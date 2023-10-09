@@ -1,0 +1,16 @@
+.new-line-paragraph {
+  .line-wrapper {
+    display: flex;
+    position: relative;
+  }
+
+  .line-number {
+    border-right: 1px solid $gray-400;
+    color: $gray-400;
+    flex: 0 0 2em;
+  }
+
+  .line-content {
+    margin-left: 0.5em;
+  }
+}

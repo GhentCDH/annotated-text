@@ -1,0 +1,15 @@
+.in-line-paragraph {
+  .line-wrapper {
+    .line-number {
+      color: $gray-400;
+      margin-right: 0.5em;
+      margin-left: 0.5em;
+    }
+
+    &:first-child {
+      .line-number {
+        margin-left: 0;
+      }
+    }
+  }
+}
