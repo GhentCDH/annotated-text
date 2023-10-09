@@ -1,16 +1,15 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div class="annotated-text" v-if="annotatedLines">
-        <div class="annotated-text__line" v-for="line in annotatedLines">
-            <template v-if="line?.gutter">
-                <span class="greek-text__gutter-text">{{ line?.gutter?.text }}</span>
-                <span class="greek-text__gutter-annotations">
+        <div class="line" v-for="line in annotatedLines">
+            <div v-if="line?.gutter" class="gutter">
+                <span class="text">{{ line?.gutter?.text }}</span>
+                <span class="annotations">
                     <span v-for="annotation in line.gutter.annotations" :class="annotation.classes"
                         @click="onClickAnnotation(annotation)"></span>
                 </span>
-            </template>
-
-            <span class="greek-text__text">
+            </div>
+            <div class="content">
                 <template v-for="linePart in line.parts">
                     <span v-if="linePart.annotations.length" class="annotation-wrapper" :key="linePart.start">
                         <RecursiveAnnotatedText :text="linePart.text" :annotations="linePart.annotations"
@@ -18,7 +17,7 @@
                     </span>
                     <template v-else>{{ linePart.text }}</template>
                 </template>
-            </span>
+            </div>
         </div>
     </div>
 </template>
@@ -103,7 +102,7 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
         return {
             start: range[0],
             end: range[1] - 1,
-            text: line.text.substring(range[0] - line.start, range[1] - line.start + 1),
+            text: line.text.substring(range[0] - line.start, range[1] - line.start),
             annotations: range[2],
         } satisfies LinePart
     })
@@ -122,7 +121,8 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
 
 const annotatedLines = computed( (): AnnotatedLine[] => {
     let lines = props.lines.map((line) => createAnnotatedLine(line))
-    console.log(lines)
+    props.debug && console.log('** annotated lines **')
+    props.debug && console.log(lines)
     return lines
 })
 
@@ -137,9 +137,3 @@ const intersectInterval = (a: RangeWithAnnotation, b: RangeWithAnnotation): [num
     return [max[0], min[1] < max[1] ? min[1] : max[1]];
 }
 </script>
-
-<style lang="scss">
-.annotation-wrapper {
-    border-bottom: 2px solid red;
-}
-</style>
