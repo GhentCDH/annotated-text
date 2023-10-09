@@ -26,6 +26,13 @@ const annotations = [
         class: "annotation annotation-typo",
         target: "span",
         metadata: {},
+      },
+      {
+        start: 23,
+        end: 36,
+        class: "annotation annotation-typo",
+        target: "span",
+        metadata: {},
       }
     ] satisfies Annotation[]
 
