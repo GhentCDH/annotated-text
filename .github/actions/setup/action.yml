@@ -1,0 +1,19 @@
+name: "Setup"
+description: "Checks out code and installs dependencies using Yarn"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18"
+    - name: Load cache
+      uses: actions/cache@v3
+      id: yarn-cache
+      with:
+        path: "**/node_modules"
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+    - name: Install packages
+      shell: bash
+      run: yarn install
