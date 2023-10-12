@@ -16,11 +16,11 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/components/index.ts"),
-      name: "VueComponentText",
+      name: "VueComponentAnnotatedText",
       formats: ["es", "cjs"],
       fileName: (format) => {
-        if (format === "es") return "vue-component-text.es.js";
-        if (format === "cjs") return "vue-component-text.cjs";
+        if (format === "es") return "vue-component-annotated-text.es.js";
+        if (format === "cjs") return "vue-component-annotated-text.cjs";
         return "";
       },
     },
