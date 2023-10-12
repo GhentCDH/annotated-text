@@ -35,7 +35,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "vue-demi": "^0.14.5"
+    "vue-demi": "latest"
   },
   "devDependencies": {
     "etali": "^1.2.5",
