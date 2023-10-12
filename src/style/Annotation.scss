@@ -1,0 +1,224 @@
+$annotated-text--default-theme: (
+
+);
+
+$annotated-text-annotation-colors: (
+    "1": #f51720,
+    "2": #008d7c,
+    "3": #ffbc05,
+    "4": #8aff05,
+    "5": #ff7ec3,
+    "6": #05d1ff,
+    "7": #6200d1,
+    "8": #424600,
+    "9": #613900,
+);
+
+
+.annotated-text {
+
+    .content > span {
+        display: inline-block;
+        position: relative;
+        height: 60px;
+    }
+    
+    .annotation {
+        cursor: pointer;
+    }
+
+    .annotation > label {
+        display: none;
+    }
+
+    &.theme-nested {
+
+        .annotation {
+            position: relative;
+
+            label {
+                background: white;
+                font-size: 8px;
+                border-radius: 3px;
+                padding: 1px 2px;
+                position: relative;
+                z-index: 2000;
+                top: -2px;
+                margin: 0 2px;
+                // display: inline-block;
+            }
+        }
+
+        .annotation--start::before {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        .annotation--end::before {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        @for $weight from 0 to 9 {
+            .annotation--w#{$weight}::before {
+                top: (-3px*$weight);
+                height: calc(1.1rem + calc(3px*2*$weight));
+                z-index: calc(1010 - $weight);
+                position: absolute;
+                content: '';
+                background: rgb(255, 0, 0, 0.3);
+                width: 100%;
+                // height: 1.1rem;
+            }
+        }
+
+        @each $name, $color in $annotated-text-annotation-colors {
+            .annotation--color-#{$name}::before {
+                background: rgba($color, 0.3);
+            }
+        }
+
+        &.annotated-text--labeled {
+
+            .annotation--end > label {
+                display: inline-block;
+            }
+    
+        }
+    
+
+    }
+
+
+    &.theme-inline {
+
+        .line-part {
+            position: relative;
+        }
+
+        .annotation {
+            position: relative;
+            width: 100%;
+            left: 0;
+            top: 0;
+            height: 1.1rem;
+
+            background: rgb(255, 0, 0, 0.3);
+
+            label {
+                background: white;
+                font-size: 8px;
+                border-radius: 3px;
+                padding: 2px 2px;
+            }
+        }
+
+        .annotation--start {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        .annotation--end {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        @for $weight from 0 to 9 {
+            .annotation--w#{$weight} {
+                top: (-3px*$weight);
+                height: calc(1.1rem + calc(3px*2*$weight));
+                z-index: calc(100 + $weight);
+            }
+        }
+
+    }
+
+    /*
+            background: rgb(0, 0, 255, 0.3);
+            background: rgb(0, 128, 0, 0.3);
+            background: rgb(255, 0, 0, 0.3);
+    */
+
+
+    &.theme-underline {
+
+        .annotation {
+            position: absolute;
+            left: 0px;
+            width: calc(100% + 0px);
+            height: 3px;
+            cursor: pointer;
+    
+            label {
+                display: none;
+                position: absolute;
+                font-family: Arial, Helvetica, sans-serif;
+                left: 0;
+                font-size: 10px;
+                padding: 2px;
+                color: white;
+                background: gray;
+            }
+        }
+
+        .annotation--start {
+            left: -1px;
+            width: calc(100% + 1px);
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;            
+        }
+
+        .annotation--end {
+            right: -1px;
+            width: calc(100% + 1px);
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;            
+        }        
+        
+        .annotation--w0 {
+            top: 18px;
+            background: rgb(255, 0, 0, 0.3);
+    
+            label {
+                background: red;
+            }
+        }
+        
+        .annotation--w1 {
+            top: 22px;
+            background: green;
+    
+            label {
+                background: green;
+            }
+        }
+        
+        .annotation--w2 {
+            top: 26px;
+            background: blue;
+    
+            label {
+                background: blue;
+            }
+        }
+    
+        &.annotated-text--labeled {
+
+            .annotation > label {
+                display: block;
+            }
+
+            .annotation--w1 {
+                top: 26px;
+            }
+    
+            .annotation--w2 {
+                top: 34px;
+            }
+    
+        }  
+    }
+
+    
+}
+

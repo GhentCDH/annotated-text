@@ -1,0 +1,16 @@
+.annotated-text {
+
+    & > .line {
+
+        & > .gutter {
+            width: 2em;
+            display: inline-block;
+        }
+    
+        & > .content {
+            display: inline-block;
+        }
+    
+    }
+
+}
