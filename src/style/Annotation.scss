@@ -14,7 +14,6 @@ $annotated-text-annotation-colors: (
     "9": #613900,
 );
 
-
 .annotated-text {
 
     .content > span {
@@ -25,27 +24,27 @@ $annotated-text-annotation-colors: (
     
     .annotation {
         cursor: pointer;
+        label {
+            cursor: pointer;
+        }
     }
 
-    .annotation > label {
-        display: none;
-    }
-
-    &.theme-nested {
+    &.annotated-text--render-nested.theme-default {
 
         .annotation {
             position: relative;
 
             label {
+                display: none;
                 background: white;
-                font-size: 8px;
+                font-size: 60%;
+                font-family: Arial, Helvetica, sans-serif;
                 border-radius: 3px;
                 padding: 1px 2px;
                 position: relative;
                 z-index: 2000;
                 top: -2px;
                 margin: 0 2px;
-                // display: inline-block;
             }
         }
 
@@ -61,8 +60,8 @@ $annotated-text-annotation-colors: (
 
         @for $weight from 0 to 9 {
             .annotation--w#{$weight}::before {
-                top: (-3px*$weight);
-                height: calc(1.1rem + calc(3px*2*$weight));
+                top: (-2px*($weight+1));
+                height: calc(1.1rem + calc(2px*2*($weight + 1)));
                 z-index: calc(1010 - $weight);
                 position: absolute;
                 content: '';
@@ -78,86 +77,35 @@ $annotated-text-annotation-colors: (
             }
         }
 
-        &.annotated-text--labeled {
-
-            .annotation--end > label {
-                display: inline-block;
-            }
-    
+        &.annotated-text--show-labels .annotation--end > label {
+            display: inline-block;
         }
-    
-
     }
 
-
-    &.theme-inline {
-
-        .line-part {
-            position: relative;
-        }
-
-        .annotation {
-            position: relative;
-            width: 100%;
-            left: 0;
-            top: 0;
-            height: 1.1rem;
-
-            background: rgb(255, 0, 0, 0.3);
-
-            label {
-                background: white;
-                font-size: 8px;
-                border-radius: 3px;
-                padding: 2px 2px;
-            }
-        }
-
-        .annotation--start {
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-        }
-
-        .annotation--end {
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-        }
-
-        @for $weight from 0 to 9 {
-            .annotation--w#{$weight} {
-                top: (-3px*$weight);
-                height: calc(1.1rem + calc(3px*2*$weight));
-                z-index: calc(100 + $weight);
-            }
-        }
-
-    }
-
-    /*
-            background: rgb(0, 0, 255, 0.3);
-            background: rgb(0, 128, 0, 0.3);
-            background: rgb(255, 0, 0, 0.3);
-    */
-
-
-    &.theme-underline {
+    &.annotated-text--render-flat.theme-default {
 
         .annotation {
             position: absolute;
             left: 0px;
             width: calc(100% + 0px);
             height: 3px;
-            cursor: pointer;
-    
+            background: rgb(255, 0, 0);
+
             label {
                 display: none;
                 position: absolute;
                 font-family: Arial, Helvetica, sans-serif;
                 left: 0;
-                font-size: 10px;
-                padding: 2px;
+                font-size: 60%;
+                padding: 1px 2px;
                 color: white;
-                background: gray;
+                background: rgb(255, 0, 0);
+            } 
+        }
+
+        &.annotated-text--show-labels {
+            .annotation.annotation--start label {
+                display: block;
             }
         }
 
@@ -165,7 +113,7 @@ $annotated-text-annotation-colors: (
             left: -1px;
             width: calc(100% + 1px);
             border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;            
+            border-bottom-left-radius: 3px;
         }
 
         .annotation--end {
@@ -174,51 +122,28 @@ $annotated-text-annotation-colors: (
             border-top-right-radius: 3px;
             border-bottom-right-radius: 3px;            
         }        
-        
-        .annotation--w0 {
-            top: 18px;
-            background: rgb(255, 0, 0, 0.3);
-    
-            label {
-                background: red;
-            }
-        }
-        
-        .annotation--w1 {
-            top: 22px;
-            background: green;
-    
-            label {
-                background: green;
-            }
-        }
-        
-        .annotation--w2 {
-            top: 26px;
-            background: blue;
-    
-            label {
-                background: blue;
-            }
-        }
-    
-        &.annotated-text--labeled {
 
-            .annotation > label {
-                display: block;
+        @for $weight from 0 to 9 {
+            .annotation--w#{$weight} {
+                top: calc(18px + 4px*$weight);
+                z-index: calc(10 + $weight);
             }
 
-            .annotation--w1 {
-                top: 26px;
+            &.annotated-text--show-labels .annotation--w#{$weight} {
+                top: calc(18px + 12px*$weight);
             }
-    
-            .annotation--w2 {
-                top: 34px;
+
+        }
+
+        @each $name, $color in $annotated-text-annotation-colors {
+            .annotation--color-#{$name} {
+                background: $color;
+                label {
+                    background: $color;
+                }
             }
-    
-        }  
+        }
     }
-
     
 }
 
