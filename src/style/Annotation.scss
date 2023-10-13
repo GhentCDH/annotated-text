@@ -21,6 +21,10 @@ $annotated-text-annotation-colors: (
         position: relative;
         height: 60px;
     }
+
+    .content span {
+        white-space: pre;
+    }
     
     .annotation {
         cursor: pointer;
