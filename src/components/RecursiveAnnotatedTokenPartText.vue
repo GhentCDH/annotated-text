@@ -1,5 +1,4 @@
 <template>
-  {{ console.log(annotations) }}
   <span
     v-if="annotations.length"
     :class="annotationClassHandler(annotations[0], start, end)"
