@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/GhentCDH/vue_component_annotated_text"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "exports": {
     ".": {
       "import": "./dist/vue-component-annotated-text.es.js",
@@ -38,7 +38,6 @@
     "vue-demi": "latest"
   },
   "devDependencies": {
-    "etali": "^1.2.5",
     "@babel/types": "^7.21.2",
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/jsdom": "^21.1.0",
@@ -51,9 +50,9 @@
     "@vue/eslint-config-typescript": "^11.0.0",
     "@vue/test-utils": "^2.3.0",
     "@vue/tsconfig": "^0.4.0",
-    "bootstrap": "^5.2.3",
     "eslint": "^8.35.0",
     "eslint-plugin-vue": "^9.9.0",
+    "etali": "^1.2.5",
     "jsdom": "^22.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.4",
@@ -70,5 +69,14 @@
     "vue-live": "^2.3.2",
     "vue-tsc": "^1.2.0",
     "vue2": "npm:vue@2.7.14"
+  },
+  "peerDependencies": {
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "vue": "^2.0.0 || >=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    }
   }
 }
