@@ -39,4 +39,7 @@ export default defineConfig({
       reportsDirectory: "../test_coverage",
     },
   },
+  optimizeDeps: {
+    exclude: ['vue-demi']
+ }  
 });
