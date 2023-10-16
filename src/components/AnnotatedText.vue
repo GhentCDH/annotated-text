@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div v-if="annotatedLines" :class="componentClasses">
         <div v-for="line in annotatedLines" class="line">
@@ -10,11 +9,12 @@
                 </span>
             </div>
             <div class="content">
-                <span v-for="linePart in line.parts" class="line-part">
+                <span v-for="linePart in line.parts" :class="linePartClasses(linePart)">
                     <template v-if="renderFlat">
                         <span>{{ linePart.text }}</span>
                         <span v-for="annotation in linePart.annotations"
-                            :class="annotationClasses(annotation, linePart.start, linePart.end)">
+                            :class="annotationClasses(annotation, linePart.start, linePart.end)"
+                            @click="onClickAnnotation(annotation)">
                             <label v-if="annotation.label">{{ annotation.label }}</label>
                         </span>
                     </template>
@@ -30,9 +30,8 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, computed } from "vue-demi";
+import { ref, computed, defineEmits } from "vue-demi";
 import type {
     AnnotatedTextProps,
     Line,
@@ -44,6 +43,9 @@ import type {
 } from "@/types";
 import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
+
+// define emits
+const emit = defineEmits(["click-annotation"]);
 
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -192,9 +194,8 @@ const annotationClasses = function (
     return classes;
 };
 
-const onClickAnnotation = function (annotation) {
-    props.debug && console.log("** clicked **");
-    props.debug && console.log(annotation);
+const onClickAnnotation = function(annotation) {
+    emit("click-annotation", annotation)
 };
 
 const renderNested = computed(() => props.render === 'nested')
@@ -208,4 +209,13 @@ const componentClasses = computed((): any[] => {
     ]
     return classes.filter( item => item )
 })
+
+const linePartClasses = function(linePart: LinePart): any[] {
+    let classes = ['line-part', 'line-part--m' + maxAnnotationWeight(linePart.annotations)]
+    return classes
+}
+
+const maxAnnotationWeight = function(annotations: Annotation[]) {
+    return annotations.reduce((ac, annotation) => Math.max(ac, Number(annotation?.weight ?? 0)), 0)
+}
 </script>

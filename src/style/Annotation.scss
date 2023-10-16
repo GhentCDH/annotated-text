@@ -19,7 +19,6 @@ $annotated-text-annotation-colors: (
     .content > span {
         display: inline-block;
         position: relative;
-        height: 60px;
     }
 
     .content span {
@@ -35,6 +34,14 @@ $annotated-text-annotation-colors: (
 
     &.annotated-text--render-nested.theme-default {
 
+
+        // calculate line-part height
+        @for $weight from 0 to 9 {
+            .line-part--m#{$weight} {
+                margin-bottom: calc(3px + ($weight + 1)*3px)
+            }
+        }
+                
         .annotation {
             position: relative;
 
@@ -88,6 +95,22 @@ $annotated-text-annotation-colors: (
 
     &.annotated-text--render-flat.theme-default {
 
+        // calculate line-part height
+        @for $weight from 0 to 9 {
+            .line-part--m#{$weight} {
+                margin-bottom: calc(4px + ($weight + 1)*4px)
+            }
+        }
+
+        &.annotated-text--show-labels {
+            @for $weight from 0 to 9 {
+                .line-part--m#{$weight} {
+                    margin-bottom: calc(4px + ($weight + 1)*12px)
+                }
+            }
+        }
+
+        
         .annotation {
             position: absolute;
             left: 0px;
