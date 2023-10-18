@@ -5,12 +5,12 @@
     "type": "git",
     "url": "https://github.com/GhentCDH/vue_component_annotated_text"
   },
-  "version": "0.0.5",
+  "version": "0.0.7",
   "exports": {
     ".": {
       "import": "./dist/vue-component-annotated-text.es.js",
       "require": "./dist/vue-component-annotated-text.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/types/index.d.ts"
     },
     "./style.css": {
       "import": "./dist/style.css"
