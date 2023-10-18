@@ -14,12 +14,7 @@
     />
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
   </span>
-  <span
-    v-else
-    _class="annotationClassHandler(annotations[0], start, end)"
-    @click.stop="annotationClickHandler(annotations[0])"
-    >{{ text }}</span
-  >
+  <span v-else class="text">{{ text }}</span>
 </template>
 
 <script>

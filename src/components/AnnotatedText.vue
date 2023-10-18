@@ -9,9 +9,10 @@
                 </span>
             </div>
             <div class="content">
-                <span v-for="linePart in line.parts" :class="linePartClasses(linePart)">
+                <span v-for="linePart in line.parts" :class="linePartClasses(linePart)" :data-start="linePart.start"
+                    :data-end="linePart.end">
                     <template v-if="renderFlat">
-                        <span>{{ linePart.text }}</span>
+                        <span class="text">{{ linePart.text }}</span>
                         <span v-for="annotation in linePart.annotations"
                             :class="annotationClasses(annotation, linePart.start, linePart.end)"
                             @click="onClickAnnotation(annotation)">
@@ -22,7 +23,7 @@
                         <RecursiveAnnotatedTokenPartText v-if="linePart.annotations.length" :text="linePart.text"
                             :start="linePart.start" :end="linePart.end" :annotations="linePart.annotations.sort((a, b) => b.weight - a.weight)
                                 " :annotation-class-handler="annotationClasses" :annotation-click-handler="onClickAnnotation" />
-                        <span v-else>{{ linePart.text }}</span>
+                        <span v-else class="text">{{ linePart.text }}</span>
                     </template>
                 </span>
             </div>
@@ -224,7 +225,7 @@ const annotationClasses = function (
     return classes;
 };
 
-const onClickAnnotation = function(annotation) {
+const onClickAnnotation = function (annotation) {
     emit("click-annotation", annotation)
 };
 
@@ -237,15 +238,24 @@ const componentClasses = computed((): any[] => {
         'annotated-text--render-' + props.render,
         props.showLabels ? 'annotated-text--show-labels' : null,
     ]
-    return classes.filter( item => item )
+    return classes.filter(item => item)
 })
 
-const linePartClasses = function(linePart: LinePart): any[] {
+const linePartClasses = function (linePart: LinePart): any[] {
     let classes = ['line-part', 'line-part--m' + maxAnnotationWeight(linePart.annotations)]
     return classes
 }
 
-const maxAnnotationWeight = function(annotations: Annotation[]) {
+const linePartAttr = function (linePart: LinePart): {} {
+    let attr = {
+        class: linePartClasses(linePart),
+        "data-start": linePart.start,
+        "data-end": linePart.end
+    }
+    return attr
+}
+
+const maxAnnotationWeight = function (annotations: Annotation[]) {
     return annotations.reduce((ac, annotation) => Math.max(ac, Number(annotation?.weight ?? 0)), 0)
 }
 </script>

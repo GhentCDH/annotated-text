@@ -16,6 +16,10 @@ $annotated-text-annotation-colors: (
 
 .annotated-text {
 
+    .gutter {
+        user-select: none;
+    }
+
     .content > span {
         display: inline-block;
         position: relative;
@@ -23,6 +27,11 @@ $annotated-text-annotation-colors: (
 
     .content span {
         white-space: pre;
+    }
+
+    .line-part .text {
+        position: relative;
+        z-index: 2000;
     }
     
     .annotation {
@@ -56,6 +65,7 @@ $annotated-text-annotation-colors: (
                 z-index: 2000;
                 top: -2px;
                 margin: 0 2px;
+                user-select: none;
             }
         }
 
@@ -127,6 +137,7 @@ $annotated-text-annotation-colors: (
                 padding: 1px 2px;
                 color: white;
                 background: rgb(255, 0, 0);
+                user-select: none;
             } 
         }
 
