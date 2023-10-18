@@ -4,9 +4,10 @@
     :annotations="annotations"
     :lines="textLines"
     :debug="true"
-    :show-labels="false"
-    render="flat"
+    :show-labels="true"
+    render="nested"
     @click-annotation="onClick"
+    @_mousemove="onMouseOver"
   />
 </template>
 
@@ -17,7 +18,7 @@ import {
   AnnotationTarget,
   Line,
   Paragraph,
-} from "./VueComponentAnnotatedText";
+} from "./";
 
 const paragraphs = [
   {
@@ -99,5 +100,39 @@ const onClick = function(annotation): void {
   console.log(annotation)
 }
 
+
+const onMouseOver = function(event): void {
+  console.log(caretPositionFromPoint(event.clientX, event.clientY))
+}
+
+function caretPositionFromPoint(x: number, y: number): {
+  offsetNode: Node;
+  offset: number;
+  getClientRect(): ClientRect | DOMRect;
+} | null {
+  // @ts-ignore
+  if (document.caretPositionFromPoint) {
+    // @ts-ignore
+    let position = document.caretPositionFromPoint(x, y);
+    return position ? {
+      offsetNode: position.offsetNode,
+      offset: position.offset,
+      getClientRect() {
+        return position.getClientRect();
+      }
+    } : null;
+  } else {
+    let range = document.caretRangeFromPoint(x, y);
+    return range ? {
+      offsetNode: range.startContainer,
+      offset: range.startOffset,
+      getClientRect() {
+        return range.getClientRects()[0];
+      }
+    } : null;
+  }
+}
+
 // console.log(textLines);
 </script>
+.
