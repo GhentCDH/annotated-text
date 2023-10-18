@@ -15,20 +15,21 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/components/index.ts"),
+      entry: resolve(__dirname, "src/index.ts"),
       name: "VueComponentAnnotatedText",
       formats: ["es", "cjs"],
-      fileName: (format) => {
-        if (format === "es") return "vue-component-annotated-text.es.js";
-        if (format === "cjs") return "vue-component-annotated-text.cjs";
-        return "";
-      },
+      // fileName: (format) => {
+      //   if (format === "es") return "vue-component-annotated-text.es.js";
+      //   if (format === "cjs") return "vue-component-annotated-text.cjs";
+      //   return "";
+      // },
     },
     rollupOptions: {
-      external: ["vue"],
+      external: ['vue', 'vue-demi'],
       output: {
         globals: {
-          vue: "Vue",
+          'vue-demi': 'vue-demi',
+          vue: 'Vue',
         },
       },
     },
@@ -41,5 +42,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['vue-demi']
- }  
+  }
 });
