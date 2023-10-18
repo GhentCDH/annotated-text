@@ -56,6 +56,7 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
     theme: "default",
     render: "nested",
     showLabels: false,
+    autoAnnotationWeights: true,
 });
 
 const annotationEndOffsetFix = 1;
@@ -64,6 +65,9 @@ const annotationEndOffsetFix = 1;
 // etali end position = position of next char not included in range
 // ex: in "abcdef", span [0,2] is "ab"
 const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
+    if (props.autoAnnotationWeights) {
+        calculateAnnotationWeights(annotations)
+    }
     // todo: check why max is needed
     let ranges = annotations.map(
         (annotation) =>
@@ -174,6 +178,32 @@ const intersectInterval = (
     if (min[1] < max[0]) return null; //the ranges don't intersect
 
     return [max[0], min[1] < max[1] ? min[1] : max[1]];
+};
+
+const calculateAnnotationWeights = function (annotations: Annotation[]) {
+    const compareAnnotations = function (a: Annotation, b: Annotation): number {
+        return a.start - b.start === 0 ? b.end - a.end : a.start - b.start;
+    };
+
+    annotations = annotations.sort(compareAnnotations);
+
+    const stack = [];
+    annotations.forEach(function (annotation) {
+        let weight = 0;
+        do {
+            if (!stack?.[weight]) {
+                annotation.weight = weight;
+                stack[weight] = annotation;
+                return;
+            }
+            if (annotation.start > stack[weight].end) {
+                annotation.weight = weight;
+                stack[weight] = annotation;
+                return;
+            }
+            weight++;
+        } while (true);
+    });
 };
 
 const annotationClasses = function (

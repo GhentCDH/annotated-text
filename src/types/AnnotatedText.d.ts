@@ -9,6 +9,7 @@ export interface AnnotatedTextProps {
   theme?: string;
   render?: RenderType;
   showLabels?: boolean;
+  autoAnnotationWeights?: boolean;
 }
 
 export type RenderType = "nested" | "flat";
