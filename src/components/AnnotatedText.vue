@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineEmits } from "vue-demi";
+import { reactive, computed, defineEmits } from "vue-demi";
 import type {
     AnnotatedTextProps,
     Line,
@@ -46,7 +46,9 @@ import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 
 // define emits
-const emit = defineEmits(["click-annotation"]);
+const emit = defineEmits<{
+  "click-annotation": [annotation: Annotation];
+}>();
 
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -61,6 +63,7 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
 });
 
 const annotationEndOffsetFix = 1;
+const annotations = reactive(props.annotations) satisfies Annotation[];
 
 // prepare annotations for Etali.FlattenRanges
 // etali end position = position of next char not included in range
@@ -85,7 +88,7 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
 // flatten overlapping ranges
 const flattenedRanges = computed((): RangeWithAnnotations[] => {
     // prepare annotations
-    let ranges = prepareRanges(props.annotations);
+  let ranges = prepareRanges(annotations);
 
     // add line ranges
     props.lines.forEach((line) =>
@@ -225,8 +228,8 @@ const annotationClasses = function (
     return classes;
 };
 
-const onClickAnnotation = function (annotation) {
-    emit("click-annotation", annotation)
+const onClickAnnotation = function (annotation: Annotation) {
+  emit("click-annotation", annotation);
 };
 
 const renderNested = computed(() => props.render === 'nested')
