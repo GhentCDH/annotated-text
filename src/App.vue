@@ -4,7 +4,7 @@
     :annotations="annotations"
     :lines="textLines"
     :debug="true"
-    :show-labels="true"
+    :show-labels="false"
     render="nested"
     @click-annotation="onClick"
     @_mousemove="onMouseOver"
@@ -95,9 +95,14 @@ const textToLines = (text: string): Line[] => {
 
 const textLines = textToLines(text);
 
-const onClick = function(annotation): void {
+const onClick = function(annotation: Annotation): void {
   console.log('** click received **')
   console.log(annotation)
+  if ( annotation.class.includes('annotation--active') ) {
+    annotation.class = annotation.class.replace('annotation--active', '').trim();
+  } else {
+    annotation.class = annotation.class += " annotation--active";
+  }
 }
 
 
