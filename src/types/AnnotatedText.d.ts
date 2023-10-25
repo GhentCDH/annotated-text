@@ -1,7 +1,7 @@
 import { Annotation } from "./Annotation";
 
 export interface AnnotatedTextProps {
-  text: string;
+  text?: string;
   annotations?: Annotation[];
   lines?: Line[];
   annotationOffset?: number;
