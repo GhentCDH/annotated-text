@@ -18,11 +18,6 @@ export default defineConfig({
       entry: resolve(__dirname, "src/index.ts"),
       name: "VueComponentAnnotatedText",
       formats: ["es", "cjs"],
-      // fileName: (format) => {
-      //   if (format === "es") return "vue-component-annotated-text.es.js";
-      //   if (format === "cjs") return "vue-component-annotated-text.cjs";
-      //   return "";
-      // },
     },
     rollupOptions: {
       external: ['vue', 'vue-demi'],
