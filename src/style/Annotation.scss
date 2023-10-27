@@ -2,6 +2,7 @@ $annotated-text--default-theme: (
 
 );
 
+
 $annotated-text-annotation-colors: (
     "1": #f51720,
     "2": #008d7c,
@@ -15,6 +16,9 @@ $annotated-text-annotation-colors: (
 );
 
 .annotated-text {
+
+
+   
 
     .gutter {
         user-select: none;

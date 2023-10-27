@@ -1,16 +1,39 @@
 .annotated-text {
-
-    & > .line {
-
-        & > .gutter {
-            width: 2em;
-            display: inline-block;
-        }
-    
-        & > .content {
-            display: inline-block;
-        }
-    
-    }
-
+    display: grid; 
+    row-gap: 0; 
+    column-gap: 5px;
+    grid-template-columns: 2em auto;
 }
+
+.gutter-annotations-1 {
+    grid-template-columns: 3px 2em auto;
+}
+
+.gutter-annotations-2 {
+    grid-template-columns: 3px 3px 2em auto;
+}
+
+.gutter-annotations-3 {
+    grid-template-columns: 3px 3px 3px 2em auto;
+}
+
+.gutter-annotations-4 {
+    grid-template-columns: 3px 3px 3px 3px 2em auto;
+}
+
+.gutter-annotations-5 {
+    grid-template-columns: 3px 3px 3px 3px 3px 2em auto;
+}
+
+.gutter-annotations-6 {
+    grid-template-columns: 3px 3px 3px 3px 3px 3px 2em auto;
+}
+
+.gutter-annotations-7 {
+    grid-template-columns: 3px 3px 3px 3px 3px 3px 3px 2em auto;
+}
+
+.gutter-annotations-8 {
+    grid-template-columns: 3px 3px 3px 3px 3px 3px 3px 3px 2em auto;
+}
+

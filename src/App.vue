@@ -1,26 +1,40 @@
 <template>
-  <AnnotatedText
+
+<h4>Vue component annotated text</h4>
+
+<menu>
+  <input type="radio" value="nested" id="nested" v-model="props.render"><label for="nested">Nested</label> 
+<input type="radio" value="flat"  id="flat" v-model="props.render"><label for="flat">Flat</label> | 
+<input v-model="props.debug"      type="checkbox"><label>Debug messages</label> | 
+<input v-model="props.showLabels" type="checkbox"><label>Show labels</label>
+</menu>
+
+<hr>
+
+<AnnotatedText
     text="012345678901234567890123456789"
     :annotations="annotations"
     :lines="textLines"
-    :debug="true"
-    :show-labels="false"
-    render="nested"
+    :debug="props.debug"
+    :show-labels="props.showLabels"
+    :render="props.render"
     @click-annotation="onClick"
     @_mousemove="onMouseOver"
   />
-
-
 </template>
 
 <script setup lang="ts">
 import {
   AnnotatedText,
+  AnnotatedTextProps,
   Annotation,
   AnnotationTarget,
   Line,
   Paragraph,
 } from "./";
+
+import { reactive } from "vue-demi";
+import { RenderType } from "./types/AnnotatedText";
 
 const paragraphs = [
   {
@@ -59,9 +73,17 @@ const annotations = [
     start: 3,
     end: 17,
     class: "annotation annotation--color-1",
-    target: "span",
-    metadata: {id: 4},
+    target: "gutter",
+    metadata: {id: 5},
     label: "lang",
+  },
+  {
+    start: 15,
+    end: 37,
+    class: "annotation annotation--color-2",
+    target: "gutter",
+    metadata: {id: 6},
+    label: "unit",
   },
 ] satisfies Annotation[];
 
@@ -95,7 +117,10 @@ const textToLines = (text: string): Line[] => {
   return lineObjects;
 };
 
+
 const textLines = textToLines(text);
+
+const props = reactive({ showLabels: false, debug: false, render: 'nested' as RenderType });
 
 const onClick = function(annotation: Annotation): void {
   console.log('** click received **')
@@ -141,4 +166,14 @@ function caretPositionFromPoint(x: number, y: number): {
 
 // console.log(textLines);
 </script>
-.
+<style>
+
+body{
+  font-family: sans-serif;
+}
+hr{
+  border: 1px solid gray;
+  margin-bottom: 1em;
+}
+
+</style>

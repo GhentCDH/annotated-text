@@ -41,9 +41,9 @@ Fill the annotations and textLines with the correct data - according to the Line
 
 ## Documentation
 
-To build the docs 
+For development: `yarn run dev`
 
-`yarn run docs:build`
+To build the docs run `yarn run docs:build`
 
 
 ## Credits
