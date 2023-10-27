@@ -1,14 +1,18 @@
 <template>
     <div v-if="annotatedLines" :class="componentClasses">
         <div v-for="line in annotatedLines" class="line">
-            <div v-if="line?.gutter" class="gutter">
-                <span class="text">{{ line?.gutter?.text }}</span>
+
+            <div v-if="line?.gutter" class="gutter" >
+                
+                <span class="text">
+                    {{ line?.gutter?.text }}</span>
                 <span class="annotations">
-                    <span v-for="annotation in line.gutter.annotations" :class="annotation.class"
-                        @click="onClickAnnotation(annotation)"></span>
+                    <span v-for="annotation in line.gutter.annotations" :class="annotation.class" @click="onClickAnnotation(annotation)"></span>
                 </span>
             </div>
             <div class="content">
+                
+
                 <span v-for="linePart in line.parts" :class="linePartClasses(linePart)" :data-start="linePart.start"
                     :data-end="linePart.end">
                     <template v-if="renderFlat">
@@ -28,6 +32,31 @@
                 </span>
             </div>
         </div>
+
+<div style="display: grid; row-gap: 0; column-gap: 5px;grid-template-columns: 3px 3px 1em auto;margin-top:1em">
+  
+  <div ></div>
+  <div style="background: green"></div>
+  <span>0.</span>
+  <div class="content"><div class="content"><span class="line-part line-part--m0" data-start="2" data-end="2"><!--v-if--><span class="text">2</span></span><span class="line-part line-part--m1" data-start="3" data-end="4"><!--v-if--><span class="annotation annotation--color-2 annotation--active annotation--w1 annotation--start"><span class="annotation annotation--color-1 annotation--w0 annotation--start"><span class="text">34</span><label>lang</label></span><label>unit</label></span></span><span class="line-part line-part--m2" data-start="5" data-end="6"><!--v-if--><span class="annotation annotation--color-1 annotation--w2 annotation--start"><span class="annotation annotation--color-2 annotation--active annotation--w1 annotation--end"><span class="annotation annotation--color-1 annotation--w0"><span class="text">56</span><label>lang</label></span><label>unit</label></span><label>typo</label></span></span><span class="line-part line-part--m2" data-start="7" data-end="9"><!--v-if--><span class="annotation annotation--color-1 annotation--w2 annotation--end"><span class="annotation annotation--color-1 annotation--w0"><span class="text">  9</span><label>lang</label></span><label>typo</label></span></span></div></div>
+  
+  <div style="background: red" ></div>
+  <div style="background: green"></div>
+  <span>0.</span>
+  <div class="content"><span class="line-part line-part--m0" data-start="13" data-end="17"> <!--v-if--><span class="annotation annotation--color-1 annotation--w0 annotation--end"><span class="text">34567</span><label>lang</label></span></span><span class="line-part line-part--m0" data-start="18" data-end="22"><!--v-if--><span class="text">89012</span></span><span class="line-part line-part--m0" data-start="23" data-end="29"><!--v-if--><span class="annotation annotation--color-3 annotation--w0 annotation--start"><span class="text">3456789</span><label> syntax</label></span></span></div>
+
+  <div style="background: red" ></div>
+  <div style=""></div>
+  <span>0.</span>
+  <div class="content"><span class="line-part line-part--m0" data-start="13" data-end="17"> <!--v-if--><span class="annotation annotation--color-1 annotation--w0 annotation--end"><span class="text">34567</span><label>lang</label></span></span><span class="line-part line-part--m0" data-start="18" data-end="22"><!--v-if--><span class="text">89012</span></span><span class="line-part line-part--m0" data-start="23" data-end="29"><!--v-if--><span class="annotation annotation--color-3 annotation--w0 annotation--start"><span class="text">3456789</span><label> syntax</label></span></span></div>
+
+  <div ></div>
+  <div style="background: green"></div>
+  <span>0.</span>
+  <div class="content"><span class="line-part line-part--m0" data-start="13" data-end="17"> <!--v-if--><span class="annotation annotation--color-1 annotation--w0 annotation--end"><span class="text">34567</span><label>lang</label></span></span><span class="line-part line-part--m0" data-start="18" data-end="22"><!--v-if--><span class="text">89012</span></span><span class="line-part line-part--m0" data-start="23" data-end="29"><!--v-if--><span class="annotation annotation--color-3 annotation--w0 annotation--start"><span class="text">3456789</span><label> syntax</label></span></span></div>
+
+</div>
+
     </div>
 </template>
 
@@ -69,9 +98,14 @@ const annotations = reactive(props.annotations) satisfies Annotation[];
 // etali end position = position of next char not included in range
 // ex: in "abcdef", span [0,2] is "ab"
 const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
+    let spanAnnotations = annotations.filter( (annotation) => annotation.target === "span")
+    let gutterAnnotations = annotations.filter( (annotation) => annotation.target === "gutter")
+    
     if (props.autoAnnotationWeights) {
-        calculateAnnotationWeights(annotations)
+        calculateAnnotationWeights(spanAnnotations)
+        calculateAnnotationWeights(gutterAnnotations)
     }
+
     // todo: check why max is needed
     let ranges = annotations.map(
         (annotation) =>

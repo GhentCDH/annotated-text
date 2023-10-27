@@ -9,6 +9,8 @@
     @click-annotation="onClick"
     @_mousemove="onMouseOver"
   />
+
+
 </template>
 
 <script setup lang="ts">
@@ -104,7 +106,6 @@ const onClick = function(annotation: Annotation): void {
     annotation.class = annotation.class += " annotation--active";
   }
 }
-
 
 const onMouseOver = function(event): void {
   console.log(caretPositionFromPoint(event.clientX, event.clientY))

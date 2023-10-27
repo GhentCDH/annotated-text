@@ -82,8 +82,8 @@ $annotated-text-annotation-colors: (
         @for $weight from 0 to 9 {
             .annotation--w#{$weight}::before {
                 box-sizing: border-box;
-                top: (-2px*($weight+1));
-                height: calc(1.1rem + calc(2px*2*($weight + 1)));
+                top: (-3px*($weight+1));
+                height: calc(1.1rem + calc(3px*2*($weight + 1)));
                 z-index: calc(1010 - $weight);
                 position: absolute;
                 content: '';
