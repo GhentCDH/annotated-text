@@ -4,11 +4,14 @@
 
         <template v-for="line in annotatedLines">
 
-            <template v-for="gutterWheight in maxGutterAnnotationWheight + 1">
+            <template v-for="gutterWheight in (maxGutterAnnotationWheight + 1)">
 
-                <template v-if="annotation = line.gutter.annotations.filter((a) => a.weight == gutterWheight)[0]">
-                    <span :class="annotationClasses(annotation)"
-                            @click="onClickAnnotation(annotation)"> </span>
+                <template v-if="annotation = line.gutter.annotations.filter((a) => a.weight == (maxGutterAnnotationWheight-gutterWheight+1))[0]">
+                    <span class="gutter-annotations">
+                       <span :class="annotationClasses(annotation)" @click="onClickAnnotation(annotation)">  
+                            <label v-if="annotation.label">{{ annotation.label }}</label> 
+                        </span>
+                    </span>
                 </template>
                 <template v-else>
                     <span></span>
@@ -103,7 +106,12 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
 
 
 const gutterAnnotations = computed((): Annotation[] => {
-    return annotations.filter( (annotation) => annotation.target === "gutter")
+    const gutter_annotations = annotations.filter( (annotation) => annotation.target === "gutter") as Annotation[] 
+
+    props.debug && console.log("** gutter_annotations **")
+    props.debug && console.log(gutter_annotations)
+
+    return gutter_annotations;
 })
 
 // flatten overlapping ranges
@@ -133,6 +141,7 @@ const flattenedRanges = computed((): RangeWithAnnotations[] => {
 });
 
 const maxGutterAnnotationWheight = computed((): number => {
+
     return Math.max(...gutterAnnotations.value.map((a) => a.weight)); 
 })
 const createAnnotatedLine = function (line: Line): AnnotatedLine {
@@ -153,6 +162,7 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
     }
     gutterAnnotations = [...new Set(gutterAnnotations)];
 
+    console.log("gutter annotations",gutterAnnotations);
 
     // sort the annotations in each range by their start position
     rangesInScope = rangesInScope.map(function (range) {
@@ -189,8 +199,6 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
 };
 
 const annotatedLines = computed((): AnnotatedLine[] => {
-
-
 
     let lines = props.lines.map((line) => createAnnotatedLine(line));
     props.debug && console.log("** annotated lines **");
@@ -255,6 +263,7 @@ const annotationClasses = function (
     }
     return classes;
 };
+
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("click-annotation", annotation);
