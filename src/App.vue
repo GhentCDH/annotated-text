@@ -68,8 +68,7 @@ const annotations = [
     target: "span",
     metadata: {id: 3},
     label: "unit",
-  },
-  {
+  },  {
     start: 5,
     end: 9,
     class: "annotation annotation--color-1",
@@ -79,6 +78,14 @@ const annotations = [
   },
   {
     start: 23,
+    end: 36,
+    class: "annotation annotation--color-3",
+    target: "gutter",
+    metadata: {id: 5},
+    label: "syntax",
+  },
+  {
+    start: 0,
     end: 36,
     class: "annotation annotation--color-3",
     target: "gutter",

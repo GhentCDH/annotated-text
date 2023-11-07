@@ -14,8 +14,6 @@ $annotated-text-annotation-colors: (
     "9": #613900,
 );
 
-
-
 .annotated-text { 
 
     display: grid; 
@@ -49,7 +47,7 @@ $annotated-text-annotation-colors: (
 
 
     //creates the right amount of columns for gutter annotations
-    @for $num_gutter_annotations from 0 to 9 {
+    @for $num_gutter_annotations from 1 to 9 {
         &.gutter-annotations-#{$num_gutter_annotations} {
             grid-template-columns:  repeat($num_gutter_annotations,3px) 2em auto;
         }
@@ -58,10 +56,16 @@ $annotated-text-annotation-colors: (
             grid-template-columns:  repeat($num_gutter_annotations,3em) 2em auto;
         }
     }
-       
+
+    //same as above, repeat 0 does not work
+    &.gutter-annotations-0 {
+        grid-template-columns:  2em auto;
+    }
+    &.gutter-annotations-0.annotated-text--show-labels   {
+        grid-template-columns: 2em auto;
+    }
 
     &.annotated-text--render-nested.theme-default{
-
 
         // calculate line-part height
         @for $weight from 0 to 9 {
@@ -91,9 +95,9 @@ $annotated-text-annotation-colors: (
 
             @each $name, $color in $annotated-text-annotation-colors {
                 .annotation--color-#{$name} {
-                    background: rgba($color, 0.3);  
+                    background: rgba($color, 0.3);
+                    border-color: $color;
                     label {
-                        background: rgba($color, 0.3);
                         background: white;
                         font-size: 60%;
                         font-family: Arial, Helvetica, sans-serif;
@@ -101,23 +105,15 @@ $annotated-text-annotation-colors: (
                         padding: 1px 2px;
                         position: relative;
                         z-index: 2000;
-                        top: -2px;
                         margin: 0 2px;
+                        user-select: none;
                     }
-                    border-color: $color;
+                   
                 }
+
+               
                 
-            }
-
-            .annotation--start{
-                border-top-width: 1px;
-                border-top-style: solid;
-            }
-
-            .annotation--stop{
-                border-bottom-width: 1px;
-                border-bottom-style: solid;
-            }
+            }           
     
         }
 
@@ -190,15 +186,13 @@ $annotated-text-annotation-colors: (
             }
         }
 
-        &.annotated-text--show-labels .annotation--end > label {
+        &.annotated-text--show-labels .content .annotation--end > label {
             display: inline-block;
         }
 
-        &.annotated-text--show-labels > .gutter-annotations label {
+        &.annotated-text--show-labels  .gutter-annotations .annotation--end > label {
             display: inline-block;
         }
-    
-
        
     }
 
@@ -320,12 +314,15 @@ $annotated-text-annotation-colors: (
 
         &.annotated-text--show-labels {
 
-            .annotation.annotation--start label {
+            .content .annotation.annotation--start label {
                 display: block;
             }
 
-            label{
+            .gutter-annotations .annotation.annotation--end label{
+                padding-top: 2px;
+                padding-left:2px;
                 display: block;
+                user-select: none;
             }
 
             @for $weight from 0 to 9 {

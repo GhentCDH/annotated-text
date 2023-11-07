@@ -4,11 +4,11 @@
 
         <template v-for="line in annotatedLines">
 
-            <template v-for="gutterWheight in (maxGutterAnnotationWheight + 1)">
+            <template v-for="gutterWheight in maxGutterAnnotationWheight">
 
-                <template v-if="annotation = line.gutter.annotations.filter((a) => a.weight == (maxGutterAnnotationWheight-gutterWheight+1))[0]">
+                <template v-if="annotation = line.gutter.annotations.filter((a) => a.weight == (maxGutterAnnotationWheight-gutterWheight))[0]">
                     <span class="gutter-annotations">
-                       <span :class="annotationClasses(annotation)" @click="onClickAnnotation(annotation)">  
+                       <span :class="annotationGutterClasses(annotation,line)" @click="onClickAnnotation(annotation)">  
                             <label v-if="annotation.label">{{ annotation.label }}</label> 
                         </span>
                     </span>
@@ -141,8 +141,10 @@ const flattenedRanges = computed((): RangeWithAnnotations[] => {
 });
 
 const maxGutterAnnotationWheight = computed((): number => {
+    if(gutterAnnotations.value.length == 0)
+        return 0;
 
-    return Math.max(...gutterAnnotations.value.map((a) => a.weight)); 
+    return (Math.max(...gutterAnnotations.value.map((a) => a.weight)) + 1); 
 })
 const createAnnotatedLine = function (line: Line): AnnotatedLine {
     let gutterAnnotations = [];
@@ -158,11 +160,10 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
         range[2]
             .filter((annotation) => annotation)
             .filter((annotation) => annotation?.target === "gutter")
+            .sort((a, b) => (Number(a?.start) > Number(b?.start) ? 1 : -1))
             .forEach((annotation) => gutterAnnotations.push(annotation));
     }
     gutterAnnotations = [...new Set(gutterAnnotations)];
-
-    console.log("gutter annotations",gutterAnnotations);
 
     // sort the annotations in each range by their start position
     rangesInScope = rangesInScope.map(function (range) {
@@ -197,6 +198,14 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
         },
     } satisfies AnnotatedLine;
 };
+
+const startsOnLine = function(line : Line,annotation: Annotation){
+   return  (line.start <= annotation.start && line.end >= annotation.start)
+}
+
+const endsOnLine = function(line : Line,annotation: Annotation){
+    return  (line.start <= annotation.end && line.end >= annotation.end)
+}
 
 const annotatedLines = computed((): AnnotatedLine[] => {
 
@@ -246,6 +255,24 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
     });
 };
 
+
+const annotationGutterClasses = function (
+    annotation: Annotation,
+    line: Line
+): string[] {
+    let classes = [
+        annotation?.class ?? "",
+        "annotation--w" + (annotation?.weight ?? 0),
+    ];
+    if (startsOnLine(line,annotation) ) {
+        classes.push("annotation--start");
+    }
+    if (endsOnLine(line,annotation)) {
+        classes.push("annotation--end");
+    }
+    return classes;
+};
+
 const annotationClasses = function (
     annotation: Annotation,
     start: number,
@@ -275,7 +302,7 @@ const componentClasses = computed((): any[] => {
     let classes = [
         'annotated-text',
         'theme-' + props.theme,
-        'gutter-annotations-' + (maxGutterAnnotationWheight.value + 1),
+        'gutter-annotations-' + (maxGutterAnnotationWheight.value),
         'annotated-text--render-' + props.render,
         props.showLabels ? 'annotated-text--show-labels' : null,
     ]
