@@ -3,6 +3,10 @@
 
 This repository contains a reusable Vue 2 / 3 component to visualize text annotations on web pages. It can be used for linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following screenshots:
 
+![Flat annotations](docs/flat.png)
+
+![Flat annotations](docs/nested.png)
+
 
 ## Usage
 
@@ -44,6 +48,9 @@ Fill the annotations and textLines with the correct data - according to the Line
 For development: `yarn run dev`
 
 To build the docs run `yarn run docs:build`
+
+The docs end up in `docs/.vitepress/`
+
 
 
 ## Credits

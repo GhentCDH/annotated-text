@@ -183,8 +183,9 @@ $annotated-text-annotation-colors: (
             display: inline-block;
         }
 
+        //Never show  gutter labels 
         &.annotated-text--show-labels  .gutter-annotations .annotation--end > label {
-            display: inline-block;
+            display: none;
         }
        
     }
@@ -311,10 +312,11 @@ $annotated-text-annotation-colors: (
                 display: block;
             }
 
+            //do not show labels in gutter annotations, change display property to show labels
             .gutter-annotations .annotation.annotation--end label{
                 padding-top: 2px;
                 padding-left:2px;
-                display: block;
+                display: none;
                 user-select: none;
             }
 

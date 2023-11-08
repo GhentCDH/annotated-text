@@ -6,10 +6,10 @@
 
             <template v-for="gutterWheight in maxGutterAnnotationWheight">
 
-                <template v-if="annotation = line.gutter.annotations.filter((a) => a.weight == (maxGutterAnnotationWheight-gutterWheight))[0]">
+                <template v-if="gutterHasAnnotationForWeight(gutterWheight,line)">
                     <span class="gutter-annotations">
-                       <span :class="annotationGutterClasses(annotation,line)" @click="onClickAnnotation(annotation)">  
-                            <label v-if="annotation.label">{{ annotation.label }}</label> 
+                       <span :class="annotationGutterClasses(gutterAnnotationForWeight(gutterWheight,line),line)" @click="onClickAnnotation(gutterAnnotationForWeight(gutterWheight,line))">  
+                            <label v-if="gutterAnnotationForWeight(gutterWheight,line).label">{{ gutterAnnotationForWeight(gutterWheight,line).label }}</label> 
                         </span>
                     </span>
                 </template>
@@ -199,11 +199,33 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
     } satisfies AnnotatedLine;
 };
 
-const startsOnLine = function(line : Line,annotation: Annotation){
+
+const gutterHasAnnotationForWeight = function (
+  weight: number,
+  line: AnnotatedLine
+): Boolean {
+  const annotation = line.gutter.annotations.filter(
+    (a) => a.weight == this.maxGutterAnnotationWheight - weight
+  )[0];
+  return annotation != null;
+}
+
+
+const gutterAnnotationForWeight = function (
+  weight: number,
+  line: AnnotatedLine
+): Annotation {
+  const annotation = line.gutter.annotations.filter(
+    (a) => a.weight == this.maxGutterAnnotationWheight - weight
+  )[0] as Annotation;
+  return annotation;
+}
+
+const startsOnLine = function(line : AnnotatedLine,annotation: Annotation) :Boolean{
    return  (line.start <= annotation.start && line.end >= annotation.start)
 }
 
-const endsOnLine = function(line : Line,annotation: Annotation){
+const endsOnLine = function(line : AnnotatedLine,annotation: Annotation) :Boolean{
     return  (line.start <= annotation.end && line.end >= annotation.end)
 }
 
@@ -258,7 +280,7 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
 
 const annotationGutterClasses = function (
     annotation: Annotation,
-    line: Line
+    line: AnnotatedLine
 ): string[] {
     let classes = [
         annotation?.class ?? "",
