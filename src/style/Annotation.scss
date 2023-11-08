@@ -45,27 +45,9 @@ $annotated-text-annotation-colors: (
         }
     }
 
-
-    //creates the right amount of columns for gutter annotations
-    @for $num_gutter_annotations from 1 to 9 {
-        &.gutter-annotations-#{$num_gutter_annotations} {
-            grid-template-columns:  repeat($num_gutter_annotations,3px) 2em auto;
-        }
-
-        &.gutter-annotations-#{$num_gutter_annotations}.annotated-text--show-labels   {
-            grid-template-columns:  repeat($num_gutter_annotations,max-content) 2em auto;
-        }
-    }
-
-    //same as above, repeat 0 does not work
-    &.gutter-annotations-0 {
-        grid-template-columns:  2em auto;
-    }
-    &.gutter-annotations-0.annotated-text--show-labels   {
-        grid-template-columns: 2em auto;
-    }
-
     &.annotated-text--render-nested.theme-default{
+
+        grid-template-columns: max-content 2em auto;
 
         // calculate line-part height
         @for $weight from 0 to 9 {
@@ -81,16 +63,16 @@ $annotated-text-annotation-colors: (
         }
 
         .gutter-annotations{
-
+            direction: rtl;
             margin: 0;
             display: block;
             padding: 0;
 
             .annotation{
-                display: block;
+                display: inline-block;
+                margin-left: 0.4em;
                 min-width: 3px;
                 min-height: 100%;
-                background-color: black;
             }
 
             @each $name, $color in $annotated-text-annotation-colors {
@@ -192,6 +174,9 @@ $annotated-text-annotation-colors: (
 
     &.annotated-text--render-flat.theme-default {
 
+        grid-template-columns: max-content 2em auto;
+
+
         // calculate line-part height
         @for $weight from 0 to 9 {
             .line-part--m#{$weight} {
@@ -203,12 +188,14 @@ $annotated-text-annotation-colors: (
 
         .gutter-annotations{
 
+            direction: rtl;
             margin: 0;
             display: block;
             padding: 0;
 
             .annotation{
-                display: block;
+                display: inline-block;
+                margin-left: 0.4em;
                 min-width: 3px;
                 min-height: 100%;
             }
