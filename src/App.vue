@@ -3,7 +3,7 @@
 <h4>Vue component annotated text</h4>
 
 <menu>
-  <input type="radio" value="nested" id="nested" v-model="props.render"><label for="nested">Nested</label> 
+<input type="radio" value="nested" id="nested" v-model="props.render"><label for="nested">Nested</label> 
 <input type="radio" value="flat"  id="flat" v-model="props.render"><label for="flat">Flat</label> | 
 <input v-model="props.debug"      type="checkbox"><label>Debug messages</label> | 
 <input v-model="props.showLabels" type="checkbox"><label>Show labels</label>
@@ -185,10 +185,14 @@ function caretPositionFromPoint(x: number, y: number): {
 
 body{
   font-family: sans-serif;
+  padding: 2em;
 }
 hr{
   border: 1px solid gray;
   margin-bottom: 1em;
+}
+menu{
+  padding: 0;
 }
 
 </style>

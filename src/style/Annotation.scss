@@ -53,7 +53,7 @@ $annotated-text-annotation-colors: (
         }
 
         &.gutter-annotations-#{$num_gutter_annotations}.annotated-text--show-labels   {
-            grid-template-columns:  repeat($num_gutter_annotations,3em) 2em auto;
+            grid-template-columns:  repeat($num_gutter_annotations,max-content) 2em auto;
         }
     }
 
@@ -107,21 +107,14 @@ $annotated-text-annotation-colors: (
                         z-index: 2000;
                         margin: 0 2px;
                         user-select: none;
-                    }
-                   
+                    }  
                 }
-
-               
-                
-            }           
-    
+            }
         }
 
         .content{
-
             .annotation {
                 position: relative;
-
                 label {
                     display: none;
                     background: white;
@@ -223,7 +216,8 @@ $annotated-text-annotation-colors: (
                 .annotation--color-#{$name} {
                     background: $color;
                     label {
-                        
+                        padding: 0 2px;
+                        padding-top: 2px;
                     }
                 }
             }
@@ -231,7 +225,6 @@ $annotated-text-annotation-colors: (
         }
 
         .annotation {
-           
             label {
                 display: none;
             } 
