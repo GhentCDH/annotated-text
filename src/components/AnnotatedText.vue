@@ -78,6 +78,10 @@ const annotations = reactive(props.annotations) satisfies Annotation[];
 // etali end position = position of next char not included in range
 // ex: in "abcdef", span [0,2] is "ab"
 const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
+
+    props.debug && console.log("** prepare ranges for_annotations **")
+    props.debug && console.log(annotations)
+
     let spanAnnotations = annotations.filter( (annotation) => annotation.target === "span")
     
     if (props.autoAnnotationWeights) {
@@ -85,6 +89,13 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
         calculateAnnotationWeights(gutterAnnotations.value);
     }
 
+    props.debug && console.log("** weighted span annotations **")
+    props.debug && console.log(spanAnnotations)
+
+    props.debug && console.log("** weighted gutter annotations **")
+    props.debug && console.log(gutterAnnotations.value)
+
+    
     // todo: check why max is needed
     let ranges = annotations.map(
         (annotation) =>
@@ -111,6 +122,7 @@ const gutterAnnotations = computed((): Annotation[] => {
 // flatten overlapping ranges
 const flattenedRanges = computed((): RangeWithAnnotations[] => {
     // prepare annotations
+ 
   let ranges = prepareRanges(annotations);
 
     // add line ranges
@@ -148,7 +160,7 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
         range[2]
             .filter((annotation) => annotation)
             .filter((annotation) => annotation?.target === "gutter")
-            .sort((a, b) => (Number(a?.weight) > Number(b?.weight) ? -1 : 1))
+            .sort((a, b) => (Number(a?.weight) < Number(b?.weight) ? -1 : 1))
             .forEach((annotation) => gutterAnnotations.push(annotation));
     }
     gutterAnnotations = [...new Set(gutterAnnotations)];
@@ -211,6 +223,7 @@ const intersectInterval = (
     const min = a[0] < b[0] ? a : b;
     const max = min == a ? b : a;
 
+    //console.log("min max intesection",min,max,min[1] < max[0])
     //min ends before max starts -> no intersection
     if (min[1] < max[0]) return null; //the ranges don't intersect
 
@@ -237,7 +250,7 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
                 annotation.weight = weight;
                 stack[weight] = annotation;
                 return;
-            }
+           }
             weight++;
         } while (true);
     });

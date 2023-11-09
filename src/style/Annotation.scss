@@ -22,6 +22,11 @@ $annotated-text-annotation-colors: (
 
     .gutter {
         user-select: none;
+        border-right: 1px solid rgba(gray,0.08);
+    }
+
+    .gutter.text {
+        padding-right: 0.5em;
     }
 
     .content > span {
@@ -37,6 +42,8 @@ $annotated-text-annotation-colors: (
         position: relative;
         z-index: 2000;
     }
+
+    
     
     .annotation {
         cursor: pointer;
@@ -47,7 +54,7 @@ $annotated-text-annotation-colors: (
 
     &.annotated-text--render-nested.theme-default{
 
-        grid-template-columns: max-content 2em auto;
+        grid-template-columns: max-content max-content auto;
 
         // calculate line-part height
         @for $weight from 0 to 9 {
@@ -174,7 +181,7 @@ $annotated-text-annotation-colors: (
 
     &.annotated-text--render-flat.theme-default {
 
-        grid-template-columns: max-content 2em auto;
+        grid-template-columns: max-content max-content auto;
 
 
         // calculate line-part height
