@@ -44,13 +44,17 @@ $annotated-text-annotation-colors: (
     }
 
     
-    
     .annotation {
         cursor: pointer;
         label {
             cursor: pointer;
         }
     }
+
+    .annotation--gutter-spacer{
+        cursor: default;
+    }
+    
 
     &.annotated-text--render-nested.theme-default{
 

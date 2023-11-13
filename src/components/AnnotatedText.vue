@@ -43,13 +43,14 @@
 <script setup lang="ts">
 import { reactive, computed, defineEmits } from "vue-demi";
 import type {
-    AnnotatedTextProps,
+  AnnotatedTextProps,
     Line,
     Annotation,
     AnnotatedLine,
     LinePart,
     RangeWithAnnotation,
     RangeWithAnnotations,
+AnnotationTarget,
 } from "@/types";
 import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
@@ -147,7 +148,7 @@ const flattenedRanges = computed((): RangeWithAnnotations[] => {
 });
 
 const createAnnotatedLine = function (line: Line): AnnotatedLine {
-    let gutterAnnotations = [];
+    let lineGutterAnnotations = [];
 
     // get all flattened ranges for this line
     let rangesInScope: RangeWithAnnotations[] = flattenedRanges.value.filter(
@@ -161,9 +162,29 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
             .filter((annotation) => annotation)
             .filter((annotation) => annotation?.target === "gutter")
             .sort((a, b) => (Number(a?.weight) < Number(b?.weight) ? -1 : 1))
-            .forEach((annotation) => gutterAnnotations.push(annotation));
+            .forEach((annotation) => lineGutterAnnotations.push(annotation));
     }
-    gutterAnnotations = [...new Set(gutterAnnotations)];
+    //make sure each weight has an annotation associated with it, 
+    //if not add an empty annotation with the missing weight
+    lineGutterAnnotations = [...new Set(lineGutterAnnotations)];
+
+    const maxGutterWeight = Math.max(...gutterAnnotations.value.map((e) => e.weight))
+
+    for(let w = 0 ; w <= maxGutterWeight ; w++){
+        let hasAnnotationForWeight = lineGutterAnnotations.filter(a => a.weight === w).length != 0;
+        if(!hasAnnotationForWeight){
+            const emptyAnnotation = {
+            "start": line.start,
+            "end": line.start,
+            "target": "gutter" as AnnotationTarget,
+            "class": "annotation annotation--gutter-spacer",
+            "weight": w
+            } as Annotation;
+            lineGutterAnnotations.push(emptyAnnotation);
+        }
+    }
+    lineGutterAnnotations.sort((a, b) => (Number(a?.weight) < Number(b?.weight) ? -1 : 1))
+    
 
     // sort the annotations in each range by their start position
     rangesInScope = rangesInScope.map(function (range) {
@@ -194,7 +215,7 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
         parts: lineParts,
         gutter: {
             text: line.gutter,
-            annotations: gutterAnnotations,
+            annotations: lineGutterAnnotations,
         },
     } satisfies AnnotatedLine;
 };

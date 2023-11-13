@@ -42,6 +42,7 @@ Fill the annotations and textLines with the correct data - according to the Line
 </template>
 ```
 
+Important: there is currently a severe limitation in the use of this component: replacing the annotations property with a new array makes the annotations dissapear. Emptying the same annotations array and reusing it is the current workaround. It is unclear why this behaviour manifests itself.
 
 ## Documentation
 
@@ -52,7 +53,6 @@ To build the docs run `yarn run docs:build`
 The docs end up in `docs/.vitepress/`
 
 
-
 ## Credits
 
 Built @ the [Ghent Center For Digital Humanities](https://www.ghentcdh.ugent.be/), Ghent University by:
@@ -60,4 +60,3 @@ Built @ the [Ghent Center For Digital Humanities](https://www.ghentcdh.ugent.be/
 * Pieterjan De Potter
 * Frederic Lamsens
 * Joren Six
-
