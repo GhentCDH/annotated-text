@@ -87,7 +87,7 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
     
     if (props.autoAnnotationWeights) {
         calculateAnnotationWeights(spanAnnotations)
-        calculateAnnotationWeights(gutterAnnotations.value);
+        calculateGutterAnnotationWeights(gutterAnnotations.value);
     }
 
     props.debug && console.log("** weighted span annotations **")
@@ -96,7 +96,6 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
     props.debug && console.log("** weighted gutter annotations **")
     props.debug && console.log(gutterAnnotations.value)
 
-    
     // todo: check why max is needed
     let ranges = annotations.map(
         (annotation) =>
@@ -109,7 +108,6 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
 
     return ranges;
 };
-
 
 const gutterAnnotations = computed((): Annotation[] => {
     const gutter_annotations = annotations.filter( (annotation) => annotation.target === "gutter") as Annotation[] 
@@ -124,19 +122,20 @@ const gutterAnnotations = computed((): Annotation[] => {
 const flattenedRanges = computed((): RangeWithAnnotations[] => {
     // prepare annotations
  
-  let ranges = prepareRanges(annotations);
+    let ranges = prepareRanges(annotations);
 
     // add line ranges
     props.lines.forEach((line) =>
         ranges.push([line.start, line.end + 1, null] satisfies RangeWithAnnotation)
     );
-
+    
     // todo: add token ranges?
     ranges = ranges.sort((a, b) =>
         Number(a[0]) - Number(b[0]) === 0
             ? Number(a[1]) - Number(b[1])
             : Number(a[0]) - Number(b[0])
     );
+
     props.debug && console.log("** ranges **");
     props.debug && console.log(ranges);
 
@@ -164,6 +163,7 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
             .sort((a, b) => (Number(a?.weight) < Number(b?.weight) ? -1 : 1))
             .forEach((annotation) => lineGutterAnnotations.push(annotation));
     }
+
     //make sure each weight has an annotation associated with it, 
     //if not add an empty annotation with the missing weight
     lineGutterAnnotations = [...new Set(lineGutterAnnotations)];
@@ -183,8 +183,8 @@ const createAnnotatedLine = function (line: Line): AnnotatedLine {
             lineGutterAnnotations.push(emptyAnnotation);
         }
     }
+
     lineGutterAnnotations.sort((a, b) => (Number(a?.weight) < Number(b?.weight) ? -1 : 1))
-    
 
     // sort the annotations in each range by their start position
     rangesInScope = rangesInScope.map(function (range) {
@@ -272,9 +272,78 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
                 stack[weight] = annotation;
                 return;
            }
-            weight++;
+           weight++;
         } while (true);
     });
+};
+
+/**
+ * Find the character index for the start of the first line or end of the last matching line.
+ * @param annotation The annotation to look for
+ * @param lookForStartCharIndex If true finds the start character index of the first line. If false returns the end character index of the last matching line. 
+ */
+const findLineStartOrEndCharacterIndex = function(annotation :Annotation, lookForStartCharIndex: boolean){
+    let characterIndex = -1
+
+    props.lines.forEach(line => {
+      let gutterTextLength = 0
+      if(line.gutter) gutterTextLength = line.gutter.length
+
+      if((line.start - gutterTextLength) <= annotation.start && annotation.start <= line.end && lookForStartCharIndex){
+        characterIndex = line.start - gutterTextLength
+
+        console.log(line,annotation)
+        return
+      } else if((line.start - gutterTextLength) <= annotation.end && annotation.end <= line.end && !lookForStartCharIndex){
+        characterIndex = line.end
+      }
+    });
+
+    console.log(characterIndex,"from",annotation.start,annotation.end,lookForStartCharIndex)
+    return characterIndex
+}
+
+const calculateGutterAnnotationWeights = function (annotations: Annotation[]) {
+    //this function is similar to the weights for span annotations but there is one difference
+    //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
+    //character indexes. 
+    const compareAnnotations = function (a: Annotation, b: Annotation): number {
+        let lineStartA = findLineStartOrEndCharacterIndex(a,true)
+        let lineEndA = findLineStartOrEndCharacterIndex(a,false)
+
+        let lineStartB = findLineStartOrEndCharacterIndex(b,true)
+        let lineEndB = findLineStartOrEndCharacterIndex(b,false)
+        return lineStartA - lineStartB === 0 ? lineEndA - lineEndB : lineStartA - lineStartB;
+    };
+    
+    annotations = annotations.sort(compareAnnotations);
+
+    const stack = [];
+    annotations.forEach(function (annotation) {
+        let weight = 0;
+        do {
+            if (!stack?.[weight]) {
+                annotation.weight = weight;
+                stack[weight] = annotation;
+                return;
+            }
+
+            let lineStart = findLineStartOrEndCharacterIndex(annotation,true)
+            let lineEnd = findLineStartOrEndCharacterIndex(stack[weight],false)
+            if (lineStart > lineEnd) {
+                annotation.weight = weight;
+                stack[weight] = annotation;
+                return;
+           }
+           weight++;
+        } while (true);
+    });
+
+    //reverse weights, makes sure longest is at the right, not left (close to the text)
+    const maxGutterWeight = Math.max(...gutterAnnotations.value.map((e) => e.weight))
+    annotations.forEach(function (annotation) {
+        annotation.weight = maxGutterWeight - annotation.weight
+    })
 };
 
 
