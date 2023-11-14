@@ -20,11 +20,11 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ['vue', 'vue-demi'],
+      external: ["vue", "vue-demi"],
       output: {
         globals: {
-          'vue-demi': 'vue-demi',
-          vue: 'Vue',
+          "vue-demi": "vue-demi",
+          vue: "Vue",
         },
       },
     },
@@ -36,6 +36,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['vue-demi']
-  }
+    exclude: ["vue-demi"],
+  },
 });
