@@ -1,4 +1,4 @@
-export * from "./components";
-export * from "./types";
+export * from './components'
+export * from './types'
 
-import "./style/style.scss";
+import './style/style.scss'
