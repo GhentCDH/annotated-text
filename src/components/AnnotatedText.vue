@@ -56,16 +56,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, defineEmits } from "vue-demi";
+import { computed, defineEmits, reactive } from "vue-demi";
 import type {
-  AnnotatedTextProps,
-  Line,
-  Annotation,
   AnnotatedLine,
+  AnnotatedTextProps,
+  Annotation,
+  AnnotationTarget,
+  Line,
   LinePart,
   RangeWithAnnotation,
-  RangeWithAnnotations,
-  AnnotationTarget,
+  RangeWithAnnotations
 } from "@/types";
 import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
@@ -455,12 +455,11 @@ const linePartClasses = function (linePart: LinePart): any[] {
 };
 
 const linePartAttr = function (linePart: LinePart): {} {
-  let attr = {
+  return {
     class: linePartClasses(linePart),
     "data-start": linePart.start,
     "data-end": linePart.end,
   };
-  return attr;
 };
 
 const maxAnnotationWeight = function (annotations: Annotation[]) {

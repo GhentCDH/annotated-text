@@ -1,22 +1,20 @@
 <template>
   <h4>Vue component annotated text</h4>
   <menu>
-    <input
-      id="nested"
-      v-model="props.render"
-      type="radio"
-      value="nested"
-    /><label for="nested">Nested</label>
-    <input id="flat" v-model="props.render" type="radio" value="flat" /><label
-      for="flat"
-      >Flat</label
-    >
-    | <input v-model="props.debug" type="checkbox" /><label
-      >Debug messages</label
-    >
-    | <input v-model="props.showLabels" type="checkbox" /><label
-      >Show labels</label
-    >
+    <form>
+      <input
+        id="nested"
+        v-model="props.render"
+        type="radio"
+        value="nested"
+      /><label for="nested">Nested</label>
+      <input id="flat" v-model="props.render" type="radio" value="flat" />
+      <label for="flat">Flat</label>
+      | <input v-model="props.debug" type="checkbox" />
+      <label>Debug messages</label>
+      | <input v-model="props.showLabels" type="checkbox" />
+      <label>Show labels</label>
+    </form>
   </menu>
 
   <hr />
