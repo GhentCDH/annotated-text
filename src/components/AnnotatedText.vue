@@ -1,8 +1,11 @@
 <template>
   <div v-if="annotatedLines" :class="componentClasses">
-    <template v-for="line in annotatedLines">
+    <template v-for="line in annotatedLines" :key="line">
       <div class="gutter-annotations">
-        <template v-for="annotation in line.gutter.annotations">
+        <template
+          v-for="annotation in line.gutter.annotations"
+          :key="annotation"
+        >
           <span
             :class="annotationGutterClasses(annotation, line)"
             @click="onClickAnnotation(annotation)"
@@ -65,7 +68,7 @@ import type {
   Line,
   LinePart,
   RangeWithAnnotation,
-  RangeWithAnnotations
+  RangeWithAnnotations,
 } from "@/types";
 import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
@@ -289,7 +292,7 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
   const stack = [];
   annotations.forEach(function (annotation) {
     let weight = 0;
-    do {
+    for (;;) {
       if (!stack?.[weight]) {
         annotation.weight = weight;
         stack[weight] = annotation;
@@ -301,7 +304,7 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
         return;
       }
       weight++;
-    } while (true);
+    }
   });
 };
 
@@ -368,22 +371,24 @@ const calculateGutterAnnotationWeights = function (annotations: Annotation[]) {
   const stack = [];
   annotations.forEach(function (annotation) {
     let weight = 0;
-    do {
+    for (;;) {
       if (!stack?.[weight]) {
         annotation.weight = weight;
         stack[weight] = annotation;
         return;
       }
 
-      let lineStart = findLineStartOrEndCharacterIndex(annotation, true);
-      let lineEnd = findLineStartOrEndCharacterIndex(stack[weight], false);
-      if (lineStart > lineEnd) {
+      let lineStartAnnotation = findLineStartOrEndCharacterIndex(annotation, true);
+      let lineEndOtherAnnotation = findLineStartOrEndCharacterIndex(stack[weight], false);
+      let lineEndAnnotation = findLineStartOrEndCharacterIndex(annotation, false);
+      let lineStartOtherAnnotation = findLineStartOrEndCharacterIndex(stack[weight], true);
+      if (lineStartAnnotation > lineEndOtherAnnotation && lineStartOtherAnnotation > lineEndAnnotation) {
         annotation.weight = weight;
         stack[weight] = annotation;
         return;
       }
       weight++;
-    } while (true);
+    }
   });
 
   //reverse weights, makes sure longest is at the right, not left (close to the text)
@@ -452,14 +457,6 @@ const linePartClasses = function (linePart: LinePart): any[] {
     "line-part--m" + maxAnnotationWeight(linePart.annotations),
   ];
   return classes;
-};
-
-const linePartAttr = function (linePart: LinePart): {} {
-  return {
-    class: linePartClasses(linePart),
-    "data-start": linePart.start,
-    "data-end": linePart.end,
-  };
 };
 
 const maxAnnotationWeight = function (annotations: Annotation[]) {

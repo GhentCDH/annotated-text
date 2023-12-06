@@ -35,11 +35,12 @@ export default {
     },
     annotations: {
       type: Array,
-      // default: () => [],
+      default: () => [],
       required: false,
     },
     annotationClassHandler: {
       type: Function,
+      default: () => {},
       required: false,
     },
     annotationClickHandler: {

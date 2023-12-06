@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { AnnotatedText, Annotation, Line } from "./";
 
-import { annotations, textTest as text } from "./lib/data";
+import { annotationsTest as annotations, textTest as text } from "./lib/data";
 
 import { reactive } from "vue-demi";
 import { RenderType } from "./types/AnnotatedText";

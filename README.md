@@ -14,7 +14,7 @@ The component uses typescript and is published on NPM as apackage with the origi
 
 To use the package in a project first add it to your dependencies with `npm` or `yarn` and import the component. It has typescript types for the structures it uses.
 
-```
+````
 import {
   type Annotation,
   type Line,
@@ -22,11 +22,11 @@ import {
   AnnotatedText
 } from '@ghentcdh/vue-component-annotated-text'
 import '@ghentcdh/vue-component-annotated-text/style.css'
-```
+````
 
-Fill the annotations and textLines with the correct data - according to the Line and ANnotation defenitions - and choose a render style.
+Fill the annotations and textLines with the correct data - according to the Line and Annotation definitions - and choose a render style.
 
-```
+````
 <template>
   <AnnotatedText
     text="012345678901234567890123456789"
@@ -40,9 +40,9 @@ Fill the annotations and textLines with the correct data - according to the Line
   />
 
 </template>
-```
+````
 
-Important: there is currently a severe limitation in the use of this component: replacing the annotations property with a new array makes the annotations dissapear. Emptying the same annotations array and reusing it is the current workaround. It is unclear why this behaviour manifests itself.
+Important: there is currently a severe limitation in the use of this component: **replacing the annotations property with a new array makes the annotations dissapear**. Emptying the same annotations array, e.g. by setting the length `annotations.length = 0`, and reusing it is the current workaround. It is unclear why this behaviour manifests itself.
 
 ## Documentation
 
