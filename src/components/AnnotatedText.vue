@@ -356,39 +356,17 @@ const calculateGutterAnnotationWeights = function (annotations: Annotation[]) {
   //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
   //character indexes.
   const compareAnnotations = function (a: Annotation, b: Annotation): number {
-    let lineStartA = findLineStartOrEndCharacterIndex(a, true);
-    let lineEndA = findLineStartOrEndCharacterIndex(a, false);
-
-    let lineStartB = findLineStartOrEndCharacterIndex(b, true);
-    let lineEndB = findLineStartOrEndCharacterIndex(b, false);
-    return lineStartA - lineStartB === 0
-      ? lineEndA - lineEndB
-      : lineStartA - lineStartB;
+    let aLength = a.end - a.start;
+    let bLength = b.end - b.start;
+    return aLength - bLength;
   };
 
   annotations = annotations.sort(compareAnnotations);
 
-  const stack = [];
+  let weight = 0;
   annotations.forEach(function (annotation) {
-    let weight = 0;
-    for (;;) {
-      if (!stack?.[weight]) {
-        annotation.weight = weight;
-        stack[weight] = annotation;
-        return;
-      }
-
-      let lineStartAnnotation = findLineStartOrEndCharacterIndex(annotation, true);
-      let lineEndOtherAnnotation = findLineStartOrEndCharacterIndex(stack[weight], false);
-      let lineEndAnnotation = findLineStartOrEndCharacterIndex(annotation, false);
-      let lineStartOtherAnnotation = findLineStartOrEndCharacterIndex(stack[weight], true);
-      if (lineStartAnnotation > lineEndOtherAnnotation && lineStartOtherAnnotation > lineEndAnnotation) {
-        annotation.weight = weight;
-        stack[weight] = annotation;
-        return;
-      }
-      weight++;
-    }
+    annotation.weight = weight;
+    weight++;
   });
 
   //reverse weights, makes sure longest is at the right, not left (close to the text)
