@@ -308,49 +308,6 @@ const calculateAnnotationWeights = function (annotations: Annotation[]) {
   });
 };
 
-/**
- * Find the character index for the start of the first line or end of the last matching line.
- * @param annotation The annotation to look for
- * @param lookForStartCharIndex If true finds the start character index of the first line. If false returns the end character index of the last matching line.
- */
-const findLineStartOrEndCharacterIndex = function (
-  annotation: Annotation,
-  lookForStartCharIndex: boolean
-) {
-  let characterIndex = -1;
-
-  props.lines.forEach((line) => {
-    let gutterTextLength = 0;
-    if (line.gutter) gutterTextLength = line.gutter.length;
-
-    if (
-      line.start - gutterTextLength <= annotation.start &&
-      annotation.start <= line.end &&
-      lookForStartCharIndex
-    ) {
-      characterIndex = line.start - gutterTextLength;
-
-      console.log(line, annotation);
-      return;
-    } else if (
-      line.start - gutterTextLength <= annotation.end &&
-      annotation.end <= line.end &&
-      !lookForStartCharIndex
-    ) {
-      characterIndex = line.end;
-    }
-  });
-
-  console.log(
-    characterIndex,
-    "from",
-    annotation.start,
-    annotation.end,
-    lookForStartCharIndex
-  );
-  return characterIndex;
-};
-
 const calculateGutterAnnotationWeights = function (annotations: Annotation[]) {
   //this function is similar to the weights for span annotations but there is one difference
   //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
