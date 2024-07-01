@@ -55,6 +55,31 @@ $annotated-text-annotation-colors: (
         cursor: default;
     }
     
+    .annotation--resize-handle {
+        cursor: ew-resize;
+    }
+
+    &.action--active {
+        user-select: none;
+    }
+    
+    &.action--move {
+        cursor: grabbing !important;
+    
+        .annotation {
+            cursor: grabbing;
+        }
+    }
+    
+    &.acton--moveStart, &.action--moveEnd {
+        cursor: ew-resize !important;
+    
+        .annotation {
+            cursor: ew-resize !important;
+        }
+    
+    }
+
 
     &.annotated-text--render-nested.theme-default{
 
@@ -121,6 +146,38 @@ $annotated-text-annotation-colors: (
                     margin: 0 2px;
                     user-select: none;
                 }
+
+                .handle {
+                    display: inline-block;
+                    background: red;
+                    cursor: ew-resize;
+                    position: absolute;
+                    z-index: 10000;
+                    height: 100%;
+                    opacity: 0;
+                    width: 4px;
+                    // display: none;
+                }
+                
+                .handle--end  {
+                    right: 0;
+                }
+                
+                .handle--start {
+                    left: 0px;
+                }
+    
+                &.annotation--transitioning {
+                    &:before {
+                        border-color: red !important;
+                        border-width: 2px !important;
+                    }
+                    
+                    .handle {
+                        display:none;
+                    }
+                } 
+    
             }
 
             .annotation--start::before {
@@ -133,7 +190,12 @@ $annotated-text-annotation-colors: (
                 border-bottom-right-radius: 4px;
             }
 
+            .annotation--active {
+                user-select: none;
+            }
+
             @for $weight from 0 to 9 {
+                .annotation--weight-#{$weight}::before,
                 .annotation--w#{$weight}::before {
                     box-sizing: border-box;
                     top: (-3px*($weight+1));
@@ -147,7 +209,8 @@ $annotated-text-annotation-colors: (
             }
 
             @each $name, $color in $annotated-text-annotation-colors {
-                .annotation--color-#{$name} {
+                .annotation--color-#{$name}, 
+                .annotation--c#{$name} {
                     &::before {
                         border-top: 1px solid rgba($color, 0.3);
                         border-bottom: 1px solid rgba($color, 0.3);
@@ -227,8 +290,7 @@ $annotated-text-annotation-colors: (
             label {
                 display: none;
             } 
-        }
-
+        } 
 
         @each $name, $color in $annotated-text-annotation-colors {
             .annotation--color-#{$name} {
