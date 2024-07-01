@@ -1,5 +1,10 @@
 <template>
-  <div v-if="annotatedLines" :class="componentClasses">
+  <div
+    v-if="annotatedLines"
+    :class="componentClasses"
+    @mouseleave="onMouseLeaveHandler($event)"
+    @mouseup="onMouseUpHandler($event)"
+  >
     <template v-for="line in annotatedLines" :key="line">
       <div class="gutter-annotations">
         <template
@@ -25,6 +30,7 @@
           :class="linePartClasses(linePart)"
           :data-start="linePart.start"
           :data-end="linePart.end"
+          @mousemove="onMouseEnterLinePartHandler(linePart)($event)"
         >
           <template v-if="renderFlat">
             <span class="text">{{ linePart.text }}</span>
@@ -49,6 +55,7 @@
               "
               :annotation-class-handler="annotationClasses"
               :annotation-click-handler="onClickAnnotation"
+              :annotation-action-handler="onAnnotationStartHandler"
             />
             <span v-else class="text">{{ linePart.text }}</span>
           </template>
@@ -59,44 +66,154 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, reactive } from "vue-demi";
+import { computed, defineEmits, reactive, set, ref, watch } from "vue-demi";
 import type {
   AnnotatedLine,
   AnnotatedTextProps,
   Annotation,
+  AnnotationLayer,
   AnnotationTarget,
+  AnnotationStyle,
+  AnnotationActionPayload,
+  AnnotationActionState,
   Line,
   LinePart,
   RangeWithAnnotation,
   RangeWithAnnotations,
+  ExtendedAnnotation,
 } from "@/types";
 import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
+import { caretPositionFromPoint } from "@/lib/DomUtils";
 
 // define emits
 const emit = defineEmits<{
-  "click-annotation": [annotation: Annotation];
+  "annotation-select": [annotation: Annotation];
+  "annotation-moved": [annotation: Annotation, state: AnnotationActionState];
 }>();
 
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
-  annotations: [] satisfies Annotation[],
-  lines: [] satisfies Line[],
+  annotations: () => [],
+  annotationLayers: () => [],
+  lines: () => [],
   annotationOffset: 0,
   debug: true,
   theme: "default",
   render: "nested",
   showLabels: false,
   autoAnnotationWeights: true,
+  allowEdit: false,
+  style: () => ({
+    activeClass: "annotation--active",
+    startClass: "annotation--start",
+    endClass: "annotation--end",
+    weightClass: "annotation--weight-",
+    transitioningClass: "annotation--transitioning",
+  }),
 });
 
 const annotationEndOffsetFix = 1;
-const annotations = reactive(props.annotations) satisfies Annotation[];
+
+const AnnotationLayerDefaults = {
+  weight: null,
+  visible: true,
+  allowEdit: null,
+  allowDelete: null,
+  allowCreate: null,
+};
+
+const layers = computed((): AnnotationLayer[] => {
+  props.debug && console.log("** refresh layers");
+
+  return props.annotationLayers.map(
+    (layer) =>
+      ({
+        AnnotationLayerDefaults,
+        ...layer,
+      } as AnnotationLayer)
+  );
+});
+
+const ExtendedAnnotationDefaults = {
+  layer: null,
+  weight: null,
+  visible: true,
+  active: false,
+};
+
+const allAnnotations = computed((): ExtendedAnnotation[] => {
+  props.debug && console.log("** refresh annotations");
+
+  // upgrade annotations
+  let annotations: ExtendedAnnotation[];
+  annotations = props.annotations.map(
+    (annotation) =>
+      ({
+        ...ExtendedAnnotationDefaults,
+        ...annotation,
+      } as ExtendedAnnotation)
+  );
+
+  // flatten annotations in layers &
+  // add reference to annotation layer
+  layers.value.forEach((layer) => {
+    if (layer.visible) {
+      let layerAnnotations = layer.annotations.map(
+        (annotation) =>
+          ({
+            ...ExtendedAnnotationDefaults,
+            layer: layer,
+            ...annotation,
+          } as ExtendedAnnotation)
+      );
+      annotations = annotations.concat(layerAnnotations);
+    }
+  });
+
+  // make sure computed sees dependent state properties
+  // if not, first execution won't see them because of conditional
+  state.value.newStart;
+  state.value.newEnd;
+
+  // replace objects by proxies, needed to be able
+  // to compare annotation (no proxy) with annotation in state (proxy)
+  // annotations = reactive(annotations);
+
+  // hide invisible annotations
+  annotations = annotations.filter(
+    (annotation) => annotation?.visible !== false
+  );
+
+  // update annotation state
+  annotations = annotations.map((annotation) => {
+    if(changes.value?.[annotation.id]) {
+      annotation.start = changes.value?.[annotation.id].start;
+      annotation.end = changes.value?.[annotation.id].end;
+    }
+    return annotation;
+  });
+
+  return annotations;
+});
+
+const gutterAnnotations = computed((): ExtendedAnnotation[] => {
+  props.debug && console.log("** refresh gutterAnnotations **");
+  const gutterAnnotations = allAnnotations.value.filter(
+    (annotation) => annotation.target === "gutter"
+  );
+
+  props.debug && console.log(gutterAnnotations);
+
+  return gutterAnnotations;
+});
 
 // prepare annotations for Etali.FlattenRanges
 // etali end position = position of next char not included in range
 // ex: in "abcdef", span [0,2] is "ab"
-const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
+const prepareRanges = (
+  annotations: ExtendedAnnotation[]
+): RangeWithAnnotation[] => {
   props.debug && console.log("** prepare ranges for_annotations **");
   props.debug && console.log(annotations);
 
@@ -128,22 +245,11 @@ const prepareRanges = (annotations: Annotation[]): RangeWithAnnotation[] => {
   return ranges;
 };
 
-const gutterAnnotations = computed((): Annotation[] => {
-  const gutter_annotations = annotations.filter(
-    (annotation) => annotation.target === "gutter"
-  ) as Annotation[];
-
-  props.debug && console.log("** gutter_annotations **");
-  props.debug && console.log(gutter_annotations);
-
-  return gutter_annotations;
-});
-
 // flatten overlapping ranges
 const flattenedRanges = computed((): RangeWithAnnotations[] => {
   // prepare annotations
 
-  let ranges = prepareRanges(annotations);
+  let ranges = prepareRanges(allAnnotations.value);
 
   // add line ranges
   props.lines.forEach((line) =>
@@ -341,13 +447,13 @@ const annotationGutterClasses = function (
 ): string[] {
   let classes = [
     annotation?.class ?? "",
-    "annotation--w" + (annotation?.weight ?? 0),
+    props.style.weightClass + (annotation?.weight ?? 0),
   ];
   if (startsOnLine(line, annotation)) {
-    classes.push("annotation--start");
+    classes.push(props.style.startClass);
   }
   if (endsOnLine(line, annotation)) {
-    classes.push("annotation--end");
+    classes.push(props.style.endClass);
   }
   return classes;
 };
@@ -359,28 +465,34 @@ const annotationClasses = function (
 ): string[] {
   let classes = [
     annotation?.class ?? "",
-    "annotation--w" + (annotation?.weight ?? 0),
+    props.style.weightClass + (annotation?.weight ?? 0),
   ];
   if (annotation?.start === start) {
-    classes.push("annotation--start");
+    classes.push(props.style.startClass);
   }
   if (annotation?.end === end) {
-    classes.push("annotation--end");
+    classes.push(props.style.endClass);
+  }
+  if (annotation === state.value.annotation) {
+    classes.push(props.style.transitioningClass);
   }
   return classes;
 };
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("click-annotation", annotation);
+  console.log("emit click-annotation");
 };
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
+
 const componentClasses = computed((): any[] => {
   let classes = [
     "annotated-text",
     "theme-" + props.theme,
     "annotated-text--render-" + props.render,
+    state.value.action ? "action--active action--" + state.value.action : null,
     props.showLabels ? "annotated-text--show-labels" : null,
   ];
   return classes.filter((item) => item);
@@ -399,5 +511,97 @@ const maxAnnotationWeight = function (annotations: Annotation[]) {
     (ac, annotation) => Math.max(ac, Number(annotation?.weight ?? 0)),
     0
   );
+};
+
+// state & changes
+let state = ref<AnnotationAction>(initActionState());
+let changes = ref({});
+
+// clear changes on prop update 
+// (parent had the change to listen to events)
+watch(
+  () => props,
+  (_newValue, _oldValue) => {
+    changes.value = {};
+});
+
+function initActionState(): AnnotationActionState {
+  return {
+    action: null,
+    handlePosition: null,
+    annotation: null,
+    origEnd: null,
+    origStart: null,
+    newEnd: null,
+    newStart: null,
+  };
+}
+
+function onMouseLeaveHandler(MouseEvent: e) {
+  // reset state?
+  if (state.value.action) {
+    state.value = initActionState();
+  }
+  console.log("global mouseleave");
+}
+
+function onMouseUpHandler(MouseEvent: e) {
+  // reset state?
+  if (state.value.action) {
+    emit(
+      "annotation-moved", 
+      JSON.parse(JSON.stringify(state.value.annotation)), 
+      state.value
+    );
+    state.value = initActionState();
+  }
+  console.log("global mouseup");
+}
+
+function onAnnotationStartHandler(
+  MouseEvent: e,
+  payload: AnnotationActionPayload
+) {
+  console.log(`start resize (${payload.action})`);
+  state.value = {
+    ...payload,
+    origStart: payload.annotation.start,
+    origEnd: payload.annotation.end,
+    newStart: payload.annotation.start,
+    newEnd: payload.annotation.end,
+  };
+}
+
+const onMouseEnterLinePartHandler = (linePart: LinePart) => {
+  return function (e: MouseEvent) {
+    let position = caretPositionFromPoint(e.x, e.y);
+    if (position) {
+      // console.log(linePart.start + position.offset);
+      // console.log(state.annotation);
+      if (state.value.annotation) {
+        const newPosition = linePart.start + position.offset;
+        switch (state.value.action) {
+          case "moveEnd":
+            if (newPosition >= state.value.annotation.start) {
+              state.value.newEnd = newPosition;
+              changes.value[state.value.annotation.id] = { start: state.value.newStart, end: state.value.newEnd };
+            }
+            break;
+          case "moveStart":
+            if (newPosition <= state.value.annotation.end) {
+              state.value.newStart = newPosition;
+              changes.value[state.value.annotation.id] = { start: state.value.newStart, end: state.value.newEnd };
+            }
+            break;
+          case "move":
+            const offset = newPosition - state.value.handlePosition;
+            state.value.newStart = state.value.origStart + offset;
+            state.value.newEnd = state.value.origEnd + offset;
+            changes.value[state.value.annotation.id] = { start: state.value.newStart, end: state.value.newEnd };
+            break;
+        }
+      }
+    }
+  };
 };
 </script>

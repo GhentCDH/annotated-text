@@ -1,8 +1,9 @@
-import { Annotation } from "./Annotation";
+import { Annotation, ExtendedAnnotation } from "./Annotation";
 
 export interface AnnotatedTextProps {
   text?: string;
-  annotations: Annotation[];
+  annotations?: Annotation[];
+  annotationLayers?: AnnotationLayer[];
   lines: Line[];
   annotationOffset?: number;
   debug?: boolean;
@@ -10,16 +11,48 @@ export interface AnnotatedTextProps {
   render?: RenderType;
   showLabels?: boolean;
   autoAnnotationWeights?: boolean;
+  style?: AnnotationStyle;
+  allowEdit?: boolean;
+}
+
+export interface AnnotationLayer {
+  annotations: Annotation[];
+  visible: boolean;
+  granularity: AnnotationGranularity;
+  allowEdit?: boolean;
+  allowDelete?: boolean;
+  allowCreate?: boolean;
+}
+
+export enum AnnotationGranularity {
+  Char = "char",
+  SingleToken = "single_token",
+  MultipleTokens = "multiple_tokens",
+  Sentence = "sentence",
+}
+
+export interface AnnotationStyle {
+  activeClass: string;
+  startClass: string;
+  endClass: string;
+  weightClass: string;
+  transitioningClass: string;
+}
+
+export interface AnnotationActionPayload {
+  action: "moveStart" | "moveEnd" | "move";
+  annotation?: Annotation;
+  handlePosition?: string;
+}
+
+export interface AnnotationActionState extends AnnotationActionPayload {
+  origStart?: number;
+  origEnd?: number;
+  newStart?: number;
+  newEnd?: number;
 }
 
 export type RenderType = "nested" | "flat";
-
-export interface Line {
-  text: string;
-  start?: number;
-  end?: number;
-  gutter?: string;
-}
 
 export interface Paragraph {
   lines: Line[];
@@ -28,6 +61,18 @@ export interface Paragraph {
   gutter?: string;
 }
 
+export interface Line {
+  text: string | Token[];
+  start: number;
+  end: number;
+  gutter?: string;
+}
+
+export interface Token {
+  text: string;
+  start: number;
+  end: number;
+}
 export interface Text {
   paragraphs: Paragraph[];
 }
@@ -49,5 +94,5 @@ interface AnnotatedLine {
   };
 }
 
-type RangeWithAnnotation = [number, number, Annotation | null];
-type RangeWithAnnotations = [number, number, Annotation[]];
+type RangeWithAnnotation = [number, number, ExtendedAnnotation | null];
+type RangeWithAnnotations = [number, number, ExtendedAnnotation[]];
