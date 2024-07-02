@@ -35,7 +35,7 @@
 import { AnnotatedText, Annotation, Line } from "@/index";
 import { textToLines } from "./Utils";
 
-import { annotationsGreek, textGreek as text} from "./data";
+import { annotationsGreek, textGreek as text } from "./data";
 
 import { reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
@@ -48,7 +48,7 @@ const props = reactive({
   render: "nested" as RenderType,
 });
 
-const onAnnotationClick = function (annotation: Annotation): void {
+const onAnnotationClick = function(annotation: Annotation): void {
   console.log("** click received **");
   console.log(annotation);
   if (annotation.class.includes("annotation--active")) {
@@ -60,11 +60,14 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
-const onAnnotationMoved = function (annotation: Annotation): void {
+const onAnnotationMoved = function(annotation: Annotation): void {
   console.log("** moved: ", annotation);
-}
+};
 
-const annotations = annotationsGreek.map( (annotation) => ({id: annotation.metadata.id, ...annotation})) ;
+const annotations: Annotation[] = annotationsGreek.map((annotation) => ({
+  id: annotation.metadata.id,
+  ...annotation,
+}));
 
 // console.log(textLines);
 </script>
@@ -74,10 +77,12 @@ body {
   font-family: sans-serif;
   padding: 2em;
 }
+
 hr {
   border: 1px solid gray;
   margin-bottom: 1em;
 }
+
 menu {
   padding: 0;
 }
