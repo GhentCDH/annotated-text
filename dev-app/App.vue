@@ -48,7 +48,7 @@ const props = reactive({
   render: "nested" as RenderType,
 });
 
-const onAnnotationClick = function(annotation: Annotation): void {
+const onAnnotationClick = function (annotation: Annotation): void {
   console.log("** click received **");
   console.log(annotation);
   if (annotation.class.includes("annotation--active")) {
@@ -60,14 +60,11 @@ const onAnnotationClick = function(annotation: Annotation): void {
   }
 };
 
-const onAnnotationMoved = function(annotation: Annotation): void {
+const onAnnotationMoved = function (annotation: Annotation): void {
   console.log("** moved: ", annotation);
 };
 
-const annotations: Annotation[] = annotationsGreek.map((annotation) => ({
-  id: annotation.metadata.id,
-  ...annotation,
-}));
+const annotations: Annotation[] = annotationsGreek;
 
 // console.log(textLines);
 </script>
