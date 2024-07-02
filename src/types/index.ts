@@ -12,4 +12,4 @@ export type {
   AnnotationActionPayload,
   AnnotationActionState,
 } from "./AnnotatedText";
-export type { Annotation, AnnotationTarget, ExtendedAnnotation} from "./Annotation";
+export type { Annotation, AnnotationTarget} from "./Annotation";

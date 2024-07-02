@@ -3,8 +3,7 @@ import {
   AnnotatedTextProps,
   type Annotation,
   AnnotationActionState,
-  type AnnotationLayer, type AnnotationTarget,
-  ExtendedAnnotation, type Line, type LinePart,
+  type AnnotationLayer, type AnnotationTarget, type Line, type LinePart,
   RangeWithAnnotation, RangeWithAnnotations
 } from "@/types";
 import { computed } from "vue-demi";
@@ -29,7 +28,7 @@ const ExtendedAnnotationDefaults = {
 
 const annotationEndOffsetFix = 1;
 
-// caculate interval intersection
+// caculate interval of an intersection
 const intersectInterval = (
   a: [number, number],
   b: [number, number]
@@ -62,6 +61,7 @@ export default class AnnotatedTextUtils {
 
   private layers = computed((): AnnotationLayer[] => {
     this.props.debug && console.log("** refresh layers");
+    console.log(this.props.annotationLayers);
 
     return this.props.annotationLayers.map(
       (layer) =>
@@ -72,18 +72,19 @@ export default class AnnotatedTextUtils {
     );
   });
 
-  private allAnnotations = computed((): ExtendedAnnotation[] => {
+  private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
-    // upgrade annotations
-    let annotations: ExtendedAnnotation[];
-    annotations = this.props.annotations.map(
-      (annotation) =>
-        ({
-          ...ExtendedAnnotationDefaults,
-          ...annotation,
-        } as ExtendedAnnotation)
-    );
+    // // upgrade annotations
+    // let annotations: ExtendedAnnotation[];
+    // annotations = this.props.annotations.map(
+    //   (annotation) =>
+    //     ({
+    //       ...ExtendedAnnotationDefaults,
+    //       ...annotation,
+    //     } as ExtendedAnnotation)
+    // );
+    let annotations = this.props.annotations;
 
     // flatten annotations in layers &
     // add reference to annotation layer
@@ -95,7 +96,7 @@ export default class AnnotatedTextUtils {
               ...ExtendedAnnotationDefaults,
               layer: layer,
               ...annotation,
-            } as ExtendedAnnotation)
+            } as Annotation)
         );
         annotations = annotations.concat(layerAnnotations);
       }
@@ -127,7 +128,7 @@ export default class AnnotatedTextUtils {
     return annotations;
   });
 
-  private gutterAnnotations = computed((): ExtendedAnnotation[] => {
+  private gutterAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh gutterAnnotations **");
     const gutterAnnotations = this.allAnnotations.value.filter(
       (annotation) => annotation.target === "gutter"
@@ -142,7 +143,7 @@ export default class AnnotatedTextUtils {
   // etali end position = position of next char not included in range
   // ex: in "abcdef", span [0,2] is "ab"
   private prepareRanges = (
-    annotations: ExtendedAnnotation[]
+    annotations: Annotation[]
   ): RangeWithAnnotation[] => {
     this.props.debug && console.log("** prepare ranges for_annotations **");
     this.props.debug && console.log(annotations);
@@ -336,6 +337,9 @@ export default class AnnotatedTextUtils {
     } satisfies AnnotatedLine;
   };
 
+  /**
+   * Map every line to an annotated line
+   */
   annotatedLines = computed((): AnnotatedLine[] => {
     const lines = this.props.lines.map((line) => this.createAnnotatedLine(line));
     this.props.debug && console.log("** annotated lines **");

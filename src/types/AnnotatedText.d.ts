@@ -1,4 +1,4 @@
-import { Annotation, ExtendedAnnotation } from "./Annotation";
+import { Annotation } from "./Annotation";
 
 export interface AnnotatedTextProps {
   text?: string;
@@ -94,5 +94,5 @@ interface AnnotatedLine {
   };
 }
 
-type RangeWithAnnotation = [number, number, ExtendedAnnotation | null];
-type RangeWithAnnotations = [number, number, ExtendedAnnotation[]];
+type RangeWithAnnotation = [number, number, Annotation | null];
+type RangeWithAnnotations = [number, number, Annotation[]];

@@ -14,9 +14,4 @@ export interface Annotation {
   visible?: boolean;
 }
 
-export interface ExtendedAnnotation extends Annotation {
-  layer?: AnnotationLayer;
-  weight?: number;
-}
-
 export type AnnotationTarget = "gutter" | "span";

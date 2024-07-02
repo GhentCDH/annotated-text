@@ -73,18 +73,10 @@ import type {
   AnnotatedLine,
   AnnotatedTextProps,
   Annotation,
-  AnnotationLayer,
-  AnnotationTarget,
-  AnnotationStyle,
   AnnotationActionPayload,
   AnnotationActionState,
-  Line,
   LinePart,
-  RangeWithAnnotation,
-  RangeWithAnnotations,
-  ExtendedAnnotation,
 } from "@/types";
-import { FlattenRanges } from "etali";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedTextUtils from "@/lib/AnnotatedTextUtils";
