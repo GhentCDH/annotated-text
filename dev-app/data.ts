@@ -1,16 +1,15 @@
-import { Annotation, Paragraph } from "../src/types";
-import { AnnotationDataIn } from "@/types/Annotation";
+import { Annotation, Paragraph } from "@/types";
 
 export const textTest =
   "0.23456  9\n1.34567890123456789\n1.3   789\n123456a.\n\n5.lorem ipsum";
 
-export const annotationsTest: AnnotationDataIn[] = [
+export const annotationsTest: Annotation[] = [
   {
     start: 5,
     end: 9,
     class: "annotation annotation--color-1",
     target: "span",
-    metadata: { id: 1 },
+    id: "1",
     label: "typo",
   },
   {
@@ -18,7 +17,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 36,
     class: "annotation annotation--color-3",
     target: "span",
-    metadata: { id: 2 },
+    id: "2",
     label: "syntax",
   },
   {
@@ -26,7 +25,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 6,
     class: "annotation annotation--color-2",
     target: "span",
-    metadata: { id: 3 },
+    id: "3",
     label: "unit",
   },
 
@@ -36,7 +35,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 9,
     class: "annotation annotation--color-1",
     target: "gutter",
-    metadata: { id: 4 },
+    id: "4",
     label: "typo",
   },
   {
@@ -44,7 +43,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 30,
     class: "annotation annotation--color-2",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
 
@@ -53,7 +52,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 50,
     class: "annotation annotation--color-5",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
 
@@ -62,7 +61,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 60,
     class: "annotation annotation--color-2",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
 
@@ -71,7 +70,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 55,
     class: "annotation annotation--color-3",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
   {
@@ -79,7 +78,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 36,
     class: "annotation annotation--color-4",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
   {
@@ -87,7 +86,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 50,
     class: "annotation annotation--color-5",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
   {
@@ -95,7 +94,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 56,
     class: "annotation annotation--color-6",
     target: "gutter",
-    metadata: { id: 5 },
+    id: "5",
     label: "syntax",
   },
   {
@@ -103,7 +102,7 @@ export const annotationsTest: AnnotationDataIn[] = [
     end: 6,
     class: "annotation annotation--color-7",
     target: "gutter",
-    metadata: { id: 6 },
+    id: "6",
     label: "unit",
   },
 ];
@@ -111,14 +110,14 @@ export const annotationsTest: AnnotationDataIn[] = [
 export const textGreek =
   "1.Χ[αι]ρήμ[ων] Ἀπολλωνίωι τῶι\n2.[φι]λτάτωι χαίρειν.\n3.καὶ διʼ ἑτ[έρας ἐπι]στολῆς ἔγραψά σοι, ἵνα δύο \n4.ἀρτάβαι σει[ταρίου](*)ἰδισθῶσί(*) μοι, ἐπεὶ λείαν(*) ἐκο-\n5.λάσθημεν [  ̣  ̣  ̣  ̣  ̣] ἄδελφε μου, Ἰσίδωρον ἔπεμ-\n6.ψα τούτου εἵνε[κα](*), [ἵ]να μ[ο]ι εὐθέως πεμφθῶσι\n7.καὶ κρειθὴ(*)[  ̣  ̣  ̣]ειδ[  ̣  ̣]ου Σαραπᾶς εἰς λόγον\n8.ναύλου [  ̣  ̣  ̣  ̣  ̣  ̣] οἴνου (δραχμὰς)δ(τετρώβολον). ἐὰν μὲν οὖν\n9.δῶι τὸ [  ̣  ̣  ̣  ̣  ̣]αδ[  ̣  ̣]ν, ἄριστα· ἐὰν δὲ μὴ λαβὼν\n10.παρα[  ̣  ̣  ̣  ̣][ χ]αλκὸν ναυλῶσαι ὀνάριον καὶ\n11.εὐθ[έως ][  ̣  ̣  ̣  ̣][ κο]μισθήτω· μόλις γὰρ ἡμερῶν\n12.δύο [  ̣  ̣  ̣  ̣  ̣  ̣]ομεν· γράφω οὖν σοι, ἵνα εἰδῇς\n13.τὴ[ν ][  ̣  ̣  ̣  ̣  ̣][ θε]ῶν δὲ βουλομένων καὶ αὐτὸς\n14.ἐλ̣[πίζω(?)](*)[Παῦ]νι κε κατελθεῖν. λέγεται γὰρ τὸν ἄνθρω-\n15.πο[ν ][  ̣  ̣  ̣  ̣][ εἰ]ς Ἀλεξ[άν]δρει[α]ν τοῦ πορεύεσθαι χάριν\n16.δ[- ca.9 -]ια  ̣  ̣νω[  ̣  ̣  ̣  ̣] π[α]ρὰ θεοῖς πᾶσι\n17.δια[  ̣  ̣  ̣  ̣  ̣]λωι μετὰ τῶν ἐμῶν δράσειν\n18.περ  ̣[  ̣  ̣  ̣  ̣  ̣  ̣]ησωι ἐπὶ σὲ προσεπιπαρακαλέσωι(*)\n19.περὶ τῶ[ν ][  ̣]  ̣[  ̣]μένων αἰσθόμενός σου τὴν εἴς με\n20.φιλοφ[ροσ]ύ[νην]. φρόντισον δʼ ἐμοῦ χορίου δερμάτ(ων)\n21.ἑξακοσίων  καὶ σφράγεισον(*) τὸ σειτάριον(*) καὶ τὴν\n22.κρειθὴν(*)δ[ηλώ]σας(*) μοι, π[ο]ίωι μέτρωι ἔπεμψας.\n23.ἀσπάζου   ̣  ̣[  ̣]  ̣  ̣  ̣ πάντ[α] σου παιδία, μεθʼ ὧν ἔ̣[σ]ῃ̣\n24.[ἔ]ρρω(σο). Φαρμο(ῦθι)κβ.\n25.πέμψον δὲ ἡμεῖν(*) κινάρας. ";
 
-export const annotationsGreek: AnnotationDataIn[] = [
+export const annotationsGreek: Annotation[] = [
   {
     start: 1,
     end: 89,
     class: "annotation annotation--color-3",
     target: "span",
     label: "gts",
-    metadata: { id: 3004789 },
+    id: "3004789",
   },
   {
     start: 3,
@@ -126,7 +125,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-5",
     target: "gutter",
     label: "handshift",
-    metadata: { id: 1900230 },
+    id: "1900230",
   },
   {
     start: 21,
@@ -134,7 +133,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-4",
     target: "span",
     label: "typography",
-    metadata: { id: 576750 },
+    id: "576750",
   },
   {
     start: 44,
@@ -142,7 +141,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-5",
     target: "span",
     label: "typography",
-    metadata: { id: 576751 },
+    id: "576751",
   },
   {
     start: 72,
@@ -150,7 +149,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-6",
     target: "span",
     label: "typography",
-    metadata: { id: 576752 },
+    id: "576752",
   },
   {
     start: 87,
@@ -158,7 +157,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-1",
     target: "span",
     label: "orthography",
-    metadata: { id: 147849 },
+    id: "147849",
   },
   {
     start: 89,
@@ -166,7 +165,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-2",
     target: "gutter",
     label: "gts",
-    metadata: { id: 3004788 },
+    id: "3004788",
   },
   {
     start: 95,
@@ -174,7 +173,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-2",
     target: "span",
     label: "orthography",
-    metadata: { id: 147850 },
+    id: "147850",
   },
   {
     start: 111,
@@ -182,7 +181,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-3",
     target: "span",
     label: "orthography",
-    metadata: { id: 147851 },
+    id: "147851",
   },
   {
     start: 126,
@@ -190,7 +189,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-1",
     target: "span",
     label: "typography",
-    metadata: { id: 443498 },
+    id: "443498",
   },
   {
     start: 150,
@@ -198,7 +197,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-5",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 277229 },
+    id: "277229",
   },
   {
     start: 175,
@@ -206,7 +205,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-2",
     target: "span",
     label: "typography",
-    metadata: { id: 443499 },
+    id: "443499",
   },
   {
     start: 214,
@@ -214,7 +213,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-7",
     target: "span",
     label: "typography",
-    metadata: { id: 576753 },
+    id: "576753",
   },
   {
     start: 316,
@@ -222,7 +221,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-6",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 277230 },
+    id: "277230",
   },
   {
     start: 335,
@@ -230,7 +229,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-1",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 1445646 },
+    id: "1445646",
   },
   {
     start: 375,
@@ -238,7 +237,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-3",
     target: "span",
     label: "typography",
-    metadata: { id: 443500 },
+    id: "443500",
   },
   {
     start: 422,
@@ -246,7 +245,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-7",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 277231 },
+    id: "277231",
   },
   {
     start: 470,
@@ -254,7 +253,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-8",
     target: "span",
     label: "typography",
-    metadata: { id: 576754 },
+    id: "576754",
   },
   {
     start: 484,
@@ -262,7 +261,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-9",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 277233 },
+    id: "277233",
   },
   {
     start: 484,
@@ -270,7 +269,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-8",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 277232 },
+    id: "277232",
   },
   {
     start: 579,
@@ -278,7 +277,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-4",
     target: "span",
     label: "morpho_syntactical",
-    metadata: { id: 100911 },
+    id: "100911",
   },
   {
     start: 710,
@@ -286,7 +285,7 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-4",
     target: "span",
     label: "gts",
-    metadata: { id: 3004790 },
+    id: "3004790",
   },
   {
     start: 715,
@@ -294,25 +293,21 @@ export const annotationsGreek: AnnotationDataIn[] = [
     class: "annotation annotation--color-9",
     target: "span",
     label: "typography",
-    metadata: { id: 576755 },
+    id: "576755",
   },
 ];
 
 export const otherGreekText =
   "1.κυρί(*)ῳ τ̣ιμιωτάτῳ Ἰωάννῃ Ταυρίνου ἀπὸ πρημι-\n2.κυρίων(*) Ισα  ̣  ̣  ̣μ  ̣γ̣κ  ̣[  ̣  ̣][ πρα]γ̣μ̣ατευτὴς κώμης\n3.Τεμσεοῦ χαίριν(*)· ετ̣ι̣  ̣ε̣ἀραβωναν(*) ἔδωκα\n4.τῇ σοι θ̣[α]υμ̣α̣[σ]ιότη̣τ̣ι̣[τ]ῆς(*)σης(*)[λι]νοκαλάμης\n5.χρυσο̣ῦ νο(μίσματα)β̣[  ̣  ̣  ̣  ̣]τ̣[ο]ῦ̣ αὐτοῦ ἀραβῶνο̣ς̣(*)ἀ̣ν̣α-\n6.δώσω σο̣ι ἄλλα νο(μίσματα)  ̣  ̣  ̣ε̣ἰ̣ς Τῦβι δ̣ε̣κάτη<ν>\n7.τ̣[ῆ]ς [παρούσ]ης̣[  ̣  ̣]ι̣  ̣  ̣[  ̣  ̣  ̣]ν̣  ̣  ̣  ̣  ̣α̣τερα  ̣ κερ[ά]μια̣  ̣  ̣[ -ca.?- ]\n8.[ -ca.?- ][ π]ροθεσμι[  ̣]  ̣  ̣  ̣  ̣ι̣ν̣ε\n9.μοι ζ[  ̣  ̣  ̣  ̣  ̣  ̣  ̣  ̣]  ̣  ̣  ̣  ̣[  ̣  ̣] τὰ αὐτὰ νο(μίσματα)  ̣ἀ̣ν̣[υπερ-]\n10.[θ]έτως̣ κα̣ὶ̣μ̣[  ̣  ̣  ̣  ̣  ̣  ̣  ̣]  ̣  ̣  ̣υς μησθοὺς(*) τῶν   ̣ρ̣  ̣[ -ca.?- ]\n11.Σέργιος̣ πρ[  ̣  ̣]  ̣  ̣[  ̣  ̣  ̣  ̣  ̣] μαρτυρῶ τῇ χιρὶ(*) ἀκο<ύ>σας\n12.παρὰ̣[  ̣  ̣  ̣  ̣]  ̣[  ̣  ̣  ̣  ̣  ̣  ̣  ̣]ι̣επ̣  ̣  ̣λεγεις Κορμιανὸς\n13.πρα̣γ̣μ̣[ατ]ε̣υ̣τ̣ὴς μαρτυρῶ τῇ χιρὶ(*) ἀκούσας παρὰ Εἰσα\n14.[ -ca.?- ]υ̣ Ἀν̣α̣σ̣τασίο̣υ̣Ἰ(*)ωάννου ἀπὸ Πτιμικ<ύ>ρκεο̣ς̣\n15.[ -ca.?- ]  ̣  ̣  ̣  ̣ τοῦ θεμένου\n16.[ -ca.?- ][ ἀπὸ Πτ]ιμικύρκεος μαρτυρῶ [τ]ῇ χιρὴ(*)\n17.[ἀκούσας παρὰ τ]οῦ θεμένου \nv\n1.[ -ca.?- ][ πραγματε]υτὴς Ἰουδαῖ̣ος̣";
 
-export const otherGreekAnnotations: AnnotationDataIn[] = [
+export const otherGreekAnnotations: Annotation[] = [
   {
     start: 1,
     end: 89,
     class: "annotation annotation--color-3",
     target: "span",
     label: "gts",
-    metadata: {
-      text: "1.μετὰ τὴν ὑπατείαν Φλ(αυίου) Λογγίνου τοῦ λαμπρ(οτάτου),\n2.Θὼθ κδ, ιβ̣ἰνδικ(τίονος).\n3.",
-      id: 3004789,
-      index: 20,
-    },
+    id: "3004789",
   },
   {
     start: 3,
@@ -320,11 +315,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-5",
     target: "gutter",
     label: "handshift",
-    metadata: {
-      text: "",
-      id: 1900233,
-      index: 22,
-    },
+    id: "1900233",
   },
   {
     start: 21,
@@ -332,11 +323,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-4",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "Φλ(αυίου)",
-      id: 576750,
-      index: 3,
-    },
+    id: "576750",
   },
   {
     start: 44,
@@ -344,11 +331,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-5",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "λαμπρ(οτάτου)",
-      id: 576751,
-      index: 4,
-    },
+    id: "576751",
   },
   {
     start: 72,
@@ -356,11 +339,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-6",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "ἰνδικ(τίονος)",
-      id: 576752,
-      index: 5,
-    },
+    id: "576752",
   },
   {
     start: 87,
@@ -368,11 +347,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-1",
     target: "span",
     label: "orthography",
-    metadata: {
-      text: "Φλαουίῳ",
-      id: 147849,
-      index: 9,
-    },
+    id: "147849",
   },
   {
     start: 89,
@@ -380,11 +355,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-2",
     target: "gutter",
     label: "gts",
-    metadata: {
-      text: "Φλαουίῳ Ἰωάννῃ Ταυρίνου αἰδεσίμῳ ἀπὸ πριμικη-\n4.ρίων ἀριθμοῦ τῶν ἐπὶ τῆς Ἑρμουπολιτῶν καθιδρ[υ-]\n5.μένων γενναιοτάτων Μαύρων π(αρὰ) Αὐρηλίου Βίκτορος\n6.Φοιβάμμωνος μητρὸς Θαήσιος ἀπὸ κώμης Τέρτον\n7.Κανᾶ τοῦ Ἑρμουπολίτου νομοῦ. ὁμολογῶ ἑκουσίως\n8.καὶ αὐθαιρέτως μεμισθῶσθαι παρὰ τῆς σῆς αἰδεσιμό-\n9.τητος ἐπὶ τριετῆ χρόνον ἀπὸ καρπῶν τῆς εὐτυχοῦς\n10.εἰσ̣ιούσης τ̣ρει̣σ̣[καιδε]κάτης ἰνδικ(τίονος) τὴν ὑπάρχουσαν\n11.αὐτῇ ἄρουρα̣ν̣ μία̣[ν][χερ]σ̣αμπέλ[ου] σὺν ἡμίσει  μέρει\n12.τοῦ ἐκεῖσε λάκκου, [δι]α̣κειμένη[ν] ἐν πεδιάδι τῆς\n13.α̣[ὐτ]ῆ̣ς̣κ̣[ώμ]η̣ς̣, πρὸς ὑδροπαροχε̣ί̣[α]ν(*) διʼ ἡμετέρων\n14.\n-- -- -- -- -- -- -- -- -- --",
-      id: 3004788,
-      index: 19,
-    },
+    id: "3004788",
   },
   {
     start: 95,
@@ -392,11 +363,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-2",
     target: "span",
     label: "orthography",
-    metadata: {
-      text: "Ἰωάννῃ",
-      id: 147850,
-      index: 10,
-    },
+    id: "147850",
   },
   {
     start: 111,
@@ -404,11 +371,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-3",
     target: "span",
     label: "orthography",
-    metadata: {
-      text: "αἰδεσίμῳ",
-      id: 147851,
-      index: 11,
-    },
+    id: "147851",
   },
   {
     start: 126,
@@ -416,11 +379,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-1",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "πριμικη-\n4.ρίων",
-      id: 443498,
-      index: 0,
-    },
+    id: "443498",
   },
   {
     start: 150,
@@ -428,11 +387,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-5",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: "τῶν ἐπὶ τῆς Ἑρμουπολιτῶν καθιδρ[υ-]\n5.μένων γενναιοτάτων Μαύρων",
-      id: 277229,
-      index: 13,
-    },
+    id: "277229",
   },
   {
     start: 175,
@@ -440,11 +395,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-2",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "καθιδρ[υ-]\n5.μένων",
-      id: 443499,
-      index: 1,
-    },
+    id: "443499",
   },
   {
     start: 214,
@@ -452,11 +403,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-7",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "π(αρὰ)",
-      id: 576753,
-      index: 6,
-    },
+    id: "576753",
   },
   {
     start: 316,
@@ -464,11 +411,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-6",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: "ὁμολογῶ ἑκουσίως\n8.καὶ αὐθαιρέτως μεμισθῶσθαι",
-      id: 277230,
-      index: 14,
-    },
+    id: "277230",
   },
   {
     start: 335,
@@ -476,11 +419,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-1",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: "καὶ",
-      id: 1445646,
-      index: 18,
-    },
+    id: "1445646",
   },
   {
     start: 375,
@@ -488,11 +427,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-3",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "αἰδεσιμό-\n9.τητος",
-      id: 443500,
-      index: 2,
-    },
+    id: "443500",
   },
   {
     start: 422,
@@ -500,11 +435,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-7",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: "τῆς εὐτυχοῦς\n10.εἰσ̣ιούσης τ̣ρει̣σ̣[καιδε]κάτης ἰνδικ(τίονος)",
-      id: 277231,
-      index: 15,
-    },
+    id: "277231",
   },
   {
     start: 470,
@@ -512,11 +443,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-8",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "ἰνδικ(τίονος)",
-      id: 576754,
-      index: 7,
-    },
+    id: "576754",
   },
   {
     start: 484,
@@ -524,11 +451,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-8",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: "τὴν ὑπάρχουσαν\n11.αὐτῇ ἄρουρα̣ν̣",
-      id: 277232,
-      index: 16,
-    },
+    id: "277232",
   },
   {
     start: 484,
@@ -536,11 +459,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-9",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: "τὴν ὑπάρχουσαν\n11.αὐτῇ ἄρουρα̣ν̣ μία̣[ν][χερ]σ̣αμπέλ[ου] σὺν ἡμίσει  μέρει\n12.τοῦ ἐκεῖσε λάκκου, [δι]α̣κειμένη[ν]",
-      id: 277233,
-      index: 17,
-    },
+    id: "277233",
   },
   {
     start: 579,
@@ -548,11 +467,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-4",
     target: "span",
     label: "morpho_syntactical",
-    metadata: {
-      text: ", [δι]α̣κειμένη[ν] ἐν πεδιάδι τῆς\n13.α̣[ὐτ]ῆ̣ς̣κ̣[ώμ]η̣ς̣",
-      id: 100911,
-      index: 12,
-    },
+    id: "100911",
   },
   {
     start: 710,
@@ -560,11 +475,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-4",
     target: "span",
     label: "gts",
-    metadata: {
-      text: "\nv\n1.μί(σθωσις)Β̣ί̣κτ̣ορο̣[ς]Φ̣[οι]β̣ά̣μ̣μ̣[ωνος]",
-      id: 3004790,
-      index: 21,
-    },
+    id: "3004790",
   },
   {
     start: 715,
@@ -572,11 +483,7 @@ export const otherGreekAnnotations: AnnotationDataIn[] = [
     class: "annotation annotation--color-9",
     target: "span",
     label: "typography",
-    metadata: {
-      text: "μί(σθωσις)",
-      id: 576755,
-      index: 8,
-    },
+    id: "576755",
   },
 ];
 
