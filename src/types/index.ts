@@ -1,6 +1,5 @@
 export type {
   AnnotatedTextProps,
-  AnnotationLayer,
   Token,
   Line,
   Paragraph,
