@@ -82,7 +82,7 @@ import type {
   Annotation,
   AnnotationActionPayload,
   AnnotationActionState,
-  LinePart,
+  LinePart
 } from "@/types";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
@@ -181,11 +181,10 @@ const componentClasses = computed((): any[] => {
 });
 
 const linePartClasses = function (linePart: LinePart): any[] {
-  let classes = [
+  return [
     "line-part",
     "line-part--m" + maxAnnotationWeight(linePart.annotations),
   ];
-  return classes;
 };
 
 const maxAnnotationWeight = function (annotations: Annotation[]) {

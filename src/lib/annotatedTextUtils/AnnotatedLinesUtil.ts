@@ -317,40 +317,14 @@ export default class AnnotatedLinesUtil {
       j += i < wordSplit.length - 1 ? w.length + 1 : w.length;
     });
 
-    let annotatedWords: AnnotatedWord[] = []
+    let annotatedWords: AnnotatedWord[] = [];
     words.forEach((w) => {
       annotatedWords.push(this.createAnnotatedWord(w))
-    });
-
-    rangesInScope = rangesInScope.map(function (range) {
-      range[2] = range[2]
-        .filter((annotation) => annotation)
-        .filter((annotation) => annotation?.target === "span")
-        .sort((a, b) => (Number(a?.start) > Number(b?.start) ? 1 : -1));
-      return range;
-    });
-
-    this.props.debug && console.log("** ranges in scope **");
-    this.props.debug && console.log(rangesInScope);
-
-    const lineParts: LinePart[] = rangesInScope.map(function (
-      range: RangeWithAnnotations
-    ) {
-      return {
-        start: range[0],
-        end: range[1] - 1,
-        text:
-          typeof line.text === "string"
-            ? line.text.substring(range[0] - line.start, range[1] - line.start)
-            : "",
-        annotations: range[2],
-      } satisfies LinePart;
     });
 
     return {
       start: line.start,
       end: line.end,
-      parts: lineParts,
       words: annotatedWords,
       gutter: {
         text: line.gutter,
