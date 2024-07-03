@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, reactive, set, ref, watch } from "vue-demi";
+import { computed, defineEmits, ref, watch } from "vue-demi";
 import type {
   AnnotatedLine,
   AnnotatedTextProps,
@@ -79,7 +79,8 @@ import type {
 } from "@/types";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
-import AnnotatedTextUtils from "@/lib/AnnotatedTextUtils";
+import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
+import { endsOnLine, startsOnLine } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 
 // define emits
 const emit = defineEmits<{
@@ -112,23 +113,9 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
 let state = ref<AnnotationActionState>(initActionState());
 let changes = ref({});
 
-const utils = new AnnotatedTextUtils(props, state, changes);
-
-const startsOnLine = function (
-  line: AnnotatedLine,
-  annotation: Annotation
-): Boolean {
-  return line.start <= annotation.start && line.end >= annotation.start;
-};
-
-const endsOnLine = function (
-  line: AnnotatedLine,
-  annotation: Annotation
-): Boolean {
-  return line.start <= annotation.end && line.end >= annotation.end;
-};
-
+const utils = new AnnotatedLinesUtil(props, state, changes);
 const annotatedLines = utils.annotatedLines;
+
 
 const annotationGutterClasses = function (
   annotation: Annotation,
@@ -201,8 +188,6 @@ const maxAnnotationWeight = function (annotations: Annotation[]) {
     0
   );
 };
-
-
 
 // clear changes on prop update
 // (parent had the change to listen to events)

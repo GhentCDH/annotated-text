@@ -44,7 +44,7 @@ const intersectInterval = (
 };
 
 // Utils class containing logic needed in the AnnotatedText component
-export default class AnnotatedTextUtils {
+export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
   state: Ref<AnnotationActionState>;
   changes: Ref<{}>;
@@ -75,15 +75,6 @@ export default class AnnotatedTextUtils {
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
-    // // upgrade annotations
-    // let annotations: ExtendedAnnotation[];
-    // annotations = this.props.annotations.map(
-    //   (annotation) =>
-    //     ({
-    //       ...ExtendedAnnotationDefaults,
-    //       ...annotation,
-    //     } as ExtendedAnnotation)
-    // );
     let annotations = this.props.annotations;
 
     // flatten annotations in layers &
@@ -174,6 +165,7 @@ export default class AnnotatedTextUtils {
     );
   };
 
+  // give a certain weight to each annotation based on their position
   private calculateAnnotationWeights = function (annotations: Annotation[]) {
     const compareAnnotations = function (a: Annotation, b: Annotation): number {
       return a.start - b.start === 0 ? b.end - a.end : a.start - b.start;
@@ -182,7 +174,7 @@ export default class AnnotatedTextUtils {
     annotations = annotations.sort(compareAnnotations);
 
     const stack = [];
-    annotations.forEach(function (annotation) {
+    annotations.forEach((annotation)=> {
       let weight = 0;
       for (;;) {
         if (!stack?.[weight]) {
@@ -200,10 +192,10 @@ export default class AnnotatedTextUtils {
     });
   };
 
-  private calculateGutterAnnotationWeights = function (annotations: Annotation[]) {
-    //this function is similar to the weights for span annotations but there is one difference
-    //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
-    //character indexes.
+  //this function is similar to the weights for span annotations but there is one difference
+  //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
+  //character indexes.
+  private calculateGutterAnnotationWeights = (annotations: Annotation[]) => {
     const compareAnnotations = function (a: Annotation, b: Annotation): number {
       const aLength = a.end - a.start;
       const bLength = b.end - b.start;
@@ -234,9 +226,10 @@ export default class AnnotatedTextUtils {
     let ranges = this.prepareRanges(this.allAnnotations.value);
 
     // add line ranges
-    this.props.lines.forEach((line) =>
-      ranges.push([line.start, line.end + 1, null] satisfies RangeWithAnnotation)
-    );
+    this.props.lines.forEach((line) => {
+        ranges.push([line.start, line.end + 1, null] satisfies RangeWithAnnotation);
+
+    });
 
     // todo: add token ranges?
     ranges = ranges.sort((a, b) =>
@@ -337,9 +330,8 @@ export default class AnnotatedTextUtils {
     } satisfies AnnotatedLine;
   };
 
-  /**
-   * Map every line to an annotated line
-   */
+
+  // Map every line to an annotated line
   annotatedLines = computed((): AnnotatedLine[] => {
     const lines = this.props.lines.map((line) => this.createAnnotatedLine(line));
     this.props.debug && console.log("** annotated lines **");
