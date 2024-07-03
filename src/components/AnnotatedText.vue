@@ -86,7 +86,7 @@ import type {
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { endsOnLine, startsOnLine } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
+import { CssClassesUtil, endsOnLine, startsOnLine } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 
 // define emits
 const emit = defineEmits<{
@@ -118,80 +118,19 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
 let state = ref<AnnotationActionState>(initActionState());
 let changes = ref({});
 
-const utils = new AnnotatedLinesUtil(props, state, changes);
-const annotatedLines = utils.annotatedLines;
+const linesUtil = new AnnotatedLinesUtil(props, state, changes);
+const annotatedLines = linesUtil.annotatedLines;
 
-
-const annotationGutterClasses = function (
-  annotation: Annotation,
-  line: AnnotatedLine
-): string[] {
-  let classes = [
-    annotation?.class ?? "",
-    props.style.weightClass + (annotation?.weight ?? 0),
-  ];
-  if (startsOnLine(line, annotation)) {
-    classes.push(props.style.startClass);
-  }
-  if (endsOnLine(line, annotation)) {
-    classes.push(props.style.endClass);
-  }
-  return classes;
-};
-
-const annotationClasses = function (
-  annotation: Annotation,
-  start: number,
-  end: number
-): string[] {
-  let classes = [
-    annotation?.class ?? "",
-    props.style.weightClass + (annotation?.weight ?? 0),
-  ];
-  if (annotation?.start === start) {
-    classes.push(props.style.startClass);
-  }
-  if (annotation?.end === end) {
-    classes.push(props.style.endClass);
-  }
-  if (annotation === state.value.annotation) {
-    classes.push(props.style.transitioningClass);
-  }
-  return classes;
-};
-
-const onClickAnnotation = function (annotation: Annotation) {
-  emit("annotation-select", annotation);
-  console.log("emit click-annotation");
-};
+const cssClassUtil = new CssClassesUtil(props, state);
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
 
-const componentClasses = computed((): any[] => {
-  let classes = [
-    "annotated-text",
-    "theme-" + props.theme,
-    "annotated-text--render-" + props.render,
-    state.value.action ? "action--active action--" + state.value.action : null,
-    props.showLabels ? "annotated-text--show-labels" : null,
-  ];
-  return classes.filter((item) => item);
-});
+const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
+const annotationClasses = cssClassUtil.annotationClasses;
+const componentClasses = cssClassUtil.componentClasses;
+const linePartClasses = cssClassUtil.linePartClasses;
 
-const linePartClasses = function (linePart: LinePart): any[] {
-  return [
-    "line-part",
-    "line-part--m" + maxAnnotationWeight(linePart.annotations),
-  ];
-};
-
-const maxAnnotationWeight = function (annotations: Annotation[]) {
-  return annotations.reduce(
-    (ac, annotation) => Math.max(ac, Number(annotation?.weight ?? 0)),
-    0
-  );
-};
 
 // clear changes on prop update
 // (parent had the change to listen to events)
@@ -213,6 +152,11 @@ function initActionState(): AnnotationActionState {
     newStart: null,
   };
 }
+
+const onClickAnnotation = function (annotation: Annotation) {
+  emit("annotation-select", annotation);
+  console.log("emit click-annotation");
+};
 
 function onMouseLeaveHandler(e: MouseEvent) {
   // reset state?
