@@ -1,5 +1,3 @@
-import { AnnotationLayer } from "./AnnotatedText";
-
 export interface Annotation {
   id: number | string;
   start: number;
@@ -8,7 +6,6 @@ export interface Annotation {
   class?: string;
   label?: string;
   target: AnnotationTarget;
-  layer?: AnnotationLayer;
   weight?: number;
   active?: boolean;
   visible?: boolean;

@@ -3,7 +3,6 @@ import {
   AnnotatedTextProps, AnnotatedWord,
   type Annotation,
   AnnotationActionState,
-  type AnnotationLayer,
   type AnnotationTarget,
   type Line,
   type LinePart,
@@ -15,21 +14,6 @@ import { Ref } from "vue";
 import { FlattenRanges } from "etali";
 
 // Some consts needed for the utils class
-const AnnotationLayerDefaults = {
-  weight: null,
-  visible: true,
-  allowEdit: null,
-  allowDelete: null,
-  allowCreate: null,
-};
-
-const ExtendedAnnotationDefaults = {
-  layer: null,
-  weight: null,
-  visible: true,
-  active: false,
-};
-
 const annotationEndOffsetFix = 1;
 
 // caculate interval of an intersection
@@ -63,39 +47,10 @@ export default class AnnotatedLinesUtil {
     this.changes = changes;
   }
 
-  private layers = computed((): AnnotationLayer[] => {
-    this.props.debug && console.log("** refresh layers");
-    console.log(this.props.annotationLayers);
-
-    return this.props.annotationLayers.map(
-      (layer) =>
-        ({
-          AnnotationLayerDefaults,
-          ...layer,
-        } as AnnotationLayer)
-    );
-  });
-
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
     let annotations = this.props.annotations;
-
-    // flatten annotations in layers &
-    // add reference to annotation layer
-    this.layers.value.forEach((layer) => {
-      if (layer.visible) {
-        const layerAnnotations = layer.annotations.map(
-          (annotation) =>
-            ({
-              ...ExtendedAnnotationDefaults,
-              layer: layer,
-              ...annotation,
-            } as Annotation)
-        );
-        annotations = annotations.concat(layerAnnotations);
-      }
-    });
 
     // make sure computed sees dependent this.state properties
     // if not, first execution won't see them because of conditional
@@ -366,10 +321,6 @@ export default class AnnotatedLinesUtil {
     words.forEach((w) => {
       annotatedWords.push(this.createAnnotatedWord(w))
     });
-
-    console.log("-----WORDS-----\n");
-    console.log(annotatedWords);
-
 
     rangesInScope = rangesInScope.map(function (range) {
       range[2] = range[2]

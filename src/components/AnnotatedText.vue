@@ -98,7 +98,6 @@ const emit = defineEmits<{
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   annotations: () => [],
-  annotationLayers: () => [],
   lines: () => [],
   annotationOffset: 0,
   debug: true,

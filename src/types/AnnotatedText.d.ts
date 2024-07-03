@@ -3,7 +3,6 @@ import { Annotation } from "./Annotation";
 export interface AnnotatedTextProps {
   text?: string;
   annotations?: Annotation[];
-  annotationLayers?: AnnotationLayer[];
   lines: Line[];
   annotationOffset?: number;
   debug?: boolean;
@@ -15,14 +14,6 @@ export interface AnnotatedTextProps {
   allowEdit?: boolean;
 }
 
-export interface AnnotationLayer {
-  annotations: Annotation[];
-  visible: boolean;
-  granularity: AnnotationGranularity;
-  allowEdit?: boolean;
-  allowDelete?: boolean;
-  allowCreate?: boolean;
-}
 
 export enum AnnotationGranularity {
   Char = "char",
