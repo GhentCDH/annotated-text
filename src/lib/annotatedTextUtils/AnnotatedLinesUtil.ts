@@ -196,8 +196,8 @@ export default class AnnotatedLinesUtil {
       const words = line.text.split(" ");
       let j = 0;
       words.forEach((w, i) => {
-        let start = line.start + j;
-        let end = i < words.length-1 ? start + w.length + 1 : start + w.length;
+        const start = line.start + j;
+        const end = i < words.length-1 ? start + w.length + 1 : start + w.length;
         ranges.push([start, end + 1, null])
         j += w.length + 1;
       });

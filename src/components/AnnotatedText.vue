@@ -28,7 +28,6 @@
         <span
           v-for="word in line.words"
           :key="word.text"
-          class="word"
         >
           <span
             v-for="linePart in word.parts"
