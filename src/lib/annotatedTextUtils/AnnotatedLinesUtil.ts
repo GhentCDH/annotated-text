@@ -1,10 +1,14 @@
 import {
   type AnnotatedLine,
-  AnnotatedTextProps,
+  AnnotatedTextProps, AnnotatedWord,
   type Annotation,
   AnnotationActionState,
-  type AnnotationLayer, type AnnotationTarget, type Line, type LinePart,
-  RangeWithAnnotation, RangeWithAnnotations
+  type AnnotationLayer,
+  type AnnotationTarget,
+  type Line,
+  type LinePart,
+  RangeWithAnnotation,
+  RangeWithAnnotations, Word
 } from "@/types";
 import { computed } from "vue-demi";
 import { Ref } from "vue";
@@ -174,7 +178,7 @@ export default class AnnotatedLinesUtil {
     annotations = annotations.sort(compareAnnotations);
 
     const stack = [];
-    annotations.forEach((annotation)=> {
+    annotations.forEach((annotation) => {
       let weight = 0;
       for (;;) {
         if (!stack?.[weight]) {
@@ -227,8 +231,21 @@ export default class AnnotatedLinesUtil {
 
     // add line ranges
     this.props.lines.forEach((line) => {
-        ranges.push([line.start, line.end + 1, null] satisfies RangeWithAnnotation);
+      ranges.push([
+        line.start,
+        line.end + 1,
+        null,
+      ]);
 
+      // Add words to ranges, trailing space is considered part of word.
+      const words = line.text.split(" ");
+      let j = 0;
+      words.forEach((w, i) => {
+        let start = line.start + j;
+        let end = i < words.length-1 ? start + w.length + 1 : start + w.length;
+        ranges.push([start, end + 1, null])
+        j += w.length + 1;
+      });
     });
 
     // todo: add token ranges?
@@ -247,6 +264,44 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log(flattenedRanges);
     return flattenedRanges;
   });
+
+  private createAnnotatedWord = (word: Word): AnnotatedWord => {
+    let rangesInScope: RangeWithAnnotations[] =
+      this.flattenedRanges.value.filter((range: RangeWithAnnotations) =>
+        intersectInterval([range[0], range[1] - 1], [word.start, word.end])
+      );
+
+    rangesInScope = rangesInScope.map(function (range) {
+      range[2] = range[2]
+        .filter((annotation) => annotation)
+        .filter((annotation) => annotation?.target === "span")
+        .sort((a, b) => (Number(a?.start) > Number(b?.start) ? 1 : -1));
+      return range;
+    });
+
+    this.props.debug && console.log("** ranges in scope **");
+    this.props.debug && console.log(rangesInScope);
+
+    const lineParts: LinePart[] = rangesInScope.map((range: RangeWithAnnotations) => {
+      return {
+        start: range[0],
+        end: range[1] - 1,
+        text:
+          typeof word.text === "string"
+            ? word.text.substring(range[0] - word.start, range[1] - word.start)
+            : "",
+        annotations: range[2],
+      } satisfies LinePart;
+    });
+
+    return {
+      start: word.start,
+      end: word.end,
+      text: word.text,
+      parts: lineParts,
+    }
+
+  }
 
   private createAnnotatedLine = (line: Line): AnnotatedLine => {
     let lineGutterAnnotations = [];
@@ -294,6 +349,28 @@ export default class AnnotatedLinesUtil {
     );
 
     // sort the annotations in each range by their start position
+
+    let words: Word[] = [];
+    let j = 0;
+    const wordSplit = line.text.split(" ");
+    wordSplit.forEach((w, i) => {
+      words.push({
+        start: line.start + j,
+        end: i < wordSplit.length - 1 ? line.start + j + w.length + 1 : line.start + j + w.length,
+        text: i < wordSplit.length - 1 ? w + " " : w,
+      });
+      j += i < wordSplit.length - 1 ? w.length + 1 : w.length;
+    });
+
+    let annotatedWords: AnnotatedWord[] = []
+    words.forEach((w) => {
+      annotatedWords.push(this.createAnnotatedWord(w))
+    });
+
+    console.log("-----WORDS-----\n");
+    console.log(annotatedWords);
+
+
     rangesInScope = rangesInScope.map(function (range) {
       range[2] = range[2]
         .filter((annotation) => annotation)
@@ -323,6 +400,7 @@ export default class AnnotatedLinesUtil {
       start: line.start,
       end: line.end,
       parts: lineParts,
+      words: annotatedWords,
       gutter: {
         text: line.gutter,
         annotations: lineGutterAnnotations,
@@ -330,10 +408,11 @@ export default class AnnotatedLinesUtil {
     } satisfies AnnotatedLine;
   };
 
-
   // Map every line to an annotated line
   annotatedLines = computed((): AnnotatedLine[] => {
-    const lines = this.props.lines.map((line) => this.createAnnotatedLine(line));
+    const lines = this.props.lines.map((line) =>
+      this.createAnnotatedLine(line)
+    );
     this.props.debug && console.log("** annotated lines **");
     this.props.debug && console.log(lines);
     return lines;

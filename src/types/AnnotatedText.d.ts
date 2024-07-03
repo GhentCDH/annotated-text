@@ -62,7 +62,7 @@ export interface Paragraph {
 }
 
 export interface Line {
-  text: string | Token[];
+  text: string;
   start: number;
   end: number;
   gutter?: string;
@@ -84,10 +84,24 @@ interface LinePart {
   annotations: Annotation[];
 }
 
+interface Word {
+  start: number;
+  end: number;
+  text: string;
+}
+
+interface AnnotatedWord {
+  start: number;
+  end: number;
+  text: string;
+  parts: LinePart[];
+}
+
 interface AnnotatedLine {
   start: number;
   end: number;
-  parts: LinePart[];
+  parts?: LinePart[];
+  words?: AnnotatedWord[];
   gutter?: {
     text: string;
     annotations: Annotation[];

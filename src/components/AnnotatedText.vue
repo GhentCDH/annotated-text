@@ -26,42 +26,49 @@
 
       <div class="content">
         <span
-          v-for="linePart in line.parts"
-          :key="linePart.text"
-          :class="linePartClasses(linePart)"
-          :data-start="linePart.start"
-          :data-end="linePart.end"
-          @mousemove="onMouseEnterLinePartHandler(linePart)($event)"
+          v-for="word in line.words"
+          :key="word.text"
+          class="word"
         >
-          <template v-if="renderFlat">
-            <span class="text">{{ linePart.text }}</span>
-            <span
-              v-for="annotation in linePart.annotations"
-              :key="annotation.id"
-              :class="
-                annotationClasses(annotation, linePart.start, linePart.end)
-              "
-              @click="onClickAnnotation(annotation)"
-            >
-              <label v-if="annotation.label">{{ annotation.label }}</label>
-            </span>
-          </template>
-          <template v-if="renderNested">
-            <RecursiveAnnotatedTokenPartText
-              v-if="linePart.annotations.length"
-              :text="linePart.text"
-              :start="linePart.start"
-              :end="linePart.end"
-              :annotations="
-                linePart.annotations.sort((a, b) => b.weight - a.weight)
-              "
-              :annotation-class-handler="annotationClasses"
-              :annotation-click-handler="onClickAnnotation"
-              :annotation-action-handler="onAnnotationStartHandler"
-            />
-            <span v-else class="text">{{ linePart.text }}</span>
-          </template>
+          <span
+            v-for="linePart in word.parts"
+            :key="linePart.text"
+            :class="linePartClasses(linePart)"
+            :data-start="linePart.start"
+            :data-end="linePart.end"
+            @mousemove="onMouseEnterLinePartHandler(linePart)($event)"
+          >
+            <template v-if="renderFlat">
+              <span class="text">{{ linePart.text }}</span>
+              <span
+                v-for="annotation in linePart.annotations"
+                :key="annotation.id"
+                :class="
+                  annotationClasses(annotation, linePart.start, linePart.end)
+                "
+                @click="onClickAnnotation(annotation)"
+              >
+                <label v-if="annotation.label">{{ annotation.label }}</label>
+              </span>
+            </template>
+            <template v-if="renderNested">
+              <RecursiveAnnotatedTokenPartText
+                v-if="linePart.annotations.length"
+                :text="linePart.text"
+                :start="linePart.start"
+                :end="linePart.end"
+                :annotations="
+                  linePart.annotations.sort((a, b) => b.weight - a.weight)
+                "
+                :annotation-class-handler="annotationClasses"
+                :annotation-click-handler="onClickAnnotation"
+                :annotation-action-handler="onAnnotationStartHandler"
+              />
+              <span v-else class="text">{{ linePart.text }}</span>
+            </template>
+          </span>
         </span>
+
       </div>
     </template>
   </div>
