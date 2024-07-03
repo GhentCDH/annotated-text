@@ -1,13 +1,15 @@
 import {
   type AnnotatedLine,
-  AnnotatedTextProps, AnnotatedWord,
+  AnnotatedTextProps,
+  AnnotatedWord,
   type Annotation,
   AnnotationActionState,
   type AnnotationTarget,
   type Line,
   type LinePart,
   RangeWithAnnotation,
-  RangeWithAnnotations, Word
+  RangeWithAnnotations,
+  Word,
 } from "@/types";
 import { computed } from "vue-demi";
 import { Ref } from "vue";
@@ -186,19 +188,16 @@ export default class AnnotatedLinesUtil {
 
     // add line ranges
     this.props.lines.forEach((line) => {
-      ranges.push([
-        line.start,
-        line.end + 1,
-        null,
-      ]);
+      ranges.push([line.start, line.end + 1, null]);
 
       // Add words to ranges, trailing space is considered part of word.
       const words = line.text.split(" ");
       let j = 0;
       words.forEach((w, i) => {
         const start = line.start + j;
-        const end = i < words.length-1 ? start + w.length + 1 : start + w.length;
-        ranges.push([start, end + 1, null])
+        const end =
+          i < words.length - 1 ? start + w.length + 1 : start + w.length;
+        ranges.push([start, end + 1, null]);
         j += w.length + 1;
       });
     });
@@ -237,32 +236,36 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log("** ranges in scope **");
     this.props.debug && console.log(rangesInScope);
 
-    const lineParts: LinePart[] = rangesInScope.map((range: RangeWithAnnotations) => {
-      return {
-        start: range[0],
-        end: range[1] - 1,
-        text:
-          typeof word.text === "string"
-            ? word.text.substring(range[0] - word.start, range[1] - word.start)
-            : "",
-        annotations: range[2],
-      } satisfies LinePart;
-    });
+    const lineParts: LinePart[] = rangesInScope.map(
+      (range: RangeWithAnnotations) => {
+        return {
+          start: range[0],
+          end: range[1] - 1,
+          text:
+            typeof word.text === "string"
+              ? word.text.substring(
+                  range[0] - word.start,
+                  range[1] - word.start
+                )
+              : "",
+          annotations: range[2],
+        } satisfies LinePart;
+      }
+    );
 
     return {
       start: word.start,
       end: word.end,
       text: word.text,
       parts: lineParts,
-    }
-
-  }
+    };
+  };
 
   private createAnnotatedLine = (line: Line): AnnotatedLine => {
     let lineGutterAnnotations = [];
 
     // get all flattened ranges for this line
-    let rangesInScope: RangeWithAnnotations[] =
+    const rangesInScope: RangeWithAnnotations[] =
       this.flattenedRanges.value.filter((range: RangeWithAnnotations) =>
         intersectInterval([range[0], range[1] - 1], [line.start, line.end])
       );
@@ -305,21 +308,24 @@ export default class AnnotatedLinesUtil {
 
     // sort the annotations in each range by their start position
 
-    let words: Word[] = [];
+    const words: Word[] = [];
     let j = 0;
     const wordSplit = line.text.split(" ");
     wordSplit.forEach((w, i) => {
       words.push({
         start: line.start + j,
-        end: i < wordSplit.length - 1 ? line.start + j + w.length + 1 : line.start + j + w.length,
+        end:
+          i < wordSplit.length - 1
+            ? line.start + j + w.length + 1
+            : line.start + j + w.length,
         text: i < wordSplit.length - 1 ? w + " " : w,
       });
       j += i < wordSplit.length - 1 ? w.length + 1 : w.length;
     });
 
-    let annotatedWords: AnnotatedWord[] = [];
+    const annotatedWords: AnnotatedWord[] = [];
     words.forEach((w) => {
-      annotatedWords.push(this.createAnnotatedWord(w))
+      annotatedWords.push(this.createAnnotatedWord(w));
     });
 
     return {

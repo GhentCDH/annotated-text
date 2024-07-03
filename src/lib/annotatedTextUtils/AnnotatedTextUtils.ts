@@ -17,24 +17,23 @@ export const endsOnLine = function (
   return line.start <= annotation.end && line.end >= annotation.end;
 };
 
-export class CssClassesUtil{
+export class CssClassesUtil {
   props: AnnotatedTextProps;
   state: Ref<AnnotationActionState>;
 
-  constructor(
-    props: AnnotatedTextProps,
-    state: Ref<AnnotationActionState>
-  ) {
+  constructor(props: AnnotatedTextProps, state: Ref<AnnotationActionState>) {
     this.props = props;
     this.state = state;
   }
 
   componentClasses = computed((): any[] => {
-    let classes = [
+    const classes = [
       "annotated-text",
       "theme-" + this.props.theme,
       "annotated-text--render-" + this.props.render,
-      this.state.value.action ? "action--active action--" + this.state.value.action : null,
+      this.state.value.action
+        ? "action--active action--" + this.state.value.action
+        : null,
       this.props.showLabels ? "annotated-text--show-labels" : null,
     ];
     return classes.filter((item) => item);
@@ -51,7 +50,7 @@ export class CssClassesUtil{
     annotation: Annotation,
     line: AnnotatedLine
   ): string[] => {
-    let classes = [
+    const classes = [
       annotation?.class ?? "",
       this.props.style.weightClass + (annotation?.weight ?? 0),
     ];
@@ -69,7 +68,7 @@ export class CssClassesUtil{
     start: number,
     end: number
   ): string[] => {
-    let classes = [
+    const classes = [
       annotation?.class ?? "",
       this.props.style.weightClass + (annotation?.weight ?? 0),
     ];
@@ -91,5 +90,4 @@ export class CssClassesUtil{
       0
     );
   };
-
 }
