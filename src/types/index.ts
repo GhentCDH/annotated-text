@@ -12,9 +12,3 @@ export type {
   AnnotatedWord,
 } from "./AnnotatedText";
 export type { Annotation, AnnotationTarget } from "./Annotation";
-
-export type {
-  AnnotatedTextProps,
-  RecursiveAnnotatedTokenPartTextProps,
-  AnnotatedLineProps,
-} from "./Props";

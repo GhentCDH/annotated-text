@@ -31,9 +31,26 @@
 
 <script setup lang="ts">
 import { caretPositionFromPoint } from "@/lib/DomUtils";
-import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
+import { Annotation, AnnotationActionPayload } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
+
+interface RecursiveAnnotatedTokenPartTextProps {
+  text: string;
+  start: number;
+  end: number;
+  annotations?: Annotation[];
+  annotationClassHandler?: (
+    annotation: Annotation,
+    start: number,
+    end: number
+  ) => string[];
+  annotationClickHandler: (annotation: Annotation) => void;
+  annotationActionHandler: (
+    mouseEvent: MouseEvent,
+    payload: AnnotationActionPayload
+  ) => void;
+}
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),

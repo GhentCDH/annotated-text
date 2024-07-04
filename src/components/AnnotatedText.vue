@@ -41,24 +41,31 @@
 
 <script setup lang="ts">
 import { computed, defineEmits, ref, watch } from "vue-demi";
-import type {
-  AnnotatedTextProps,
+import {
   Annotation,
   AnnotationActionPayload,
-  AnnotationActionState,
-  WordPart,
+  AnnotationActionState, AnnotationStyle, Line,
+  WordPart
 } from "@/types";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
-import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
+import { RenderType } from "@/types/AnnotatedText";
 
-// define emits
-const emit = defineEmits<{
-  "annotation-select": [annotation: Annotation];
-  "annotation-moved": [annotation: Annotation, state: AnnotationActionState];
-}>();
+interface AnnotatedTextProps {
+  text?: string;
+  annotations?: Annotation[];
+  lines: Line[];
+  annotationOffset?: number;
+  debug?: boolean;
+  theme?: string;
+  render?: RenderType;
+  showLabels?: boolean;
+  autoAnnotationWeights?: boolean;
+  style?: AnnotationStyle;
+  allowEdit?: boolean;
+}
 
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -79,6 +86,12 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
     transitioningClass: "annotation--transitioning",
   }),
 });
+
+// define emits
+const emit = defineEmits<{
+  "annotation-select": [annotation: Annotation];
+  "annotation-moved": [annotation: Annotation, state: AnnotationActionState];
+}>();
 
 // state & changes
 let state = ref<AnnotationActionState>(initActionState());
