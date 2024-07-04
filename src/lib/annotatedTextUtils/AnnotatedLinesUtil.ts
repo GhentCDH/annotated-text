@@ -6,7 +6,7 @@ import {
   AnnotationActionState,
   type AnnotationTarget,
   type Line,
-  type LinePart,
+  type WordPart,
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
@@ -236,7 +236,7 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log("** ranges in scope **");
     this.props.debug && console.log(rangesInScope);
 
-    const lineParts: LinePart[] = rangesInScope.map(
+    const lineParts: WordPart[] = rangesInScope.map(
       (range: RangeWithAnnotations) => {
         return {
           start: range[0],
@@ -249,7 +249,7 @@ export default class AnnotatedLinesUtil {
                 )
               : "",
           annotations: range[2],
-        } satisfies LinePart;
+        } satisfies WordPart;
       }
     );
 

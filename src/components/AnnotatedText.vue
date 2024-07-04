@@ -30,20 +30,20 @@
           :key="word.text"
         >
           <span
-            v-for="linePart in word.parts"
-            :key="linePart.text"
-            :class="linePartClasses(linePart)"
-            :data-start="linePart.start"
-            :data-end="linePart.end"
-            @mousemove="onMouseEnterLinePartHandler(linePart)($event)"
+            v-for="wordPart in word.parts"
+            :key="wordPart.text"
+            :class="linePartClasses(wordPart)"
+            :data-start="wordPart.start"
+            :data-end="wordPart.end"
+            @mousemove="onMouseEnterLinePartHandler(wordPart)($event)"
           >
             <template v-if="renderFlat">
-              <span class="text">{{ linePart.text }}</span>
+              <span class="text">{{ wordPart.text }}</span>
               <span
-                v-for="annotation in linePart.annotations"
+                v-for="annotation in wordPart.annotations"
                 :key="annotation.id"
                 :class="
-                  annotationClasses(annotation, linePart.start, linePart.end)
+                  annotationClasses(annotation, wordPart.start, wordPart.end)
                 "
                 @click="onClickAnnotation(annotation)"
               >
@@ -52,18 +52,18 @@
             </template>
             <template v-if="renderNested">
               <RecursiveAnnotatedTokenPartText
-                v-if="linePart.annotations.length"
-                :text="linePart.text"
-                :start="linePart.start"
-                :end="linePart.end"
+                v-if="wordPart.annotations.length"
+                :text="wordPart.text"
+                :start="wordPart.start"
+                :end="wordPart.end"
                 :annotations="
-                  linePart.annotations.sort((a, b) => b.weight - a.weight)
+                  wordPart.annotations.sort((a, b) => b.weight - a.weight)
                 "
                 :annotation-class-handler="annotationClasses"
                 :annotation-click-handler="onClickAnnotation"
                 :annotation-action-handler="onAnnotationStartHandler"
               />
-              <span v-else class="text">{{ linePart.text }}</span>
+              <span v-else class="text">{{ wordPart.text }}</span>
             </template>
           </span>
         </span>
@@ -75,17 +75,16 @@
 <script setup lang="ts">
 import { computed, defineEmits, ref, watch } from "vue-demi";
 import type {
-  AnnotatedLine,
   AnnotatedTextProps,
   Annotation,
   AnnotationActionPayload,
   AnnotationActionState,
-  LinePart
+  WordPart
 } from "@/types";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { CssClassesUtil, endsOnLine, startsOnLine } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
+import { CssClassesUtil} from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 
 // define emits
 const emit = defineEmits<{
@@ -168,6 +167,7 @@ function onMouseLeaveHandler(e: MouseEvent) {
 function onMouseUpHandler(e: MouseEvent) {
   // reset state?
   if (state.value.action) {
+    console.log("EMIT");
     emit(
       "annotation-moved",
       JSON.parse(JSON.stringify(state.value.annotation)),
@@ -192,7 +192,7 @@ function onAnnotationStartHandler(
   };
 }
 
-const onMouseEnterLinePartHandler = (linePart: LinePart) => {
+const onMouseEnterLinePartHandler = (linePart: WordPart) => {
   return function (e: MouseEvent) {
     let position = caretPositionFromPoint(e.x, e.y);
     if (position) {

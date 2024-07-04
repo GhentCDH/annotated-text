@@ -6,7 +6,7 @@ export type {
   RangeWithAnnotation,
   RangeWithAnnotations,
   AnnotatedLine,
-  LinePart,
+  WordPart,
   AnnotationStyle,
   AnnotationActionPayload,
   AnnotationActionState,

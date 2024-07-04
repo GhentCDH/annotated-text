@@ -1,4 +1,4 @@
-import type { AnnotatedLine, Annotation, LinePart } from "@/types";
+import type { AnnotatedLine, Annotation, WordPart } from "@/types";
 import { AnnotatedTextProps, AnnotationActionState } from "@/types";
 import { Ref } from "vue";
 import { computed } from "vue-demi";
@@ -39,7 +39,7 @@ export class CssClassesUtil {
     return classes.filter((item) => item);
   });
 
-  linePartClasses = (linePart: LinePart): any[] => {
+  linePartClasses = (linePart: WordPart): any[] => {
     return [
       "line-part",
       "line-part--m" + this.maxAnnotationWeight(linePart.annotations),

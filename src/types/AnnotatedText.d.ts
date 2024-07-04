@@ -68,7 +68,7 @@ export interface Text {
   paragraphs: Paragraph[];
 }
 
-interface LinePart {
+interface WordPart {
   start: number;
   end: number;
   text: string;
@@ -85,13 +85,13 @@ interface AnnotatedWord {
   start: number;
   end: number;
   text: string;
-  parts: LinePart[];
+  parts: WordPart[];
 }
 
 interface AnnotatedLine {
   start: number;
   end: number;
-  parts?: LinePart[];
+  parts?: WordPart[];
   words?: AnnotatedWord[];
   gutter?: {
     text: string;
