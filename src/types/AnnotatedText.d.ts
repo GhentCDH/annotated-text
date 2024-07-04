@@ -14,6 +14,16 @@ export interface AnnotatedTextProps {
   allowEdit?: boolean;
 }
 
+export interface RecursiveAnnotatedTokenPartTextProps {
+  text: string;
+  start: number;
+  end: number;
+  annotations?: Annotation[];
+  annotationClassHandler?: (annotation: Annotation, start: number, end: number) => string[];
+  annotationClickHandler: (annotation: Annotation) => void;
+  annotationActionHandler: (mouseEvent: MouseEvent, payload: AnnotationActionPayload) => void;
+}
+
 
 export enum AnnotationGranularity {
   Char = "char",
@@ -31,10 +41,12 @@ export interface AnnotationStyle {
 }
 
 export interface AnnotationActionPayload {
-  action: "moveStart" | "moveEnd" | "move";
+  action: ActionType;
   annotation?: Annotation;
   handlePosition?: string;
 }
+
+export type ActionType = "moveStart" | "moveEnd" | "move";
 
 export interface AnnotationActionState extends AnnotationActionPayload {
   origStart?: number;
@@ -59,11 +71,6 @@ export interface Line {
   gutter?: string;
 }
 
-export interface Token {
-  text: string;
-  start: number;
-  end: number;
-}
 export interface Text {
   paragraphs: Paragraph[];
 }

@@ -29,60 +29,31 @@
   <span v-else class="text">{{ text }}</span>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { caretPositionFromPoint } from "@/lib/DomUtils";
-import { Annotation } from "@/types";
+import {RecursiveAnnotatedTokenPartTextProps } from "@/types";
+import { computed } from "vue-demi";
+import { ActionType } from "@/types/AnnotatedText";
 
-export default {
-  name: "RecursiveAnnotatedTokenPartText",
-  props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    start: {
-      type: Number,
-      required: true,
-    },
-    end: {
-      type: Number,
-      required: true,
-    },
-    annotations: {
-      type: Array,
-      default: () => [],
-      required: false,
-    },
-    annotationClassHandler: {
-      type: Function,
-      default: () => {},
-      required: false,
-    },
-    annotationClickHandler: {
-      type: Function,
-      required: true,
-    },
-    annotationActionHandler: {
-      type: Function,
-      required: true,
-    },
-  },
-  computed: {
-    annotation(): Annotation {
-      return this.annotations[0];
-    },
-  },
-  methods: {
-    onActionStart(e: MouseEvent, action) {
-      const position = caretPositionFromPoint(e.x, e.y);
-      this.annotationActionHandler(e, {
-        annotation: this.annotation,
-        action: action,
-        handlePosition: this.annotation.start + position.offset,
-      });
-    },
-  },
-};
+const props = withDefaults(defineProps<RecursiveAnnotatedTokenPartTextProps>(), {
+  annotations: () => [],
+  annotationClassHandler: () => [],
+});
+
+const annotation = computed(() => props.annotations[0]);
+
+const annotationClickHandler = props.annotationClickHandler;
+const annotationClassHandler =  props.annotationClassHandler;
+const annotationActionHandler = props.annotationActionHandler;
+
+function onActionStart(e: MouseEvent, action: ActionType){
+  const position = caretPositionFromPoint(e.x, e.y);
+  this.annotationActionHandler(e, {
+    annotation: this.annotation,
+    action: action,
+    handlePosition: this.annotation.start + position.offset,
+  });
+}
 </script>
 
 <style scoped lang="scss"></style>

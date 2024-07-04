@@ -25,10 +25,7 @@
       </div>
 
       <div class="content">
-        <span
-          v-for="word in line.words"
-          :key="word.text"
-        >
+        <span v-for="word in line.words" :key="word.text">
           <span
             v-for="wordPart in word.parts"
             :key="wordPart.text"
@@ -79,12 +76,12 @@ import type {
   Annotation,
   AnnotationActionPayload,
   AnnotationActionState,
-  WordPart
+  WordPart,
 } from "@/types";
-import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { CssClassesUtil} from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
+import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
+import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 
 // define emits
 const emit = defineEmits<{
@@ -128,7 +125,6 @@ const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
 const linePartClasses = cssClassUtil.linePartClasses;
-
 
 // clear changes on prop update
 // (parent had the change to listen to events)

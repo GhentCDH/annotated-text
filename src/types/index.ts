@@ -1,6 +1,6 @@
 export type {
   AnnotatedTextProps,
-  Token,
+  RecursiveAnnotatedTokenPartTextProps,
   Line,
   Paragraph,
   RangeWithAnnotation,
@@ -11,6 +11,6 @@ export type {
   AnnotationActionPayload,
   AnnotationActionState,
   Word,
-  AnnotatedWord
+  AnnotatedWord,
 } from "./AnnotatedText";
 export type { Annotation, AnnotationTarget} from "./Annotation";

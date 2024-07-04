@@ -306,7 +306,6 @@ export default class AnnotatedLinesUtil {
       Number(a?.weight) < Number(b?.weight) ? -1 : 1
     );
 
-    // sort the annotations in each range by their start position
 
     const words: Word[] = [];
     let j = 0;
@@ -314,10 +313,7 @@ export default class AnnotatedLinesUtil {
     wordSplit.forEach((w, i) => {
       words.push({
         start: line.start + j,
-        end:
-          i < wordSplit.length - 1
-            ? line.start + j + w.length + 1
-            : line.start + j + w.length,
+        end: line.start + j + w.length,
         text: i < wordSplit.length - 1 ? w + " " : w,
       });
       j += i < wordSplit.length - 1 ? w.length + 1 : w.length;
@@ -327,6 +323,7 @@ export default class AnnotatedLinesUtil {
     words.forEach((w) => {
       annotatedWords.push(this.createAnnotatedWord(w));
     });
+    // console.log("-----WORDS-----\n", annotatedWords);
 
     return {
       start: line.start,
