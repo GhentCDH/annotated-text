@@ -1,30 +1,5 @@
 import { Annotation } from "./Annotation";
 
-export interface AnnotatedTextProps {
-  text?: string;
-  annotations?: Annotation[];
-  lines: Line[];
-  annotationOffset?: number;
-  debug?: boolean;
-  theme?: string;
-  render?: RenderType;
-  showLabels?: boolean;
-  autoAnnotationWeights?: boolean;
-  style?: AnnotationStyle;
-  allowEdit?: boolean;
-}
-
-export interface RecursiveAnnotatedTokenPartTextProps {
-  text: string;
-  start: number;
-  end: number;
-  annotations?: Annotation[];
-  annotationClassHandler?: (annotation: Annotation, start: number, end: number) => string[];
-  annotationClickHandler: (annotation: Annotation) => void;
-  annotationActionHandler: (mouseEvent: MouseEvent, payload: AnnotationActionPayload) => void;
-}
-
-
 export enum AnnotationGranularity {
   Char = "char",
   SingleToken = "single_token",

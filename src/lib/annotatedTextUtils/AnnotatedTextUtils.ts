@@ -39,10 +39,10 @@ export class CssClassesUtil {
     return classes.filter((item) => item);
   });
 
-  linePartClasses = (linePart: WordPart): any[] => {
+  wordPartClasses = (wordPart: WordPart): string[] => {
     return [
       "line-part",
-      "line-part--m" + this.maxAnnotationWeight(linePart.annotations),
+      "line-part--m" + this.maxAnnotationWeight(wordPart.annotations),
     ];
   };
 

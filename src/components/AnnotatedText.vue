@@ -25,45 +25,15 @@
       </div>
 
       <div class="content">
-        <span v-for="word in line.words" :key="word.text">
-          <span
-            v-for="wordPart in word.parts"
-            :key="wordPart.text"
-            :class="linePartClasses(wordPart)"
-            :data-start="wordPart.start"
-            :data-end="wordPart.end"
-            @mousemove="onMouseEnterLinePartHandler(wordPart)($event)"
-          >
-            <template v-if="renderFlat">
-              <span class="text">{{ wordPart.text }}</span>
-              <span
-                v-for="annotation in wordPart.annotations"
-                :key="annotation.id"
-                :class="
-                  annotationClasses(annotation, wordPart.start, wordPart.end)
-                "
-                @click="onClickAnnotation(annotation)"
-              >
-                <label v-if="annotation.label">{{ annotation.label }}</label>
-              </span>
-            </template>
-            <template v-if="renderNested">
-              <RecursiveAnnotatedTokenPartText
-                v-if="wordPart.annotations.length"
-                :text="wordPart.text"
-                :start="wordPart.start"
-                :end="wordPart.end"
-                :annotations="
-                  wordPart.annotations.sort((a, b) => b.weight - a.weight)
-                "
-                :annotation-class-handler="annotationClasses"
-                :annotation-click-handler="onClickAnnotation"
-                :annotation-action-handler="onAnnotationStartHandler"
-              />
-              <span v-else class="text">{{ wordPart.text }}</span>
-            </template>
-          </span>
-        </span>
+        <AnnotatedLine
+          :on-click-annotation="onClickAnnotation"
+          :line="line"
+          :on-annotation-start-handler="onAnnotationStartHandler"
+          :on-mouse-enter-line-part-handler="onMouseEnterLinePartHandler"
+          :annotationClasses="annotationClasses"
+          :wordPartClasses="wordPartClasses"
+          :render="render"
+        />
       </div>
     </template>
   </div>
@@ -82,6 +52,7 @@ import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
+import AnnotatedLine from "@/components/AnnotatedLine.vue";
 
 // define emits
 const emit = defineEmits<{
@@ -124,7 +95,7 @@ const renderFlat = computed(() => props.render === "flat");
 const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
-const linePartClasses = cssClassUtil.linePartClasses;
+const wordPartClasses = cssClassUtil.wordPartClasses;
 
 // clear changes on prop update
 // (parent had the change to listen to events)
@@ -188,45 +159,43 @@ function onAnnotationStartHandler(
   };
 }
 
-const onMouseEnterLinePartHandler = (linePart: WordPart) => {
-  return function (e: MouseEvent) {
-    let position = caretPositionFromPoint(e.x, e.y);
-    if (position) {
-      // console.log(linePart.start + position.offset);
-      // console.log(state.annotation);
-      if (state.value.annotation) {
-        const newPosition = linePart.start + position.offset;
-        const offset = newPosition - state.value.handlePosition;
-        switch (state.value.action) {
-          case "moveEnd":
-            if (newPosition >= state.value.annotation.start) {
-              state.value.newEnd = newPosition;
-              changes.value[state.value.annotation.id] = {
-                start: state.value.newStart,
-                end: state.value.newEnd,
-              };
-            }
-            break;
-          case "moveStart":
-            if (newPosition <= state.value.annotation.end) {
-              state.value.newStart = newPosition;
-              changes.value[state.value.annotation.id] = {
-                start: state.value.newStart,
-                end: state.value.newEnd,
-              };
-            }
-            break;
-          case "move":
-            state.value.newStart = state.value.origStart + offset;
-            state.value.newEnd = state.value.origEnd + offset;
+const onMouseEnterLinePartHandler = (wordPart: WordPart, e: MouseEvent) => {
+  let position = caretPositionFromPoint(e.x, e.y);
+  if (position) {
+    // console.log(wordPart.start + position.offset);
+    // console.log(state.annotation);
+    if (state.value.annotation) {
+      const newPosition = wordPart.start + position.offset;
+      const offset = newPosition - state.value.handlePosition;
+      switch (state.value.action) {
+        case "moveEnd":
+          if (newPosition >= state.value.annotation.start) {
+            state.value.newEnd = newPosition;
             changes.value[state.value.annotation.id] = {
               start: state.value.newStart,
               end: state.value.newEnd,
             };
-            break;
-        }
+          }
+          break;
+        case "moveStart":
+          if (newPosition <= state.value.annotation.end) {
+            state.value.newStart = newPosition;
+            changes.value[state.value.annotation.id] = {
+              start: state.value.newStart,
+              end: state.value.newEnd,
+            };
+          }
+          break;
+        case "move":
+          state.value.newStart = state.value.origStart + offset;
+          state.value.newEnd = state.value.origEnd + offset;
+          changes.value[state.value.annotation.id] = {
+            start: state.value.newStart,
+            end: state.value.newEnd,
+          };
+          break;
       }
     }
-  };
+  }
 };
 </script>

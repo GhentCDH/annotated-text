@@ -236,7 +236,7 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log("** ranges in scope **");
     this.props.debug && console.log(rangesInScope);
 
-    const lineParts: WordPart[] = rangesInScope.map(
+    const wordParts: WordPart[] = rangesInScope.map(
       (range: RangeWithAnnotations) => {
         return {
           start: range[0],
@@ -257,7 +257,7 @@ export default class AnnotatedLinesUtil {
       start: word.start,
       end: word.end,
       text: word.text,
-      parts: lineParts,
+      parts: wordParts,
     };
   };
 
@@ -323,7 +323,6 @@ export default class AnnotatedLinesUtil {
     words.forEach((w) => {
       annotatedWords.push(this.createAnnotatedWord(w));
     });
-    // console.log("-----WORDS-----\n", annotatedWords);
 
     return {
       start: line.start,

@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { caretPositionFromPoint } from "@/lib/DomUtils";
-import {RecursiveAnnotatedTokenPartTextProps } from "@/types";
+import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
 
