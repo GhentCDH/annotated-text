@@ -1,6 +1,5 @@
 import {
   type AnnotatedLine,
-  AnnotatedTextProps,
   AnnotatedWord,
   type Annotation,
   AnnotationActionState,
@@ -14,6 +13,7 @@ import {
 import { computed } from "vue-demi";
 import { Ref } from "vue";
 import { FlattenRanges } from "etali";
+import { AnnotatedTextProps } from "@/components/AnnotatedText.vue";
 
 // Some consts needed for the utils class
 const annotationEndOffsetFix = 1;

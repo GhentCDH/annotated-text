@@ -40,11 +40,16 @@
 
 <script setup lang="ts">
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
-import { AnnotatedLine, Annotation, AnnotationActionPayload, WordPart } from "@/types";
+import {
+  AnnotatedLine,
+  Annotation,
+  AnnotationActionPayload,
+  WordPart,
+} from "@/types";
 import { computed } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 
-interface AnnotatedLineProps {
+export interface AnnotatedLineProps {
   line: AnnotatedLine;
   wordPartClasses?: (wordPart: WordPart) => any[];
   render?: RenderType;

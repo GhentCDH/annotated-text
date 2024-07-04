@@ -44,8 +44,10 @@ import { computed, defineEmits, ref, watch } from "vue-demi";
 import {
   Annotation,
   AnnotationActionPayload,
-  AnnotationActionState, AnnotationStyle, Line,
-  WordPart
+  AnnotationActionState,
+  AnnotationStyle,
+  Line,
+  WordPart,
 } from "@/types";
 import { caretPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
@@ -53,7 +55,7 @@ import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
 import { RenderType } from "@/types/AnnotatedText";
 
-interface AnnotatedTextProps {
+export interface AnnotatedTextProps {
   text?: string;
   annotations?: Annotation[];
   lines: Line[];
@@ -101,9 +103,6 @@ const linesUtil = new AnnotatedLinesUtil(props, state, changes);
 const annotatedLines = linesUtil.annotatedLines;
 
 const cssClassUtil = new CssClassesUtil(props, state);
-
-const renderNested = computed(() => props.render === "nested");
-const renderFlat = computed(() => props.render === "flat");
 
 const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
