@@ -306,7 +306,6 @@ export default class AnnotatedLinesUtil {
       Number(a?.weight) < Number(b?.weight) ? -1 : 1
     );
 
-
     const words: Word[] = [];
     let j = 0;
     const wordSplit = line.text.split(" ");

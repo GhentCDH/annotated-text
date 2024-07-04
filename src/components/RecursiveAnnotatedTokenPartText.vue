@@ -35,18 +35,21 @@ import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
 
-const props = withDefaults(defineProps<RecursiveAnnotatedTokenPartTextProps>(), {
-  annotations: () => [],
-  annotationClassHandler: () => [],
-});
+const props = withDefaults(
+  defineProps<RecursiveAnnotatedTokenPartTextProps>(),
+  {
+    annotations: () => [],
+    annotationClassHandler: () => [],
+  }
+);
 
 const annotation = computed(() => props.annotations[0]);
 
 const annotationClickHandler = props.annotationClickHandler;
-const annotationClassHandler =  props.annotationClassHandler;
+const annotationClassHandler = props.annotationClassHandler;
 const annotationActionHandler = props.annotationActionHandler;
 
-function onActionStart(e: MouseEvent, action: ActionType){
+function onActionStart(e: MouseEvent, action: ActionType) {
   const position = caretPositionFromPoint(e.x, e.y);
   this.annotationActionHandler(e, {
     annotation: this.annotation,

@@ -13,9 +13,7 @@
         <span
           v-for="annotation in wordPart.annotations"
           :key="annotation.id"
-          :class="
-            annotationClasses(annotation, wordPart.start, wordPart.end)
-          "
+          :class="annotationClasses(annotation, wordPart.start, wordPart.end)"
           @click="onClickAnnotation(annotation)"
         >
           <label v-if="annotation.label">{{ annotation.label }}</label>
@@ -53,11 +51,6 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
-
 </script>
 
-<style scoped lang="scss">
-
-</style>
-
-
+<style scoped lang="scss"></style>

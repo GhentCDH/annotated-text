@@ -9,7 +9,7 @@ const caretPositionFromPoint = (
   // @ts-ignore
   if (document.caretPositionFromPoint) {
     // @ts-ignore
-    let position = document.caretPositionFromPoint(x, y);
+    const position = document.caretPositionFromPoint(x, y);
     console.log(position);
     return position
       ? {
@@ -21,7 +21,7 @@ const caretPositionFromPoint = (
         }
       : null;
   } else {
-    let range = document.caretRangeFromPoint(x, y);
+    const range = document.caretRangeFromPoint(x, y);
     return range
       ? {
           offsetNode: range.startContainer,
@@ -32,6 +32,6 @@ const caretPositionFromPoint = (
         }
       : null;
   }
-}
+};
 
 export { caretPositionFromPoint };

@@ -30,8 +30,8 @@
           :line="line"
           :on-annotation-start-handler="onAnnotationStartHandler"
           :on-mouse-enter-line-part-handler="onMouseEnterLinePartHandler"
-          :annotationClasses="annotationClasses"
-          :wordPartClasses="wordPartClasses"
+          :annotation-classes="annotationClasses"
+          :word-part-classes="wordPartClasses"
           :render="render"
         />
       </div>
