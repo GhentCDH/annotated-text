@@ -5,7 +5,7 @@ import {
   AnnotationStyle,
   Line,
   RenderType,
-  WordPart
+  WordPart,
 } from "@/types/AnnotatedText";
 
 export interface AnnotatedTextProps {
@@ -27,17 +27,34 @@ export interface RecursiveAnnotatedTokenPartTextProps {
   start: number;
   end: number;
   annotations?: Annotation[];
-  annotationClassHandler?: (annotation: Annotation, start: number, end: number) => string[];
+  annotationClassHandler?: (
+    annotation: Annotation,
+    start: number,
+    end: number
+  ) => string[];
   annotationClickHandler: (annotation: Annotation) => void;
-  annotationActionHandler: (mouseEvent: MouseEvent, payload: AnnotationActionPayload) => void;
+  annotationActionHandler: (
+    mouseEvent: MouseEvent,
+    payload: AnnotationActionPayload
+  ) => void;
 }
 
 export interface AnnotatedLineProps {
-  line: AnnotatedLine,
+  line: AnnotatedLine;
   wordPartClasses?: (wordPart: WordPart) => any[];
   render?: RenderType;
-  annotationClasses?: (annotation: Annotation, start: number, end: number) => string[];
-  onMouseEnterLinePartHandler: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
+  annotationClasses?: (
+    annotation: Annotation,
+    start: number,
+    end: number
+  ) => string[];
+  onMouseEnterLinePartHandler: (
+    wordPart: WordPart,
+    mouseEvent: MouseEvent
+  ) => void;
   onClickAnnotation: (annotation: Annotation) => void;
-  onAnnotationStartHandler: (mouseEvent: MouseEvent, payload: AnnotationActionPayload) => void;
+  onAnnotationStartHandler: (
+    mouseEvent: MouseEvent,
+    payload: AnnotationActionPayload
+  ) => void;
 }
