@@ -41,33 +41,10 @@
 <script setup lang="ts">
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import {
-  AnnotatedLine,
-  Annotation,
-  AnnotationActionPayload,
-  WordPart,
+  AnnotatedLineProps
 } from "@/types";
 import { computed } from "vue-demi";
-import { RenderType } from "@/types/AnnotatedText";
 
-export interface AnnotatedLineProps {
-  line: AnnotatedLine;
-  wordPartClasses?: (wordPart: WordPart) => any[];
-  render?: RenderType;
-  annotationClasses?: (
-    annotation: Annotation,
-    start: number,
-    end: number
-  ) => string[];
-  onMouseEnterLinePartHandler: (
-    wordPart: WordPart,
-    mouseEvent: MouseEvent
-  ) => void;
-  onClickAnnotation: (annotation: Annotation) => void;
-  onAnnotationStartHandler: (
-    mouseEvent: MouseEvent,
-    payload: AnnotationActionPayload
-  ) => void;
-}
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",

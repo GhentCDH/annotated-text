@@ -1,8 +1,7 @@
-import type { AnnotatedLine, Annotation, WordPart } from "@/types";
+import type { AnnotatedLine, AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { AnnotationActionState } from "@/types";
 import { Ref } from "vue";
 import { computed } from "vue-demi";
-import { AnnotatedTextProps } from "@/components/AnnotatedText.vue";
 
 export const startsOnLine = function (
   line: AnnotatedLine,

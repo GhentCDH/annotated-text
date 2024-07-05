@@ -8,12 +8,11 @@ import {
   type WordPart,
   RangeWithAnnotation,
   RangeWithAnnotations,
-  Word,
+  Word, AnnotatedTextProps
 } from "@/types";
 import { computed } from "vue-demi";
 import { Ref } from "vue";
 import { FlattenRanges } from "etali";
-import { AnnotatedTextProps } from "@/components/AnnotatedText.vue";
 
 // Some consts needed for the utils class
 const annotationEndOffsetFix = 1;
@@ -56,6 +55,7 @@ export default class AnnotatedLinesUtil {
 
     // make sure computed sees dependent this.state properties
     // if not, first execution won't see them because of conditional
+    console.log(this.state);
     this.state.value.newStart;
     this.state.value.newEnd;
 
@@ -68,7 +68,9 @@ export default class AnnotatedLinesUtil {
       (annotation) => annotation?.visible !== false
     );
 
-    // update annotation this.state
+    console.log("CHANGES");
+    console.log(this.changes.value);
+    // update annotation state
     annotations = annotations.map((annotation) => {
       if (this.changes.value?.[annotation.id]) {
         annotation.start = this.changes.value?.[annotation.id].start;

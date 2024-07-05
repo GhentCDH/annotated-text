@@ -18,7 +18,7 @@ export interface AnnotationStyle {
 export interface AnnotationActionPayload {
   action: ActionType;
   annotation?: Annotation;
-  handlePosition?: string;
+  handlePosition?: number;
 }
 
 export type ActionType = "moveStart" | "moveEnd" | "move";
