@@ -49,7 +49,7 @@ import {
   Line,
   WordPart,
 } from "@/types";
-import { caretPositionFromPoint } from "@/lib/DomUtils";
+import { createPositionFromPoint } from "@/lib/DomUtils";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
@@ -146,7 +146,6 @@ function onMouseLeaveHandler(e: MouseEvent) {
 function onMouseUpHandler(e: MouseEvent) {
   // reset state?
   if (state.value.action) {
-    console.log("EMIT");
     emit(
       "annotation-moved",
       JSON.parse(JSON.stringify(state.value.annotation)),
@@ -155,6 +154,9 @@ function onMouseUpHandler(e: MouseEvent) {
     state.value = initActionState();
   }
   console.log("global mouseup");
+  console.log(e);
+  const pos = createPositionFromPoint(e.x, e.y);
+  console.log(`${pos.offset}`);
 }
 
 function onAnnotationStartHandler(
@@ -172,7 +174,7 @@ function onAnnotationStartHandler(
 }
 
 const onMouseEnterLinePartHandler = (wordPart: WordPart, e: MouseEvent) => {
-  let position = caretPositionFromPoint(e.x, e.y);
+  let position = createPositionFromPoint(e.x, e.y);
   if (position) {
     // console.log(wordPart.start + position.offset);
     // console.log(state.annotation);
@@ -210,4 +212,5 @@ const onMouseEnterLinePartHandler = (wordPart: WordPart, e: MouseEvent) => {
     }
   }
 };
+
 </script>

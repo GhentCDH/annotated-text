@@ -1,4 +1,4 @@
-const caretPositionFromPoint = (
+const createPositionFromPoint = (
   x: number,
   y: number
 ): {
@@ -34,4 +34,4 @@ const caretPositionFromPoint = (
   }
 };
 
-export { caretPositionFromPoint };
+export { createPositionFromPoint };

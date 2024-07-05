@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { caretPositionFromPoint } from "@/lib/DomUtils";
+import { createPositionFromPoint } from "@/lib/DomUtils";
 import { Annotation, AnnotationActionPayload } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
@@ -67,7 +67,7 @@ const annotationClassHandler = props.annotationClassHandler;
 const annotationActionHandler = props.annotationActionHandler;
 
 function onActionStart(e: MouseEvent, action: ActionType) {
-  const position = caretPositionFromPoint(e.x, e.y);
+  const position = createPositionFromPoint(e.x, e.y);
   this.annotationActionHandler(e, {
     annotation: this.annotation,
     action: action,

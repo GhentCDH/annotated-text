@@ -61,7 +61,7 @@ const onAnnotationClick = function (annotation: Annotation): void {
 };
 
 const onAnnotationMoved = function (annotation: Annotation): void {
-  console.log("** moved: ", annotation);
+  props.debug && console.log("** moved: ", annotation);
 };
 
 const annotations: Annotation[] = annotationsGreek;
