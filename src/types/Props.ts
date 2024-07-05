@@ -5,7 +5,7 @@ import {
   AnnotationStyle,
   Line,
   RenderType,
-  WordPart
+  WordPart,
 } from "@/types/AnnotatedText";
 
 export interface AnnotatedTextProps {
@@ -33,10 +33,6 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     end: number
   ) => string[];
   annotationClickHandler: (annotation: Annotation) => void;
-  annotationActionHandler: (
-    mouseEvent: MouseEvent,
-    payload: AnnotationActionPayload
-  ) => void;
 }
 
 export interface AnnotatedLineProps {
@@ -48,13 +44,5 @@ export interface AnnotatedLineProps {
     start: number,
     end: number
   ) => string[];
-  onMouseEnterLinePartHandler: (
-    wordPart: WordPart,
-    mouseEvent: MouseEvent
-  ) => void;
   onClickAnnotation: (annotation: Annotation) => void;
-  onAnnotationStartHandler: (
-    mouseEvent: MouseEvent,
-    payload: AnnotationActionPayload
-  ) => void;
 }

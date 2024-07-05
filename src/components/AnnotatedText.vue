@@ -2,10 +2,10 @@
   <div
     v-if="annotatedLines"
     :class="componentClasses"
-    @mouseleave="onMouseLeaveHandler($event)"
+    @mouseleave="store.onMouseLeaveHandler($event)"
     @mouseup="onMouseUpHandler($event)"
   >
-    <template v-for="line in annotationStore.annotatedLines" :key="line">
+    <template v-for="line in store.annotatedLines" :key="line">
       <div class="gutter-annotations">
         <template
           v-for="annotation in line.gutter.annotations"
@@ -28,8 +28,6 @@
         <AnnotatedLine
           :on-click-annotation="onClickAnnotation"
           :line="line"
-          :on-annotation-start-handler="onAnnotationStartHandler"
-          :on-mouse-enter-line-part-handler="onMouseEnterLinePartHandler"
           :annotation-classes="annotationClasses"
           :word-part-classes="wordPartClasses"
           :render="render"
@@ -40,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, ref, watch } from "vue-demi";
+import { defineEmits, watch } from "vue-demi";
 import {
   AnnotatedTextProps,
   Annotation,
@@ -75,23 +73,22 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   }),
 });
 
+
+
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
   "annotation-moved": [annotation: Annotation, state: AnnotationActionState];
 }>();
 
+// Init store
+const store = useAnnotationsStore();
+store.init(props);
+const {annotationsState, changes} = storeToRefs(store);
+const annotatedLines = store.annotatedLines;
 
-const annotationStore = useAnnotationsStore();
-
-annotationStore.init(props);
-const {annotationsState, changes} = storeToRefs(annotationStore);
-
-
-const annotatedLines = annotationStore.annotatedLines;
-
+// Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, annotationsState);
-
 const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
@@ -106,30 +103,11 @@ watch(
   }
 );
 
-function initActionState(): AnnotationActionState {
-  return {
-    action: null,
-    handlePosition: null,
-    annotation: null,
-    origEnd: null,
-    origStart: null,
-    newEnd: null,
-    newStart: null,
-  };
-}
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("annotation-select", annotation);
   console.log("emit click-annotation");
 };
-
-function onMouseLeaveHandler(e: MouseEvent) {
-  // reset state?
-  if (annotationsState.value.action) {
-    annotationsState.value = initActionState();
-  }
-  console.log("global mouseleave");
-}
 
 function onMouseUpHandler(e: MouseEvent) {
   // reset state?
@@ -139,67 +117,11 @@ function onMouseUpHandler(e: MouseEvent) {
       JSON.parse(JSON.stringify(annotationsState.value.annotation)),
       annotationsState.value
     );
-    annotationsState.value = initActionState();
+    store.initActionState();
   }
   console.log("global mouseup");
   console.log(e);
   const pos = createPositionFromPoint(e.x, e.y);
   console.log(`${pos.offset}`);
 }
-
-function onAnnotationStartHandler(
-  e: MouseEvent,
-  payload: AnnotationActionPayload
-) {
-  console.log(`start resize (${payload.action})`);
-  annotationsState.value = {
-    ...payload,
-    origStart: payload.annotation.start,
-    origEnd: payload.annotation.end,
-    newStart: payload.annotation.start,
-    newEnd: payload.annotation.end,
-  };
-}
-
-const onMouseEnterLinePartHandler = (wordPart: WordPart, e: MouseEvent) => {
-  let position = createPositionFromPoint(e.x, e.y);
-  if (position) {
-    // console.log(wordPart.start + position.offset);
-    // console.log(state.annotation);
-    if (annotationsState.value.annotation) {
-      const newPosition = wordPart.start + position.offset;
-      const offset = newPosition - annotationsState.value.handlePosition;
-      switch (annotationsState.value.action) {
-        case "moveEnd":
-          if (newPosition >= annotationsState.value.annotation.start) {
-            annotationsState.value.newEnd = newPosition;
-            changes.value[annotationsState.value.annotation.id] = {
-              start: annotationsState.value.newStart,
-              end: annotationsState.value.newEnd,
-            };
-          }
-          break;
-        case "moveStart":
-          if (newPosition <= annotationsState.value.annotation.end) {
-            annotationsState.value.newStart = newPosition;
-            changes.value[annotationsState.value.annotation.id] = {
-              start: annotationsState.value.newStart,
-              end: annotationsState.value.newEnd,
-            };
-          }
-          break;
-        case "move":
-          console.log("MOVE");
-          annotationsState.value.newStart = annotationsState.value.origStart + offset;
-          annotationsState.value.newEnd = annotationsState.value.origEnd + offset;
-          changes.value[annotationsState.value.annotation.id] = {
-            start: annotationsState.value.newStart,
-            end: annotationsState.value.newEnd,
-          };
-          console.log(changes.value);
-          break;
-      }
-    }
-  }
-};
 </script>

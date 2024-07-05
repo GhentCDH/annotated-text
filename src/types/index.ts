@@ -10,6 +10,7 @@ export type {
   AnnotationActionState,
   Word,
   AnnotatedWord,
+  Emits,
 } from "./AnnotatedText";
 export type { Annotation, AnnotationTarget } from "./Annotation";
 

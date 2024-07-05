@@ -17,7 +17,7 @@
       :end="end"
       :annotation-click-handler="annotationClickHandler"
       :annotation-class-handler="annotationClassHandler"
-      :annotation-action-handler="annotationActionHandler"
+      :annotation-action-handler="store.onAnnotationStartHandler"
     />
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
     <span
@@ -34,6 +34,7 @@ import { createPositionFromPoint } from "@/lib/DomUtils";
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
+import { useAnnotationsStore } from "@/stores/AnnotationsStore";
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),
@@ -43,15 +44,17 @@ const props = withDefaults(
   }
 );
 
+// store
+const store = useAnnotationsStore();
+
 const annotation = computed(() => props.annotations[0]);
 
 const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
-const annotationActionHandler = props.annotationActionHandler;
 
 function onActionStart(e: MouseEvent, action: ActionType) {
   const position = createPositionFromPoint(e.x, e.y);
-  this.annotationActionHandler(e, {
+  store.onAnnotationStartHandler(e, {
     annotation: this.annotation,
     action: action,
     handlePosition: this.annotation.start + position.offset,

@@ -6,7 +6,7 @@
       :class="wordPartClasses(wordPart)"
       :data-start="wordPart.start"
       :data-end="wordPart.end"
-      @mousemove="onMouseEnterLinePartHandler(wordPart, $event)"
+      @mousemove="store.onMouseEnterLinePartHandler(wordPart, $event)"
     >
       <template v-if="renderFlat">
         <span class="text">{{ wordPart.text }}</span>
@@ -30,7 +30,6 @@
           "
           :annotation-class-handler="annotationClasses"
           :annotation-click-handler="onClickAnnotation"
-          :annotation-action-handler="onAnnotationStartHandler"
         />
         <span v-else class="text">{{ wordPart.text }}</span>
       </template>
@@ -40,10 +39,9 @@
 
 <script setup lang="ts">
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
-import {
-  AnnotatedLineProps
-} from "@/types";
+import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
+import { useAnnotationsStore } from "@/stores/AnnotationsStore";
 
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
@@ -51,6 +49,8 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   wordPartClasses: () => [],
   annotationClasses: () => [],
 });
+
+const store = useAnnotationsStore();
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
