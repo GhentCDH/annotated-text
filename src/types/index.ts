@@ -18,4 +18,4 @@ export type {
   AnnotatedTextProps,
   RecursiveAnnotatedTokenPartTextProps,
   AnnotatedLineProps,
-} from "./Props"
+} from "./Props";

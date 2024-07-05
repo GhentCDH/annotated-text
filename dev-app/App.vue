@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { AnnotatedText, Annotation, Line } from "@/index";
+import { AnnotatedText, Annotation } from "@/index";
 import { textToLines } from "./Utils";
 
 import { annotationsGreek, textGreek as text } from "./data";

@@ -83,5 +83,3 @@ interface AnnotatedLine {
 
 type RangeWithAnnotation = [number, number, Annotation | null];
 type RangeWithAnnotations = [number, number, Annotation[]];
-
-

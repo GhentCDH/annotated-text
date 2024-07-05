@@ -43,7 +43,6 @@ import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
 import { useAnnotationsStore } from "@/stores/AnnotationsStore";
 
-
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
   wordPartClasses: () => [],

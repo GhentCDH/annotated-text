@@ -1,5 +1,10 @@
-import {defineStore} from 'pinia'
-import { AnnotatedTextProps, Annotation, AnnotationActionPayload, AnnotationActionState, WordPart } from "@/types";
+import { defineStore } from "pinia";
+import {
+  AnnotatedTextProps,
+  AnnotationActionPayload,
+  AnnotationActionState,
+  WordPart,
+} from "@/types";
 import { ref } from "vue-demi";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import { createPositionFromPoint } from "@/lib/DomUtils";
@@ -26,10 +31,14 @@ export const useAnnotationsStore = defineStore("annotations", {
 
   actions: {
     // init
-    init(props: AnnotatedTextProps){
+    init(props: AnnotatedTextProps) {
       this.props = props;
       this.initActionState();
-      this.linesUtil = new AnnotatedLinesUtil(props, ref(this.annotationsState), ref(this.changes));
+      this.linesUtil = new AnnotatedLinesUtil(
+        props,
+        ref(this.annotationsState),
+        ref(this.changes)
+      );
     },
     initActionState() {
       this.annotationsState = {
@@ -40,7 +49,7 @@ export const useAnnotationsStore = defineStore("annotations", {
         origStart: null,
         newEnd: null,
         newStart: null,
-      }
+      };
     },
 
     // Events
@@ -52,10 +61,7 @@ export const useAnnotationsStore = defineStore("annotations", {
       console.log("global mouseleave");
     },
 
-    onAnnotationStartHandler(
-      e: MouseEvent,
-      payload: AnnotationActionPayload
-    ) {
+    onAnnotationStartHandler(e: MouseEvent, payload: AnnotationActionPayload) {
       console.log(`start resize (${payload.action})`);
       this.annotationsState = {
         ...payload,
@@ -67,7 +73,7 @@ export const useAnnotationsStore = defineStore("annotations", {
     },
 
     onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
-      let position = createPositionFromPoint(e.x, e.y);
+      const position = createPositionFromPoint(e.x, e.y);
       if (position) {
         // console.log(wordPart.start + position.offset);
         // console.log(state.annotation);
@@ -95,8 +101,10 @@ export const useAnnotationsStore = defineStore("annotations", {
               break;
             case "move":
               console.log("MOVE");
-              this.annotationsState.newStart = this.annotationsState.origStart + offset;
-              this.annotationsState.newEnd = this.annotationsState.origEnd + offset;
+              this.annotationsState.newStart =
+                this.annotationsState.origStart + offset;
+              this.annotationsState.newEnd =
+                this.annotationsState.origEnd + offset;
               this.changes[this.annotationsState.annotation.id] = {
                 start: this.annotationsState.newStart,
                 end: this.annotationsState.newEnd,
@@ -107,5 +115,5 @@ export const useAnnotationsStore = defineStore("annotations", {
         }
       }
     },
-  }
+  },
 });

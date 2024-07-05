@@ -1,7 +1,6 @@
 import { Annotation } from "@/types/Annotation";
 import {
   AnnotatedLine,
-  AnnotationActionPayload,
   AnnotationStyle,
   Line,
   RenderType,

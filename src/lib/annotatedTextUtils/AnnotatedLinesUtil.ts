@@ -8,7 +8,8 @@ import {
   type WordPart,
   RangeWithAnnotation,
   RangeWithAnnotations,
-  Word, AnnotatedTextProps
+  Word,
+  AnnotatedTextProps,
 } from "@/types";
 import { computed } from "vue-demi";
 import { Ref } from "vue";

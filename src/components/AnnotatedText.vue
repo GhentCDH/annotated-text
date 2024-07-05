@@ -39,15 +39,8 @@
 
 <script setup lang="ts">
 import { defineEmits, watch } from "vue-demi";
-import {
-  AnnotatedTextProps,
-  Annotation,
-  AnnotationActionPayload,
-  AnnotationActionState,
-  WordPart
-} from "@/types";
+import { AnnotatedTextProps, Annotation, AnnotationActionState } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
-import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
 import { useAnnotationsStore } from "@/stores/AnnotationsStore";
@@ -73,8 +66,6 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   }),
 });
 
-
-
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
@@ -84,7 +75,7 @@ const emit = defineEmits<{
 // Init store
 const store = useAnnotationsStore();
 store.init(props);
-const {annotationsState, changes} = storeToRefs(store);
+const { annotationsState, changes } = storeToRefs(store);
 const annotatedLines = store.annotatedLines;
 
 // Init util to handle css classes
@@ -102,7 +93,6 @@ watch(
     changes.value = {};
   }
 );
-
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("annotation-select", annotation);
