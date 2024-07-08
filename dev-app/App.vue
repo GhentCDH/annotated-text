@@ -27,7 +27,7 @@
     :show-labels="props.showLabels"
     :render="props.render"
     @annotation-select="onAnnotationClick"
-    @annotation-moved="onAnnotationMoved"
+    @annotation-edited="onAnnotationEdited"
   />
 </template>
 
@@ -48,6 +48,11 @@ const props = reactive({
   render: "nested" as RenderType,
 });
 
+// define emits
+const emit = defineEmits<{
+  "annotation-edited": [annotation: Annotation];
+}>();
+
 const onAnnotationClick = function (annotation: Annotation): void {
   console.log("** click received **");
   console.log(annotation);
@@ -60,8 +65,9 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
-const onAnnotationMoved = function (annotation: Annotation): void {
-  props.debug && console.log("** moved: ", annotation);
+const onAnnotationEdited = function (annotation: Annotation): void {
+  props.debug && console.log("** Edited: ", annotation);
+  emit("annotation-edited", annotation);
 };
 
 const annotations: Annotation[] = annotationsGreek;

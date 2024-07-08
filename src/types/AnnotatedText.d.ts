@@ -1,4 +1,4 @@
-import { Annotation } from "./Annotation";
+import { Annotation, AnnotationTarget } from "./Annotation";
 
 export enum AnnotationGranularity {
   Char = "char",
@@ -28,6 +28,12 @@ export interface AnnotationActionState extends AnnotationActionPayload {
   origEnd?: number;
   newStart?: number;
   newEnd?: number;
+}
+
+export interface CreateAnnotationState{
+  start?: number,
+  end?: number,
+  target?: AnnotationTarget, //TODO fix this after gutter annotation display and edit works
 }
 
 export type RenderType = "nested" | "flat";

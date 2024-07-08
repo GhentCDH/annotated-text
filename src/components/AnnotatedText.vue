@@ -69,7 +69,7 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
-  "annotation-moved": [annotation: Annotation, state: AnnotationActionState];
+  "annotation-edited": [annotation: Annotation];
 }>();
 
 // Init store
@@ -103,9 +103,8 @@ function onMouseUpHandler(e: MouseEvent) {
   // reset state?
   if (annotationsState.value.action) {
     emit(
-      "annotation-moved",
-      JSON.parse(JSON.stringify(annotationsState.value.annotation)),
-      annotationsState.value
+      "annotation-edited",
+      JSON.parse(JSON.stringify(annotationsState.value.annotation))
     );
     store.initActionState();
   }

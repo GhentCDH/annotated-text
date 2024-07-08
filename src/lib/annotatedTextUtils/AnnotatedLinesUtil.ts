@@ -1,15 +1,15 @@
 import {
   type AnnotatedLine,
+  AnnotatedTextProps,
   AnnotatedWord,
   type Annotation,
   AnnotationActionState,
   type AnnotationTarget,
   type Line,
-  type WordPart,
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
-  AnnotatedTextProps,
+  type WordPart
 } from "@/types";
 import { computed } from "vue-demi";
 import { Ref } from "vue";
@@ -212,14 +212,8 @@ export default class AnnotatedLinesUtil {
         : Number(a[0]) - Number(b[0])
     );
 
-    this.props.debug && console.log("** ranges **");
-    this.props.debug && console.log(ranges);
-
     // flatten ranges
-    const flattenedRanges = FlattenRanges(ranges);
-    this.props.debug && console.log("** flattened ranges **");
-    this.props.debug && console.log(flattenedRanges);
-    return flattenedRanges;
+    return FlattenRanges(ranges);
   });
 
   private createAnnotatedWord = (word: Word): AnnotatedWord => {
@@ -235,9 +229,6 @@ export default class AnnotatedLinesUtil {
         .sort((a, b) => (Number(a?.start) > Number(b?.start) ? 1 : -1));
       return range;
     });
-
-    this.props.debug && console.log("** ranges in scope **");
-    this.props.debug && console.log(rangesInScope);
 
     const wordParts: WordPart[] = rangesInScope.map(
       (range: RangeWithAnnotations) => {

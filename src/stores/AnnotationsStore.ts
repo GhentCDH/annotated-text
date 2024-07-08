@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import {
   AnnotatedTextProps,
   AnnotationActionPayload,
-  AnnotationActionState,
-  WordPart,
+  AnnotationActionState, CreateAnnotationState,
+  WordPart
 } from "@/types";
 import { ref } from "vue-demi";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
@@ -21,6 +21,11 @@ export const useAnnotationsStore = defineStore("annotations", {
       newEnd: null,
       newStart: null,
     } as AnnotationActionState,
+    createAnnotationState: {
+      start: null,
+      end: null,
+      target: null,
+    } as CreateAnnotationState,
     changes: {},
     linesUtil: undefined as AnnotatedLinesUtil,
   }),
@@ -34,6 +39,7 @@ export const useAnnotationsStore = defineStore("annotations", {
     init(props: AnnotatedTextProps) {
       this.props = props;
       this.initActionState();
+      this.initCreateState();
       this.linesUtil = new AnnotatedLinesUtil(
         props,
         ref(this.annotationsState),
@@ -50,6 +56,13 @@ export const useAnnotationsStore = defineStore("annotations", {
         newEnd: null,
         newStart: null,
       };
+    },
+    initCreateState(){
+      this.createAnnotationState = {
+        start: null,
+        end: null,
+        target: null,
+      }
     },
 
     // Events
@@ -75,8 +88,6 @@ export const useAnnotationsStore = defineStore("annotations", {
     onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
       const position = createPositionFromPoint(e.x, e.y);
       if (position) {
-        // console.log(wordPart.start + position.offset);
-        // console.log(state.annotation);
         if (this.annotationsState.annotation) {
           const newPosition = wordPart.start + position.offset;
           const offset = newPosition - this.annotationsState.handlePosition;
@@ -115,5 +126,10 @@ export const useAnnotationsStore = defineStore("annotations", {
         }
       }
     },
+
+    onStartCreateAnnotation(position: number){
+      this.createAnnotationState.start = position;
+      this.createAnnotationState.target = "span";
+    }
   },
 });

@@ -53,6 +53,10 @@ const store = useAnnotationsStore();
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
+
+function onDragStart(e: MouseEvent){
+
+}
 </script>
 
 <style scoped lang="scss"></style>
