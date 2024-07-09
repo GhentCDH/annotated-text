@@ -40,7 +40,12 @@
 
 <script setup lang="ts">
 import { defineEmits, watch } from "vue-demi";
-import { AnnotatedTextProps, Annotation, AnnotationActionState, WordPart } from "@/types";
+import {
+  AnnotatedTextProps,
+  Annotation,
+  AnnotationActionState,
+  WordPart,
+} from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";

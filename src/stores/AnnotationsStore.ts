@@ -87,7 +87,6 @@ export const useAnnotationsStore = defineStore("annotations", {
       };
     },
 
-
     onStartSelect(position: number) {
       this.createAnnotationState.start = position;
       this.createAnnotationState.target = "span";
