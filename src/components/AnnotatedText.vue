@@ -76,12 +76,13 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
   "annotation-edited": [annotation: Annotation];
+  "select-text": [start: number, end: number, text: string];
 }>();
 
 // Init store
 const store = useAnnotationsStore();
 store.init(props);
-const { annotationsState, createAnnotationState } = storeToRefs(store);
+const { annotationsState, createAnnotationStateStart } = storeToRefs(store);
 const annotatedLines = store.annotatedLines;
 
 // Init util to handle css classes
@@ -104,12 +105,9 @@ function onMouseUpHandler(e: MouseEvent) {
       JSON.parse(JSON.stringify(annotationsState.value.annotation))
     );
     store.initActionState();
-  } else if (createAnnotationState.value.start) {
-    console.log("select end");
-    console.log(e);
+  } else if (createAnnotationStateStart.value) {
     const length = window.getSelection().toString().length - 1;
-    console.log(length);
-    store.onEndSelect(length, window.getSelection().toString());
+    emit("select-text", createAnnotationStateStart.value, createAnnotationStateStart.value + length, window.getSelection().toString())
     store.initCreateState();
   }
 }

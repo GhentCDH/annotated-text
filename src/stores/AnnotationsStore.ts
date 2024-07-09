@@ -1,16 +1,11 @@
 import { defineStore } from "pinia";
 import {
   AnnotatedTextProps,
-  Annotation,
   AnnotationActionPayload,
   AnnotationActionState,
-  CreateAnnotationState,
-  EditAnnotation,
-  WordPart,
 } from "@/types";
 import { ref } from "vue-demi";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { createPositionFromPoint } from "@/lib/DomUtils";
 
 export const useAnnotationsStore = defineStore("annotations", {
   state: () => ({
@@ -24,13 +19,8 @@ export const useAnnotationsStore = defineStore("annotations", {
       newEnd: null,
       newStart: null,
     } as AnnotationActionState,
-    createAnnotationState: {
-      start: null,
-      end: null,
-      target: null,
-    } as CreateAnnotationState,
+    createAnnotationStateStart: null as null | number,
     linesUtil: undefined as AnnotatedLinesUtil,
-    editingAnnotation: null as EditAnnotation | null,
   }),
 
   getters: {
@@ -60,11 +50,7 @@ export const useAnnotationsStore = defineStore("annotations", {
       };
     },
     initCreateState() {
-      this.createAnnotationState = {
-        start: null,
-        end: null,
-        target: null,
-      };
+      this.createAnnotationStateStart = null;
     },
 
     // Events
@@ -85,37 +71,6 @@ export const useAnnotationsStore = defineStore("annotations", {
         newStart: payload.annotation.start,
         newEnd: payload.annotation.end,
       };
-    },
-
-    onStartSelect(position: number) {
-      this.createAnnotationState.start = position;
-      this.createAnnotationState.target = "span";
-      console.log(this.createAnnotationState);
-    },
-
-    onEndSelect(length: number, text: string) {
-      if (this.createAnnotationState.start) {
-        this.createAnnotationState.end =
-          this.createAnnotationState.start + length;
-        console.log("select state");
-        console.log(this.createAnnotationState);
-
-        const anno: Annotation = {
-          id: Math.random().toString().slice(2, 12),
-          start: this.createAnnotationState.start,
-          end: this.createAnnotationState.end,
-          text: text,
-          class: "annotation annotation--color-8",
-          label: "label",
-          target: this.createAnnotationState.target,
-        };
-
-        this.props.annotations.push(anno);
-        this.changes[anno.id] = {
-          start: this.createAnnotationState.start,
-          end: this.createAnnotationState.end,
-        };
-      }
     },
   },
 });

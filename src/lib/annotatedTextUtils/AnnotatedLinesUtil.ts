@@ -312,6 +312,7 @@ export default class AnnotatedLinesUtil {
   // Map every line to an annotated line
   annotatedLines = computed((): AnnotatedLine[] => {
     this.props.annotations;
+    console.log(this.props.annotations.length);
     const lines = this.props.lines.map((line) =>
       this.createAnnotatedLine(line)
     );

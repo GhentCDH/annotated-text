@@ -28,6 +28,7 @@
     :render="props.render"
     @annotation-select="onAnnotationClick"
     @annotation-edited="onAnnotationEdited"
+    @select-text="onSelectText"
   />
 </template>
 
@@ -48,6 +49,14 @@ const props = reactive({
   render: "nested" as RenderType,
 });
 
+const annotations: Map<string, Annotation> = annotationsGreek.reduce(
+  (map, anno) => {
+    map.set(anno.id, anno);
+    return map;
+  },
+  new Map()
+);
+
 const onAnnotationClick = function (annotation: Annotation): void {
   console.log("** click received **");
   console.log(annotation);
@@ -66,13 +75,21 @@ const onAnnotationEdited = function (annotation: Annotation): void {
   annotations.set(annotation.id, annotation);
 };
 
-const annotations: Map<string, Annotation> = annotationsGreek.reduce(
-  (map, anno) => {
-    map.set(anno.id, anno);
-    return map;
-  },
-  new Map()
-);
+function onSelectText(start: number, end: number, text: string){
+  console.log(`selected from ${start} until ${end}`);
+  const id = Math.random().toString().slice(2, 12);
+  const anno: Annotation = {
+    id: id,
+    start: start,
+    end: end,
+    text: text,
+    label: "label",
+    target: "span",
+    visible: true,
+  }
+  annotations.set(id, anno);
+  console.log(annotations);
+}
 
 // console.log(textLines);
 </script>

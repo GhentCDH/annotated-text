@@ -63,11 +63,7 @@ const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
 
 function onSelectStart(e: MouseEvent, wordStart: number) {
-  console.log("select start");
-  console.log(e);
-  const pos = createPositionFromPoint(e.x, e.y).offset + wordStart;
-  console.log(pos);
-  store.onStartSelect(pos);
+  store.createAnnotationStateStart = createPositionFromPoint(e.x, e.y).offset + wordStart;
 }
 </script>
 

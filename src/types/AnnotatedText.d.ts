@@ -30,12 +30,6 @@ export interface AnnotationActionState extends AnnotationActionPayload {
   newEnd?: number;
 }
 
-export interface CreateAnnotationState {
-  start?: number;
-  end?: number;
-  target?: AnnotationTarget; //TODO fix this after gutter annotation display and edit works
-}
-
 export type RenderType = "nested" | "flat";
 
 export interface Paragraph {
