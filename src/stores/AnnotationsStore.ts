@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import {
   AnnotatedTextProps,
+  Annotation,
   AnnotationActionPayload,
-  AnnotationActionState, CreateAnnotationState,
-  WordPart
+  AnnotationActionState,
+  CreateAnnotationState,
+  WordPart,
 } from "@/types";
 import { ref } from "vue-demi";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
@@ -57,12 +59,12 @@ export const useAnnotationsStore = defineStore("annotations", {
         newStart: null,
       };
     },
-    initCreateState(){
+    initCreateState() {
       this.createAnnotationState = {
         start: null,
         end: null,
         target: null,
-      }
+      };
     },
 
     // Events
@@ -111,7 +113,6 @@ export const useAnnotationsStore = defineStore("annotations", {
               }
               break;
             case "move":
-              console.log("MOVE");
               this.annotationsState.newStart =
                 this.annotationsState.origStart + offset;
               this.annotationsState.newEnd =
@@ -120,16 +121,42 @@ export const useAnnotationsStore = defineStore("annotations", {
                 start: this.annotationsState.newStart,
                 end: this.annotationsState.newEnd,
               };
-              console.log(this.changes);
               break;
           }
         }
       }
     },
 
-    onStartCreateAnnotation(position: number){
+    onStartSelect(position: number) {
       this.createAnnotationState.start = position;
       this.createAnnotationState.target = "span";
-    }
+      console.log(this.createAnnotationState);
+    },
+
+    onEndSelect(length: number, text: string) {
+      if (this.createAnnotationState.start) {
+        this.createAnnotationState.end =
+          this.createAnnotationState.start + length;
+        console.log("select state");
+        console.log(this.createAnnotationState);
+
+        const anno: Annotation = {
+          id: Math.random().toString().slice(2, 12),
+          start: this.createAnnotationState.start,
+          end: this.createAnnotationState.end,
+          text: text,
+          class: "annotation annotation--color-8",
+          label: "label",
+          target: this.createAnnotationState.target,
+        };
+
+        this.props.annotations.push(anno);
+        this.changes[anno.id] = {
+          start: this.createAnnotationState.start,
+          end: this.createAnnotationState.end,
+        };
+        console.log(this.changes);
+      }
+    },
   },
 });

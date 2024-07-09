@@ -9,9 +9,9 @@ import {
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
-  type WordPart
+  type WordPart,
 } from "@/types";
-import { computed } from "vue-demi";
+import { computed, reactive } from "vue-demi";
 import { Ref } from "vue";
 import { FlattenRanges } from "etali";
 
@@ -54,23 +54,21 @@ export default class AnnotatedLinesUtil {
 
     let annotations = this.props.annotations;
 
-    // make sure computed sees dependent this.state properties
+    // make sure computed sees dependent state properties
     // if not, first execution won't see them because of conditional
-    console.log(this.state);
     this.state.value.newStart;
     this.state.value.newEnd;
+    this.changes.value;
 
     // replace objects by proxies, needed to be able
     // to compare annotation (no proxy) with annotation in this.state (proxy)
-    // annotations = reactive(annotations);
+    annotations = reactive(annotations);
 
     // hide invisible annotations
     annotations = annotations.filter(
       (annotation) => annotation?.visible !== false
     );
 
-    console.log("CHANGES");
-    console.log(this.changes.value);
     // update annotation state
     annotations = annotations.map((annotation) => {
       if (this.changes.value?.[annotation.id]) {
@@ -330,6 +328,7 @@ export default class AnnotatedLinesUtil {
 
   // Map every line to an annotated line
   annotatedLines = computed((): AnnotatedLine[] => {
+    this.props.annotations;
     const lines = this.props.lines.map((line) =>
       this.createAnnotatedLine(line)
     );

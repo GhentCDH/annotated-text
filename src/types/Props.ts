@@ -32,6 +32,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     end: number
   ) => string[];
   annotationClickHandler: (annotation: Annotation) => void;
+  wordPartStart: number; // for correct handle position
 }
 
 export interface AnnotatedLineProps {

@@ -6,7 +6,7 @@
       :class="wordPartClasses(wordPart)"
       :data-start="wordPart.start"
       :data-end="wordPart.end"
-      @mousemove="store.onMouseEnterLinePartHandler(wordPart, $event)"
+      @mousemove.once="store.onMouseEnterLinePartHandler(wordPart, $event)"
     >
       <template v-if="renderFlat">
         <span class="text">{{ wordPart.text }}</span>
@@ -25,13 +25,20 @@
           :text="wordPart.text"
           :start="wordPart.start"
           :end="wordPart.end"
+          :word-part-start="wordPart.start"
           :annotations="
             wordPart.annotations.sort((a, b) => b.weight - a.weight)
           "
           :annotation-class-handler="annotationClasses"
           :annotation-click-handler="onClickAnnotation"
         />
-        <span v-else class="text">{{ wordPart.text }}</span>
+        <span
+          v-else
+          class="text"
+          @mousedown="(e) => onSelectStart(e, wordPart.start)"
+        >
+          {{ wordPart.text }}
+        </span>
       </template>
     </span>
   </span>
@@ -42,6 +49,7 @@ import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedToke
 import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
 import { useAnnotationsStore } from "@/stores/AnnotationsStore";
+import { createPositionFromPoint } from "@/lib/DomUtils";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
@@ -54,8 +62,12 @@ const store = useAnnotationsStore();
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
 
-function onDragStart(e: MouseEvent){
-
+function onSelectStart(e: MouseEvent, wordStart: number) {
+  console.log("select start");
+  console.log(e);
+  const pos = createPositionFromPoint(e.x, e.y).offset + wordStart;
+  console.log(pos);
+  store.onStartSelect(pos);
 }
 </script>
 

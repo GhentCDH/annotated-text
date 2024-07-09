@@ -44,7 +44,7 @@ const textLines = textToLines(text);
 
 const props = reactive({
   showLabels: false,
-  debug: true,
+  debug: false,
   render: "nested" as RenderType,
 });
 

@@ -15,6 +15,7 @@
       :text="text"
       :start="start"
       :end="end"
+      :word-part-start="wordPartStart"
       :annotation-click-handler="annotationClickHandler"
       :annotation-class-handler="annotationClassHandler"
       :annotation-action-handler="store.onAnnotationStartHandler"
@@ -57,7 +58,7 @@ function onActionStart(e: MouseEvent, action: ActionType) {
   store.onAnnotationStartHandler(e, {
     annotation: this.annotation,
     action: action,
-    handlePosition: this.annotation.start + position.offset,
+    handlePosition: props.wordPartStart + position.offset,
   });
 }
 </script>

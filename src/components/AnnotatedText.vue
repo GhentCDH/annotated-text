@@ -75,7 +75,7 @@ const emit = defineEmits<{
 // Init store
 const store = useAnnotationsStore();
 store.init(props);
-const { annotationsState, changes } = storeToRefs(store);
+const { annotationsState, changes, createAnnotationState } = storeToRefs(store);
 const annotatedLines = store.annotatedLines;
 
 // Init util to handle css classes
@@ -107,10 +107,13 @@ function onMouseUpHandler(e: MouseEvent) {
       JSON.parse(JSON.stringify(annotationsState.value.annotation))
     );
     store.initActionState();
+  } else if (createAnnotationState.value.start) {
+    console.log("select end");
+    console.log(e);
+    const length = window.getSelection().toString().length - 1;
+    console.log(length);
+    store.onEndSelect(length, window.getSelection().toString());
+    store.initCreateState();
   }
-  console.log("global mouseup");
-  console.log(e);
-  const pos = createPositionFromPoint(e.x, e.y);
-  console.log(`${pos.offset}`);
 }
 </script>
