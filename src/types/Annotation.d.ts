@@ -1,5 +1,5 @@
 export interface Annotation {
-  id: number | string;
+  id: string;
   start: number;
   end: number;
   text?: string;
@@ -9,6 +9,11 @@ export interface Annotation {
   weight?: number;
   active?: boolean;
   visible?: boolean;
+}
+
+export interface EditAnnotation {
+  position: number;
+  Annotation: Annotation;
 }
 
 export type AnnotationTarget = "gutter" | "span";

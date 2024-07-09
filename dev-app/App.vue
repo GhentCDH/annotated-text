@@ -21,7 +21,7 @@
 
   <AnnotatedText
     text="012345678901234567890123456789"
-    :annotations="annotations"
+    :annotations="Array.from(annotations.values())"
     :lines="textLines"
     :debug="props.debug"
     :show-labels="props.showLabels"
@@ -48,11 +48,6 @@ const props = reactive({
   render: "nested" as RenderType,
 });
 
-// define emits
-const emit = defineEmits<{
-  "annotation-edited": [annotation: Annotation];
-}>();
-
 const onAnnotationClick = function (annotation: Annotation): void {
   console.log("** click received **");
   console.log(annotation);
@@ -67,10 +62,17 @@ const onAnnotationClick = function (annotation: Annotation): void {
 
 const onAnnotationEdited = function (annotation: Annotation): void {
   props.debug && console.log("** Edited: ", annotation);
-  emit("annotation-edited", annotation);
+  console.log("emited edit");
+  annotations.set(annotation.id, annotation);
 };
 
-const annotations: Annotation[] = annotationsGreek;
+const annotations: Map<string, Annotation> = annotationsGreek.reduce(
+  (map, anno) => {
+    map.set(anno.id, anno);
+    return map;
+  },
+  new Map()
+);
 
 // console.log(textLines);
 </script>

@@ -45,4 +45,5 @@ export interface AnnotatedLineProps {
     end: number
   ) => string[];
   onClickAnnotation: (annotation: Annotation) => void;
+  onMouseEnterLinePart: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
 }

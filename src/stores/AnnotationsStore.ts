@@ -5,6 +5,7 @@ import {
   AnnotationActionPayload,
   AnnotationActionState,
   CreateAnnotationState,
+  EditAnnotation,
   WordPart,
 } from "@/types";
 import { ref } from "vue-demi";
@@ -28,8 +29,8 @@ export const useAnnotationsStore = defineStore("annotations", {
       end: null,
       target: null,
     } as CreateAnnotationState,
-    changes: {},
     linesUtil: undefined as AnnotatedLinesUtil,
+    editingAnnotation: null as EditAnnotation | null,
   }),
 
   getters: {
@@ -44,8 +45,7 @@ export const useAnnotationsStore = defineStore("annotations", {
       this.initCreateState();
       this.linesUtil = new AnnotatedLinesUtil(
         props,
-        ref(this.annotationsState),
-        ref(this.changes)
+        ref(this.annotationsState)
       );
     },
     initActionState() {
@@ -87,45 +87,6 @@ export const useAnnotationsStore = defineStore("annotations", {
       };
     },
 
-    onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
-      const position = createPositionFromPoint(e.x, e.y);
-      if (position) {
-        if (this.annotationsState.annotation) {
-          const newPosition = wordPart.start + position.offset;
-          const offset = newPosition - this.annotationsState.handlePosition;
-          switch (this.annotationsState.action) {
-            case "moveEnd":
-              if (newPosition >= this.annotationsState.annotation.start) {
-                this.annotationsState.newEnd = newPosition;
-                this.changes[this.annotationsState.annotation.id] = {
-                  start: this.annotationsState.newStart,
-                  end: this.annotationsState.newEnd,
-                };
-              }
-              break;
-            case "moveStart":
-              if (newPosition <= this.annotationsState.annotation.end) {
-                this.annotationsState.newStart = newPosition;
-                this.changes[this.annotationsState.annotation.id] = {
-                  start: this.annotationsState.newStart,
-                  end: this.annotationsState.newEnd,
-                };
-              }
-              break;
-            case "move":
-              this.annotationsState.newStart =
-                this.annotationsState.origStart + offset;
-              this.annotationsState.newEnd =
-                this.annotationsState.origEnd + offset;
-              this.changes[this.annotationsState.annotation.id] = {
-                start: this.annotationsState.newStart,
-                end: this.annotationsState.newEnd,
-              };
-              break;
-          }
-        }
-      }
-    },
 
     onStartSelect(position: number) {
       this.createAnnotationState.start = position;
@@ -155,7 +116,6 @@ export const useAnnotationsStore = defineStore("annotations", {
           start: this.createAnnotationState.start,
           end: this.createAnnotationState.end,
         };
-        console.log(this.changes);
       }
     },
   },

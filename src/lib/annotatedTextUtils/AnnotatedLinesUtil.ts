@@ -37,16 +37,10 @@ const intersectInterval = (
 export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
   state: Ref<AnnotationActionState>;
-  changes: Ref<{}>;
 
-  constructor(
-    props: AnnotatedTextProps,
-    state: Ref<AnnotationActionState>,
-    changes: Ref<{}>
-  ) {
+  constructor(props: AnnotatedTextProps, state: Ref<AnnotationActionState>) {
     this.props = props;
     this.state = state;
-    this.changes = changes;
   }
 
   private allAnnotations = computed((): Annotation[] => {
@@ -58,7 +52,6 @@ export default class AnnotatedLinesUtil {
     // if not, first execution won't see them because of conditional
     this.state.value.newStart;
     this.state.value.newEnd;
-    this.changes.value;
 
     // replace objects by proxies, needed to be able
     // to compare annotation (no proxy) with annotation in this.state (proxy)
@@ -68,16 +61,6 @@ export default class AnnotatedLinesUtil {
     annotations = annotations.filter(
       (annotation) => annotation?.visible !== false
     );
-
-    // update annotation state
-    annotations = annotations.map((annotation) => {
-      if (this.changes.value?.[annotation.id]) {
-        annotation.start = this.changes.value?.[annotation.id].start;
-        annotation.end = this.changes.value?.[annotation.id].end;
-      }
-      return annotation;
-    });
-
     return annotations;
   });
 

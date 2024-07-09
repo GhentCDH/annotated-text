@@ -54,6 +54,7 @@ const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
 
 function onActionStart(e: MouseEvent, action: ActionType) {
+  console.log("on action start");
   const position = createPositionFromPoint(e.x, e.y);
   store.onAnnotationStartHandler(e, {
     annotation: this.annotation,

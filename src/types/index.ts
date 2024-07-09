@@ -12,7 +12,11 @@ export type {
   AnnotatedWord,
   CreateAnnotationState,
 } from "./AnnotatedText";
-export type { Annotation, AnnotationTarget } from "./Annotation";
+export type {
+  Annotation,
+  AnnotationTarget,
+  EditAnnotation,
+} from "./Annotation";
 
 export type {
   AnnotatedTextProps,
