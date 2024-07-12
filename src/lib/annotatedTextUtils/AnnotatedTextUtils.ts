@@ -28,7 +28,10 @@ export class CssClassesUtil {
   props: AnnotatedTextProps;
   editAnnotationState: EditAnnotationState;
 
-  constructor(props: AnnotatedTextProps, editingAnnotation: EditAnnotationState) {
+  constructor(
+    props: AnnotatedTextProps,
+    editingAnnotation: EditAnnotationState
+  ) {
     this.props = props;
     this.editAnnotationState = editingAnnotation;
   }
@@ -85,7 +88,11 @@ export class CssClassesUtil {
     if (annotation?.end === end) {
       classes.push(this.props.style.endClass);
     }
-    if (this.editAnnotationState.annotation && annotation.id === this.editAnnotationState.annotation.id && annotation !== this.editAnnotationState.annotation) {
+    if (
+      this.editAnnotationState.annotation &&
+      annotation.id === this.editAnnotationState.annotation.id &&
+      annotation !== this.editAnnotationState.annotation
+    ) {
       classes.push(this.props.style.transitioningClass);
     }
     return classes;

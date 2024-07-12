@@ -16,7 +16,10 @@ import { Ref } from "vue";
 import { FlattenRanges } from "etali";
 import { useEditAnnotationsStore } from "@/stores/AnnotationComponentStores";
 import { Store } from "pinia";
-import { AnnotationsState, EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
+import {
+  AnnotationsState,
+  EditAnnotationState,
+} from "@/lib/annotatedTextUtils/StateClasses";
 
 // Some consts needed for the utils class
 const annotationEndOffsetFix = 1;
@@ -42,7 +45,11 @@ export default class AnnotatedLinesUtil {
   annotationsState: AnnotationsState;
   editState: EditAnnotationState;
 
-  constructor(props: AnnotatedTextProps, annotationsState: AnnotationsState, editState: EditAnnotationState) {
+  constructor(
+    props: AnnotatedTextProps,
+    annotationsState: AnnotationsState,
+    editState: EditAnnotationState
+  ) {
     this.props = props;
     this.annotationsState = annotationsState;
     this.editState = editState;
@@ -52,7 +59,7 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log("** refresh annotations");
 
     let annotations = this.annotationsState.getAnnotationsList();
-    if (this.editState.annotation){
+    if (this.editState.annotation) {
       annotations.push(this.editState.annotation);
     }
     // replace objects by proxies, needed to be able
@@ -86,11 +93,9 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log("** prepare ranges for_annotations **");
     this.props.debug && console.log(annotations);
 
-    const spanAnnotations = annotations.filter(
-      (annotation) => {
-        return annotation.target === "span"
-      }
-    );
+    const spanAnnotations = annotations.filter((annotation) => {
+      return annotation.target === "span";
+    });
 
     if (this.props.autoAnnotationWeights) {
       this.calculateAnnotationWeights(spanAnnotations);

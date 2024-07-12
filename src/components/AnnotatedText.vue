@@ -49,10 +49,16 @@ import {
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
-import { useEditAnnotationsStore, useStateObjectsStore } from "@/stores/AnnotationComponentStores";
+import {
+  useEditAnnotationsStore,
+  useStateObjectsStore,
+} from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { AnnotationsState, EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
+import {
+  AnnotationsState,
+  EditAnnotationState,
+} from "@/lib/annotatedTextUtils/StateClasses";
 
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -77,7 +83,10 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
-  "annotation-edited": [annotationsState: AnnotationsState, editState: EditAnnotationState];
+  "annotation-edited": [
+    annotationsState: AnnotationsState,
+    editState: EditAnnotationState
+  ];
   "select-text": [start: number, end: number, text: string];
 }>();
 
@@ -88,10 +97,14 @@ const emit = defineEmits<{
 
 const statesStore = useStateObjectsStore();
 statesStore.init();
-const {annotationsState, editState} = storeToRefs(statesStore);
+const { annotationsState, editState } = storeToRefs(statesStore);
 annotationsState.value.overrideAnnotations(props.annotations);
 
-const linesUtil = new AnnotatedLinesUtil(props, annotationsState.value, editState.value);
+const linesUtil = new AnnotatedLinesUtil(
+  props,
+  annotationsState.value,
+  editState.value
+);
 
 // Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, editState.value);
@@ -116,9 +129,7 @@ function onMouseLeaveHandler(e: MouseEvent) {
 function onMouseUpHandler(e: MouseEvent) {
   // reset state?
   if (editState.value.action) {
-    emit(
-      "annotation-edited", annotationsState.value, editState.value
-    );
+    emit("annotation-edited", annotationsState.value, editState.value);
     editState.value.resetEdit();
   }
 }
@@ -141,10 +152,8 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
           }
           break;
         case "move":
-          editState.value.annotation.start =
-            editState.value.origStart + offset;
-          editState.value.annotation.end =
-            editState.value.origEnd + offset;
+          editState.value.annotation.start = editState.value.origStart + offset;
+          editState.value.annotation.end = editState.value.origEnd + offset;
           break;
       }
       // emit("annotation-edited", editState.value.annotation);

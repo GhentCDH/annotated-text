@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import { AnnotationActionState } from "@/types";
 import {
-  AnnotationActionState
-} from "@/types";
-import { AnnotationsState, EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
+  AnnotationsState,
+  EditAnnotationState,
+} from "@/lib/annotatedTextUtils/StateClasses";
 
 export const useEditAnnotationsStore = defineStore("edits", {
   state: () => ({
@@ -17,9 +18,7 @@ export const useEditAnnotationsStore = defineStore("edits", {
     } as AnnotationActionState,
   }),
 
-  getters: {
-
-  },
+  getters: {},
 
   actions: {
     // init
@@ -40,9 +39,8 @@ export const useEditAnnotationsStore = defineStore("edits", {
   },
 });
 
-
 export const useStateObjectsStore = defineStore("stateObjects", {
-  state:() =>  ({
+  state: () => ({
     annotationsState: {} as AnnotationsState,
     editState: {} as EditAnnotationState,
   }),
@@ -51,6 +49,6 @@ export const useStateObjectsStore = defineStore("stateObjects", {
     init() {
       this.annotationsState = new AnnotationsState();
       this.editState = new EditAnnotationState();
-    }
-  }
+    },
+  },
 });

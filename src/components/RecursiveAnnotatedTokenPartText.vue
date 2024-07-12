@@ -34,7 +34,10 @@ import { createPositionFromPoint } from "@/lib/DomUtils";
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
-import { useEditAnnotationsStore, useStateObjectsStore } from "@/stores/AnnotationComponentStores";
+import {
+  useEditAnnotationsStore,
+  useStateObjectsStore,
+} from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";
 
 const props = withDefaults(
@@ -47,8 +50,7 @@ const props = withDefaults(
 
 // store
 const statesStore = useStateObjectsStore();
-const {editState, annotationsState} = storeToRefs(statesStore);
-
+const { editState, annotationsState } = storeToRefs(statesStore);
 
 const annotation = computed(() => props.annotations[0]);
 
@@ -66,9 +68,15 @@ function onActionStart(e: MouseEvent, action: ActionType) {
   //   newStart: this.annotation.start,
   //   newEnd: this.annotation.end,
   // };
-  editState.value.startEditing(action,
-    props.wordPartStart + position.offset, this.annotation,
-    this.annotation.end, this.annotation.start, this.annotation.end, this.annotation.start);
+  editState.value.startEditing(
+    action,
+    props.wordPartStart + position.offset,
+    this.annotation,
+    this.annotation.end,
+    this.annotation.start,
+    this.annotation.end,
+    this.annotation.start
+  );
 }
 </script>
 

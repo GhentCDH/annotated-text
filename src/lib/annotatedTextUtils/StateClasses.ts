@@ -15,7 +15,7 @@ export class AnnotationsState {
    * override the entire annotations state of the component
    * @param annotations
    */
-  overrideAnnotations(annotations: Map<string, Annotation>){
+  overrideAnnotations(annotations: Map<string, Annotation>) {
     this.annotations = annotations;
   }
 
@@ -23,15 +23,15 @@ export class AnnotationsState {
    * Add or edit an annotation
    * @param annotation
    */
-  editAnnotation(annotation: Annotation){
-    this.annotations.set(annotation.id, annotation)
+  editAnnotation(annotation: Annotation) {
+    this.annotations.set(annotation.id, annotation);
   }
 
   /**
    * Remove an annotation
    * @param id id of the annotation to remove
    */
-  removeAnnotation(id: string){
+  removeAnnotation(id: string) {
     this.annotations.delete(id);
   }
 
@@ -62,7 +62,7 @@ export class EditAnnotationState {
   /**
    * has to get called after an edit has been confirmed or denied.
    */
-  resetEdit(){
+  resetEdit() {
     this.action = null;
     this.handlePosition = null;
     this.annotation = null;
@@ -74,10 +74,15 @@ export class EditAnnotationState {
     this.editing = false;
   }
 
-  startEditing(action: ActionType, handlePosition: number,
-               annotation: Annotation, origEnd: number | null = null,
-               origStart: number | null = null,
-               newEnd: number, newStart: number) {
+  startEditing(
+    action: ActionType,
+    handlePosition: number,
+    annotation: Annotation,
+    origEnd: number | null = null,
+    origStart: number | null = null,
+    newEnd: number,
+    newStart: number
+  ) {
     this.action = action;
     this.handlePosition = handlePosition;
     this.origAnnotation = annotation;
@@ -88,5 +93,4 @@ export class EditAnnotationState {
     this.newStart = newStart;
     this.editing = true;
   }
-
 }

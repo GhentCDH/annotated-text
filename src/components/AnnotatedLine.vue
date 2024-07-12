@@ -32,10 +32,7 @@
           :annotation-class-handler="annotationClasses"
           :annotation-click-handler="onClickAnnotation"
         />
-        <span
-          v-else
-          class="text"
-        >
+        <span v-else class="text">
           {{ wordPart.text }}
         </span>
       </template>
@@ -56,7 +53,6 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
-
 </script>
 
 <style scoped lang="scss"></style>

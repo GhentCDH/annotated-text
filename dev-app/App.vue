@@ -20,13 +20,13 @@
   <hr />
 
   <AnnotatedText
+    key="text"
     text="012345678901234567890123456789"
     :annotations="annotations"
     :lines="textLines"
     :debug="props.debug"
     :show-labels="props.showLabels"
     :render="props.render"
-    key="text"
     @annotation-select="onAnnotationClick"
     @annotation-edited="onAnnotationEdited"
     @select-text="onSelectText"
@@ -41,7 +41,10 @@ import { annotationsGreek, textGreek as text } from "./data";
 
 import { computed, reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
-import { AnnotationsState, EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
+import {
+  AnnotationsState,
+  EditAnnotationState,
+} from "@/lib/annotatedTextUtils/StateClasses";
 
 const textLines = textToLines(text);
 
@@ -71,13 +74,16 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
-const onAnnotationEdited = function (annotationsState: AnnotationsState, editState: EditAnnotationState): void {
+const onAnnotationEdited = function (
+  annotationsState: AnnotationsState,
+  editState: EditAnnotationState
+): void {
   props.debug && console.log("** Edited: ", editState.annotation);
   annotationsState.editAnnotation(editState.annotation); // Edit component state
   annotations.set(editState.annotation.id, editState.annotation); // Edit application state
 };
 
-function onSelectText(start: number, end: number, text: string){
+function onSelectText(start: number, end: number, text: string) {
   console.log(`selected from ${start} until ${end}`);
   const id = Math.random().toString().slice(2, 12);
   const anno: Annotation = {
