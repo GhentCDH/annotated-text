@@ -9,7 +9,7 @@ import {
 
 export interface AnnotatedTextProps {
   text?: string;
-  annotations?: Annotation[];
+  annotations?: Map<string, Annotation>;
   lines: Line[];
   annotationOffset?: number;
   debug?: boolean;

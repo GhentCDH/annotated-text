@@ -7,6 +7,8 @@ import type {
 import { AnnotationActionState } from "@/types";
 import { Ref } from "vue";
 import { computed } from "vue-demi";
+import { ActionType } from "@/types/AnnotatedText";
+import { EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
 
 export const startsOnLine = function (
   line: AnnotatedLine,
@@ -24,11 +26,11 @@ export const endsOnLine = function (
 
 export class CssClassesUtil {
   props: AnnotatedTextProps;
-  state: Ref<AnnotationActionState>;
+  editAnnotationState: EditAnnotationState;
 
-  constructor(props: AnnotatedTextProps, state: Ref<AnnotationActionState>) {
+  constructor(props: AnnotatedTextProps, editingAnnotation: EditAnnotationState) {
     this.props = props;
-    this.state = state;
+    this.editAnnotationState = editingAnnotation;
   }
 
   componentClasses = computed((): any[] => {
@@ -36,8 +38,8 @@ export class CssClassesUtil {
       "annotated-text",
       "theme-" + this.props.theme,
       "annotated-text--render-" + this.props.render,
-      this.state.value.action
-        ? "action--active action--" + this.state.value.action
+      this.editAnnotationState.action
+        ? "action--active action--" + this.editAnnotationState.action
         : null,
       this.props.showLabels ? "annotated-text--show-labels" : null,
     ];
@@ -83,7 +85,7 @@ export class CssClassesUtil {
     if (annotation?.end === end) {
       classes.push(this.props.style.endClass);
     }
-    if (annotation === this.state.value.annotation) {
+    if (this.editAnnotationState.annotation && annotation.id === this.editAnnotationState.annotation.id && annotation !== this.editAnnotationState.annotation) {
       classes.push(this.props.style.transitioningClass);
     }
     return classes;

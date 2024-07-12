@@ -14,6 +14,9 @@ import {
 import { computed, reactive } from "vue-demi";
 import { Ref } from "vue";
 import { FlattenRanges } from "etali";
+import { useEditAnnotationsStore } from "@/stores/AnnotationComponentStores";
+import { Store } from "pinia";
+import { AnnotationsState, EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
 
 // Some consts needed for the utils class
 const annotationEndOffsetFix = 1;
@@ -36,23 +39,22 @@ const intersectInterval = (
 // Utils class containing logic needed in the AnnotatedText component
 export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
-  state: Ref<AnnotationActionState>;
+  annotationsState: AnnotationsState;
+  editState: EditAnnotationState;
 
-  constructor(props: AnnotatedTextProps, state: Ref<AnnotationActionState>) {
+  constructor(props: AnnotatedTextProps, annotationsState: AnnotationsState, editState: EditAnnotationState) {
     this.props = props;
-    this.state = state;
+    this.annotationsState = annotationsState;
+    this.editState = editState;
   }
 
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
-    let annotations = this.props.annotations;
-
-    // make sure computed sees dependent state properties
-    // if not, first execution won't see them because of conditional
-    this.state.value.newStart;
-    this.state.value.newEnd;
-
+    let annotations = this.annotationsState.getAnnotationsList();
+    if (this.editState.annotation){
+      annotations.push(this.editState.annotation);
+    }
     // replace objects by proxies, needed to be able
     // to compare annotation (no proxy) with annotation in this.state (proxy)
     annotations = reactive(annotations);
@@ -85,7 +87,9 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log(annotations);
 
     const spanAnnotations = annotations.filter(
-      (annotation) => annotation.target === "span"
+      (annotation) => {
+        return annotation.target === "span"
+      }
     );
 
     if (this.props.autoAnnotationWeights) {
@@ -167,7 +171,6 @@ export default class AnnotatedLinesUtil {
   // flatten overlapping ranges
   private flattenedRanges = computed((): RangeWithAnnotations[] => {
     // prepare annotations
-
     let ranges = this.prepareRanges(this.allAnnotations.value);
 
     // add line ranges
@@ -311,8 +314,6 @@ export default class AnnotatedLinesUtil {
 
   // Map every line to an annotated line
   annotatedLines = computed((): AnnotatedLine[] => {
-    this.props.annotations;
-    console.log(this.props.annotations.length);
     const lines = this.props.lines.map((line) =>
       this.createAnnotatedLine(line)
     );

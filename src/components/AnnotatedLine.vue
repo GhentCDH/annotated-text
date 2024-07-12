@@ -35,7 +35,6 @@
         <span
           v-else
           class="text"
-          @mousedown="(e) => onSelectStart(e, wordPart.start)"
         >
           {{ wordPart.text }}
         </span>
@@ -48,8 +47,6 @@
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
-import { useAnnotationsStore } from "@/stores/AnnotationsStore";
-import { createPositionFromPoint } from "@/lib/DomUtils";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
@@ -57,14 +54,9 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   annotationClasses: () => [],
 });
 
-const store = useAnnotationsStore();
-
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
 
-function onSelectStart(e: MouseEvent, wordStart: number) {
-  store.createAnnotationStateStart = createPositionFromPoint(e.x, e.y).offset + wordStart;
-}
 </script>
 
 <style scoped lang="scss"></style>

@@ -18,7 +18,6 @@
       :word-part-start="wordPartStart"
       :annotation-click-handler="annotationClickHandler"
       :annotation-class-handler="annotationClassHandler"
-      :annotation-action-handler="store.onAnnotationStartHandler"
     />
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
     <span
@@ -35,7 +34,8 @@ import { createPositionFromPoint } from "@/lib/DomUtils";
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
-import { useAnnotationsStore } from "@/stores/AnnotationsStore";
+import { useEditAnnotationsStore, useStateObjectsStore } from "@/stores/AnnotationComponentStores";
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),
@@ -46,7 +46,9 @@ const props = withDefaults(
 );
 
 // store
-const store = useAnnotationsStore();
+const statesStore = useStateObjectsStore();
+const {editState, annotationsState} = storeToRefs(statesStore);
+
 
 const annotation = computed(() => props.annotations[0]);
 
@@ -54,13 +56,19 @@ const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
 
 function onActionStart(e: MouseEvent, action: ActionType) {
-  console.log("on action start");
   const position = createPositionFromPoint(e.x, e.y);
-  store.onAnnotationStartHandler(e, {
-    annotation: this.annotation,
-    action: action,
-    handlePosition: props.wordPartStart + position.offset,
-  });
+  // store.annotationsState = {
+  //   annotation: this.annotation,
+  //   action: action,
+  //   handlePosition: props.wordPartStart + position.offset,
+  //   origStart: this.annotation.start,
+  //   origEnd: this.annotation.end,
+  //   newStart: this.annotation.start,
+  //   newEnd: this.annotation.end,
+  // };
+  editState.value.startEditing(action,
+    props.wordPartStart + position.offset, this.annotation,
+    this.annotation.end, this.annotation.start, this.annotation.end, this.annotation.start);
 }
 </script>
 

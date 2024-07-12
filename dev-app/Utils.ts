@@ -27,6 +27,5 @@ export const textToLines = (text: string): Line[] => {
     //empty lines:
     lineObjects[i].end = Math.max(lineObjects[i].end, lineObjects[i].start);
   }
-  console.log("line objects", lineObjects);
   return lineObjects;
 };
