@@ -81,9 +81,10 @@ const onAnnotationMove = function(
   editState: EditAnnotationState,
   confirmEdit: () => void,
 ){
-
+  editState.newStart = Math.round(editState.newStart / 5)*5;
+  editState.newEnd = Math.round(editState.newEnd / 5)*5;
   confirmEdit();
-}
+};
 
 const onAnnotationEdited = function (
   annotationsState: AnnotationsState,
