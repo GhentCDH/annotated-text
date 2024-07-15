@@ -4,6 +4,7 @@
     :class="componentClasses"
     @mouseleave="onMouseLeaveHandler($event)"
     @mouseup="onMouseUpHandler($event)"
+    @keydown.esc="onKeyEvent($event)"
   >
     <template v-for="line in linesUtil.annotatedLines.value" :key="line">
       <div class="gutter-annotations">
@@ -77,23 +78,28 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
     endClass: "annotation--end",
     weightClass: "annotation--weight-",
     transitioningClass: "annotation--transitioning",
+    shadowClass: "annotation--shadow",
   }),
 });
 
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
-  "annotation-edited": [
+  "annotation-edit-done": [
     annotationsState: AnnotationsState,
     editState: EditAnnotationState
   ];
+  "annotation-edit-moved": [
+    annotationsState: AnnotationsState,
+    editState: EditAnnotationState,
+    confirmMove: () => void,
+  ];
   "select-text": [start: number, end: number, text: string];
+  "key-pressed": [
+    keyEvent: KeyboardEvent,
+    annotationsState: AnnotationsState,
+    editState: EditAnnotationState];
 }>();
-
-// Init store
-// const store = useEditAnnotationsStore();
-// store.init();
-// const { annotationsState } = storeToRefs(store);
 
 const statesStore = useStateObjectsStore();
 statesStore.init();
@@ -113,6 +119,12 @@ const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
 const wordPartClasses = cssClassUtil.wordPartClasses;
 
+const onKeyEvent = function(key: KeyboardEvent){
+  console.log(key.key);
+  console.log("key pressed");
+  emit("key-pressed", key, annotationsState.value, editState.value);
+}
+
 const onClickAnnotation = function (annotation: Annotation) {
   emit("annotation-select", annotation);
   console.log("emit click-annotation");
@@ -129,7 +141,7 @@ function onMouseLeaveHandler(e: MouseEvent) {
 function onMouseUpHandler(e: MouseEvent) {
   // reset state?
   if (editState.value.action) {
-    emit("annotation-edited", annotationsState.value, editState.value);
+    emit("annotation-edit-done", annotationsState.value, editState.value);
     editState.value.resetEdit();
   }
 }
@@ -140,24 +152,32 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
     if (editState.value.annotation) {
       const newPosition = wordPart.start + position.offset;
       const offset = newPosition - editState.value.handlePosition;
+      editState.value.newStart = editState.value.annotation.start;
+      editState.value.newEnd = editState.value.annotation.end;
       switch (editState.value.action) {
         case "moveEnd":
           if (newPosition >= editState.value.annotation.start) {
-            editState.value.annotation.end = newPosition;
+            editState.value.newEnd = newPosition;
           }
           break;
         case "moveStart":
           if (newPosition <= editState.value.annotation.end) {
-            editState.value.annotation.start = newPosition;
+            editState.value.newStart = newPosition;
           }
           break;
         case "move":
-          editState.value.annotation.start = editState.value.origStart + offset;
-          editState.value.annotation.end = editState.value.origEnd + offset;
+          editState.value.newStart = editState.value.origStart + offset;
+          editState.value.newEnd = editState.value.origEnd + offset;
           break;
       }
-      // emit("annotation-edited", editState.value.annotation);
+      emit("annotation-edit-moved", annotationsState.value, editState.value, onMoveEditAnnotation);
     }
   }
 }
+
+function onMoveEditAnnotation(){
+  editState.value.annotation.start = editState.value.newStart;
+  editState.value.annotation.end = editState.value.newEnd;
+}
+
 </script>

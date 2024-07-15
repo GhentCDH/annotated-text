@@ -4,10 +4,7 @@ import type {
   Annotation,
   WordPart,
 } from "@/types";
-import { AnnotationActionState } from "@/types";
-import { Ref } from "vue";
 import { computed } from "vue-demi";
-import { ActionType } from "@/types/AnnotatedText";
 import { EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
 
 export const startsOnLine = function (
@@ -95,6 +92,13 @@ export class CssClassesUtil {
     ) {
       classes.push(this.props.style.transitioningClass);
     }
+    if (
+      this.editAnnotationState.annotation &&
+      annotation === this.editAnnotationState.annotation
+    ) {
+      classes.push(this.props.style.shadowClass);
+    }
+
     return classes;
   };
 

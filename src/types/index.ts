@@ -14,7 +14,6 @@ export type {
 export type {
   Annotation,
   AnnotationTarget,
-  EditAnnotation,
 } from "./Annotation";
 
 export type {

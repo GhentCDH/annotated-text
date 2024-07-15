@@ -28,8 +28,10 @@
     :show-labels="props.showLabels"
     :render="props.render"
     @annotation-select="onAnnotationClick"
-    @annotation-edited="onAnnotationEdited"
+    @annotation-edit-moved="onAnnotationMove"
+    @annotation-edit-done="onAnnotationEdited"
     @select-text="onSelectText"
+    @key-pressed="onKeyPressed"
   />
 </template>
 
@@ -39,7 +41,7 @@ import { textToLines } from "./Utils";
 
 import { annotationsGreek, textGreek as text } from "./data";
 
-import { computed, reactive } from "vue-demi";
+import { reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 import {
   AnnotationsState,
@@ -74,6 +76,15 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
+const onAnnotationMove = function(
+  annotationsState: AnnotationsState,
+  editState: EditAnnotationState,
+  confirmEdit: () => void,
+){
+
+  confirmEdit();
+}
+
 const onAnnotationEdited = function (
   annotationsState: AnnotationsState,
   editState: EditAnnotationState
@@ -81,6 +92,15 @@ const onAnnotationEdited = function (
   props.debug && console.log("** Edited: ", editState.annotation);
   annotationsState.editAnnotation(editState.annotation); // Edit component state
   annotations.set(editState.annotation.id, editState.annotation); // Edit application state
+};
+
+const onKeyPressed = function (
+  key: KeyboardEvent,
+  annotationsState: AnnotationsState,
+  editState: EditAnnotationState
+): void {
+  console.log(key.key);
+
 };
 
 function onSelectText(start: number, end: number, text: string) {

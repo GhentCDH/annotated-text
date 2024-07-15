@@ -11,9 +11,4 @@ export interface Annotation {
   visible?: boolean;
 }
 
-export interface EditAnnotation {
-  position: number;
-  Annotation: Annotation;
-}
-
 export type AnnotationTarget = "gutter" | "span";

@@ -13,6 +13,7 @@ export interface AnnotationStyle {
   endClass: string;
   weightClass: string;
   transitioningClass: string;
+  shadowClass: string;
 }
 
 export interface AnnotationActionPayload {
