@@ -4,7 +4,6 @@
     :class="componentClasses"
     @mouseleave="onMouseLeaveHandler($event)"
     @mouseup="onMouseUpHandler($event)"
-    @keydown.esc="onKeyEvent($event)"
   >
     <template v-for="line in linesUtil.annotatedLines.value" :key="line">
       <div class="gutter-annotations">
@@ -119,11 +118,9 @@ const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
 const wordPartClasses = cssClassUtil.wordPartClasses;
 
-const onKeyEvent = function (key: KeyboardEvent) {
-  console.log(key.key);
-  console.log("key pressed");
-  emit("key-pressed", key, annotationsState.value, editState.value);
-};
+window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
+  emit("key-pressed", keyEv, annotationsState.value, editState.value);
+});
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("annotation-select", annotation);

@@ -99,7 +99,10 @@ const onKeyPressed = function (
   annotationsState: AnnotationsState,
   editState: EditAnnotationState
 ): void {
-  console.log(key.key);
+  switch (key.key) {
+    case "Escape":
+      editState.resetEdit();
+  }
 };
 
 function onSelectText(start: number, end: number, text: string) {
