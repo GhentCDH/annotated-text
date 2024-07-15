@@ -30,7 +30,6 @@
     @annotation-select="onAnnotationClick"
     @annotation-edit-moved="onAnnotationMove"
     @annotation-edit-done="onAnnotationEdited"
-    @select-text="onSelectText"
     @key-pressed="onKeyPressed"
   />
 </template>
@@ -104,23 +103,6 @@ const onKeyPressed = function (
       editState.resetEdit();
   }
 };
-
-function onSelectText(start: number, end: number, text: string) {
-  console.log(`selected from ${start} until ${end}`);
-  const id = Math.random().toString().slice(2, 12);
-  const anno: Annotation = {
-    id: id,
-    start: start,
-    end: end,
-    text: text,
-    label: "label",
-    target: "span",
-    visible: true,
-    class: "annotation annotation--color-6",
-  };
-  annotations.set(id, anno);
-  console.log(annotations);
-}
 </script>
 
 <style>

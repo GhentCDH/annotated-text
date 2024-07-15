@@ -92,7 +92,6 @@ const emit = defineEmits<{
     annotationsState: AnnotationsState,
     editState: EditAnnotationState
   ];
-  "select-text": [start: number, end: number, text: string];
   "key-pressed": [
     keyEvent: KeyboardEvent,
     annotationsState: AnnotationsState,
