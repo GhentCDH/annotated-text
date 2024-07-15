@@ -88,8 +88,8 @@ $annotated-text-annotation-colors: (
         // calculate line-part height
         @for $weight from 0 to 9 {
             .line-part--m#{$weight} {
-                margin-bottom: calc(2px + ($weight + 2)*2px);
-                margin-top: calc(2px + ($weight + 2)*2px)
+                padding-bottom: calc(2px + ($weight + 2)*2px);
+                padding-top: calc(2px + ($weight + 2)*2px)
             }
         }
 
