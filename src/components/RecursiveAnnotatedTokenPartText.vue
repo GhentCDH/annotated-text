@@ -59,15 +59,6 @@ const annotationClassHandler = props.annotationClassHandler;
 
 function onActionStart(e: MouseEvent, action: ActionType) {
   const position = createPositionFromPoint(e.x, e.y);
-  // store.annotationsState = {
-  //   annotation: this.annotation,
-  //   action: action,
-  //   handlePosition: props.wordPartStart + position.offset,
-  //   origStart: this.annotation.start,
-  //   origEnd: this.annotation.end,
-  //   newStart: this.annotation.start,
-  //   newEnd: this.annotation.end,
-  // };
   editState.value.startEditing(
     action,
     props.wordPartStart + position.offset,

@@ -13,7 +13,8 @@ export class AnnotationsState {
 
   /**
    * override the entire annotations state of the component
-   * @param annotations
+   * @param annotations map of annotations with ID string as key and annotation
+   * objects as values
    */
   overrideAnnotations(annotations: Map<string, Annotation>) {
     this.annotations = annotations;
@@ -21,7 +22,7 @@ export class AnnotationsState {
 
   /**
    * Add or edit an annotation
-   * @param annotation
+   * @param annotation annotation object
    */
   editAnnotation(annotation: Annotation) {
     this.annotations.set(annotation.id, annotation);
@@ -35,6 +36,9 @@ export class AnnotationsState {
     this.annotations.delete(id);
   }
 
+  /**
+   * Returns all annotations as an array.
+   */
   getAnnotationsList(): Annotation[] {
     return Array.from(this.annotations.values());
   }
@@ -74,6 +78,17 @@ export class EditAnnotationState {
     this.editing = false;
   }
 
+  /**
+   * Gets called by the component when an edit it started. Should generally not
+   * be called by the parent component.
+   * @param action
+   * @param handlePosition
+   * @param annotation
+   * @param origEnd
+   * @param origStart
+   * @param newEnd
+   * @param newStart
+   */
   startEditing(
     action: ActionType,
     handlePosition: number,
@@ -92,5 +107,16 @@ export class EditAnnotationState {
     this.newEnd = newEnd;
     this.newStart = newStart;
     this.editing = true;
+  }
+
+  /**
+   * Needs to be called by the parent component every time annotation-edit-moved
+   * is emitted in order to confirm that edit. newStart and newEnd can be
+   * edited before calling this in order to manipulate on what annotations have
+   * to wrap.
+   */
+  confirmEdit() {
+    this.annotation.start = this.newStart;
+    this.annotation.end = this.newEnd;
   }
 }

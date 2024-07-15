@@ -91,14 +91,14 @@ const emit = defineEmits<{
   ];
   "annotation-edit-moved": [
     annotationsState: AnnotationsState,
-    editState: EditAnnotationState,
-    confirmMove: () => void,
+    editState: EditAnnotationState
   ];
   "select-text": [start: number, end: number, text: string];
   "key-pressed": [
     keyEvent: KeyboardEvent,
     annotationsState: AnnotationsState,
-    editState: EditAnnotationState];
+    editState: EditAnnotationState
+  ];
 }>();
 
 const statesStore = useStateObjectsStore();
@@ -119,11 +119,11 @@ const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
 const wordPartClasses = cssClassUtil.wordPartClasses;
 
-const onKeyEvent = function(key: KeyboardEvent){
+const onKeyEvent = function (key: KeyboardEvent) {
   console.log(key.key);
   console.log("key pressed");
   emit("key-pressed", key, annotationsState.value, editState.value);
-}
+};
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("annotation-select", annotation);
@@ -170,14 +170,8 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
           editState.value.newEnd = editState.value.origEnd + offset;
           break;
       }
-      emit("annotation-edit-moved", annotationsState.value, editState.value, onMoveEditAnnotation);
+      emit("annotation-edit-moved", annotationsState.value, editState.value);
     }
   }
 }
-
-function onMoveEditAnnotation(){
-  editState.value.annotation.start = editState.value.newStart;
-  editState.value.annotation.end = editState.value.newEnd;
-}
-
 </script>

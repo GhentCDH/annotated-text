@@ -76,14 +76,13 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
-const onAnnotationMove = function(
+const onAnnotationMove = function (
   annotationsState: AnnotationsState,
-  editState: EditAnnotationState,
-  confirmEdit: () => void,
-){
-  editState.newStart = Math.round(editState.newStart / 5)*5;
-  editState.newEnd = Math.round(editState.newEnd / 5)*5;
-  confirmEdit();
+  editState: EditAnnotationState
+) {
+  editState.newStart = Math.round(editState.newStart / 5) * 5;
+  editState.newEnd = Math.round(editState.newEnd / 5) * 5;
+  editState.confirmEdit();
 };
 
 const onAnnotationEdited = function (
@@ -101,7 +100,6 @@ const onKeyPressed = function (
   editState: EditAnnotationState
 ): void {
   console.log(key.key);
-
 };
 
 function onSelectText(start: number, end: number, text: string) {
