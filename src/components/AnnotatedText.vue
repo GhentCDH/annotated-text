@@ -28,6 +28,7 @@
         <AnnotatedLine
           :on-click-annotation="onClickAnnotation"
           :line="line"
+          :allow-edit="allowEdit"
           :annotation-classes="annotationClasses"
           :word-part-classes="wordPartClasses"
           :render="render"
@@ -70,7 +71,10 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   render: "nested",
   showLabels: false,
   autoAnnotationWeights: true,
-  allowEdit: false,
+  allowEdit: true,
+  listenToOnEditDone: true,
+  listenToOnEditMove: true,
+  listenToOnKeyPressed: true,
   style: () => ({
     activeClass: "annotation--active",
     startClass: "annotation--start",
@@ -118,7 +122,14 @@ const componentClasses = cssClassUtil.componentClasses;
 const wordPartClasses = cssClassUtil.wordPartClasses;
 
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
-  emit("key-pressed", keyEv, annotationsState.value, editState.value);
+  if (props.listenToOnKeyPressed){
+    emit("key-pressed", keyEv, annotationsState.value, editState.value);
+  } else {
+    switch (keyEv.key) {
+      case "Escape":
+        editState.value.resetEdit();
+    }
+  }
 });
 
 const onClickAnnotation = function (annotation: Annotation) {
@@ -131,13 +142,16 @@ function onMouseLeaveHandler(e: MouseEvent) {
   if (editState.value.action) {
     editState.value.resetEdit();
   }
-  console.log("global mouseleave");
 }
 
 function onMouseUpHandler(e: MouseEvent) {
   // reset state?
   if (editState.value.action) {
-    emit("annotation-edit-done", annotationsState.value, editState.value);
+    if (props.listenToOnEditDone){
+      emit("annotation-edit-done", annotationsState.value, editState.value);
+    } else {
+      annotationsState.value.editAnnotation(editState.value.annotation);
+    }
     editState.value.resetEdit();
   }
 }
@@ -166,7 +180,11 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
           editState.value.newEnd = editState.value.origEnd + offset;
           break;
       }
-      emit("annotation-edit-moved", annotationsState.value, editState.value);
+      if (props.listenToOnEditMove){
+        emit("annotation-edit-moved", annotationsState.value, editState.value);
+      } else {
+        editState.value.confirmEdit();
+      }
     }
   }
 }

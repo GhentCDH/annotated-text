@@ -25,6 +25,7 @@
           :text="wordPart.text"
           :start="wordPart.start"
           :end="wordPart.end"
+          :allow-edit="allowEdit"
           :word-part-start="wordPart.start"
           :annotations="
             wordPart.annotations.sort((a, b) => b.weight - a.weight)

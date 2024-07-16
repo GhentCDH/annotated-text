@@ -1,4 +1,4 @@
-import { Annotation, AnnotationTarget } from "./Annotation";
+import { Annotation } from "./Annotation";
 
 export enum AnnotationGranularity {
   Char = "char",

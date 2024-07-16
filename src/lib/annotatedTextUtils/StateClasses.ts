@@ -47,6 +47,7 @@ export class AnnotationsState {
 /**
  * Hold a state of an annotation currently being edited, not yet confirmed by
  * the parent component
+ * @annotation deep copy of the being edited annotation
  */
 export class EditAnnotationState {
   action: ActionType;
@@ -116,7 +117,20 @@ export class EditAnnotationState {
    * to wrap.
    */
   confirmEdit() {
-    this.annotation.start = this.newStart;
-    this.annotation.end = this.newEnd;
+    if (this.editing){
+      this.annotation.start = this.newStart;
+      this.annotation.end = this.newEnd;
+    }
   }
+}
+
+export class HoverAnnotationsState{
+
+  annotations: Annotation[];
+
+  constructor() {
+    this.annotations = [];
+  }
+
+
 }

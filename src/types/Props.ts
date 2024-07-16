@@ -19,6 +19,9 @@ export interface AnnotatedTextProps {
   autoAnnotationWeights?: boolean;
   style?: AnnotationStyle;
   allowEdit?: boolean;
+  listenToOnEditMove?: boolean;
+  listenToOnEditDone?: boolean;
+  listenToOnKeyPressed?: boolean;
 }
 
 export interface RecursiveAnnotatedTokenPartTextProps {
@@ -33,6 +36,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
   ) => string[];
   annotationClickHandler: (annotation: Annotation) => void;
   wordPartStart: number; // for correct handle position
+  allowEdit?: boolean;
 }
 
 export interface AnnotatedLineProps {
@@ -46,4 +50,5 @@ export interface AnnotatedLineProps {
   ) => string[];
   onClickAnnotation: (annotation: Annotation) => void;
   onMouseEnterLinePart: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
+  allowEdit?: boolean;
 }

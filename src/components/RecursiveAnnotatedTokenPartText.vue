@@ -15,6 +15,7 @@
       :text="text"
       :start="start"
       :end="end"
+      :allow-edit="allowEdit"
       :word-part-start="wordPartStart"
       :annotation-click-handler="annotationClickHandler"
       :annotation-class-handler="annotationClassHandler"
@@ -58,16 +59,19 @@ const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
 
 function onActionStart(e: MouseEvent, action: ActionType) {
-  const position = createPositionFromPoint(e.x, e.y);
-  editState.value.startEditing(
-    action,
-    props.wordPartStart + position.offset,
-    this.annotation,
-    this.annotation.end,
-    this.annotation.start,
-    this.annotation.end,
-    this.annotation.start
-  );
+  if (props.allowEdit){
+    const position = createPositionFromPoint(e.x, e.y);
+    editState.value.startEditing(
+      action,
+      props.wordPartStart + position.offset,
+      this.annotation,
+      this.annotation.end,
+      this.annotation.start,
+      this.annotation.end,
+      this.annotation.start
+    );
+  }
+
 }
 </script>
 
