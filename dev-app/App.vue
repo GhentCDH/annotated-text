@@ -28,6 +28,7 @@
     :show-labels="props.showLabels"
     :render="props.render"
     :allow-edit="true"
+    :allow-create="true"
     :listen-to-on-edit-move="false"
     @annotation-select="onAnnotationClick"
     @annotation-edit-moved="onAnnotationMove"
