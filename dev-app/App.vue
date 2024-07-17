@@ -48,8 +48,9 @@ import { annotationsGreek, textGreek as text } from "./data";
 import { reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 import {
-  AnnotationsState, CreateAnnotationState,
-  EditAnnotationState
+  AnnotationsState,
+  CreateAnnotationState,
+  EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 const textLines = textToLines(text);
@@ -80,7 +81,10 @@ const onAnnotationClick = function (annotation: Annotation): void {
   // }
 };
 
-const onCreateStart = function(annotationsState: AnnotationsState, createState: CreateAnnotationState){
+const onCreateStart = function (
+  annotationsState: AnnotationsState,
+  createState: CreateAnnotationState
+) {
   const annotation: Annotation = {
     id: Math.random().toString().slice(2, 12),
     start: createState.newStart,
@@ -89,18 +93,24 @@ const onCreateStart = function(annotationsState: AnnotationsState, createState: 
     target: "span",
     active: true,
     visible: true,
-  }
+  };
   createState.initAnnotation(annotation);
-}
+};
 
-const onCreateMove = function(annotationsState: AnnotationsState, createState: CreateAnnotationState){
+const onCreateMove = function (
+  annotationsState: AnnotationsState,
+  createState: CreateAnnotationState
+) {
   createState.updateCreating();
-}
+};
 
-const onCreateDone = function(annotationsState: AnnotationsState, createState: CreateAnnotationState){
+const onCreateDone = function (
+  annotationsState: AnnotationsState,
+  createState: CreateAnnotationState
+) {
   annotations.set(createState.annotation.id, createState.annotation);
   annotationsState.editAnnotation(createState.annotation);
-}
+};
 
 const onAnnotationMove = function (
   annotationsState: AnnotationsState,

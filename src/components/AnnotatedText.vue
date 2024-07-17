@@ -51,14 +51,13 @@ import {
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
-import {
-  useStateObjectsStore,
-} from "@/stores/AnnotationComponentStores";
+import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
-  AnnotationsState, CreateAnnotationState,
-  EditAnnotationState
+  AnnotationsState,
+  CreateAnnotationState,
+  EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 // init props
@@ -102,15 +101,15 @@ const emit = defineEmits<{
   ];
   "annotation-create-start": [
     annotationsState: AnnotationsState,
-    createState: CreateAnnotationState,
+    createState: CreateAnnotationState
   ];
   "annotation-create-move": [
     annotationsState: AnnotationsState,
-    createState: CreateAnnotationState,
+    createState: CreateAnnotationState
   ];
   "annotation-create-done": [
     annotationsState: AnnotationsState,
-    createState: CreateAnnotationState,
+    createState: CreateAnnotationState
   ];
   "key-pressed": [
     keyEvent: KeyboardEvent,
@@ -128,7 +127,7 @@ const linesUtil = new AnnotatedLinesUtil(
   props,
   annotationsState.value,
   editState.value,
-  createState.value,
+  createState.value
 );
 
 // Init util to handle css classes
@@ -139,7 +138,7 @@ const componentClasses = cssClassUtil.componentClasses;
 const wordPartClasses = cssClassUtil.wordPartClasses;
 
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
-  if (props.listenToOnKeyPressed){
+  if (props.listenToOnKeyPressed) {
     emit("key-pressed", keyEv, annotationsState.value, editState.value);
   } else {
     switch (keyEv.key) {
@@ -163,13 +162,13 @@ function onMouseLeaveHandler(e: MouseEvent) {
 
 function onMouseUpHandler(e: MouseEvent) {
   if (editState.value.editing) {
-    if (props.listenToOnEditDone){
+    if (props.listenToOnEditDone) {
       emit("annotation-edit-done", annotationsState.value, editState.value);
     } else {
       annotationsState.value.editAnnotation(editState.value.annotation);
     }
     editState.value.resetEdit();
-  } else if (createState.value.creating){
+  } else if (createState.value.creating) {
     emit("annotation-create-done", annotationsState.value, createState.value);
     createState.value.resetCreating();
   }
@@ -199,27 +198,30 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
           editState.value.newEnd = editState.value.origEnd + offset;
           break;
       }
-      if (props.listenToOnEditMove){
+      if (props.listenToOnEditMove) {
         emit("annotation-edit-moved", annotationsState.value, editState.value);
       } else {
         editState.value.confirmEdit();
       }
-    } else if (createState.value.creating){
-      if (createState.value.newStart < newPosition){
+    } else if (createState.value.creating) {
+      if (createState.value.newStart < newPosition) {
         createState.value.newEnd = newPosition;
-        emit("annotation-create-move", annotationsState.value, createState.value);
+        emit(
+          "annotation-create-move",
+          annotationsState.value,
+          createState.value
+        );
       }
     }
   }
 }
 
-function onStartCreate(e: MouseEvent, wordPartStart: number){
-  if (props.allowCreate){
+function onStartCreate(e: MouseEvent, wordPartStart: number) {
+  if (props.allowCreate) {
     const position = wordPartStart + createPositionFromPoint(e.x, e.y).offset;
-    console.log(position);
     createState.value.startCreating(position);
+
     emit("annotation-create-start", annotationsState.value, createState.value);
   }
-
 }
 </script>

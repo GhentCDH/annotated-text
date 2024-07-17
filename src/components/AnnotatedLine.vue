@@ -34,7 +34,8 @@
           :annotation-click-handler="onClickAnnotation"
         />
         <span
-          v-else class="text"
+          v-else
+          class="text"
           @mousedown="onStartCreate($event, wordPart.start)"
         >
           {{ wordPart.text }}
@@ -63,8 +64,6 @@ const { createState } = storeToRefs(statesStore);
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
-
-
 </script>
 
 <style scoped lang="scss"></style>

@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import {
-  AnnotationsState, CreateAnnotationState,
-  EditAnnotationState
+  AnnotationsState,
+  CreateAnnotationState,
+  EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
-
 
 export const useStateObjectsStore = defineStore("stateObjects", {
   state: () => ({

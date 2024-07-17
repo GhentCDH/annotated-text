@@ -125,7 +125,6 @@ export class EditAnnotationState {
 }
 
 export class HoverAnnotationsState {
-
   hoveredAnnotations: Annotation[];
   editingAnnotation: Annotation;
 
@@ -134,18 +133,16 @@ export class HoverAnnotationsState {
     this.editingAnnotation = null;
   }
 
-  setEditingAnnotation(annotation: Annotation){
+  setEditingAnnotation(annotation: Annotation) {
     this.editingAnnotation = JSON.parse(JSON.stringify(annotation));
   }
 
-  resetEditingAnnotation(){
+  resetEditingAnnotation() {
     this.editingAnnotation = null;
   }
-
 }
 
 export class CreateAnnotationState {
-
   newEnd: number;
   newStart: number;
   annotation: Annotation;
@@ -155,24 +152,24 @@ export class CreateAnnotationState {
     this.resetCreating();
   }
 
-  resetCreating(){
+  resetCreating() {
     this.creating = false;
     this.annotation = null;
     this.newEnd = null;
     this.newStart = null;
   }
 
-  startCreating(start: number){
+  startCreating(start: number) {
     this.creating = true;
     this.newStart = start;
     this.newEnd = start;
   }
 
-  initAnnotation(annotation: Annotation){
+  initAnnotation(annotation: Annotation) {
     this.annotation = annotation;
   }
 
-  updateCreating(){
+  updateCreating() {
     this.annotation.start = this.newStart;
     this.annotation.end = this.newEnd;
   }

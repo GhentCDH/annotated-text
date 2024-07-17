@@ -14,8 +14,9 @@ import {
 import { computed, reactive } from "vue-demi";
 import { FlattenRanges } from "etali";
 import {
-  AnnotationsState, CreateAnnotationState,
-  EditAnnotationState
+  AnnotationsState,
+  CreateAnnotationState,
+  EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 // Some consts needed for the utils class
@@ -47,7 +48,7 @@ export default class AnnotatedLinesUtil {
     props: AnnotatedTextProps,
     annotationsState: AnnotationsState,
     editState: EditAnnotationState,
-    createState: CreateAnnotationState,
+    createState: CreateAnnotationState
   ) {
     this.props = props;
     this.annotationsState = annotationsState;
