@@ -33,6 +33,7 @@
           :word-part-classes="wordPartClasses"
           :render="render"
           :on-mouse-enter-line-part="onMouseEnterLinePartHandler"
+          :on-start-create="onStartCreate"
         />
       </div>
     </template>
@@ -51,14 +52,13 @@ import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
 import {
-  useEditAnnotationsStore,
   useStateObjectsStore,
 } from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
-  AnnotationsState,
-  EditAnnotationState,
+  AnnotationsState, CreateAnnotationState,
+  EditAnnotationState
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 // init props
@@ -72,9 +72,13 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   showLabels: false,
   autoAnnotationWeights: true,
   allowEdit: true,
+  allowCreate: true,
   listenToOnEditDone: true,
   listenToOnEditMove: true,
   listenToOnKeyPressed: true,
+  listenToOnCreateStart: true,
+  listenToOnCreateMove: true,
+  listenToOnCreateDone: true,
   style: () => ({
     activeClass: "annotation--active",
     startClass: "annotation--start",
@@ -96,6 +100,18 @@ const emit = defineEmits<{
     annotationsState: AnnotationsState,
     editState: EditAnnotationState
   ];
+  "annotation-create-start": [
+    annotationsState: AnnotationsState,
+    createState: CreateAnnotationState,
+  ];
+  "annotation-create-move": [
+    annotationsState: AnnotationsState,
+    createState: CreateAnnotationState,
+  ];
+  "annotation-create-done": [
+    annotationsState: AnnotationsState,
+    createState: CreateAnnotationState,
+  ];
   "key-pressed": [
     keyEvent: KeyboardEvent,
     annotationsState: AnnotationsState,
@@ -105,13 +121,14 @@ const emit = defineEmits<{
 
 const statesStore = useStateObjectsStore();
 statesStore.init();
-const { annotationsState, editState } = storeToRefs(statesStore);
+const { annotationsState, editState, createState } = storeToRefs(statesStore);
 annotationsState.value.overrideAnnotations(props.annotations);
 
 const linesUtil = new AnnotatedLinesUtil(
   props,
   annotationsState.value,
-  editState.value
+  editState.value,
+  createState.value,
 );
 
 // Init util to handle css classes
@@ -145,23 +162,25 @@ function onMouseLeaveHandler(e: MouseEvent) {
 }
 
 function onMouseUpHandler(e: MouseEvent) {
-  // reset state?
-  if (editState.value.action) {
+  if (editState.value.editing) {
     if (props.listenToOnEditDone){
       emit("annotation-edit-done", annotationsState.value, editState.value);
     } else {
       annotationsState.value.editAnnotation(editState.value.annotation);
     }
     editState.value.resetEdit();
+  } else if (createState.value.creating){
+    emit("annotation-create-done", annotationsState.value, createState.value);
+    createState.value.resetCreating();
   }
 }
 
 function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
   const position = createPositionFromPoint(e.x, e.y);
   if (position) {
-    if (editState.value.annotation) {
-      const newPosition = wordPart.start + position.offset;
-      const offset = newPosition - editState.value.handlePosition;
+    const newPosition = wordPart.start + position.offset;
+    const offset = newPosition - editState.value.handlePosition;
+    if (editState.value.editing) {
       editState.value.newStart = editState.value.annotation.start;
       editState.value.newEnd = editState.value.annotation.end;
       switch (editState.value.action) {
@@ -185,7 +204,22 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
       } else {
         editState.value.confirmEdit();
       }
+    } else if (createState.value.creating){
+      if (createState.value.newStart < newPosition){
+        createState.value.newEnd = newPosition;
+        emit("annotation-create-move", annotationsState.value, createState.value);
+      }
     }
   }
+}
+
+function onStartCreate(e: MouseEvent, wordPartStart: number){
+  if (props.allowCreate){
+    const position = wordPartStart + createPositionFromPoint(e.x, e.y).offset;
+    console.log(position);
+    createState.value.startCreating(position);
+    emit("annotation-create-start", annotationsState.value, createState.value);
+  }
+
 }
 </script>

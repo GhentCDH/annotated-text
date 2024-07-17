@@ -36,7 +36,6 @@ import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
 import {
-  useEditAnnotationsStore,
   useStateObjectsStore,
 } from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";

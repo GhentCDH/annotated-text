@@ -33,6 +33,9 @@
     @annotation-edit-moved="onAnnotationMove"
     @annotation-edit-done="onAnnotationEdited"
     @key-pressed="onKeyPressed"
+    @annotation-create-start="onCreateStart"
+    @annotation-create-move="onCreateMove"
+    @annotation-create-done="onCreateDone"
   />
 </template>
 
@@ -45,8 +48,8 @@ import { annotationsGreek, textGreek as text } from "./data";
 import { reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 import {
-  AnnotationsState,
-  EditAnnotationState,
+  AnnotationsState, CreateAnnotationState,
+  EditAnnotationState
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 const textLines = textToLines(text);
@@ -76,6 +79,28 @@ const onAnnotationClick = function (annotation: Annotation): void {
   //   annotation.class = annotation.class += " annotation--active";
   // }
 };
+
+const onCreateStart = function(annotationsState: AnnotationsState, createState: CreateAnnotationState){
+  const annotation: Annotation = {
+    id: Math.random().toString().slice(2, 12),
+    start: createState.newStart,
+    end: createState.newStart,
+    class: "annotation annotation--color-1",
+    target: "span",
+    active: true,
+    visible: true,
+  }
+  createState.initAnnotation(annotation);
+}
+
+const onCreateMove = function(annotationsState: AnnotationsState, createState: CreateAnnotationState){
+  createState.updateCreating();
+}
+
+const onCreateDone = function(annotationsState: AnnotationsState, createState: CreateAnnotationState){
+  annotations.set(createState.annotation.id, createState.annotation);
+  annotationsState.editAnnotation(createState.annotation);
+}
 
 const onAnnotationMove = function (
   annotationsState: AnnotationsState,

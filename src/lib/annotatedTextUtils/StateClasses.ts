@@ -117,20 +117,63 @@ export class EditAnnotationState {
    * to wrap.
    */
   confirmEdit() {
-    if (this.editing){
+    if (this.editing) {
       this.annotation.start = this.newStart;
       this.annotation.end = this.newEnd;
     }
   }
 }
 
-export class HoverAnnotationsState{
+export class HoverAnnotationsState {
 
-  annotations: Annotation[];
+  hoveredAnnotations: Annotation[];
+  editingAnnotation: Annotation;
 
   constructor() {
-    this.annotations = [];
+    this.hoveredAnnotations = [];
+    this.editingAnnotation = null;
   }
 
+  setEditingAnnotation(annotation: Annotation){
+    this.editingAnnotation = JSON.parse(JSON.stringify(annotation));
+  }
 
+  resetEditingAnnotation(){
+    this.editingAnnotation = null;
+  }
+
+}
+
+export class CreateAnnotationState {
+
+  newEnd: number;
+  newStart: number;
+  annotation: Annotation;
+  creating: boolean;
+
+  constructor() {
+    this.resetCreating();
+  }
+
+  resetCreating(){
+    this.creating = false;
+    this.annotation = null;
+    this.newEnd = null;
+    this.newStart = null;
+  }
+
+  startCreating(start: number){
+    this.creating = true;
+    this.newStart = start;
+    this.newEnd = start;
+  }
+
+  initAnnotation(annotation: Annotation){
+    this.annotation = annotation;
+  }
+
+  updateCreating(){
+    this.annotation.start = this.newStart;
+    this.annotation.end = this.newEnd;
+  }
 }

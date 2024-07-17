@@ -33,7 +33,10 @@
           :annotation-class-handler="annotationClasses"
           :annotation-click-handler="onClickAnnotation"
         />
-        <span v-else class="text">
+        <span
+          v-else class="text"
+          @mousedown="onStartCreate($event, wordPart.start)"
+        >
           {{ wordPart.text }}
         </span>
       </template>
@@ -45,6 +48,9 @@
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
+import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
+import { storeToRefs } from "pinia";
+import { createPositionFromPoint } from "@/lib/DomUtils";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
@@ -52,8 +58,13 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   annotationClasses: () => [],
 });
 
+const statesStore = useStateObjectsStore();
+const { createState } = storeToRefs(statesStore);
+
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
+
+
 </script>
 
 <style scoped lang="scss"></style>

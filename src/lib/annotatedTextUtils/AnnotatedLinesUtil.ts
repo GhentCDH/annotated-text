@@ -12,13 +12,10 @@ import {
   type WordPart,
 } from "@/types";
 import { computed, reactive } from "vue-demi";
-import { Ref } from "vue";
 import { FlattenRanges } from "etali";
-import { useEditAnnotationsStore } from "@/stores/AnnotationComponentStores";
-import { Store } from "pinia";
 import {
-  AnnotationsState,
-  EditAnnotationState,
+  AnnotationsState, CreateAnnotationState,
+  EditAnnotationState
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 // Some consts needed for the utils class
@@ -44,15 +41,18 @@ export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
   annotationsState: AnnotationsState;
   editState: EditAnnotationState;
+  createState: CreateAnnotationState;
 
   constructor(
     props: AnnotatedTextProps,
     annotationsState: AnnotationsState,
-    editState: EditAnnotationState
+    editState: EditAnnotationState,
+    createState: CreateAnnotationState,
   ) {
     this.props = props;
     this.annotationsState = annotationsState;
     this.editState = editState;
+    this.createState = createState;
   }
 
   private allAnnotations = computed((): Annotation[] => {
@@ -61,6 +61,9 @@ export default class AnnotatedLinesUtil {
     let annotations = this.annotationsState.getAnnotationsList();
     if (this.editState.annotation) {
       annotations.push(this.editState.annotation);
+    }
+    if (this.createState.annotation) {
+      annotations.push(this.createState.annotation);
     }
     // replace objects by proxies, needed to be able
     // to compare annotation (no proxy) with annotation in this.state (proxy)
