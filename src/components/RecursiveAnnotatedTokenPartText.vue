@@ -1,7 +1,7 @@
 <template>
   <span
     v-if="annotations.length"
-    :class="annotationClassHandler(annotation, start, end)"
+    :class="annotationClassHandler(annotation, start, end, props.allowCreate)"
     @click.stop="annotationClickHandler(annotation)"
     @mousedown="onActionStart($event, 'move')"
   >

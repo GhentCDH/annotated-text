@@ -29,6 +29,7 @@
           :on-click-annotation="onClickAnnotation"
           :line="line"
           :allow-edit="allowEdit"
+          :allow-create="allowCreate"
           :annotation-classes="annotationClasses"
           :word-part-classes="wordPartClasses"
           :render="render"
@@ -41,13 +42,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, watch } from "vue-demi";
-import {
-  AnnotatedTextProps,
-  Annotation,
-  AnnotationActionState,
-  WordPart,
-} from "@/types";
+import { defineEmits } from "vue-demi";
+import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
@@ -148,7 +144,6 @@ window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
 
 const onClickAnnotation = function (annotation: Annotation) {
   emit("annotation-select", annotation);
-  console.log("emit click-annotation");
 };
 
 function onMouseLeaveHandler(e: MouseEvent) {

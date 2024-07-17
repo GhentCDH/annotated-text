@@ -73,7 +73,8 @@ export class CssClassesUtil {
   annotationClasses = (
     annotation: Annotation,
     start: number,
-    end: number
+    end: number,
+    allowCreate: boolean,
   ): string[] => {
     const classes = [
       annotation?.class ?? "",
@@ -99,6 +100,9 @@ export class CssClassesUtil {
       classes.push(this.props.style.shadowClass);
     }
 
+    if (allowCreate) {
+      classes.push("create-anno-text");
+    }
     return classes;
   };
 

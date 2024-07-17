@@ -41,6 +41,9 @@ $annotated-text-annotation-colors: (
     .line-part .text {
         position: relative;
         z-index: 2000;
+    }
+
+    .line-part .create-anno-text {
         user-select: none;
     }
     

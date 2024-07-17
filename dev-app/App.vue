@@ -14,6 +14,10 @@
       <label>Debug messages</label>
       | <input v-model="props.showLabels" type="checkbox" />
       <label>Show labels</label>
+      | <input v-model="props.allowEdit" type="checkbox" />
+      <label>Allow Edits</label>
+      | <input v-model="props.allowCreate" type="checkbox" />
+      <label>Allow Create</label>
     </form>
   </menu>
 
@@ -27,8 +31,8 @@
     :debug="props.debug"
     :show-labels="props.showLabels"
     :render="props.render"
-    :allow-edit="true"
-    :allow-create="true"
+    :allow-edit="props.allowEdit"
+    :allow-create="props.allowCreate"
     :listen-to-on-edit-move="false"
     @annotation-select="onAnnotationClick"
     @annotation-edit-moved="onAnnotationMove"
@@ -60,6 +64,8 @@ const props = reactive({
   showLabels: false,
   debug: false,
   render: "nested" as RenderType,
+  allowEdit: true,
+  allowCreate: true,
 });
 
 const annotations: Map<string, Annotation> = annotationsGreek.reduce(
