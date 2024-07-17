@@ -145,6 +145,13 @@ const onKeyPressed = function (
   switch (keyEv.key) {
     case "Escape":
       editState.resetEdit();
+      break;
+    case "Delete":
+      if (editState.editing){
+        annotationsState.removeAnnotation(editState.annotation.id);
+        annotations.delete(editState.annotation.id);
+        editState.resetEdit();
+      }
   }
 };
 </script>

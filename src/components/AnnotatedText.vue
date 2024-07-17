@@ -113,7 +113,6 @@ const emit = defineEmits<{
 }>();
 
 const statesStore = useStateObjectsStore();
-statesStore.init();
 const { annotationsState, editState, createState } = storeToRefs(statesStore);
 annotationsState.value.overrideAnnotations(props.annotations);
 

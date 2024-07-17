@@ -36,7 +36,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@programic/vue3-tooltip": "^1.0.0",
     "pinia": "^2.1.7",
     "vue-demi": "latest"
   },

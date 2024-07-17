@@ -49,6 +49,7 @@
           {{ wordPart.text }}
         </span>
       </template>
+      </tooltip>
     </span>
   </span>
 </template>
