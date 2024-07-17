@@ -21,11 +21,9 @@ export interface AnnotatedTextProps {
   allowEdit?: boolean;
   allowCreate?: boolean;
   listenToOnEditMove?: boolean;
-  listenToOnEditDone?: boolean;
   listenToOnKeyPressed?: boolean;
   listenToOnCreateStart?: boolean;
   listenToOnCreateMove?: boolean;
-  listenToOnCreateDone?: boolean;
 }
 
 export interface RecursiveAnnotatedTokenPartTextProps {

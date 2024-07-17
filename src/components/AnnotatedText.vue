@@ -72,12 +72,10 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   autoAnnotationWeights: true,
   allowEdit: true,
   allowCreate: true,
-  listenToOnEditDone: true,
   listenToOnEditMove: true,
   listenToOnKeyPressed: true,
   listenToOnCreateStart: true,
   listenToOnCreateMove: true,
-  listenToOnCreateDone: true,
   style: () => ({
     activeClass: "annotation--active",
     startClass: "annotation--start",
@@ -154,19 +152,17 @@ const onClickAnnotation = function (annotation: Annotation) {
 };
 
 function onMouseLeaveHandler(e: MouseEvent) {
-  // reset state?
-  if (editState.value.action) {
+  if (editState.value.editing) {
     editState.value.resetEdit();
+  }
+  if (createState.value.creating) {
+    createState.value.resetCreating();
   }
 }
 
 function onMouseUpHandler(e: MouseEvent) {
   if (editState.value.editing) {
-    if (props.listenToOnEditDone) {
-      emit("annotation-edit-done", annotationsState.value, editState.value);
-    } else {
-      annotationsState.value.editAnnotation(editState.value.annotation);
-    }
+    emit("annotation-edit-done", annotationsState.value, editState.value);
     editState.value.resetEdit();
   } else if (createState.value.creating) {
     emit("annotation-create-done", annotationsState.value, createState.value);
@@ -204,13 +200,17 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
         editState.value.confirmEdit();
       }
     } else if (createState.value.creating) {
-      if (createState.value.newStart < newPosition) {
+      if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
-        emit(
-          "annotation-create-move",
-          annotationsState.value,
-          createState.value
-        );
+        if (props.listenToOnCreateMove) {
+          emit(
+            "annotation-create-move",
+            annotationsState.value,
+            createState.value
+          );
+        } else {
+          createState.value.updateCreating();
+        }
       }
     }
   }
@@ -221,7 +221,24 @@ function onStartCreate(e: MouseEvent, wordPartStart: number) {
     const position = wordPartStart + createPositionFromPoint(e.x, e.y).offset;
     createState.value.startCreating(position);
 
-    emit("annotation-create-start", annotationsState.value, createState.value);
+    if (props.listenToOnCreateStart) {
+      emit(
+        "annotation-create-start",
+        annotationsState.value,
+        createState.value
+      );
+    } else {
+      const annotation: Annotation = {
+        id: Math.random().toString().slice(2, 12),
+        start: createState.value.newStart,
+        end: createState.value.newStart,
+        class: "annotation annotation--color-1",
+        target: "span",
+        active: true,
+        visible: true,
+      };
+      createState.value.initAnnotation(annotation);
+    }
   }
 }
 </script>

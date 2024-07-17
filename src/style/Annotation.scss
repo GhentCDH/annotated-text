@@ -41,8 +41,8 @@ $annotated-text-annotation-colors: (
     .line-part .text {
         position: relative;
         z-index: 2000;
+        user-select: none;
     }
-
     
     .annotation {
         cursor: pointer;
