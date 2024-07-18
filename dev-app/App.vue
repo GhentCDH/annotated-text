@@ -116,7 +116,7 @@ const onCreateDone = function (
   createState: CreateAnnotationState
 ) {
   annotations.set(createState.annotation.id, createState.annotation);
-  annotationsState.editAnnotation(createState.annotation);
+  annotationsState.setAnnotation(createState.annotation);
 };
 
 const onAnnotationMove = function (
@@ -133,7 +133,7 @@ const onAnnotationEdited = function (
   editState: EditAnnotationState
 ): void {
   props.debug && console.log("** Edited: ", editState.annotation);
-  annotationsState.editAnnotation(editState.annotation); // Edit component state
+  annotationsState.setAnnotation(editState.annotation); // Edit component state
   annotations.set(editState.annotation.id, editState.annotation); // Edit application state
 };
 

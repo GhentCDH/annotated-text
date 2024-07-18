@@ -24,7 +24,7 @@ export class AnnotationsState {
    * Add or edit an annotation
    * @param annotation annotation object
    */
-  editAnnotation(annotation: Annotation) {
+  setAnnotation(annotation: Annotation) {
     this.annotations.set(annotation.id, annotation);
   }
 

@@ -27,20 +27,24 @@
         </span>
       </template>
       <template v-if="renderNested">
-        <RecursiveAnnotatedTokenPartText
-          v-if="wordPart.annotations.length"
-          :text="wordPart.text"
-          :start="wordPart.start"
-          :end="wordPart.end"
-          :allow-edit="allowEdit"
-          :allow-create="allowCreate"
-          :word-part-start="wordPart.start"
-          :annotations="
+        <n-tooltip v-if="wordPart.annotations.length" trigger="hover" theme="">
+          <template #trigger>
+            <RecursiveAnnotatedTokenPartText
+              :text="wordPart.text"
+              :start="wordPart.start"
+              :end="wordPart.end"
+              :allow-edit="allowEdit"
+              :allow-create="allowCreate"
+              :word-part-start="wordPart.start"
+              :annotations="
             wordPart.annotations.sort((a, b) => b.weight - a.weight)
           "
-          :annotation-class-handler="annotationClasses"
-          :annotation-click-handler="onClickAnnotation"
-        />
+              :annotation-class-handler="annotationClasses"
+              :annotation-click-handler="onClickAnnotation"
+            />
+          </template>
+          <span>Testing</span>
+        </n-tooltip>
         <span
           v-else
           :class="handleTextClass()"
@@ -49,7 +53,6 @@
           {{ wordPart.text }}
         </span>
       </template>
-      </tooltip>
     </span>
   </span>
 </template>
@@ -58,6 +61,7 @@
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
+import {NTooltip} from 'naive-ui'
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",

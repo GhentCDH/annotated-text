@@ -36,6 +36,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "naive-ui": "^2.39.0",
     "pinia": "^2.1.7",
     "vue-demi": "latest"
   },
