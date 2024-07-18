@@ -8,7 +8,6 @@ import {
 
 export const useStateObjectsStore = defineStore("stateObjects", {
   state: () => ({
-    annotationsState: new AnnotationsState(),
     editState: new EditAnnotationState(),
     createState: new CreateAnnotationState(),
     hoverState: new HoverAnnotationsState(),

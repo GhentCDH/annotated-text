@@ -53,12 +53,19 @@ import { annotationsGreek, textGreek as text } from "./data";
 import { reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 import {
-  AnnotationsState,
   CreateAnnotationState,
   EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 const textLines = textToLines(text);
+
+const annotations: Map<string, Annotation> = annotationsGreek.reduce(
+  (map, anno) => {
+    map.set(anno.id, { ...anno, visible: true });
+    return map;
+  },
+  new Map()
+);
 
 const props = reactive({
   showLabels: false,
@@ -68,13 +75,6 @@ const props = reactive({
   allowCreate: true,
 });
 
-const annotations: Map<string, Annotation> = annotationsGreek.reduce(
-  (map, anno) => {
-    map.set(anno.id, { ...anno, visible: true });
-    return map;
-  },
-  new Map()
-);
 
 const onAnnotationClick = function (annotation: Annotation): void {
   console.log("** click received **");
@@ -89,7 +89,6 @@ const onAnnotationClick = function (annotation: Annotation): void {
 };
 
 const onCreateStart = function (
-  annotationsState: AnnotationsState,
   createState: CreateAnnotationState
 ) {
   const annotation: Annotation = {
@@ -105,22 +104,18 @@ const onCreateStart = function (
 };
 
 const onCreateMove = function (
-  annotationsState: AnnotationsState,
   createState: CreateAnnotationState
 ) {
   createState.updateCreating();
 };
 
 const onCreateDone = function (
-  annotationsState: AnnotationsState,
   createState: CreateAnnotationState
 ) {
   annotations.set(createState.annotation.id, createState.annotation);
-  annotationsState.setAnnotation(createState.annotation);
 };
 
 const onAnnotationMove = function (
-  annotationsState: AnnotationsState,
   editState: EditAnnotationState
 ) {
   editState.newStart = Math.round(editState.newStart / 5) * 5;
@@ -129,17 +124,14 @@ const onAnnotationMove = function (
 };
 
 const onAnnotationEdited = function (
-  annotationsState: AnnotationsState,
   editState: EditAnnotationState
 ): void {
   props.debug && console.log("** Edited: ", editState.annotation);
-  annotationsState.setAnnotation(editState.annotation); // Edit component state
   annotations.set(editState.annotation.id, editState.annotation); // Edit application state
 };
 
 const onKeyPressed = function (
   keyEv: KeyboardEvent,
-  annotationsState: AnnotationsState,
   editState: EditAnnotationState
 ): void {
   switch (keyEv.key) {
@@ -148,7 +140,6 @@ const onKeyPressed = function (
       break;
     case "Delete":
       if (editState.editing){
-        annotationsState.removeAnnotation(editState.annotation.id);
         annotations.delete(editState.annotation.id);
         editState.resetEdit();
       }

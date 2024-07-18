@@ -40,18 +40,15 @@ const intersectInterval = (
 // Utils class containing logic needed in the AnnotatedText component
 export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
-  annotationsState: AnnotationsState;
   editState: EditAnnotationState;
   createState: CreateAnnotationState;
 
   constructor(
     props: AnnotatedTextProps,
-    annotationsState: AnnotationsState,
     editState: EditAnnotationState,
     createState: CreateAnnotationState
   ) {
     this.props = props;
-    this.annotationsState = annotationsState;
     this.editState = editState;
     this.createState = createState;
   }
@@ -59,7 +56,9 @@ export default class AnnotatedLinesUtil {
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
-    let annotations = this.annotationsState.getAnnotationsList();
+    console.log(this.props.annotations);
+
+    let annotations = Array.from(this.props.annotations.values());
     if (this.editState.annotation) {
       annotations.push(this.editState.annotation);
     }

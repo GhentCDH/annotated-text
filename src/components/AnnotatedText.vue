@@ -51,10 +51,10 @@ import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
-  AnnotationsState,
   CreateAnnotationState,
   EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
+
 
 // init props
 const props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -82,43 +82,36 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   }),
 });
 
+
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
   "annotation-edit-done": [
-    annotationsState: AnnotationsState,
     editState: EditAnnotationState
   ];
   "annotation-edit-moved": [
-    annotationsState: AnnotationsState,
     editState: EditAnnotationState
   ];
   "annotation-create-start": [
-    annotationsState: AnnotationsState,
     createState: CreateAnnotationState
   ];
   "annotation-create-move": [
-    annotationsState: AnnotationsState,
     createState: CreateAnnotationState
   ];
   "annotation-create-done": [
-    annotationsState: AnnotationsState,
     createState: CreateAnnotationState
   ];
   "key-pressed": [
     keyEvent: KeyboardEvent,
-    annotationsState: AnnotationsState,
     editState: EditAnnotationState
   ];
 }>();
 
 const statesStore = useStateObjectsStore();
-const { annotationsState, editState, createState } = storeToRefs(statesStore);
-annotationsState.value.overrideAnnotations(props.annotations);
+const { editState, createState } = storeToRefs(statesStore);
 
 const linesUtil = new AnnotatedLinesUtil(
   props,
-  annotationsState.value,
   editState.value,
   createState.value
 );
@@ -132,7 +125,7 @@ const wordPartClasses = cssClassUtil.wordPartClasses;
 
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   if (props.listenToOnKeyPressed) {
-    emit("key-pressed", keyEv, annotationsState.value, editState.value);
+    emit("key-pressed", keyEv, editState.value);
   } else {
     switch (keyEv.key) {
       case "Escape":
@@ -156,10 +149,10 @@ function onMouseLeaveHandler(e: MouseEvent) {
 
 function onMouseUpHandler(e: MouseEvent) {
   if (editState.value.editing) {
-    emit("annotation-edit-done", annotationsState.value, editState.value);
+    emit("annotation-edit-done", editState.value);
     editState.value.resetEdit();
   } else if (createState.value.creating) {
-    emit("annotation-create-done", annotationsState.value, createState.value);
+    emit("annotation-create-done", createState.value);
     createState.value.resetCreating();
   }
 }
@@ -189,7 +182,7 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
           break;
       }
       if (props.listenToOnEditMove) {
-        emit("annotation-edit-moved", annotationsState.value, editState.value);
+        emit("annotation-edit-moved", editState.value);
       } else {
         editState.value.confirmEdit();
       }
@@ -199,7 +192,6 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
         if (props.listenToOnCreateMove) {
           emit(
             "annotation-create-move",
-            annotationsState.value,
             createState.value
           );
         } else {
@@ -218,7 +210,6 @@ function onStartCreate(e: MouseEvent, wordPartStart: number) {
     if (props.listenToOnCreateStart) {
       emit(
         "annotation-create-start",
-        annotationsState.value,
         createState.value
       );
     } else {
