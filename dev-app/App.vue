@@ -33,7 +33,7 @@
     :render="props.render"
     :allow-edit="props.allowEdit"
     :allow-create="props.allowCreate"
-    :listen-to-on-edit-move="false"
+    :listen-to-on-edit-move="true"
     @annotation-select="onAnnotationClick"
     @annotation-edit-moved="onAnnotationMove"
     @annotation-edit-done="onAnnotationEdited"
@@ -77,15 +77,15 @@ const annotations: Map<string, Annotation> = annotationsGreek.reduce(
 );
 
 const onAnnotationClick = function (annotation: Annotation): void {
-  // console.log("** click received **");
-  // console.log(annotation);
-  // if (annotation.class.includes("annotation--active")) {
-  //   annotation.class = annotation.class
-  //     .replace("annotation--active", "")
-  //     .trim();
-  // } else {
-  //   annotation.class = annotation.class += " annotation--active";
-  // }
+  console.log("** click received **");
+  console.log(annotation);
+  if (annotation.class.includes("annotation--active")) {
+    annotation.class = annotation.class
+      .replace("annotation--active", "")
+      .trim();
+  } else {
+    annotation.class = annotation.class += " annotation--active";
+  }
 };
 
 const onCreateStart = function (

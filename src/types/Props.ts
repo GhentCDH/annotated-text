@@ -42,7 +42,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
   allowEdit?: boolean;
   allowCreate?: boolean;
 }
-``
+
 export interface AnnotatedLineProps {
   line: AnnotatedLine;
   wordPartClasses?: (wordPart: WordPart) => any[];
