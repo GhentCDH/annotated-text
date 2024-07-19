@@ -49,7 +49,7 @@ const props = withDefaults(
 
 // store
 const statesStore = useStateObjectsStore(props.componentId);
-const { editState } = storeToRefs(statesStore());
+const { updateState } = storeToRefs(statesStore());
 
 const annotation = computed(() => props.annotations[0]);
 
@@ -59,7 +59,7 @@ const annotationClassHandler = props.annotationClassHandler;
 function onActionStart(e: MouseEvent, action: ActionType) {
   if (props.allowEdit) {
     const position = createPositionFromPoint(e.x, e.y);
-    editState.value.startEditing(
+    updateState.value.startUpdating(
       action,
       props.wordPartStart + position.offset,
       this.annotation,

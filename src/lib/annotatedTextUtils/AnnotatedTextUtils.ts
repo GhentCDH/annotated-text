@@ -5,7 +5,7 @@ import type {
   WordPart,
 } from "@/types";
 import { computed } from "vue-demi";
-import { EditAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
+import { UpdateAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
 
 export const startsOnLine = function (
   line: AnnotatedLine,
@@ -23,11 +23,11 @@ export const endsOnLine = function (
 
 export class CssClassesUtil {
   props: AnnotatedTextProps;
-  editAnnotationState: EditAnnotationState;
+  editAnnotationState: UpdateAnnotationState;
 
   constructor(
     props: AnnotatedTextProps,
-    editingAnnotation: EditAnnotationState
+    editingAnnotation: UpdateAnnotationState
   ) {
     this.props = props;
     this.editAnnotationState = editingAnnotation;

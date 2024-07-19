@@ -53,7 +53,7 @@ import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
   CreateAnnotationState,
-  EditAnnotationState,
+  UpdateAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 
@@ -92,25 +92,26 @@ watchEffect(() => {
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
-  "annotation-edit-done": [editState: EditAnnotationState];
-  "annotation-edit-moved": [editState: EditAnnotationState];
+
+  "annotation-updating": [updateState: UpdateAnnotationState];
+  "annotation-update-end": [updateState: UpdateAnnotationState];
   "annotation-create-start": [createState: CreateAnnotationState];
-  "annotation-create-move": [createState: CreateAnnotationState];
-  "annotation-create-done": [createState: CreateAnnotationState];
-  "key-pressed": [keyEvent: KeyboardEvent, editState: EditAnnotationState];
+  "annotation-creating": [createState: CreateAnnotationState];
+  "annotation-create-end": [createState: CreateAnnotationState];
+  "key-pressed": [keyEvent: KeyboardEvent, updateState: UpdateAnnotationState];
 }>();
 
 const statesStore = useStateObjectsStore(props.componentId);
-const { editState, createState } = storeToRefs(statesStore());
+const { updateState, createState } = storeToRefs(statesStore());
 
 const linesUtil = new AnnotatedLinesUtil(
   props,
-  editState.value,
+  updateState.value,
   createState.value
 );
 
 // Init util to handle css classes
-const cssClassUtil = new CssClassesUtil(props, editState.value);
+const cssClassUtil = new CssClassesUtil(props, updateState.value);
 const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
 const componentClasses = cssClassUtil.componentClasses;
@@ -118,11 +119,11 @@ const wordPartClasses = cssClassUtil.wordPartClasses;
 
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   if (props.listenToOnKeyPressed) {
-    emit("key-pressed", keyEv, editState.value);
+    emit("key-pressed", keyEv, updateState.value);
   } else {
     switch (keyEv.key) {
       case "Escape":
-        editState.value.resetEdit();
+        updateState.value.resetUpdate();
     }
   }
 });
@@ -132,8 +133,8 @@ const onClickAnnotation = function (annotation: Annotation) {
 };
 
 function onMouseLeaveHandler(e: MouseEvent) {
-  if (editState.value.editing) {
-    editState.value.resetEdit();
+  if (updateState.value.editing) {
+    updateState.value.resetUpdate();
   }
   if (createState.value.creating) {
     createState.value.resetCreating();
@@ -141,11 +142,11 @@ function onMouseLeaveHandler(e: MouseEvent) {
 }
 
 function onMouseUpHandler(e: MouseEvent) {
-  if (editState.value.editing) {
-    emit("annotation-edit-done", editState.value);
-    editState.value.resetEdit();
+  if (updateState.value.editing) {
+    emit("annotation-update-end", updateState.value);
+    updateState.value.resetUpdate();
   } else if (createState.value.creating) {
-    emit("annotation-create-done", createState.value);
+    emit("annotation-create-end", createState.value);
     createState.value.resetCreating();
   }
 }
@@ -154,36 +155,36 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
   const position = createPositionFromPoint(e.x, e.y);
   if (position) {
     const newPosition = wordPart.start + position.offset;
-    const offset = newPosition - editState.value.handlePosition;
-    if (editState.value.editing) {
-      editState.value.newStart = editState.value.annotation.start;
-      editState.value.newEnd = editState.value.annotation.end;
-      switch (editState.value.action) {
+    const offset = newPosition - updateState.value.handlePosition;
+    if (updateState.value.editing) {
+      updateState.value.newStart = updateState.value.annotation.start;
+      updateState.value.newEnd = updateState.value.annotation.end;
+      switch (updateState.value.action) {
         case "moveEnd":
-          if (newPosition >= editState.value.annotation.start) {
-            editState.value.newEnd = newPosition;
+          if (newPosition >= updateState.value.annotation.start) {
+            updateState.value.newEnd = newPosition;
           }
           break;
         case "moveStart":
-          if (newPosition <= editState.value.annotation.end) {
-            editState.value.newStart = newPosition;
+          if (newPosition <= updateState.value.annotation.end) {
+            updateState.value.newStart = newPosition;
           }
           break;
         case "move":
-          editState.value.newStart = editState.value.origStart + offset;
-          editState.value.newEnd = editState.value.origEnd + offset;
+          updateState.value.newStart = updateState.value.origStart + offset;
+          updateState.value.newEnd = updateState.value.origEnd + offset;
           break;
       }
       if (props.listenToOnEditMove) {
-        emit("annotation-edit-moved", editState.value);
+        emit("annotation-updating", updateState.value);
       } else {
-        editState.value.confirmEdit();
+        updateState.value.confirmUpdate();
       }
     } else if (createState.value.creating) {
       if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
         if (props.listenToOnCreateMove) {
-          emit("annotation-create-move", createState.value);
+          emit("annotation-creating", createState.value);
         } else {
           createState.value.updateCreating();
         }

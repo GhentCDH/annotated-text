@@ -6,7 +6,7 @@ import { ActionType } from "@/types/AnnotatedText";
  * the parent component
  * @annotation deep copy of the being edited annotation
  */
-export class EditAnnotationState {
+export class UpdateAnnotationState {
   action: ActionType;
   handlePosition: number;
   annotation: Annotation;
@@ -18,13 +18,13 @@ export class EditAnnotationState {
   editing: boolean = false;
 
   constructor() {
-    this.resetEdit();
+    this.resetUpdate();
   }
 
   /**
    * has to get called after an edit has been confirmed or denied.
    */
-  resetEdit() {
+  resetUpdate() {
     this.action = null;
     this.handlePosition = null;
     this.annotation = null;
@@ -47,7 +47,7 @@ export class EditAnnotationState {
    * @param newEnd
    * @param newStart
    */
-  startEditing(
+  startUpdating(
     action: ActionType,
     handlePosition: number,
     annotation: Annotation,
@@ -73,7 +73,7 @@ export class EditAnnotationState {
    * edited before calling this in order to manipulate on what annotations have
    * to wrap.
    */
-  confirmEdit() {
+  confirmUpdate() {
     if (this.editing) {
       this.annotation.start = this.newStart;
       this.annotation.end = this.newEnd;

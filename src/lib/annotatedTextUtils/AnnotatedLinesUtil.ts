@@ -14,7 +14,7 @@ import { computed, reactive } from "vue-demi";
 import { FlattenRanges } from "etali";
 import {
   CreateAnnotationState,
-  EditAnnotationState,
+  UpdateAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 // Some consts needed for the utils class
@@ -38,12 +38,12 @@ const intersectInterval = (
 // Utils class containing logic needed in the AnnotatedText component
 export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
-  editState: EditAnnotationState;
+  editState: UpdateAnnotationState;
   createState: CreateAnnotationState;
 
   constructor(
     props: AnnotatedTextProps,
-    editState: EditAnnotationState,
+    editState: UpdateAnnotationState,
     createState: CreateAnnotationState
   ) {
     this.props = props;

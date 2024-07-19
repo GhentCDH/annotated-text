@@ -36,12 +36,12 @@
       :allow-create="props.allowCreate"
       :listen-to-on-edit-move="true"
       @annotation-select="onAnnotationClick"
-      @annotation-edit-moved="onAnnotationMove"
-      @annotation-edit-done="onAnnotationEdited"
+      @annotation-updating="onAnnotationUpdating"
+      @annotation-update-end="onAnnotationUpdateEnd"
       @key-pressed="onKeyPressed"
-      @annotation-create-start="onCreateStart"
-      @annotation-create-move="onCreateMove"
-      @annotation-create-done="onCreateDone"
+      @annotation-create-start="onAnnotationCreateStart"
+      @annotation-creating="onAnnotationCreating"
+      @annotation-create-end="onAnnotationCreateEnd"
     />
     <AnnotatedText
       key="text"
@@ -56,12 +56,12 @@
       :allow-create="props.allowCreate"
       :listen-to-on-edit-move="true"
       @annotation-select="onAnnotationClick"
-      @annotation-edit-moved="onAnnotationMove"
-      @annotation-edit-done="onAnnotationEdited"
+      @annotation-updating="onAnnotationUpdating"
+      @annotation-update-end="onAnnotationUpdateEnd"
       @key-pressed="onKeyPressed"
-      @annotation-create-start="onCreateStart"
-      @annotation-create-move="onCreateMove"
-      @annotation-create-done="onCreateDone"
+      @annotation-create-start="onAnnotationCreateStart"
+      @annotation-creating="onAnnotationCreating"
+      @annotation-create-end="onAnnotationCreateEnd"
     />
   </div>
 </template>
@@ -76,7 +76,7 @@ import { reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 import {
   CreateAnnotationState,
-  EditAnnotationState,
+  UpdateAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 const textLines = textToLines(text);
@@ -113,7 +113,7 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
-const onCreateStart = function (createState: CreateAnnotationState) {
+const onAnnotationCreateStart = function (createState: CreateAnnotationState) {
   const annotation: Annotation = {
     id: Math.random().toString().slice(2, 12),
     start: createState.newStart,
@@ -126,44 +126,42 @@ const onCreateStart = function (createState: CreateAnnotationState) {
   createState.initAnnotation(annotation);
 };
 
-const onCreateMove = function (createState: CreateAnnotationState) {
+const onAnnotationCreating = function (createState: CreateAnnotationState) {
   createState.updateCreating();
 };
 
-const onCreateDone = function (createState: CreateAnnotationState) {
+const onAnnotationCreateEnd = function (createState: CreateAnnotationState) {
   annotations.set(createState.annotation.id, createState.annotation);
   props.annoList = Array.from(annotations.values());
 };
 
-const onAnnotationMove = function (editState: EditAnnotationState) {
-  editState.newStart = Math.round(editState.newStart / 5) * 5;
-  editState.newEnd = Math.round(editState.newEnd / 5) * 5;
-  editState.confirmEdit();
+const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
+  updateState.newStart = Math.round(updateState.newStart / 5) * 5;
+  updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
+  updateState.confirmUpdate();
 };
 
-const onAnnotationEdited = function (editState: EditAnnotationState): void {
-  props.debug && console.log("** Edited: ", editState.annotation);
-  annotations.set(editState.annotation.id, editState.annotation); // Edit application state
+const onAnnotationUpdateEnd = function (updateState: UpdateAnnotationState): void {
+  props.debug && console.log("** Edited: ", updateState.annotation);
+  annotations.set(updateState.annotation.id, updateState.annotation); // Edit application state
   props.annoList = Array.from(annotations.values());
 };
 
 const onKeyPressed = function (
   keyEv: KeyboardEvent,
-  editState: EditAnnotationState
+  updateState: UpdateAnnotationState
 ): void {
   switch (keyEv.key) {
     case "Escape":
-      editState.resetEdit();
+      updateState.resetUpdate();
       break;
     case "Delete":
-      if (editState.editing) {
-        annotations.delete(editState.annotation.id);
-        editState.resetEdit();
+      if (updateState.editing) {
+        annotations.delete(updateState.annotation.id);
+        props.annoList = Array.from(annotations.values());
+        updateState.resetUpdate();
       }
       break;
-    case "a":
-      console.log("a");
-      annotations.clear();
   }
 };
 </script>
