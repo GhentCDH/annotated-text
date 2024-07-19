@@ -29,6 +29,7 @@
       <template v-if="renderNested">
         <RecursiveAnnotatedTokenPartText
           v-if="wordPart.annotations.length"
+          :component-id="props.componentId"
           :text="wordPart.text"
           :start="wordPart.start"
           :end="wordPart.end"

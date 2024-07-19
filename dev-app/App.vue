@@ -22,26 +22,49 @@
   </menu>
 
   <hr />
+  <div class="text-components">
+    <AnnotatedText
+      key="text"
+      text="012345678901234567890123456789"
+      :component-id="'1'"
+      :annotations="props.annoList"
+      :lines="textLines"
+      :debug="props.debug"
+      :show-labels="props.showLabels"
+      :render="props.render"
+      :allow-edit="props.allowEdit"
+      :allow-create="props.allowCreate"
+      :listen-to-on-edit-move="true"
+      @annotation-select="onAnnotationClick"
+      @annotation-edit-moved="onAnnotationMove"
+      @annotation-edit-done="onAnnotationEdited"
+      @key-pressed="onKeyPressed"
+      @annotation-create-start="onCreateStart"
+      @annotation-create-move="onCreateMove"
+      @annotation-create-done="onCreateDone"
+    />
+    <AnnotatedText
+      key="text"
+      text="012345678901234567890123456789"
+      :component-id="'2'"
+      :annotations="props.annoList"
+      :lines="textLines"
+      :debug="props.debug"
+      :show-labels="props.showLabels"
+      :render="props.render"
+      :allow-edit="props.allowEdit"
+      :allow-create="props.allowCreate"
+      :listen-to-on-edit-move="true"
+      @annotation-select="onAnnotationClick"
+      @annotation-edit-moved="onAnnotationMove"
+      @annotation-edit-done="onAnnotationEdited"
+      @key-pressed="onKeyPressed"
+      @annotation-create-start="onCreateStart"
+      @annotation-create-move="onCreateMove"
+      @annotation-create-done="onCreateDone"
+    />
+  </div>
 
-  <AnnotatedText
-    key="text"
-    text="012345678901234567890123456789"
-    :annotations="annotations"
-    :lines="textLines"
-    :debug="props.debug"
-    :show-labels="props.showLabels"
-    :render="props.render"
-    :allow-edit="props.allowEdit"
-    :allow-create="props.allowCreate"
-    :listen-to-on-edit-move="true"
-    @annotation-select="onAnnotationClick"
-    @annotation-edit-moved="onAnnotationMove"
-    @annotation-edit-done="onAnnotationEdited"
-    @key-pressed="onKeyPressed"
-    @annotation-create-start="onCreateStart"
-    @annotation-create-move="onCreateMove"
-    @annotation-create-done="onCreateDone"
-  />
 </template>
 
 <script setup lang="ts">
@@ -67,14 +90,17 @@ const annotations: Map<string, Annotation> = annotationsGreek.reduce(
   new Map()
 );
 
+// let annoList = Array.from(annotations.values());
+
 const props = reactive({
   showLabels: false,
   debug: false,
   render: "nested" as RenderType,
   allowEdit: true,
   allowCreate: true,
+  reload: true,
+  annoList: Array.from(annotations.values()),
 });
-
 
 const onAnnotationClick = function (annotation: Annotation): void {
   console.log("** click received **");
@@ -113,6 +139,7 @@ const onCreateDone = function (
   createState: CreateAnnotationState
 ) {
   annotations.set(createState.annotation.id, createState.annotation);
+  props.annoList = Array.from(annotations.values());
 };
 
 const onAnnotationMove = function (
@@ -128,6 +155,7 @@ const onAnnotationEdited = function (
 ): void {
   props.debug && console.log("** Edited: ", editState.annotation);
   annotations.set(editState.annotation.id, editState.annotation); // Edit application state
+  props.annoList = Array.from(annotations.values());
 };
 
 const onKeyPressed = function (
@@ -143,6 +171,10 @@ const onKeyPressed = function (
         annotations.delete(editState.annotation.id);
         editState.resetEdit();
       }
+      break;
+    case "a":
+      console.log("a");
+      annotations.clear();
   }
 };
 </script>
@@ -160,5 +192,10 @@ hr {
 
 menu {
   padding: 0;
+}
+
+.text-components {
+  display: flex;
+  flex-direction: row;
 }
 </style>

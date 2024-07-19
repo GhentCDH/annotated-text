@@ -26,6 +26,7 @@
 
       <div class="content">
         <AnnotatedLine
+          :component-id="props.componentId"
           :on-click-annotation="onClickAnnotation"
           :line="line"
           :allow-edit="allowEdit"
@@ -42,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits } from "vue-demi";
+import { computed, defineEmits, reactive, toRefs, watchEffect } from "vue-demi";
 import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
@@ -54,11 +55,13 @@ import {
   CreateAnnotationState,
   EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
+import { v4 as uuidv4 } from 'uuid';
+import { watch } from "vue";
 
 
 // init props
-const props = withDefaults(defineProps<AnnotatedTextProps>(), {
-  annotations: () => new Map(),
+let props = withDefaults(defineProps<AnnotatedTextProps>(), {
+  annotations: () => [],
   lines: () => [],
   annotationOffset: 0,
   debug: true,
@@ -82,6 +85,11 @@ const props = withDefaults(defineProps<AnnotatedTextProps>(), {
   }),
 });
 
+props = reactive(props);
+
+watchEffect(() => {
+  props.annotations.values()
+})
 
 // define emits
 const emit = defineEmits<{
@@ -107,8 +115,8 @@ const emit = defineEmits<{
   ];
 }>();
 
-const statesStore = useStateObjectsStore();
-const { editState, createState } = storeToRefs(statesStore);
+const statesStore = useStateObjectsStore(props.componentId);
+const { editState, createState } = storeToRefs(statesStore());
 
 const linesUtil = new AnnotatedLinesUtil(
   props,
@@ -214,7 +222,7 @@ function onStartCreate(e: MouseEvent, wordPartStart: number) {
       );
     } else {
       const annotation: Annotation = {
-        id: Math.random().toString().slice(2, 12),
+        id: uuidv4(),
         start: createState.value.newStart,
         end: createState.value.newStart,
         class: "annotation annotation--color-1",

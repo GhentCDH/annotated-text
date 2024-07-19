@@ -11,6 +11,7 @@
       @mousedown.stop="onActionStart($event, 'moveStart')"
     ></span>
     <RecursiveAnnotatedTokenPartText
+      :component-id="componentId"
       :annotations="annotations.slice(1)"
       :text="text"
       :start="start"
@@ -33,7 +34,7 @@
 <script setup lang="ts">
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
-import { computed } from "vue-demi";
+import { computed, toRefs } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
 import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";
@@ -47,8 +48,8 @@ const props = withDefaults(
 );
 
 // store
-const statesStore = useStateObjectsStore();
-const { editState, annotationsState } = storeToRefs(statesStore);
+const statesStore = useStateObjectsStore(props.componentId);
+const { editState } = storeToRefs(statesStore());
 
 const annotation = computed(() => props.annotations[0]);
 

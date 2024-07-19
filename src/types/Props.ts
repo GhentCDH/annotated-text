@@ -8,8 +8,9 @@ import {
 } from "@/types/AnnotatedText";
 
 export interface AnnotatedTextProps {
+  componentId: string;
   text?: string;
-  annotations?: Map<string, Annotation>;
+  annotations?: Annotation[];
   lines: Line[];
   annotationOffset?: number;
   debug?: boolean;
@@ -27,6 +28,7 @@ export interface AnnotatedTextProps {
 }
 
 export interface RecursiveAnnotatedTokenPartTextProps {
+  componentId: string;
   text: string;
   start: number;
   end: number;
@@ -44,6 +46,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
 }
 
 export interface AnnotatedLineProps {
+  componentId: string;
   line: AnnotatedLine;
   wordPartClasses?: (wordPart: WordPart) => any[];
   render?: RenderType;
