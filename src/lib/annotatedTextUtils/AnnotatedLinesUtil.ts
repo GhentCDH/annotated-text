@@ -56,7 +56,6 @@ export default class AnnotatedLinesUtil {
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
-
     let annotations = JSON.parse(JSON.stringify(this.props.annotations));
     if (this.editState.annotation) {
       annotations.push(this.editState.annotation);
@@ -324,7 +323,10 @@ export default class AnnotatedLinesUtil {
     const lines = this.props.lines.map((line) =>
       this.createAnnotatedLine(line)
     );
-    this.props.debug && console.log(`** annotated lines (component ${this.props.componentId}) **`);
+    this.props.debug &&
+      console.log(
+        `** annotated lines (component ${this.props.componentId}) **`
+      );
     this.props.debug && console.log(lines);
     return lines;
   });

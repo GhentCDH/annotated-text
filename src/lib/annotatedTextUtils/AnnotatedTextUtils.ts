@@ -74,7 +74,7 @@ export class CssClassesUtil {
     annotation: Annotation,
     start: number,
     end: number,
-    allowCreate: boolean,
+    allowCreate: boolean
   ): string[] => {
     const classes = [
       annotation?.class ?? "",

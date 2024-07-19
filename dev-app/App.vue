@@ -64,7 +64,6 @@
       @annotation-create-done="onCreateDone"
     />
   </div>
-
 </template>
 
 <script setup lang="ts">
@@ -114,9 +113,7 @@ const onAnnotationClick = function (annotation: Annotation): void {
   }
 };
 
-const onCreateStart = function (
-  createState: CreateAnnotationState
-) {
+const onCreateStart = function (createState: CreateAnnotationState) {
   const annotation: Annotation = {
     id: Math.random().toString().slice(2, 12),
     start: createState.newStart,
@@ -129,30 +126,22 @@ const onCreateStart = function (
   createState.initAnnotation(annotation);
 };
 
-const onCreateMove = function (
-  createState: CreateAnnotationState
-) {
+const onCreateMove = function (createState: CreateAnnotationState) {
   createState.updateCreating();
 };
 
-const onCreateDone = function (
-  createState: CreateAnnotationState
-) {
+const onCreateDone = function (createState: CreateAnnotationState) {
   annotations.set(createState.annotation.id, createState.annotation);
   props.annoList = Array.from(annotations.values());
 };
 
-const onAnnotationMove = function (
-  editState: EditAnnotationState
-) {
+const onAnnotationMove = function (editState: EditAnnotationState) {
   editState.newStart = Math.round(editState.newStart / 5) * 5;
   editState.newEnd = Math.round(editState.newEnd / 5) * 5;
   editState.confirmEdit();
 };
 
-const onAnnotationEdited = function (
-  editState: EditAnnotationState
-): void {
+const onAnnotationEdited = function (editState: EditAnnotationState): void {
   props.debug && console.log("** Edited: ", editState.annotation);
   annotations.set(editState.annotation.id, editState.annotation); // Edit application state
   props.annoList = Array.from(annotations.values());
@@ -167,7 +156,7 @@ const onKeyPressed = function (
       editState.resetEdit();
       break;
     case "Delete":
-      if (editState.editing){
+      if (editState.editing) {
         annotations.delete(editState.annotation.id);
         editState.resetEdit();
       }

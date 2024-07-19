@@ -55,9 +55,8 @@ import {
   CreateAnnotationState,
   EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { watch } from "vue";
-
 
 // init props
 let props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -88,31 +87,18 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
 props = reactive(props);
 
 watchEffect(() => {
-  props.annotations.values()
-})
+  props.annotations.values();
+});
 
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
-  "annotation-edit-done": [
-    editState: EditAnnotationState
-  ];
-  "annotation-edit-moved": [
-    editState: EditAnnotationState
-  ];
-  "annotation-create-start": [
-    createState: CreateAnnotationState
-  ];
-  "annotation-create-move": [
-    createState: CreateAnnotationState
-  ];
-  "annotation-create-done": [
-    createState: CreateAnnotationState
-  ];
-  "key-pressed": [
-    keyEvent: KeyboardEvent,
-    editState: EditAnnotationState
-  ];
+  "annotation-edit-done": [editState: EditAnnotationState];
+  "annotation-edit-moved": [editState: EditAnnotationState];
+  "annotation-create-start": [createState: CreateAnnotationState];
+  "annotation-create-move": [createState: CreateAnnotationState];
+  "annotation-create-done": [createState: CreateAnnotationState];
+  "key-pressed": [keyEvent: KeyboardEvent, editState: EditAnnotationState];
 }>();
 
 const statesStore = useStateObjectsStore(props.componentId);
@@ -198,10 +184,7 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
       if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
         if (props.listenToOnCreateMove) {
-          emit(
-            "annotation-create-move",
-            createState.value
-          );
+          emit("annotation-create-move", createState.value);
         } else {
           createState.value.updateCreating();
         }
@@ -216,10 +199,7 @@ function onStartCreate(e: MouseEvent, wordPartStart: number) {
     createState.value.startCreating(position);
 
     if (props.listenToOnCreateStart) {
-      emit(
-        "annotation-create-start",
-        createState.value
-      );
+      emit("annotation-create-start", createState.value);
     } else {
       const annotation: Annotation = {
         id: uuidv4(),

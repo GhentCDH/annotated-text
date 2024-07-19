@@ -37,7 +37,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     annotation: Annotation,
     start: number,
     end: number,
-    allowCreate: boolean,
+    allowCreate: boolean
   ) => string[];
   annotationClickHandler: (annotation: Annotation) => void;
   wordPartStart: number; // for correct handle position
@@ -54,7 +54,7 @@ export interface AnnotatedLineProps {
     annotation: Annotation,
     start: number,
     end: number,
-    allowCreate: boolean,
+    allowCreate: boolean
   ) => string[];
   onClickAnnotation: (annotation: Annotation) => void;
   onMouseEnterLinePart: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
