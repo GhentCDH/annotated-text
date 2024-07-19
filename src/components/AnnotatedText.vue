@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, reactive, toRefs, watchEffect } from "vue-demi";
+import { defineEmits, reactive, watchEffect } from "vue-demi";
 import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
@@ -56,7 +56,6 @@ import {
   EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
-import { watch } from "vue";
 
 // init props
 let props = withDefaults(defineProps<AnnotatedTextProps>(), {

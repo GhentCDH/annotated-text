@@ -2,49 +2,6 @@ import { Annotation } from "@/types";
 import { ActionType } from "@/types/AnnotatedText";
 
 /**
- * Holds a state of all the annotations confirmed by the parent component.
- */
-export class AnnotationsState {
-  annotations: Map<string, Annotation>;
-
-  constructor(annotations: Map<string, Annotation> = new Map()) {
-    this.annotations = annotations;
-  }
-
-  /**
-   * override the entire annotations state of the component
-   * @param annotations map of annotations with ID string as key and annotation
-   * objects as values
-   */
-  overrideAnnotations(annotations: Map<string, Annotation>) {
-    this.annotations = annotations;
-  }
-
-  /**
-   * Add or edit an annotation
-   * @param annotation annotation object
-   */
-  setAnnotation(annotation: Annotation) {
-    this.annotations.set(annotation.id, annotation);
-  }
-
-  /**
-   * Remove an annotation
-   * @param id id of the annotation to remove
-   */
-  removeAnnotation(id: string) {
-    this.annotations.delete(id);
-  }
-
-  /**
-   * Returns all annotations as an array.
-   */
-  getAnnotationsList(): Annotation[] {
-    return Array.from(this.annotations.values());
-  }
-}
-
-/**
  * Hold a state of an annotation currently being edited, not yet confirmed by
  * the parent component
  * @annotation deep copy of the being edited annotation

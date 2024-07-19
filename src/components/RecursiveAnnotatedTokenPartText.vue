@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
-import { computed, toRefs } from "vue-demi";
+import { computed } from "vue-demi";
 import { ActionType } from "@/types/AnnotatedText";
 import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
 import { storeToRefs } from "pinia";

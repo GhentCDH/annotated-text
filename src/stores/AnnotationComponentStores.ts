@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import {
-  AnnotationsState,
   CreateAnnotationState,
   EditAnnotationState,
   HoverAnnotationsState,

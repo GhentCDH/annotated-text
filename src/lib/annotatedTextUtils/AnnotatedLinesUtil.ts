@@ -3,7 +3,6 @@ import {
   AnnotatedTextProps,
   AnnotatedWord,
   type Annotation,
-  AnnotationActionState,
   type AnnotationTarget,
   type Line,
   RangeWithAnnotation,
@@ -14,7 +13,6 @@ import {
 import { computed, reactive } from "vue-demi";
 import { FlattenRanges } from "etali";
 import {
-  AnnotationsState,
   CreateAnnotationState,
   EditAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
