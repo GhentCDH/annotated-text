@@ -1,10 +1,11 @@
 import { Annotation } from "@/types/Annotation";
 import {
+  ActionType,
   AnnotatedLine,
   AnnotationStyle,
   Line,
   RenderType,
-  WordPart,
+  WordPart
 } from "@/types/AnnotatedText";
 
 export interface AnnotatedTextProps {
@@ -21,10 +22,11 @@ export interface AnnotatedTextProps {
   style?: AnnotationStyle;
   allowEdit?: boolean;
   allowCreate?: boolean;
-  listenToOnEditMove?: boolean;
+  listenToOnUpdateStart?: boolean;
+  listenToOnUpdating?: boolean;
   listenToOnKeyPressed?: boolean;
   listenToOnCreateStart?: boolean;
-  listenToOnCreateMove?: boolean;
+  listenToOnCreating?: boolean;
 }
 
 export interface RecursiveAnnotatedTokenPartTextProps {
@@ -39,6 +41,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     end: number,
     allowCreate: boolean
   ) => string[];
+  onUpdateStart: (mouseEvent: MouseEvent, action: ActionType, wordPartStart: number, annotation: Annotation) => void;
   annotationClickHandler: (annotation: Annotation) => void;
   wordPartStart: number; // for correct handle position
   allowEdit?: boolean;
@@ -59,6 +62,7 @@ export interface AnnotatedLineProps {
   onClickAnnotation: (annotation: Annotation) => void;
   onMouseEnterLinePart: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
   onStartCreate: (mouseEvent: MouseEvent, wordPartStart: number) => void;
+  onUpdateStart: (mouseEvent: MouseEvent, action: ActionType, wordPartStart: number, annotation: Annotation) => void;
   allowEdit?: boolean;
   allowCreate?: boolean;
 }

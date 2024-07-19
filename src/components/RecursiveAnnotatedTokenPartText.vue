@@ -3,12 +3,12 @@
     v-if="annotations.length"
     :class="annotationClassHandler(annotation, start, end, props.allowCreate)"
     @click.stop="annotationClickHandler(annotation)"
-    @mousedown="onActionStart($event, 'move')"
+    @mousedown="onUpdateStart($event, 'move', wordPartStart, annotation)"
   >
     <span
       v-if="start === annotation?.start"
       class="handle handle--start"
-      @mousedown.stop="onActionStart($event, 'moveStart')"
+      @mousedown.stop="onUpdateStart($event, 'moveStart', wordPartStart, annotation)"
     ></span>
     <RecursiveAnnotatedTokenPartText
       :component-id="componentId"
@@ -20,12 +20,13 @@
       :word-part-start="wordPartStart"
       :annotation-click-handler="annotationClickHandler"
       :annotation-class-handler="annotationClassHandler"
+      :on-update-start="onUpdateStart"
     />
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
     <span
       v-if="end === annotations[0]?.end"
       class="handle handle--end"
-      @mousedown.stop="onActionStart($event, 'moveEnd')"
+      @mousedown.stop="onUpdateStart($event, 'moveEnd', wordPartStart, annotation)"
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>

@@ -36,6 +36,7 @@
           :render="render"
           :on-mouse-enter-line-part="onMouseEnterLinePartHandler"
           :on-start-create="onStartCreate"
+          :on-update-start="onUpdateStart"
         />
       </div>
     </template>
@@ -56,6 +57,7 @@ import {
   UpdateAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
+import { ActionType } from "@/types/AnnotatedText";
 
 // init props
 let props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -69,10 +71,11 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
   autoAnnotationWeights: true,
   allowEdit: true,
   allowCreate: true,
-  listenToOnEditMove: true,
-  listenToOnKeyPressed: true,
-  listenToOnCreateStart: true,
-  listenToOnCreateMove: true,
+  listenToOnUpdateStart: false,
+  listenToOnUpdating: false,
+  listenToOnKeyPressed: false,
+  listenToOnCreateStart: false,
+  listenToOnCreating: false,
   style: () => ({
     activeClass: "annotation--active",
     startClass: "annotation--start",
@@ -92,7 +95,7 @@ watchEffect(() => {
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
-
+  "annotation-update-start": [updateState: UpdateAnnotationState];
   "annotation-updating": [updateState: UpdateAnnotationState];
   "annotation-update-end": [updateState: UpdateAnnotationState];
   "annotation-create-start": [createState: CreateAnnotationState];
@@ -133,7 +136,7 @@ const onClickAnnotation = function (annotation: Annotation) {
 };
 
 function onMouseLeaveHandler(e: MouseEvent) {
-  if (updateState.value.editing) {
+  if (updateState.value.updating) {
     updateState.value.resetUpdate();
   }
   if (createState.value.creating) {
@@ -142,7 +145,7 @@ function onMouseLeaveHandler(e: MouseEvent) {
 }
 
 function onMouseUpHandler(e: MouseEvent) {
-  if (updateState.value.editing) {
+  if (updateState.value.updating) {
     emit("annotation-update-end", updateState.value);
     updateState.value.resetUpdate();
   } else if (createState.value.creating) {
@@ -156,7 +159,7 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
   if (position) {
     const newPosition = wordPart.start + position.offset;
     const offset = newPosition - updateState.value.handlePosition;
-    if (updateState.value.editing) {
+    if (updateState.value.updating) {
       updateState.value.newStart = updateState.value.annotation.start;
       updateState.value.newEnd = updateState.value.annotation.end;
       switch (updateState.value.action) {
@@ -175,7 +178,7 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
           updateState.value.newEnd = updateState.value.origEnd + offset;
           break;
       }
-      if (props.listenToOnEditMove) {
+      if (props.listenToOnUpdating) {
         emit("annotation-updating", updateState.value);
       } else {
         updateState.value.confirmUpdate();
@@ -183,12 +186,32 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
     } else if (createState.value.creating) {
       if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
-        if (props.listenToOnCreateMove) {
+        if (props.listenToOnCreating) {
           emit("annotation-creating", createState.value);
         } else {
           createState.value.updateCreating();
         }
       }
+    }
+  }
+}
+
+function onUpdateStart(e: MouseEvent, action: ActionType, wordPartStart: number, annotation: Annotation) {
+  if (props.allowEdit) {
+    const position = createPositionFromPoint(e.x, e.y);
+    updateState.value.startUpdating(
+      action,
+      wordPartStart + position.offset,
+      annotation,
+      annotation.end,
+      annotation.start,
+      annotation.end,
+      annotation.start
+    );
+    if (props.listenToOnUpdateStart){
+      emit("annotation-update-start", updateState.value);
+    } else {
+      updateState.value.confirmStartUpdating();
     }
   }
 }

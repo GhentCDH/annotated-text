@@ -34,8 +34,10 @@
       :render="props.render"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
-      :listen-to-on-edit-move="true"
+      :listen-to-on-updating="true"
+      :listen-to-on-update-start="true"
       @annotation-select="onAnnotationClick"
+      @annotation-update-start="onAnnotationUpdateStart"
       @annotation-updating="onAnnotationUpdating"
       @annotation-update-end="onAnnotationUpdateEnd"
       @key-pressed="onKeyPressed"
@@ -54,7 +56,7 @@
       :render="props.render"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
-      :listen-to-on-edit-move="true"
+      :listen-to-on-key-pressed="true"
       @annotation-select="onAnnotationClick"
       @annotation-updating="onAnnotationUpdating"
       @annotation-update-end="onAnnotationUpdateEnd"
@@ -135,6 +137,12 @@ const onAnnotationCreateEnd = function (createState: CreateAnnotationState) {
   props.annoList = Array.from(annotations.values());
 };
 
+const onAnnotationUpdateStart = function(updateState: UpdateAnnotationState){
+  updateState.newStart = Math.round(updateState.newStart / 5) * 5;
+  updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
+  updateState.confirmStartUpdating();
+}
+
 const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
   updateState.newStart = Math.round(updateState.newStart / 5) * 5;
   updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
@@ -156,7 +164,7 @@ const onKeyPressed = function (
       updateState.resetUpdate();
       break;
     case "Delete":
-      if (updateState.editing) {
+      if (updateState.updating) {
         annotations.delete(updateState.annotation.id);
         props.annoList = Array.from(annotations.values());
         updateState.resetUpdate();

@@ -15,7 +15,7 @@ export class UpdateAnnotationState {
   origStart?: number;
   newEnd: number;
   newStart: number;
-  editing: boolean = false;
+  updating: boolean = false;
 
   constructor() {
     this.resetUpdate();
@@ -33,7 +33,7 @@ export class UpdateAnnotationState {
     this.origStart = null;
     this.newEnd = null;
     this.newStart = null;
-    this.editing = false;
+    this.updating = false;
   }
 
   /**
@@ -64,7 +64,14 @@ export class UpdateAnnotationState {
     this.origStart = origStart;
     this.newEnd = newEnd;
     this.newStart = newStart;
-    this.editing = true;
+  }
+
+  /**
+   * Should get called in order to confirm the initial state of the update.
+   */
+  confirmStartUpdating(){
+    this.updating = true;
+    this.confirmUpdate();
   }
 
   /**
@@ -74,7 +81,7 @@ export class UpdateAnnotationState {
    * to wrap.
    */
   confirmUpdate() {
-    if (this.editing) {
+    if (this.updating) {
       this.annotation.start = this.newStart;
       this.annotation.end = this.newEnd;
     }
