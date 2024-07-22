@@ -8,7 +8,9 @@
     <span
       v-if="start === annotation?.start"
       class="handle handle--start"
-      @mousedown.stop="onUpdateStart($event, 'moveStart', wordPartStart, annotation)"
+      @mousedown.stop="
+        onUpdateStart($event, 'moveStart', wordPartStart, annotation)
+      "
     ></span>
     <RecursiveAnnotatedTokenPartText
       :component-id="componentId"
@@ -33,12 +35,8 @@
 </template>
 
 <script setup lang="ts">
-import { createPositionFromPoint } from "@/lib/DomUtils";
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue-demi";
-import { ActionType } from "@/types/AnnotatedText";
-import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
-import { storeToRefs } from "pinia";
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),
@@ -48,29 +46,11 @@ const props = withDefaults(
   }
 );
 
-// store
-const statesStore = useStateObjectsStore(props.componentId);
-const { updateState } = storeToRefs(statesStore());
-
 const annotation = computed(() => props.annotations[0]);
 
 const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
 
-function onActionStart(e: MouseEvent, action: ActionType) {
-  if (props.allowEdit) {
-    const position = createPositionFromPoint(e.x, e.y);
-    updateState.value.startUpdating(
-      action,
-      props.wordPartStart + position.offset,
-      this.annotation,
-      this.annotation.end,
-      this.annotation.start,
-      this.annotation.end,
-      this.annotation.start
-    );
-  }
-}
 </script>
 
 <style scoped lang="scss"></style>

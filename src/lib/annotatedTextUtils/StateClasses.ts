@@ -1,6 +1,22 @@
 import { Annotation } from "@/types";
 import { ActionType } from "@/types/AnnotatedText";
 
+
+export enum UserActionState {
+  IDLE,
+  UPDATING,
+  CREATING
+}
+
+export class UserState {
+  value: UserActionState;
+
+  constructor() {
+    this.value = UserActionState.IDLE;
+  }
+
+}
+
 /**
  * Hold a state of an annotation currently being edited, not yet confirmed by
  * the parent component
@@ -16,8 +32,10 @@ export class UpdateAnnotationState {
   newEnd: number;
   newStart: number;
   updating: boolean = false;
+  userState: UserState;
 
-  constructor() {
+  constructor(userState: UserState) {
+    this.userState = userState;
     this.resetUpdate();
   }
 
@@ -69,7 +87,7 @@ export class UpdateAnnotationState {
   /**
    * Should get called in order to confirm the initial state of the update.
    */
-  confirmStartUpdating(){
+  confirmStartUpdating() {
     this.updating = true;
     this.confirmUpdate();
   }
@@ -86,23 +104,25 @@ export class UpdateAnnotationState {
       this.annotation.end = this.newEnd;
     }
   }
+
+  /**
+   * Internally called to reset state when update is done.
+   */
+  updateDone() {
+    this.resetUpdate();
+    this.userState.value = UserActionState.IDLE;
+    this.updating = false;
+  }
 }
 
+/**
+ * Holds all the annotations the mouse is currently hovering over.
+ */
 export class HoverAnnotationsState {
   hoveredAnnotations: Annotation[];
-  editingAnnotation: Annotation;
 
   constructor() {
     this.hoveredAnnotations = [];
-    this.editingAnnotation = null;
-  }
-
-  setEditingAnnotation(annotation: Annotation) {
-    this.editingAnnotation = JSON.parse(JSON.stringify(annotation));
-  }
-
-  resetEditingAnnotation() {
-    this.editingAnnotation = null;
   }
 }
 
@@ -114,8 +134,10 @@ export class CreateAnnotationState {
   newStart: number;
   annotation: Annotation;
   creating: boolean;
+  userState: UserState;
 
-  constructor() {
+  constructor(userState: UserState) {
+    this.userState = userState;
     this.resetCreating();
   }
 

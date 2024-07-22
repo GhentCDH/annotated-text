@@ -54,7 +54,7 @@ import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
   CreateAnnotationState,
-  UpdateAnnotationState,
+  UpdateAnnotationState, UserActionState
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 import { ActionType } from "@/types/AnnotatedText";
@@ -105,7 +105,7 @@ const emit = defineEmits<{
 }>();
 
 const statesStore = useStateObjectsStore(props.componentId);
-const { updateState, createState } = storeToRefs(statesStore());
+const { updateState, createState, userState } = storeToRefs(statesStore());
 
 const linesUtil = new AnnotatedLinesUtil(
   props,
@@ -147,7 +147,7 @@ function onMouseLeaveHandler(e: MouseEvent) {
 function onMouseUpHandler(e: MouseEvent) {
   if (updateState.value.updating) {
     emit("annotation-update-end", updateState.value);
-    updateState.value.resetUpdate();
+    updateState.value.updateDone();
   } else if (createState.value.creating) {
     emit("annotation-create-end", createState.value);
     createState.value.resetCreating();
@@ -197,7 +197,7 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
 }
 
 function onUpdateStart(e: MouseEvent, action: ActionType, wordPartStart: number, annotation: Annotation) {
-  if (props.allowEdit) {
+  if (props.allowEdit && userState.value.value === UserActionState.IDLE) {
     const position = createPositionFromPoint(e.x, e.y);
     updateState.value.startUpdating(
       action,

@@ -41,7 +41,7 @@
           "
           :annotation-class-handler="annotationClasses"
           :annotation-click-handler="onClickAnnotation"
-          :onUpdateStart="onUpdateStart"
+          :on-update-start="onUpdateStart"
         />
         <span
           v-else
