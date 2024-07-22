@@ -158,6 +158,7 @@ export class CreateAnnotationState {
     this.creating = true;
     this.newStart = start;
     this.newEnd = start;
+    this.userState.value = UserActionState.CREATING;
   }
 
   /**
@@ -179,5 +180,14 @@ export class CreateAnnotationState {
   updateCreating() {
     this.annotation.start = this.newStart;
     this.annotation.end = this.newEnd;
+  }
+
+  /**
+   * Internally called to properly reset state when creation is done.
+   */
+  creatingDone(){
+    this.userState.value = UserActionState.IDLE;
+    this.creating = false;
+    this.resetCreating();
   }
 }

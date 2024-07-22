@@ -151,7 +151,7 @@ function onMouseUpHandler(e: MouseEvent) {
     updateState.value.updateDone();
   } else if (createState.value.creating) {
     emit("annotation-create-end", createState.value);
-    createState.value.resetCreating();
+    createState.value.creatingDone();
   }
 }
 
@@ -223,7 +223,7 @@ function onUpdateStart(
 }
 
 function onStartCreate(e: MouseEvent, wordPartStart: number) {
-  if (props.allowCreate) {
+  if (props.allowCreate && userState.value.value === UserActionState.IDLE) {
     const position = wordPartStart + createPositionFromPoint(e.x, e.y).offset;
     createState.value.startCreating(position);
 
