@@ -28,7 +28,9 @@
     <span
       v-if="end === annotations[0]?.end"
       class="handle handle--end"
-      @mousedown.stop="onUpdateStart($event, 'moveEnd', wordPartStart, annotation)"
+      @mousedown.stop="
+        onUpdateStart($event, 'moveEnd', wordPartStart, annotation)
+      "
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>
@@ -50,7 +52,6 @@ const annotation = computed(() => props.annotations[0]);
 
 const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
-
 </script>
 
 <style scoped lang="scss"></style>

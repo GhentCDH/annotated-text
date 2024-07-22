@@ -54,7 +54,8 @@ import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
   CreateAnnotationState,
-  UpdateAnnotationState, UserActionState
+  UpdateAnnotationState,
+  UserActionState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 import { ActionType } from "@/types/AnnotatedText";
@@ -196,7 +197,12 @@ function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
   }
 }
 
-function onUpdateStart(e: MouseEvent, action: ActionType, wordPartStart: number, annotation: Annotation) {
+function onUpdateStart(
+  e: MouseEvent,
+  action: ActionType,
+  wordPartStart: number,
+  annotation: Annotation
+) {
   if (props.allowEdit && userState.value.value === UserActionState.IDLE) {
     const position = createPositionFromPoint(e.x, e.y);
     updateState.value.startUpdating(
@@ -208,7 +214,7 @@ function onUpdateStart(e: MouseEvent, action: ActionType, wordPartStart: number,
       annotation.end,
       annotation.start
     );
-    if (props.listenToOnUpdateStart){
+    if (props.listenToOnUpdateStart) {
       emit("annotation-update-start", updateState.value);
     } else {
       updateState.value.confirmStartUpdating();

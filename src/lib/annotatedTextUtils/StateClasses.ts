@@ -1,11 +1,10 @@
 import { Annotation } from "@/types";
 import { ActionType } from "@/types/AnnotatedText";
 
-
 export enum UserActionState {
   IDLE,
   UPDATING,
-  CREATING
+  CREATING,
 }
 
 export class UserState {
@@ -14,7 +13,6 @@ export class UserState {
   constructor() {
     this.value = UserActionState.IDLE;
   }
-
 }
 
 /**

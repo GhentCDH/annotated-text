@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
-  HoverAnnotationsState, UserState
+  HoverAnnotationsState,
+  UserState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { ref } from "vue";
 

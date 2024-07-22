@@ -137,11 +137,11 @@ const onAnnotationCreateEnd = function (createState: CreateAnnotationState) {
   props.annoList = Array.from(annotations.values());
 };
 
-const onAnnotationUpdateStart = function(updateState: UpdateAnnotationState){
+const onAnnotationUpdateStart = function (updateState: UpdateAnnotationState) {
   updateState.newStart = Math.round(updateState.newStart / 5) * 5;
   updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
   updateState.confirmStartUpdating();
-}
+};
 
 const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
   updateState.newStart = Math.round(updateState.newStart / 5) * 5;
@@ -149,7 +149,9 @@ const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
   updateState.confirmUpdate();
 };
 
-const onAnnotationUpdateEnd = function (updateState: UpdateAnnotationState): void {
+const onAnnotationUpdateEnd = function (
+  updateState: UpdateAnnotationState
+): void {
   props.debug && console.log("** Edited: ", updateState.annotation);
   annotations.set(updateState.annotation.id, updateState.annotation); // Edit application state
   props.annoList = Array.from(annotations.values());
