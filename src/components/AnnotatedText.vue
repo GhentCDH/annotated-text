@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, reactive, watchEffect } from "vue-demi";
+import { computed, defineEmits, reactive, watchEffect } from "vue-demi";
 import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
@@ -55,10 +55,11 @@ import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
-  UserActionState,
+  UserActionState, UserState
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 import { ActionType } from "@/types/AnnotatedText";
+import { watch } from "vue";
 
 // init props
 let props = withDefaults(defineProps<AnnotatedTextProps>(), {
@@ -89,9 +90,6 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
 
 props = reactive(props);
 
-watchEffect(() => {
-  props.annotations.values();
-});
 
 // define emits
 const emit = defineEmits<{
@@ -103,10 +101,18 @@ const emit = defineEmits<{
   "annotation-creating": [createState: CreateAnnotationState];
   "annotation-create-end": [createState: CreateAnnotationState];
   "key-pressed": [keyEvent: KeyboardEvent, updateState: UpdateAnnotationState];
+  "annotation-mouse-over": [hoveredAnnotations: Annotation[], mouseEvent: MouseEvent];
+  "user-action-state-change": [oldState: UserActionState, newState: UserActionState];
 }>();
 
 const statesStore = useStateObjectsStore(props.componentId);
-const { updateState, createState, userState } = storeToRefs(statesStore());
+const { updateState, createState, userState, hoverState } = storeToRefs(statesStore());
+
+const userStateComp = computed(() => userState.value.value);
+
+watch(userStateComp, (nv, ov) => {
+  emit("user-action-state-change", ov, nv);
+});
 
 const linesUtil = new AnnotatedLinesUtil(
   props,
@@ -133,7 +139,9 @@ window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
 });
 
 const onClickAnnotation = function (annotation: Annotation) {
-  emit("annotation-select", annotation);
+  if (userState.value.value === UserActionState.IDLE){
+    emit("annotation-select", annotation);
+  }
 };
 
 function onMouseLeaveHandler(e: MouseEvent) {
@@ -148,53 +156,67 @@ function onMouseLeaveHandler(e: MouseEvent) {
 function onMouseUpHandler(e: MouseEvent) {
   if (updateState.value.updating) {
     emit("annotation-update-end", updateState.value);
-    updateState.value.updateDone();
+    updateState.value.resetUpdate();
   } else if (createState.value.creating) {
     emit("annotation-create-end", createState.value);
-    createState.value.creatingDone();
+    createState.value.resetCreating();
   }
 }
 
-function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
+const onMouseEnterLinePartHandlerFunctions = new Map<UserActionState, (wordPart: WordPart, e: MouseEvent) => void>();
+
+onMouseEnterLinePartHandlerFunctions.set(UserActionState.UPDATING, (wordPart: WordPart, e: MouseEvent) => {
   const position = createPositionFromPoint(e.x, e.y);
   if (position) {
     const newPosition = wordPart.start + position.offset;
     const offset = newPosition - updateState.value.handlePosition;
-    if (updateState.value.updating) {
-      updateState.value.newStart = updateState.value.annotation.start;
-      updateState.value.newEnd = updateState.value.annotation.end;
-      switch (updateState.value.action) {
-        case "moveEnd":
-          if (newPosition >= updateState.value.annotation.start) {
-            updateState.value.newEnd = newPosition;
-          }
-          break;
-        case "moveStart":
-          if (newPosition <= updateState.value.annotation.end) {
-            updateState.value.newStart = newPosition;
-          }
-          break;
-        case "move":
-          updateState.value.newStart = updateState.value.origStart + offset;
-          updateState.value.newEnd = updateState.value.origEnd + offset;
-          break;
-      }
-      if (props.listenToOnUpdating) {
-        emit("annotation-updating", updateState.value);
-      } else {
-        updateState.value.confirmUpdate();
-      }
-    } else if (createState.value.creating) {
-      if (createState.value.newStart <= newPosition) {
-        createState.value.newEnd = newPosition;
-        if (props.listenToOnCreating) {
-          emit("annotation-creating", createState.value);
-        } else {
-          createState.value.updateCreating();
+    updateState.value.newStart = updateState.value.annotation.start;
+    updateState.value.newEnd = updateState.value.annotation.end;
+    switch (updateState.value.action) {
+      case "moveEnd":
+        if (newPosition >= updateState.value.annotation.start) {
+          updateState.value.newEnd = newPosition;
         }
+        break;
+      case "moveStart":
+        if (newPosition <= updateState.value.annotation.end) {
+          updateState.value.newStart = newPosition;
+        }
+        break;
+      case "move":
+        updateState.value.newStart = updateState.value.origStart + offset;
+        updateState.value.newEnd = updateState.value.origEnd + offset;
+        break;
+    }
+    if (props.listenToOnUpdating) {
+      emit("annotation-updating", updateState.value);
+    } else {
+      updateState.value.confirmUpdate();
+    }
+  }
+});
+
+onMouseEnterLinePartHandlerFunctions.set(UserActionState.IDLE, (wordPart: WordPart, e: MouseEvent) => {
+  emit("annotation-mouse-over", wordPart.annotations, e);
+});
+
+onMouseEnterLinePartHandlerFunctions.set(UserActionState.CREATING, (wordPart: WordPart, e: MouseEvent) => {
+  const position = createPositionFromPoint(e.x, e.y);
+  if (position) {
+    const newPosition = wordPart.start + position.offset;
+    if (createState.value.newStart <= newPosition) {
+      createState.value.newEnd = newPosition;
+      if (props.listenToOnCreating) {
+        emit("annotation-creating", createState.value);
+      } else {
+        createState.value.updateCreating();
       }
     }
   }
+})
+
+function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
+  onMouseEnterLinePartHandlerFunctions.get(userState.value.value)(wordPart, e);
 }
 
 function onUpdateStart(
@@ -204,6 +226,7 @@ function onUpdateStart(
   annotation: Annotation
 ) {
   if (props.allowEdit && userState.value.value === UserActionState.IDLE) {
+    userState.value.value = UserActionState.UPDATING;
     const position = createPositionFromPoint(e.x, e.y);
     updateState.value.startUpdating(
       action,
@@ -224,6 +247,7 @@ function onUpdateStart(
 
 function onStartCreate(e: MouseEvent, wordPartStart: number) {
   if (props.allowCreate && userState.value.value === UserActionState.IDLE) {
+    userState.value.value = UserActionState.CREATING;
     const position = wordPartStart + createPositionFromPoint(e.x, e.y).offset;
     createState.value.startCreating(position);
 

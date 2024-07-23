@@ -294,8 +294,7 @@ $annotated-text-annotation-colors: (
                 .annotation--color-#{$name} {
                     background: $color;
                     label {
-                        padding: 0 2px;
-                        padding-top: 2px;
+                        padding: 2px 2px 0;
                     }
                 }
             }
@@ -341,7 +340,7 @@ $annotated-text-annotation-colors: (
             
             .annotation {
                 position: absolute;
-                left: 0px;
+                left: 0;
                 width: calc(100% + 0px);
                 height: 100%;
                 background: rgb(255, 0, 0);
