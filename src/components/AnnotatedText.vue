@@ -35,6 +35,7 @@
           :word-part-classes="wordPartClasses"
           :render="render"
           :on-mouse-enter-line-part="onMouseEnterLinePartHandler"
+          :on-mouse-move="onMouseMove"
           :on-start-create="onStartCreate"
           :on-update-start="onUpdateStart"
         />
@@ -55,7 +56,8 @@ import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
-  UserActionState, UserState
+  UserActionState,
+  UserState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 import { ActionType } from "@/types/AnnotatedText";
@@ -90,7 +92,6 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
 
 props = reactive(props);
 
-
 // define emits
 const emit = defineEmits<{
   "annotation-select": [annotation: Annotation];
@@ -101,12 +102,24 @@ const emit = defineEmits<{
   "annotation-creating": [createState: CreateAnnotationState];
   "annotation-create-end": [createState: CreateAnnotationState];
   "key-pressed": [keyEvent: KeyboardEvent, updateState: UpdateAnnotationState];
-  "annotation-mouse-over": [hoveredAnnotations: Annotation[], mouseEvent: MouseEvent];
-  "user-action-state-change": [oldState: UserActionState, newState: UserActionState];
+  "annotation-mouse-over": [
+    hoveredAnnotations: Annotation[],
+    mouseEvent: MouseEvent
+  ];
+  "annotation-mouse-leave": [
+    hoveredAnnotations: Annotation[],
+    mouseEvent: MouseEvent
+  ];
+  "user-action-state-change": [
+    oldState: UserActionState,
+    newState: UserActionState
+  ];
 }>();
 
 const statesStore = useStateObjectsStore(props.componentId);
-const { updateState, createState, userState, hoverState } = storeToRefs(statesStore());
+const { updateState, createState, userState, hoverState } = storeToRefs(
+  statesStore()
+);
 
 const userStateComp = computed(() => userState.value.value);
 
@@ -139,7 +152,7 @@ window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
 });
 
 const onClickAnnotation = function (annotation: Annotation) {
-  if (userState.value.value === UserActionState.IDLE){
+  if (userState.value.value === UserActionState.IDLE) {
     emit("annotation-select", annotation);
   }
 };
@@ -163,60 +176,113 @@ function onMouseUpHandler(e: MouseEvent) {
   }
 }
 
-const onMouseEnterLinePartHandlerFunctions = new Map<UserActionState, (wordPart: WordPart, e: MouseEvent) => void>();
+// TODO clean all of this up
+const onMouseEnterLinePartHandlerFunctions = new Map<
+  UserActionState,
+  (wordPart: WordPart, e: MouseEvent) => void
+>();
 
-onMouseEnterLinePartHandlerFunctions.set(UserActionState.UPDATING, (wordPart: WordPart, e: MouseEvent) => {
-  const position = createPositionFromPoint(e.x, e.y);
-  if (position) {
-    const newPosition = wordPart.start + position.offset;
-    const offset = newPosition - updateState.value.handlePosition;
-    updateState.value.newStart = updateState.value.annotation.start;
-    updateState.value.newEnd = updateState.value.annotation.end;
-    switch (updateState.value.action) {
-      case "moveEnd":
-        if (newPosition >= updateState.value.annotation.start) {
-          updateState.value.newEnd = newPosition;
-        }
-        break;
-      case "moveStart":
-        if (newPosition <= updateState.value.annotation.end) {
-          updateState.value.newStart = newPosition;
-        }
-        break;
-      case "move":
-        updateState.value.newStart = updateState.value.origStart + offset;
-        updateState.value.newEnd = updateState.value.origEnd + offset;
-        break;
-    }
-    if (props.listenToOnUpdating) {
-      emit("annotation-updating", updateState.value);
-    } else {
-      updateState.value.confirmUpdate();
-    }
-  }
-});
-
-onMouseEnterLinePartHandlerFunctions.set(UserActionState.IDLE, (wordPart: WordPart, e: MouseEvent) => {
-  emit("annotation-mouse-over", wordPart.annotations, e);
-});
-
-onMouseEnterLinePartHandlerFunctions.set(UserActionState.CREATING, (wordPart: WordPart, e: MouseEvent) => {
-  const position = createPositionFromPoint(e.x, e.y);
-  if (position) {
-    const newPosition = wordPart.start + position.offset;
-    if (createState.value.newStart <= newPosition) {
-      createState.value.newEnd = newPosition;
-      if (props.listenToOnCreating) {
-        emit("annotation-creating", createState.value);
+onMouseEnterLinePartHandlerFunctions.set(
+  UserActionState.UPDATING,
+  (wordPart: WordPart, e: MouseEvent) => {
+    const position = createPositionFromPoint(e.x, e.y);
+    if (position) {
+      const newPosition = wordPart.start + position.offset;
+      const offset = newPosition - updateState.value.handlePosition;
+      updateState.value.newStart = updateState.value.annotation.start;
+      updateState.value.newEnd = updateState.value.annotation.end;
+      switch (updateState.value.action) {
+        case "moveEnd":
+          if (newPosition >= updateState.value.annotation.start) {
+            updateState.value.newEnd = newPosition;
+          }
+          break;
+        case "moveStart":
+          if (newPosition <= updateState.value.annotation.end) {
+            updateState.value.newStart = newPosition;
+          }
+          break;
+        case "move":
+          updateState.value.newStart = updateState.value.origStart + offset;
+          updateState.value.newEnd = updateState.value.origEnd + offset;
+          break;
+      }
+      if (props.listenToOnUpdating) {
+        emit("annotation-updating", updateState.value);
       } else {
-        createState.value.updateCreating();
+        updateState.value.confirmUpdate();
       }
     }
   }
-})
+);
+
+onMouseEnterLinePartHandlerFunctions.set(
+  UserActionState.IDLE,
+  (wordPart: WordPart, e: MouseEvent) => {
+    hoverState.value.hoveredAnnotations = wordPart.annotations;
+    hoverState.value.mouseEvent = e;
+  }
+);
+
+const hoverStateComp = computed(() => hoverState.value.hoveredAnnotations);
+
+watch(hoverStateComp, (nv, ov) => {
+  const removedObjects = ov.filter(
+    (oldObj) => !nv.some((newObj) => newObj.id === oldObj.id)
+  );
+  const addedObjects: Annotation[] = nv.filter(
+    (newObj) => !ov.some((oldObj) => oldObj.id === newObj.id)
+  );
+
+  emit(
+    "annotation-mouse-over",
+    addedObjects,
+    hoverState.value.mouseEvent as MouseEvent
+  );
+
+  emit(
+    "annotation-mouse-leave",
+    removedObjects,
+    hoverState.value.mouseEvent as MouseEvent
+  );
+});
+
+onMouseEnterLinePartHandlerFunctions.set(
+  UserActionState.CREATING,
+  (wordPart: WordPart, e: MouseEvent) => {
+    const position = createPositionFromPoint(e.x, e.y);
+    if (position) {
+      const newPosition = wordPart.start + position.offset;
+      if (createState.value.newStart <= newPosition) {
+        createState.value.newEnd = newPosition;
+        if (props.listenToOnCreating) {
+          emit("annotation-creating", createState.value);
+        } else {
+          createState.value.updateCreating();
+        }
+      }
+    }
+  }
+);
 
 function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
+  // console.log("enter line part");
+  // if (userState.value.value === UserActionState.IDLE) {
+  //   onMouseEnterLinePartHandlerFunctions.get(userState.value.value)(
+  //     wordPart,
+  //     e
+  //   );
+  // }
+}
+
+function onMouseMove(wordPart: WordPart, e: MouseEvent) {
+  // console.log("move");
+  // if (
+  //   userState.value.value === UserActionState.UPDATING ||
+  //   userState.value.value === UserActionState.CREATING
+  // ) {
   onMouseEnterLinePartHandlerFunctions.get(userState.value.value)(wordPart, e);
+  // }
 }
 
 function onUpdateStart(

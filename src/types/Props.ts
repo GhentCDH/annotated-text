@@ -66,6 +66,7 @@ export interface AnnotatedLineProps {
   ) => string[];
   onClickAnnotation: (annotation: Annotation) => void;
   onMouseEnterLinePart: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
+  onMouseMove: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
   onStartCreate: (mouseEvent: MouseEvent, wordPartStart: number) => void;
   onUpdateStart: (
     mouseEvent: MouseEvent,

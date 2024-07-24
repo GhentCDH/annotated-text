@@ -4,6 +4,7 @@ export interface Annotation {
   end: number;
   text?: string;
   class?: string;
+  tmpClass?: string;
   label?: string;
   target: AnnotationTarget;
   weight?: number;

@@ -78,6 +78,7 @@ export class UpdateAnnotationState {
     this.handlePosition = handlePosition;
     this.origAnnotation = annotation;
     this.annotation = JSON.parse(JSON.stringify(annotation));
+    this.annotation.tmpClass = "";
     this.origEnd = origEnd;
     this.origStart = origStart;
     this.newEnd = newEnd;
@@ -111,9 +112,11 @@ export class UpdateAnnotationState {
  */
 export class HoverAnnotationsState {
   hoveredAnnotations: Annotation[];
+  mouseEvent: MouseEvent;
 
   constructor() {
     this.hoveredAnnotations = [];
+    this.mouseEvent = null;
   }
 }
 

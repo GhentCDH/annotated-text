@@ -44,6 +44,8 @@
       @annotation-create-start="onAnnotationCreateStart"
       @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
+      @annotation-mouse-over="onAnnotationMouseOver"
+      @annotation-mouse-leave="onAnnotationMouseLeave"
     />
     <AnnotatedText
       key="text"
@@ -91,6 +93,9 @@ const annotations: Map<string, Annotation> = annotationsGreek.reduce(
   new Map()
 );
 
+// const hoveredAnnotations: Annotation[] = [];
+const selectedAnnotations: Annotation[] = [];
+
 // let annoList = Array.from(annotations.values());
 
 const props = reactive({
@@ -103,9 +108,28 @@ const props = reactive({
   annoList: Array.from(annotations.values()),
 });
 
+const onAnnotationMouseOver = function (
+  hoveredAnnotaations: Annotation[],
+  mouseEvent: MouseEvent
+) {
+  hoveredAnnotaations.forEach((a) => {
+    if (!a.tmpClass || !a.tmpClass.includes("annotation--hover")) {
+      console.log(a.id);
+      a.tmpClass = "annotation--hover";
+    }
+  });
+};
+
+const onAnnotationMouseLeave = function (
+  hoveredAnnotaations: Annotation[],
+  mouseEvent: MouseEvent
+) {
+  hoveredAnnotaations.forEach((a) => {
+    a.tmpClass = "";
+  });
+};
+
 const onAnnotationClick = function (annotation: Annotation): void {
-  console.log("** click received **");
-  console.log(annotation);
   if (annotation.class.includes("annotation--active")) {
     annotation.class = annotation.class
       .replace("annotation--active", "")

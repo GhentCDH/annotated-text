@@ -78,6 +78,7 @@ export class CssClassesUtil {
   ): string[] => {
     const classes = [
       annotation?.class ?? "",
+      annotation?.tmpClass ?? "",
       this.props.style.weightClass + (annotation?.weight ?? 0),
     ];
     if (annotation?.start === start) {

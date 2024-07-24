@@ -6,7 +6,8 @@
       :class="wordPartClasses(wordPart)"
       :data-start="wordPart.start"
       :data-end="wordPart.end"
-      @mousemove="onMouseEnterLinePart(wordPart, $event)"
+      @mousemove.once="onMouseEnterLinePart(wordPart, $event)"
+      @mousemove="onMouseMove(wordPart, $event)"
     >
       <template v-if="renderFlat">
         <span class="text">{{ wordPart.text }}</span>
