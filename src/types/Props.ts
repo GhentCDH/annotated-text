@@ -1,4 +1,4 @@
-import { Annotation } from "@/types/Annotation";
+import { Annotation, AnnotationTarget } from "@/types/Annotation";
 import {
   ActionType,
   AnnotatedLine,
@@ -17,6 +17,7 @@ export interface AnnotatedTextProps {
   debug?: boolean;
   theme?: string;
   render?: RenderType;
+  display?: AnnotationTarget;
   showLabels?: boolean;
   autoAnnotationWeights?: boolean;
   style?: AnnotationStyle;

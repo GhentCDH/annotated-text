@@ -210,10 +210,11 @@ export default class AnnotatedLinesUtil {
         intersectInterval([range[0], range[1] - 1], [word.start, word.end])
       );
 
+    const display = this.props.display;
     rangesInScope = rangesInScope.map(function (range) {
       range[2] = range[2]
         .filter((annotation) => annotation)
-        // .filter((annotation) => annotation?.target === "span")
+        .filter((annotation) => annotation?.target === display)
         .sort((a, b) => (Number(a?.start) > Number(b?.start) ? 1 : -1));
       return range;
     });

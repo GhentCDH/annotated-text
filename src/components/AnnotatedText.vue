@@ -69,6 +69,7 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
   debug: true,
   theme: "default",
   render: "nested",
+  display: "span",
   showLabels: false,
   autoAnnotationWeights: true,
   allowEdit: true,
@@ -174,7 +175,6 @@ function onMouseUpHandler(e: MouseEvent) {
   }
 }
 
-// TODO clean all of this up
 const onMouseMoveHandlerFunctions = new Map<
   UserActionState,
   (wordPart: WordPart, e: MouseEvent) => void

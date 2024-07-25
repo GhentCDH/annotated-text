@@ -32,6 +32,7 @@
       :debug="props.debug"
       :show-labels="props.showLabels"
       render="nested"
+      :display="props.target"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
       :listen-to-on-updating="true"
@@ -56,6 +57,7 @@
       :debug="props.debug"
       :show-labels="props.showLabels"
       render="nested"
+      :display="props.target"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
       :listen-to-on-key-pressed="true"
@@ -76,12 +78,11 @@ import { textToLines } from "./Utils";
 
 import { annotationsGreek, textGreek as text } from "./data";
 
-import { computed, reactive } from "vue-demi";
+import { reactive } from "vue-demi";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
-import { watch } from "vue";
 
 const textLines = textToLines(text);
 
@@ -101,21 +102,8 @@ const props = reactive({
   target: "span" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
-  reload: true,
   annoList: Array.from(annotations.values()),
 });
-
-const target = computed(() => props.target);
-
-watch(target, (nv, ov) => {
-  reloadAnnotationsList();
-});
-
-function reloadAnnotationsList() {
-  props.annoList = Array.from(annotations.values()).filter(
-    (a) => a.target === props.target
-  );
-}
 
 const onAnnotationMouseOver = function (
   hoveredAnnotaations: Annotation[],
