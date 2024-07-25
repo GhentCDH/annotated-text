@@ -77,7 +77,6 @@ import { textToLines } from "./Utils";
 import { annotationsGreek, textGreek as text } from "./data";
 
 import { computed, reactive } from "vue-demi";
-import { RenderType } from "@/types/AnnotatedText";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
@@ -113,7 +112,9 @@ watch(target, (nv, ov) => {
 });
 
 function reloadAnnotationsList() {
-  props.annoList = Array.from(annotations.values()).filter((a) => a.target === props.target);
+  props.annoList = Array.from(annotations.values()).filter(
+    (a) => a.target === props.target
+  );
 }
 
 const onAnnotationMouseOver = function (
