@@ -37,7 +37,14 @@
           :on-mouse-move="onMouseMove"
           :on-start-create="onStartCreate"
           :on-update-start="onUpdateStart"
-        />
+        >
+          <template v-slot:annotation-start>
+            <slot name="annotation-start"></slot>
+          </template>
+          <template v-slot:annotation-end>
+            <slot name="annotation-end"></slot>
+          </template>
+        </AnnotatedLine>
       </div>
     </template>
   </div>

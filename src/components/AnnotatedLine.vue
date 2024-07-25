@@ -43,7 +43,15 @@
           :annotation-class-handler="annotationClasses"
           :annotation-click-handler="onClickAnnotation"
           :on-update-start="onUpdateStart"
-        />
+        >
+          <template v-slot:annotation-start>
+            <slot name="annotation-start"></slot>
+          </template>
+          <template v-slot:annotation-end>
+            <slot name="annotation-end"></slot>
+          </template>
+
+        </RecursiveAnnotatedTokenPartText>
         <span
           v-else
           :class="handleTextClass()"

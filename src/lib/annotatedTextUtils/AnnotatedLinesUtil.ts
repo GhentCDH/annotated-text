@@ -53,6 +53,7 @@ export default class AnnotatedLinesUtil {
 
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
+    console.log("refresh");
 
     let annotations = JSON.parse(JSON.stringify(this.props.annotations));
     if (this.editState.annotation) {

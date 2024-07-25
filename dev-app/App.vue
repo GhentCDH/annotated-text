@@ -47,7 +47,14 @@
       @annotation-create-end="onAnnotationCreateEnd"
       @annotation-mouse-over="onAnnotationMouseOver"
       @annotation-mouse-leave="onAnnotationMouseLeave"
-    />
+    >
+      <template v-slot:annotation-start>
+        S
+      </template>
+      <template v-slot:annotation-end>
+        E
+      </template>
+    </AnnotatedText>
     <AnnotatedText
       key="text"
       text="012345678901234567890123456789"
