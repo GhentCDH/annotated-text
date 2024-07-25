@@ -34,7 +34,6 @@
           :annotation-classes="annotationClasses"
           :word-part-classes="wordPartClasses"
           :render="render"
-          :on-mouse-enter-line-part="onMouseEnterLinePartHandler"
           :on-mouse-move="onMouseMove"
           :on-start-create="onStartCreate"
           :on-update-start="onUpdateStart"
@@ -45,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, reactive, watchEffect } from "vue-demi";
+import { computed, defineEmits, reactive } from "vue-demi";
 import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
@@ -57,7 +56,6 @@ import {
   CreateAnnotationState,
   UpdateAnnotationState,
   UserActionState,
-  UserState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 import { ActionType } from "@/types/AnnotatedText";
@@ -177,12 +175,12 @@ function onMouseUpHandler(e: MouseEvent) {
 }
 
 // TODO clean all of this up
-const onMouseEnterLinePartHandlerFunctions = new Map<
+const onMouseMoveHandlerFunctions = new Map<
   UserActionState,
   (wordPart: WordPart, e: MouseEvent) => void
 >();
 
-onMouseEnterLinePartHandlerFunctions.set(
+onMouseMoveHandlerFunctions.set(
   UserActionState.UPDATING,
   (wordPart: WordPart, e: MouseEvent) => {
     const position = createPositionFromPoint(e.x, e.y);
@@ -216,7 +214,7 @@ onMouseEnterLinePartHandlerFunctions.set(
   }
 );
 
-onMouseEnterLinePartHandlerFunctions.set(
+onMouseMoveHandlerFunctions.set(
   UserActionState.IDLE,
   (wordPart: WordPart, e: MouseEvent) => {
     hoverState.value.hoveredAnnotations = wordPart.annotations;
@@ -247,7 +245,7 @@ watch(hoverStateComp, (nv, ov) => {
   );
 });
 
-onMouseEnterLinePartHandlerFunctions.set(
+onMouseMoveHandlerFunctions.set(
   UserActionState.CREATING,
   (wordPart: WordPart, e: MouseEvent) => {
     const position = createPositionFromPoint(e.x, e.y);
@@ -265,24 +263,8 @@ onMouseEnterLinePartHandlerFunctions.set(
   }
 );
 
-function onMouseEnterLinePartHandler(wordPart: WordPart, e: MouseEvent) {
-  // console.log("enter line part");
-  // if (userState.value.value === UserActionState.IDLE) {
-  //   onMouseEnterLinePartHandlerFunctions.get(userState.value.value)(
-  //     wordPart,
-  //     e
-  //   );
-  // }
-}
-
 function onMouseMove(wordPart: WordPart, e: MouseEvent) {
-  // console.log("move");
-  // if (
-  //   userState.value.value === UserActionState.UPDATING ||
-  //   userState.value.value === UserActionState.CREATING
-  // ) {
-  onMouseEnterLinePartHandlerFunctions.get(userState.value.value)(wordPart, e);
-  // }
+  onMouseMoveHandlerFunctions.get(userState.value.value)(wordPart, e);
 }
 
 function onUpdateStart(

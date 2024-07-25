@@ -4,12 +4,12 @@
     <form>
       <input
         id="nested"
-        v-model="props.render"
+        v-model="props.target"
         type="radio"
-        value="nested"
-      /><label for="nested">Nested</label>
-      <input id="flat" v-model="props.render" type="radio" value="flat" />
-      <label for="flat">Flat</label>
+        value="span"
+      /><label for="span">Span</label>
+      <input id="gutter" v-model="props.target" type="radio" value="gutter" />
+      <label for="gutter">Gutter</label>
       | <input v-model="props.debug" type="checkbox" />
       <label>Debug messages</label>
       | <input v-model="props.showLabels" type="checkbox" />
@@ -31,7 +31,7 @@
       :lines="textLines"
       :debug="props.debug"
       :show-labels="props.showLabels"
-      :render="props.render"
+      render="nested"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
       :listen-to-on-updating="true"
@@ -55,7 +55,7 @@
       :lines="textLines"
       :debug="props.debug"
       :show-labels="props.showLabels"
-      :render="props.render"
+      render="nested"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
       :listen-to-on-key-pressed="true"
@@ -71,17 +71,18 @@
 </template>
 
 <script setup lang="ts">
-import { AnnotatedText, Annotation } from "@/index";
+import { AnnotatedText, Annotation, AnnotationTarget } from "@/index";
 import { textToLines } from "./Utils";
 
 import { annotationsGreek, textGreek as text } from "./data";
 
-import { reactive } from "vue-demi";
+import { computed, reactive } from "vue-demi";
 import { RenderType } from "@/types/AnnotatedText";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
 } from "@/lib/annotatedTextUtils/StateClasses";
+import { watch } from "vue";
 
 const textLines = textToLines(text);
 
@@ -93,20 +94,27 @@ const annotations: Map<string, Annotation> = annotationsGreek.reduce(
   new Map()
 );
 
-// const hoveredAnnotations: Annotation[] = [];
-const selectedAnnotations: Annotation[] = [];
-
 // let annoList = Array.from(annotations.values());
 
 const props = reactive({
   showLabels: false,
   debug: false,
-  render: "nested" as RenderType,
+  target: "span" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
   reload: true,
   annoList: Array.from(annotations.values()),
 });
+
+const target = computed(() => props.target);
+
+watch(target, (nv, ov) => {
+  reloadAnnotationsList();
+});
+
+function reloadAnnotationsList() {
+  props.annoList = Array.from(annotations.values()).filter((a) => a.target === props.target);
+}
 
 const onAnnotationMouseOver = function (
   hoveredAnnotaations: Annotation[],
@@ -114,7 +122,6 @@ const onAnnotationMouseOver = function (
 ) {
   hoveredAnnotaations.forEach((a) => {
     if (!a.tmpClass || !a.tmpClass.includes("annotation--hover")) {
-      console.log(a.id);
       a.tmpClass = "annotation--hover";
     }
   });

@@ -6,8 +6,8 @@
       :class="wordPartClasses(wordPart)"
       :data-start="wordPart.start"
       :data-end="wordPart.end"
-      @mousemove.once="onMouseEnterLinePart(wordPart, $event)"
       @mousemove="onMouseMove(wordPart, $event)"
+      @mouseleave="onMouseLeave"
     >
       <template v-if="renderFlat">
         <span class="text">{{ wordPart.text }}</span>
@@ -60,12 +60,31 @@
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
+import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
   wordPartClasses: () => [],
   annotationClasses: () => [],
 });
+
+const statesStore = useStateObjectsStore(props.componentId);
+const { hoverState } = storeToRefs(statesStore());
+
+// When leaving the line remove all annotations of that line from the hovered annos
+function onMouseLeave(e: MouseEvent) {
+  const annotations = [];
+  props.line.words.forEach((w) => {
+    w.parts.forEach((wp) => {
+      annotations.push(wp.annotations);
+    });
+  });
+  hoverState.value.hoveredAnnotations =
+    hoverState.value.hoveredAnnotations.filter((a) =>
+      annotations.some((a2) => a.id === a2.id)
+    );
+}
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");

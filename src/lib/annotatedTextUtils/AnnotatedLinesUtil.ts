@@ -213,7 +213,7 @@ export default class AnnotatedLinesUtil {
     rangesInScope = rangesInScope.map(function (range) {
       range[2] = range[2]
         .filter((annotation) => annotation)
-        .filter((annotation) => annotation?.target === "span")
+        // .filter((annotation) => annotation?.target === "span")
         .sort((a, b) => (Number(a?.start) > Number(b?.start) ? 1 : -1));
       return range;
     });
