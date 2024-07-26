@@ -48,12 +48,8 @@
       @annotation-mouse-over="onAnnotationMouseOver"
       @annotation-mouse-leave="onAnnotationMouseLeave"
     >
-      <template v-slot:annotation-start>
-        S
-      </template>
-      <template v-slot:annotation-end>
-        E
-      </template>
+      <template #annotation-start="props"> {{props.annotationId}} </template>
+      <template #annotation-end="props"> {{props.annotationId}} </template>
     </AnnotatedText>
     <AnnotatedText
       key="text"
@@ -83,7 +79,7 @@
 import { AnnotatedText, Annotation, AnnotationTarget } from "@/index";
 import { textToLines } from "./Utils";
 
-import { annotationsGreek, textGreek as text } from "./data";
+import { annotationsGreek, otherGreekAnnotations, otherGreekText as text } from "./data";
 
 import { reactive } from "vue-demi";
 import {
@@ -93,7 +89,7 @@ import {
 
 const textLines = textToLines(text);
 
-const annotations: Map<string, Annotation> = annotationsGreek.reduce(
+const annotations: Map<string, Annotation> = otherGreekAnnotations.reduce(
   (map, anno) => {
     map.set(anno.id, { ...anno, visible: true });
     return map;
@@ -111,6 +107,11 @@ const props = reactive({
   allowCreate: true,
   annoList: Array.from(annotations.values()),
 });
+
+
+// function startSlot(){
+//   return ()
+// }
 
 const onAnnotationMouseOver = function (
   hoveredAnnotaations: Annotation[],

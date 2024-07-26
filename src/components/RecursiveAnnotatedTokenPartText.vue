@@ -12,10 +12,8 @@
         onUpdateStart($event, 'moveStart', wordPartStart, annotation)
       "
     ></span>
-    <span
-      v-if="start === annotation?.start"
-    >
-      <slot name="annotation-start"></slot>
+    <span v-if="start === annotation?.start">
+      <slot name="annotation-start" :annotation-id="annotation.id"/>
     </span>
     <RecursiveAnnotatedTokenPartText
       :component-id="componentId"
@@ -30,10 +28,8 @@
       :on-update-start="onUpdateStart"
     />
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
-    <span
-      v-if="end === annotation?.end"
-    >
-      <slot name="annotation-end"></slot>
+    <span v-if="end === annotation?.end">
+      <slot name="annotation-end" :annotation-id="annotation.id"/>
     </span>
     <span
       v-if="end === annotations[0]?.end"

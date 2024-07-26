@@ -38,11 +38,11 @@
           :on-start-create="onStartCreate"
           :on-update-start="onUpdateStart"
         >
-          <template v-slot:annotation-start>
-            <slot name="annotation-start"></slot>
+          <template v-slot:annotation-start="props">
+            <slot name="annotation-start" :annotation-id="props.annotationId"></slot>
           </template>
-          <template v-slot:annotation-end>
-            <slot name="annotation-end"></slot>
+          <template v-slot:annotation-end="props">
+            <slot name="annotation-end" :annotation-id="props.annotationId"/>
           </template>
         </AnnotatedLine>
       </div>
