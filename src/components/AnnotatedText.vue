@@ -38,11 +38,14 @@
           :on-start-create="onStartCreate"
           :on-update-start="onUpdateStart"
         >
-          <template v-slot:annotation-start="props">
-            <slot name="annotation-start" :annotation="props.annotation"></slot>
+          <template #annotation-start="slotProps">
+            <slot
+              name="annotation-start"
+              :annotation="slotProps.annotation"
+            ></slot>
           </template>
-          <template v-slot:annotation-end="props">
-            <slot name="annotation-end" :annotation="props.annotation"/>
+          <template #annotation-end="slotProps">
+            <slot name="annotation-end" :annotation="slotProps.annotation" />
           </template>
         </AnnotatedLine>
       </div>
@@ -247,14 +250,13 @@ watch(hoverStateComp, (nv, ov) => {
     );
   }
 
-  if (removedObjects.length > 0){
+  if (removedObjects.length > 0) {
     emit(
       "annotation-mouse-leave",
       removedObjects,
       hoverState.value.mouseEvent as MouseEvent
     );
   }
-
 });
 
 onMouseMoveHandlerFunctions.set(

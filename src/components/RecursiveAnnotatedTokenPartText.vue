@@ -1,7 +1,7 @@
 <template>
   <span v-if="start === annotation?.start">
-      <slot name="annotation-start" :annotation="annotation"/>
-    </span>
+    <slot name="annotation-start" :annotation="annotation" />
+  </span>
   <span
     v-if="annotations.length"
     :class="annotationClassHandler(annotation, start, end, props.allowCreate)"
@@ -40,7 +40,7 @@
   </span>
   <span v-else class="text">{{ text }}</span>
   <span v-if="end === annotation?.end">
-      <slot name="annotation-end" :annotation="annotation"/>
+    <slot name="annotation-end" :annotation="annotation" />
   </span>
 </template>
 

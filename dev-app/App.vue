@@ -51,12 +51,18 @@
       @annotation-mouse-leave="onAnnotationMouseLeave"
     >
       <template #annotation-end="slotProps">
-        <div v-if="hoveredAnnotationsState.has(slotProps.annotation.id) &&
-        Array.from(hoveredAnnotationsState.values()).filter((a) => a.weight > slotProps.annotation.weight).length === 0">
+        <div
+          v-if="
+            hoveredAnnotationsState.has(slotProps.annotation.id) &&
+            Array.from(hoveredAnnotationsState.values()).filter(
+              (a) => a.weight > slotProps.annotation.weight
+            ).length === 0
+          "
+        >
           <button>test</button>
         </div>
       </template>
-<!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
+      <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
     </AnnotatedText>
     <AnnotatedText
       v-if="props.secondComponent"
@@ -87,7 +93,7 @@
 import { AnnotatedText, Annotation, AnnotationTarget } from "@/index";
 import { textToLines } from "./Utils";
 
-import { annotationsGreek, otherGreekAnnotations, textGreek as text } from "./data";
+import { annotationsGreek, textGreek as text } from "./data";
 
 import { reactive } from "vue-demi";
 import {
@@ -116,7 +122,6 @@ const props = reactive({
   annoList: Array.from(annotations.values()),
   secondComponent: false,
 });
-
 
 // function startSlot(){
 //   return ()

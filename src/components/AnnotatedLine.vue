@@ -44,13 +44,12 @@
           :annotation-click-handler="onClickAnnotation"
           :on-update-start="onUpdateStart"
         >
-          <template v-slot:annotation-start="props">
-            <slot name="annotation-start" :annotation="props.annotation"/>
+          <template #annotation-start="slotProps">
+            <slot name="annotation-start" :annotation="slotProps.annotation" />
           </template>
-          <template v-slot:annotation-end="props">
-            <slot name="annotation-end" :annotation="props.annotation"/>
+          <template #annotation-end="slotProps">
+            <slot name="annotation-end" :annotation="slotProps.annotation" />
           </template>
-
         </RecursiveAnnotatedTokenPartText>
         <span
           v-else
