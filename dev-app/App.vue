@@ -18,6 +18,8 @@
       <label>Allow Edits</label>
       | <input v-model="props.allowCreate" type="checkbox" />
       <label>Allow Create</label>
+      | <input v-model="props.secondComponent" type="checkbox" />
+      <label>Second Component</label>
     </form>
   </menu>
 
@@ -48,10 +50,15 @@
       @annotation-mouse-over="onAnnotationMouseOver"
       @annotation-mouse-leave="onAnnotationMouseLeave"
     >
-      <template #annotation-start="props"> {{props.annotationId}} </template>
-      <template #annotation-end="props"> {{props.annotationId}} </template>
+      <template #annotation-end="slotProps">
+        <div v-if="hoveredAnnotationsState.has(slotProps.annotationId)">
+          <button>test</button>
+        </div>
+      </template>
+<!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
     </AnnotatedText>
     <AnnotatedText
+      v-if="props.secondComponent"
       key="text"
       text="012345678901234567890123456789"
       :component-id="'2'"
@@ -97,7 +104,7 @@ const annotations: Map<string, Annotation> = otherGreekAnnotations.reduce(
   new Map()
 );
 
-// let annoList = Array.from(annotations.values());
+const hoveredAnnotationsState: Map<string, Annotation> = new Map();
 
 const props = reactive({
   showLabels: false,
@@ -106,6 +113,7 @@ const props = reactive({
   allowEdit: true,
   allowCreate: true,
   annoList: Array.from(annotations.values()),
+  secondComponent: false,
 });
 
 
@@ -114,22 +122,24 @@ const props = reactive({
 // }
 
 const onAnnotationMouseOver = function (
-  hoveredAnnotaations: Annotation[],
+  hoveredAnnotations: Annotation[],
   mouseEvent: MouseEvent
 ) {
-  hoveredAnnotaations.forEach((a) => {
+  hoveredAnnotations.forEach((a) => {
     if (!a.tmpClass || !a.tmpClass.includes("annotation--hover")) {
       a.tmpClass = "annotation--hover";
     }
+    hoveredAnnotationsState.set(a.id, a);
   });
 };
 
 const onAnnotationMouseLeave = function (
-  hoveredAnnotaations: Annotation[],
+  hoveredAnnotations: Annotation[],
   mouseEvent: MouseEvent
 ) {
-  hoveredAnnotaations.forEach((a) => {
+  hoveredAnnotations.forEach((a) => {
     a.tmpClass = "";
+    hoveredAnnotationsState.delete(a.id);
   });
 };
 

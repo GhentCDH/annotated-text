@@ -239,17 +239,22 @@ watch(hoverStateComp, (nv, ov) => {
     (newObj) => !ov.some((oldObj) => oldObj.id === newObj.id)
   );
 
-  emit(
-    "annotation-mouse-over",
-    addedObjects,
-    hoverState.value.mouseEvent as MouseEvent
-  );
+  if (addedObjects.length > 0) {
+    emit(
+      "annotation-mouse-over",
+      addedObjects,
+      hoverState.value.mouseEvent as MouseEvent
+    );
+  }
 
-  emit(
-    "annotation-mouse-leave",
-    removedObjects,
-    hoverState.value.mouseEvent as MouseEvent
-  );
+  if (removedObjects.length > 0){
+    emit(
+      "annotation-mouse-leave",
+      removedObjects,
+      hoverState.value.mouseEvent as MouseEvent
+    );
+  }
+
 });
 
 onMouseMoveHandlerFunctions.set(
