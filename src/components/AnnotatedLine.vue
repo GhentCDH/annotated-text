@@ -45,10 +45,10 @@
           :on-update-start="onUpdateStart"
         >
           <template v-slot:annotation-start="props">
-            <slot name="annotation-start" :annotation-id="props.annotationId"/>
+            <slot name="annotation-start" :annotation="props.annotation"/>
           </template>
           <template v-slot:annotation-end="props">
-            <slot name="annotation-end" :annotation-id="props.annotationId"/>
+            <slot name="annotation-end" :annotation="props.annotation"/>
           </template>
 
         </RecursiveAnnotatedTokenPartText>

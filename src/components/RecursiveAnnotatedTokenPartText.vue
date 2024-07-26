@@ -1,4 +1,7 @@
 <template>
+  <span v-if="start === annotation?.start">
+      <slot name="annotation-start" :annotation="annotation"/>
+    </span>
   <span
     v-if="annotations.length"
     :class="annotationClassHandler(annotation, start, end, props.allowCreate)"
@@ -12,9 +15,7 @@
         onUpdateStart($event, 'moveStart', wordPartStart, annotation)
       "
     ></span>
-    <span v-if="start === annotation?.start">
-      <slot name="annotation-start" :annotation-id="annotation.id"/>
-    </span>
+
     <RecursiveAnnotatedTokenPartText
       :component-id="componentId"
       :annotations="annotations.slice(1)"
@@ -28,9 +29,7 @@
       :on-update-start="onUpdateStart"
     />
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
-    <span v-if="end === annotation?.end">
-      <slot name="annotation-end" :annotation-id="annotation.id"/>
-    </span>
+
     <span
       v-if="end === annotations[0]?.end"
       class="handle handle--end"
@@ -40,6 +39,9 @@
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>
+  <span v-if="end === annotation?.end">
+      <slot name="annotation-end" :annotation="annotation"/>
+  </span>
 </template>
 
 <script setup lang="ts">
