@@ -30,6 +30,8 @@
       text="012345678901234567890123456789"
       :component-id="'1'"
       :annotations="props.annoList"
+      :hovered-annotations="props.hoveredList"
+      :selected-annotations="props.selectedList"
       :lines="textLines"
       :debug="props.debug"
       :show-labels="props.showLabels"
@@ -112,6 +114,7 @@ const annotations: Map<string, Annotation> = annotationsGreek.reduce(
 );
 
 const hoveredAnnotationsState: Map<string, Annotation> = new Map();
+const selectedAnnotations: Map<string, Annotation> = new Map();
 
 const props = reactive({
   showLabels: false,
@@ -120,6 +123,8 @@ const props = reactive({
   allowEdit: true,
   allowCreate: true,
   annoList: Array.from(annotations.values()),
+  hoveredList: Array.from(hoveredAnnotationsState.keys()),
+  selectedList: Array.from(selectedAnnotations.keys()),
   secondComponent: false,
 });
 
@@ -132,11 +137,9 @@ const onAnnotationMouseOver = function (
   mouseEvent: MouseEvent
 ) {
   hoveredAnnotations.forEach((a) => {
-    if (!a.tmpClass || !a.tmpClass.includes("annotation--hover")) {
-      a.tmpClass = "annotation--hover";
-    }
     hoveredAnnotationsState.set(a.id, a);
   });
+  props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 
 const onAnnotationMouseLeave = function (
@@ -144,21 +147,18 @@ const onAnnotationMouseLeave = function (
   mouseEvent: MouseEvent
 ) {
   hoveredAnnotations.forEach((a) => {
-    a.tmpClass = "";
     hoveredAnnotationsState.delete(a.id);
   });
+  props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 
 const onAnnotationClick = function (annotation: Annotation, e: MouseEvent): void {
-  if (annotation.class.includes("annotation--active")) {
-    annotation.class = annotation.class
-      .replace("annotation--active", "")
-      .trim();
+  if (!selectedAnnotations.has(annotation.id)) {
+    selectedAnnotations.set(annotation.id, annotation);
   } else {
-    annotation.class = annotation.class += " annotation--active";
+    selectedAnnotations.delete(annotation.id);
   }
   console.log("click");
-  console.log(e);
 };
 
 const onAnnotationCreateStart = function (createState: CreateAnnotationState) {

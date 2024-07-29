@@ -14,6 +14,7 @@ export interface AnnotationStyle {
   weightClass: string;
   transitioningClass: string;
   shadowClass: string;
+  hoveredClass: string;
 }
 
 export interface AnnotationActionPayload {

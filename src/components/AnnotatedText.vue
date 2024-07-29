@@ -74,6 +74,8 @@ import { watch } from "vue";
 // init props
 let props = withDefaults(defineProps<AnnotatedTextProps>(), {
   annotations: () => [],
+  selectedAnnotations: () => [],
+  hoveredAnnotations: () => [],
   lines: () => [],
   annotationOffset: 0,
   debug: true,
@@ -96,6 +98,7 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
     weightClass: "annotation--weight-",
     transitioningClass: "annotation--transitioning",
     shadowClass: "annotation--shadow",
+    hoveredClass: "annotation--hover"
   }),
 });
 
@@ -105,8 +108,8 @@ props = reactive(props);
 const emit = defineEmits<{
   /**
    * Emitted when an annotation (both span and gutter) is clicked.
-   * @arg annotation annotation object that was clicked
-   * @arg mouseEvent normal dom mouse event
+   * @arg annotation {Annotation} Annotation object that was clicked
+   * @arg mouseEvent {MouseEvent} normal dom mouse event
    */
   "annotation-select": [annotation: Annotation, mouseEvent: MouseEvent];
   /**
@@ -131,6 +134,9 @@ const emit = defineEmits<{
    * @arg updateState UpdateAnnotationState object
    */
   "annotation-updating": [updateState: UpdateAnnotationState];
+  /**
+   *
+   */
   "annotation-update-end": [updateState: UpdateAnnotationState];
   "annotation-create-start": [createState: CreateAnnotationState];
   "annotation-creating": [createState: CreateAnnotationState];

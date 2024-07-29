@@ -12,6 +12,8 @@ export interface AnnotatedTextProps {
   componentId: string;
   text?: string;
   annotations?: Annotation[];
+  selectedAnnotations?: string[];
+  hoveredAnnotations?: string[];
   lines: Line[];
   annotationOffset?: number;
   debug?: boolean;
