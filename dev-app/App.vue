@@ -149,7 +149,7 @@ const onAnnotationMouseLeave = function (
   });
 };
 
-const onAnnotationClick = function (annotation: Annotation): void {
+const onAnnotationClick = function (annotation: Annotation, e: MouseEvent): void {
   if (annotation.class.includes("annotation--active")) {
     annotation.class = annotation.class
       .replace("annotation--active", "")
@@ -157,6 +157,8 @@ const onAnnotationClick = function (annotation: Annotation): void {
   } else {
     annotation.class = annotation.class += " annotation--active";
   }
+  console.log("click");
+  console.log(e);
 };
 
 const onAnnotationCreateStart = function (createState: CreateAnnotationState) {

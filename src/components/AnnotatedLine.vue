@@ -22,7 +22,7 @@
               props.allowCreate
             )
           "
-          @click="onClickAnnotation(annotation)"
+          @click="onClickAnnotation(annotation, $event)"
         >
           <label v-if="annotation.label">{{ annotation.label }}</label>
         </span>

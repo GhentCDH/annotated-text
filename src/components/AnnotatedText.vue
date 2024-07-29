@@ -13,7 +13,7 @@
         >
           <span
             :class="annotationGutterClasses(annotation, line)"
-            @click="onClickAnnotation(annotation)"
+            @click="onClickAnnotation(annotation, $event)"
           >
             <label v-if="annotation.label">{{ annotation.label }}</label>
           </span>
@@ -103,8 +103,33 @@ props = reactive(props);
 
 // define emits
 const emit = defineEmits<{
-  "annotation-select": [annotation: Annotation];
+  /**
+   * Emitted when an annotation (both span and gutter) is clicked.
+   * @arg annotation annotation object that was clicked
+   * @arg mouseEvent normal dom mouse event
+   */
+  "annotation-select": [annotation: Annotation, mouseEvent: MouseEvent];
+  /**
+   * Emitted when the user starts updating an annotation, so when the mouse is
+   * clicked down and the listenToOnUpdateStart prop is true.
+   *
+   * The newStart and newEnd fields of the updateState can be edited.
+   *
+   * updateState.confirmStartUpdating should be called in order to confirm
+   * the start of the update
+   * @arg updateState UpdateAnnotationState object
+   */
   "annotation-update-start": [updateState: UpdateAnnotationState];
+  /**
+   * Emitted every time the user moves their cursor while updating an
+   * annotation. Only emitted if the listenToOnUpdating prop is true.
+   *
+   * The newStart and newEnd fields of the updateState can be edited.
+   *
+   * updateState.confirmUpdate should be called in order to confirm the new
+   * position after the mouse move.
+   * @arg updateState UpdateAnnotationState object
+   */
   "annotation-updating": [updateState: UpdateAnnotationState];
   "annotation-update-end": [updateState: UpdateAnnotationState];
   "annotation-create-start": [createState: CreateAnnotationState];
@@ -160,9 +185,9 @@ window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   }
 });
 
-const onClickAnnotation = function (annotation: Annotation) {
+const onClickAnnotation = function (annotation: Annotation, mouseEvent: MouseEvent) {
   if (userState.value.value === UserActionState.IDLE) {
-    emit("annotation-select", annotation);
+    emit("annotation-select", annotation, mouseEvent);
   }
 };
 

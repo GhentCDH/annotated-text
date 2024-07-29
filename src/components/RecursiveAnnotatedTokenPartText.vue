@@ -5,7 +5,7 @@
   <span
     v-if="annotations.length"
     :class="annotationClassHandler(annotation, start, end, props.allowCreate)"
-    @click.stop="annotationClickHandler(annotation)"
+    @click.stop="annotationClickHandler(annotation, $event)"
     @mousedown="onUpdateStart($event, 'move', wordPartStart, annotation)"
   >
     <span
