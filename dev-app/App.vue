@@ -152,7 +152,10 @@ const onAnnotationMouseLeave = function (
   props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 
-const onAnnotationClick = function (annotation: Annotation, e: MouseEvent): void {
+const onAnnotationClick = function (
+  annotation: Annotation,
+  e: MouseEvent
+): void {
   if (!selectedAnnotations.has(annotation.id)) {
     selectedAnnotations.set(annotation.id, annotation);
   } else {

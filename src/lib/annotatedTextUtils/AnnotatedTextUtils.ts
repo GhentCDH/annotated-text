@@ -101,11 +101,11 @@ export class CssClassesUtil {
       classes.push(this.props.style.shadowClass);
     }
 
-    if (this.props.hoveredAnnotations.includes(annotation.id)){
+    if (this.props.hoveredAnnotations.includes(annotation.id)) {
       classes.push(this.props.style.hoveredClass);
     }
 
-    if (this.props.selectedAnnotations.includes(annotation.id)){
+    if (this.props.selectedAnnotations.includes(annotation.id)) {
       classes.push(this.props.style.activeClass);
     }
 

@@ -50,7 +50,10 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     wordPartStart: number,
     annotation: Annotation
   ) => void;
-  annotationClickHandler: (annotation: Annotation, mouseEvent: MouseEvent) => void;
+  annotationClickHandler: (
+    annotation: Annotation,
+    mouseEvent: MouseEvent
+  ) => void;
   wordPartStart: number; // for correct handle position
   allowEdit?: boolean;
   allowCreate?: boolean;

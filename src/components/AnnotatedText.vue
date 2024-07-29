@@ -98,7 +98,7 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
     weightClass: "annotation--weight-",
     transitioningClass: "annotation--transitioning",
     shadowClass: "annotation--shadow",
-    hoveredClass: "annotation--hover"
+    hoveredClass: "annotation--hover",
   }),
 });
 
@@ -191,7 +191,10 @@ window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   }
 });
 
-const onClickAnnotation = function (annotation: Annotation, mouseEvent: MouseEvent) {
+const onClickAnnotation = function (
+  annotation: Annotation,
+  mouseEvent: MouseEvent
+) {
   if (userState.value.value === UserActionState.IDLE) {
     emit("annotation-select", annotation, mouseEvent);
   }
