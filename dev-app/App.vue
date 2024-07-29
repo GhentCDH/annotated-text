@@ -158,7 +158,9 @@ const onAnnotationClick = function (annotation: Annotation, e: MouseEvent): void
   } else {
     selectedAnnotations.delete(annotation.id);
   }
+  props.selectedList = Array.from(selectedAnnotations.keys());
   console.log("click");
+  console.log(selectedAnnotations);
 };
 
 const onAnnotationCreateStart = function (createState: CreateAnnotationState) {
