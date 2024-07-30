@@ -39,7 +39,7 @@
       :display="props.target"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
-      :listen-to-on-updating="true"
+      :listen-to-on-updating="false"
       :listen-to-on-update-start="true"
       @annotation-select="onAnnotationClick"
       @annotation-update-start="onAnnotationUpdateStart"
@@ -53,14 +53,7 @@
       @annotation-mouse-leave="onAnnotationMouseLeave"
     >
       <template #annotation-end="slotProps">
-        <div
-          v-if="
-            hoveredAnnotationsState.has(slotProps.annotation.id) &&
-            Array.from(hoveredAnnotationsState.values()).filter(
-              (a) => a.weight > slotProps.annotation.weight
-            ).length === 0
-          "
-        >
+        <div v-if="endSlotCondition(slotProps)">
           <button>test</button>
         </div>
       </template>
@@ -128,9 +121,11 @@ const props = reactive({
   secondComponent: false,
 });
 
-// function startSlot(){
-//   return ()
-// }
+function endSlotCondition(slotProps: { annotation: Annotation }) {
+  return (
+    selectedAnnotations.has(slotProps.annotation.id)
+  );
+}
 
 const onAnnotationMouseOver = function (
   hoveredAnnotations: Annotation[],
@@ -139,6 +134,7 @@ const onAnnotationMouseOver = function (
   hoveredAnnotations.forEach((a) => {
     hoveredAnnotationsState.set(a.id, a);
   });
+  console.log(hoveredAnnotations);
   props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 

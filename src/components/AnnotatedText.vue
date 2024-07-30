@@ -66,6 +66,7 @@ import {
   CreateAnnotationState,
   UpdateAnnotationState,
   UserActionState,
+  UserState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
 import { ActionType } from "@/types/AnnotatedText";
@@ -120,7 +121,7 @@ const emit = defineEmits<{
    *
    * updateState.confirmStartUpdating should be called in order to confirm
    * the start of the update
-   * @arg updateState UpdateAnnotationState object
+   * @arg updateState {UpdateAnnotationState} object holding the state of the update
    */
   "annotation-update-start": [updateState: UpdateAnnotationState];
   /**
@@ -131,17 +132,46 @@ const emit = defineEmits<{
    *
    * updateState.confirmUpdate should be called in order to confirm the new
    * position after the mouse move.
-   * @arg updateState UpdateAnnotationState object
+   * @arg updateState {UpdateAnnotationState} object holding the state of the update
    */
   "annotation-updating": [updateState: UpdateAnnotationState];
   /**
+   * Emitted when during an update the mouse is released.
+   *
+   * @arg updateState {UpdateAnnotationState} updateState object containing the new annotation object in the annotation field.
    *
    */
   "annotation-update-end": [updateState: UpdateAnnotationState];
+  /**
+   * Emitted when the mouse is pressed down on plain text.
+   *
+   * If listening to this emit, createState.initAnnotation should be called to initialize the new annotation being created.
+   *
+   * @arg createState {CreateAnnotationState} object holding the state of the being created annotation
+   */
   "annotation-create-start": [createState: CreateAnnotationState];
+  /**
+   * Emitted on every mouse move while creating an annotation.
+   *
+   * The newEnd and newStart fields of the createState object can be edited.
+   *
+   * createState.updateCreating needs to be called to confirm the new position after the mouse move.
+   *
+   * @arg createState {CreateAnnotationState} object holding the state of the being created annotation
+   */
   "annotation-creating": [createState: CreateAnnotationState];
+  /**
+   * Emitted when during creation the mouse is released.
+   *
+   * @arg createState {CreateAnnotationState} object holding the state of the being created annotation. The annotation field holds the newly created annotation.
+   */
   "annotation-create-end": [createState: CreateAnnotationState];
-  "key-pressed": [keyEvent: KeyboardEvent, updateState: UpdateAnnotationState];
+  "key-pressed": [
+    keyEvent: KeyboardEvent,
+    updateState: UpdateAnnotationState,
+    createState: CreateAnnotationState,
+    userState: UserState
+  ];
   "annotation-mouse-over": [
     hoveredAnnotations: Annotation[],
     mouseEvent: MouseEvent
@@ -182,7 +212,13 @@ const wordPartClasses = cssClassUtil.wordPartClasses;
 
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   if (props.listenToOnKeyPressed) {
-    emit("key-pressed", keyEv, updateState.value);
+    emit(
+      "key-pressed",
+      keyEv,
+      updateState.value,
+      createState.value,
+      userState.value
+    );
   } else {
     switch (keyEv.key) {
       case "Escape":

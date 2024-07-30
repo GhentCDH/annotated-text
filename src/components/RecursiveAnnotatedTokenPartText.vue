@@ -27,7 +27,14 @@
       :annotation-click-handler="annotationClickHandler"
       :annotation-class-handler="annotationClassHandler"
       :on-update-start="onUpdateStart"
-    />
+    >
+      <template #annotation-start="slotProps">
+        <slot name="annotation-start" :annotation="slotProps.annotation"></slot>
+      </template>
+      <template #annotation-end="slotProps">
+        <slot name="annotation-end" :annotation="slotProps.annotation" />
+      </template>
+    </RecursiveAnnotatedTokenPartText>
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
 
     <span
@@ -57,6 +64,9 @@ const props = withDefaults(
 );
 
 const annotation = computed(() => props.annotations[0]);
+if (annotation.value?.id === "3004790") {
+  console.log("test");
+}
 
 const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
