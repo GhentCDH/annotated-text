@@ -122,9 +122,7 @@ const props = reactive({
 });
 
 function endSlotCondition(slotProps: { annotation: Annotation }) {
-  return (
-    selectedAnnotations.has(slotProps.annotation.id)
-  );
+  return selectedAnnotations.has(slotProps.annotation.id);
 }
 
 const onAnnotationMouseOver = function (
