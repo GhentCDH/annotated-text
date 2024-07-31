@@ -24,10 +24,7 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "docs:dev": "vue-demi-switch 3 && vitepress dev docs",
-    "docs:build": "vue-demi-switch 3 && vitepress build docs",
-    "docs:github": "vue-demi-switch 3 && BASE='/vue_component_annotated_text/' vitepress build docs",
-    "docs:preview": "vue-demi-switch 3 && vitepress preview docs",
+    "docs:build": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-vue --entryPoints \"./src/lib/annotatedTextUtils/StateClasses.ts\" --entryPoints \"./src/types/Annotation.d.ts\" --entryPoints \"./src/types/AnnotatedText.d.ts\" typedoc.json --out docs/typedoc && vue-docgen src/components/AnnotatedText.vue ./docs ",
     "test:vue2": "vue-demi-switch 2 && vitest --environment jsdom --root src/",
     "test:vue3": "vue-demi-switch 3 && vitest --environment jsdom --root src/",
     "test:coverage": "vue-demi-switch 3 && vitest --environment jsdom --root src/ --coverage",

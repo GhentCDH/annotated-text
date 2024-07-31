@@ -167,7 +167,7 @@ const emit = defineEmits<{
    */
   "annotation-create-end": [createState: CreateAnnotationState];
   /**
-   * Emitted whenever any key is pressed.
+   * Emitted whenever any key is pressed. Can be used to reset updating or creating states
    *
    * @arg keyEvent {KeyboardEvent} key event object
    * @arg updateState {UpdateAnnotationState}
@@ -180,14 +180,29 @@ const emit = defineEmits<{
     createState: CreateAnnotationState,
     userState: UserState
   ];
+  /**
+   * Emitted when the mouse goes over new annotations
+   * @arg hoveredAnnotations {Annotation[]} List newly hovered annotations
+   * @arg mouseEvent {MouseEvent} Normal dom mouse event
+   */
   "annotation-mouse-over": [
     hoveredAnnotations: Annotation[],
     mouseEvent: MouseEvent
   ];
+  /**
+   * Emitted when the mouse stops hovering over annotations
+   * @arg hoveredAnnotations {Annotation[]} List of now newly no longer hovered annotations
+   * @arg mouseEvent {MouseEvent} Normal dom mouse event
+   */
   "annotation-mouse-leave": [
     hoveredAnnotations: Annotation[],
     mouseEvent: MouseEvent
   ];
+  /**
+   * Emitted whenever the internal user state changes
+   * @arg oldState {UserActionState} Old user action state
+   * @arg newState {UserActionState} New user action state
+   */
   "user-action-state-change": [
     oldState: UserActionState,
     newState: UserActionState

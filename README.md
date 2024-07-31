@@ -46,11 +46,16 @@ Important: there is currently a severe limitation in the use of this component: 
 
 ## Documentation
 
-For development: `yarn run dev`
-
 To build the docs run `yarn run docs:build`
 
-The docs end up in `docs/.vitepress/`
+### Component
+- [AnnotatedText component](docs/src/components/AnnotatedText.md)
+
+### Modules
+
+- [StateClasses](docs/typedoc/lib/annotatedTextUtils/StateClasses/README.md)
+- [AnnotatedText types](docs/typedoc/types/AnnotatedText/README.md)
+- [Annotation types](docs/typedoc/types/Annotation/README.md)
 
 ## Creating a new release
 
