@@ -17,11 +17,11 @@ Example app can be found in [App.vue](dev-app/App.vue)
 
 To build the docs run `yarn run docs:build`
 
-### Component
+### AnnotatedText Component
 - [Props](docs/typedoc/types/Props/interfaces/AnnotatedTextProps.md)
 - [Emits](docs/typedoc/types/Emits/interfaces/AnnotatedTextEmits.md)
 
-### Modules
+### Types
 
 - [StateClasses](docs/typedoc/lib/annotatedTextUtils/StateClasses/README.md)
 - [AnnotatedText types](docs/typedoc/types/AnnotatedText/README.md)
