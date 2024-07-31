@@ -49,7 +49,8 @@ Important: there is currently a severe limitation in the use of this component: 
 To build the docs run `yarn run docs:build`
 
 ### Component
-- [AnnotatedText component](docs/src/components/AnnotatedText.md)
+- [Props](docs/typedoc/types/Props/interfaces/AnnotatedTextProps.md)
+- [Emits](docs/typedoc/types/Emits/interfaces/AnnotatedTextEmits.md)
 
 ### Modules
 
