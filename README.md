@@ -27,6 +27,27 @@ To build the docs run `yarn run docs:build`
 - [AnnotatedText types](docs/typedoc/types/AnnotatedText/README.md)
 - [Annotation types](docs/typedoc/types/Annotation/README.md)
 
+### Slots
+
+Every annotation has 2 named slots: annotation-start and annotation-end. One before the annotation, one after the annotation.
+
+An example usage:
+```vue
+<AnnotatedText ...>
+    <template #annotation-end="slotProps">
+      <button>test</button>
+    </template>
+    <template #annotation-start="slotProps">
+        <button>startTest</button>
+    </template>
+</AnnotatedText>
+```
+
+the slotProps argument is an object that looks like this:
+{
+  annotation: [Annotation](docs/typedoc/types/Annotation/interfaces/Annotation.md)
+}
+
 ## Creating a new release
 
 
