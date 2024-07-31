@@ -117,9 +117,15 @@ const props = reactive({
   target: "span" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
+  /**
+   * Lists to pass as props to the component(s). Note, if edits are made to the map state the lists need to be rebuilt.
+   * Alternatively instead of using maps to hold the states, lists can also be used, but then operations like updating
+   * items in them becomes less clean to implement.
+   */
   annoList: Array.from(annotations.values()),
   hoveredList: Array.from(hoveredAnnotationsState.keys()),
   selectedList: Array.from(selectedAnnotations.keys()),
+
   secondComponent: false,
 });
 
