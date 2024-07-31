@@ -1,12 +1,5 @@
 import { Annotation } from "./Annotation";
 
-export enum AnnotationGranularity {
-  Char = "char",
-  SingleToken = "single_token",
-  MultipleTokens = "multiple_tokens",
-  Sentence = "sentence",
-}
-
 export interface AnnotationStyle {
   activeClass: string;
   startClass: string;

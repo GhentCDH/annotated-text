@@ -94,6 +94,8 @@ import { reactive } from "vue-demi";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
+  UserActionState,
+  UserState,
 } from "@/lib/annotatedTextUtils/StateClasses";
 
 const textLines = textToLines(text);
@@ -204,14 +206,17 @@ const onAnnotationUpdateEnd = function (
 
 const onKeyPressed = function (
   keyEv: KeyboardEvent,
-  updateState: UpdateAnnotationState
+  updateState: UpdateAnnotationState,
+  createState: CreateAnnotationState,
+  userState: UserState
 ): void {
   switch (keyEv.key) {
     case "Escape":
       updateState.resetUpdate();
+      createState.resetCreating();
       break;
     case "Delete":
-      if (updateState.updating) {
+      if (userState.value === UserActionState.UPDATING) {
         annotations.delete(updateState.annotation.id);
         props.annoList = Array.from(annotations.values());
         updateState.resetUpdate();

@@ -166,6 +166,14 @@ const emit = defineEmits<{
    * @arg createState {CreateAnnotationState} object holding the state of the being created annotation. The annotation field holds the newly created annotation.
    */
   "annotation-create-end": [createState: CreateAnnotationState];
+  /**
+   * Emitted whenever any key is pressed.
+   *
+   * @arg keyEvent {KeyboardEvent} key event object
+   * @arg updateState {UpdateAnnotationState}
+   * @arg createState {CreateAnnotationState}
+   * @arg userState {UserState}
+   */
   "key-pressed": [
     keyEvent: KeyboardEvent,
     updateState: UpdateAnnotationState,

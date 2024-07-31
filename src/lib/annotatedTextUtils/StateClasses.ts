@@ -7,6 +7,9 @@ export enum UserActionState {
   CREATING,
 }
 
+/**
+ * Holds the current user state in the component.
+ */
 export class UserState {
   value: UserActionState;
 

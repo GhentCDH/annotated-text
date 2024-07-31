@@ -4,9 +4,9 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "declaration": true,
+    "declaration": false,
     "outDir": "dist",
-    "declarationDir": "dist",
+//    "declarationDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -14,14 +14,15 @@
       ]
     },
     "moduleResolution": "node",
-    "target": "ESNext"
+    "target": "ESNext",
+    "skipLibCheck": true, // Because of some type errors with etali
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue", 
-    "dev-app/*.vue", 
-    "dev-app/*.ts"  
-  ],
+    "src/**/*.vue",
+    "dev-app/*.vue",
+    "dev-app/*.ts"
+  ]
 }
