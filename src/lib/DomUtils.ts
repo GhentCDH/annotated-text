@@ -10,7 +10,7 @@ const createPositionFromPoint = (
   if (document.caretPositionFromPoint) {
     // @ts-ignore
     const position = document.caretPositionFromPoint(x, y);
-    console.log(position);
+    // console.log(position);
     return position
       ? {
           offsetNode: position.offsetNode,
