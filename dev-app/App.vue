@@ -34,6 +34,7 @@
       :selected-annotations="props.selectedList"
       :lines="textLines"
       :debug="props.debug"
+      :verbose="true"
       :show-labels="props.showLabels"
       render="nested"
       :display="props.target"
