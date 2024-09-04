@@ -118,7 +118,7 @@ const { updateState, createState, userState, hoverState } = storeToRefs(
   statesStore()
 );
 
-const userStateComp = computed(() => userState.value.value);
+const userStateComp = computed(() => userState.value.state);
 
 watch(userStateComp, (nv, ov) => {
   props.verbose && console.log("user-action-state-change", ov, nv);
@@ -161,7 +161,7 @@ const onClickAnnotation = function (
   annotation: Annotation,
   mouseEvent: MouseEvent
 ) {
-  if (userState.value.value === UserActionState.IDLE) {
+  if (userState.value.state === UserActionState.IDLE) {
     props.verbose && console.log("annotation-select", annotation);
     emit("annotation-select", annotation, mouseEvent);
   }
@@ -295,7 +295,7 @@ onMouseMoveHandlerFunctions.set(
 );
 
 function onMouseMove(wordPart: WordPart, e: MouseEvent) {
-  onMouseMoveHandlerFunctions.get(userState.value.value)(wordPart, e);
+  onMouseMoveHandlerFunctions.get(userState.value.state)(wordPart, e);
 }
 
 function onUpdateStart(
@@ -304,8 +304,8 @@ function onUpdateStart(
   wordPartStart: number,
   annotation: Annotation
 ) {
-  if (props.allowEdit && userState.value.value === UserActionState.IDLE) {
-    userState.value.value = UserActionState.UPDATING;
+  if (props.allowEdit && userState.value.state === UserActionState.IDLE) {
+    userState.value.state = UserActionState.UPDATING;
     const position = createPositionFromPoint(e.x, e.y);
     updateState.value.startUpdating(
       action,
@@ -326,8 +326,8 @@ function onUpdateStart(
 }
 
 function onStartCreate(e: MouseEvent, wordPartStart: number) {
-  if (props.allowCreate && userState.value.value === UserActionState.IDLE) {
-    userState.value.value = UserActionState.CREATING;
+  if (props.allowCreate && userState.value.state === UserActionState.IDLE) {
+    userState.value.state = UserActionState.CREATING;
     const position = wordPartStart + createPositionFromPoint(e.x, e.y).offset;
     createState.value.startCreating(position);
 

@@ -1,8 +1,9 @@
 import { Annotation } from "@/types";
-import { ActionType } from "@/types/AnnotatedText";
+import { ActionType, WordPart } from "@/types/AnnotatedText";
 
 export enum UserActionState {
   IDLE,
+  SELECTING,
   UPDATING,
   CREATING,
 }
@@ -11,10 +12,14 @@ export enum UserActionState {
  * Holds the current user state in the component.
  */
 export class UserState {
-  value: UserActionState;
+  state: UserActionState;
+  annotation: Annotation;
+  wordPart: WordPart;
 
   constructor() {
-    this.value = UserActionState.IDLE;
+    this.state = UserActionState.IDLE;
+    this.wordPart = null;
+    this.annotation = null;
   }
 }
 
@@ -53,7 +58,7 @@ export class UpdateAnnotationState {
     this.newEnd = null;
     this.newStart = null;
     this.updating = false;
-    this.userState.value = UserActionState.IDLE;
+    this.userState.state = UserActionState.IDLE;
     this.updating = false;
   }
 
@@ -147,7 +152,7 @@ export class CreateAnnotationState {
     this.newEnd = null;
     this.newStart = null;
     this.creating = false;
-    this.userState.value = UserActionState.IDLE;
+    this.userState.state = UserActionState.IDLE;
   }
 
   /**
