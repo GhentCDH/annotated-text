@@ -121,6 +121,7 @@ const { updateState, createState, userState, hoverState } = storeToRefs(
 const userStateComp = computed(() => userState.value.value);
 
 watch(userStateComp, (nv, ov) => {
+  props.verbose && console.log("user-action-state-change", ov, nv);
   emit("user-action-state-change", ov, nv);
 });
 
@@ -139,6 +140,8 @@ const wordPartClasses = cssClassUtil.wordPartClasses;
 
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   if (props.listenToOnKeyPressed) {
+    props.verbose &&
+      console.log("key-pressed", keyEv.key, updateState.value, createState.value);
     emit(
       "key-pressed",
       keyEv,
@@ -159,6 +162,7 @@ const onClickAnnotation = function (
   mouseEvent: MouseEvent
 ) {
   if (userState.value.value === UserActionState.IDLE) {
+    props.verbose && console.log("annotation-select", annotation);
     emit("annotation-select", annotation, mouseEvent);
   }
 };
@@ -174,9 +178,11 @@ function onMouseLeaveHandler(e: MouseEvent) {
 
 function onMouseUpHandler(e: MouseEvent) {
   if (updateState.value.updating) {
+    props.verbose && console.log("annotation-update-end", updateState.value);
     emit("annotation-update-end", updateState.value);
     updateState.value.resetUpdate();
   } else if (createState.value.creating) {
+    props.verbose && console.log("annotation-create-end", createState.value);
     emit("annotation-create-end", createState.value);
     createState.value.resetCreating();
   }
@@ -213,6 +219,7 @@ onMouseMoveHandlerFunctions.set(
           break;
       }
       if (props.listenToOnUpdating) {
+        props.verbose && console.log("annotation-updating", updateState.value);
         emit("annotation-updating", updateState.value);
       } else {
         updateState.value.confirmUpdate();
@@ -238,8 +245,15 @@ watch(hoverStateComp, (nv, ov) => {
   const addedObjects: Annotation[] = nv.filter(
     (newObj) => !ov.some((oldObj) => oldObj.id === newObj.id)
   );
+  // console.log('nv-ov',nv.map((a) => a.id), ov.map((a) => a.id));
+  // console.log(addedObjects.map((a) => a.id), removedObjects.map((a) => a.id));
 
   if (addedObjects.length > 0) {
+    props.verbose &&
+      console.log(
+        "annotation-mouse-over",
+        addedObjects.map((a) => a.id)
+      );
     emit(
       "annotation-mouse-over",
       addedObjects,
@@ -248,6 +262,11 @@ watch(hoverStateComp, (nv, ov) => {
   }
 
   if (removedObjects.length > 0) {
+    props.verbose &&
+      console.log(
+        "annotation-mouse-leave",
+        removedObjects.map((a) => a.id)
+      );
     emit(
       "annotation-mouse-leave",
       removedObjects,
@@ -265,6 +284,7 @@ onMouseMoveHandlerFunctions.set(
       if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
         if (props.listenToOnCreating) {
+          props.verbose && console.log("annotation-creating", createState.value);
           emit("annotation-creating", createState.value);
         } else {
           createState.value.updateCreating();
@@ -297,6 +317,7 @@ function onUpdateStart(
       annotation.start
     );
     if (props.listenToOnUpdateStart) {
+      props.verbose && console.log("annotation-update-start", updateState.value);
       emit("annotation-update-start", updateState.value);
     } else {
       updateState.value.confirmStartUpdating();
@@ -311,6 +332,7 @@ function onStartCreate(e: MouseEvent, wordPartStart: number) {
     createState.value.startCreating(position);
 
     if (props.listenToOnCreateStart) {
+      props.verbose && console.log("annotation-create-start", createState.value);
       emit("annotation-create-start", createState.value);
     } else {
       const annotation: Annotation = {

@@ -1,4 +1,5 @@
 <template>
+  <!-- slot: annotation-start -->
   <span v-if="start === annotation?.start">
     <slot name="annotation-start" :annotation="annotation" />
   </span>
@@ -8,6 +9,7 @@
     @click.stop="annotationClickHandler(annotation, $event)"
     @mousedown="onUpdateStart($event, 'move', wordPartStart, annotation)"
   >
+    <!-- handle: move annotation start -->
     <span
       v-if="start === annotation?.start"
       class="handle handle--start"
@@ -15,7 +17,7 @@
         onUpdateStart($event, 'moveStart', wordPartStart, annotation)
       "
     ></span>
-
+    <!-- recurse annotation list -->
     <RecursiveAnnotatedTokenPartText
       :component-id="componentId"
       :annotations="annotations.slice(1)"
@@ -35,8 +37,9 @@
         <slot name="annotation-end" :annotation="slotProps.annotation" />
       </template>
     </RecursiveAnnotatedTokenPartText>
+    <!-- annotation label -->
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
-
+    <!-- handle: move annotation end -->
     <span
       v-if="end === annotations[0]?.end"
       class="handle handle--end"
@@ -46,6 +49,7 @@
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>
+  <!-- slot: annotation-end -->
   <span v-if="end === annotation?.end">
     <slot name="annotation-end" :annotation="annotation" />
   </span>
@@ -64,9 +68,9 @@ const props = withDefaults(
 );
 
 const annotation = computed(() => props.annotations[0]);
-if (annotation.value?.id === "3004790") {
-  console.log("test");
-}
+// if (annotation.value?.id === "3004790") {
+//   console.log("test");
+// }
 
 const annotationClickHandler = props.annotationClickHandler;
 const annotationClassHandler = props.annotationClassHandler;
