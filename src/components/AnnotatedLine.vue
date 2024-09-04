@@ -7,10 +7,13 @@
       :data-start="wordPart.start"
       :data-end="wordPart.end"
       @mousemove="onMouseMove(wordPart, $event)"
-      @mouseleave="onMouseLeave"
+      @_mouseleave="onMouseLeave"
     >
+      <!-- render flat ? -->
       <template v-if="renderFlat">
+        <!-- output text -->
         <span class="text">{{ wordPart.text }}</span>
+        <!-- output annotations below text -->
         <span
           v-for="annotation in wordPart.annotations"
           :key="annotation.id"
@@ -27,6 +30,7 @@
           <label v-if="annotation.label">{{ annotation.label }}</label>
         </span>
       </template>
+      <!-- render nested ? -->
       <template v-if="renderNested">
         <RecursiveAnnotatedTokenPartText
           v-if="wordPart.annotations.length"
@@ -81,6 +85,7 @@ const { hoverState } = storeToRefs(statesStore());
 
 // When leaving the line remove all annotations of that line from the hovered annos
 function onMouseLeave(e: MouseEvent) {
+  console.log('annotation-mouse-line-leave')
   const annotations = [];
   props.line.words.forEach((w) => {
     w.parts.forEach((wp) => {
