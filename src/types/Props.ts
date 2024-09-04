@@ -42,6 +42,10 @@ export interface AnnotatedTextProps {
    */
   debug?: boolean;
   /**
+   * Whether event messages are printed
+   */
+  verbose?: boolean;
+  /**
    * only default theme available for now
    */
   theme?: string;
