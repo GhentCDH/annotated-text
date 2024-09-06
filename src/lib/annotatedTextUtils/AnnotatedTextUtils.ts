@@ -48,8 +48,8 @@ export class CssClassesUtil {
 
   wordPartClasses = (wordPart: WordPart): string[] => {
     return [
-      "line-part",
-      "line-part--m" + this.maxAnnotationWeight(wordPart.annotations),
+      "token-segment",
+      "token-segment--m" + this.maxAnnotationWeight(wordPart.annotations),
     ];
   };
 
