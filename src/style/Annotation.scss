@@ -32,19 +32,22 @@ $annotated-text-annotation-colors: (
         justify-content: center;
     }
 
-    .content span {
-        white-space: pre;
+    .content .token, .content .token-segment {
         display: inline-block;
         position: relative;
     }
 
-    .line-part .text {
-        position: relative;
-        z-index: 2000;
-    }
+    .token-segment {
 
-    .line-part .create-anno-text {
-        user-select: none;
+        .text {
+            white-space: pre;
+            position: relative;
+            z-index: 2000;
+        }
+
+        .create-anno-text {
+            user-select: none;
+        }
     }
     
     .annotation {
@@ -61,7 +64,7 @@ $annotated-text-annotation-colors: (
     .annotation--resize-handle {
         cursor: ew-resize;
     }
-
+   
     &.action--active {
         user-select: none;
     }
@@ -90,7 +93,7 @@ $annotated-text-annotation-colors: (
 
         // calculate line-part height
         @for $weight from 0 to 9 {
-            .line-part--m#{$weight} {
+            .token-segment--m#{$weight} {
                 padding-bottom: calc(2px + ($weight + 2)*2px);
                 padding-top: calc(2px + ($weight + 2)*2px)
             }
@@ -197,7 +200,7 @@ $annotated-text-annotation-colors: (
                 &.annotation--hover {
                     &:before {
                         border-color: rgba(100,100,100,0.5) !important;
-                        border-width: 2px !important;
+                        border-width: 1px !important;
                         fill-opacity: 0.5;
                         background-color: rgba(1,1,1,0.1);
                     }
@@ -258,6 +261,23 @@ $annotated-text-annotation-colors: (
                     }
                 }
             }
+
+            .annotation-slot {
+                z-index: 1000000;
+                background-color: white;
+                display: inline-block;
+                position: absolute;
+            
+                &.annotation-slot--after {
+                    top: -0.5em;
+                    left: calc(100% + 0.5em);
+                }
+                
+                &.annotation-slot--before {
+                    top: -0.5em;
+                    right: -0.5em;
+                }
+            }            
         }
 
         &.annotated-text--show-labels .content .annotation--end > label {
@@ -278,7 +298,7 @@ $annotated-text-annotation-colors: (
 
         // calculate line-part height
         @for $weight from 0 to 9 {
-            .line-part--m#{$weight} {
+            .token-segment--m#{$weight} {
                 margin-bottom: calc(4px + ($weight + 1)*4px)
             }
         }
@@ -419,7 +439,7 @@ $annotated-text-annotation-colors: (
             }
 
             @for $weight from 0 to 9 {
-                .line-part--m#{$weight} {
+                .token-segment--m#{$weight} {
                     margin-bottom: calc(4px + ($weight + 1)*12px)
                 }
             }
