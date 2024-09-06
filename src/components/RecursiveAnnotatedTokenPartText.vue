@@ -1,20 +1,41 @@
 <template>
-  <!-- slot: annotation-start -->
-  <span v-if="start === annotation?.start">
-    <slot name="annotation-start" :annotation="annotation" />
+  <!-- slot: annotation-before -->
+  <span
+    v-if="start === annotation?.start"
+    class="annotation-slot annotation-slot--before"
+  >
+    <slot name="annotation-before" :annotation="annotation" />
   </span>
+  <!-- output annotation -->
   <span
     v-if="annotations.length"
-    :class="annotationClassHandler(annotation, start, end, props.allowCreate)"
-    @click.stop="annotationClickHandler(annotation, $event)"
-    @mousedown="onUpdateStart($event, 'move', wordPartStart, annotation)"
+    :class="
+      props.annotationClassHandler(annotation, start, end, props.allowCreate)
+    "
+    @mousedown.stop="
+      props.mouseDownHandler($event, {
+        startOffset: wordPartStart,
+        annotation: annotation,
+        action: 'move',
+      })
+    "
+    @mousemove.stop="
+      props.mouseMoveHandler($event, {
+        startOffset: wordPartStart,
+        annotation: annotation,
+      })
+    "
   >
     <!-- handle: move annotation start -->
     <span
       v-if="start === annotation?.start"
       class="handle handle--start"
       @mousedown.stop="
-        onUpdateStart($event, 'moveStart', wordPartStart, annotation)
+        props.mouseDownHandler($event, {
+          startOffset: wordPartStart,
+          annotation: annotation,
+          action: 'moveStart',
+        })
       "
     ></span>
     <!-- recurse annotation list -->
@@ -26,15 +47,15 @@
       :end="end"
       :allow-edit="allowEdit"
       :word-part-start="wordPartStart"
-      :annotation-click-handler="annotationClickHandler"
-      :annotation-class-handler="annotationClassHandler"
-      :on-update-start="onUpdateStart"
+      :annotation-class-handler="props.annotationClassHandler"
+      :mouse-down-handler="props.mouseDownHandler"
+      :mouse-move-handler="props.mouseMoveHandler"
     >
-      <template #annotation-start="slotProps">
-        <slot name="annotation-start" :annotation="slotProps.annotation"></slot>
+      <template #annotation-before="slotProps">
+        <slot name="annotation-before" :annotation="slotProps.annotation"></slot>
       </template>
-      <template #annotation-end="slotProps">
-        <slot name="annotation-end" :annotation="slotProps.annotation" />
+      <template #annotation-after="slotProps">
+        <slot name="annotation-after" :annotation="slotProps.annotation" />
       </template>
     </RecursiveAnnotatedTokenPartText>
     <!-- annotation label -->
@@ -44,14 +65,21 @@
       v-if="end === annotations[0]?.end"
       class="handle handle--end"
       @mousedown.stop="
-        onUpdateStart($event, 'moveEnd', wordPartStart, annotation)
+        props.mouseDownHandler($event, {
+          startOffset: wordPartStart,
+          annotation: annotation,
+          action: 'moveEnd',
+        })
       "
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>
-  <!-- slot: annotation-end -->
-  <span v-if="end === annotation?.end">
-    <slot name="annotation-end" :annotation="annotation" />
+  <!-- slot: annotation-after -->
+  <span
+    v-if="end === annotation?.end"
+    class="annotation-slot annotation-slot--after"
+  >
+    <slot name="annotation-after" :annotation="annotation" />
   </span>
 </template>
 
@@ -68,12 +96,6 @@ const props = withDefaults(
 );
 
 const annotation = computed(() => props.annotations[0]);
-// if (annotation.value?.id === "3004790") {
-//   console.log("test");
-// }
-
-const annotationClickHandler = props.annotationClickHandler;
-const annotationClassHandler = props.annotationClassHandler;
 </script>
 
 <style scoped lang="scss"></style>

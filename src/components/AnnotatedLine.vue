@@ -1,13 +1,14 @@
 <template>
-  <span v-for="word in line.words" :key="word.text">
+  <span v-for="word in line.words" :key="word.text" class="token">
     <span
       v-for="wordPart in word.parts"
       :key="wordPart.text"
       :class="wordPartClasses(wordPart)"
-      :data-start="wordPart.start"
-      :data-end="wordPart.end"
-      @mousemove="onMouseMove(wordPart, $event)"
-      @_mouseleave="onMouseLeave"
+      @mousemove="
+        props.mouseMoveHandler($event, {
+          startOffset: wordPart.start,
+        })
+      "
     >
       <!-- render flat ? -->
       <template v-if="renderFlat">
@@ -25,7 +26,19 @@
               props.allowCreate
             )
           "
-          @click="onClickAnnotation(annotation, $event)"
+          @mousedown="
+            props.mouseDownHandler($event, {
+              startOffset: wordPart.start,
+              annotation: annotation,
+              action: 'move',
+            })
+          "
+          @mousemove="
+            props.mouseMoveHandler($event, {
+              startOffset: wordPart.start,
+              annotation: annotation,
+            })
+          "
         >
           <label v-if="annotation.label">{{ annotation.label }}</label>
         </span>
@@ -45,20 +58,21 @@
             wordPart.annotations.sort((a, b) => b.weight - a.weight)
           "
           :annotation-class-handler="annotationClasses"
-          :annotation-click-handler="onClickAnnotation"
-          :on-update-start="onUpdateStart"
+
+          :mouse-down-handler="props.mouseDownHandler"
+          :mouse-move-handler="props.mouseMoveHandler"
         >
-          <template #annotation-start="slotProps">
-            <slot name="annotation-start" :annotation="slotProps.annotation" />
+          <template #annotation-before="slotProps">
+            <slot name="annotation-before" :annotation="slotProps.annotation" />
           </template>
-          <template #annotation-end="slotProps">
-            <slot name="annotation-end" :annotation="slotProps.annotation" />
+          <template #annotation-after="slotProps">
+            <slot name="annotation-after" :annotation="slotProps.annotation" />
           </template>
         </RecursiveAnnotatedTokenPartText>
         <span
           v-else
           :class="handleTextClass()"
-          @mousedown="onStartCreate($event, wordPart.start)"
+          @mousedown="props.mouseDownHandler($event, { startOffset: wordPart.start })"
         >
           {{ wordPart.text }}
         </span>
@@ -71,32 +85,12 @@
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import { AnnotatedLineProps } from "@/types";
 import { computed } from "vue-demi";
-import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
-import { storeToRefs } from "pinia";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
   wordPartClasses: () => [],
   annotationClasses: () => [],
 });
-
-const statesStore = useStateObjectsStore(props.componentId);
-const { hoverState } = storeToRefs(statesStore());
-
-// When leaving the line remove all annotations of that line from the hovered annos
-function onMouseLeave(e: MouseEvent) {
-  console.log('annotation-mouse-line-leave')
-  const annotations = [];
-  props.line.words.forEach((w) => {
-    w.parts.forEach((wp) => {
-      annotations.push(wp.annotations);
-    });
-  });
-  hoverState.value.hoveredAnnotations =
-    hoverState.value.hoveredAnnotations.filter((a) =>
-      annotations.some((a2) => a.id === a2.id)
-    );
-}
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");

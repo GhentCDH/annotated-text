@@ -1,11 +1,14 @@
 import { Annotation } from "@/types";
 import { ActionType, WordPart } from "@/types/AnnotatedText";
+import { MouseEventPayload } from "@/types/Props";
 
 export enum UserActionState {
-  IDLE,
-  SELECTING,
-  UPDATING,
-  CREATING,
+  IDLE = "idle",
+  SELECTING = "selecting",
+  UPDATING = "updating",
+  CREATING = "creating",
+  START_SELECT = "start-selecting",
+  START_CREATE = "start-creating",
 }
 
 /**
@@ -13,13 +16,16 @@ export enum UserActionState {
  */
 export class UserState {
   state: UserActionState;
-  annotation: Annotation;
-  wordPart: WordPart;
+  payload: MouseEventPayload;
 
   constructor() {
     this.state = UserActionState.IDLE;
-    this.wordPart = null;
-    this.annotation = null;
+    this.payload = null;
+  }
+
+  reset() {
+    this.state = UserActionState.IDLE;
+    this.payload = null;
   }
 }
 
@@ -97,6 +103,7 @@ export class UpdateAnnotationState {
    * Should get called in order to confirm the initial state of the update.
    */
   confirmStartUpdating() {
+    this.userState.state = UserActionState.UPDATING;
     this.updating = true;
     this.confirmUpdate();
   }

@@ -23,7 +23,7 @@ export interface AnnotatedTextEmits {
    * the start of the update
    * @arg updateState object holding the state of the update
    */
-  "annotation-update-start": [updateState: UpdateAnnotationState];
+  "annotation-update-begin": [updateState: UpdateAnnotationState];
   /**
    * Emitted every time the user moves their cursor while updating an
    * annotation. Only emitted if the listenToOnUpdating prop is true.
@@ -49,7 +49,7 @@ export interface AnnotatedTextEmits {
    *
    * @arg createState object holding the state of the being created annotation
    */
-  "annotation-create-start": [createState: CreateAnnotationState];
+  "annotation-create-begin": [createState: CreateAnnotationState];
   /**
    * Emitted on every mouse move while creating an annotation.
    *

@@ -111,19 +111,12 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     end: number,
     allowCreate: boolean
   ) => string[];
-  onUpdateStart: (
-    mouseEvent: MouseEvent,
-    action: ActionType,
-    wordPartStart: number,
-    annotation: Annotation
-  ) => void;
-  annotationClickHandler: (
-    annotation: Annotation,
-    mouseEvent: MouseEvent
-  ) => void;
   wordPartStart: number; // for correct handle position
   allowEdit?: boolean;
   allowCreate?: boolean;
+
+  mouseDownHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
+  mouseMoveHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
 }
 
 export interface AnnotatedLineProps {
@@ -137,15 +130,15 @@ export interface AnnotatedLineProps {
     end: number,
     allowCreate: boolean
   ) => string[];
-  onClickAnnotation: (annotation: Annotation, mouseEvent) => void;
-  onMouseMove: (wordPart: WordPart, mouseEvent: MouseEvent) => void;
-  onStartCreate: (mouseEvent: MouseEvent, wordPartStart: number) => void;
-  onUpdateStart: (
-    mouseEvent: MouseEvent,
-    action: ActionType,
-    wordPartStart: number,
-    annotation: Annotation
-  ) => void;
   allowEdit?: boolean;
   allowCreate?: boolean;
+
+  mouseDownHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
+  mouseMoveHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
+}
+
+export interface MouseEventPayload {
+  startOffset: number;
+  annotation?: Annotation;
+  action?: string;
 }
