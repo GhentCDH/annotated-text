@@ -14,6 +14,8 @@
       <label>Debug messages</label>
       | <input v-model="props.showLabels" type="checkbox" />
       <label>Show labels</label>
+      | <input v-model="props.renderNested" type="checkbox" />
+      <label>Render nested</label>
       | <input v-model="props.allowEdit" type="checkbox" />
       <label>Allow Edits</label>
       | <input v-model="props.allowCreate" type="checkbox" />
@@ -36,27 +38,27 @@
       :debug="props.debug"
       :verbose="true"
       :show-labels="props.showLabels"
-      render="nested"
+      :render="props.renderNested ? 'nested' : 'flat'"
       :display="props.target"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
       :listen-to-on-updating="false"
       :listen-to-on-update-start="true"
       @annotation-select="onAnnotationClick"
-      @annotation-update-start="onAnnotationUpdateStart"
+      @annotation-update-begin="onAnnotationUpdateBegin"
       @annotation-updating="onAnnotationUpdating"
       @annotation-update-end="onAnnotationUpdateEnd"
       @key-pressed="onKeyPressed"
-      @annotation-create-start="onAnnotationCreateStart"
+      @annotation-create-begin="onAnnotationCreateBegin"
       @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
       @annotation-mouse-over="onAnnotationMouseOver"
       @annotation-mouse-leave="onAnnotationMouseLeave"
     >
-      <template #annotation-end="slotProps">
-        <div v-if="endSlotCondition(slotProps)">
+      <template #annotation-after="slotProps">
+        <template v-if="slotCondition(slotProps)">
           <button>test</button>
-        </div>
+        </template>
       </template>
       <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
     </AnnotatedText>
@@ -69,7 +71,7 @@
       :lines="textLines"
       :debug="props.debug"
       :show-labels="props.showLabels"
-      render="nested"
+      :render="props.renderNested ? 'nested' : 'flat'"
       :display="props.target"
       :allow-edit="props.allowEdit"
       :allow-create="props.allowCreate"
@@ -78,7 +80,7 @@
       @annotation-updating="onAnnotationUpdating"
       @annotation-update-end="onAnnotationUpdateEnd"
       @key-pressed="onKeyPressed"
-      @annotation-create-start="onAnnotationCreateStart"
+      @annotation-create-start="onAnnotationCreateBegin"
       @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
     />
@@ -118,6 +120,7 @@ const props = reactive({
   target: "span" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
+  renderNested: true,
   /**
    * Lists to pass as props to the component(s). Note, if edits are made to the map state the lists need to be rebuilt.
    * Alternatively instead of using maps to hold the states, lists can also be used, but then operations like updating
@@ -130,28 +133,24 @@ const props = reactive({
   secondComponent: false,
 });
 
-function endSlotCondition(slotProps: { annotation: Annotation }) {
+function slotCondition(slotProps: { annotation: Annotation }) {
   return selectedAnnotations.has(slotProps.annotation.id);
 }
 
 const onAnnotationMouseOver = function (
-  hoveredAnnotations: Annotation[],
+  annotation: Annotation,
   mouseEvent: MouseEvent
 ) {
-  hoveredAnnotations.forEach((a) => {
-    hoveredAnnotationsState.set(a.id, a);
-  });
-  console.log(hoveredAnnotations);
+  hoveredAnnotationsState.set(annotation.id, annotation);
+  // console.log(hoveredAnnotations);
   props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 
 const onAnnotationMouseLeave = function (
-  hoveredAnnotations: Annotation[],
+  annotation: Annotation,
   mouseEvent: MouseEvent
 ) {
-  hoveredAnnotations.forEach((a) => {
-    hoveredAnnotationsState.delete(a.id);
-  });
+  hoveredAnnotationsState.delete(annotation.id);
   props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 
@@ -165,11 +164,9 @@ const onAnnotationClick = function (
     selectedAnnotations.delete(annotation.id);
   }
   props.selectedList = Array.from(selectedAnnotations.keys());
-  console.log("click");
-  console.log(selectedAnnotations);
 };
 
-const onAnnotationCreateStart = function (createState: CreateAnnotationState) {
+const onAnnotationCreateBegin = function (createState: CreateAnnotationState) {
   const annotation: Annotation = {
     id: Math.random().toString().slice(2, 12),
     start: createState.newStart,
@@ -191,15 +188,15 @@ const onAnnotationCreateEnd = function (createState: CreateAnnotationState) {
   props.annoList = Array.from(annotations.values());
 };
 
-const onAnnotationUpdateStart = function (updateState: UpdateAnnotationState) {
-  updateState.newStart = Math.round(updateState.newStart / 5) * 5;
-  updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
+const onAnnotationUpdateBegin = function (updateState: UpdateAnnotationState) {
+  // updateState.newStart = Math.round(updateState.newStart / 5) * 5;
+  // updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
   updateState.confirmStartUpdating();
 };
 
 const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
-  updateState.newStart = Math.round(updateState.newStart / 5) * 5;
-  updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
+  // updateState.newStart = Math.round(updateState.newStart / 5) * 5;
+  // updateState.newEnd = Math.round(updateState.newEnd / 5) * 5;
   updateState.confirmUpdate();
 };
 
@@ -223,7 +220,7 @@ const onKeyPressed = function (
       createState.resetCreating();
       break;
     case "Delete":
-      if (userState.value === UserActionState.UPDATING) {
+      if (userState.state === UserActionState.UPDATING) {
         annotations.delete(updateState.annotation.id);
         props.annoList = Array.from(annotations.values());
         updateState.resetUpdate();
