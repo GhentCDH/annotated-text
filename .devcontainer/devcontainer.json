@@ -16,7 +16,8 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pnpm install",
 
-	"postStartCommand": "pnpm run dev --host 127.0.0.1",
+	// "postStartCommand": "pnpm run dev --host 127.0.0.1",
+	"postStartCommand": "pnpm run dev",
 
 	// Configure tool-specific properties.
 	// This adds a more advanced git 
