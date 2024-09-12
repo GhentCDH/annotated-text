@@ -57,8 +57,17 @@
     >
       <template #annotation-after="slotProps">
         <template v-if="slotCondition(slotProps)">
-          <button>test</button>
+          <span>
+            <FontAwesomeIcon :icon="faRemove" style="color: red" />
+          </span>
+          <!-- <span>
+            <FontAwesomeIcon :icon="faImportant" style="color: orange" />
+          </span>
+          <span>
+            <FontAwesomeIcon :icon="faValidate" style="color: green" />
+          </span> -->
         </template>
+        <!-- <input type="checkbox" /> -->
       </template>
       <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
     </AnnotatedText>
@@ -100,6 +109,11 @@ import {
   UserActionState,
   UserState,
 } from "@/lib/annotatedTextUtils/StateClasses";
+
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faCircleMinus as faRemove } from "@fortawesome/free-solid-svg-icons";
+import { faCircleExclamation as faImportant } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck as faValidate } from "@fortawesome/free-solid-svg-icons";
 
 const textLines = textToLines(text);
 
