@@ -265,7 +265,7 @@ $annotated-text-annotation-colors: (
             .annotation-slot {
                 z-index: 1000000;
                 background-color: white;
-                display: inline-block;
+                display: flex;
                 position: absolute;
             
                 &.annotation-slot--after {
