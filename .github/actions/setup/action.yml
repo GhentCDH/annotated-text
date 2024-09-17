@@ -1,5 +1,5 @@
 name: "Setup"
-description: "Checks out code and installs dependencies using Yarn"
+description: "Checks out code and installs dependencies using pnpm"
 
 runs:
   using: "composite"
@@ -7,13 +7,13 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: "18"
+        node-version: "22"
     - name: Load cache
       uses: actions/cache@v3
-      id: yarn-cache
+      id: pnpm-cache
       with:
         path: "**/node_modules"
         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
     - name: Install packages
       shell: bash
-      run: yarn install
+      run: pnpm install
