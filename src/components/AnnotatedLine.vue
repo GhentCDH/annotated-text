@@ -54,9 +54,7 @@
           :allow-edit="allowEdit"
           :allow-create="allowCreate"
           :word-part-start="wordPart.start"
-          :annotations="
-            wordPart.annotations.sort((a, b) => b.weight - a.weight)
-          "
+          :annotations="sortAnnotations(wordPart.annotations)"
           :annotation-class-handler="annotationClasses"
 
           :mouse-down-handler="props.mouseDownHandler"
@@ -83,7 +81,7 @@
 
 <script setup lang="ts">
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
-import { AnnotatedLineProps } from "@/types";
+import { AnnotatedLineProps, Annotation } from "@/types";
 import { computed } from "vue-demi";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
@@ -101,6 +99,10 @@ function handleTextClass(): string[] {
     res.push("create-anno-text");
   }
   return res;
+}
+
+function sortAnnotations(annotations: Annotation[]): Annotation[] {
+  return annotations.sort((a, b) => b.weight - a.weight);
 }
 </script>
 
