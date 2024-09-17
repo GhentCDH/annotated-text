@@ -14,21 +14,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "22"
           registry-url: https://registry.npmjs.org/
           scope: "@ghentcdh"
       - name: Load cache
         uses: actions/cache@v3
-        id: yarn-cache
+        id: pnpm-cache
         with:
           path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock') }}
       - name: Install packages
         shell: bash
-        run: yarn install
+        run: pnpm install
       - name: Build
-        run: yarn build
+        run: pnpm build
       - name: Publish package on NPM
-        run: yarn publish --access public
+        run: pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
