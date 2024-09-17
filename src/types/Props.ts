@@ -14,10 +14,6 @@ export interface AnnotatedTextProps {
    */
   componentId: string;
   /**
-   * Full text
-   */
-  text?: string;
-  /**
    * List of annotations to be displayed
    */
   annotations?: Annotation[];
