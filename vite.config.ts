@@ -21,10 +21,9 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["vue", "vue-demi"],
+      external: ["vue"],
       output: {
         globals: {
-          "vue-demi": "vue-demi",
           vue: "Vue",
         },
       },
@@ -35,9 +34,6 @@ export default defineConfig({
     coverage: {
       reportsDirectory: "../test_coverage",
     },
-  },
-  optimizeDeps: {
-    exclude: ["vue-demi"],
   },
   resolve: {
     alias: {

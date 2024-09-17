@@ -10,7 +10,7 @@ import {
   Word,
   type WordPart,
 } from "@/types";
-import { computed, reactive } from "vue-demi";
+import { computed, reactive } from "vue";
 import { FlattenRanges } from "etali";
 import {
   CreateAnnotationState,

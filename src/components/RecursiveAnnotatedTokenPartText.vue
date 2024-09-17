@@ -85,7 +85,7 @@
 
 <script setup lang="ts">
 import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
-import { computed } from "vue-demi";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),

@@ -4,7 +4,7 @@ import type {
   Annotation,
   WordPart,
 } from "@/types";
-import { computed } from "vue-demi";
+import { computed } from "vue";
 import { UpdateAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
 
 export const startsOnLine = function (

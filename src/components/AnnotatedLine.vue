@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
 import { AnnotatedLineProps, Annotation } from "@/types";
-import { computed } from "vue-demi";
+import { computed } from "vue";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",

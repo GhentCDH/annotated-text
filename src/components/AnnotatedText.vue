@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="linesUtil.annotatedLines"
+    v-if="linesUtil.annotatedLines.value.length"
     :class="componentClasses"
     @mouseleave="onMouseLeave($event)"
     @mouseup="onMouseUp($event)"
@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, reactive } from "vue-demi";
+import { computed, reactive } from "vue";
 import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
 import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
@@ -244,8 +244,6 @@ onMouseMoveHandlers.set(
           end: createState.value.newStart,
           class: "annotation annotation--color-1",
           target: "span",
-          active: true,
-          visible: true,
         };
         createState.value.initAnnotation(annotation);
       }
