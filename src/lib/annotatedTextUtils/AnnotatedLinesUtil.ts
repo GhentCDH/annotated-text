@@ -63,12 +63,9 @@ export default class AnnotatedLinesUtil {
     }
     // replace objects by proxies, needed to be able
     // to compare annotation (no proxy) with annotation in this.state (proxy)
-    annotations = reactive(annotations);
+    // todo: don't think we need this
+    // annotations = reactive(annotations);
 
-    // hide invisible annotations
-    annotations = annotations.filter(
-      (annotation) => annotation?.visible !== false
-    );
     return annotations;
   });
 
