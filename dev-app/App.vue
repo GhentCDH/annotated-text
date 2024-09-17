@@ -29,7 +29,6 @@
   <div class="text-components">
     <AnnotatedText
       key="text"
-      text="012345678901234567890123456789"
       :component-id="'1'"
       :annotations="props.annoList"
       :hovered-annotations="props.hoveredList"
@@ -60,21 +59,20 @@
           <span>
             <FontAwesomeIcon :icon="faRemove" style="color: red" />
           </span>
-          <!-- <span>
+          <span>
             <FontAwesomeIcon :icon="faImportant" style="color: orange" />
           </span>
           <span>
             <FontAwesomeIcon :icon="faValidate" style="color: green" />
-          </span> -->
+          </span>
         </template>
-        <!-- <input type="checkbox" /> -->
+        <input type="checkbox" />
       </template>
       <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
     </AnnotatedText>
     <AnnotatedText
       v-if="props.secondComponent"
       key="text"
-      text="012345678901234567890123456789"
       :component-id="'2'"
       :annotations="props.annoList"
       :lines="textLines"
@@ -98,17 +96,18 @@
 
 <script setup lang="ts">
 import { AnnotatedText, Annotation, AnnotationTarget } from "@/index";
-import { textToLines } from "./Utils";
-
-import { annotationsGreek, textGreek as text } from "./data";
-
-import { reactive } from "vue-demi";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
   UserActionState,
   UserState,
-} from "@/lib/annotatedTextUtils/StateClasses";
+} from "@/index";
+
+import { textToLines } from "./Utils";
+
+import { annotationsGreek, textGreek as text } from "./data";
+
+import { reactive } from "vue";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCircleMinus as faRemove } from "@fortawesome/free-solid-svg-icons";
@@ -119,7 +118,7 @@ const textLines = textToLines(text);
 
 const annotations: Map<string, Annotation> = annotationsGreek.reduce(
   (map, anno) => {
-    map.set(anno.id, { ...anno, visible: true });
+    map.set(anno.id, { ...anno });
     return map;
   },
   new Map()
