@@ -75,6 +75,8 @@
       key="text"
       :component-id="'2'"
       :annotations="props.annoList"
+      :hovered-annotations="props.hoveredList"
+      :selected-annotations="props.selectedList"
       :lines="textLines"
       :debug="props.debug"
       :show-labels="props.showLabels"
@@ -84,12 +86,15 @@
       :allow-create="props.allowCreate"
       :listen-to-on-key-pressed="true"
       @annotation-select="onAnnotationClick"
+      @annotation-update-begin="onAnnotationUpdateBegin"
       @annotation-updating="onAnnotationUpdating"
       @annotation-update-end="onAnnotationUpdateEnd"
       @key-pressed="onKeyPressed"
-      @annotation-create-start="onAnnotationCreateBegin"
+      @annotation-create-begin="onAnnotationCreateBegin"
       @annotation-creating="onAnnotationCreating"
       @annotation-create-end="onAnnotationCreateEnd"
+      @annotation-mouse-over="onAnnotationMouseOver"
+      @annotation-mouse-leave="onAnnotationMouseLeave"
     />
   </div>
 </template>
