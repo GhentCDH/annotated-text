@@ -6,7 +6,7 @@
         id="nested"
         v-model="props.target"
         type="radio"
-        value="span"
+        value="text"
       /><label for="span">Span</label>
       <input id="gutter" v-model="props.target" type="radio" value="gutter" />
       <label for="gutter">Gutter</label>
@@ -135,7 +135,7 @@ const selectedAnnotations: Map<string, Annotation> = new Map();
 const props = reactive({
   showLabels: false,
   debug: false,
-  target: "span" as AnnotationTarget,
+  target: "text" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
   renderNested: true,
