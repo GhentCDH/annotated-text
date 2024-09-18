@@ -10,28 +10,58 @@
 
 ### CREATING
 
-> **CREATING**: `2`
+> **CREATING**: `"creating"`
 
 #### Defined in
 
-lib/annotatedTextUtils/StateClasses.ts:7
+[lib/annotatedTextUtils/StateClasses.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L9)
 
 ***
 
 ### IDLE
 
-> **IDLE**: `0`
+> **IDLE**: `"idle"`
 
 #### Defined in
 
-lib/annotatedTextUtils/StateClasses.ts:5
+[lib/annotatedTextUtils/StateClasses.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L6)
+
+***
+
+### SELECTING
+
+> **SELECTING**: `"selecting"`
+
+#### Defined in
+
+[lib/annotatedTextUtils/StateClasses.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L7)
+
+***
+
+### START\_CREATE
+
+> **START\_CREATE**: `"start-creating"`
+
+#### Defined in
+
+[lib/annotatedTextUtils/StateClasses.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L11)
+
+***
+
+### START\_SELECT
+
+> **START\_SELECT**: `"start-selecting"`
+
+#### Defined in
+
+[lib/annotatedTextUtils/StateClasses.ts:10](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L10)
 
 ***
 
 ### UPDATING
 
-> **UPDATING**: `1`
+> **UPDATING**: `"updating"`
 
 #### Defined in
 
-lib/annotatedTextUtils/StateClasses.ts:6
+[lib/annotatedTextUtils/StateClasses.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L8)

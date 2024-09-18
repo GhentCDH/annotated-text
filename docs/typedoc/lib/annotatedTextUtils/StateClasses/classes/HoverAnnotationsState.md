@@ -20,7 +20,7 @@ Holds all the annotations the mouse is currently hovering over.
 
 #### Defined in
 
-lib/annotatedTextUtils/StateClasses.ts:120
+[lib/annotatedTextUtils/StateClasses.ts:131](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L131)
 
 ## Properties
 
@@ -30,7 +30,7 @@ lib/annotatedTextUtils/StateClasses.ts:120
 
 #### Defined in
 
-lib/annotatedTextUtils/StateClasses.ts:117
+[lib/annotatedTextUtils/StateClasses.ts:128](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L128)
 
 ***
 
@@ -40,4 +40,4 @@ lib/annotatedTextUtils/StateClasses.ts:117
 
 #### Defined in
 
-lib/annotatedTextUtils/StateClasses.ts:118
+[lib/annotatedTextUtils/StateClasses.ts:129](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L129)

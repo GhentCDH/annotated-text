@@ -24,7 +24,7 @@
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:28
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:28](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L28)
 
 ## Properties
 
@@ -34,7 +34,7 @@ lib/annotatedTextUtils/AnnotatedTextUtils.ts:28
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:36
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:36](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L36)
 
 ***
 
@@ -44,7 +44,7 @@ lib/annotatedTextUtils/AnnotatedTextUtils.ts:36
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:26
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L26)
 
 ***
 
@@ -54,7 +54,7 @@ lib/annotatedTextUtils/AnnotatedTextUtils.ts:26
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:25
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:25](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L25)
 
 ## Methods
 
@@ -78,7 +78,7 @@ lib/annotatedTextUtils/AnnotatedTextUtils.ts:25
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:73
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:73](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L73)
 
 ***
 
@@ -98,7 +98,7 @@ lib/annotatedTextUtils/AnnotatedTextUtils.ts:73
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:56
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:56](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L56)
 
 ***
 
@@ -116,4 +116,4 @@ lib/annotatedTextUtils/AnnotatedTextUtils.ts:56
 
 #### Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:49
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:49](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L49)

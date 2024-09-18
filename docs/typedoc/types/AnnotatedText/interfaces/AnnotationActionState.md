@@ -22,7 +22,7 @@
 
 #### Defined in
 
-types/AnnotatedText.d.ts:14
+[types/AnnotatedText.d.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L14)
 
 ***
 
@@ -36,7 +36,7 @@ types/AnnotatedText.d.ts:14
 
 #### Defined in
 
-types/AnnotatedText.d.ts:15
+[types/AnnotatedText.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L15)
 
 ***
 
@@ -50,7 +50,7 @@ types/AnnotatedText.d.ts:15
 
 #### Defined in
 
-types/AnnotatedText.d.ts:16
+[types/AnnotatedText.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L16)
 
 ***
 
@@ -60,7 +60,7 @@ types/AnnotatedText.d.ts:16
 
 #### Defined in
 
-types/AnnotatedText.d.ts:25
+[types/AnnotatedText.d.ts:25](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L25)
 
 ***
 
@@ -70,7 +70,7 @@ types/AnnotatedText.d.ts:25
 
 #### Defined in
 
-types/AnnotatedText.d.ts:24
+[types/AnnotatedText.d.ts:24](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L24)
 
 ***
 
@@ -80,7 +80,7 @@ types/AnnotatedText.d.ts:24
 
 #### Defined in
 
-types/AnnotatedText.d.ts:23
+[types/AnnotatedText.d.ts:23](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L23)
 
 ***
 
@@ -90,4 +90,4 @@ types/AnnotatedText.d.ts:23
 
 #### Defined in
 
-types/AnnotatedText.d.ts:22
+[types/AnnotatedText.d.ts:22](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/AnnotatedText.d.ts#L22)

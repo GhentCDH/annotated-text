@@ -4,61 +4,50 @@
 
 # Vue component annotated text
 
-This repository contains a reusable Vue 2 / 3 component to visualize text annotations on web pages. It can be used for linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following screenshots:
+This repository contains a reusable Vue 3 component to visualize text annotations on web pages. It can be used for linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following screenshots:
 
-![Flat annotations](_media/flat.png)
+![Annotations](_media/annotations.png)
 
-![Flat annotations](_media/nested.png)
+![Edit](_media/editAnnotation.png)
 
 ## Usage
 
-The component uses typescript and is published on NPM as apackage with the original name [@ghentcdh/vue-component-annotated-text](https://www.npmjs.com/package/@ghentcdh/vue-component-annotated-text). 
-
-To use the package in a project first add it to your dependencies with `npm` or `yarn` and import the component. It has typescript types for the structures it uses.
-
-````
-import {
-  type Annotation,
-  type Line,
-  type AnnotationTarget,
-  AnnotatedText
-} from '@ghentcdh/vue-component-annotated-text'
-import '@ghentcdh/vue-component-annotated-text/style.css'
-````
-
-Fill the annotations and textLines with the correct data - according to the Line and Annotation definitions - and choose a render style.
-
-````
-<template>
-  <AnnotatedText
-    text="012345678901234567890123456789"
-    :annotations="annotations"
-    :lines="textLines"
-    :debug="true"
-    :show-labels="false"
-    render="nested"
-    @click-annotation="onClick"
-    @_mousemove="onMouseOver"
-  />
-
-</template>
-````
-
-Important: there is currently a severe limitation in the use of this component: **replacing the annotations property with a new array makes the annotations dissapear**. Emptying the same annotations array, e.g. by setting the length `annotations.length = 0`, and reusing it is the current workaround. It is unclear why this behaviour manifests itself.
+Example app can be found in [App.vue](_media/App.vue)
 
 ## Documentation
 
 To build the docs run `yarn run docs:build`
 
-### Component
+### AnnotatedText Component
 - [Props](_media/AnnotatedTextProps.md)
 - [Emits](_media/AnnotatedTextEmits.md)
 
-### Modules
+### Types
 
 - [StateClasses](_media/README.md)
-- [AnnotatedText types](_media/README-1.md)
-- [Annotation types](_media/README-2.md)
+- [AnnotatedText](_media/README-1.md)
+- [Annotation](_media/README-2.md)
+
+### Slots
+
+Every annotation has 2 named slots: annotation-start and annotation-end. One before the annotation, one after the annotation.
+
+An example usage:
+```vue
+<AnnotatedText ...>
+    <template #annotation-end="slotProps">
+      <button>test</button>
+    </template>
+    <template #annotation-start="slotProps">
+        <button>startTest</button>
+    </template>
+</AnnotatedText>
+```
+
+the slotProps argument is an object that looks like this:
+{
+  annotation: [Annotation](docs/typedoc/types/Annotation/interfaces/Annotation.md)
+}
 
 ## Creating a new release
 
@@ -69,6 +58,11 @@ git tag "v0.0.16"
 git push origin "v0.0.16"
 ````
 
+## Todo
+
+- [ ] update tests
+- [ ] update vitepress documentation
+
 ## Credits
 
 Built @ the [Ghent Center For Digital Humanities](https://www.ghentcdh.ugent.be/), Ghent University by:
@@ -76,3 +70,4 @@ Built @ the [Ghent Center For Digital Humanities](https://www.ghentcdh.ugent.be/
 * Pieterjan De Potter
 * Frederic Lamsens
 * Joren Six
+* Jahid Chetti

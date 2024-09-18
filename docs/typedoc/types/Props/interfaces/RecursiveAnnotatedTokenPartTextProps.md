@@ -14,7 +14,7 @@
 
 #### Defined in
 
-types/Props.ts:122
+[types/Props.ts:107](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L107)
 
 ***
 
@@ -24,7 +24,7 @@ types/Props.ts:122
 
 #### Defined in
 
-types/Props.ts:121
+[types/Props.ts:106](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L106)
 
 ***
 
@@ -48,27 +48,7 @@ types/Props.ts:121
 
 #### Defined in
 
-types/Props.ts:104
-
-***
-
-### annotationClickHandler()
-
-> **annotationClickHandler**: (`annotation`, `mouseEvent`) => `void`
-
-#### Parameters
-
-• **annotation**: [`Annotation`](../../Annotation/interfaces/Annotation.md)
-
-• **mouseEvent**: `MouseEvent`
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-types/Props.ts:116
+[types/Props.ts:99](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L99)
 
 ***
 
@@ -78,17 +58,7 @@ types/Props.ts:116
 
 #### Defined in
 
-types/Props.ts:103
-
-***
-
-### componentId
-
-> **componentId**: `string`
-
-#### Defined in
-
-types/Props.ts:99
+[types/Props.ts:98](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L98)
 
 ***
 
@@ -98,23 +68,19 @@ types/Props.ts:99
 
 #### Defined in
 
-types/Props.ts:102
+[types/Props.ts:97](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L97)
 
 ***
 
-### onUpdateStart()
+### mouseDownHandler()
 
-> **onUpdateStart**: (`mouseEvent`, `action`, `wordPartStart`, `annotation`) => `void`
+> **mouseDownHandler**: (`e`, `payload`?) => `void`
 
 #### Parameters
 
-• **mouseEvent**: `MouseEvent`
+• **e**: `MouseEvent`
 
-• **action**: [`ActionType`](../../AnnotatedText/type-aliases/ActionType.md)
-
-• **wordPartStart**: `number`
-
-• **annotation**: [`Annotation`](../../Annotation/interfaces/Annotation.md)
+• **payload?**: [`MouseEventPayload`](MouseEventPayload.md)
 
 #### Returns
 
@@ -122,7 +88,27 @@ types/Props.ts:102
 
 #### Defined in
 
-types/Props.ts:110
+[types/Props.ts:109](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L109)
+
+***
+
+### mouseMoveHandler()
+
+> **mouseMoveHandler**: (`e`, `payload`?) => `void`
+
+#### Parameters
+
+• **e**: `MouseEvent`
+
+• **payload?**: [`MouseEventPayload`](MouseEventPayload.md)
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[types/Props.ts:110](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L110)
 
 ***
 
@@ -132,7 +118,7 @@ types/Props.ts:110
 
 #### Defined in
 
-types/Props.ts:101
+[types/Props.ts:96](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L96)
 
 ***
 
@@ -142,7 +128,7 @@ types/Props.ts:101
 
 #### Defined in
 
-types/Props.ts:100
+[types/Props.ts:95](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L95)
 
 ***
 
@@ -152,4 +138,4 @@ types/Props.ts:100
 
 #### Defined in
 
-types/Props.ts:120
+[types/Props.ts:105](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L105)

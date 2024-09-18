@@ -8,23 +8,13 @@
 
 ## Properties
 
-### active?
-
-> `optional` **active**: `boolean`
-
-#### Defined in
-
-types/Annotation.d.ts:11
-
-***
-
 ### class?
 
 > `optional` **class**: `string`
 
 #### Defined in
 
-types/Annotation.d.ts:6
+[types/Annotation.d.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L5)
 
 ***
 
@@ -34,7 +24,7 @@ types/Annotation.d.ts:6
 
 #### Defined in
 
-types/Annotation.d.ts:4
+[types/Annotation.d.ts:4](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L4)
 
 ***
 
@@ -44,7 +34,7 @@ types/Annotation.d.ts:4
 
 #### Defined in
 
-types/Annotation.d.ts:2
+[types/Annotation.d.ts:2](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L2)
 
 ***
 
@@ -54,7 +44,7 @@ types/Annotation.d.ts:2
 
 #### Defined in
 
-types/Annotation.d.ts:8
+[types/Annotation.d.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L6)
 
 ***
 
@@ -64,7 +54,7 @@ types/Annotation.d.ts:8
 
 #### Defined in
 
-types/Annotation.d.ts:3
+[types/Annotation.d.ts:3](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L3)
 
 ***
 
@@ -74,37 +64,7 @@ types/Annotation.d.ts:3
 
 #### Defined in
 
-types/Annotation.d.ts:9
-
-***
-
-### text?
-
-> `optional` **text**: `string`
-
-#### Defined in
-
-types/Annotation.d.ts:5
-
-***
-
-### tmpClass?
-
-> `optional` **tmpClass**: `string`
-
-#### Defined in
-
-types/Annotation.d.ts:7
-
-***
-
-### visible?
-
-> `optional` **visible**: `boolean`
-
-#### Defined in
-
-types/Annotation.d.ts:12
+[types/Annotation.d.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L7)
 
 ***
 
@@ -114,4 +74,4 @@ types/Annotation.d.ts:12
 
 #### Defined in
 
-types/Annotation.d.ts:10
+[types/Annotation.d.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L8)

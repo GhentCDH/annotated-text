@@ -16,7 +16,7 @@ Whether to allow creating new annotations
 
 #### Defined in
 
-types/Props.ts:75
+[types/Props.ts:71](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L71)
 
 ***
 
@@ -28,7 +28,7 @@ Whether to allow editing annotations
 
 #### Defined in
 
-types/Props.ts:71
+[types/Props.ts:67](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L67)
 
 ***
 
@@ -40,7 +40,7 @@ types/Props.ts:71
 
 #### Defined in
 
-types/Props.ts:39
+[types/Props.ts:31](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L31)
 
 ***
 
@@ -52,7 +52,7 @@ List of annotations to be displayed
 
 #### Defined in
 
-types/Props.ts:23
+[types/Props.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L15)
 
 ***
 
@@ -64,19 +64,7 @@ Whether to automatically calculate weights
 
 #### Defined in
 
-types/Props.ts:63
-
-***
-
-### componentId
-
-> **componentId**: `string`
-
-Required unique ID of the component
-
-#### Defined in
-
-types/Props.ts:15
+[types/Props.ts:59](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L59)
 
 ***
 
@@ -88,7 +76,7 @@ Whether verbose debug messages are printed
 
 #### Defined in
 
-types/Props.ts:43
+[types/Props.ts:35](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L35)
 
 ***
 
@@ -96,11 +84,11 @@ types/Props.ts:43
 
 > `optional` **display**: [`AnnotationTarget`](../../Annotation/type-aliases/AnnotationTarget.md)
 
-Whether to display span or gutter annotations
+Whether to display text or gutter annotations
 
 #### Defined in
 
-types/Props.ts:55
+[types/Props.ts:51](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L51)
 
 ***
 
@@ -112,7 +100,7 @@ List of annotation ID's that are hovered. Those will get the "hovered" style cla
 
 #### Defined in
 
-types/Props.ts:31
+[types/Props.ts:23](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L23)
 
 ***
 
@@ -124,7 +112,7 @@ List of lines
 
 #### Defined in
 
-types/Props.ts:35
+[types/Props.ts:27](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L27)
 
 ***
 
@@ -136,7 +124,7 @@ Whether you are listening to the onCreateStart emit or not. If false default beh
 
 #### Defined in
 
-types/Props.ts:91
+[types/Props.ts:87](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L87)
 
 ***
 
@@ -148,7 +136,7 @@ Whether you are listening to the onCreating emit or not. If false default behavi
 
 #### Defined in
 
-types/Props.ts:95
+[types/Props.ts:91](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L91)
 
 ***
 
@@ -160,7 +148,7 @@ Whether you are listening to the onKeyPressed emit or not. If false default beha
 
 #### Defined in
 
-types/Props.ts:87
+[types/Props.ts:83](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L83)
 
 ***
 
@@ -172,7 +160,7 @@ Whether you are listening to the onUpdateStart emit or not. If false default beh
 
 #### Defined in
 
-types/Props.ts:79
+[types/Props.ts:75](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L75)
 
 ***
 
@@ -184,7 +172,7 @@ Whether you are listening to the onUpdating emit or not. If false default behavi
 
 #### Defined in
 
-types/Props.ts:83
+[types/Props.ts:79](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L79)
 
 ***
 
@@ -196,7 +184,7 @@ types/Props.ts:83
 
 #### Defined in
 
-types/Props.ts:51
+[types/Props.ts:47](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L47)
 
 ***
 
@@ -208,7 +196,7 @@ List of annotation ID's that are selected. Those will get the "active" style cla
 
 #### Defined in
 
-types/Props.ts:27
+[types/Props.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L19)
 
 ***
 
@@ -220,7 +208,7 @@ Whether to show the labels
 
 #### Defined in
 
-types/Props.ts:59
+[types/Props.ts:55](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L55)
 
 ***
 
@@ -232,19 +220,7 @@ Object to define classes for styles.
 
 #### Defined in
 
-types/Props.ts:67
-
-***
-
-### text?
-
-> `optional` **text**: `string`
-
-Full text
-
-#### Defined in
-
-types/Props.ts:19
+[types/Props.ts:63](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L63)
 
 ***
 
@@ -256,4 +232,16 @@ only default theme available for now
 
 #### Defined in
 
-types/Props.ts:47
+[types/Props.ts:43](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L43)
+
+***
+
+### verbose?
+
+> `optional` **verbose**: `boolean`
+
+Whether event messages are printed
+
+#### Defined in
+
+[types/Props.ts:39](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L39)

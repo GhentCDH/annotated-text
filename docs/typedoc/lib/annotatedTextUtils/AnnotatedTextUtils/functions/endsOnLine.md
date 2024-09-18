@@ -20,4 +20,4 @@
 
 ## Defined in
 
-lib/annotatedTextUtils/AnnotatedTextUtils.ts:17
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L17)

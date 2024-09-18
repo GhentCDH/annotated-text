@@ -12,4 +12,5 @@
 
 - [AnnotatedLineProps](interfaces/AnnotatedLineProps.md)
 - [AnnotatedTextProps](interfaces/AnnotatedTextProps.md)
+- [MouseEventPayload](interfaces/MouseEventPayload.md)
 - [RecursiveAnnotatedTokenPartTextProps](interfaces/RecursiveAnnotatedTokenPartTextProps.md)

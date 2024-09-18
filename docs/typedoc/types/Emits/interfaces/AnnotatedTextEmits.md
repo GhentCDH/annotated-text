@@ -8,6 +8,24 @@
 
 ## Properties
 
+### annotation-create-begin
+
+> **annotation-create-begin**: [[`CreateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md)]
+
+Emitted when the mouse is pressed down on plain text.
+
+If listening to this emit, createState.initAnnotation should be called to initialize the new annotation being created.
+
+#### Arg
+
+createState object holding the state of the being created annotation
+
+#### Defined in
+
+[types/Emits.ts:52](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L52)
+
+***
+
 ### annotation-create-end
 
 > **annotation-create-end**: [[`CreateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md)]
@@ -20,25 +38,7 @@ createState object holding the state of the being created annotation. The annota
 
 #### Defined in
 
-types/Emits.ts:68
-
-***
-
-### annotation-create-start
-
-> **annotation-create-start**: [[`CreateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md)]
-
-Emitted when the mouse is pressed down on plain text.
-
-If listening to this emit, createState.initAnnotation should be called to initialize the new annotation being created.
-
-#### Arg
-
-createState object holding the state of the being created annotation
-
-#### Defined in
-
-types/Emits.ts:52
+[types/Emits.ts:68](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L68)
 
 ***
 
@@ -58,7 +58,7 @@ createState object holding the state of the being created annotation
 
 #### Defined in
 
-types/Emits.ts:62
+[types/Emits.ts:62](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L62)
 
 ***
 
@@ -78,7 +78,7 @@ mouseEvent Normal dom mouse event
 
 #### Defined in
 
-types/Emits.ts:97
+[types/Emits.ts:97](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L97)
 
 ***
 
@@ -98,7 +98,7 @@ mouseEvent Normal dom mouse event
 
 #### Defined in
 
-types/Emits.ts:88
+[types/Emits.ts:88](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L88)
 
 ***
 
@@ -118,29 +118,13 @@ mouseEvent normal dom mouse event
 
 #### Defined in
 
-types/Emits.ts:15
+[types/Emits.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L15)
 
 ***
 
-### annotation-update-end
+### annotation-update-begin
 
-> **annotation-update-end**: [[`UpdateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
-
-Emitted when during an update the mouse is released.
-
-#### Arg
-
-updateState updateState object containing the new annotation object in the annotation field.
-
-#### Defined in
-
-types/Emits.ts:44
-
-***
-
-### annotation-update-start
-
-> **annotation-update-start**: [[`UpdateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
+> **annotation-update-begin**: [[`UpdateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
 
 Emitted when the user starts updating an annotation, so when the mouse is
 clicked down and the listenToOnUpdateStart prop is true.
@@ -156,7 +140,23 @@ updateState object holding the state of the update
 
 #### Defined in
 
-types/Emits.ts:26
+[types/Emits.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L26)
+
+***
+
+### annotation-update-end
+
+> **annotation-update-end**: [[`UpdateAnnotationState`](../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
+
+Emitted when during an update the mouse is released.
+
+#### Arg
+
+updateState updateState object containing the new annotation object in the annotation field.
+
+#### Defined in
+
+[types/Emits.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L44)
 
 ***
 
@@ -178,7 +178,7 @@ updateState object holding the state of the update
 
 #### Defined in
 
-types/Emits.ts:37
+[types/Emits.ts:37](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L37)
 
 ***
 
@@ -206,7 +206,7 @@ userState {UserState}
 
 #### Defined in
 
-types/Emits.ts:77
+[types/Emits.ts:77](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L77)
 
 ***
 
@@ -226,4 +226,4 @@ newState New user action state
 
 #### Defined in
 
-types/Emits.ts:106
+[types/Emits.ts:106](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L106)

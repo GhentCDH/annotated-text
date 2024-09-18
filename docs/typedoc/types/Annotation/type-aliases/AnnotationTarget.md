@@ -6,8 +6,8 @@
 
 # Type Alias: AnnotationTarget
 
-> **AnnotationTarget**: `"gutter"` \| `"span"`
+> **AnnotationTarget**: `"gutter"` \| `"text"`
 
 ## Defined in
 
-types/Annotation.d.ts:15
+[types/Annotation.d.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Annotation.d.ts#L11)
