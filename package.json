@@ -32,8 +32,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "etali": "^1.2.5",
-    "pinia": "^2.2.2"
+    "etali": "^1.2.5"
   },
   "devDependencies": {
     "@babel/types": "^7.25.6",

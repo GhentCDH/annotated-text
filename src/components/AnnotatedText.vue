@@ -61,7 +61,6 @@ import { createPositionFromPoint } from "@/lib/DomUtils";
 import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
 import AnnotatedLine from "@/components/AnnotatedLine.vue";
 import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
-import { storeToRefs } from "pinia";
 import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
 import { UserActionState } from "@/lib/annotatedTextUtils/StateClasses";
 import { v4 as uuidv4 } from "uuid";
@@ -110,10 +109,10 @@ props = reactive(props);
 // define emits
 const emit = defineEmits<AnnotatedTextEmits>();
 
-const statesStore = useStateObjectsStore(props.componentId);
-const { updateState, createState, userState, hoverState } = storeToRefs(
-  statesStore()
-);
+const statesStore = useStateObjectsStore();
+
+const { updateState, createState, userState, hoverState } = statesStore;
+
 
 const userStateLabel = computed(() => userState.value.state);
 
