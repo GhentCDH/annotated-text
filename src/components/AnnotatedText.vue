@@ -82,7 +82,7 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
   verbose: false,
   theme: "default",
   render: "nested",
-  display: "span",
+  display: "text",
   showLabels: false,
   autoAnnotationWeights: true,
   allowEdit: true,
@@ -241,7 +241,7 @@ onMouseMoveHandlers.set(
           start: createState.value.newStart,
           end: createState.value.newStart,
           class: "annotation annotation--color-1",
-          target: "span",
+          target: "text",
         };
         createState.value.initAnnotation(annotation);
       }

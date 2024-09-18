@@ -46,7 +46,7 @@ export interface AnnotatedTextProps {
    */
   render?: RenderType;
   /**
-   * Whether to display span or gutter annotations
+   * Whether to display text or gutter annotations
    */
   display?: AnnotationTarget;
   /**
@@ -92,7 +92,6 @@ export interface AnnotatedTextProps {
 }
 
 export interface RecursiveAnnotatedTokenPartTextProps {
-  componentId: string;
   text: string;
   start: number;
   end: number;
@@ -112,7 +111,6 @@ export interface RecursiveAnnotatedTokenPartTextProps {
 }
 
 export interface AnnotatedLineProps {
-  componentId: string;
   line: AnnotatedLine;
   wordPartClasses?: (wordPart: WordPart) => any[];
   render?: RenderType;

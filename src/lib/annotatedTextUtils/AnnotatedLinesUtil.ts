@@ -90,7 +90,7 @@ export default class AnnotatedLinesUtil {
     this.props.debug && console.log(annotations);
 
     const spanAnnotations = annotations.filter((annotation) => {
-      return annotation.target === "span";
+      return annotation.target === "text";
     });
 
     if (this.props.autoAnnotationWeights) {

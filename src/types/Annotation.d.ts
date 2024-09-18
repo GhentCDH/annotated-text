@@ -8,4 +8,4 @@ export interface Annotation {
   weight?: number;
 }
 
-export type AnnotationTarget = "gutter" | "span";
+export type AnnotationTarget = "gutter" | "text";
