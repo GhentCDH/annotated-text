@@ -10,10 +10,6 @@ import {
 
 export interface AnnotatedTextProps {
   /**
-   * Required unique ID of the component
-   */
-  componentId: string;
-  /**
    * List of annotations to be displayed
    */
   annotations?: Annotation[];

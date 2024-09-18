@@ -40,7 +40,6 @@
     ></span>
     <!-- recurse annotation list -->
     <RecursiveAnnotatedTokenPartText
-      :component-id="componentId"
       :annotations="annotations.slice(1)"
       :text="text"
       :start="start"

@@ -29,7 +29,6 @@
       <!-- line -->
       <div class="content">
         <AnnotatedLine
-          :component-id="props.componentId"
           :line="line"
           :allow-edit="allowEdit"
           :allow-create="allowCreate"

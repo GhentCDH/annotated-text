@@ -321,7 +321,7 @@ export default class AnnotatedLinesUtil {
     );
     this.props.debug &&
       console.log(
-        `** annotated lines (component ${this.props.componentId}) **`
+        `** annotated lines **`
       );
     this.props.debug && console.log(lines);
     return lines;
