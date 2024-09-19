@@ -68,6 +68,8 @@ import { watch } from "vue";
 import { AnnotatedTextEmits } from "@/types/Emits";
 import { MouseEventPayload } from "@/types/Props";
 
+import { hasCustomEventListener } from "@/lib/EventUtils";
+
 // init props
 /**
  * @ignore
@@ -85,13 +87,8 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
   display: "text",
   showLabels: false,
   autoAnnotationWeights: true,
-  allowEdit: true,
-  allowCreate: true,
-  listenToOnUpdateStart: false,
-  listenToOnUpdating: false,
-  listenToOnKeyPressed: false,
-  listenToOnCreateStart: false,
-  listenToOnCreating: false,
+  allowEdit: false,
+  allowCreate: false,
   style: () => ({
     activeClass: "annotation--active",
     startClass: "annotation--start",
@@ -112,7 +109,6 @@ const statesStore = useStateObjectsStore();
 
 const { updateState, createState, userState, hoverState } = statesStore;
 
-
 const userStateLabel = computed(() => userState.value.state);
 
 const linesUtil = new AnnotatedLinesUtil(
@@ -120,6 +116,15 @@ const linesUtil = new AnnotatedLinesUtil(
   updateState.value,
   createState.value
 );
+
+// Check event listeners
+const hasUpdateBeginListener = hasCustomEventListener("annotationUpdateBegin");
+const hasUpdatingListener = hasCustomEventListener("annotationUpdating");
+const hasUpdateEndListener = hasCustomEventListener("annotationUpdateEnd");
+const hasCreateBeginListener = hasCustomEventListener("annotationCreateBegin");
+const hasCreatingListener = hasCustomEventListener("annotationCreating");
+const hasCreateEndListener = hasCustomEventListener("annotationCreateEnd");
+const hasKeyPressedListener = hasCustomEventListener("keyPressed");
 
 // Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, updateState.value);
@@ -136,7 +141,7 @@ watch(userStateLabel, (nv, ov) => {
 
 /* keyboard events */
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
-  if (props.listenToOnKeyPressed) {
+  if (hasKeyPressedListener) {
     props.verbose &&
       console.log("key-pressed", keyEv.key, updateState.value, createState.value);
     emit(
@@ -232,7 +237,7 @@ onMouseMoveHandlers.set(
       const position = payload.startOffset + createPositionFromPoint(e.x, e.y).offset;
       createState.value.startCreating(position);
 
-      if (props.listenToOnCreateStart) {
+      if (hasCreateBeginListener) {
         props.verbose && console.log("*emit annotation-create-begin", createState.value);
         emit("annotation-create-begin", createState.value);
       } else {
@@ -261,7 +266,7 @@ onMouseMoveHandlers.set(
       const newPosition = payload.startOffset + position.offset;
       if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
-        if (props.listenToOnCreating) {
+        if (hasCreatingListener) {
           props.verbose && console.log("*emit annotation-creating", createState.value);
           emit("annotation-creating", createState.value);
         } else {
@@ -307,7 +312,7 @@ onMouseMoveHandlers.set(
     );
 
     // confirm update state
-    if (props.listenToOnUpdateStart) {
+    if (hasUpdateBeginListener) {
       props.verbose && console.log("*emit annotation-update-begin", updateState.value);
       emit("annotation-update-begin", updateState.value);
     } else {
@@ -353,7 +358,7 @@ onMouseMoveHandlers.set(
       // postion updated?
       if (isUpdated) {
         // needs confirmation by user?
-        if (props.listenToOnUpdating) {
+        if (hasUpdatingListener) {
           props.verbose && console.log("*emit annotation-updating", updateState.value);
           emit("annotation-updating", updateState.value);
         } else {

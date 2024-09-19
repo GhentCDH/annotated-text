@@ -69,26 +69,6 @@ export interface AnnotatedTextProps {
    * Whether to allow creating new annotations
    */
   allowCreate?: boolean;
-  /**
-   * Whether you are listening to the onUpdateStart emit or not. If false default behaviour will be used.
-   */
-  listenToOnUpdateStart?: boolean;
-  /**
-   * Whether you are listening to the onUpdating emit or not. If false default behaviour will be used.
-   */
-  listenToOnUpdating?: boolean;
-  /**
-   * Whether you are listening to the onKeyPressed emit or not. If false default behaviour will be used.
-   */
-  listenToOnKeyPressed?: boolean;
-  /**
-   * Whether you are listening to the onCreateStart emit or not. If false default behaviour will be used.
-   */
-  listenToOnCreateStart?: boolean;
-  /**
-   * Whether you are listening to the onCreating emit or not. If false default behaviour will be used.
-   */
-  listenToOnCreating?: boolean;
 }
 
 export interface RecursiveAnnotatedTokenPartTextProps {
