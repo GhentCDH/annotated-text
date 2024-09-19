@@ -190,9 +190,7 @@ const onAnnotationCreateBegin = function (createState: CreateAnnotationState) {
     start: createState.newStart,
     end: createState.newStart,
     class: "annotation annotation--color-1",
-    target: "span",
-    active: true,
-    visible: true,
+    target: "text",
   };
   createState.initAnnotation(annotation);
 };

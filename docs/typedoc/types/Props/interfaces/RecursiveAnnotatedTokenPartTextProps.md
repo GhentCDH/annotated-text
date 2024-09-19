@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types/Props.ts:107](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L107)
+[types/Props.ts:87](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L87)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types/Props.ts:106](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L106)
+[types/Props.ts:86](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L86)
 
 ***
 
@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[types/Props.ts:99](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L99)
+[types/Props.ts:79](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L79)
 
 ***
 
@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[types/Props.ts:98](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L98)
+[types/Props.ts:78](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L78)
 
 ***
 
@@ -68,7 +68,7 @@
 
 #### Defined in
 
-[types/Props.ts:97](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L97)
+[types/Props.ts:77](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L77)
 
 ***
 
@@ -88,7 +88,7 @@
 
 #### Defined in
 
-[types/Props.ts:109](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L109)
+[types/Props.ts:89](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L89)
 
 ***
 
@@ -108,7 +108,7 @@
 
 #### Defined in
 
-[types/Props.ts:110](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L110)
+[types/Props.ts:90](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L90)
 
 ***
 
@@ -118,7 +118,7 @@
 
 #### Defined in
 
-[types/Props.ts:96](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L96)
+[types/Props.ts:76](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L76)
 
 ***
 
@@ -128,7 +128,7 @@
 
 #### Defined in
 
-[types/Props.ts:95](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L95)
+[types/Props.ts:75](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L75)
 
 ***
 
@@ -138,4 +138,4 @@
 
 #### Defined in
 
-[types/Props.ts:105](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L105)
+[types/Props.ts:85](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L85)

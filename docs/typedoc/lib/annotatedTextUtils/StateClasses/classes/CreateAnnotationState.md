@@ -24,7 +24,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:147](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L147)
+[lib/annotatedTextUtils/StateClasses.ts:147](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L147)
 
 ## Properties
 
@@ -34,7 +34,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:143](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L143)
+[lib/annotatedTextUtils/StateClasses.ts:143](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L143)
 
 ***
 
@@ -44,7 +44,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:144](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L144)
+[lib/annotatedTextUtils/StateClasses.ts:144](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L144)
 
 ***
 
@@ -54,7 +54,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:141](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L141)
+[lib/annotatedTextUtils/StateClasses.ts:141](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L141)
 
 ***
 
@@ -64,7 +64,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:142](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L142)
+[lib/annotatedTextUtils/StateClasses.ts:142](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L142)
 
 ***
 
@@ -74,7 +74,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:145](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L145)
+[lib/annotatedTextUtils/StateClasses.ts:145](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L145)
 
 ## Methods
 
@@ -97,7 +97,7 @@ as default init value.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:180](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L180)
+[lib/annotatedTextUtils/StateClasses.ts:180](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L180)
 
 ***
 
@@ -113,7 +113,7 @@ resets to the initial state
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:155](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L155)
+[lib/annotatedTextUtils/StateClasses.ts:155](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L155)
 
 ***
 
@@ -136,7 +136,7 @@ be able to be before this starting position.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:169](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L169)
+[lib/annotatedTextUtils/StateClasses.ts:169](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L169)
 
 ***
 
@@ -154,4 +154,4 @@ component will do this automatically.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:191](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/StateClasses.ts#L191)
+[lib/annotatedTextUtils/StateClasses.ts:191](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L191)

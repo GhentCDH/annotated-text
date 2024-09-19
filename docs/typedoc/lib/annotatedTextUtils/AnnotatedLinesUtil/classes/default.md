@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L44)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L44)
 
 ## Properties
 
@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:318](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L318)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:318](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L318)
 
 ***
 
@@ -46,7 +46,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:42](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L42)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:42](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L42)
 
 ***
 
@@ -56,7 +56,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:41](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L41)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:41](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L41)
 
 ***
 
@@ -66,4 +66,4 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L40)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L40)

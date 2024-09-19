@@ -22,7 +22,7 @@ createState object holding the state of the being created annotation
 
 #### Defined in
 
-[types/Emits.ts:52](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L52)
+[types/Emits.ts:52](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L52)
 
 ***
 
@@ -38,7 +38,7 @@ createState object holding the state of the being created annotation. The annota
 
 #### Defined in
 
-[types/Emits.ts:68](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L68)
+[types/Emits.ts:68](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L68)
 
 ***
 
@@ -58,7 +58,7 @@ createState object holding the state of the being created annotation
 
 #### Defined in
 
-[types/Emits.ts:62](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L62)
+[types/Emits.ts:62](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L62)
 
 ***
 
@@ -78,7 +78,7 @@ mouseEvent Normal dom mouse event
 
 #### Defined in
 
-[types/Emits.ts:97](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L97)
+[types/Emits.ts:97](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L97)
 
 ***
 
@@ -98,7 +98,7 @@ mouseEvent Normal dom mouse event
 
 #### Defined in
 
-[types/Emits.ts:88](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L88)
+[types/Emits.ts:88](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L88)
 
 ***
 
@@ -118,7 +118,7 @@ mouseEvent normal dom mouse event
 
 #### Defined in
 
-[types/Emits.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L15)
+[types/Emits.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L15)
 
 ***
 
@@ -140,7 +140,7 @@ updateState object holding the state of the update
 
 #### Defined in
 
-[types/Emits.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L26)
+[types/Emits.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L26)
 
 ***
 
@@ -156,7 +156,7 @@ updateState updateState object containing the new annotation object in the annot
 
 #### Defined in
 
-[types/Emits.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L44)
+[types/Emits.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L44)
 
 ***
 
@@ -178,7 +178,7 @@ updateState object holding the state of the update
 
 #### Defined in
 
-[types/Emits.ts:37](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L37)
+[types/Emits.ts:37](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L37)
 
 ***
 
@@ -206,7 +206,7 @@ userState {UserState}
 
 #### Defined in
 
-[types/Emits.ts:77](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L77)
+[types/Emits.ts:77](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L77)
 
 ***
 
@@ -226,4 +226,4 @@ newState New user action state
 
 #### Defined in
 
-[types/Emits.ts:106](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Emits.ts#L106)
+[types/Emits.ts:106](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Emits.ts#L106)

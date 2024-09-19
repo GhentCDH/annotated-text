@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types/Props.ts:133](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L133)
+[types/Props.ts:113](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L113)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types/Props.ts:132](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L132)
+[types/Props.ts:112](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L112)
 
 ***
 
@@ -34,4 +34,4 @@
 
 #### Defined in
 
-[types/Props.ts:131](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7f662fc6e4815223b2966a3f98cd4c1fa9a5954/src/types/Props.ts#L131)
+[types/Props.ts:111](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/types/Props.ts#L111)
