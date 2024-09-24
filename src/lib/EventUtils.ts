@@ -2,7 +2,6 @@ import { getCurrentInstance, toHandlerKey, camelize } from "vue";
 
 export function hasCustomEventListener(eventName: string) {
   const instance = getCurrentInstance();
-  console.log(instance);
   if (!instance) {
     return false;
   }
