@@ -58,8 +58,9 @@ export class CssClassesUtil {
     line: AnnotatedLine
   ): string[] => {
     const classes = [
-      annotation?.class ?? "",
+      this.props.style.defaultClass,
       this.props.style.weightClass + (annotation?.weight ?? 0),
+      annotation?.class ?? "",
     ];
     if (startsOnLine(line, annotation)) {
       classes.push(this.props.style.startClass);
@@ -77,8 +78,9 @@ export class CssClassesUtil {
     allowCreate: boolean
   ): string[] => {
     const classes = [
-      annotation?.class ?? "",
+      this.props.style.defaultClass,
       this.props.style.weightClass + (annotation?.weight ?? 0),
+      annotation?.class ?? "",
     ];
     if (annotation?.start === start) {
       classes.push(this.props.style.startClass);

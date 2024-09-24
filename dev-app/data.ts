@@ -1,13 +1,13 @@
 import { Annotation, Paragraph } from "@/types";
 
 export const textTest =
-  "0.23456  9\n1.34567890123456789\n1.3   789\n123456a.\n\n5.lorem ipsum";
+  "0.23456  9\n1.34567890123456789\n1.3   789123456a.\n\n5.lorem ipsum";
 
 export const annotationsTest: Annotation[] = [
   {
     start: 5,
     end: 9,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     id: "1",
     label: "typo",
@@ -15,7 +15,7 @@ export const annotationsTest: Annotation[] = [
   {
     start: 5,
     end: 36,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     id: "2",
     label: "syntax",
@@ -23,7 +23,7 @@ export const annotationsTest: Annotation[] = [
   {
     start: 3,
     end: 6,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "text",
     id: "3",
     label: "unit",
@@ -33,15 +33,15 @@ export const annotationsTest: Annotation[] = [
   {
     start: 5,
     end: 9,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "gutter",
     id: "4",
     label: "typo",
   },
   {
-    start: 5,
-    end: 30,
-    class: "annotation annotation--color-2",
+    start: 6,
+    end: 20,
+    class: "annotation--color-2",
     target: "gutter",
     id: "5",
     label: "syntax",
@@ -50,7 +50,7 @@ export const annotationsTest: Annotation[] = [
   {
     start: 20,
     end: 50,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "gutter",
     id: "5",
     label: "syntax",
@@ -59,50 +59,50 @@ export const annotationsTest: Annotation[] = [
   {
     start: 20,
     end: 60,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "gutter",
-    id: "5",
+    id: "6",
     label: "syntax",
   },
 
   {
     start: 36,
     end: 55,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "gutter",
-    id: "5",
+    id: "7",
     label: "syntax",
   },
   {
     start: 23,
     end: 36,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "gutter",
-    id: "5",
+    id: "8",
     label: "syntax",
   },
   {
     start: 30,
     end: 50,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "gutter",
-    id: "5",
+    id: "9",
     label: "syntax",
   },
   {
     start: 0,
     end: 56,
-    class: "annotation annotation--color-6",
+    class: "annotation--color-6",
     target: "gutter",
-    id: "5",
+    id: "10",
     label: "syntax",
   },
   {
     start: 3,
     end: 6,
-    class: "annotation annotation--color-7",
+    class: "annotation--color-7",
     target: "gutter",
-    id: "6",
+    id: "11",
     label: "unit",
   },
 ];
@@ -114,7 +114,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 1,
     end: 89,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     label: "gts",
     id: "3004789",
@@ -122,7 +122,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 3,
     end: 3756,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "gutter",
     label: "handshift",
     id: "1900230",
@@ -130,7 +130,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 21,
     end: 30,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "text",
     label: "typography",
     id: "576750",
@@ -138,7 +138,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 44,
     end: 57,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "text",
     label: "typography",
     id: "576751",
@@ -146,7 +146,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 72,
     end: 85,
-    class: "annotation annotation--color-6",
+    class: "annotation--color-6",
     target: "text",
     label: "typography",
     id: "576752",
@@ -154,7 +154,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 87,
     end: 94,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     label: "orthography",
     id: "147849",
@@ -162,7 +162,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 89,
     end: 710,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "gutter",
     label: "gts",
     id: "3004788",
@@ -170,7 +170,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 95,
     end: 101,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "text",
     label: "orthography",
     id: "147850",
@@ -178,7 +178,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 111,
     end: 119,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     label: "orthography",
     id: "147851",
@@ -186,7 +186,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 126,
     end: 141,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     label: "typography",
     id: "443498",
@@ -194,7 +194,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 150,
     end: 213,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "text",
     label: "morpho_syntactical",
     id: "277229",
@@ -202,7 +202,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 175,
     end: 193,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "text",
     label: "typography",
     id: "443499",
@@ -210,7 +210,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 214,
     end: 220,
-    class: "annotation annotation--color-7",
+    class: "annotation--color-7",
     target: "text",
     label: "typography",
     id: "576753",
@@ -218,7 +218,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 316,
     end: 361,
-    class: "annotation annotation--color-6",
+    class: "annotation--color-6",
     target: "text",
     label: "morpho_syntactical",
     id: "277230",
@@ -226,7 +226,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 335,
     end: 338,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     label: "morpho_syntactical",
     id: "1445646",
@@ -234,7 +234,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 375,
     end: 392,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     label: "typography",
     id: "443500",
@@ -242,7 +242,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 422,
     end: 483,
-    class: "annotation annotation--color-7",
+    class: "annotation--color-7",
     target: "text",
     label: "morpho_syntactical",
     id: "277231",
@@ -250,7 +250,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 470,
     end: 483,
-    class: "annotation annotation--color-8",
+    class: "annotation--color-8",
     target: "text",
     label: "typography",
     id: "576754",
@@ -258,7 +258,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 484,
     end: 597,
-    class: "annotation annotation--color-9",
+    class: "annotation--color-9",
     target: "text",
     label: "morpho_syntactical",
     id: "277233",
@@ -266,7 +266,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 484,
     end: 516,
-    class: "annotation annotation--color-8",
+    class: "annotation--color-8",
     target: "text",
     label: "morpho_syntactical",
     id: "277232",
@@ -274,7 +274,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 579,
     end: 636,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "text",
     label: "morpho_syntactical",
     id: "100911",
@@ -282,7 +282,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 710,
     end: 759,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "text",
     label: "gts",
     id: "3004790",
@@ -290,7 +290,7 @@ export const annotationsGreek: Annotation[] = [
   {
     start: 715,
     end: 725,
-    class: "annotation annotation--color-9",
+    class: "annotation--color-9",
     target: "text",
     label: "typography",
     id: "576755",
@@ -304,7 +304,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 1,
     end: 89,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     label: "gts",
     id: "3004789",
@@ -312,7 +312,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 3,
     end: 3756,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "gutter",
     label: "handshift",
     id: "1900233",
@@ -320,7 +320,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 21,
     end: 30,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "text",
     label: "typography",
     id: "576750",
@@ -328,7 +328,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 44,
     end: 57,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "text",
     label: "typography",
     id: "576751",
@@ -336,7 +336,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 72,
     end: 85,
-    class: "annotation annotation--color-6",
+    class: "annotation--color-6",
     target: "text",
     label: "typography",
     id: "576752",
@@ -344,7 +344,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 87,
     end: 94,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     label: "orthography",
     id: "147849",
@@ -352,7 +352,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 89,
     end: 710,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "gutter",
     label: "gts",
     id: "3004788",
@@ -360,7 +360,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 95,
     end: 101,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "text",
     label: "orthography",
     id: "147850",
@@ -368,7 +368,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 111,
     end: 119,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     label: "orthography",
     id: "147851",
@@ -376,7 +376,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 126,
     end: 141,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     label: "typography",
     id: "443498",
@@ -384,7 +384,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 150,
     end: 213,
-    class: "annotation annotation--color-5",
+    class: "annotation--color-5",
     target: "text",
     label: "morpho_syntactical",
     id: "277229",
@@ -392,7 +392,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 175,
     end: 193,
-    class: "annotation annotation--color-2",
+    class: "annotation--color-2",
     target: "text",
     label: "typography",
     id: "443499",
@@ -400,7 +400,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 214,
     end: 220,
-    class: "annotation annotation--color-7",
+    class: "annotation--color-7",
     target: "text",
     label: "typography",
     id: "576753",
@@ -408,7 +408,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 316,
     end: 361,
-    class: "annotation annotation--color-6",
+    class: "annotation--color-6",
     target: "text",
     label: "morpho_syntactical",
     id: "277230",
@@ -416,7 +416,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 335,
     end: 338,
-    class: "annotation annotation--color-1",
+    class: "annotation--color-1",
     target: "text",
     label: "morpho_syntactical",
     id: "1445646",
@@ -424,7 +424,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 375,
     end: 392,
-    class: "annotation annotation--color-3",
+    class: "annotation--color-3",
     target: "text",
     label: "typography",
     id: "443500",
@@ -432,7 +432,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 422,
     end: 483,
-    class: "annotation annotation--color-7",
+    class: "annotation--color-7",
     target: "text",
     label: "morpho_syntactical",
     id: "277231",
@@ -440,7 +440,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 470,
     end: 483,
-    class: "annotation annotation--color-8",
+    class: "annotation--color-8",
     target: "text",
     label: "typography",
     id: "576754",
@@ -448,7 +448,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 484,
     end: 516,
-    class: "annotation annotation--color-8",
+    class: "annotation--color-8",
     target: "text",
     label: "morpho_syntactical",
     id: "277232",
@@ -456,7 +456,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 484,
     end: 597,
-    class: "annotation annotation--color-9",
+    class: "annotation--color-9",
     target: "text",
     label: "morpho_syntactical",
     id: "277233",
@@ -464,7 +464,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 579,
     end: 636,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "text",
     label: "morpho_syntactical",
     id: "100911",
@@ -472,7 +472,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 710,
     end: 759,
-    class: "annotation annotation--color-4",
+    class: "annotation--color-4",
     target: "text",
     label: "gts",
     id: "3004790",
@@ -480,7 +480,7 @@ export const otherGreekAnnotations: Annotation[] = [
   {
     start: 715,
     end: 725,
-    class: "annotation annotation--color-9",
+    class: "annotation--color-9",
     target: "text",
     label: "typography",
     id: "576755",

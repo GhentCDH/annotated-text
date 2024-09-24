@@ -90,6 +90,7 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
   allowEdit: false,
   allowCreate: false,
   style: () => ({
+    defaultClass: "annotation",
     activeClass: "annotation--active",
     startClass: "annotation--start",
     endClass: "annotation--end",

@@ -275,7 +275,7 @@ export default class AnnotatedLinesUtil {
           start: line.start,
           end: line.start,
           target: "gutter" as AnnotationTarget,
-          class: "annotation annotation--gutter-spacer",
+          class: "annotation--gutter-spacer",
           weight: w,
         } as Annotation;
         lineGutterAnnotations.push(emptyAnnotation);

@@ -1,6 +1,7 @@
 import { Annotation } from "./Annotation";
 
 export interface AnnotationStyle {
+  defaultClass: string;
   activeClass: string;
   startClass: string;
   endClass: string;
