@@ -1,0 +1,19 @@
+on:
+  workflow_call:
+
+jobs:
+  pass-secret-to-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0 
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ env.DEPENDENCIES_CACHE }}-${{ hashFiles('pnpm-lock.yaml') }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
