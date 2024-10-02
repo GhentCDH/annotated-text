@@ -1,14 +1,10 @@
-on:
-  workflow_call:
+name: "Setup"
+description: "Load node cache"
 
-jobs:
-  pass-secret-to-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0 
+
+runs:
+  using: "composite"
+  steps:
       - name: Cache node modules
         uses: actions/cache@v4
         with:
