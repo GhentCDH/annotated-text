@@ -37,6 +37,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: install-deps
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0 
       - uses: ./actions/merge-request.yml
       - run: ls -al
       - name: Build
