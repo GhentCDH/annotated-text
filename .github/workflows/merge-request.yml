@@ -35,8 +35,26 @@ jobs:
     needs: install-deps
     steps:
       - uses: actions/checkout@v4
-      - run: ls -al
-      - run: ls ./.github -al
       - uses: ./.github/actions/use-cache
-      - name: Build
-        run: pnpm run build
+      - run: pnpm run build
+  docs-build:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/use-cache
+      - run: pnpm run docs:build
+  test:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/use-cache
+      - run: pnpm run test:vue3
+  lint:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/use-cache
+      - run: pnpm run lint
