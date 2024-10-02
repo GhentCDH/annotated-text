@@ -41,7 +41,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0 
-      - uses: ./actions/merge-request.yml
+      - uses: ./actions/use-cache.yml
       - run: ls -al
       - name: Build
         run: pnpm run build
