@@ -51,7 +51,10 @@
       :mouse-move-handler="props.mouseMoveHandler"
     >
       <template #annotation-before="slotProps">
-        <slot name="annotation-before" :annotation="slotProps.annotation"></slot>
+        <slot
+          name="annotation-before"
+          :annotation="slotProps.annotation"
+        ></slot>
       </template>
       <template #annotation-after="slotProps">
         <slot name="annotation-after" :annotation="slotProps.annotation" />
@@ -83,8 +86,8 @@
 </template>
 
 <script setup lang="ts">
-import { RecursiveAnnotatedTokenPartTextProps } from "@/types";
 import { computed } from "vue";
+import type { RecursiveAnnotatedTokenPartTextProps } from "@/types/props";
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),

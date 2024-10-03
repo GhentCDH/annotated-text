@@ -55,7 +55,6 @@
           :word-part-start="wordPart.start"
           :annotations="sortAnnotations(wordPart.annotations)"
           :annotation-class-handler="annotationClasses"
-
           :mouse-down-handler="props.mouseDownHandler"
           :mouse-move-handler="props.mouseMoveHandler"
         >
@@ -69,7 +68,9 @@
         <span
           v-else
           :class="handleTextClass()"
-          @mousedown="props.mouseDownHandler($event, { startOffset: wordPart.start })"
+          @mousedown="
+            props.mouseDownHandler($event, { startOffset: wordPart.start })
+          "
         >
           {{ wordPart.text }}
         </span>
@@ -79,9 +80,10 @@
 </template>
 
 <script setup lang="ts">
-import RecursiveAnnotatedTokenPartText from "@/components/RecursiveAnnotatedTokenPartText.vue";
-import { AnnotatedLineProps, Annotation } from "@/types";
 import { computed } from "vue";
+import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
+import type { Annotation } from "../types/Annotation";
+import type { AnnotatedLineProps } from "@/types/props";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",

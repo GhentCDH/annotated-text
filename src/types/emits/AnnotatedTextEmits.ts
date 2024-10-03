@@ -1,12 +1,12 @@
-import { Annotation } from "@/types/Annotation";
-import {
-  CreateAnnotationState,
+import type {
   UpdateAnnotationState,
-  UserActionState,
+  CreateAnnotationState,
   UserState,
-} from "@/lib/annotatedTextUtils";
+  UserActionState,
+} from "../../lib/annotatedTextUtils";
+import type { Annotation } from "../Annotation";
 
-export interface AnnotatedTextEmits {
+export type AnnotatedTextEmits = {
   /**
    * Emitted when an annotation (both span and gutter) is clicked.
    * @arg annotation Annotation object that was clicked
@@ -107,4 +107,4 @@ export interface AnnotatedTextEmits {
     oldState: UserActionState,
     newState: UserActionState
   ];
-}
+};

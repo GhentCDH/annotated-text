@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import { AnnotatedText, Annotation, AnnotationTarget } from "@/index";
-import {
-  CreateAnnotationState,
-  UpdateAnnotationState,
-  UserActionState,
-  UserState,
-} from "@/index";
-
-import { textToLines } from "./Utils";
-
 // import { annotationsGreek, textGreek as text } from "./data";
-import { annotationsGreek as annotations, textGreek as text } from "./data";
 
 import { reactive } from "vue";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faCircleMinus as faRemove } from "@fortawesome/free-solid-svg-icons";
-import { faCircleExclamation as faImportant } from "@fortawesome/free-solid-svg-icons";
-import { faCircleCheck as faValidate } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleMinus as faRemove,
+  faCircleExclamation as faImportant,
+  faCircleCheck as faValidate,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  AnnotatedText,
+  UserActionState,
+} from "@ghentcdh/vue-component-annotated-text";
+import type {
+  Annotation,
+  AnnotationTarget,
+  CreateAnnotationState,
+  UpdateAnnotationState,
+  UserState,
+} from "@ghentcdh/vue-component-annotated-text";
+import { textToLines } from "./Utils";
+import { annotationsGreek as annotations, textGreek as text } from "./data";
 
 const textLines = textToLines(text);
 
@@ -270,4 +274,3 @@ menu {
   flex-direction: row;
 }
 </style>
-

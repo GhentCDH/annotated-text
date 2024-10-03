@@ -1,4 +1,4 @@
-import { Line } from "@/types";
+import type { Line } from "@ghentcdh/vue-component-annotated-text";
 
 export const textToLines = (text: string): Line[] => {
   const regLineNumber = /^([0-9/]+[a-z]?)\./g;

@@ -1,6 +1,6 @@
-import { Annotation } from "@/types";
-import { ActionType, WordPart } from "@/types/AnnotatedText";
-import { MouseEventPayload } from "@/types/Props";
+import type { Annotation } from "../../types/Annotation";
+import type { ActionType } from "../../types/AnnotatedText";
+import type { MouseEventPayload } from "../../types/props";
 
 export enum UserActionState {
   IDLE = "idle",

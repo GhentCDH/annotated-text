@@ -9,8 +9,12 @@
 //    "declarationDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
+      "@ghentcdh/vue-component-annotated-text": ["./src/index.ts"],
+      "@/types/props": [
+        "./src/types/props/index.ts"
+      ], 
+      "@/types/emits": [
+        "./src/types/emits/index.ts"
       ]
     },
     "moduleResolution": "node",

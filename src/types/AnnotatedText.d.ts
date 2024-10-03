@@ -1,4 +1,4 @@
-import { Annotation } from "./Annotation";
+import type { Annotation } from "./Annotation";
 
 export interface AnnotationStyle {
   defaultClass: string;

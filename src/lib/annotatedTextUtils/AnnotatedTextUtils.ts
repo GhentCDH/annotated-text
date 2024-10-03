@@ -1,11 +1,12 @@
+import { computed } from "vue";
+import type { UpdateAnnotationState } from "./StateClasses";
+import type { Annotation } from "../../types/Annotation";
 import type {
   AnnotatedLine,
-  AnnotatedTextProps,
-  Annotation,
+  AnnotationStyle,
+  RenderType,
   WordPart,
-} from "@/types";
-import { computed } from "vue";
-import { UpdateAnnotationState } from "@/lib/annotatedTextUtils/StateClasses";
+} from "../../types/AnnotatedText";
 
 export const startsOnLine = function (
   line: AnnotatedLine,
@@ -21,14 +22,35 @@ export const endsOnLine = function (
   return line.start <= annotation.end && line.end >= annotation.end;
 };
 
-export class CssClassesUtil {
-  props: AnnotatedTextProps;
+export type CssClassUtilProps = {
+  theme?: string;
+  /**
+   * @deprecated
+   */
+  render?: RenderType;
+  /**
+   * Object to define classes for styles.
+   */
+  style?: AnnotationStyle;
+  /**
+   * Whether to show the labels
+   */
+  showLabels?: boolean;
+  /**
+   * List of annotation ID's that are selected. Those will get the "active" style class
+   */
+  selectedAnnotations?: string[];
+  /**
+   * List of annotation ID's that are hovered. Those will get the "hovered" style class.
+   */
+  hoveredAnnotations?: string[];
+};
+
+export class CssClassesUtil<P extends CssClassUtilProps> {
+  props: P;
   editAnnotationState: UpdateAnnotationState;
 
-  constructor(
-    props: AnnotatedTextProps,
-    editingAnnotation: UpdateAnnotationState
-  ) {
+  constructor(props: P, editingAnnotation: UpdateAnnotationState) {
     this.props = props;
     this.editAnnotationState = editingAnnotation;
   }
