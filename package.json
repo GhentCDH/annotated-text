@@ -30,7 +30,8 @@
     "build": "vite build",
     "type-check": "vue-tsc --noEmit --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
-    "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "prepare": "husky install",
+    "lint-staged": "lint-staged --allow-empty"
   },
   "dependencies": {
     "etali": "^1.2.5"
@@ -52,10 +53,14 @@
     "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.4.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.28.0",
+    "husky": "^8.0.3",
     "jsdom": "^22.1.0",
+    "lint-staged": "^15.2.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "prism-themes": "^1.9.0",
@@ -79,5 +84,16 @@
   },
   "peerDependencies": {
     "vue": "^3.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,scss,md,vue,mts}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
