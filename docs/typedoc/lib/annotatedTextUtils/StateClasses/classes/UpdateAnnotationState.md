@@ -29,7 +29,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:49](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L49)
+[lib/annotatedTextUtils/StateClasses.ts:49](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L49)
 
 ## Properties
 
@@ -39,7 +39,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:38](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L38)
+[lib/annotatedTextUtils/StateClasses.ts:38](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L38)
 
 ***
 
@@ -49,7 +49,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L40)
+[lib/annotatedTextUtils/StateClasses.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L40)
 
 ***
 
@@ -59,7 +59,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:39](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L39)
+[lib/annotatedTextUtils/StateClasses.ts:39](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L39)
 
 ***
 
@@ -69,7 +69,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L44)
+[lib/annotatedTextUtils/StateClasses.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L44)
 
 ***
 
@@ -79,7 +79,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:45](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L45)
+[lib/annotatedTextUtils/StateClasses.ts:45](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L45)
 
 ***
 
@@ -89,7 +89,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:41](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L41)
+[lib/annotatedTextUtils/StateClasses.ts:41](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L41)
 
 ***
 
@@ -99,7 +99,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:42](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L42)
+[lib/annotatedTextUtils/StateClasses.ts:42](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L42)
 
 ***
 
@@ -109,7 +109,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:43](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L43)
+[lib/annotatedTextUtils/StateClasses.ts:43](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L43)
 
 ***
 
@@ -119,7 +119,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:46](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L46)
+[lib/annotatedTextUtils/StateClasses.ts:46](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L46)
 
 ***
 
@@ -129,7 +129,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:47](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L47)
+[lib/annotatedTextUtils/StateClasses.ts:47](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L47)
 
 ## Methods
 
@@ -145,7 +145,7 @@ Should get called in order to confirm the initial state of the update.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:104](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L104)
+[lib/annotatedTextUtils/StateClasses.ts:104](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L104)
 
 ***
 
@@ -164,7 +164,7 @@ to wrap.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:116](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L116)
+[lib/annotatedTextUtils/StateClasses.ts:116](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L116)
 
 ***
 
@@ -180,7 +180,7 @@ has to get called after an edit has been confirmed or denied.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:57](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L57)
+[lib/annotatedTextUtils/StateClasses.ts:57](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L57)
 
 ***
 
@@ -213,4 +213,4 @@ be called by the parent component.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:82](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L82)
+[lib/annotatedTextUtils/StateClasses.ts:82](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L82)

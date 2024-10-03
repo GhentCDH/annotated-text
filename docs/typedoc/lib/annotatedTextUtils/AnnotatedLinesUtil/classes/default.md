@@ -14,7 +14,7 @@
 
 #### Parameters
 
-• **props**: [`AnnotatedTextProps`](../../../../types/Props/interfaces/AnnotatedTextProps.md)
+• **props**: [`AnnotatedTextProps`](../../../../types/props/AnnotatedTextProps/interfaces/AnnotatedTextProps.md)
 
 • **editState**: [`UpdateAnnotationState`](../../StateClasses/classes/UpdateAnnotationState.md)
 
@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L44)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:43](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L43)
 
 ## Properties
 
@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:318](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L318)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:317](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L317)
 
 ***
 
@@ -46,7 +46,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:42](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L42)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:41](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L41)
 
 ***
 
@@ -56,14 +56,14 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:41](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L41)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L40)
 
 ***
 
 ### props
 
-> **props**: [`AnnotatedTextProps`](../../../../types/Props/interfaces/AnnotatedTextProps.md)
+> **props**: [`AnnotatedTextProps`](../../../../types/props/AnnotatedTextProps/interfaces/AnnotatedTextProps.md)
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L40)
+[lib/annotatedTextUtils/AnnotatedLinesUtil.ts:39](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedLinesUtil.ts#L39)

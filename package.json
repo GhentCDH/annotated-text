@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "docs:build": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-vue --entryPoints \"./src/lib/annotatedTextUtils/**.ts\" --entryPoints \"./src/types/**.ts\" --out docs/typedoc",
+    "docs:build": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-vue --entryPoints \"./src/lib/annotatedTextUtils/**.ts\" --entryPoints \"./src/types/**.ts\" --entryPoints \"./src/types/**/**.ts\"  --out docs/typedoc",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
     "build": "vite build",

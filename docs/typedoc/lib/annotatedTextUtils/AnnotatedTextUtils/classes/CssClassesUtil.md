@@ -4,27 +4,31 @@
 
 [@ghentcdh/vue-component-annotated-text](../../../../modules.md) / [lib/annotatedTextUtils/AnnotatedTextUtils](../README.md) / CssClassesUtil
 
-# Class: CssClassesUtil
+# Class: CssClassesUtil\<P\>
+
+## Type Parameters
+
+• **P** *extends* [`CssClassUtilProps`](../type-aliases/CssClassUtilProps.md)
 
 ## Constructors
 
 ### new CssClassesUtil()
 
-> **new CssClassesUtil**(`props`, `editingAnnotation`): [`CssClassesUtil`](CssClassesUtil.md)
+> **new CssClassesUtil**\<`P`\>(`props`, `editingAnnotation`): [`CssClassesUtil`](CssClassesUtil.md)\<`P`\>
 
 #### Parameters
 
-• **props**: [`AnnotatedTextProps`](../../../../types/Props/interfaces/AnnotatedTextProps.md)
+• **props**: `P`
 
 • **editingAnnotation**: [`UpdateAnnotationState`](../../StateClasses/classes/UpdateAnnotationState.md)
 
 #### Returns
 
-[`CssClassesUtil`](CssClassesUtil.md)
+[`CssClassesUtil`](CssClassesUtil.md)\<`P`\>
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:28](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L28)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:53](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L53)
 
 ## Properties
 
@@ -34,7 +38,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:36](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L36)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:58](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L58)
 
 ***
 
@@ -44,17 +48,17 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L26)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:51](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L51)
 
 ***
 
 ### props
 
-> **props**: [`AnnotatedTextProps`](../../../../types/Props/interfaces/AnnotatedTextProps.md)
+> **props**: `P`
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:25](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L25)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:50](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L50)
 
 ## Methods
 
@@ -78,7 +82,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:73](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L73)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:96](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L96)
 
 ***
 
@@ -98,7 +102,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:56](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L56)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:78](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L78)
 
 ***
 
@@ -116,4 +120,4 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/AnnotatedTextUtils.ts:49](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L49)
+[lib/annotatedTextUtils/AnnotatedTextUtils.ts:71](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/AnnotatedTextUtils.ts#L71)
