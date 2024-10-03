@@ -14,6 +14,7 @@ import type {
   WordPart,
 } from "../../types/AnnotatedText";
 import type { Annotation, AnnotationTarget } from "../../types/Annotation";
+import { Debugger } from "../../utlis/debugger";
 import type { AnnotatedTextProps } from "@/types/props";
 
 // Some consts needed for the utils class
@@ -51,7 +52,7 @@ export default class AnnotatedLinesUtil {
   }
 
   private allAnnotations = computed((): Annotation[] => {
-    this.props.debug && console.log("** refresh annotations");
+    Debugger.debug("** refresh annotations");
 
     const annotations = JSON.parse(JSON.stringify(this.props.annotations));
     if (this.editState.annotation) {
@@ -69,12 +70,12 @@ export default class AnnotatedLinesUtil {
   });
 
   private gutterAnnotations = computed((): Annotation[] => {
-    this.props.debug && console.log("** refresh gutterAnnotations **");
+    Debugger.debug("** refresh gutterAnnotations **");
     const gutterAnnotations = this.allAnnotations.value.filter(
       (annotation) => annotation.target === "gutter"
     );
 
-    this.props.debug && console.log(gutterAnnotations);
+    Debugger.debug(gutterAnnotations);
 
     return gutterAnnotations;
   });
@@ -85,8 +86,8 @@ export default class AnnotatedLinesUtil {
   private prepareRanges = (
     annotations: Annotation[]
   ): RangeWithAnnotation[] => {
-    this.props.debug && console.log("** prepare ranges for_annotations **");
-    this.props.debug && console.log(annotations);
+    Debugger.debug("** prepare ranges for_annotations **");
+    Debugger.debug(annotations);
 
     const spanAnnotations = annotations.filter((annotation) => {
       return annotation.target === "text";
@@ -97,11 +98,11 @@ export default class AnnotatedLinesUtil {
       this.calculateGutterAnnotationWeights(this.gutterAnnotations.value);
     }
 
-    this.props.debug && console.log("** weighted span annotations **");
-    this.props.debug && console.log(spanAnnotations);
+    Debugger.debug("** weighted span annotations **");
+    Debugger.debug(spanAnnotations);
 
-    this.props.debug && console.log("** weighted gutter annotations **");
-    this.props.debug && console.log(this.gutterAnnotations.value);
+    Debugger.debug("** weighted gutter annotations **");
+    Debugger.debug(this.gutterAnnotations.value);
 
     // todo: check why max is needed
     return annotations.map(
@@ -318,8 +319,8 @@ export default class AnnotatedLinesUtil {
     const lines = this.props.lines.map((line) =>
       this.createAnnotatedLine(line)
     );
-    this.props.debug && console.log(`** annotated lines **`);
-    this.props.debug && console.log(lines);
+    Debugger.debug(`** annotated lines **`);
+    Debugger.debug(lines);
     return lines;
   });
 }

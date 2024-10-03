@@ -27,3 +27,5 @@ export {
 } from "./lib/annotatedTextUtils/StateClasses";
 
 import "./style/style.scss";
+
+export * from "./utlis/debugger";

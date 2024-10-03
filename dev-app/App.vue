@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
   AnnotatedText,
+  Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
 import type {
@@ -40,6 +41,7 @@ const props = reactive({
   showLabels: false,
   showSelects: false,
   debug: false,
+  verbose: true,
   target: "text" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
@@ -124,7 +126,7 @@ const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
 const onAnnotationUpdateEnd = function (
   updateState: UpdateAnnotationState
 ): void {
-  props.debug && console.log("** Edited: ", updateState.annotation);
+  Debugger.debug("** Edited: ", updateState.annotation);
   annotationMap.set(updateState.annotation.id, updateState.annotation); // Edit application state
   props.annoList = Array.from(annotationMap.values());
 };
@@ -165,6 +167,8 @@ const onKeyPressed = function (
       <label for="gutter">Gutter</label>
       | <input v-model="props.debug" type="checkbox" />
       <label>Debug messages</label>
+      | <input v-model="props.verbose" type="checkbox" />
+      <label>Verbose messages</label>
       | <input v-model="props.showLabels" type="checkbox" />
       <label>Show labels</label>
       | <input v-model="props.showSelects" type="checkbox" />
@@ -190,7 +194,7 @@ const onKeyPressed = function (
       :selected-annotations="props.selectedList"
       :lines="textLines"
       :debug="props.debug"
-      :verbose="true"
+      :verbose="props.verbose"
       :show-labels="props.showLabels"
       :render="props.renderNested ? 'nested' : 'flat'"
       :display="props.target"

@@ -14,6 +14,7 @@ module.exports = {
     ecmaVersion: "latest",
   },
   rules: {
+    "no-console": ["error", { allow: ["warn", "error"] }],
     "@typescript-eslint/consistent-type-imports": "warn",
     "import/named": "off",
     "import/no-unresolved": "off",
