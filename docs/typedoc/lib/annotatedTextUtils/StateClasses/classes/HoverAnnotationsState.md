@@ -20,7 +20,7 @@ Holds all the annotations the mouse is currently hovering over.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:131](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L131)
+[lib/annotatedTextUtils/StateClasses.ts:131](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L131)
 
 ## Properties
 
@@ -30,7 +30,7 @@ Holds all the annotations the mouse is currently hovering over.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:128](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L128)
+[lib/annotatedTextUtils/StateClasses.ts:128](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L128)
 
 ***
 
@@ -40,4 +40,4 @@ Holds all the annotations the mouse is currently hovering over.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:129](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L129)
+[lib/annotatedTextUtils/StateClasses.ts:129](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L129)

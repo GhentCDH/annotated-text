@@ -1,21 +1,20 @@
-import {
-  type AnnotatedLine,
-  AnnotatedTextProps,
+import { computed } from "vue";
+import { FlattenRanges } from "etali";
+import type {
+  CreateAnnotationState,
+  UpdateAnnotationState,
+} from "./StateClasses";
+import type {
   AnnotatedWord,
-  type Annotation,
-  type AnnotationTarget,
-  type Line,
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
-  type WordPart,
-} from "@/types";
-import { computed, reactive } from "vue";
-import { FlattenRanges } from "etali";
-import {
-  CreateAnnotationState,
-  UpdateAnnotationState,
-} from "@/lib/annotatedTextUtils/StateClasses";
+  AnnotatedLine,
+  Line,
+  WordPart,
+} from "../../types/AnnotatedText";
+import type { Annotation, AnnotationTarget } from "../../types/Annotation";
+import type { AnnotatedTextProps } from "@/types/props";
 
 // Some consts needed for the utils class
 const annotationEndOffsetFix = 1;
@@ -54,7 +53,7 @@ export default class AnnotatedLinesUtil {
   private allAnnotations = computed((): Annotation[] => {
     this.props.debug && console.log("** refresh annotations");
 
-    let annotations = JSON.parse(JSON.stringify(this.props.annotations));
+    const annotations = JSON.parse(JSON.stringify(this.props.annotations));
     if (this.editState.annotation) {
       annotations.push(this.editState.annotation);
     }
@@ -319,10 +318,7 @@ export default class AnnotatedLinesUtil {
     const lines = this.props.lines.map((line) =>
       this.createAnnotatedLine(line)
     );
-    this.props.debug &&
-      console.log(
-        `** annotated lines **`
-      );
+    this.props.debug && console.log(`** annotated lines **`);
     this.props.debug && console.log(lines);
     return lines;
   });

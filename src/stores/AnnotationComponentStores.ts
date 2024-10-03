@@ -1,10 +1,10 @@
+import { ref } from "vue";
 import {
   CreateAnnotationState,
   UpdateAnnotationState,
   HoverAnnotationsState,
   UserState,
-} from "@/lib/annotatedTextUtils/StateClasses";
-import { ref } from "vue";
+} from "../lib/annotatedTextUtils/StateClasses";
 
 export const useStateObjectsStore = () => {
   const userState = ref(new UserState());
@@ -13,4 +13,4 @@ export const useStateObjectsStore = () => {
   const hoverState = ref(new HoverAnnotationsState());
 
   return { updateState, createState, hoverState, userState };
-}
+};

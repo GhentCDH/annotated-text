@@ -6,12 +6,14 @@
 
 # types/Annotation
 
-## Index
+## References
 
-### Interfaces
+### Annotation
 
-- [Annotation](interfaces/Annotation.md)
+Re-exports [Annotation](interfaces/Annotation.md)
 
-### Type Aliases
+***
 
-- [AnnotationTarget](type-aliases/AnnotationTarget.md)
+### AnnotationTarget
+
+Re-exports [AnnotationTarget](type-aliases/AnnotationTarget.md)

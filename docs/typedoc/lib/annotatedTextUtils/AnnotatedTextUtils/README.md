@@ -12,6 +12,10 @@
 
 - [CssClassesUtil](classes/CssClassesUtil.md)
 
+### Type Aliases
+
+- [CssClassUtilProps](type-aliases/CssClassUtilProps.md)
+
 ### Functions
 
 - [endsOnLine](functions/endsOnLine.md)

@@ -20,17 +20,17 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L21)
+[lib/annotatedTextUtils/StateClasses.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L21)
 
 ## Properties
 
 ### payload
 
-> **payload**: [`MouseEventPayload`](../../../../types/Props/interfaces/MouseEventPayload.md)
+> **payload**: [`MouseEventPayload`](../../../../types/props/MouseEventPayload/interfaces/MouseEventPayload.md)
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L19)
+[lib/annotatedTextUtils/StateClasses.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L19)
 
 ***
 
@@ -40,7 +40,7 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:18](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L18)
+[lib/annotatedTextUtils/StateClasses.ts:18](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L18)
 
 ## Methods
 
@@ -54,4 +54,4 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L26)
+[lib/annotatedTextUtils/StateClasses.ts:26](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L26)

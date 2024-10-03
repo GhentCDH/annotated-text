@@ -1,4 +1,7 @@
-import { Annotation, Paragraph } from "@/types";
+import type {
+  Annotation,
+  Paragraph,
+} from "@ghentcdh/vue-component-annotated-text";
 
 export const textTest =
   "0.23456  9\n1.34567890123456789\n1.3   789123456a.\n\n5.lorem ipsum";

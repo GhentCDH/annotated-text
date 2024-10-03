@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L9)
+[lib/annotatedTextUtils/StateClasses.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L9)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L6)
+[lib/annotatedTextUtils/StateClasses.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L6)
 
 ***
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L7)
+[lib/annotatedTextUtils/StateClasses.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L7)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L11)
+[lib/annotatedTextUtils/StateClasses.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L11)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:10](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L10)
+[lib/annotatedTextUtils/StateClasses.ts:10](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L10)
 
 ***
 
@@ -64,4 +64,4 @@
 
 #### Defined in
 
-[lib/annotatedTextUtils/StateClasses.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/5675fc54077a4297a03f45161e62f99e3d8b3eba/src/lib/annotatedTextUtils/StateClasses.ts#L8)
+[lib/annotatedTextUtils/StateClasses.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/lib/annotatedTextUtils/StateClasses.ts#L8)

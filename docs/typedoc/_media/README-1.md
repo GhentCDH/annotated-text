@@ -6,24 +6,86 @@
 
 # types/AnnotatedText
 
-## Index
+## References
 
-### Interfaces
+### ActionType
 
-- [AnnotatedLine](interfaces/AnnotatedLine.md)
-- [AnnotatedWord](interfaces/AnnotatedWord.md)
-- [AnnotationActionPayload](interfaces/AnnotationActionPayload.md)
-- [AnnotationActionState](interfaces/AnnotationActionState.md)
-- [AnnotationStyle](interfaces/AnnotationStyle.md)
-- [Line](interfaces/Line.md)
-- [Paragraph](interfaces/Paragraph.md)
-- [Text](interfaces/Text.md)
-- [Word](interfaces/Word.md)
-- [WordPart](interfaces/WordPart.md)
+Re-exports [ActionType](type-aliases/ActionType.md)
 
-### Type Aliases
+***
 
-- [ActionType](type-aliases/ActionType.md)
-- [RangeWithAnnotation](type-aliases/RangeWithAnnotation.md)
-- [RangeWithAnnotations](type-aliases/RangeWithAnnotations.md)
-- [RenderType](type-aliases/RenderType.md)
+### AnnotatedLine
+
+Re-exports [AnnotatedLine](interfaces/AnnotatedLine.md)
+
+***
+
+### AnnotatedWord
+
+Re-exports [AnnotatedWord](interfaces/AnnotatedWord.md)
+
+***
+
+### AnnotationActionPayload
+
+Re-exports [AnnotationActionPayload](interfaces/AnnotationActionPayload.md)
+
+***
+
+### AnnotationActionState
+
+Re-exports [AnnotationActionState](interfaces/AnnotationActionState.md)
+
+***
+
+### AnnotationStyle
+
+Re-exports [AnnotationStyle](interfaces/AnnotationStyle.md)
+
+***
+
+### Line
+
+Re-exports [Line](interfaces/Line.md)
+
+***
+
+### Paragraph
+
+Re-exports [Paragraph](interfaces/Paragraph.md)
+
+***
+
+### RangeWithAnnotation
+
+Re-exports [RangeWithAnnotation](type-aliases/RangeWithAnnotation.md)
+
+***
+
+### RangeWithAnnotations
+
+Re-exports [RangeWithAnnotations](type-aliases/RangeWithAnnotations.md)
+
+***
+
+### RenderType
+
+Re-exports [RenderType](type-aliases/RenderType.md)
+
+***
+
+### Text
+
+Re-exports [Text](interfaces/Text.md)
+
+***
+
+### Word
+
+Re-exports [Word](interfaces/Word.md)
+
+***
+
+### WordPart
+
+Re-exports [WordPart](interfaces/WordPart.md)

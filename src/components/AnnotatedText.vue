@@ -54,21 +54,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
-import { AnnotatedTextProps, Annotation, WordPart } from "@/types";
-import { createPositionFromPoint } from "@/lib/DomUtils";
-import { CssClassesUtil } from "@/lib/annotatedTextUtils/AnnotatedTextUtils";
-import AnnotatedLine from "@/components/AnnotatedLine.vue";
-import { useStateObjectsStore } from "@/stores/AnnotationComponentStores";
-import AnnotatedLinesUtil from "@/lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { UserActionState } from "@/lib/annotatedTextUtils/StateClasses";
+import { computed, reactive, watch } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import { ActionType } from "@/types/AnnotatedText";
-import { watch } from "vue";
-import { AnnotatedTextEmits } from "@/types/Emits";
-import { MouseEventPayload } from "@/types/Props";
-
-import { hasCustomEventListener } from "@/lib/EventUtils";
+import AnnotatedLine from "./AnnotatedLine.vue";
+import { createPositionFromPoint } from "../lib/DomUtils";
+import { CssClassesUtil } from "../lib/annotatedTextUtils/AnnotatedTextUtils";
+import { useStateObjectsStore } from "../stores/AnnotationComponentStores";
+import AnnotatedLinesUtil from "../lib/annotatedTextUtils/AnnotatedLinesUtil";
+import { UserActionState } from "../lib/annotatedTextUtils/StateClasses";
+import type { Annotation } from "../types/Annotation";
+import { hasCustomEventListener } from "../lib/EventUtils";
+import type { AnnotatedTextProps, MouseEventPayload } from "@/types/props";
+import type { AnnotatedTextEmits } from "@/types/emits";
 
 // init props
 /**
@@ -144,7 +141,12 @@ watch(userStateLabel, (nv, ov) => {
 window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
   if (hasKeyPressedListener) {
     props.verbose &&
-      console.log("key-pressed", keyEv.key, updateState.value, createState.value);
+      console.log(
+        "key-pressed",
+        keyEv.key,
+        updateState.value,
+        createState.value
+      );
     emit(
       "key-pressed",
       keyEv,
@@ -172,25 +174,36 @@ const onMouseMoveHandlers = new Map<
 >();
 
 function onMouseDown(e: MouseEvent, payload?: MouseEventPayload) {
-  props.verbose && console.log('@onMouseDown', 'userState:', userState.value.state, payload)
+  props.verbose &&
+    console.log("@onMouseDown", "userState:", userState.value.state, payload);
   onMouseDownHandlers.get(userState.value.state) &&
     onMouseDownHandlers.get(userState.value.state)(e, payload);
 }
 
 function onMouseMove(e: MouseEvent, payload?: MouseEventPayload) {
-  props.verbose && console.log('@onMouseMove', 'userState:', e, userState.value.state, payload, payload?.annotation?.id)
+  props.verbose &&
+    console.log(
+      "@onMouseMove",
+      "userState:",
+      e,
+      userState.value.state,
+      payload,
+      payload?.annotation?.id
+    );
   onMouseMoveHandlers.get(userState.value.state) &&
     onMouseMoveHandlers.get(userState.value.state)(e, payload);
 }
 
 function onMouseUp(e: MouseEvent) {
-  props.verbose && console.log('@onMouseUp', 'userState:', userState.value.state)
+  props.verbose &&
+    console.log("@onMouseUp", "userState:", userState.value.state);
   onMouseUpHandlers.get(userState.value.state) &&
     onMouseUpHandlers.get(userState.value.state)(e);
 }
 
 function onMouseLeave(e: MouseEvent, payload?: MouseEventPayload) {
-  props.verbose && console.log('@onMouseLeave', 'userState:', userState.value.state)
+  props.verbose &&
+    console.log("@onMouseLeave", "userState:", userState.value.state);
   if (updateState.value.updating) {
     updateState.value.resetUpdate();
   }
@@ -217,7 +230,8 @@ onMouseDownHandlers.set(
 
 onMouseUpHandlers.set(UserActionState.START_SELECT, (e: MouseEvent) => {
   // emit select event
-  props.verbose && console.log("annotation-select", userState.value.payload.annotation);
+  props.verbose &&
+    console.log("annotation-select", userState.value.payload.annotation);
   emit("annotation-select", userState.value.payload.annotation, e);
   // reset user state
   userState.value.reset();
@@ -235,11 +249,13 @@ onMouseMoveHandlers.set(
   UserActionState.START_CREATE,
   (e: MouseEvent, payload?: MouseEventPayload) => {
     if (props.allowCreate) {
-      const position = payload.startOffset + createPositionFromPoint(e.x, e.y).offset;
+      const position =
+        payload.startOffset + createPositionFromPoint(e.x, e.y).offset;
       createState.value.startCreating(position);
 
       if (hasCreateBeginListener) {
-        props.verbose && console.log("*emit annotation-create-begin", createState.value);
+        props.verbose &&
+          console.log("*emit annotation-create-begin", createState.value);
         emit("annotation-create-begin", createState.value);
       } else {
         const annotation: Annotation = {
@@ -268,7 +284,8 @@ onMouseMoveHandlers.set(
       if (createState.value.newStart <= newPosition) {
         createState.value.newEnd = newPosition;
         if (hasCreatingListener) {
-          props.verbose && console.log("*emit annotation-creating", createState.value);
+          props.verbose &&
+            console.log("*emit annotation-creating", createState.value);
           emit("annotation-creating", createState.value);
         } else {
           createState.value.updateCreating();
@@ -280,7 +297,8 @@ onMouseMoveHandlers.set(
 
 // USER STATE creating + MOUSE EVENT mouseup
 onMouseUpHandlers.set(UserActionState.CREATING, (e: MouseEvent) => {
-  props.verbose && console.log("*emit annotation-create-end", createState.value);
+  props.verbose &&
+    console.log("*emit annotation-create-end", createState.value);
   emit("annotation-create-end", createState.value);
   createState.value.resetCreating();
 });
@@ -314,7 +332,8 @@ onMouseMoveHandlers.set(
 
     // confirm update state
     if (hasUpdateBeginListener) {
-      props.verbose && console.log("*emit annotation-update-begin", updateState.value);
+      props.verbose &&
+        console.log("*emit annotation-update-begin", updateState.value);
       emit("annotation-update-begin", updateState.value);
     } else {
       updateState.value.confirmStartUpdating();
@@ -349,7 +368,10 @@ onMouseMoveHandlers.set(
           break;
         default:
         case "move":
-          if (updateState.value.newStart != updateState.value.origStart + offset) {
+          if (
+            updateState.value.newStart !=
+            updateState.value.origStart + offset
+          ) {
             updateState.value.newStart = updateState.value.origStart + offset;
             updateState.value.newEnd = updateState.value.origEnd + offset;
             isUpdated = true;
@@ -360,7 +382,8 @@ onMouseMoveHandlers.set(
       if (isUpdated) {
         // needs confirmation by user?
         if (hasUpdatingListener) {
-          props.verbose && console.log("*emit annotation-updating", updateState.value);
+          props.verbose &&
+            console.log("*emit annotation-updating", updateState.value);
           emit("annotation-updating", updateState.value);
         } else {
           updateState.value.confirmUpdate();
@@ -372,7 +395,8 @@ onMouseMoveHandlers.set(
 
 // updating state + mouse up event => end updating
 onMouseUpHandlers.set(UserActionState.UPDATING, (e: MouseEvent) => {
-  props.verbose && console.log("*emit annotation-update-end", updateState.value);
+  props.verbose &&
+    console.log("*emit annotation-update-end", updateState.value);
   emit("annotation-update-end", updateState.value);
   updateState.value.resetUpdate();
 });
