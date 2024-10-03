@@ -30,6 +30,7 @@
     "build": "vite build",
     "type-check": "vue-tsc --noEmit --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
+    "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prepare": "husky install",
     "lint-staged": "lint-staged --allow-empty"
   },

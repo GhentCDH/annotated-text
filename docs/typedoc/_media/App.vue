@@ -9,16 +9,17 @@ import {
   faCircleExclamation as faImportant,
   faCircleCheck as faValidate,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  AnnotatedText,
-  UserActionState,
-} from "@ghentcdh/vue-component-annotated-text";
 import type {
   Annotation,
   AnnotationTarget,
   CreateAnnotationState,
   UpdateAnnotationState,
   UserState,
+} from "@ghentcdh/vue-component-annotated-text";
+import {
+  AnnotatedText,
+  UserActionState,
+  Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
 import { textToLines } from "./Utils";
 import { annotationsGreek as annotations, textGreek as text } from "./data";
@@ -65,7 +66,6 @@ const onAnnotationMouseOver = function (
   mouseEvent: MouseEvent
 ) {
   hoveredAnnotationsState.set(annotation.id, annotation);
-  // console.log(hoveredAnnotations);
   props.hoveredList = Array.from(hoveredAnnotationsState.keys());
 };
 
@@ -124,7 +124,7 @@ const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
 const onAnnotationUpdateEnd = function (
   updateState: UpdateAnnotationState
 ): void {
-  props.debug && console.log("** Edited: ", updateState.annotation);
+  Debugger.debug("** Edited: ", updateState.annotation);
   annotationMap.set(updateState.annotation.id, updateState.annotation); // Edit application state
   props.annoList = Array.from(annotationMap.values());
 };
