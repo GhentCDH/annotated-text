@@ -1,0 +1,15 @@
+name: "Setup"
+description: "Load node cache"
+
+
+runs:
+  using: "composite"
+  steps:
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ env.DEPENDENCIES_CACHE }}-${{ hashFiles('pnpm-lock.yaml') }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
