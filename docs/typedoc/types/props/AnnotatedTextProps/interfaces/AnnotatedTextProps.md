@@ -16,7 +16,7 @@ Whether to allow creating new annotations
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:64](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L64)
+[src/types/props/AnnotatedTextProps.ts:64](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L64)
 
 ***
 
@@ -28,7 +28,7 @@ Whether to allow editing annotations
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:60](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L60)
+[src/types/props/AnnotatedTextProps.ts:60](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L60)
 
 ***
 
@@ -40,7 +40,7 @@ Whether to allow editing annotations
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:24](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L24)
+[src/types/props/AnnotatedTextProps.ts:24](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L24)
 
 ***
 
@@ -52,7 +52,7 @@ List of annotations to be displayed
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L8)
+[src/types/props/AnnotatedTextProps.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L8)
 
 ***
 
@@ -64,7 +64,7 @@ Whether to automatically calculate weights
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:52](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L52)
+[src/types/props/AnnotatedTextProps.ts:52](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L52)
 
 ***
 
@@ -76,7 +76,7 @@ Whether verbose debug messages are printed
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:28](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L28)
+[src/types/props/AnnotatedTextProps.ts:28](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L28)
 
 ***
 
@@ -88,7 +88,7 @@ Whether to display text or gutter annotations
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L44)
+[src/types/props/AnnotatedTextProps.ts:44](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L44)
 
 ***
 
@@ -100,7 +100,7 @@ List of annotation ID's that are hovered. Those will get the "hovered" style cla
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L16)
+[src/types/props/AnnotatedTextProps.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L16)
 
 ***
 
@@ -112,7 +112,7 @@ List of lines
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L20)
+[src/types/props/AnnotatedTextProps.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L20)
 
 ***
 
@@ -124,7 +124,7 @@ List of lines
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L40)
+[src/types/props/AnnotatedTextProps.ts:40](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L40)
 
 ***
 
@@ -136,7 +136,7 @@ List of annotation ID's that are selected. Those will get the "active" style cla
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:12](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L12)
+[src/types/props/AnnotatedTextProps.ts:12](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L12)
 
 ***
 
@@ -148,7 +148,7 @@ Whether to show the labels
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:48](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L48)
+[src/types/props/AnnotatedTextProps.ts:48](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L48)
 
 ***
 
@@ -160,7 +160,7 @@ Object to define classes for styles.
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:56](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L56)
+[src/types/props/AnnotatedTextProps.ts:56](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L56)
 
 ***
 
@@ -172,7 +172,7 @@ only default theme available for now
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:36](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L36)
+[src/types/props/AnnotatedTextProps.ts:36](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L36)
 
 ***
 
@@ -184,4 +184,4 @@ Whether event messages are printed
 
 #### Defined in
 
-[types/props/AnnotatedTextProps.ts:32](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/AnnotatedTextProps.ts#L32)
+[src/types/props/AnnotatedTextProps.ts:32](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/AnnotatedTextProps.ts#L32)

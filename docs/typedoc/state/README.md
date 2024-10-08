@@ -1,10 +1,10 @@
-[**@ghentcdh/vue-component-annotated-text**](../../../README.md) • **Docs**
+[**@ghentcdh/vue-component-annotated-text**](../README.md) • **Docs**
 
 ***
 
-[@ghentcdh/vue-component-annotated-text](../../../modules.md) / lib/annotatedTextUtils/StateClasses
+[@ghentcdh/vue-component-annotated-text](../modules.md) / state
 
-# lib/annotatedTextUtils/StateClasses
+# state
 
 ## Index
 
@@ -18,3 +18,7 @@
 - [HoverAnnotationsState](classes/HoverAnnotationsState.md)
 - [UpdateAnnotationState](classes/UpdateAnnotationState.md)
 - [UserState](classes/UserState.md)
+
+### Functions
+
+- [useStateObjectsStore](functions/useStateObjectsStore.md)

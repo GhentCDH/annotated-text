@@ -12,7 +12,7 @@
 
 ### annotation-create-begin
 
-> **annotation-create-begin**: [[`CreateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md)]
+> **annotation-create-begin**: [[`CreateAnnotationState`](../../../../state/classes/CreateAnnotationState.md)]
 
 Emitted when the mouse is pressed down on plain text.
 
@@ -24,7 +24,7 @@ createState object holding the state of the being created annotation
 
 ### annotation-create-end
 
-> **annotation-create-end**: [[`CreateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md)]
+> **annotation-create-end**: [[`CreateAnnotationState`](../../../../state/classes/CreateAnnotationState.md)]
 
 Emitted when during creation the mouse is released.
 
@@ -34,7 +34,7 @@ createState object holding the state of the being created annotation. The annota
 
 ### annotation-creating
 
-> **annotation-creating**: [[`CreateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md)]
+> **annotation-creating**: [[`CreateAnnotationState`](../../../../state/classes/CreateAnnotationState.md)]
 
 Emitted on every mouse move while creating an annotation.
 
@@ -90,7 +90,7 @@ mouseEvent normal dom mouse event
 
 ### annotation-update-begin
 
-> **annotation-update-begin**: [[`UpdateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
+> **annotation-update-begin**: [[`UpdateAnnotationState`](../../../../state/classes/UpdateAnnotationState.md)]
 
 Emitted when the user starts updating an annotation, so when the mouse is
 clicked down and the listenToOnUpdateStart prop is true.
@@ -106,7 +106,7 @@ updateState object holding the state of the update
 
 ### annotation-update-end
 
-> **annotation-update-end**: [[`UpdateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
+> **annotation-update-end**: [[`UpdateAnnotationState`](../../../../state/classes/UpdateAnnotationState.md)]
 
 Emitted when during an update the mouse is released.
 
@@ -116,7 +116,7 @@ updateState updateState object containing the new annotation object in the annot
 
 ### annotation-updating
 
-> **annotation-updating**: [[`UpdateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md)]
+> **annotation-updating**: [[`UpdateAnnotationState`](../../../../state/classes/UpdateAnnotationState.md)]
 
 Emitted every time the user moves their cursor while updating an
 annotation. Only emitted if the listenToOnUpdating prop is true.
@@ -132,7 +132,7 @@ updateState object holding the state of the update
 
 ### key-pressed
 
-> **key-pressed**: [`KeyboardEvent`, [`UpdateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/UpdateAnnotationState.md), [`CreateAnnotationState`](../../../../lib/annotatedTextUtils/StateClasses/classes/CreateAnnotationState.md), [`UserState`](../../../../lib/annotatedTextUtils/StateClasses/classes/UserState.md)]
+> **key-pressed**: [`KeyboardEvent`, [`UpdateAnnotationState`](../../../../state/classes/UpdateAnnotationState.md), [`CreateAnnotationState`](../../../../state/classes/CreateAnnotationState.md), [`UserState`](../../../../state/classes/UserState.md)]
 
 Emitted whenever any key is pressed. Can be used to reset updating or creating states
 
@@ -154,7 +154,7 @@ userState {UserState}
 
 ### user-action-state-change
 
-> **user-action-state-change**: [[`UserActionState`](../../../../lib/annotatedTextUtils/StateClasses/enumerations/UserActionState.md), [`UserActionState`](../../../../lib/annotatedTextUtils/StateClasses/enumerations/UserActionState.md)]
+> **user-action-state-change**: [[`UserActionState`](../../../../state/enumerations/UserActionState.md), [`UserActionState`](../../../../state/enumerations/UserActionState.md)]
 
 Emitted whenever the internal user state changes
 
@@ -168,4 +168,4 @@ newState New user action state
 
 ## Defined in
 
-[types/emits/AnnotatedTextEmits.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/emits/AnnotatedTextEmits.ts#L9)
+[src/types/emits/AnnotatedTextEmits.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/emits/AnnotatedTextEmits.ts#L9)

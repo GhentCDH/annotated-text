@@ -3,7 +3,7 @@ import type {
   CreateAnnotationState,
   UserState,
   UserActionState,
-} from "../../utils/annotatedTextUtils";
+} from "../../state";
 import type { Annotation } from "../Annotation";
 
 export type AnnotatedTextEmits = {
