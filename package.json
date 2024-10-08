@@ -32,7 +32,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prepare": "husky install",
-    "lint-staged": "lint-staged --allow-empty"
+    "lint:staged": "lint-staged --allow-empty"
   },
   "dependencies": {
     "etali": "^1.2.5"
@@ -88,7 +88,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint:staged"
     }
   },
   "lint-staged": {

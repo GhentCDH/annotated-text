@@ -24,8 +24,8 @@ export {
   CreateAnnotationState,
   UserActionState,
   UserState,
-} from "./lib/annotatedTextUtils/StateClasses";
+} from "./state";
 
 import "./style/style.scss";
 
-export * from "./utlis/debugger";
+export * from "./utils/debugger";

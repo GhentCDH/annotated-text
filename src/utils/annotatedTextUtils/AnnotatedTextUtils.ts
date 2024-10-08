@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import type { UpdateAnnotationState } from "./StateClasses";
+import type { UpdateAnnotationState } from "../../state";
 import type { Annotation } from "../../types/Annotation";
 import type {
   AnnotatedLine,

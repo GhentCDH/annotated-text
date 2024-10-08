@@ -57,14 +57,13 @@
 import { computed, reactive, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import AnnotatedLine from "./AnnotatedLine.vue";
-import { createPositionFromPoint } from "../lib/DomUtils";
-import { CssClassesUtil } from "../lib/annotatedTextUtils/AnnotatedTextUtils";
-import { useStateObjectsStore } from "../stores/AnnotationComponentStores";
-import AnnotatedLinesUtil from "../lib/annotatedTextUtils/AnnotatedLinesUtil";
-import { UserActionState } from "../lib/annotatedTextUtils/StateClasses";
+import { createPositionFromPoint } from "../utils/dom";
+import { CssClassesUtil } from "../utils/annotatedTextUtils/AnnotatedTextUtils";
+import { useStateObjectsStore, UserActionState } from "../state";
+import AnnotatedLinesUtil from "../utils/annotatedTextUtils/AnnotatedLinesUtil";
 import type { Annotation } from "../types/Annotation";
-import { hasCustomEventListener } from "../lib/EventUtils";
-import { Debugger } from "../utlis/debugger";
+import { hasCustomEventListener } from "../utils/events";
+import { Debugger } from "../utils/debugger";
 import type { AnnotatedTextProps, MouseEventPayload } from "@/types/props";
 import type { AnnotatedTextEmits } from "@/types/emits";
 

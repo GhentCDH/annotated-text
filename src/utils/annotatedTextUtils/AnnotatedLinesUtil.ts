@@ -1,9 +1,6 @@
 import { computed } from "vue";
 import { FlattenRanges } from "etali";
-import type {
-  CreateAnnotationState,
-  UpdateAnnotationState,
-} from "./StateClasses";
+import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
   AnnotatedWord,
   RangeWithAnnotation,
@@ -14,7 +11,7 @@ import type {
   WordPart,
 } from "../../types/AnnotatedText";
 import type { Annotation, AnnotationTarget } from "../../types/Annotation";
-import { Debugger } from "../../utlis/debugger";
+import { Debugger } from "../debugger";
 import type { AnnotatedTextProps } from "@/types/props";
 
 // Some consts needed for the utils class
