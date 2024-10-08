@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types/props/MouseEventPayload.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/MouseEventPayload.ts#L7)
+[src/types/props/MouseEventPayload.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/MouseEventPayload.ts#L7)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types/props/MouseEventPayload.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/MouseEventPayload.ts#L6)
+[src/types/props/MouseEventPayload.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/MouseEventPayload.ts#L6)
 
 ***
 
@@ -34,4 +34,4 @@
 
 #### Defined in
 
-[types/props/MouseEventPayload.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/6add7bb10a77b5452736ad4c56c99391d8dec5bd/src/types/props/MouseEventPayload.ts#L5)
+[src/types/props/MouseEventPayload.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/props/MouseEventPayload.ts#L5)

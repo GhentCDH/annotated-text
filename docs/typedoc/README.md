@@ -24,9 +24,9 @@ To build the docs run `yarn run docs:build`
 
 ### Types
 
-- [StateClasses](_media/README.md)
-- [AnnotatedText](_media/README-1.md)
-- [Annotation](_media/README-2.md)
+- [StateClasses](docs/typedoc/lib/annotatedTextUtils/StateClasses/README.md)
+- [AnnotatedText](docs/typedoc/types/AnnotatedText/README.md)
+- [Annotation](docs/typedoc/types/Annotation/README.md)
 
 ### Slots
 

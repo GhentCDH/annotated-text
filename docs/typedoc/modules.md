@@ -6,10 +6,7 @@
 
 ## Modules
 
-- [lib/annotatedTextUtils](lib/annotatedTextUtils/README.md)
-- [lib/annotatedTextUtils/AnnotatedLinesUtil](lib/annotatedTextUtils/AnnotatedLinesUtil/README.md)
-- [lib/annotatedTextUtils/AnnotatedTextUtils](lib/annotatedTextUtils/AnnotatedTextUtils/README.md)
-- [lib/annotatedTextUtils/StateClasses](lib/annotatedTextUtils/StateClasses/README.md)
+- [state](state/README.md)
 - [types/AnnotatedText](types/AnnotatedText/README.md)
 - [types/AnnotatedText](types/AnnotatedText/README.md)
 - [types/Annotation](types/Annotation/README.md)
@@ -21,3 +18,4 @@
 - [types/props/AnnotatedTextProps](types/props/AnnotatedTextProps/README.md)
 - [types/props/MouseEventPayload](types/props/MouseEventPayload/README.md)
 - [types/props/RecursiveAnnotatedTokenPartTextProps](types/props/RecursiveAnnotatedTokenPartTextProps/README.md)
+- [utils/debugger](utils/debugger/README.md)
