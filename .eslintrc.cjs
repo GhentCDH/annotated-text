@@ -12,28 +12,29 @@ module.exports = {
   ],
   parserOptions: {
     ecmaVersion: "latest",
-  },  
-  "overrides": [
+  },
+  overrides: [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx","*.vue"],
-  rules: {
-    "no-console": ["error", { allow: ["warn", "error"] }],
-    "@typescript-eslint/consistent-type-imports": "warn",
-    "import/named": "off",
-    "import/no-unresolved": "off",
-    "import/order": [
-      1,
-      {
-        groups: [
-          "external",
-          "builtin",
-          "internal",
-          "sibling",
-          "parent",
-          "index",
+      files: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.vue"],
+      rules: {
+        "no-console": ["error", { allow: ["warn", "error"] }],
+        "@typescript-eslint/consistent-type-imports": "warn",
+        "import/named": "off",
+        "import/no-unresolved": "off",
+        "import/order": [
+          1,
+          {
+            groups: [
+              "external",
+              "builtin",
+              "internal",
+              "sibling",
+              "parent",
+              "index",
+            ],
+          },
         ],
       },
-    ],
-  },
-    }]
+    },
+  ],
 };
