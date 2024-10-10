@@ -2,10 +2,7 @@ name: Labeler
 
 
 on:
-    pull_request:
-        branches:
-            - main
-        types: [opened, edited, synchronize]
+    workflow_dispatch:
 
 jobs:
     labeler:
@@ -16,6 +13,5 @@ jobs:
 
             - name: Run Labeler
               uses: crazy-max/ghaction-github-labeler@v4.1.0
-
-            - name: Label the pr
-              uses: actions/labeler@v5
+              with:
+                  skip-delete: true
