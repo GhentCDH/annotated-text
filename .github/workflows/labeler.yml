@@ -16,6 +16,8 @@ jobs:
 
             - name: Run Labeler
               uses: crazy-max/ghaction-github-labeler@v4.1.0
-
+              with:
+                  skip-delete: true
+                  
             - name: Label the pr
               uses: actions/labeler@v5
