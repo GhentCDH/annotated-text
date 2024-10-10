@@ -7,6 +7,7 @@ import type {
   RenderType,
   WordPart,
 } from "../../types/AnnotatedText";
+import { createAnnotationColor } from "../createAnnotationColor";
 
 export const startsOnLine = function (
   line: AnnotatedLine,
@@ -93,6 +94,22 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
     return classes;
   };
 
+  annotationStyle = (annotation: Annotation): string[] => {
+    if (!annotation.color) return [];
+
+    const { border, background, borderActive, backgroundActive } =
+      typeof annotation.color === "string"
+        ? createAnnotationColor(annotation.color)
+        : annotation.color;
+
+    return [
+      `--annotation-bg-color: ${background}`,
+      `--annotation-border-color: ${border}`,
+      `--annotation-bg-color--active: ${backgroundActive}`,
+      `--annotation-border-color--active: ${borderActive}`,
+    ];
+  };
+
   annotationClasses = (
     annotation: Annotation,
     start: number,
@@ -135,6 +152,11 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
     if (allowCreate) {
       classes.push("create-anno-text");
     }
+
+    if (annotation.color) {
+      classes.push("annotation--color-custom");
+    }
+
     return classes;
   };
 

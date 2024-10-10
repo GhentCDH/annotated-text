@@ -12,6 +12,7 @@ export interface RecursiveAnnotatedTokenPartTextProps {
     end: number,
     allowCreate: boolean
   ) => string[];
+  annotationStyleHandler?: (annotation: Annotation) => string[];
   wordPartStart: number; // for correct handle position
   allowEdit?: boolean;
   allowCreate?: boolean;
