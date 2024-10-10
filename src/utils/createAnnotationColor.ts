@@ -14,10 +14,10 @@ import type { AnnotationColor } from "../types/AnnotationColor";
  */
 type Config = {
   opacity?: {
-    background: number;
-    border: number;
-    backgroundActive: number;
-    borderActive: number;
+    background?: number;
+    border?: number;
+    backgroundActive?: number;
+    borderActive?: number;
   };
 };
 
@@ -76,12 +76,13 @@ export const createAnnotationColor = (
  * @returns A record where the key is a string representing the annotation name and the value is an `AnnotationColor` object.
  */
 export const createAnnotationColors = (
-  colors: Record<string, string>
+  colors: Record<string, string>,
+  config?: Config
 ): Record<string, AnnotationColor> => {
   const colorSet: Record<string, AnnotationColor> = {};
 
   Object.entries(colors).forEach(([key, value]) => {
-    colorSet[key] = createAnnotationColor(value);
+    colorSet[key] = createAnnotationColor(value, config);
   });
 
   return colorSet;
