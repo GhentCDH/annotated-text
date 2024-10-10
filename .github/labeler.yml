@@ -7,6 +7,9 @@ bug:
 release:
  - head-branch: ['^release', 'release']
 
+refactoring:
+ - head-branch: ['^refactoring', 'refactoring']
+
 build:
  - head-branch: ['^chore', 'chore']
  - changed-files:
