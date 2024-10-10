@@ -41,7 +41,7 @@ $annotation-border-color--active: rgba(red, 0.9);
 
 @mixin createAnnotationColor() {
   $border-color_: var(--annotation-border-color, $annotation-border-color);
-      $border-color: rgba($border-color_, 0.3);
+  $border-color: rgba($border-color_, 0.3);
   $border-color_active: rgba($border-color_, 0.9);
 
   $background-color: var(--annotation-bg-color);
