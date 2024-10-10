@@ -39,20 +39,9 @@ $annotation-border-color--active: rgba(red, 0.9);
   }
 }
 
-/**
- * Mixin: createAnnotationColor
- * 
- * This mixin is used to create annotation colors for the annotated text component.
- * It can be used to define and apply specific color styles for annotations.
- * 
- * Usage:
- * @include createAnnotationColor();
- * 
- * Note: Ensure to define the necessary color variables or styles within this mixin.
- */
 @mixin createAnnotationColor() {
   $border-color_: var(--annotation-border-color, $annotation-border-color);
-  $border-color: rgba($border-color_, 0.3);
+      $border-color: rgba($border-color_, 0.3);
   $border-color_active: rgba($border-color_, 0.9);
 
   $background-color: var(--annotation-bg-color);
