@@ -4,6 +4,9 @@ enhancement:
 bug:
  - head-branch: ['^bug', 'bugfix']
 
+release:
+ - head-branch: ['^release', 'release']
+
 build:
  - head-branch: ['^chore', 'chore']
  - changed-files:
