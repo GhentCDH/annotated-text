@@ -7,13 +7,16 @@ categories:
     labels:
       - 'feature'
       - 'enhancement'
-  - title: '🐛 Bug Fixes'
+      - 'enhancement 🚀'
+  - title: '🐞 Bug Fixes'
     labels:
       - 'fix'
       - 'bugfix'
       - 'bug'
+      - 'bug 🐞'
   - title: '🧰 Maintenance'
-    label: 'chore'
+    labels: 
+      - 'chore'
   - title: 'Others'
     label: '**'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
