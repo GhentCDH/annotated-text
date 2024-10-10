@@ -26,6 +26,7 @@
               props.allowCreate
             )
           "
+          :style="props.annotationStyle(annotation)"
           @mousedown="
             props.mouseDownHandler($event, {
               startOffset: wordPart.start,
@@ -55,6 +56,7 @@
           :word-part-start="wordPart.start"
           :annotations="sortAnnotations(wordPart.annotations)"
           :annotation-class-handler="annotationClasses"
+          :annotation-style-handler="annotationStyle"
           :mouse-down-handler="props.mouseDownHandler"
           :mouse-move-handler="props.mouseMoveHandler"
         >
@@ -89,6 +91,7 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
   wordPartClasses: () => [],
   annotationClasses: () => [],
+  annotationStyle: () => [],
 });
 
 const renderNested = computed(() => props.render === "nested");

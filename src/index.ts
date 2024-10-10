@@ -29,3 +29,4 @@ export {
 import "./style/style.scss";
 
 export * from "./utils/debugger";
+export * from "./utils/createAnnotationColor";

@@ -3,6 +3,7 @@ require("@rushstack/eslint-patch/modern-module-resolution");
 
 module.exports = {
   root: true,
+  "ignorePatterns": ["**/*"],
   extends: [
     "plugin:vue/vue3-recommended",
     "plugin:import/recommended",
@@ -13,6 +14,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
   },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx","**.vue"],
   rules: {
     "no-console": ["error", { allow: ["warn", "error"] }],
     "@typescript-eslint/consistent-type-imports": "warn",
@@ -32,4 +36,5 @@ module.exports = {
       },
     ],
   },
+    }]
 };

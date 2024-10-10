@@ -33,6 +33,7 @@
           :allow-edit="allowEdit"
           :allow-create="allowCreate"
           :annotation-classes="annotationClasses"
+          :annotation-style="annotationStyle"
           :word-part-classes="wordPartClasses"
           :render="render"
           :mouse-down-handler="onMouseDown"
@@ -133,6 +134,7 @@ const hasKeyPressedListener = hasCustomEventListener("keyPressed");
 const cssClassUtil = new CssClassesUtil(props, updateState.value);
 const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
+const annotationStyle = cssClassUtil.annotationStyle;
 const componentClasses = cssClassUtil.componentClasses;
 const wordPartClasses = cssClassUtil.wordPartClasses;
 

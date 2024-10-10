@@ -12,6 +12,7 @@ export interface AnnotatedLineProps {
     end: number,
     allowCreate: boolean
   ) => string[];
+  annotationStyle?: (annotation: Annotation) => string[];
   allowEdit?: boolean;
   allowCreate?: boolean;
 

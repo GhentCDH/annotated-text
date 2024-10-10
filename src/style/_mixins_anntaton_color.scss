@@ -1,0 +1,71 @@
+$annotation-bg-color: rgba(red, 0.3);
+$annotation-border-color: rgba(red, 0.3);
+$annotated-bg-color--active: rgba(red, 0.3);
+$annotation-border-color--active: rgba(red, 0.9);
+
+:root {
+  --annotation-bg-color: #{$annotation-bg-color};
+  --annotation-border-color: #{$annotation-border-color};
+  --annotation-bg-active: #{$annotated-bg-color--active};
+  --annotation-border-active: #{$annotation-border-color--active};
+}
+
+@mixin show-border($borders: ()) {
+  $border-color: var(--annotation-border-color, $annotation-border-color);
+  $border: 3px solid $border-color;
+
+  @if index($borders, "top") {
+    border-top: $border;
+  } @else {
+    border-top-style: none;
+  }
+
+  @if index($borders, "bottom") {
+    border-bottom: $border;
+  } @else {
+    border-bottom-style: none;
+  }
+
+  @if index($borders, "left") {
+    border-left: $border;
+  } @else {
+    border-left-style: none;
+  }
+
+  @if index($borders, "right") {
+    border-right: $border;
+  } @else {
+    border-right-style: none;
+  }
+}
+
+@mixin createAnnotationColor() {
+  $border-color_: var(--annotation-border-color, $annotation-border-color);
+  $border-color: rgba($border-color_, 0.3);
+  $border-color_active: rgba($border-color_, 0.9);
+
+  $background-color: var(--annotation-bg-color);
+
+  &::before {
+    background: var(--annotation-bg-color);
+    @include show-border(("top", "bottom"));
+  }
+
+  &.annotation--end::before {
+    @include show-border(("right", "top", "bottom"));
+  }
+
+  &.annotation--start::before {
+    @include show-border(("left", "top", "bottom"));
+  }
+
+  &.annotation--active::before {
+    background: var(--annotation-bg-color--active, $annotated-bg-color--active);
+    border-color: var(
+      --annotation-border-color--active,
+      $annotation-border-color--active
+    );
+    border-width: 2px;
+    z-index: 1020;
+  }
+}

@@ -12,6 +12,7 @@
     :class="
       props.annotationClassHandler(annotation, start, end, props.allowCreate)
     "
+    :style="props.annotationStyleHandler?.(annotation)"
     @mousedown.stop="
       props.mouseDownHandler($event, {
         startOffset: wordPartStart,
@@ -47,6 +48,7 @@
       :allow-edit="allowEdit"
       :word-part-start="wordPartStart"
       :annotation-class-handler="props.annotationClassHandler"
+      :annotation-style-handler="props.annotationStyleHandler"
       :mouse-down-handler="props.mouseDownHandler"
       :mouse-move-handler="props.mouseMoveHandler"
     >
@@ -94,6 +96,7 @@ const props = withDefaults(
   {
     annotations: () => [],
     annotationClassHandler: () => [],
+    annotationStyleHandler: () => [],
   }
 );
 
