@@ -1,0 +1,19 @@
+enhancement:
+ - head-branch: ['^feature', 'feature', 'feat']
+
+bug:
+ - head-branch: ['^bug', 'bugfix']
+
+release:
+ - head-branch: ['^release', 'release']
+
+build:
+ - head-branch: ['^chore', 'chore']
+ - changed-files:
+    - any-glob-to-any-file:
+      - package*
+
+ci:
+ - changed-files:
+    - any-glob-to-any-file:
+      - .github/*

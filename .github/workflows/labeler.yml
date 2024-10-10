@@ -1,0 +1,21 @@
+name: Labeler
+
+
+on:
+    pull_request:
+        branches:
+            - main
+        types: [opened, edited, synchronize]
+
+jobs:
+    labeler:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out the repository
+              uses: actions/checkout@v3.0.2
+
+            - name: Run Labeler
+              uses: crazy-max/ghaction-github-labeler@v4.1.0
+
+            - name: Label the pr
+              uses: actions/labeler@v5
