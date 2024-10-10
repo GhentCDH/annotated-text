@@ -103,7 +103,7 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
         : annotation.color;
 
     return [
-      `--annotation-bg-color__: ${background}`,
+      `--annotation-bg-color: ${background}`,
       `--annotation-border-color: ${border}`,
       `--annotation-bg-color--active: ${backgroundActive}`,
       `--annotation-border-color--active: ${borderActive}`,

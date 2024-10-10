@@ -237,8 +237,12 @@ $annotated-text-annotation-colors: (
         .annotation--c#{$name} {
           --annotation-bg-color: #{rgba($color, 0.3)};
           --annotation-border-color: #{rgba($color, 0.3)};
-          --annotation-border-active: #{rgba($color, 0.9)};
-          --annotation-bg-active: #{color-mix(in srgb, white, $color 30%)};
+          --annotation-border-color--active: #{rgba($color, 0.9)};
+          --annotation-bg-color--active: #{color-mix(
+              in srgb,
+              white,
+              $color 30%
+            )};
 
           @include createAnnotationColor();
         }
