@@ -4,10 +4,10 @@
 #
 # The repository labels will be automatically configured using this file and
 # the GitHub Action https://github.com/marketplace/actions/github-labeler.
-- name: breaking
+- name: breaking ⛏️
   description: Breaking Changes
   color: bfd4f2
-- name: bug
+- name: bug 🐞
   description: Something isn't working
   color: d73a4a
 - name: build
@@ -25,16 +25,10 @@
 - name: duplicate
   description: This issue or pull request already exists
   color: cfd3d7
-- name: enhancement
+- name: enhancement 🚀
   description: New feature or request
   color: a2eeef
-- name: github_actions
-  description: Pull requests that update Github_actions code
-  color: "000000"
-- name: good first issue
-  description: Good for newcomers
-  color: 7057ff
-- name: help wanted
+- name: help wanted ❔
   description: Extra attention is needed
   color: 008672
 - name: invalid
@@ -49,11 +43,8 @@
 - name: refactoring
   description: Refactoring
   color: ef67c4
-- name: removal
-  description: Removals and Deprecations
-  color: 9ae7ea
-- name: style
-  description: Style
+- name: idea
+  description: Idea 💡
   color: c120e5
 - name: testing
   description: Testing
