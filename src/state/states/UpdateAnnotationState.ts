@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash-es";
 import type { UserState } from "./UserState";
 import type { Annotation } from "../../types/Annotation";
 import { UserActionState } from "../types/UserActionState.enum";
@@ -65,7 +66,7 @@ export class UpdateAnnotationState {
     this.action = action;
     this.handlePosition = handlePosition;
     this.origAnnotation = annotation;
-    this.annotation = JSON.parse(JSON.stringify(annotation));
+    this.annotation = cloneDeep(annotation);
     this.origEnd = origEnd;
     this.origStart = origStart;
     this.newEnd = newEnd;

@@ -18,6 +18,7 @@ export type {
   RecursiveAnnotatedTokenPartTextProps,
   AnnotatedLineProps,
 } from "./types/props";
+export type { AnnotationColor } from "./types/AnnotationColor";
 
 export {
   UpdateAnnotationState,
