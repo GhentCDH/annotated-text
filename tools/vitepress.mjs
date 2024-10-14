@@ -15,10 +15,11 @@ function generateDirectoryObject(dir) {
     const stat = fs.statSync(filePath);
 
     if (stat.isFile()) {
+      const fileName = file.substring(0, file.lastIndexOf("."));
       if (file === "index.md") return;
       items.push({
-        text: file.substring(0, file.lastIndexOf(".")),
-        link: `/${dirName}/${file}`,
+        text: fileName,
+        link: `/${dirName}/${fileName}`,
       });
     }
   });
@@ -30,9 +31,9 @@ function generateDirectoryObject(dir) {
 }
 const sidebar = [
   generateDirectoryObject("components"),
-  generateDirectoryObject("typedoc"),
+  // generateDirectoryObject("typedoc"),
 ];
-console.log(sidebar)
+console.log(sidebar);
 fs.writeFileSync(
   path.join(docsPath, ".vitepress/config.ts"),
 
@@ -45,10 +46,10 @@ fs.writeFileSync(
 export default defineConfig( 
 ${JSON.stringify({
   ...BaseConfig,
-    themeConfig:{...BaseConfig.themeConfig,
-      sidebar: [BaseConfig.themeConfig?.sidebar ?? [], sidebar].flat(),
-    },
-
+  themeConfig: {
+    ...BaseConfig.themeConfig,
+    sidebar: [BaseConfig.themeConfig?.sidebar ?? [], sidebar].flat(),
+  },
 })}
 )
 `

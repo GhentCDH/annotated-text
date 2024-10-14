@@ -10,9 +10,6 @@ hero:
     - theme: brand
       text: Components
       link: /components
-    - theme: brand
-      text: Modules
-      link: /typedoc/modules
 
 
 ---

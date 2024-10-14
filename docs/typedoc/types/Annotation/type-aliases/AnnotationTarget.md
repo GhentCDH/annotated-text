@@ -10,4 +10,4 @@
 
 ## Defined in
 
-[src/types/Annotation.d.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/Annotation.d.ts#L11)
+[src/types/Annotation.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/types/Annotation.d.ts#L13)

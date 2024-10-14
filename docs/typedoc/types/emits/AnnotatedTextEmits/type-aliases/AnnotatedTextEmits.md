@@ -168,4 +168,4 @@ newState New user action state
 
 ## Defined in
 
-[src/types/emits/AnnotatedTextEmits.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/types/emits/AnnotatedTextEmits.ts#L9)
+[src/types/emits/AnnotatedTextEmits.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/types/emits/AnnotatedTextEmits.ts#L9)

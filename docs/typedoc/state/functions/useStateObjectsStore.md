@@ -26,6 +26,10 @@
 
 > `optional` **class**: `string`
 
+##### annotation.color?
+
+> `optional` **color**: `any`
+
 ##### annotation.end
 
 > **end**: `number`
@@ -81,6 +85,10 @@
 ##### userState.payload.annotation.class?
 
 > `optional` **class**: `string`
+
+##### userState.payload.annotation.color?
+
+> `optional` **color**: `any`
 
 ##### userState.payload.annotation.end
 
@@ -848,6 +856,10 @@ When dispatched in a tree, invoking this method prevents event from reaching any
 
 > `optional` **class**: `string`
 
+##### annotation.color?
+
+> `optional` **color**: `any`
+
 ##### annotation.end
 
 > **end**: `number`
@@ -891,6 +903,10 @@ When dispatched in a tree, invoking this method prevents event from reaching any
 ##### origAnnotation.class?
 
 > `optional` **class**: `string`
+
+##### origAnnotation.color?
+
+> `optional` **color**: `any`
 
 ##### origAnnotation.end
 
@@ -947,6 +963,10 @@ When dispatched in a tree, invoking this method prevents event from reaching any
 ##### userState.payload.annotation.class?
 
 > `optional` **class**: `string`
+
+##### userState.payload.annotation.color?
+
+> `optional` **color**: `any`
 
 ##### userState.payload.annotation.end
 
@@ -1060,6 +1080,10 @@ be called by the parent component.
 
 > `optional` **class**: `string`
 
+##### payload.annotation.color?
+
+> `optional` **color**: `any`
+
 ##### payload.annotation.end
 
 > **end**: `number`
@@ -1100,4 +1124,4 @@ be called by the parent component.
 
 ## Defined in
 
-[src/state/stores/AnnotationComponentStores.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/d51ee50afdd4ab5cda55f7357c95be62d9ee9e3f/src/state/stores/AnnotationComponentStores.ts#L7)
+[src/state/stores/AnnotationComponentStores.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/state/stores/AnnotationComponentStores.ts#L7)
