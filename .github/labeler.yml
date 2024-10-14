@@ -20,3 +20,7 @@ ci:
  - changed-files:
     - any-glob-to-any-file:
       - .github/*
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/*
