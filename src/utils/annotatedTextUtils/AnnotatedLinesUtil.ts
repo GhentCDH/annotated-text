@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { FlattenRanges } from "etali";
+import { cloneDeep } from "lodash-es";
 import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
   AnnotatedWord,
@@ -51,7 +52,7 @@ export default class AnnotatedLinesUtil {
   private allAnnotations = computed((): Annotation[] => {
     Debugger.debug("** refresh annotations");
 
-    const annotations = JSON.parse(JSON.stringify(this.props.annotations));
+    const annotations = cloneDeep(this.props.annotations);
     if (this.editState.annotation) {
       annotations.push(this.editState.annotation);
     }
