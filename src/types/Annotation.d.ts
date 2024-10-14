@@ -1,3 +1,5 @@
+import type { AnnotationColor } from "./AnnotationColor";
+
 export interface Annotation {
   id: string;
   start: number;

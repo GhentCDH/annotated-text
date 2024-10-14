@@ -120,6 +120,9 @@ importers:
       typedoc-plugin-vue:
         specifier: ^1.2.0
         version: 1.2.0(typedoc@0.26.7(typescript@5.6.2))
+      typedoc-vitepress-theme:
+        specifier: ^1.0.2
+        version: 1.0.2(typedoc-plugin-markdown@4.2.7(typedoc@0.26.7(typescript@5.6.2)))
       typescript:
         specifier: ^5.0.0
         version: 5.6.2
@@ -3459,6 +3462,11 @@ packages:
     resolution: {integrity: sha512-T7HbeaD7mAGtllFmYP0oCXWL8pwFia3tyPoM2ux7std6GNTYTFz2BzBZ0jO6YtItjqOexJYygJppbd81e/cnEQ==}
     peerDependencies:
       typedoc: 0.25.x || 0.26.x
+
+  typedoc-vitepress-theme@1.0.2:
+    resolution: {integrity: sha512-6RUW4FBsGolOU3M92F7qz9ILKjL0oq8aHyQ5Q39tIpzapimJ2qX+ChLqzcBP7/aAtEoPYezIivjjZN9oZ4Ghvg==}
+    peerDependencies:
+      typedoc-plugin-markdown: '>=4.1.0'
 
   typedoc@0.26.7:
     resolution: {integrity: sha512-gUeI/Wk99vjXXMi8kanwzyhmeFEGv1LTdTQsiyIsmSYsBebvFxhbcyAx7Zjo4cMbpLGxM4Uz3jVIjksu/I2v6Q==}
@@ -7417,6 +7425,10 @@ snapshots:
   typedoc-plugin-vue@1.2.0(typedoc@0.26.7(typescript@5.6.2)):
     dependencies:
       typedoc: 0.26.7(typescript@5.6.2)
+
+  typedoc-vitepress-theme@1.0.2(typedoc-plugin-markdown@4.2.7(typedoc@0.26.7(typescript@5.6.2))):
+    dependencies:
+      typedoc-plugin-markdown: 4.2.7(typedoc@0.26.7(typescript@5.6.2))
 
   typedoc@0.26.7(typescript@5.6.2):
     dependencies:
