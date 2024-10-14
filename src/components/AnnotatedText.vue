@@ -100,7 +100,6 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
 });
 
 props = reactive(props);
-
 // define emits
 const emit = defineEmits<AnnotatedTextEmits>();
 
@@ -145,28 +144,30 @@ watch(userStateLabel, (nv, ov) => {
 });
 
 /* keyboard events */
-window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
-  if (hasKeyPressedListener) {
-    Debugger.verbose(
-      "key-pressed",
-      keyEv.key,
-      updateState.value,
-      createState.value
-    );
-    emit(
-      "key-pressed",
-      keyEv,
-      updateState.value,
-      createState.value,
-      userState.value
-    );
-  } else {
-    switch (keyEv.key) {
-      case "Escape":
-        updateState.value.resetUpdate();
+if (typeof window !== "undefined") {
+  window.addEventListener("keyup", (keyEv: KeyboardEvent) => {
+    if (hasKeyPressedListener) {
+      Debugger.verbose(
+        "key-pressed",
+        keyEv.key,
+        updateState.value,
+        createState.value
+      );
+      emit(
+        "key-pressed",
+        keyEv,
+        updateState.value,
+        createState.value,
+        userState.value
+      );
+    } else {
+      switch (keyEv.key) {
+        case "Escape":
+          updateState.value.resetUpdate();
+      }
     }
-  }
-});
+  });
+}
 
 /* mouse event handlers */
 const onMouseDownHandlers = new Map<

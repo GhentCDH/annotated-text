@@ -1,16 +1,12 @@
-
 # Vue component annotated text
 
 This repository contains a reusable Vue 3 component to visualize text annotations on web pages. It can be used for linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following screenshots:
 
-![Annotations](docs/annotations.png)
+![Annotations](_media/annotations.png)
 
-![Edit](docs/editAnnotation.png)
-
+![Edit](_media/editAnnotation.png)
 
 ## Usage
-
-
 
 ## Documentation
 
@@ -36,7 +32,6 @@ An example usage:
  
 
 ## Creating a new release
-
 
 To create a new release: first change the version in `package.json`, the file should contain for example `"version": "0.0.16",`. Next, tag the local git repository, push the tag to github and release a branch on GitHub manually.
 
@@ -91,12 +86,10 @@ const annotations = [ {id: "1",
 </style>
 ````
 
-
 ## Todo
 
 - [ ] update tests
 - [ ] update vitepress documentation
-
 
 ## Credits
 
