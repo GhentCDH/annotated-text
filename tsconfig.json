@@ -18,8 +18,7 @@
       ]
     },
     "moduleResolution": "node",
-    "target": "ESNext",
-    "skipLibCheck": true, // Because of some type errors with etali
+    "target": "ESNext"
   },
   "include": [
     "src/**/*.ts",

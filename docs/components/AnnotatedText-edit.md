@@ -27,14 +27,17 @@ const textLines = lines.slice(0,4)
 </script>
 
 ## Line read only component
+<ClientOnly>
 <AnnotatedText
     key="text"
     :component-id="'1'" 
     :annotations="annot"
     :lines="textLines"
 />
+</ClientOnly>
 
 ## Line edit only component
+
 <AnnotatedText
 key="text"
 :component-id="'2'"

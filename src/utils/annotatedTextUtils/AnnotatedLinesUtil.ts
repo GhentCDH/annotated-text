@@ -1,6 +1,6 @@
 import { computed } from "vue";
-import { FlattenRanges } from "etali";
 import { cloneDeep } from "lodash-es";
+import { FlattenRanges } from "./FlattenRanges";
 import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
   AnnotatedWord,

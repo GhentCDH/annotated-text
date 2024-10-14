@@ -27,6 +27,7 @@ const textLines = lines
 </script>
 
 ## Line read only component
+
 <AnnotatedText
     key="text"
     :component-id="'1'" 
