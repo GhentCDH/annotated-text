@@ -163,7 +163,6 @@ const onKeyPressed = function (
         type="radio"
         value="text"
       /><label for="span">Span</label>
-      <input id="gutter" v-model="props.target" type="radio" value="gutter" />
       <label for="gutter">Gutter</label>
       | <input v-model="props.debug" type="checkbox" />
       <label>Debug messages</label>
