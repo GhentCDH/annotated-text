@@ -27,7 +27,7 @@
     "docs:build:typedoc": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-vue --entryPoints \"./src/state/**.ts\" --entryPoints \"./src/utils/**.ts\" --entryPoints \"./src/types/**.ts\" --entryPoints \"./src/types/**/**.ts\"  --out docs/typedoc",
     "docs:build:vitepress": "vitepress build docs",
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/vitepress.mjs",
-    "docs:build": "docs:build:vitepress",
+    "docs:build": "run-p docs:build:menu docs:build:vitepress",
     "docs:preview": "vitepress preview docs",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
