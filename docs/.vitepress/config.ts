@@ -16,6 +16,10 @@ export default defineConfig({
       {
         text: "components",
         items: [
+          {
+            text: "AnnotatedText-edit",
+            link: "/components/AnnotatedText-edit.md",
+          },
           { text: "AnnotatedText", link: "/components/AnnotatedText.md" },
         ],
       },
