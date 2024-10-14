@@ -14,4 +14,4 @@
 
 #### Defined in
 
-[src/types/AnnotatedText.d.ts:46](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/types/AnnotatedText.d.ts#L46)
+[src/types/AnnotatedText.d.ts:46](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/types/AnnotatedText.d.ts#L46)

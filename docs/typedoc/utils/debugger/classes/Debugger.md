@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[src/utils/debugger.ts:31](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/utils/debugger.ts#L31)
+[src/utils/debugger.ts:31](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/utils/debugger.ts#L31)
 
 ***
 
@@ -40,7 +40,7 @@
 
 #### Defined in
 
-[src/utils/debugger.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/utils/debugger.ts#L15)
+[src/utils/debugger.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/utils/debugger.ts#L15)
 
 ***
 
@@ -58,7 +58,7 @@
 
 #### Defined in
 
-[src/utils/debugger.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/utils/debugger.ts#L19)
+[src/utils/debugger.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/utils/debugger.ts#L19)
 
 ***
 
@@ -76,4 +76,4 @@
 
 #### Defined in
 
-[src/utils/debugger.ts:37](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/utils/debugger.ts#L37)
+[src/utils/debugger.ts:37](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/utils/debugger.ts#L37)

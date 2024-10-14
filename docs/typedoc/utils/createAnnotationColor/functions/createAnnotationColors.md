@@ -26,4 +26,4 @@ A record where the key is a string representing the annotation name and the valu
 
 ## Defined in
 
-[src/utils/createAnnotationColor.ts:78](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/utils/createAnnotationColor.ts#L78)
+[src/utils/createAnnotationColor.ts:78](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/utils/createAnnotationColor.ts#L78)

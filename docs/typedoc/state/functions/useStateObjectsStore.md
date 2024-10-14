@@ -1124,4 +1124,4 @@ be called by the parent component.
 
 ## Defined in
 
-[src/state/stores/AnnotationComponentStores.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/c145d8d49d379abea35b82d25bbbe7087d48b21f/src/state/stores/AnnotationComponentStores.ts#L7)
+[src/state/stores/AnnotationComponentStores.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/bbd5dc841c855a8533eb4b63ec1d23dd4ebf9e1d/src/state/stores/AnnotationComponentStores.ts#L7)
