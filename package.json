@@ -24,7 +24,11 @@
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
-    "docs:build": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-vue --entryPoints \"./src/state/**.ts\" --entryPoints \"./src/utils/**.ts\" --entryPoints \"./src/types/**.ts\" --entryPoints \"./src/types/**/**.ts\"  --out docs/typedoc",
+    "docs:build:typedoc": "typedoc --plugin typedoc-plugin-markdown --plugin typedoc-plugin-vue --entryPoints \"./src/state/**.ts\" --entryPoints \"./src/utils/**.ts\" --entryPoints \"./src/types/**.ts\" --entryPoints \"./src/types/**/**.ts\"  --out docs/typedoc",
+    "docs:build:vitepress": "vitepress build docs",
+    "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/vitepress.mjs",
+    "docs:build": "run-p docs:build:typedoc docs:build:menu docs:build:vitepress",
+    "docs:preview": "vitepress preview docs",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
     "build": "vite build",
@@ -32,7 +36,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prepare": "husky install",
-    "lint:staged": "lint-staged --allow-empty"
+    "lint:staged": "lint-staged --allow-empty",
+    "docs:dev": "vitepress dev docs"
   },
   "dependencies": {
     "etali": "^1.2.5",
@@ -70,6 +75,7 @@
     "sass": "^1.78.0",
     "stylelint": "^15.11.0",
     "stylelint-config-standard-scss": "^9.0.0",
+    "ts-node": "^10.9.2",
     "typedoc": "^0.26.7",
     "typedoc-plugin-markdown": "^4.2.7",
     "typedoc-plugin-vue": "^1.2.0",

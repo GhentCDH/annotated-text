@@ -100,7 +100,6 @@ let props = withDefaults(defineProps<AnnotatedTextProps>(), {
 });
 
 props = reactive(props);
-
 // define emits
 const emit = defineEmits<AnnotatedTextEmits>();
 
