@@ -59,10 +59,10 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
   componentClasses = computed((): any[] => {
     const classes = [
       "annotated-text",
-      "theme-" + this.props.theme,
-      "annotated-text--render-" + this.props.render,
+      `theme-${this.props.theme}`,
+      `annotated-text--render-${this.props.render}`,
       this.editAnnotationState.action
-        ? "action--active action--" + this.editAnnotationState.action
+        ? `action--active action--${this.editAnnotationState.action}`
         : null,
       this.props.showLabels ? "annotated-text--show-labels" : null,
     ];

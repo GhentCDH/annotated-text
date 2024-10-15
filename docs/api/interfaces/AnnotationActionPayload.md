@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotatedText.d.ts#L15)
+[types/AnnotatedText.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/3f721d7c93e00e2c4020399ef45a44adc742a78b/src/types/AnnotatedText.d.ts#L15)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotatedText.d.ts#L16)
+[types/AnnotatedText.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/3f721d7c93e00e2c4020399ef45a44adc742a78b/src/types/AnnotatedText.d.ts#L16)
 
 ***
 
@@ -34,4 +34,4 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotatedText.d.ts#L17)
+[types/AnnotatedText.d.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/3f721d7c93e00e2c4020399ef45a44adc742a78b/src/types/AnnotatedText.d.ts#L17)

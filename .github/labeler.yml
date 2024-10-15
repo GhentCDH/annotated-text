@@ -10,6 +10,7 @@ release:
 refactoring:
  - head-branch: ['^refactoring', 'refactoring']
 
+
 build:
  - head-branch: ['^chore', 'chore']
  - changed-files:
@@ -20,7 +21,9 @@ ci:
  - changed-files:
     - any-glob-to-any-file:
       - .github/*
+      
 documentation:
+  - head-branch: ['^docs', 'docs']
   - changed-files:
       - any-glob-to-any-file:
           - docs/*

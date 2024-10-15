@@ -29,7 +29,7 @@
   >
     <!-- handle: move annotation start -->
     <span
-      v-if="start === annotation?.start"
+      v-if="canHandle && start === annotation?.start"
       class="handle handle--start"
       @mousedown.stop="
         props.mouseDownHandler($event, {
@@ -66,7 +66,7 @@
     <label v-if="annotations[0].label">{{ annotations[0].label }}</label>
     <!-- handle: move annotation end -->
     <span
-      v-if="end === annotations[0]?.end"
+      v-if="canHandle && end === annotations[0]?.end"
       class="handle handle--end"
       @mousedown.stop="
         props.mouseDownHandler($event, {
@@ -101,6 +101,8 @@ const props = withDefaults(
 );
 
 const annotation = computed(() => props.annotations[0]);
+
+const canHandle = computed(() => props.allowEdit || props.allowCreate);
 </script>
 
 <style scoped lang="scss"></style>
