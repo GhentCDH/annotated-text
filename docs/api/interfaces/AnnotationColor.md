@@ -16,7 +16,7 @@ The color of the background.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/types/AnnotationColor.d.ts#L14)
+[types/AnnotationColor.d.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotationColor.d.ts#L14)
 
 ***
 
@@ -28,7 +28,7 @@ The color of the background when active.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/types/AnnotationColor.d.ts#L16)
+[types/AnnotationColor.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotationColor.d.ts#L16)
 
 ***
 
@@ -40,7 +40,7 @@ The color of the border.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/types/AnnotationColor.d.ts#L13)
+[types/AnnotationColor.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotationColor.d.ts#L13)
 
 ***
 
@@ -52,4 +52,4 @@ The color of the border when active.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/types/AnnotationColor.d.ts#L15)
+[types/AnnotationColor.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/types/AnnotationColor.d.ts#L15)

@@ -10,7 +10,7 @@
 
 #### Defined in
 
-[state/types/UserActionState.enum.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/types/UserActionState.enum.ts#L5)
+[state/types/UserActionState.enum.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/state/types/UserActionState.enum.ts#L5)
 
 ***
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[state/types/UserActionState.enum.ts:2](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/types/UserActionState.enum.ts#L2)
+[state/types/UserActionState.enum.ts:2](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/state/types/UserActionState.enum.ts#L2)
 
 ***
 
@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[state/types/UserActionState.enum.ts:3](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/types/UserActionState.enum.ts#L3)
+[state/types/UserActionState.enum.ts:3](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/state/types/UserActionState.enum.ts#L3)
 
 ***
 
@@ -40,7 +40,7 @@
 
 #### Defined in
 
-[state/types/UserActionState.enum.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/types/UserActionState.enum.ts#L7)
+[state/types/UserActionState.enum.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/state/types/UserActionState.enum.ts#L7)
 
 ***
 
@@ -50,7 +50,7 @@
 
 #### Defined in
 
-[state/types/UserActionState.enum.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/types/UserActionState.enum.ts#L6)
+[state/types/UserActionState.enum.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/state/types/UserActionState.enum.ts#L6)
 
 ***
 
@@ -60,4 +60,4 @@
 
 #### Defined in
 
-[state/types/UserActionState.enum.ts:4](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/types/UserActionState.enum.ts#L4)
+[state/types/UserActionState.enum.ts:4](https://github.com/GhentCDH/vue_component_annotated_text/blob/10ad4fcd6799d0511ba161419ebd7d538a09bcc4/src/state/types/UserActionState.enum.ts#L4)

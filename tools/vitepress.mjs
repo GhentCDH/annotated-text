@@ -1,12 +1,18 @@
 import fs from "fs";
 import path from "path";
-import { BaseConfig } from "../docs/.vitepress/BaseConfig.js";
 
 const docsPath = "docs/";
 
+function writeSidebarFile(dir, sidebar) {
+  fs.writeFileSync(
+    path.join(dir, "typedoc_sidebar.json"),
+
+    JSON.stringify(sidebar)
+  );
+}
+
 function generateDirectoryObject(dir) {
   const dirPath = path.join(docsPath, dir);
-  const dirName = path.basename(dirPath);
   const items = [];
 
   const files = fs.readdirSync(dirPath);
@@ -16,41 +22,34 @@ function generateDirectoryObject(dir) {
 
     if (stat.isFile()) {
       const fileName = file.substring(0, file.lastIndexOf("."));
+
+      if (!file.endsWith(".md")) return;
       if (file === "index.md") return;
       items.push({
         text: fileName,
-        link: `/${dirName}/${fileName}`,
+        link: `/${dir}/${fileName}`,
       });
+    }
+
+    if (stat.isDirectory()) {
+      items.push(generateDirectoryObject(path.join(dir, file)));
     }
   });
 
+  const dirName = path.basename(dirPath);
   return {
     text: dirName,
     items: items,
+    link: items.length === 0 ? `/${dir}` : "",
   };
 }
-const sidebar = [
-  generateDirectoryObject("components"),
-  // generateDirectoryObject("typedoc"),
-];
-console.log(sidebar);
-fs.writeFileSync(
-  path.join(docsPath, ".vitepress/config.ts"),
 
-  `
-  // Auto generated file from BaseConfig.ts add your adjustments there
-  
-  import { defineConfig } from 'vitepress'
+function createMenu(dir) {
+  const dirPath = path.join(docsPath, dir);
 
-// https://vitepress.dev/reference/site-config
-export default defineConfig( 
-${JSON.stringify({
-  ...BaseConfig,
-  themeConfig: {
-    ...BaseConfig.themeConfig,
-    sidebar: [BaseConfig.themeConfig?.sidebar ?? [], sidebar].flat(),
-  },
-})}
-)
-`
-);
+  const items = generateDirectoryObject(dir);
+
+  writeSidebarFile(dirPath, items.items);
+}
+
+createMenu("components");

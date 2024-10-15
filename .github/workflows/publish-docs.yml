@@ -43,6 +43,7 @@ jobs:
       - uses: ./.github/actions/use-cache
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - run: pnpm run build
       - run: pnpm run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
