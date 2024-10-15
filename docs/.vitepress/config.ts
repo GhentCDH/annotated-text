@@ -4,9 +4,12 @@ import { defineConfig } from "vitepress";
 import componentsSideBar from "../components/typedoc_sidebar.json";
 import apiSideBar from "../api/typedoc-sidebar.json";
 
+const { BASE: base = "/" } = process.env;
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Vue annotated text component",
+  base,
   description:
     "This repository contains a reusable Vue 3 component to visualize text annotations on web pages. It can be used for linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following screenshots:",
   themeConfig: {
