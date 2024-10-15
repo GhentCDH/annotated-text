@@ -25,7 +25,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:24](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L24)
+[state/states/UpdateAnnotationState.ts:24](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L24)
 
 ## Properties
 
@@ -35,7 +35,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L13)
+[state/states/UpdateAnnotationState.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L13)
 
 ***
 
@@ -45,7 +45,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L15)
+[state/states/UpdateAnnotationState.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L15)
 
 ***
 
@@ -55,7 +55,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L14)
+[state/states/UpdateAnnotationState.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L14)
 
 ***
 
@@ -65,7 +65,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L19)
+[state/states/UpdateAnnotationState.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L19)
 
 ***
 
@@ -75,7 +75,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L20)
+[state/states/UpdateAnnotationState.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L20)
 
 ***
 
@@ -85,7 +85,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L16)
+[state/states/UpdateAnnotationState.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L16)
 
 ***
 
@@ -95,7 +95,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L17)
+[state/states/UpdateAnnotationState.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L17)
 
 ***
 
@@ -105,7 +105,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:18](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L18)
+[state/states/UpdateAnnotationState.ts:18](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L18)
 
 ***
 
@@ -115,7 +115,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L21)
+[state/states/UpdateAnnotationState.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L21)
 
 ***
 
@@ -125,7 +125,7 @@ deep copy of the being edited annotation
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:22](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L22)
+[state/states/UpdateAnnotationState.ts:22](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L22)
 
 ## Methods
 
@@ -141,7 +141,7 @@ Should get called in order to confirm the initial state of the update.
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:79](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L79)
+[state/states/UpdateAnnotationState.ts:79](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L79)
 
 ***
 
@@ -160,7 +160,7 @@ to wrap.
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:91](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L91)
+[state/states/UpdateAnnotationState.ts:91](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L91)
 
 ***
 
@@ -176,7 +176,7 @@ has to get called after an edit has been confirmed or denied.
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:32](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L32)
+[state/states/UpdateAnnotationState.ts:32](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L32)
 
 ***
 
@@ -209,4 +209,4 @@ be called by the parent component.
 
 #### Defined in
 
-[state/states/UpdateAnnotationState.ts:57](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/UpdateAnnotationState.ts#L57)
+[state/states/UpdateAnnotationState.ts:57](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/UpdateAnnotationState.ts#L57)

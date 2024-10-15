@@ -20,7 +20,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L17)
+[state/states/CreateAnnotationState.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L17)
 
 ## Properties
 
@@ -30,7 +30,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L13)
+[state/states/CreateAnnotationState.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L13)
 
 ***
 
@@ -40,7 +40,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L14)
+[state/states/CreateAnnotationState.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L14)
 
 ***
 
@@ -50,7 +50,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L11)
+[state/states/CreateAnnotationState.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L11)
 
 ***
 
@@ -60,7 +60,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:12](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L12)
+[state/states/CreateAnnotationState.ts:12](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L12)
 
 ***
 
@@ -70,7 +70,7 @@ Class holding the state of an annotation being created
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L15)
+[state/states/CreateAnnotationState.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L15)
 
 ## Methods
 
@@ -93,7 +93,7 @@ as default init value.
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:50](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L50)
+[state/states/CreateAnnotationState.ts:50](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L50)
 
 ***
 
@@ -109,7 +109,7 @@ resets to the initial state
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:25](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L25)
+[state/states/CreateAnnotationState.ts:25](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L25)
 
 ***
 
@@ -132,7 +132,7 @@ be able to be before this starting position.
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:39](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L39)
+[state/states/CreateAnnotationState.ts:39](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L39)
 
 ***
 
@@ -150,4 +150,4 @@ component will do this automatically.
 
 #### Defined in
 
-[state/states/CreateAnnotationState.ts:61](https://github.com/GhentCDH/vue_component_annotated_text/blob/c33c7c7591dc479e1a58c4c5d7095b115973c87c/src/state/states/CreateAnnotationState.ts#L61)
+[state/states/CreateAnnotationState.ts:61](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198f4099aac4fb2c5d74cb86dba0c84c00d1230/src/state/states/CreateAnnotationState.ts#L61)
