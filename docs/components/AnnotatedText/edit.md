@@ -12,7 +12,7 @@ import {
 } from "../../../src";
 import { lines } from '../../demo/line';
 import { annotations } from '../../demo/annotations';
-
+import { cloneDeep } from 'lodash-es'
 
 const  onMouseDown=(e, payload) =>{
  console.log('mouse Down', e, payload);
@@ -23,7 +23,15 @@ function onMouseMove(e, payload) {
 }
 
 const annot = annotations.slice(0,4);
-const textLines = lines.slice(0,4)
+const annotations_1 = cloneDeep(annot);
+const annotations_2 = cloneDeep(annot);
+const annotations_3 = cloneDeep(annot);
+
+
+const textLines = lines.slice(0,4);
+const textLines_1 = cloneDeep(textLines);
+const textLines_2 = cloneDeep(textLines);
+const textLines_3 = cloneDeep(textLines);
 </script>
 
 ## Line read only component
@@ -31,8 +39,8 @@ const textLines = lines.slice(0,4)
 <AnnotatedText
     key="text"
     :component-id="'1'" 
-    :annotations="annot"
-    :lines="textLines"
+    :annotations="annotations_1"
+    :lines="textLines_1"
 />
 </ClientOnly>
 
@@ -41,8 +49,8 @@ const textLines = lines.slice(0,4)
 <AnnotatedText
 key="text"
 :component-id="'2'"
-:annotations="annot"
-:lines="textLines"
+:annotations="annotations_2"
+:lines="textLines_2"
 :allow-edit="true"
 />
 
@@ -50,15 +58,11 @@ key="text"
 <AnnotatedText
 key="text"
 :component-id="'3'"
-:annotations="annot"
-:lines="textLines"
+:annotations="annotations_3"
+:lines="textLines_3"
 :allow-edit="true"
 :allow-create="true"
 />
 
 <style module>
-.button {
-  color: red;
-  font-weight: bold;
-}
 </style>

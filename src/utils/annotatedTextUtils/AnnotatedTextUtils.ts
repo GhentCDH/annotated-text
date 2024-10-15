@@ -45,6 +45,8 @@ export type CssClassUtilProps = {
    * List of annotation ID's that are hovered. Those will get the "hovered" style class.
    */
   hoveredAnnotations?: string[];
+  allowEdit: false;
+  allowCreate: false;
 };
 
 export class CssClassesUtil<P extends CssClassUtilProps> {
@@ -59,12 +61,13 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
   componentClasses = computed((): any[] => {
     const classes = [
       "annotated-text",
-      "theme-" + this.props.theme,
-      "annotated-text--render-" + this.props.render,
+      `theme-${this.props.theme}`,
+      `annotated-text--render-${this.props.render}`,
       this.editAnnotationState.action
-        ? "action--active action--" + this.editAnnotationState.action
+        ? `action--active action--${this.editAnnotationState.action}`
         : null,
       this.props.showLabels ? "annotated-text--show-labels" : null,
+      this.props.allowEdit ? "annotated-text--edit" : null,
     ];
     return classes.filter((item) => item);
   });
