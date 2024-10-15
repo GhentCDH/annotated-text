@@ -7,7 +7,13 @@ on:
 
 env:
   DEPENDENCIES_CACHE: cache-node-modules
-
+  
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  
 jobs:
   install-deps:
     runs-on: ubuntu-latest
