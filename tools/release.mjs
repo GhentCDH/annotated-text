@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
 import { execSync } from "node:child_process";
-export var process;
 
 // Read input parameters
 const args = process.argv.slice(2);
@@ -12,11 +11,7 @@ if (!allowedReleaseTypes.includes(releaseType))
     "Invalid release type. Allowed values are major, minor, patch"
   );
 
-execSync(
-  `npm version ${releaseType}  --allow-same-version
-`,
-  { stdio: "inherit" }
-);
+execSync(`npm version ${releaseType}`, { stdio: "inherit" });
 
 // Read version from package.json
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
