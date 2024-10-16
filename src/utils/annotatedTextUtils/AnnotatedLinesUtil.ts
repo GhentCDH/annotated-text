@@ -3,19 +3,19 @@ import { cloneDeep } from "lodash-es";
 import { FlattenRanges } from "./FlattenRanges";
 import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
+  AnnotatedLine,
   AnnotatedWord,
+  Line,
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
-  AnnotatedLine,
-  Line,
   WordPart,
 } from "../../types/AnnotatedText";
 import type { Annotation, AnnotationTarget } from "../../types/Annotation";
 import { Debugger } from "../debugger";
 import type { AnnotatedTextProps } from "@/types/props";
 
-// Some consts needed for the utils class
+// Some consts needed for the AnnotatedTextUtils class
 const annotationEndOffsetFix = 1;
 
 // caculate interval of an intersection

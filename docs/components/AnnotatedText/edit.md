@@ -12,7 +12,7 @@ import {
 } from "../../../src";
 import { lines } from '../../demo/line';
 import { annotations } from '../../demo/annotations';
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from 'lodash-es';
 
 const  onMouseDown=(e, payload) =>{
  console.log('mouse Down', e, payload);
