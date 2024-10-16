@@ -37,10 +37,10 @@
     "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prepare": "husky install",
     "lint:staged": "lint-staged --allow-empty",
-    "docs:dev": "vitepress dev docs"
+    "docs:dev": "vitepress dev docs",
+    "release": "ts-node --project tools/tsconfig.tools.json tools/release.mjs"
   },
   "dependencies": {
-    "etali": "^1.2.5",
     "lodash-es": "^4.17.21",
     "memoizee": "^0.4.17"
   },

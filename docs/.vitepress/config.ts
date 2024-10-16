@@ -27,6 +27,10 @@ export default defineConfig({
         text: "api",
         items: apiSideBar1,
       },
+      {
+        text: "release",
+        link: "release",
+      },
     ],
     socialLinks: [
       {
