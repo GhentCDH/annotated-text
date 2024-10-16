@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { execSync } from "node:child_process";
 
 // Read input parameters
+// eslint-disable-next-line no-undef
 const args = process.argv.slice(2);
 const allowedReleaseTypes = ["major", "minor", "patch"];
 const releaseType = args[0]?.substring(2);
