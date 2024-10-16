@@ -11,7 +11,11 @@ if (!allowedReleaseTypes.includes(releaseType))
     "Invalid release type. Allowed values are major, minor, patch"
   );
 
-execSync(`npm version ${releaseType}`, { stdio: "inherit" });
+execSync(
+  `npm version ${releaseType}  --allow-same-version
+`,
+  { stdio: "inherit" }
+);
 
 // Read version from package.json
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
