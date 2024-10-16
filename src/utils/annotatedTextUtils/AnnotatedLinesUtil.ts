@@ -15,7 +15,7 @@ import type { Annotation, AnnotationTarget } from "../../types/Annotation";
 import { Debugger } from "../debugger";
 import type { AnnotatedTextProps } from "@/types/props";
 
-// Some consts needed for the AnnotatedTextUtils class
+// Some consts needed for the utils class
 const annotationEndOffsetFix = 1;
 
 // caculate interval of an intersection

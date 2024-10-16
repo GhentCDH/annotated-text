@@ -1,4 +1,4 @@
-import * as memoize from "memoizee";
+import memoize from "memoizee";
 import { pick } from "lodash-es";
 import type { AnnotationStyle } from "../../../types/AnnotatedText";
 import type { Annotation } from "../../../types/Annotation";
