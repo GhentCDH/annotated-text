@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import { execSync } from "node:child_process";
+export var process;
 
 // Read input parameters
 const args = process.argv.slice(2);
