@@ -11,6 +11,7 @@ Live demo of the dev app
 
 <script setup>
 import Demo from "../../../dev-app/DemoComponent.vue";
+import '../../../src/style/style.scss';
 
 </script>
 

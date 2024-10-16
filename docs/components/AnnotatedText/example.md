@@ -36,8 +36,4 @@ key="text"
 />
 
 <style module>
-.button {
-  color: red;
-  font-weight: bold;
-}
 </style>

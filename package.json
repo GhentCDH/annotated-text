@@ -41,7 +41,8 @@
   },
   "dependencies": {
     "etali": "^1.2.5",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "memoizee": "^0.4.17"
   },
   "devDependencies": {
     "@babel/types": "^7.25.6",

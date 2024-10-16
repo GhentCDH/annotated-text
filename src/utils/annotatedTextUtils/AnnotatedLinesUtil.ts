@@ -3,12 +3,12 @@ import { cloneDeep } from "lodash-es";
 import { FlattenRanges } from "./FlattenRanges";
 import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
+  AnnotatedLine,
   AnnotatedWord,
+  Line,
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
-  AnnotatedLine,
-  Line,
   WordPart,
 } from "../../types/AnnotatedText";
 import type { Annotation, AnnotationTarget } from "../../types/Annotation";

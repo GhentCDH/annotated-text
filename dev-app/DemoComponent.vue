@@ -41,7 +41,7 @@ const props = reactive({
   showLabels: false,
   showSelects: false,
   debug: false,
-  verbose: true,
+  verbose: false,
   target: "text" as AnnotationTarget,
   allowEdit: true,
   allowCreate: true,
