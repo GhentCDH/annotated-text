@@ -18,9 +18,11 @@ const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const version = packageJson.version;
 
 execSync(`git checkout -b release/${version}`, { stdio: "inherit" });
+// execSync(`git tag "v${version}`);
 execSync(`git add . && git commit -m 'release: ${version} && git push`, {
   stdio: "inherit",
 });
+// execSync(`git push origin "v${version}`);
 
 // Output the parameters and version
 console.log(`Release type: ${releaseType}`);
