@@ -2,7 +2,7 @@
 
 import { defineConfig } from "vitepress";
 import componentsSideBar from "../components/typedoc_sidebar.json";
-import apiSideBar from "../api/typedoc-sidebar.json";
+import apiSideBar1 from "../api/typedoc_sidebar.json";
 
 const { BASE: base = "/" } = process.env;
 
@@ -16,7 +16,7 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Components", link: "/components" },
-      { text: "Api", link: "/api" },
+      { text: "Api", link: "/api/globals" },
     ],
     sidebar: [
       {
@@ -25,7 +25,7 @@ export default defineConfig({
       },
       {
         text: "api",
-        items: apiSideBar,
+        items: apiSideBar1,
       },
     ],
     socialLinks: [
