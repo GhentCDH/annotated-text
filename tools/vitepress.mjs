@@ -11,7 +11,7 @@ function writeSidebarFile(dir, sidebar) {
   );
 }
 
-function generateDirectoryObject(dir) {
+function generateDirectoryObject(dir, exclude) {
   const dirPath = path.join(docsPath, dir);
   const items = [];
 
@@ -19,6 +19,10 @@ function generateDirectoryObject(dir) {
   files.forEach((file) => {
     const filePath = path.join(dirPath, file);
     const stat = fs.statSync(filePath);
+
+    console.log(exclude, file, exclude.indexOf(file));
+
+    if (exclude.indexOf(file) !== -1) return;
 
     if (stat.isFile()) {
       const fileName = file.substring(0, file.lastIndexOf("."));
@@ -32,24 +36,26 @@ function generateDirectoryObject(dir) {
     }
 
     if (stat.isDirectory()) {
-      items.push(generateDirectoryObject(path.join(dir, file)));
+      items.push(generateDirectoryObject(path.join(dir, file), exclude));
     }
   });
 
   const dirName = path.basename(dirPath);
   return {
-    text: dirName,
+    text: dirName.charAt(0).toUpperCase() + dirName.slice(1),
     items: items,
+    collapsed: true,
     link: items.length === 0 ? `/${dir}` : "",
   };
 }
 
-function createMenu(dir) {
+function createMenu(dir, exclude = []) {
   const dirPath = path.join(docsPath, dir);
 
-  const items = generateDirectoryObject(dir);
+  const items = generateDirectoryObject(dir, exclude);
 
   writeSidebarFile(dirPath, items.items);
 }
 
 createMenu("components");
+createMenu("api", ["_media", "globals.md"]);
