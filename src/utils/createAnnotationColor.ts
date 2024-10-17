@@ -68,7 +68,6 @@ export const createAnnotationColor = (
     backgroundActive: `color-mix(in srgb, white, ${color} ${
       opacity.backgroundActive * 100
     })`,
-
     gutterColor: `rgba(${rgbColor},${opacity.gutter})`,
   };
 };
