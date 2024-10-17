@@ -14,6 +14,7 @@
         >
           <span
             :class="annotationGutterClasses(annotation, line)"
+            :style="annotationGutterStyle(annotation)"
             @click="
               onMouseDown($event, { startOffset: 0, annotation: annotation })
             "
@@ -131,6 +132,7 @@ const hasKeyPressedListener = hasCustomEventListener("keyPressed");
 
 // Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, updateState.value);
+const annotationGutterStyle = cssClassUtil.annotationGutterStyle;
 const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
 const annotationStyle = cssClassUtil.annotationStyle;

@@ -11,6 +11,10 @@ function writeSidebarFile(dir, sidebar) {
   );
 }
 
+function formatText(text) {
+  return text.charAt(0).toUpperCase() + text.replaceAll("-", " ").slice(1);
+}
+
 function generateDirectoryObject(dir, exclude) {
   const dirPath = path.join(docsPath, dir);
   const items = [];
@@ -28,9 +32,9 @@ function generateDirectoryObject(dir, exclude) {
       const fileName = file.substring(0, file.lastIndexOf("."));
 
       if (!file.endsWith(".md")) return;
-      if (file === "index.md") return;
+      if (file === "demo.md") return;
       items.push({
-        text: fileName,
+        text: formatText(fileName),
         link: `/${dir}/${fileName}`,
       });
     }
@@ -42,7 +46,7 @@ function generateDirectoryObject(dir, exclude) {
 
   const dirName = path.basename(dirPath);
   return {
-    text: dirName.charAt(0).toUpperCase() + dirName.slice(1),
+    text: formatText(dirName),
     items: items,
     collapsed: true,
     link: items.length === 0 ? `/${dir}` : "",

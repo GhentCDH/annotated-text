@@ -18,6 +18,7 @@ type Config = {
     border?: number;
     backgroundActive?: number;
     borderActive?: number;
+    gutter?: number;
   };
 };
 
@@ -27,6 +28,7 @@ const defaultConfig: Config = {
     border: 0.3,
     backgroundActive: 0.3,
     borderActive: 0.9,
+    gutter: 0.8,
   },
 };
 
@@ -66,6 +68,8 @@ export const createAnnotationColor = (
     backgroundActive: `color-mix(in srgb, white, ${color} ${
       opacity.backgroundActive * 100
     })`,
+
+    gutterColor: `rgba(${rgbColor},${opacity.gutter})`,
   };
 };
 

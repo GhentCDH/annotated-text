@@ -14,4 +14,5 @@ export interface AnnotationColor {
   background: string;
   borderActive: string;
   backgroundActive: string;
+  gutterColor: string;
 }

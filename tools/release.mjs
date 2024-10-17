@@ -23,7 +23,7 @@ execSync(`git checkout -b release/${version}`, { stdio: "inherit" });
 execSync(`git add . && git commit -m 'release: ${version} && git push`, {
   stdio: "inherit",
 });
-// execSync(`git push origin "v${version}`);
+execSync(`git push origin "v${version}`);
 
 // Output the parameters and version
 console.log(`Release type: ${releaseType}`);

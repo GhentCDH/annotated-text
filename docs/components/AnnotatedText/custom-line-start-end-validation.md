@@ -1,0 +1,71 @@
+---
+AnnotatedText
+---
+
+# AnnotatedText
+
+<script setup>
+import {
+  AnnotatedText,
+  Debugger,
+  UserActionState,
+} from "../../../src";
+import { lines } from '../../demo/line';
+import { annotations } from '../../demo/annotations'; 
+
+
+const  onMouseDown=(e, payload) =>{
+ console.log('mouse Down', e, payload);
+}
+
+function onMouseMove(e, payload) {
+ console.log('mouse Move', e, payload);
+}
+
+const annot = annotations;
+const textLines = lines.slice(0,4);
+
+const fixOffset = function (updateState) {
+    switch(updateState.action) {
+        case 'moveEnd':
+          updateState.newEnd = updateState.newEnd+2;
+          break;
+        case 'moveStart':
+          updateState.newStart = updateState.newStart-2;
+          break;
+    }
+
+
+};
+
+const onAnnotationUpdateBegin = function (updateState) {
+  fixOffset(updateState);
+
+  updateState.confirmStartUpdating();
+};
+const onAnnotationUpdating = function (updateState) {
+  fixOffset(updateState);
+
+  updateState.confirmUpdate();
+};
+</script>
+
+## A custom line start and end validation
+
+This example shows how to implement a custom line start and end validation. The `onAnnotationUpdateBegin` and `onAnnotationUpdating` functions are used to adjust the start and end of the annotation. In this example, the start is decreased by 2 and the end is increased by 2.
+
+<AnnotatedText
+key="text"
+:component-id="'1'"
+:annotations="annot"
+:lines="textLines"
+:can-edit="true"
+:allow-edit="true"
+:listen-to-on-update-start="true"
+:listen-to-on-updating="true"
+@annotation-update-begin="onAnnotationUpdateBegin"
+@annotation-updating="onAnnotationUpdating"
+/>
+
+<style module>
+</style>

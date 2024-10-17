@@ -1,12 +1,10 @@
 import memoize from "memoizee";
 import type { AnnotationColor } from "../../../types/AnnotationColor";
-import { createAnnotationColor } from "../../createAnnotationColor";
 
 const annotationStyle_ = (color: AnnotationColor): string[] => {
   if (!color) return [];
 
-  const { border, background, borderActive, backgroundActive } =
-    typeof color === "string" ? createAnnotationColor(color) : color;
+  const { border, background, borderActive, backgroundActive } = color;
 
   return [
     `--annotation-bg-color: ${background}`,
