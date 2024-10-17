@@ -18,6 +18,7 @@ type Config = {
     border?: number;
     backgroundActive?: number;
     borderActive?: number;
+    gutter?: number;
   };
 };
 
