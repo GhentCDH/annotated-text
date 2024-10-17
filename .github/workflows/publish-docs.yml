@@ -2,9 +2,10 @@ name: Publish Docs
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
-
+  push:
+    branches: [main]
+    types: [ documentation ]
+    
 env:
   DEPENDENCIES_CACHE: cache-node-modules
   
