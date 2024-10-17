@@ -32,7 +32,7 @@ function generateDirectoryObject(dir, exclude) {
       const fileName = file.substring(0, file.lastIndexOf("."));
 
       if (!file.endsWith(".md")) return;
-      if (file === "demo.md") return;
+      if (file === "index.md") return;
       items.push({
         text: formatText(fileName),
         link: `/${dir}/${fileName}`,
