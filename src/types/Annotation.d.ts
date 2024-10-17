@@ -9,7 +9,7 @@ export interface Annotation {
   target: AnnotationTarget;
   weight?: number;
 
-  color?: string | AnnotationColor;
+  color?: AnnotationColor;
 }
 
 export type AnnotationTarget = "gutter" | "text";

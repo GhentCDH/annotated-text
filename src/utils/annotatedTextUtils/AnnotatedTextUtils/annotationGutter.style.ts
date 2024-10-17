@@ -8,6 +8,10 @@ const annotationGutterStyle_ = (background?: string): string[] => {
 };
 export const annotationGutterStyleMemoizee = memoize(annotationGutterStyle_);
 
-export const annotationGutterStyle = (color: AnnotationColor): string[] => {
-  return annotationGutterStyleMemoizee(color?.gutterColor);
+export const annotationGutterStyle = (
+  color: AnnotationColor | string
+): string[] => {
+  return annotationGutterStyleMemoizee(
+    typeof color === "string" ? color : color?.gutterColor
+  );
 };

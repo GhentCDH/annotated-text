@@ -70,7 +70,7 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
   }
 
   annotationGutterStyle(annotation: Annotation): string[] {
-    return annotationGutterStyle(annotation);
+    return annotationGutterStyle(annotation.color);
   }
 
   annotationClasses = (

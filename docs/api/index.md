@@ -33,12 +33,7 @@ An example usage:
 
 ## Creating a new release
 
-To create a new release: first change the version in `package.json`, the file should contain for example `"version": "0.0.16",`. Next, tag the local git repository, push the tag to github and release a branch on GitHub manually.
-
-````
-git tag "v0.0.16"
-git push origin "v0.0.16"
-````
+Documentation on releases can be found on: [Release documentation](https://ghentcdh.github.io/vue_component_annotated_text/release/)
 
 ## Minimal working example
 
