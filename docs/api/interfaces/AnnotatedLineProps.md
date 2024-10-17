@@ -10,7 +10,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L17)
+[types/props/AnnotatedLineProps.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L17)
 
 ***
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L16)
+[types/props/AnnotatedLineProps.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L16)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L9)
+[types/props/AnnotatedLineProps.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L9)
 
 ***
 
@@ -62,7 +62,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L15)
+[types/props/AnnotatedLineProps.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L15)
 
 ***
 
@@ -72,7 +72,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L6)
+[types/props/AnnotatedLineProps.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L6)
 
 ***
 
@@ -92,7 +92,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L19)
+[types/props/AnnotatedLineProps.ts:19](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L19)
 
 ***
 
@@ -112,7 +112,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L20)
+[types/props/AnnotatedLineProps.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L20)
 
 ***
 
@@ -122,7 +122,7 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L8)
+[types/props/AnnotatedLineProps.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L8)
 
 ***
 
@@ -140,4 +140,4 @@
 
 #### Defined in
 
-[types/props/AnnotatedLineProps.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/AnnotatedLineProps.ts#L7)
+[types/props/AnnotatedLineProps.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/AnnotatedLineProps.ts#L7)

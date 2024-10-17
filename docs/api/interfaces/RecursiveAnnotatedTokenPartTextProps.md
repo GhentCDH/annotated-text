@@ -10,7 +10,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:18](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L18)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:18](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L18)
 
 ***
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L17)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L17)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L9)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L9)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L8)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L8)
 
 ***
 
@@ -72,7 +72,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L15)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L15)
 
 ***
 
@@ -82,7 +82,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L7)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:7](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L7)
 
 ***
 
@@ -102,7 +102,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L20)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L20)
 
 ***
 
@@ -122,7 +122,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L21)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L21)
 
 ***
 
@@ -132,7 +132,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L6)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:6](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L6)
 
 ***
 
@@ -142,7 +142,7 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L5)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:5](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L5)
 
 ***
 
@@ -152,4 +152,4 @@
 
 #### Defined in
 
-[types/props/RecursiveAnnotatedTokenPartTextProps.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L16)
+[types/props/RecursiveAnnotatedTokenPartTextProps.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/props/RecursiveAnnotatedTokenPartTextProps.ts#L16)

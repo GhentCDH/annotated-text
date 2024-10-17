@@ -16,7 +16,7 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[state/states/UserState.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/state/states/UserState.ts#L11)
+[state/states/UserState.ts:11](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/state/states/UserState.ts#L11)
 
 ## Properties
 
@@ -26,7 +26,7 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[state/states/UserState.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/state/states/UserState.ts#L9)
+[state/states/UserState.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/state/states/UserState.ts#L9)
 
 ***
 
@@ -36,7 +36,7 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[state/states/UserState.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/state/states/UserState.ts#L8)
+[state/states/UserState.ts:8](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/state/states/UserState.ts#L8)
 
 ## Methods
 
@@ -50,4 +50,4 @@ Holds the current user state in the component.
 
 #### Defined in
 
-[state/states/UserState.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/dbc83b2337042fef45821e5ad97cfdb941fff476/src/state/states/UserState.ts#L16)
+[state/states/UserState.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/state/states/UserState.ts#L16)
