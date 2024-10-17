@@ -19,18 +19,6 @@ $annotated-text-annotation-colors: (
   row-gap: 0;
   column-gap: 5px;
 
-  .gutter {
-    user-select: none;
-    border-right: 1px solid rgba(gray, 0.08);
-  }
-
-  .gutter.text {
-    padding-right: 0.5em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
   .content .token,
   .content .token-segment {
     display: inline-block;
@@ -54,10 +42,6 @@ $annotated-text-annotation-colors: (
     label {
       cursor: pointer;
     }
-  }
-
-  .annotation--gutter-spacer {
-    cursor: default;
   }
 
   .annotation--resize-handle {
@@ -99,38 +83,6 @@ $annotated-text-annotation-colors: (
     .annotation {
       label {
         display: none;
-      }
-    }
-
-    .gutter-annotations {
-      direction: rtl;
-      margin: 0;
-      display: block;
-      padding: 0;
-
-      .annotation {
-        display: inline-block;
-        margin-left: 0.4em;
-        min-width: 3px;
-        min-height: 100%;
-      }
-
-      @each $name, $color in $annotated-text-annotation-colors {
-        .annotation--color-#{$name} {
-          background: rgba($color, 0.3);
-          border-color: $color;
-          label {
-            background: white;
-            font-size: 60%;
-            font-family: Arial, Helvetica, sans-serif;
-            border-radius: 3px;
-            padding: 1px 2px;
-            position: relative;
-            z-index: 2000;
-            margin: 0 2px;
-            user-select: none;
-          }
-        }
       }
     }
 
@@ -290,31 +242,6 @@ $annotated-text-annotation-colors: (
       }
     }
 
-    //gutter annotation styling
-
-    .gutter-annotations {
-      direction: rtl;
-      margin: 0;
-      display: block;
-      padding: 0;
-
-      .annotation {
-        display: inline-block;
-        margin-left: 0.4em;
-        min-width: 3px;
-        min-height: 100%;
-      }
-
-      @each $name, $color in $annotated-text-annotation-colors {
-        .annotation--color-#{$name} {
-          background: $color;
-          label {
-            padding: 2px 2px 0;
-          }
-        }
-      }
-    }
-
     .annotation {
       label {
         display: none;
@@ -404,14 +331,6 @@ $annotated-text-annotation-colors: (
     &.annotated-text--show-labels {
       .content .annotation.annotation--start label {
         display: block;
-      }
-
-      //do not show labels in gutter annotations, change display property to show labels
-      .gutter-annotations .annotation.annotation--end label {
-        padding-top: 2px;
-        padding-left: 2px;
-        display: none;
-        user-select: none;
       }
 
       @for $weight from 0 to 9 {

@@ -6,7 +6,7 @@ import type {
 } from "../../../types/AnnotatedText";
 import type { Annotation } from "../../../types/Annotation";
 
-const AnnotationFields = ["weight", "class"] as const;
+const AnnotationFields = ["weight", "class", "color"] as const;
 type AnnotationField = (typeof AnnotationFields)[number];
 type PartialAnnotation = Pick<Annotation, AnnotationField>;
 
@@ -45,6 +45,7 @@ const annotationGutterClasses_ = (
     annotation?.class ?? null,
     startsOnLine ? style.startClass : null,
     endsOnLine ? style.endClass : null,
+    annotation?.color ? "annotation--color-custom" : null,
   ].filter((item) => !!item);
 };
 

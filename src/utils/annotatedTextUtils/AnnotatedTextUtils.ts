@@ -3,6 +3,7 @@ import { annotationStyle } from "./AnnotatedTextUtils/annotation.style";
 import { componentClasses } from "./AnnotatedTextUtils/component.classes";
 import { wordPartClasses } from "./AnnotatedTextUtils/wordPart.classes";
 import { annotationGutterClasses } from "./AnnotatedTextUtils/annotationGutter.classes";
+import { annotationGutterStyle } from "./AnnotatedTextUtils/annotationGutter.style";
 import { annotationClasses } from "./AnnotatedTextUtils/annotation.classes";
 import type { UpdateAnnotationState } from "../../state";
 import type { Annotation } from "../../types/Annotation";
@@ -66,6 +67,10 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
 
   annotationStyle(annotation: Annotation): string[] {
     return annotationStyle(annotation.color);
+  }
+
+  annotationGutterStyle(annotation: Annotation): string[] {
+    return annotationGutterStyle(annotation.color);
   }
 
   annotationClasses = (

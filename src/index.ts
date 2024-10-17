@@ -18,7 +18,6 @@ export type {
   RecursiveAnnotatedTokenPartTextProps,
   AnnotatedLineProps,
 } from "./types/props";
-export type { AnnotationColor } from "./types/AnnotationColor";
 
 export {
   UpdateAnnotationState,
@@ -30,4 +29,6 @@ export {
 import "./style/style.scss";
 
 export * from "./utils/debugger";
+
+export type { AnnotationColor } from "./types/AnnotationColor";
 export * from "./utils/createAnnotationColor";

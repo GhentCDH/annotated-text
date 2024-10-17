@@ -34,3 +34,4 @@ coverage
 !/docs/.vitepress/config.ts
 !/docs/.vitepress/BaseConfig.js
 /test_coverage
+/docs/internal
