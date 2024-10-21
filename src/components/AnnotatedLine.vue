@@ -3,7 +3,10 @@
     <span
       v-for="wordPart in word.parts"
       :key="wordPart.text"
-      :class="wordPartClasses(wordPart)"
+      :class="[
+        'token-segment',
+        `token-segment--m${wordPart.maxAnnotationWeight}`,
+      ]"
       @mousemove="mouseMove($event, wordPart)"
     >
       <!-- render flat ? -->
@@ -57,6 +60,7 @@
         <span
           v-else
           :class="handleTextClass()"
+          @dblclick="doubleClick($event, wordPart, null)"
           @mousedown="mouseDown($event, wordPart)"
         >
           {{ wordPart.text }}
@@ -71,11 +75,11 @@ import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import type { Annotation, AnnotationInternal } from "../types/Annotation";
 import type { ActionType, WordPart } from "../types/AnnotatedText";
+import { annotationStyle } from "../utils/annotatedTextUtils/AnnotatedTextUtils/annotation.style";
 import type { AnnotatedLineEmits, AnnotatedLineProps } from "@/types/props";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
-  wordPartClasses: () => [],
   annotationClasses: () => [],
   annotationStyle: () => [],
 });
@@ -106,7 +110,7 @@ const mouseDown = (
   action?: ActionType
 ) => {
   onClick(event, {
-    startOffset: wordPart.start,
+    startOffset: wordPart?.start,
     annotation,
     action,
   });
@@ -119,7 +123,7 @@ const doubleClick = (
   action?: ActionType
 ) => {
   onDoubleClick(event, {
-    startOffset: wordPart.start,
+    startOffset: wordPart?.start,
     annotation,
     action,
   });
@@ -131,7 +135,7 @@ const mouseMove = (
   annotation: Annotation
 ) => {
   onMove(event, {
-    startOffset: wordPart.start,
+    startOffset: wordPart?.start,
     annotation,
   });
 };

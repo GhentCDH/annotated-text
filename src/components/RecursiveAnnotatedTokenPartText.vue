@@ -70,6 +70,7 @@
 import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import type { ActionType } from "../types/AnnotatedText";
+import { annotationStyle } from "../utils/annotatedTextUtils/AnnotatedTextUtils/annotation.style";
 import type {
   MouseEventPayload,
   RecursiveAnnotatedTokenPartTextProps,

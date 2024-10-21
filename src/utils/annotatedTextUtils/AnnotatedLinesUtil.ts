@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep, maxBy } from "lodash-es";
 import { FlattenRanges } from "./FlattenRanges";
 import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
@@ -229,6 +229,7 @@ export default class AnnotatedLinesUtil {
 
     const wordParts: WordPart[] = rangesInScope.map(
       (range: RangeWithAnnotations) => {
+        const annotations = range[2];
         return {
           start: range[0],
           end: range[1] - 1,
@@ -239,7 +240,8 @@ export default class AnnotatedLinesUtil {
                   range[1] - word.start
                 )
               : "",
-          annotations: range[2],
+          annotations,
+          maxAnnotationWeight: maxBy(annotations, (a) => a.weight)?.weight ?? 0,
         } satisfies WordPart;
       }
     );

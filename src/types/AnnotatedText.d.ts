@@ -51,6 +51,7 @@ interface WordPart {
   end: number;
   text: string;
   annotations: AnnotationInternal[];
+  maxAnnotationWeight: number;
 }
 
 interface Word {

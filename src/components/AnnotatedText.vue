@@ -22,7 +22,6 @@
           :allow-create="allowCreate"
           :annotation-classes="annotationClasses"
           :annotation-style="annotationStyle"
-          :word-part-classes="wordPartClasses"
           :render="render"
           @annotation-click="onClick"
           @annotation-double-click="onDoubleClick"
@@ -126,7 +125,6 @@ const cssClassUtil = new CssClassesUtil(props, updateState.value);
 const annotationClasses = cssClassUtil.annotationClasses;
 const annotationStyle = cssClassUtil.annotationStyle;
 const componentClasses = cssClassUtil.componentClasses;
-const wordPartClasses = cssClassUtil.wordPartClasses;
 
 /* user state event */
 watch(userStateLabel, (nv, ov) => {
@@ -184,6 +182,7 @@ function onDoubleClick(e: MouseEvent, payload?: MouseEventPayload) {
     userState.value.state,
     payload
   );
+  e.preventDefault();
   emit("annotation-double-click", payload);
 }
 

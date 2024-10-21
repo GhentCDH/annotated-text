@@ -1,15 +1,9 @@
 import { computed } from "vue";
-import { annotationStyle } from "./AnnotatedTextUtils/annotation.style";
 import { componentClasses } from "./AnnotatedTextUtils/component.classes";
-import { wordPartClasses } from "./AnnotatedTextUtils/wordPart.classes";
 import { annotationClasses } from "./AnnotatedTextUtils/annotation.classes";
 import type { UpdateAnnotationState } from "../../state";
 import type { AnnotationInternal } from "../../types/Annotation";
-import type {
-  AnnotationStyle,
-  RenderType,
-  WordPart,
-} from "../../types/AnnotatedText";
+import type { AnnotationStyle, RenderType } from "../../types/AnnotatedText";
 
 export type CssClassUtilProps = {
   theme?: string;
@@ -49,10 +43,6 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
     const { action } = this.editAnnotationState;
     return componentClasses(theme, render, showLabels, action);
   });
-
-  wordPartClasses = (wordPart: WordPart): string[] => {
-    return wordPartClasses(wordPart.annotations);
-  };
 
   annotationStyle(annotation: AnnotationInternal): string[] {
     return annotationStyle(annotation.color);
