@@ -2,8 +2,40 @@
 
 # Type Alias: Annotation
 
-> **Annotation**: `Omit`\<`AnnotationInternal`, `"startsOnLine"` \| `"endsOnline"` \| `"class"`\>
+> **Annotation**: `object`
+
+Represents an annotation with various properties.
+
+## Type declaration
+
+### color?
+
+> `optional` **color**: [`AnnotationColor`](../interfaces/AnnotationColor.md)
+
+### end
+
+> **end**: `number`
+
+### id
+
+> **id**: `string`
+
+### label?
+
+> `optional` **label**: `string`
+
+### start
+
+> **start**: `number`
+
+### target
+
+> **target**: [`AnnotationTarget`](AnnotationTarget.md)
+
+### weight?
+
+> `optional` **weight**: `number`
 
 ## Defined in
 
-[types/Annotation.d.ts:21](https://github.com/GhentCDH/vue_component_annotated_text/blob/59a5cff35d6965ffe0b2afa94949652f590d3fbd/src/types/Annotation.d.ts#L21)
+[types/Annotation.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198e0a4e27a9a158506503be2182fda5bbd00a1/src/types/Annotation.d.ts#L13)
