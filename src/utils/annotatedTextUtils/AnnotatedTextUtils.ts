@@ -44,10 +44,6 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
     return componentClasses(theme, render, showLabels, action);
   });
 
-  annotationStyle(annotation: AnnotationInternal): string[] {
-    return annotationStyle(annotation.color);
-  }
-
   annotationClasses = (
     annotation: AnnotationInternal,
     start: number,

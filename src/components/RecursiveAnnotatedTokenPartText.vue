@@ -12,7 +12,7 @@
     :class="
       props.annotationClassHandler(annotation, start, end, props.allowCreate)
     "
-    :style="props.annotationStyleHandler?.(annotation)"
+    :style="annotationStyle(annotation.color)"
     @mousedown.stop="click($event, wordPartStart, 'move')"
     @mousemove.stop="mouseMove($event, wordPartStart)"
     @dblclick="dblClick($event, wordPartStart)"
@@ -21,7 +21,7 @@
     <span
       v-if="canHandle && start === annotation?.start"
       class="handle handle--start"
-      @mousedown.stop="onClick($event, wordPartStart, 'moveStart')"
+      @mousedown.stop="click($event, wordPartStart, 'moveStart')"
     ></span>
     <!-- recurse annotation list -->
     <RecursiveAnnotatedTokenPartText
@@ -32,7 +32,6 @@
       :allow-edit="allowEdit"
       :word-part-start="wordPartStart"
       :annotation-class-handler="props.annotationClassHandler"
-      :annotation-style-handler="props.annotationStyleHandler"
       @annotation-click="onClick"
       @annotation-double-click="onDoubleClick"
       @annotation-mouse-move="onMove"
@@ -53,7 +52,7 @@
     <span
       v-if="canHandle && end === annotations[0]?.end"
       class="handle handle--end"
-      @mousedown.stop="click($event, wordPartStart, action)"
+      @mousedown.stop="click($event, wordPartStart, 'moveEnd')"
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>
@@ -82,7 +81,6 @@ const props = withDefaults(
   {
     annotations: () => [],
     annotationClassHandler: () => [],
-    annotationStyleHandler: () => [],
   }
 );
 

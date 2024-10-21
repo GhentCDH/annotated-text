@@ -25,7 +25,7 @@
               props.allowCreate
             )
           "
-          :style="props.annotationStyle(annotation)"
+          :style="props.annotationStyle(annotation.color)"
           @mousedown="mouseDown($event, wordPart, annotation, 'move')"
           @mousemove="mouseMove($event, wordPart, annotation)"
           @dblclick="doubleClick($event, wordPart, annotation)"
@@ -45,7 +45,6 @@
           :word-part-start="wordPart.start"
           :annotations="sortAnnotations(wordPart.annotations)"
           :annotation-class-handler="annotationClasses"
-          :annotation-style-handler="annotationStyle"
           @annotation-click="onClick"
           @annotation-double-click="onDoubleClick"
           @annotation-mouse-move="onMove"
@@ -81,7 +80,6 @@ import type { AnnotatedLineEmits, AnnotatedLineProps } from "@/types/props";
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
   annotationClasses: () => [],
-  annotationStyle: () => [],
 });
 
 const renderNested = computed(() => props.render === "nested");

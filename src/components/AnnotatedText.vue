@@ -21,7 +21,6 @@
           :allow-edit="allowEdit"
           :allow-create="allowCreate"
           :annotation-classes="annotationClasses"
-          :annotation-style="annotationStyle"
           :render="render"
           @annotation-click="onClick"
           @annotation-double-click="onDoubleClick"
@@ -123,7 +122,6 @@ const hasDoubleClickHandler = hasCustomEventListener("annotationDoubleClick");
 // Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, updateState.value);
 const annotationClasses = cssClassUtil.annotationClasses;
-const annotationStyle = cssClassUtil.annotationStyle;
 const componentClasses = cssClassUtil.componentClasses;
 
 /* user state event */
