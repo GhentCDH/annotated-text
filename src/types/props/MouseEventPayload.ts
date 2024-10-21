@@ -6,3 +6,10 @@ export interface MouseEventPayload {
   annotation?: Annotation;
   action?: ActionType;
 }
+
+export type MouseEventFn = (e: MouseEvent, payload?: MouseEventPayload) => void;
+
+export type MouseEventEmitPayload = [
+  mouseEvent: MouseEvent,
+  payload: MouseEventPayload
+];

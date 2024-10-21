@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
-import path, { resolve } from "path";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({

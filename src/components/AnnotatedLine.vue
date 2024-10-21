@@ -4,11 +4,7 @@
       v-for="wordPart in word.parts"
       :key="wordPart.text"
       :class="wordPartClasses(wordPart)"
-      @mousemove="
-        props.mouseMoveHandler($event, {
-          startOffset: wordPart.start,
-        })
-      "
+      @mousemove="mouseMove($event, wordPart)"
     >
       <!-- render flat ? -->
       <template v-if="renderFlat">
@@ -27,19 +23,9 @@
             )
           "
           :style="props.annotationStyle(annotation)"
-          @mousedown="
-            props.mouseDownHandler($event, {
-              startOffset: wordPart.start,
-              annotation: annotation,
-              action: 'move',
-            })
-          "
-          @mousemove="
-            props.mouseMoveHandler($event, {
-              startOffset: wordPart.start,
-              annotation: annotation,
-            })
-          "
+          @mousedown="mouseDown($event, wordPart, annotation, 'move')"
+          @mousemove="mouseMove($event, wordPart, annotation)"
+          @dblclick="doubleClick($event, wordPart, annotation)"
         >
           <label v-if="annotation.label">{{ annotation.label }}</label>
         </span>
@@ -57,8 +43,9 @@
           :annotations="sortAnnotations(wordPart.annotations)"
           :annotation-class-handler="annotationClasses"
           :annotation-style-handler="annotationStyle"
-          :mouse-down-handler="props.mouseDownHandler"
-          :mouse-move-handler="props.mouseMoveHandler"
+          @annotation-click="onClick"
+          @annotation-double-click="onDoubleClick"
+          @annotation-mouse-move="onMove"
         >
           <template #annotation-before="slotProps">
             <slot name="annotation-before" :annotation="slotProps.annotation" />
@@ -70,9 +57,7 @@
         <span
           v-else
           :class="handleTextClass()"
-          @mousedown="
-            props.mouseDownHandler($event, { startOffset: wordPart.start })
-          "
+          @mousedown="mouseDown($event, wordPart)"
         >
           {{ wordPart.text }}
         </span>
@@ -84,8 +69,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
-import type { AnnotationInternal } from "../types/Annotation";
-import type { AnnotatedLineProps } from "@/types/props";
+import type { Annotation, AnnotationInternal } from "../types/Annotation";
+import type { ActionType, WordPart } from "../types/AnnotatedText";
+import type { AnnotatedLineEmits, AnnotatedLineProps } from "@/types/props";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
@@ -110,6 +96,55 @@ function sortAnnotations(
 ): AnnotationInternal[] {
   return annotations.sort((a, b) => b.weight - a.weight);
 }
+
+const emit = defineEmits<AnnotatedLineEmits>();
+
+const mouseDown = (
+  event: MouseEvent,
+  wordPart: WordPart,
+  annotation?: Annotation,
+  action?: ActionType
+) => {
+  onClick(event, {
+    startOffset: wordPart.start,
+    annotation,
+    action,
+  });
+};
+
+const doubleClick = (
+  event: MouseEvent,
+  wordPart: WordPart,
+  annotation?: Annotation,
+  action?: ActionType
+) => {
+  onDoubleClick(event, {
+    startOffset: wordPart.start,
+    annotation,
+    action,
+  });
+};
+
+const mouseMove = (
+  event: MouseEvent,
+  wordPart: WordPart,
+  annotation: Annotation
+) => {
+  onMove(event, {
+    startOffset: wordPart.start,
+    annotation,
+  });
+};
+
+const onClick = (event: MouseEvent, payload: any) => {
+  emit("annotation-click", event, payload);
+};
+const onDoubleClick = (event: MouseEvent, payload: any) => {
+  emit("annotation-double-click", event, payload);
+};
+const onMove = (event: MouseEvent, payload: any) => {
+  emit("annotation-mouse-move", event, payload);
+};
 </script>
 
 <style scoped lang="scss"></style>

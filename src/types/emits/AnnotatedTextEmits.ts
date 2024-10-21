@@ -14,6 +14,18 @@ export type AnnotatedTextEmits = {
    */
   "annotation-select": [annotation: Annotation, mouseEvent: MouseEvent];
   /**
+   * Emitted when an annotation (both span and gutter) is clicked.
+   * @arg annotation Annotation object that was clicked
+   * @arg mouseEvent normal dom mouse event
+   */
+  "annotation-click": [annotation: Annotation, mouseEvent: MouseEvent];
+  /**
+   * Emitted when an annotation (both span and gutter) is double clicked.
+   * @arg annotation Annotation object that was clicked
+   * @arg mouseEvent normal dom mouse event
+   */
+  "annotation-double-click": [annotation: Annotation, mouseEvent: MouseEvent];
+  /**
    * Emitted when the user starts updating an annotation, so when the mouse is
    * clicked down and the listenToOnUpdateStart prop is true.
    *

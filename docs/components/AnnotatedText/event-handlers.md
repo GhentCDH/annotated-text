@@ -12,6 +12,7 @@ import {
   Debugger,
   UserActionState,
 } from "../../../src";
+import {ref } from "vue"
 import { lines } from "../../demo/line";
 import { annotations } from "../../demo/annotations"; 
 
@@ -26,57 +27,56 @@ function onMouseMove(e, payload) {
 
 const annot = annotations;
 const textLines = lines.slice(0,4);
-const clickedAnnotation = null;
-const dblClickedAnnotation = null;
+const clickedAnnotation = ref(null);
+const dblClickedAnnotation = ref(null);
 
-const onAnnotationClick = function (updateState) {
- clickedAnnotation = annotation;
+const onAnnotationClick = function (payload) {
+ clickedAnnotation.value=JSON.stringify( payload?.annotation, null, 4);
+
 };
-const onAnnotationDblClick = function (annotation) {
- dblClickedAnnotation = annotation;
+const onAnnotationDblClick = function (payload) {
+ dblClickedAnnotation.value=JSON.stringify( payload?.annotation, null, 4);
 };
 </script>
 
 ### Click event
+
+```vue
+
+<AnnotatedText
+  :annotations="annot"
+  :lines="textLines"
+  @annotation-click="onAnnotationClick"
+/>
+```
 
 <AnnotatedText
 :annotations="annot"
 :lines="textLines"
 @annotation-click="onAnnotationClick"
 />
-:::info
-Clicked annotation: {{onAnnotationClick}}
-:::
+
+Clicked annotation:
+<pre>{{clickedAnnotation}}</pre>
+
+### Double click event
 
 ```vue
 
 <AnnotatedText
   :annotations="annot"
   :lines="textLines"
-  @annotation-click="onAnnotationDblClick"
+  @annotation-double-click="onAnnotationDblClick"
 />
 ```
-
-### Double click event
 
 <AnnotatedText
 :annotations="annot"
 :lines="textLines"
-@annotation-dblClick="onAnnotationDblClick"
+@annotation-double-click="onAnnotationDblClick"
 />
-
-:::info
-Clicked annotation: {{dblClickedAnnotation}}
-:::
-
-```vue
-
-<AnnotatedText
-  :annotations="annot"
-  :lines="textLines"
-  @annotation-dblClick="onAnnotationDblClick"
-/>
-```
+Double Clicked annotation:
+<pre>{{dblClickedAnnotation}}</pre>
 
 ## Other events
 
