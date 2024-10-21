@@ -57,14 +57,13 @@
             <slot name="annotation-after" :annotation="slotProps.annotation" />
           </template>
         </RecursiveAnnotatedTokenPartText>
-        <span
+        <TextOnly
           v-else
-          :class="handleTextClass()"
-          @dblclick="doubleClick($event, wordPart, null)"
-          @mousedown="mouseDown($event, wordPart)"
-        >
-          {{ wordPart.text }}
-        </span>
+          :word-part="wordPart"
+          :allow-create="allowCreate"
+          @annotation-click="onClick"
+          @annotation-double-click="onDoubleClick"
+        />
       </template>
     </span>
   </span>
@@ -73,6 +72,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
+import TextOnly from "./text/TextOnly.vue";
 import type { Annotation, AnnotationInternal } from "../types/Annotation";
 import type { ActionType, WordPart } from "../types/AnnotatedText";
 import { annotationStyle } from "../utils/annotatedTextUtils/AnnotatedTextUtils/annotation.style";
@@ -86,14 +86,6 @@ const props = withDefaults(defineProps<AnnotatedLineProps>(), {
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
-
-function handleTextClass(): string[] {
-  const res = ["text"];
-  if (props.allowCreate) {
-    res.push("create-anno-text");
-  }
-  return res;
-}
 
 function sortAnnotations(
   annotations: AnnotationInternal[]

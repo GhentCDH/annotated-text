@@ -12,18 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  ActionType,
-  Annotation,
-} from "@ghentcdh/vue-component-annotated-text";
 import type { WordPart } from "../../types/AnnotatedText";
-import { Word } from "../../types/AnnotatedText";
-import type {
-  AnnotatedGutterEmits,
-  AnnotatedGutterProps,
-  AnnotatedLineEmits,
-  MouseEventEmitPayload,
-} from "@/types/props";
+import type { MouseEventEmitPayload } from "@/types/props";
 
 type TextOnlyProps = {
   wordPart: WordPart;
@@ -42,13 +32,13 @@ export type TextOnlyEmits = {
 const emit = defineEmits<TextOnlyEmits>();
 
 const mouseDown = (event: MouseEvent, wordPart: WordPart) => {
-  onClick(event, {
+  emit("annotation-click", event, {
     startOffset: wordPart?.start,
   });
 };
 
 const doubleClick = (event: MouseEvent, wordPart: WordPart) => {
-  onDoubleClick(event, {
+  emit("annotation-double-click", event, {
     startOffset: wordPart?.start,
   });
 };
