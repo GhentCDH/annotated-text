@@ -10,7 +10,8 @@
       <annotated-gutters
         :gutter="line.gutter"
         :annotation-style="style"
-        :mouse-down-handler="onMouseDown"
+        @annotation-click="onClick"
+        @annotation-double-click="onDoubleClick"
       />
 
       <!-- line -->
@@ -23,8 +24,9 @@
           :annotation-style="annotationStyle"
           :word-part-classes="wordPartClasses"
           :render="render"
-          :mouse-down-handler="onMouseDown"
-          :mouse-move-handler="onMouseMove"
+          @annotation-click="onClick"
+          @annotation-double-click="onDoubleClick"
+          @annotation-mouse-move="onMouseMove"
         >
           <template #annotation-before="slotProps">
             <slot
@@ -42,12 +44,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect } from "vue";
+import { computed, reactive, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import AnnotatedLine from "./AnnotatedLine.vue";
 import AnnotatedGutters from "./gutter/AnnotatedGutters.vue";
 import { createPositionFromPoint } from "../utils/dom";
-import { CssClassesUtil } from "../utils/annotatedTextUtils/AnnotatedTextUtils";
+import { CssClassesUtil } from "../utils/annotatedTextUtils";
 import { useStateObjectsStore, UserActionState } from "../state";
 import AnnotatedLinesUtil from "../utils/annotatedTextUtils/AnnotatedLinesUtil";
 import type { AnnotationInternal } from "../types/Annotation";
@@ -103,8 +105,6 @@ const linesUtil = new AnnotatedLinesUtil(
   createState.value
 );
 
-const ss = ref(props.style);
-
 watchEffect(() => {
   Debugger.setDebug(props.debug);
   Debugger.setVerbose(props.verbose);
@@ -118,6 +118,8 @@ const hasCreateBeginListener = hasCustomEventListener("annotationCreateBegin");
 const hasCreatingListener = hasCustomEventListener("annotationCreating");
 const hasCreateEndListener = hasCustomEventListener("annotationCreateEnd");
 const hasKeyPressedListener = hasCustomEventListener("keyPressed");
+const hasClickHandler = hasCustomEventListener("annotationClick");
+const hasDoubleClickHandler = hasCustomEventListener("annotationDoubleClick");
 
 // Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, updateState.value);
@@ -169,15 +171,20 @@ const onMouseMoveHandlers = new Map<
   (e: MouseEvent, payload?: MouseEventPayload) => void
 >();
 
-function onMouseDown(e: MouseEvent, payload?: MouseEventPayload) {
+function onClick(e: MouseEvent, payload?: MouseEventPayload) {
+  Debugger.verbose("@onClick", "userState:", userState.value.state, payload);
+  onMouseDownHandlers.get(userState.value.state)?.(e, payload);
+  emit("annotation-click", payload);
+}
+
+function onDoubleClick(e: MouseEvent, payload?: MouseEventPayload) {
   Debugger.verbose(
-    "@onMouseDown",
+    "@onDoubleClick",
     "userState:",
     userState.value.state,
     payload
   );
-  onMouseDownHandlers.get(userState.value.state) &&
-    onMouseDownHandlers.get(userState.value.state)(e, payload);
+  emit("annotation-double-click", payload);
 }
 
 function onMouseMove(e: MouseEvent, payload?: MouseEventPayload) {

@@ -1,4 +1,4 @@
-import type { MouseEventPayload } from "./MouseEventPayload";
+import type { MouseEventEmitPayload } from "./MouseEventPayload";
 import type { AnnotatedLine, RenderType, WordPart } from "../AnnotatedText";
 import type { AnnotationInternal } from "../Annotation";
 
@@ -13,9 +13,13 @@ export interface AnnotatedLineProps {
     allowCreate: boolean
   ) => string[];
   annotationStyle?: (annotation: AnnotationInternal) => string[];
+
   allowEdit?: boolean;
   allowCreate?: boolean;
-
-  mouseDownHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
-  mouseMoveHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
 }
+
+export type AnnotatedLineEmits = {
+  "annotation-click": MouseEventEmitPayload;
+  "annotation-double-click": MouseEventEmitPayload;
+  "annotation-mouse-move": MouseEventEmitPayload;
+};

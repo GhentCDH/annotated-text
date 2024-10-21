@@ -1,4 +1,4 @@
-import type { MouseEventPayload } from "./MouseEventPayload";
+import type { MouseEventEmitPayload } from "./MouseEventPayload";
 import type { AnnotationInternal } from "../Annotation";
 
 export interface RecursiveAnnotatedTokenPartTextProps {
@@ -16,7 +16,10 @@ export interface RecursiveAnnotatedTokenPartTextProps {
   wordPartStart: number; // for correct handle position
   allowEdit?: boolean;
   allowCreate?: boolean;
-
-  mouseDownHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
-  mouseMoveHandler: (e: MouseEvent, payload?: MouseEventPayload) => void;
 }
+
+export type RecursiveAnnotatedTokenPartTextEmits = {
+  "annotation-click": MouseEventEmitPayload;
+  "annotation-double-click": MouseEventEmitPayload;
+  "annotation-mouse-move": MouseEventEmitPayload;
+};

@@ -13,31 +13,15 @@
       props.annotationClassHandler(annotation, start, end, props.allowCreate)
     "
     :style="props.annotationStyleHandler?.(annotation)"
-    @mousedown.stop="
-      props.mouseDownHandler($event, {
-        startOffset: wordPartStart,
-        annotation: annotation,
-        action: 'move',
-      })
-    "
-    @mousemove.stop="
-      props.mouseMoveHandler($event, {
-        startOffset: wordPartStart,
-        annotation: annotation,
-      })
-    "
+    @mousedown.stop="click($event, wordPartStart, 'move')"
+    @mousemove.stop="mouseMove($event, wordPartStart)"
+    @dblclick="dblClick($event, wordPartStart)"
   >
     <!-- handle: move annotation start -->
     <span
       v-if="canHandle && start === annotation?.start"
       class="handle handle--start"
-      @mousedown.stop="
-        props.mouseDownHandler($event, {
-          startOffset: wordPartStart,
-          annotation: annotation,
-          action: 'moveStart',
-        })
-      "
+      @mousedown.stop="onClick($event, wordPartStart, 'moveStart')"
     ></span>
     <!-- recurse annotation list -->
     <RecursiveAnnotatedTokenPartText
@@ -49,8 +33,9 @@
       :word-part-start="wordPartStart"
       :annotation-class-handler="props.annotationClassHandler"
       :annotation-style-handler="props.annotationStyleHandler"
-      :mouse-down-handler="props.mouseDownHandler"
-      :mouse-move-handler="props.mouseMoveHandler"
+      @annotation-click="onClick"
+      @annotation-double-click="onDoubleClick"
+      @annotation-mouse-move="onMove"
     >
       <template #annotation-before="slotProps">
         <slot
@@ -68,13 +53,7 @@
     <span
       v-if="canHandle && end === annotations[0]?.end"
       class="handle handle--end"
-      @mousedown.stop="
-        props.mouseDownHandler($event, {
-          startOffset: wordPartStart,
-          annotation: annotation,
-          action: 'moveEnd',
-        })
-      "
+      @mousedown.stop="click($event, wordPartStart, action)"
     ></span>
   </span>
   <span v-else class="text">{{ text }}</span>
@@ -89,7 +68,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { RecursiveAnnotatedTokenPartTextProps } from "@/types/props";
+import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
+import type { ActionType } from "../types/AnnotatedText";
+import type {
+  MouseEventPayload,
+  RecursiveAnnotatedTokenPartTextProps,
+  RecursiveAnnotatedTokenPartTextEmits,
+} from "@/types/props";
 
 const props = withDefaults(
   defineProps<RecursiveAnnotatedTokenPartTextProps>(),
@@ -103,6 +88,49 @@ const props = withDefaults(
 const annotation = computed(() => props.annotations[0]);
 
 const canHandle = computed(() => props.allowEdit || props.allowCreate);
+
+const emit = defineEmits<RecursiveAnnotatedTokenPartTextEmits>();
+
+const click = (
+  event: MouseEventPayload,
+  wordPartStart: number,
+  action?: ActionType
+) => {
+  onClick(event, {
+    startOffset: wordPartStart,
+    annotation: annotation.value,
+    action,
+  });
+};
+
+const dblClick = (
+  event: MouseEventPayload,
+  wordPartStart: number,
+  action?: ActionType
+) => {
+  onDoubleClick(event, {
+    startOffset: wordPartStart,
+    annotation: annotation.value,
+    action,
+  });
+};
+
+const mouseMove = (event: MouseEventPayload, wordPartStart: number) => {
+  onMove(event, {
+    startOffset: wordPartStart,
+    annotation: annotation.value,
+  });
+};
+
+const onClick = (event: MouseEvent, payload: any) => {
+  emit("annotation-click", event, payload);
+};
+const onDoubleClick = (event: MouseEvent, payload: any) => {
+  emit("annotation-double-click", event, payload);
+};
+const onMove = (event: MouseEvent, payload: any) => {
+  emit("annotation-mouse-move", event, payload);
+};
 </script>
 
 <style scoped lang="scss"></style>
