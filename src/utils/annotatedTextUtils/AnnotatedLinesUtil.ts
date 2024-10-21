@@ -11,7 +11,10 @@ import type {
   Word,
   WordPart,
 } from "../../types/AnnotatedText";
-import type { Annotation, AnnotationTarget } from "../../types/Annotation";
+import type {
+  AnnotationInternal,
+  AnnotationTarget,
+} from "../../types/Annotation";
 import { Debugger } from "../debugger";
 import type { AnnotatedTextProps } from "@/types/props";
 
@@ -49,7 +52,7 @@ export default class AnnotatedLinesUtil {
     this.createState = createState;
   }
 
-  private allAnnotations = computed((): Annotation[] => {
+  private allAnnotations = computed((): AnnotationInternal[] => {
     Debugger.debug("** refresh annotations");
 
     const annotations = cloneDeep(this.props.annotations);
@@ -67,7 +70,7 @@ export default class AnnotatedLinesUtil {
     return annotations;
   });
 
-  private gutterAnnotations = computed((): Annotation[] => {
+  private gutterAnnotations = computed((): AnnotationInternal[] => {
     Debugger.debug("** refresh gutterAnnotations **");
     const gutterAnnotations = this.allAnnotations.value.filter(
       (annotation) => annotation.target === "gutter"
@@ -82,7 +85,7 @@ export default class AnnotatedLinesUtil {
   // etali end position = position of next char not included in range
   // ex: in "abcdef", span [0,2] is "ab"
   private prepareRanges = (
-    annotations: Annotation[]
+    annotations: AnnotationInternal[]
   ): RangeWithAnnotation[] => {
     Debugger.debug("** prepare ranges for_annotations **");
     Debugger.debug(annotations);
@@ -114,8 +117,13 @@ export default class AnnotatedLinesUtil {
   };
 
   // give a certain weight to each annotation based on their position
-  private calculateAnnotationWeights = function (annotations: Annotation[]) {
-    const compareAnnotations = function (a: Annotation, b: Annotation): number {
+  private calculateAnnotationWeights = function (
+    annotations: AnnotationInternal[]
+  ) {
+    const compareAnnotations = function (
+      a: AnnotationInternal,
+      b: AnnotationInternal
+    ): number {
       return a.start - b.start === 0 ? b.end - a.end : a.start - b.start;
     };
 
@@ -143,8 +151,13 @@ export default class AnnotatedLinesUtil {
   //this function is similar to the weights for span annotations but there is one difference
   //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
   //character indexes.
-  private calculateGutterAnnotationWeights = (annotations: Annotation[]) => {
-    const compareAnnotations = function (a: Annotation, b: Annotation): number {
+  private calculateGutterAnnotationWeights = (
+    annotations: AnnotationInternal[]
+  ) => {
+    const compareAnnotations = function (
+      a: AnnotationInternal,
+      b: AnnotationInternal
+    ): number {
       const aLength = a.end - a.start;
       const bLength = b.end - b.start;
       return aLength - bLength;
@@ -240,7 +253,7 @@ export default class AnnotatedLinesUtil {
   };
 
   private createAnnotatedLine = (line: Line): AnnotatedLine => {
-    let lineGutterAnnotations = [];
+    let lineGutterAnnotations: AnnotationInternal[] = [];
 
     // get all flattened ranges for this line
     const rangesInScope: RangeWithAnnotations[] =
@@ -275,14 +288,21 @@ export default class AnnotatedLinesUtil {
           target: "gutter" as AnnotationTarget,
           class: "annotation--gutter-spacer",
           weight: w,
-        } as Annotation;
+        } as AnnotationInternal;
         lineGutterAnnotations.push(emptyAnnotation);
       }
     }
 
-    lineGutterAnnotations.sort((a, b) =>
-      Number(a?.weight) < Number(b?.weight) ? -1 : 1
-    );
+    lineGutterAnnotations
+      .map((g) => {
+        const cloned = cloneDeep(g);
+
+        g.startsOnLine = line.start <= g.start && line.end >= g.start;
+        g.endsOnLine = line.start <= g.end && line.end >= g.end;
+
+        return cloned;
+      })
+      .sort((a, b) => (Number(a?.weight) < Number(b?.weight) ? -1 : 1));
 
     const words: Word[] = [];
     let j = 0;

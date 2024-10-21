@@ -1,11 +1,11 @@
 import memoize from "memoizee";
 import { pick } from "lodash-es";
 import type { AnnotationStyle } from "../../../types/AnnotatedText";
-import type { Annotation } from "../../../types/Annotation";
+import type { AnnotationInternal } from "../../../types/Annotation";
 
 const AnnotationFields = ["weight", "color", "class"] as const;
 type AnnotationField = (typeof AnnotationFields)[number];
-type PartialAnnotation = Pick<Annotation, AnnotationField>;
+type PartialAnnotation = Pick<AnnotationInternal, AnnotationField>;
 
 type PartialStyle = AnnotationStyle;
 
@@ -45,8 +45,8 @@ export const annotationClassesMemoizee = memoize(annotationClasses_, {
 });
 
 export const annotationClasses = (
-  annotation: Annotation,
-  editAnnotation: Annotation | undefined,
+  annotation: AnnotationInternal,
+  editAnnotation: AnnotationInternal | undefined,
   style: AnnotationStyle,
   start: number,
   end: number,

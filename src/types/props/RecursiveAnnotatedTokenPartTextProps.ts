@@ -1,18 +1,18 @@
 import type { MouseEventPayload } from "./MouseEventPayload";
-import type { Annotation } from "../Annotation";
+import type { AnnotationInternal } from "../Annotation";
 
 export interface RecursiveAnnotatedTokenPartTextProps {
   text: string;
   start: number;
   end: number;
-  annotations?: Annotation[];
+  annotations?: AnnotationInternal[];
   annotationClassHandler?: (
-    annotation: Annotation,
+    annotation: AnnotationInternal,
     start: number,
     end: number,
     allowCreate: boolean
   ) => string[];
-  annotationStyleHandler?: (annotation: Annotation) => string[];
+  annotationStyleHandler?: (annotation: AnnotationInternal) => string[];
   wordPartStart: number; // for correct handle position
   allowEdit?: boolean;
   allowCreate?: boolean;

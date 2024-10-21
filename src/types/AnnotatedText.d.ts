@@ -1,4 +1,4 @@
-import type { Annotation } from "./Annotation";
+import type { Annotation, AnnotationInternal } from "./Annotation";
 
 export interface AnnotationStyle {
   defaultClass: string;
@@ -50,7 +50,7 @@ interface WordPart {
   start: number;
   end: number;
   text: string;
-  annotations: Annotation[];
+  annotations: AnnotationInternal[];
 }
 
 interface Word {
@@ -66,16 +66,18 @@ interface AnnotatedWord {
   parts: WordPart[];
 }
 
+interface AnnotatedGutter {
+  text: string;
+  annotations: AnnotationInternal[];
+}
+
 interface AnnotatedLine {
   start: number;
   end: number;
   parts?: WordPart[];
   words?: AnnotatedWord[];
-  gutter?: {
-    text: string;
-    annotations: Annotation[];
-  };
+  gutter?: AnnotatedGutter;
 }
 
-type RangeWithAnnotation = [number, number, Annotation | null];
-type RangeWithAnnotations = [number, number, Annotation[]];
+type RangeWithAnnotation = [number, number, AnnotationInternal | null];
+type RangeWithAnnotations = [number, number, AnnotationInternal[]];

@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash-es";
 import type { UserState } from "./UserState";
-import type { Annotation } from "../../types/Annotation";
+import type { AnnotationInternal } from "../../types/Annotation";
 import { UserActionState } from "../types/UserActionState.enum";
 import type { ActionType } from "../../types/AnnotatedText";
 
@@ -12,8 +12,8 @@ import type { ActionType } from "../../types/AnnotatedText";
 export class UpdateAnnotationState {
   action: ActionType;
   handlePosition: number;
-  annotation: Annotation;
-  origAnnotation: Annotation;
+  annotation: AnnotationInternal;
+  origAnnotation: AnnotationInternal;
   origEnd?: number;
   origStart?: number;
   newEnd: number;
@@ -57,7 +57,7 @@ export class UpdateAnnotationState {
   startUpdating(
     action: ActionType,
     handlePosition: number,
-    annotation: Annotation,
+    annotation: AnnotationInternal,
     origEnd: number | null = null,
     origStart: number | null = null,
     newEnd: number,

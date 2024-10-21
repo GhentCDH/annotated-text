@@ -1,14 +1,17 @@
 import memoize from "memoizee";
 import { pick } from "lodash-es";
-import type {
-  AnnotatedLine,
-  AnnotationStyle,
-} from "../../../types/AnnotatedText";
-import type { Annotation } from "../../../types/Annotation";
+import type { AnnotationStyle } from "../../types/AnnotatedText";
+import type { AnnotationInternal } from "../../types/Annotation";
 
-const AnnotationFields = ["weight", "class", "color"] as const;
+const AnnotationFields = [
+  "weight",
+  "class",
+  "color",
+  "startsOnLine",
+  "endsOnLine",
+] as const;
 type AnnotationField = (typeof AnnotationFields)[number];
-type PartialAnnotation = Pick<Annotation, AnnotationField>;
+type PartialAnnotation = Pick<AnnotationInternal, AnnotationField>;
 
 const StyleFields = [
   "defaultClass",
@@ -19,32 +22,16 @@ const StyleFields = [
 type StyleField = (typeof StyleFields)[number];
 type PartialStyle = Pick<AnnotationStyle, StyleField>;
 
-const startsOnLine = function (
-  line: AnnotatedLine,
-  annotation: Annotation
-): Boolean {
-  return line.start <= annotation.start && line.end >= annotation.start;
-};
-
-const endsOnLine = function (
-  line: AnnotatedLine,
-  annotation: Annotation
-): Boolean {
-  return line.start <= annotation.end && line.end >= annotation.end;
-};
-
 const annotationGutterClasses_ = (
   annotation: PartialAnnotation,
-  style: PartialStyle,
-  startsOnLine: boolean,
-  endsOnLine: boolean
+  style: PartialStyle
 ): string[] => {
   return [
     style.defaultClass,
     style.weightClass + (annotation?.weight ?? 0),
     annotation?.class ?? null,
-    startsOnLine ? style.startClass : null,
-    endsOnLine ? style.endClass : null,
+    annotation.startsOnLine ? style.startClass : null,
+    annotation.endsOnLine ? style.endClass : null,
     annotation?.color ? "annotation--color-custom" : null,
   ].filter((item) => !!item);
 };
@@ -57,14 +44,11 @@ const annotationGutterClassesMem = memoize(annotationGutterClasses_, {
 });
 
 export const annotationGutterClasses = (
-  annotation: Annotation,
-  style: AnnotationStyle,
-  line: AnnotatedLine
+  annotation: AnnotationInternal,
+  style: AnnotationStyle
 ) => {
   return annotationGutterClassesMem(
     pick(annotation, AnnotationFields),
-    pick(style, StyleFields),
-    startsOnLine(line, annotation),
-    endsOnLine(line, annotation)
+    pick(style, StyleFields)
   );
 };
