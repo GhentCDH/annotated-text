@@ -1,9 +1,9 @@
 import memoize from "memoizee";
 import { maxBy } from "lodash-es";
-import type { Annotation } from "../../../types/Annotation";
+import type { AnnotationInternal } from "../../../types/Annotation";
 
 // TODO check if this needs optimization
-export const maxAnnotationWeight = (annotations: Annotation[]) => {
+export const maxAnnotationWeight = (annotations: AnnotationInternal[]) => {
   const max = maxBy(annotations, (a) => a.weight);
 
   return max?.weight ?? 0;
@@ -14,6 +14,6 @@ const wordPartClasses_ = (annotationWeight: number): string[] => {
 };
 const wordPartClassesMem = memoize(wordPartClasses_);
 
-export const wordPartClasses = (annotations: Annotation[]) => {
+export const wordPartClasses = (annotations: AnnotationInternal[]) => {
   return wordPartClassesMem(maxAnnotationWeight(annotations));
 };

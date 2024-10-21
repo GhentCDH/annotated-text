@@ -13,7 +13,7 @@ runs:
       id: pnpm-cache
       with:
         path: "**/node_modules"
-        key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+        key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.lock') }}
     - name: Install packages
       shell: bash
       run: pnpm install

@@ -84,7 +84,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
-import type { Annotation } from "../types/Annotation";
+import type { AnnotationInternal } from "../types/Annotation";
 import type { AnnotatedLineProps } from "@/types/props";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
@@ -105,7 +105,9 @@ function handleTextClass(): string[] {
   return res;
 }
 
-function sortAnnotations(annotations: Annotation[]): Annotation[] {
+function sortAnnotations(
+  annotations: AnnotationInternal[]
+): AnnotationInternal[] {
   return annotations.sort((a, b) => b.weight - a.weight);
 }
 </script>

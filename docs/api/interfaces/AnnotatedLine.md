@@ -10,25 +10,17 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:71](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/AnnotatedText.d.ts#L71)
+[types/AnnotatedText.d.ts:76](https://github.com/GhentCDH/vue_component_annotated_text/blob/59a5cff35d6965ffe0b2afa94949652f590d3fbd/src/types/AnnotatedText.d.ts#L76)
 
 ***
 
 ### gutter?
 
-> `optional` **gutter**: `object`
-
-#### annotations
-
-> **annotations**: [`Annotation`](Annotation.md)[]
-
-#### text
-
-> **text**: `string`
+> `optional` **gutter**: `AnnotatedGutter`
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:74](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/AnnotatedText.d.ts#L74)
+[types/AnnotatedText.d.ts:79](https://github.com/GhentCDH/vue_component_annotated_text/blob/59a5cff35d6965ffe0b2afa94949652f590d3fbd/src/types/AnnotatedText.d.ts#L79)
 
 ***
 
@@ -38,7 +30,7 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:72](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/AnnotatedText.d.ts#L72)
+[types/AnnotatedText.d.ts:77](https://github.com/GhentCDH/vue_component_annotated_text/blob/59a5cff35d6965ffe0b2afa94949652f590d3fbd/src/types/AnnotatedText.d.ts#L77)
 
 ***
 
@@ -48,7 +40,7 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:70](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/AnnotatedText.d.ts#L70)
+[types/AnnotatedText.d.ts:75](https://github.com/GhentCDH/vue_component_annotated_text/blob/59a5cff35d6965ffe0b2afa94949652f590d3fbd/src/types/AnnotatedText.d.ts#L75)
 
 ***
 
@@ -58,4 +50,4 @@
 
 #### Defined in
 
-[types/AnnotatedText.d.ts:73](https://github.com/GhentCDH/vue_component_annotated_text/blob/1a1305298088f2a8b844c3bc4c9169f47cb7de8b/src/types/AnnotatedText.d.ts#L73)
+[types/AnnotatedText.d.ts:78](https://github.com/GhentCDH/vue_component_annotated_text/blob/59a5cff35d6965ffe0b2afa94949652f590d3fbd/src/types/AnnotatedText.d.ts#L78)

@@ -7,26 +7,12 @@
   >
     <template v-for="line in linesUtil.annotatedLines.value" :key="line">
       <!-- gutter annotations -->
-      <div class="gutter-annotations">
-        <template
-          v-for="annotation in line.gutter.annotations"
-          :key="annotation"
-        >
-          <span
-            :class="annotationGutterClasses(annotation, line)"
-            :style="annotationGutterStyle(annotation)"
-            @click="
-              onMouseDown($event, { startOffset: 0, annotation: annotation })
-            "
-          >
-            <label v-if="annotation.label">{{ annotation.label }}</label>
-          </span>
-        </template>
-      </div>
-      <!-- gutter text -->
-      <div v-if="line?.gutter" class="gutter text">
-        {{ line?.gutter?.text }}
-      </div>
+      <annotated-gutters
+        :gutter="line.gutter"
+        :annotation-style="style"
+        :mouse-down-handler="onMouseDown"
+      />
+
       <!-- line -->
       <div class="content">
         <AnnotatedLine
@@ -56,14 +42,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch, watchEffect } from "vue";
+import { computed, reactive, ref, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import AnnotatedLine from "./AnnotatedLine.vue";
+import AnnotatedGutters from "./gutter/AnnotatedGutters.vue";
 import { createPositionFromPoint } from "../utils/dom";
 import { CssClassesUtil } from "../utils/annotatedTextUtils/AnnotatedTextUtils";
 import { useStateObjectsStore, UserActionState } from "../state";
 import AnnotatedLinesUtil from "../utils/annotatedTextUtils/AnnotatedLinesUtil";
-import type { Annotation } from "../types/Annotation";
+import type { AnnotationInternal } from "../types/Annotation";
 import { hasCustomEventListener } from "../utils/events";
 import { Debugger } from "../utils/debugger";
 import type { AnnotatedTextProps, MouseEventPayload } from "@/types/props";
@@ -116,6 +103,8 @@ const linesUtil = new AnnotatedLinesUtil(
   createState.value
 );
 
+const ss = ref(props.style);
+
 watchEffect(() => {
   Debugger.setDebug(props.debug);
   Debugger.setVerbose(props.verbose);
@@ -132,8 +121,6 @@ const hasKeyPressedListener = hasCustomEventListener("keyPressed");
 
 // Init util to handle css classes
 const cssClassUtil = new CssClassesUtil(props, updateState.value);
-const annotationGutterStyle = cssClassUtil.annotationGutterStyle;
-const annotationGutterClasses = cssClassUtil.annotationGutterClasses;
 const annotationClasses = cssClassUtil.annotationClasses;
 const annotationStyle = cssClassUtil.annotationStyle;
 const componentClasses = cssClassUtil.componentClasses;
@@ -266,7 +253,7 @@ onMouseMoveHandlers.set(
         Debugger.verbose("*emit annotation-create-begin", createState.value);
         emit("annotation-create-begin", createState.value);
       } else {
-        const annotation: Annotation = {
+        const annotation: AnnotationInternal = {
           id: uuidv4(),
           start: createState.value.newStart,
           end: createState.value.newStart,
@@ -410,7 +397,7 @@ onMouseMoveHandlers.set(
   (e: MouseEvent, payload?: MouseEventPayload) => {
     // over annotation?
     if (payload?.annotation) {
-      const annotation: Annotation = payload.annotation;
+      const annotation: AnnotationInternal = payload.annotation;
       if (
         !hoverState.value.hoveredAnnotations.some((a) => a.id === annotation.id)
       ) {
@@ -419,10 +406,12 @@ onMouseMoveHandlers.set(
         emit("annotation-mouse-over", annotation, e);
       }
     } else {
-      hoverState.value.hoveredAnnotations.map((annotation: Annotation) => {
-        Debugger.verbose("annotation-mouse-leave", annotation.id);
-        emit("annotation-mouse-leave", annotation, e);
-      });
+      hoverState.value.hoveredAnnotations.map(
+        (annotation: AnnotationInternal) => {
+          Debugger.verbose("annotation-mouse-leave", annotation.id);
+          emit("annotation-mouse-leave", annotation, e);
+        }
+      );
       hoverState.value.hoveredAnnotations = [];
     }
   }

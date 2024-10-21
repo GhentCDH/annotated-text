@@ -1,7 +1,5 @@
 import type { UserState } from "./UserState";
-import type { Annotation } from "../../types/Annotation";
-import type { ActionType } from "../../types/AnnotatedText";
-import type { MouseEventPayload } from "../../types/props";
+import type { AnnotationInternal } from "../../types/Annotation";
 import { UserActionState } from "../types/UserActionState.enum";
 
 /**
@@ -10,7 +8,7 @@ import { UserActionState } from "../types/UserActionState.enum";
 export class CreateAnnotationState {
   newEnd: number;
   newStart: number;
-  annotation: Annotation;
+  annotation: AnnotationInternal;
   creating: boolean;
   userState: UserState;
 
@@ -47,7 +45,7 @@ export class CreateAnnotationState {
    * @param annotation annotation object that the application can pass to use
    * as default init value.
    */
-  initAnnotation(annotation: Annotation) {
+  initAnnotation(annotation: AnnotationInternal) {
     this.annotation = annotation;
     this.annotation.start = this.newStart;
     this.annotation.end = this.newEnd;

@@ -1,8 +1,8 @@
 import type {
-  UpdateAnnotationState,
   CreateAnnotationState,
-  UserState,
+  UpdateAnnotationState,
   UserActionState,
+  UserState,
 } from "../../state";
 import type { Annotation } from "../Annotation";
 

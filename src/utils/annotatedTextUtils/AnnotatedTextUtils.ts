@@ -2,13 +2,10 @@ import { computed } from "vue";
 import { annotationStyle } from "./AnnotatedTextUtils/annotation.style";
 import { componentClasses } from "./AnnotatedTextUtils/component.classes";
 import { wordPartClasses } from "./AnnotatedTextUtils/wordPart.classes";
-import { annotationGutterClasses } from "./AnnotatedTextUtils/annotationGutter.classes";
-import { annotationGutterStyle } from "./AnnotatedTextUtils/annotationGutter.style";
 import { annotationClasses } from "./AnnotatedTextUtils/annotation.classes";
 import type { UpdateAnnotationState } from "../../state";
-import type { Annotation } from "../../types/Annotation";
+import type { AnnotationInternal } from "../../types/Annotation";
 import type {
-  AnnotatedLine,
   AnnotationStyle,
   RenderType,
   WordPart,
@@ -57,24 +54,12 @@ export class CssClassesUtil<P extends CssClassUtilProps> {
     return wordPartClasses(wordPart.annotations);
   };
 
-  annotationGutterClasses = (
-    annotation: Annotation,
-    line: AnnotatedLine
-  ): string[] => {
-    const { style } = this.props;
-    return annotationGutterClasses(annotation, style, line);
-  };
-
-  annotationStyle(annotation: Annotation): string[] {
+  annotationStyle(annotation: AnnotationInternal): string[] {
     return annotationStyle(annotation.color);
   }
 
-  annotationGutterStyle(annotation: Annotation): string[] {
-    return annotationGutterStyle(annotation.color);
-  }
-
   annotationClasses = (
-    annotation: Annotation,
+    annotation: AnnotationInternal,
     start: number,
     end: number,
     allowCreate: boolean

@@ -1,29 +1,29 @@
 enhancement:
- - head-branch: ['^feature', 'feature', 'feat']
+  - head-branch: [ '^feature', 'feature', 'feat' ]
 
-bug:
- - head-branch: ['^bug', 'bugfix']
+bug 🐞:
+  - head-branch: [ '^bug', 'bugfix', 'fix' ]
 
 release:
- - head-branch: ['^release', 'release']
+  - head-branch: [ '^release', 'release' ]
 
 refactoring:
- - head-branch: ['^refactoring', 'refactoring']
+  - head-branch: [ '^refactoring', 'refactoring' ]
 
 
 build:
- - head-branch: ['^chore', 'chore']
- - changed-files:
-    - any-glob-to-any-file:
-      - package*
+  - head-branch: [ '^chore', 'chore' ]
+  - changed-files:
+      - any-glob-to-any-file:
+          - package*
 
 ci:
- - changed-files:
-    - any-glob-to-any-file:
-      - .github/*
-      
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/*
+
 documentation:
-  - head-branch: ['^docs', 'docs']
+  - head-branch: [ '^docs', 'docs' ]
   - changed-files:
       - any-glob-to-any-file:
           - docs/*

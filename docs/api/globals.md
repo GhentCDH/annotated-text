@@ -20,7 +20,6 @@
 - [AnnotatedLine](interfaces/AnnotatedLine.md)
 - [AnnotatedLineProps](interfaces/AnnotatedLineProps.md)
 - [AnnotatedWord](interfaces/AnnotatedWord.md)
-- [Annotation](interfaces/Annotation.md)
 - [AnnotationActionPayload](interfaces/AnnotationActionPayload.md)
 - [AnnotationActionState](interfaces/AnnotationActionState.md)
 - [AnnotationColor](interfaces/AnnotationColor.md)
@@ -33,6 +32,7 @@
 
 ## Type Aliases
 
+- [Annotation](type-aliases/Annotation.md)
 - [AnnotationTarget](type-aliases/AnnotationTarget.md)
 - [RangeWithAnnotation](type-aliases/RangeWithAnnotation.md)
 - [RangeWithAnnotations](type-aliases/RangeWithAnnotations.md)
