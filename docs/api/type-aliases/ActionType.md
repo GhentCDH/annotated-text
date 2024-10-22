@@ -6,4 +6,4 @@
 
 ## Defined in
 
-[types/AnnotatedText.d.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198e0a4e27a9a158506503be2182fda5bbd00a1/src/types/AnnotatedText.d.ts#L20)
+[types/AnnotatedText.d.ts:20](https://github.com/GhentCDH/vue_component_annotated_text/blob/eb5228ddfcc6425ad354f890aef21001e0aa51cf/src/types/AnnotatedText.d.ts#L20)

@@ -4,6 +4,10 @@
 
 - [AnnotatedText](namespaces/AnnotatedText/index.md)
 
+## Enumerations
+
+- [UserActionState](enumerations/UserActionState.md)
+
 ## Classes
 
 - [Debugger](classes/Debugger.md)

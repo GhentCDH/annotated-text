@@ -6,6 +6,20 @@
 
 ## Type declaration
 
+### annotation-click
+
+> **annotation-click**: [[`Annotation`](Annotation.md), `MouseEvent`]
+
+Emitted when an annotation (both span and gutter) is clicked.
+
+#### Arg
+
+annotation Annotation object that was clicked
+
+#### Arg
+
+mouseEvent normal dom mouse event
+
 ### annotation-create-begin
 
 > **annotation-create-begin**: [`CreateAnnotationState`]
@@ -41,6 +55,20 @@ createState.updateCreating needs to be called to confirm the new position after 
 #### Arg
 
 createState object holding the state of the being created annotation
+
+### annotation-double-click
+
+> **annotation-double-click**: [[`Annotation`](Annotation.md), `MouseEvent`]
+
+Emitted when an annotation (both span and gutter) is double clicked.
+
+#### Arg
+
+annotation Annotation object that was clicked
+
+#### Arg
+
+mouseEvent normal dom mouse event
 
 ### annotation-mouse-leave
 
@@ -150,7 +178,7 @@ userState {UserState}
 
 ### user-action-state-change
 
-> **user-action-state-change**: [`UserActionState`, `UserActionState`]
+> **user-action-state-change**: [[`UserActionState`](../enumerations/UserActionState.md), [`UserActionState`](../enumerations/UserActionState.md)]
 
 Emitted whenever the internal user state changes
 
@@ -164,4 +192,4 @@ newState New user action state
 
 ## Defined in
 
-[types/emits/AnnotatedTextEmits.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/f198e0a4e27a9a158506503be2182fda5bbd00a1/src/types/emits/AnnotatedTextEmits.ts#L9)
+[types/emits/AnnotatedTextEmits.ts:9](https://github.com/GhentCDH/vue_component_annotated_text/blob/eb5228ddfcc6425ad354f890aef21001e0aa51cf/src/types/emits/AnnotatedTextEmits.ts#L9)
