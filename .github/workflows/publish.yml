@@ -2,7 +2,7 @@ name: Publish
 
 on:
   release:
-    types: [published]
+    types: [ published ]
 
 jobs:
   publish:
@@ -12,26 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9
-          run_install: false        
-
-      - name: Setup Node.js
+      - uses: ./.github/actions/use-cache
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          registry-url: https://registry.npmjs.org/
-          scope: "@ghentcdh"
-
-      - name: Load cache
-        uses: actions/cache@v3
-        id: pnpm-cache
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock') }}
-
+          cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
 

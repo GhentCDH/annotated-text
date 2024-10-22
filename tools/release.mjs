@@ -18,7 +18,7 @@ execSync(`npm version ${releaseType}`, { stdio: "inherit" });
 const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
 const version = packageJson.version;
 
-execSync(`git add . && git commit -m 'release: ${version}' && git push`, {
+execSync(`git push`, {
   stdio: "inherit",
 });
 execSync(`git push origin "v${version}`);

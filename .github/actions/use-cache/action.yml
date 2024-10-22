@@ -11,3 +11,8 @@ runs:
         path: node_modules
         key: ${{ env.DEPENDENCIES_CACHE }}-${{ hashFiles('pnpm-lock.yaml') }}
     - uses: pnpm/action-setup@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        registry-url: https://registry.npmjs.org/
+        scope: "@ghentcdh"
