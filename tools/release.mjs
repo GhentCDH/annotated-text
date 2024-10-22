@@ -26,3 +26,5 @@ execSync(`git push origin "v${version}`);
 // Output the parameters and version
 console.log(`Release type: ${releaseType}`);
 console.log(`New version: ${version}`);
+
+console.warn(`Promote tag to release on github`);
