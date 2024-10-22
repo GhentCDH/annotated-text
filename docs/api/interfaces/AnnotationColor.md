@@ -16,7 +16,7 @@ The color of the background.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/types/AnnotationColor.d.ts#L14)
+[types/AnnotationColor.d.ts:14](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/types/AnnotationColor.d.ts#L14)
 
 ***
 
@@ -28,7 +28,7 @@ The color of the background when active.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/types/AnnotationColor.d.ts#L16)
+[types/AnnotationColor.d.ts:16](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/types/AnnotationColor.d.ts#L16)
 
 ***
 
@@ -40,7 +40,7 @@ The color of the border.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/types/AnnotationColor.d.ts#L13)
+[types/AnnotationColor.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/types/AnnotationColor.d.ts#L13)
 
 ***
 
@@ -52,7 +52,7 @@ The color of the border when active.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/types/AnnotationColor.d.ts#L15)
+[types/AnnotationColor.d.ts:15](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/types/AnnotationColor.d.ts#L15)
 
 ***
 
@@ -62,4 +62,4 @@ The color of the border when active.
 
 #### Defined in
 
-[types/AnnotationColor.d.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/types/AnnotationColor.d.ts#L17)
+[types/AnnotationColor.d.ts:17](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/types/AnnotationColor.d.ts#L17)

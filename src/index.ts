@@ -12,7 +12,7 @@ export type { Paragraph } from "./types/AnnotatedText";
 export type { Line } from "./types/AnnotatedText";
 export type { AnnotatedTextProps } from "./types/props";
 
-export type { UserActionState, UpdateAnnotationState } from "./state";
+export { UserActionState, UpdateAnnotationState } from "./state";
 
 export * from "./utils/debugger";
 

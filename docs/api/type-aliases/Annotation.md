@@ -38,4 +38,4 @@ Represents an annotation with various properties.
 
 ## Defined in
 
-[types/Annotation.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/types/Annotation.d.ts#L13)
+[types/Annotation.d.ts:13](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/types/Annotation.d.ts#L13)

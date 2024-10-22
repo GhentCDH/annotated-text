@@ -24,4 +24,4 @@ The generated annotation color configuration.
 
 ## Defined in
 
-[utils/createAnnotationColor.ts:57](https://github.com/GhentCDH/vue_component_annotated_text/blob/d7fbb39b834198d0e930e690be57398881a7bf81/src/utils/createAnnotationColor.ts#L57)
+[utils/createAnnotationColor.ts:57](https://github.com/GhentCDH/vue_component_annotated_text/blob/4ae83fe63806a0b66e052cea6a1a25b805e2cef9/src/utils/createAnnotationColor.ts#L57)
