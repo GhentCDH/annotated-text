@@ -1,15 +1,15 @@
 const createPositionFromPoint = (
   x: number,
-  y: number
+  y: number,
 ): {
   offsetNode: Node;
   offset: number;
   getClientRect(): ClientRect | DOMRect;
 } | null => {
-  // @ts-ignore
-  if (document.caretPositionFromPoint) {
-    // @ts-ignore
-    const position = document.caretPositionFromPoint(x, y);
+  const doc = document as unknown as any;
+
+  if (doc.caretPositionFromPoint) {
+    const position = doc.caretPositionFromPoint(x, y);
     // console.log(position);
     return position
       ? {
@@ -21,7 +21,7 @@ const createPositionFromPoint = (
         }
       : null;
   } else {
-    const range = document.caretRangeFromPoint(x, y);
+    const range = doc.caretRangeFromPoint(x, y);
     return range
       ? {
           offsetNode: range.startContainer,
