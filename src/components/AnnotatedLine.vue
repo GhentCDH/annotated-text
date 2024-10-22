@@ -3,7 +3,10 @@
     <span
       v-for="wordPart in word.parts"
       :key="wordPart.text"
-      :class="wordPartClasses(wordPart)"
+      :class="[
+        'token-segment',
+        `token-segment--m${wordPart.maxAnnotationWeight}`,
+      ]"
       @mousemove="mouseMove($event, wordPart)"
     >
       <!-- render flat ? -->
@@ -22,7 +25,7 @@
               props.allowCreate
             )
           "
-          :style="props.annotationStyle(annotation)"
+          :style="props.annotationStyle(annotation.color)"
           @mousedown="mouseDown($event, wordPart, annotation, 'move')"
           @mousemove="mouseMove($event, wordPart, annotation)"
           @dblclick="doubleClick($event, wordPart, annotation)"
@@ -42,7 +45,6 @@
           :word-part-start="wordPart.start"
           :annotations="sortAnnotations(wordPart.annotations)"
           :annotation-class-handler="annotationClasses"
-          :annotation-style-handler="annotationStyle"
           @annotation-click="onClick"
           @annotation-double-click="onDoubleClick"
           @annotation-mouse-move="onMove"
@@ -54,13 +56,13 @@
             <slot name="annotation-after" :annotation="slotProps.annotation" />
           </template>
         </RecursiveAnnotatedTokenPartText>
-        <span
+        <TextOnly
           v-else
-          :class="handleTextClass()"
-          @mousedown="mouseDown($event, wordPart)"
-        >
-          {{ wordPart.text }}
-        </span>
+          :word-part="wordPart"
+          :allow-create="allowCreate"
+          @annotation-click="onClick"
+          @annotation-double-click="onDoubleClick"
+        />
       </template>
     </span>
   </span>
@@ -69,27 +71,19 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
+import TextOnly from "./text/TextOnly.vue";
 import type { Annotation, AnnotationInternal } from "../types/Annotation";
 import type { ActionType, WordPart } from "../types/AnnotatedText";
+import { annotationStyle } from "../utils/annotatedTextUtils/AnnotatedTextUtils/annotation.style";
 import type { AnnotatedLineEmits, AnnotatedLineProps } from "@/types/props";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {
   render: "nested",
-  wordPartClasses: () => [],
   annotationClasses: () => [],
-  annotationStyle: () => [],
 });
 
 const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
-
-function handleTextClass(): string[] {
-  const res = ["text"];
-  if (props.allowCreate) {
-    res.push("create-anno-text");
-  }
-  return res;
-}
 
 function sortAnnotations(
   annotations: AnnotationInternal[]
@@ -106,7 +100,7 @@ const mouseDown = (
   action?: ActionType
 ) => {
   onClick(event, {
-    startOffset: wordPart.start,
+    startOffset: wordPart?.start,
     annotation,
     action,
   });
@@ -119,7 +113,7 @@ const doubleClick = (
   action?: ActionType
 ) => {
   onDoubleClick(event, {
-    startOffset: wordPart.start,
+    startOffset: wordPart?.start,
     annotation,
     action,
   });
@@ -131,7 +125,7 @@ const mouseMove = (
   annotation: Annotation
 ) => {
   onMove(event, {
-    startOffset: wordPart.start,
+    startOffset: wordPart?.start,
     annotation,
   });
 };

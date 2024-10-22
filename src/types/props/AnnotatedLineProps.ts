@@ -1,10 +1,9 @@
 import type { MouseEventEmitPayload } from "./MouseEventPayload";
-import type { AnnotatedLine, RenderType, WordPart } from "../AnnotatedText";
+import type { AnnotatedLine, RenderType } from "../AnnotatedText";
 import type { AnnotationInternal } from "../Annotation";
 
 export interface AnnotatedLineProps {
   line: AnnotatedLine;
-  wordPartClasses?: (wordPart: WordPart) => any[];
   render?: RenderType;
   annotationClasses?: (
     annotation: AnnotationInternal,
