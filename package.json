@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/GhentCDH/vue_component_annotated_text"
   },
-  "version": "0.4.5",
+  "version": "0.4.6",
   "exports": {
     ".": {
       "import": "./dist/vue-component-annotated-text.js",
@@ -27,7 +27,7 @@
     "docs:build:typedoc": "typedoc",
     "docs:build:vitepress": "vitepress build docs",
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/vitepress.mjs",
-    "docs:build": "pnpm run  docs:build:typedoc && pnpm run  docs:build:menu && pnpm run   docs:build:vitepress",
+    "docs:build": "pnpm run build && pnpm run  docs:build:typedoc && pnpm run  docs:build:menu && pnpm run   docs:build:vitepress",
     "docs:preview": "vitepress preview docs",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",

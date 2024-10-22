@@ -34,7 +34,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
-      - run: pnpm run build
       - run: pnpm run docs:build
   test:
     runs-on: ubuntu-latest
