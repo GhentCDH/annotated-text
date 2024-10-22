@@ -1,14 +1,12 @@
 const createPositionFromPoint = (
   x: number,
-  y: number
+  y: number,
 ): {
   offsetNode: Node;
   offset: number;
   getClientRect(): ClientRect | DOMRect;
 } | null => {
-  // @ts-ignore
   if (document.caretPositionFromPoint) {
-    // @ts-ignore
     const position = document.caretPositionFromPoint(x, y);
     // console.log(position);
     return position

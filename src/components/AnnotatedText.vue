@@ -100,7 +100,7 @@ const userStateLabel = computed(() => userState.value.state);
 const linesUtil = new AnnotatedLinesUtil(
   props,
   updateState.value,
-  createState.value
+  createState.value,
 );
 
 watchEffect(() => {
@@ -138,14 +138,14 @@ if (typeof window !== "undefined") {
         "key-pressed",
         keyEv.key,
         updateState.value,
-        createState.value
+        createState.value,
       );
       emit(
         "key-pressed",
         keyEv,
         updateState.value,
         createState.value,
-        userState.value
+        userState.value,
       );
     } else {
       switch (keyEv.key) {
@@ -178,7 +178,7 @@ function onDoubleClick(e: MouseEvent, payload?: MouseEventPayload) {
     "@onDoubleClick",
     "userState:",
     userState.value.state,
-    payload
+    payload,
   );
   e.preventDefault();
   emit("annotation-double-click", payload);
@@ -191,16 +191,14 @@ function onMouseMove(e: MouseEvent, payload?: MouseEventPayload) {
     e,
     userState.value.state,
     payload,
-    payload?.annotation?.id
+    payload?.annotation?.id,
   );
-  onMouseMoveHandlers.get(userState.value.state) &&
-    onMouseMoveHandlers.get(userState.value.state)(e, payload);
+  onMouseMoveHandlers.get(userState.value.state)?.(e, payload);
 }
 
 function onMouseUp(e: MouseEvent) {
   Debugger.verbose("@onMouseUp", "userState:", userState.value.state);
-  onMouseUpHandlers.get(userState.value.state) &&
-    onMouseUpHandlers.get(userState.value.state)(e);
+  onMouseUpHandlers.get(userState.value.state)?.(e);
 }
 
 function onMouseLeave(e: MouseEvent, payload?: MouseEventPayload) {
@@ -226,7 +224,7 @@ onMouseDownHandlers.set(
       userState.value.payload = payload;
       return;
     }
-  }
+  },
 );
 
 onMouseUpHandlers.set(UserActionState.START_SELECT, (e: MouseEvent) => {
@@ -270,7 +268,7 @@ onMouseMoveHandlers.set(
       // update user state
       userState.value.state = UserActionState.CREATING;
     }
-  }
+  },
 );
 
 // USER STATE creating + MOUSE EVENT mousemove => continue creating, update positions
@@ -290,7 +288,7 @@ onMouseMoveHandlers.set(
         }
       }
     }
-  }
+  },
 );
 
 // USER STATE creating + MOUSE EVENT mouseup
@@ -324,7 +322,7 @@ onMouseMoveHandlers.set(
       userState.value.payload.annotation.end,
       userState.value.payload.annotation.start,
       userState.value.payload.annotation.end,
-      userState.value.payload.annotation.start
+      userState.value.payload.annotation.start,
     );
 
     // confirm update state
@@ -334,7 +332,7 @@ onMouseMoveHandlers.set(
     } else {
       updateState.value.confirmStartUpdating();
     }
-  }
+  },
 );
 
 // updating state + mouse move event => keep updating
@@ -385,7 +383,7 @@ onMouseMoveHandlers.set(
         }
       }
     }
-  }
+  },
 );
 
 // updating state + mouse up event => end updating
@@ -414,10 +412,10 @@ onMouseMoveHandlers.set(
         (annotation: AnnotationInternal) => {
           Debugger.verbose("annotation-mouse-leave", annotation.id);
           emit("annotation-mouse-leave", annotation, e);
-        }
+        },
       );
       hoverState.value.hoveredAnnotations = [];
     }
-  }
+  },
 );
 </script>

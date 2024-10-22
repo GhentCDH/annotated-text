@@ -7,7 +7,7 @@ function writeSidebarFile(dir, sidebar) {
   fs.writeFileSync(
     path.join(dir, "typedoc_sidebar.json"),
 
-    JSON.stringify(sidebar)
+    JSON.stringify(sidebar),
   );
 }
 
@@ -24,6 +24,7 @@ function generateDirectoryObject(dir, exclude) {
     const filePath = path.join(dirPath, file);
     const stat = fs.statSync(filePath);
 
+    // eslint-disable-next-line no-console
     console.log(exclude, file, exclude.indexOf(file));
 
     if (exclude.indexOf(file) !== -1) return;
