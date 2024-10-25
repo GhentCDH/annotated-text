@@ -9,9 +9,8 @@ export interface AnnotatedLineProps {
     annotation: AnnotationInternal,
     start: number,
     end: number,
-    allowCreate: boolean
+    allowCreate: boolean,
   ) => string[];
-  annotationStyle?: (annotation: AnnotationInternal) => string[];
 
   allowEdit?: boolean;
   allowCreate?: boolean;
