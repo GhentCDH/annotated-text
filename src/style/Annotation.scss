@@ -1,4 +1,4 @@
-@import "./mixins_anntaton_color";
+@use "./mixins_anntaton_color" as ac;
 
 $annotated-text--default-theme: ();
 
@@ -39,6 +39,7 @@ $annotated-text-annotation-colors: (
 
   .annotation {
     cursor: pointer;
+
     label {
       cursor: pointer;
     }
@@ -89,6 +90,7 @@ $annotated-text-annotation-colors: (
     .content {
       .annotation {
         position: relative;
+
         label {
           display: none;
           background: white;
@@ -111,8 +113,17 @@ $annotated-text-annotation-colors: (
           z-index: 10000;
           height: 100%;
           opacity: 0;
-          width: 4px;
+          width: 10px;
+          color: red;
           // display: none;
+
+          &--start {
+            margin-left: -4px;
+          }
+
+          &--end {
+            margin-left: 4px;
+          }
         }
 
         .handle--end {
@@ -133,6 +144,7 @@ $annotated-text-annotation-colors: (
             display: none;
           }
         }
+
         &.annotation--shadow {
           &:before {
             border-color: rgba(0, 0, 0, 0.5) !important;
@@ -196,12 +208,12 @@ $annotated-text-annotation-colors: (
               $color 30%
             )};
 
-          @include createAnnotationColor();
+          @include ac.createAnnotationColor();
         }
       }
 
       .annotation--color-custom {
-        @include createAnnotationColor();
+        @include ac.createAnnotationColor();
       }
 
       .annotation-slot {
@@ -251,6 +263,7 @@ $annotated-text-annotation-colors: (
     @each $name, $color in $annotated-text-annotation-colors {
       .annotation--color-#{$name} {
         background: $color;
+
         label {
           font-family: Arial, Helvetica, sans-serif;
           left: 0;
@@ -263,10 +276,13 @@ $annotated-text-annotation-colors: (
     //content annotation styling
     .content {
       height: 100%;
+
       template {
         height: 100%;
+
         span {
           height: 100%;
+
           span {
             height: 100%;
           }
@@ -321,6 +337,7 @@ $annotated-text-annotation-colors: (
       @each $name, $color in $annotated-text-annotation-colors {
         .annotation--color-#{$name} {
           background: $color;
+
           label {
             background: $color;
           }

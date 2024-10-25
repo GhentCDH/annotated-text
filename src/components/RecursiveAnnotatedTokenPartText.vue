@@ -9,9 +9,7 @@
   <!-- output annotation -->
   <span
     v-if="annotations.length"
-    :class="
-      props.annotationClassHandler(annotation, start, end, props.allowCreate)
-    "
+    :class="annotationClassHandler(annotation, start, end, allowCreate)"
     :style="annotationStyle(annotation.color)"
     @mousedown.stop="click($event, wordPartStart, 'move')"
     @mousemove.stop="mouseMove($event, wordPartStart)"
@@ -31,7 +29,7 @@
       :end="end"
       :allow-edit="allowEdit"
       :word-part-start="wordPartStart"
-      :annotation-class-handler="props.annotationClassHandler"
+      :annotation-class-handler="annotationClassHandler"
       @annotation-click="onClick"
       @annotation-double-click="onDoubleClick"
       @annotation-mouse-move="onMove"
@@ -81,7 +79,7 @@ const props = withDefaults(
   {
     annotations: () => [],
     annotationClassHandler: () => [],
-  }
+  },
 );
 
 const annotation = computed(() => props.annotations[0]);
@@ -93,7 +91,7 @@ const emit = defineEmits<RecursiveAnnotatedTokenPartTextEmits>();
 const click = (
   event: MouseEventPayload,
   wordPartStart: number,
-  action?: ActionType
+  action?: ActionType,
 ) => {
   onClick(event, {
     startOffset: wordPartStart,
@@ -105,7 +103,7 @@ const click = (
 const dblClick = (
   event: MouseEventPayload,
   wordPartStart: number,
-  action?: ActionType
+  action?: ActionType,
 ) => {
   onDoubleClick(event, {
     startOffset: wordPartStart,

@@ -36,3 +36,4 @@ coverage
 /test_coverage
 /docs/internal
 /docs/api/*
+/docs/components/typedoc_sidebar.json

@@ -22,10 +22,10 @@
               annotation,
               wordPart.start,
               wordPart.end,
-              props.allowCreate
+              allowCreate,
             )
           "
-          :style="props.annotationStyle(annotation.color)"
+          :style="annotationStyle(annotation.color)"
           @mousedown="mouseDown($event, wordPart, annotation, 'move')"
           @mousemove="mouseMove($event, wordPart, annotation)"
           @dblclick="doubleClick($event, wordPart, annotation)"
@@ -86,7 +86,7 @@ const renderNested = computed(() => props.render === "nested");
 const renderFlat = computed(() => props.render === "flat");
 
 function sortAnnotations(
-  annotations: AnnotationInternal[]
+  annotations: AnnotationInternal[],
 ): AnnotationInternal[] {
   return annotations.sort((a, b) => b.weight - a.weight);
 }
@@ -97,7 +97,7 @@ const mouseDown = (
   event: MouseEvent,
   wordPart: WordPart,
   annotation?: Annotation,
-  action?: ActionType
+  action?: ActionType,
 ) => {
   onClick(event, {
     startOffset: wordPart?.start,
@@ -110,7 +110,7 @@ const doubleClick = (
   event: MouseEvent,
   wordPart: WordPart,
   annotation?: Annotation,
-  action?: ActionType
+  action?: ActionType,
 ) => {
   onDoubleClick(event, {
     startOffset: wordPart?.start,
@@ -122,7 +122,7 @@ const doubleClick = (
 const mouseMove = (
   event: MouseEvent,
   wordPart: WordPart,
-  annotation: Annotation
+  annotation: Annotation,
 ) => {
   onMove(event, {
     startOffset: wordPart?.start,

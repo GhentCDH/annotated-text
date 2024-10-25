@@ -29,6 +29,7 @@
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/vitepress.mjs",
     "docs:build": "pnpm run build && pnpm run  docs:build:typedoc && pnpm run  docs:build:menu && pnpm run   docs:build:vitepress",
     "docs:preview": "vitepress preview docs",
+    "docs:dev": "pnpm run docs:build:typedoc && pnpm run docs:build:menu && vitepress dev docs",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
     "build": "vite build",
@@ -37,7 +38,6 @@
     "lint:fix": "eslint src/. dev-app/. tools/. --fix",
     "prepare": "husky install",
     "lint:staged": "lint-staged --allow-empty",
-    "docs:dev": "vitepress dev docs",
     "upgrade": "vue upgrade",
     "release": "ts-node --project tools/tsconfig.tools.json tools/release.mjs"
   },
