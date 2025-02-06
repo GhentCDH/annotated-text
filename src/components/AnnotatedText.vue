@@ -1,3 +1,4 @@
+-
 <template>
   <div
     v-if="linesUtil.annotatedLines.value.length"
@@ -52,12 +53,11 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch, watchEffect } from "vue";
-import { v4 as uuidv4 } from "uuid";
 import AnnotatedLine from "./AnnotatedLine.vue";
 import AnnotatedGutters from "./gutter/AnnotatedGutters.vue";
 import { createPositionFromPoint } from "../utils/dom";
 import { CssClassesUtil } from "../utils/annotatedTextUtils";
-import { useStateObjectsStore, UserActionState } from "../state";
+import { UserActionState, useStateObjectsStore } from "../state";
 import AnnotatedLinesUtil from "../utils/annotatedTextUtils/AnnotatedLinesUtil";
 import type { AnnotationInternal } from "../types/Annotation";
 import { hasCustomEventListener } from "../utils/events";
@@ -264,14 +264,7 @@ onMouseMoveHandlers.set(
         Debugger.verbose("*emit annotation-create-begin", createState.value);
         emit("annotation-create-begin", createState.value);
       } else {
-        const annotation: AnnotationInternal = {
-          id: uuidv4(),
-          start: createState.value.newStart,
-          end: createState.value.newStart,
-          class: "annotation annotation--color-1",
-          target: "text",
-        };
-        createState.value.initAnnotation(annotation);
+        createState.value.init();
       }
 
       // update user state

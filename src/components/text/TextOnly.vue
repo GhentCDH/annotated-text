@@ -7,11 +7,12 @@
     @dblclick="doubleClick($event, wordPart)"
     @mousedown="mouseDown($event, wordPart)"
   >
-    {{ wordPart.text }}
+    {{ text }}
   </span>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import type { WordPart } from "../../types/AnnotatedText";
 import type { MouseEventEmitPayload } from "@/types/props";
 
@@ -20,8 +21,7 @@ type TextOnlyProps = {
   allowCreate: boolean;
 };
 
-withDefaults(defineProps<TextOnlyProps>(), {
-  text: "",
+const properties = withDefaults(defineProps<TextOnlyProps>(), {
   allowCreate: false,
 });
 
@@ -42,4 +42,8 @@ const doubleClick = (event: MouseEvent, wordPart: WordPart) => {
     startOffset: wordPart?.start,
   });
 };
+
+const text = computed(() => {
+  return properties.wordPart.text.replace(/\n/g, "<br />");
+});
 </script>

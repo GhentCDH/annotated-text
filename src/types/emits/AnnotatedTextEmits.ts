@@ -78,6 +78,7 @@ export type AnnotatedTextEmits = {
    * @arg createState object holding the state of the being created annotation. The annotation field holds the newly created annotation.
    */
   "annotation-create-end": [createState: CreateAnnotationState];
+
   /**
    * Emitted whenever any key is pressed. Can be used to reset updating or creating states
    *
@@ -90,7 +91,7 @@ export type AnnotatedTextEmits = {
     keyEvent: KeyboardEvent,
     updateState: UpdateAnnotationState,
     createState: CreateAnnotationState,
-    userState: UserState
+    userState: UserState,
   ];
   /**
    * Emitted when the mouse goes over new annotations
@@ -99,7 +100,7 @@ export type AnnotatedTextEmits = {
    */
   "annotation-mouse-over": [
     hoveredAnnotations: Annotation[],
-    mouseEvent: MouseEvent
+    mouseEvent: MouseEvent,
   ];
   /**
    * Emitted when the mouse stops hovering over annotations
@@ -108,7 +109,7 @@ export type AnnotatedTextEmits = {
    */
   "annotation-mouse-leave": [
     hoveredAnnotations: Annotation[],
-    mouseEvent: MouseEvent
+    mouseEvent: MouseEvent,
   ];
   /**
    * Emitted whenever the internal user state changes
@@ -117,6 +118,6 @@ export type AnnotatedTextEmits = {
    */
   "user-action-state-change": [
     oldState: UserActionState,
-    newState: UserActionState
+    newState: UserActionState,
   ];
 };

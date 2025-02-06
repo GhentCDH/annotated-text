@@ -1,6 +1,9 @@
+import { v4 as uuidv4 } from "uuid";
+import { cloneDeep } from "lodash-es";
 import type { UserState } from "./UserState";
 import type { AnnotationInternal } from "../../types/Annotation";
 import { UserActionState } from "../types/UserActionState.enum";
+import { createAnnotationColor } from "../../utils/createAnnotationColor";
 
 /**
  * Class holding the state of an annotation being created
@@ -51,6 +54,17 @@ export class CreateAnnotationState {
     this.annotation.end = this.newEnd;
   }
 
+  init(annotation: Partial<AnnotationInternal> = {}) {
+    this.initAnnotation({
+      id: uuidv4(),
+      start: this.newStart,
+      end: this.newStart,
+      color: annotation?.color ?? createAnnotationColor("#f51720"),
+      target: "text",
+      ...annotation,
+    });
+  }
+
   /**
    * Has to be called every time the mouse moves a character when creating an
    * annotation. If the application does not listen to onMove updates the
@@ -59,5 +73,9 @@ export class CreateAnnotationState {
   updateCreating() {
     this.annotation.start = this.newStart;
     this.annotation.end = this.newEnd;
+  }
+
+  getAnnotation() {
+    return cloneDeep(this.annotation);
   }
 }
