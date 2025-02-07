@@ -25,6 +25,6 @@ jobs:
         run: pnpm build
 
       - name: Publish package on NPM
-        run: pnpm publish --access public --no-git-checks --verbose
+        run: pnpm publish --access public --no-git-checks --force --verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
