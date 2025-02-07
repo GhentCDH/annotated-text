@@ -1,4 +1,5 @@
-![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fvue-component-annotated-text)
+![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fvue-component-annotated-text?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40ghentcdh%2Fvue-component-annotated-text)
+
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/GhentCDH/vue_component_annotated_text/merge-request.yml)
 
 
