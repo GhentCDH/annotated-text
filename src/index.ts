@@ -12,11 +12,12 @@ export type { Paragraph } from "./types/AnnotatedText";
 export type { Line } from "./types/AnnotatedText";
 export type { AnnotatedTextProps } from "./types/props";
 
-export {
-  UserActionState,
+export type {
   UpdateAnnotationState,
   CreateAnnotationState,
+  UserState,
 } from "./state";
+export { UserActionState } from "./state";
 
 export * from "./utils/debugger";
 

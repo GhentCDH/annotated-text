@@ -5,21 +5,21 @@ import { reactive } from "vue";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
-  faCircleMinus as faRemove,
-  faCircleExclamation as faImportant,
   faCircleCheck as faValidate,
+  faCircleExclamation as faImportant,
+  faCircleMinus as faRemove,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  AnnotatedText,
-  Debugger,
-  UserActionState,
-} from "@ghentcdh/vue-component-annotated-text";
 import type {
   Annotation,
   AnnotationTarget,
   CreateAnnotationState,
   UpdateAnnotationState,
   UserState,
+} from "@ghentcdh/vue-component-annotated-text";
+import {
+  AnnotatedText,
+  Debugger,
+  UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
 import { textToLines } from "./Utils";
 import { annotationsGreek as annotations, textGreek as text } from "./data";
@@ -31,7 +31,7 @@ const annotationMap: Map<string, Annotation> = annotations.reduce(
     map.set(anno.id, { ...anno });
     return map;
   },
-  new Map()
+  new Map(),
 );
 
 const hoveredAnnotationsState: Map<string, Annotation> = new Map();
@@ -64,7 +64,7 @@ function slotCondition(slotProps: { annotation: Annotation }) {
 
 const onAnnotationMouseOver = function (
   annotation: Annotation,
-  mouseEvent: MouseEvent
+  mouseEvent: MouseEvent,
 ) {
   hoveredAnnotationsState.set(annotation.id, annotation);
   // console.log(hoveredAnnotations);
@@ -73,7 +73,7 @@ const onAnnotationMouseOver = function (
 
 const onAnnotationMouseLeave = function (
   annotation: Annotation,
-  mouseEvent: MouseEvent
+  mouseEvent: MouseEvent,
 ) {
   hoveredAnnotationsState.delete(annotation.id);
   props.hoveredList = Array.from(hoveredAnnotationsState.keys());
@@ -81,7 +81,7 @@ const onAnnotationMouseLeave = function (
 
 const onAnnotationClick = function (
   annotation: Annotation,
-  e: MouseEvent
+  e: MouseEvent,
 ): void {
   if (!selectedAnnotations.has(annotation.id)) {
     selectedAnnotations.set(annotation.id, annotation);
@@ -96,7 +96,7 @@ const onAnnotationCreateBegin = function (createState: CreateAnnotationState) {
     id: Math.random().toString().slice(2, 12),
     start: createState.newStart,
     end: createState.newStart,
-    class: "annotation annotation--color-1",
+    // class: "annotation annotation--color-1",
     target: "text",
   };
   createState.initAnnotation(annotation);
@@ -124,7 +124,7 @@ const onAnnotationUpdating = function (updateState: UpdateAnnotationState) {
 };
 
 const onAnnotationUpdateEnd = function (
-  updateState: UpdateAnnotationState
+  updateState: UpdateAnnotationState,
 ): void {
   Debugger.debug("** Edited: ", updateState.annotation);
   annotationMap.set(updateState.annotation.id, updateState.annotation); // Edit application state
@@ -135,7 +135,7 @@ const onKeyPressed = function (
   keyEv: KeyboardEvent,
   updateState: UpdateAnnotationState,
   createState: CreateAnnotationState,
-  userState: UserState
+  userState: UserState,
 ): void {
   switch (keyEv.key) {
     case "Escape":

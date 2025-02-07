@@ -1,8 +1,7 @@
 ![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fvue-component-annotated-text?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40ghentcdh%2Fvue-component-annotated-text)
-
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/GhentCDH/vue_component_annotated_text/merge-request.yml)
-
-
+[![Build](https://github.com/GhentCDH/vue_component_annotated_text/actions/workflows/merge-request.yml/badge.svg)](https://github.com/GhentCDH/vue_component_annotated_text/actions/workflows/merge-request.yml)
+[![Publish](https://github.com/GhentCDH/vue_component_annotated_text/actions/workflows/publish.yml/badge.svg)](https://github.com/GhentCDH/vue_component_annotated_text/actions/workflows/publish.yml)
+ 
 # Vue component annotated text
 
 This repository contains a reusable Vue 3 component to visualize text annotations on web pages. It can be used for

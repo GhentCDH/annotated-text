@@ -122,7 +122,7 @@ const doubleClick = (
 const mouseMove = (
   event: MouseEvent,
   wordPart: WordPart,
-  annotation: Annotation,
+  annotation?: Annotation,
 ) => {
   onMove(event, {
     startOffset: wordPart?.start,

@@ -69,9 +69,8 @@ import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.v
 import type { ActionType } from "../types/AnnotatedText";
 import { annotationStyle } from "../utils/annotatedTextUtils/AnnotatedTextUtils/annotation.style";
 import type {
-  MouseEventPayload,
-  RecursiveAnnotatedTokenPartTextProps,
   RecursiveAnnotatedTokenPartTextEmits,
+  RecursiveAnnotatedTokenPartTextProps,
 } from "@/types/props";
 
 const props = withDefaults(
@@ -89,7 +88,7 @@ const canHandle = computed(() => props.allowEdit || props.allowCreate);
 const emit = defineEmits<RecursiveAnnotatedTokenPartTextEmits>();
 
 const click = (
-  event: MouseEventPayload,
+  event: MouseEvent,
   wordPartStart: number,
   action?: ActionType,
 ) => {
@@ -101,7 +100,7 @@ const click = (
 };
 
 const dblClick = (
-  event: MouseEventPayload,
+  event: MouseEvent,
   wordPartStart: number,
   action?: ActionType,
 ) => {
@@ -112,7 +111,7 @@ const dblClick = (
   });
 };
 
-const mouseMove = (event: MouseEventPayload, wordPartStart: number) => {
+const mouseMove = (event: MouseEvent, wordPartStart: number) => {
   onMove(event, {
     startOffset: wordPartStart,
     annotation: annotation.value,

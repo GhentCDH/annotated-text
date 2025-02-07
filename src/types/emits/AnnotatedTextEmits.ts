@@ -1,10 +1,11 @@
 import type {
   CreateAnnotationState,
   UpdateAnnotationState,
-  UserActionState,
   UserState,
 } from "../../state";
+import { UserActionState } from "../../state";
 import type { Annotation } from "../Annotation";
+import type { MouseEventPayload } from "@/types/props";
 
 export type AnnotatedTextEmits = {
   /**
@@ -18,13 +19,16 @@ export type AnnotatedTextEmits = {
    * @arg annotation Annotation object that was clicked
    * @arg mouseEvent normal dom mouse event
    */
-  "annotation-click": [annotation: Annotation, mouseEvent: MouseEvent];
+  "annotation-click": [annotation: MouseEventPayload, mouseEvent: MouseEvent];
   /**
    * Emitted when an annotation (both span and gutter) is double clicked.
    * @arg annotation Annotation object that was clicked
    * @arg mouseEvent normal dom mouse event
    */
-  "annotation-double-click": [annotation: Annotation, mouseEvent: MouseEvent];
+  "annotation-double-click": [
+    annotation: MouseEventPayload,
+    mouseEvent: MouseEvent,
+  ];
   /**
    * Emitted when the user starts updating an annotation, so when the mouse is
    * clicked down and the listenToOnUpdateStart prop is true.
@@ -95,20 +99,20 @@ export type AnnotatedTextEmits = {
   ];
   /**
    * Emitted when the mouse goes over new annotations
-   * @arg hoveredAnnotations List newly hovered annotations
+   * @arg hoveredAnnotations The hovered annotation
    * @arg mouseEvent Normal dom mouse event
    */
   "annotation-mouse-over": [
-    hoveredAnnotations: Annotation[],
+    hoveredAnnotation: Annotation,
     mouseEvent: MouseEvent,
   ];
   /**
    * Emitted when the mouse stops hovering over annotations
-   * @arg hoveredAnnotations List of now newly no longer hovered annotations
+   * @arg hoveredAnnotation The hovered annotation
    * @arg mouseEvent Normal dom mouse event
    */
   "annotation-mouse-leave": [
-    hoveredAnnotations: Annotation[],
+    hoveredAnnotation: Annotation,
     mouseEvent: MouseEvent,
   ];
   /**

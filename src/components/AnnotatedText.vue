@@ -179,7 +179,7 @@ const onMouseMoveHandlers = new Map<
 function onClick(e: MouseEvent, payload?: MouseEventPayload) {
   Debugger.verbose("@onClick", "userState:", userState.value.state, payload);
   onMouseDownHandlers.get(userState.value.state)?.(e, payload);
-  emit("annotation-click", payload);
+  emit("annotation-click", payload, e);
 }
 
 function onDoubleClick(e: MouseEvent, payload?: MouseEventPayload) {
@@ -190,7 +190,7 @@ function onDoubleClick(e: MouseEvent, payload?: MouseEventPayload) {
     payload,
   );
   e.preventDefault();
-  emit("annotation-double-click", payload);
+  emit("annotation-double-click", payload, e);
 }
 
 function onMouseMove(e: MouseEvent, payload?: MouseEventPayload) {
