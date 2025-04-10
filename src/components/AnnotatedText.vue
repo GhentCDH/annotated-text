@@ -228,7 +228,10 @@ onMouseDownHandlers.set(
       userState.value.payload = payload;
       return;
     }
-    if (payload?.startOffset) {
+
+    const startOffset = payload?.startOffset ?? null;
+
+    if (startOffset >= 0) {
       userState.value.state = UserActionState.START_CREATE;
       userState.value.payload = payload;
       return;
