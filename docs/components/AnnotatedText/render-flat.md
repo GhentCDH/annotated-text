@@ -13,9 +13,8 @@ import {
   AnnotatedText,
   Debugger,
   UserActionState,
-} from "../../../src";
-import { lines } from "../../demo/line";
-import { annotations } from "../../demo/annotations";
+} from "@ghentcdh/vue-component-annotated-text";
+import { lines, annotations } from "@demo";
 
 
 

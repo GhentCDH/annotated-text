@@ -1,19 +1,15 @@
-{   "env": {
-  "node": true,
-  "commonjs": true
-},
+{
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "checkJs": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "exactOptionalPropertyTypes": true,
+    "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2021"],
-    "module": "node16",
-    "newLine": "lf",
-    "skipLibCheck": true,
     "strict": true,
-    "target": "es2021"
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true
   },
-  "include": ["**/*.cjs", "**/*.js", "**/*.jsx", "**/*.ts"]
+  "include": [
+    "**/*.ts"
+  ]
 }
