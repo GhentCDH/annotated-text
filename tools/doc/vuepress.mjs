@@ -117,6 +117,6 @@ const copyReadme = (from, to, depth = Number.MAX_SAFE_INTEGER) => {
 
 copyReadme('', '', 1);
 
-// createMenu('components');
-// createMenu('demo');
-// createMenu('api', ['_media', 'globals.md']);
+createMenu('components');
+createMenu('demo');
+createMenu('api', ['_media', 'globals.md']);
