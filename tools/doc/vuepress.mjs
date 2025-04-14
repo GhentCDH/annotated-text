@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from 'fs';
 import path from 'path';
 
@@ -119,4 +120,4 @@ copyReadme('', '', 1);
 
 createMenu('components');
 createMenu('demo');
-createMenu('api', ['_media', 'globals.md']);
+// createMenu('api', ['_media', 'globals.md']);
