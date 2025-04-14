@@ -1,8 +1,5 @@
----
-AnnotatedText
----
-
 # AnnotatedText
+
 
 <script setup>
 import {

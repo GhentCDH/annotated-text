@@ -32,7 +32,7 @@ coverage
 
 /docs/.vitepress/*
 !/docs/.vitepress/config.ts
-!/docs/.vitepress/BaseConfig.js
+!/docs/styles
 /test_coverage
 /docs/internal
 /docs/api/*
