@@ -10,8 +10,8 @@ Live demo of the dev app
 
 
 <script setup>
-import Demo from "../../../dev-app/DemoComponent.vue";
-import '../../../src/style/style.scss';
+import { Demo } from "@dev-app";
+import "@ghentcdh/vue-component-annotated-text";
 
 </script>
 

@@ -8,9 +8,9 @@ This repository contains a reusable Vue 3 component to visualize text annotation
 linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following
 screenshots:
 
-![Annotations](docs/annotations.png)
+![Annotations](docs/_media/annotations.png)
 
-![Edit](docs/editAnnotation.png)
+![Edit](docs/_media/editAnnotation.png)
 
 ## Usage
 

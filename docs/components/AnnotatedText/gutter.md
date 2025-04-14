@@ -2,16 +2,15 @@
 AnnotatedText
 ---
 
-# AnnotatedText
+# Gutter example
 
 <script setup>
 import {
   AnnotatedText,
   Debugger,
   UserActionState,
-} from "../../../src";
-import { lines } from '../../demo/line';
-import { annotations } from '../../demo/annotations-some-gutters';
+} from "@ghentcdh/vue-component-annotated-text";
+import { lines, annotationsWithGutters } from "@demo";
 
 </script>
 
@@ -20,7 +19,7 @@ import { annotations } from '../../demo/annotations-some-gutters';
 <AnnotatedText
     key="text"
     :component-id="'1'" 
-    :annotations="annotations"
+    :annotations="annotationsWithGutters"
     :lines="lines"
 />
 </ClientOnly>
