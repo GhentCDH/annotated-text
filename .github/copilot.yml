@@ -1,0 +1,11 @@
+pull_request:
+  reviewer:
+    enabled: true
+    paths:
+      - "src/**"           # Include everything in src/
+      - "!src/**/*.spec.*" # Exclude test files (like *.spec.js or *.spec.ts)
+      - "!tests/**"        # Exclude tests folder if you have one
+    languages:
+      - javascript
+      - typescript
+      - vue

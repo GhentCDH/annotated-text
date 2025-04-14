@@ -57,6 +57,7 @@
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.14.1",
     "@types/uuid": "^10.0.0",
+    "@types/yargs": "17.0.33",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vitest/coverage-c8": "^0.33.0",
     "@vitest/eslint-plugin": "^1.1.42",
@@ -66,11 +67,13 @@
     "@vue/tsconfig": "^0.7.0",
     "@vuepress/bundler-vite": "2.0.0-rc.21",
     "@vuepress/theme-default": "2.0.0-rc.94",
+    "conventional-changelog": "6.0.0",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-vue": "^10.0.0",
+    "fs-extra": "11.3.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "lint-staged": "^15.5.1",
@@ -78,6 +81,8 @@
     "prettier": "^3.5.3",
     "prism-themes": "^1.9.0",
     "sass": "^1.86.3",
+    "semver": "7.7.1",
+    "simple-git": "3.27.0",
     "stylelint": "^16.18.0",
     "stylelint-config-standard-scss": "^14.0.0",
     "ts-node": "^10.9.2",
@@ -96,7 +101,8 @@
     "vue-docgen-cli": "^4.79.0",
     "vue-live": "^2.5.4",
     "vue-tsc": "^2.2.8",
-    "vuepress": "2.0.0-rc.21"
+    "vuepress": "2.0.0-rc.21",
+    "yargs": "17.7.2"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
