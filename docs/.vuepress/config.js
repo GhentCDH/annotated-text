@@ -2,6 +2,7 @@ import { viteBundler } from "@vuepress/bundler-vite";
 import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 
+import { hopeTheme } from "vuepress-theme-hope";
 import { fileURLToPath } from "node:url";
 import componentsSideBar from "../components/typedoc_sidebar.json";
 import demoSidebar from "../demo/typedoc_sidebar.json";
@@ -31,9 +32,10 @@ export default defineUserConfig({
   // postcss: {
   //   plugins: [require('@tailwindcss/postcss'), require('autoprefixer')],
   // },
-  theme: defaultTheme({
+  theme: hopeTheme({
+    darkmode: "disable",
     docsRepo: "https://github.com/GhentCDH/vue_component_annotated_text",
-    docsBranch: "master",
+    docsBranch: "main",
     docsDir: "docs",
     // editLinkPattern: ':repo/tree/:branch/:path',
     lastUpdated: true,
