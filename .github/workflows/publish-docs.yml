@@ -19,20 +19,13 @@ jobs:
   install-deps:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Cache node modules
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ env.DEPENDENCIES_CACHE }}-${{ hashFiles('pnpm-lock.yaml') }}
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/use-cache
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install

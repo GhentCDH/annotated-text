@@ -45,6 +45,9 @@ importers:
       '@types/node':
         specifier: ^22.14.1
         version: 22.14.1
+      '@types/semver':
+        specifier: 7.7.0
+        version: 7.7.0
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0
