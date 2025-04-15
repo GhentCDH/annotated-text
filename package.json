@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/GhentCDH/vue_component_annotated_text"
   },
-  "version": "0.4.8",
+  "version": "0.4.10",
   "exports": {
     ".": {
       "import": "./dist/vue-component-annotated-text.js",
@@ -39,7 +39,7 @@
     "prepare": "husky install",
     "lint:staged": "lint-staged --allow-empty",
     "upgrade": "vue upgrade",
-    "release": "ts-node --project tools/tsconfig.tools.json tools/release/release.ts"
+    "release": "node tools/release/release.mjs"
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
@@ -125,13 +125,8 @@
     ]
   },
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=9"
+    "node": ">=22",
+    "pnpm": ">=10"
   },
-  "packageManager": "pnpm@9.12.2",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  "packageManager": "pnpm@10.8.1"
 }
