@@ -8,16 +8,16 @@
   "version": "0.4.11",
   "exports": {
     ".": {
+      "types": "./dist/vue-component-annotated-text.d.ts",
       "import": "./dist/vue-component-annotated-text.js",
-      "require": "./dist/vue-component-annotated-text.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/vue-component-annotated-text.cjs"
     },
     "./style.css": {
-      "import": "./dist/style.css"
+      "import": "./dist/vue-component-annotated-text.css"
     }
   },
   "type": "module",
-  "style": "./dist/style.css",
+  "style": "./dist/vue-component-annotated-text.css",
   "files": [
     "dist/**/*"
   ],
@@ -32,15 +32,15 @@
     "docs:dev": "pnpm run docs:build:typedoc && pnpm run docs:build:menu && vitepress dev docs",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
-    "build": "vite build",
+    "build:types": "vue-tsc --project tsconfig.build.json ",
+    "build": "pnpm run build:types  && vite build",
     "type-check": "vue-tsc --noEmit --composite false",
     "lint": "eslint src/. dev-app/. tools/.",
     "lint:fix": "eslint src/. dev-app/. tools/. --fix",
     "prepare": "husky install",
     "lint:staged": "lint-staged --allow-empty",
     "upgrade": "vue upgrade",
-    "release": "node tools/release/release.mjs"
-  },
+    "release": "node tools/release/release.mjs"},
   "dependencies": {
     "lodash-es": "^4.17.21",
     "memoizee": "^0.4.17"
@@ -81,6 +81,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.5.3",
     "prism-themes": "^1.9.0",
+    "rollup-plugin-dts": "6.2.1",
     "sass": "^1.86.3",
     "sass-embedded": "^1.86.3",
     "semver": "7.7.1",

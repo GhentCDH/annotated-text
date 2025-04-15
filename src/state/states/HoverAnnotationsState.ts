@@ -1,4 +1,4 @@
-import type { AnnotationInternal } from "src/types/Annotation";
+import { AnnotationInternal } from "../../types/Annotation";
 
 /**
  * Holds all the annotations the mouse is currently hovering over.
