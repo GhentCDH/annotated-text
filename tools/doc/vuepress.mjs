@@ -62,7 +62,8 @@ function generateDirectoryObject(dir, exclude) {
     text: formatText(dirName),
     children: items,
     items: items,
-    collapsed: true,
+    collapsible: files.length>1,
+
     link: indexFile ? `/${dir}/${indexFile}` : '',
   };
 }
@@ -120,4 +121,4 @@ copyReadme('', '', 1);
 
 createMenu('components');
 createMenu('demo');
-// createMenu('api', ['_media', 'globals.md']);
+createMenu('api', ['_media', 'globals.md']);

@@ -1,11 +1,11 @@
 import { viteBundler } from "@vuepress/bundler-vite";
-import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 
 import { hopeTheme } from "vuepress-theme-hope";
 import { fileURLToPath } from "node:url";
 import componentsSideBar from "../components/typedoc_sidebar.json";
 import demoSidebar from "../demo/typedoc_sidebar.json";
+import apiSideBar from "../api/typedoc_sidebar.json";
 
 export default defineUserConfig({
   title: "Vue annotated text component",
@@ -56,10 +56,14 @@ export default defineUserConfig({
     sidebar: [
       componentsSideBar,
       demoSidebar,
-      // {
-      //   text: 'api',
-      //   children: apiSideBar1,
-      // },
+
+      {
+        text: "api",
+        children: apiSideBar,
+        link: "/api/globals.md",
+        extended: false,
+        collapsible: true,
+      },
     ].flat(),
   }),
 });
