@@ -8,6 +8,7 @@ import demoSidebar from "../demo/typedoc_sidebar.json";
 import apiSideBar from "../api/typedoc_sidebar.json";
 
 export default defineUserConfig({
+  base: process.env.DOCS_BASE ?? "/vue_component_annotated_text/",
   title: "Vue annotated text component",
   lastUpdated: true,
   cleanUrls: true,
