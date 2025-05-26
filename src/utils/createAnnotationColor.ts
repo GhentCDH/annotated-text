@@ -28,7 +28,7 @@ const defaultConfig: Config = {
     border: 0.3,
     backgroundActive: 0.3,
     borderActive: 0.9,
-    gutter: 0.8,
+    gutter: 0.3,
   },
 };
 
@@ -56,7 +56,7 @@ const hexToRgb = (hex: string): string => {
  */
 export const createAnnotationColor = (
   color: string,
-  config?: Config
+  config?: Config,
 ): AnnotationColor => {
   const opacity = { ...defaultConfig.opacity, ...config?.opacity };
   const rgbColor = hexToRgb(color);
@@ -69,6 +69,7 @@ export const createAnnotationColor = (
       opacity.backgroundActive * 100
     })`,
     gutterColor: `rgba(${rgbColor},${opacity.gutter})`,
+    color: color,
   };
 };
 
@@ -80,7 +81,7 @@ export const createAnnotationColor = (
  */
 export const createAnnotationColors = (
   colors: Record<string, string>,
-  config?: Config
+  config?: Config,
 ): Record<string, AnnotationColor> => {
   const colorSet: Record<string, AnnotationColor> = {};
 

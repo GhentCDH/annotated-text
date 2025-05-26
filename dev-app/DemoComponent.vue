@@ -23,6 +23,7 @@ import {
 } from "@ghentcdh/vue-component-annotated-text";
 import { textToLines } from "./Utils";
 import { annotationsGreek as annotations, textGreek as text } from "./data";
+import AnnotatedTextPojo from "../src/components/AnnotatedTextPojo.vue";
 
 const textLines = textToLines(text);
 
@@ -178,6 +179,49 @@ const onKeyPressed = function (
 
   <hr />
   <div class="text-components">
+    <AnnotatedTextPojo
+      key="text"
+      :component-id="'1'"
+      :annotations="props.annoList"
+      :hovered-annotations="props.hoveredList"
+      :selected-annotations="props.selectedList"
+      :lines="textLines"
+      :debug="props.debug"
+      :verbose="props.verbose"
+      :show-labels="props.showLabels"
+      :render="props.renderNested ? 'nested' : 'flat'"
+      :display="props.target"
+      :allow-edit="props.allowEdit"
+      :allow-create="props.allowCreate"
+      :listen-to-on-updating="false"
+      :listen-to-on-update-start="true"
+      @annotation-select="onAnnotationClick"
+      @annotation-update-begin="onAnnotationUpdateBegin"
+      @annotation-updating="onAnnotationUpdating"
+      @annotation-update-end="onAnnotationUpdateEnd"
+      @key-pressed="onKeyPressed"
+      @annotation-create-begin="onAnnotationCreateBegin"
+      @annotation-creating="onAnnotationCreating"
+      @annotation-create-end="onAnnotationCreateEnd"
+      @annotation-mouse-over="onAnnotationMouseOver"
+      @annotation-mouse-leave="onAnnotationMouseLeave"
+    >
+      <template #annotation-after="slotProps">
+        <template v-if="slotCondition(slotProps)">
+          <span>
+            <FontAwesomeIcon :icon="faRemove" style="color: red" />
+          </span>
+          <span>
+            <FontAwesomeIcon :icon="faImportant" style="color: orange" />
+          </span>
+          <span>
+            <FontAwesomeIcon :icon="faValidate" style="color: green" />
+          </span>
+        </template>
+        <input v-if="props.showSelects" type="checkbox" />
+      </template>
+      <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
+    </AnnotatedTextPojo>
     <AnnotatedText
       key="text"
       :component-id="'1'"

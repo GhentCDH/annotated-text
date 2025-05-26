@@ -1,59 +1,18 @@
 -
 <template>
-  <div
-    v-if="linesUtil.annotatedLines.value.length"
-    :class="[
-      'annotated-text',
-      `theme-${theme}`,
-      `annotated-text--render-${render}`,
-      {
-        'annotated-text--show-labels': showLabels,
-        'action--active': updateState.action,
-      },
-      updateState.action ? `action--${updateState.action}` : '',
-    ]"
-    @mouseleave="onMouseLeave($event)"
-    @mouseup="onMouseUp($event)"
-  >
-    <template v-for="line in linesUtil.annotatedLines.value" :key="line">
-      <!-- gutter annotations -->
-      <annotated-gutters
-        :gutter="line.gutter"
-        :annotation-style="style"
-        @annotation-click="onClick"
-        @annotation-double-click="onDoubleClick"
-      />
-      <!-- line -->
-      <div class="content">
-        <AnnotatedLine
-          :line="line"
-          :allow-edit="allowEdit"
-          :allow-create="allowCreate"
-          :annotation-classes="annotationClasses"
-          :render="render"
-          @annotation-click="onClick"
-          @annotation-double-click="onDoubleClick"
-          @annotation-mouse-move="onMouseMove"
-        >
-          <template #annotation-before="slotProps">
-            <slot
-              name="annotation-before"
-              :annotation="slotProps.annotation"
-            ></slot>
-          </template>
-          <template #annotation-after="slotProps">
-            <slot name="annotation-after" :annotation="slotProps.annotation" />
-          </template>
-        </AnnotatedLine>
-      </div>
-    </template>
-  </div>
+  <div class="pojo" :id="id"></div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch, watchEffect } from "vue";
-import AnnotatedLine from "./AnnotatedLine.vue";
-import AnnotatedGutters from "./gutter/AnnotatedGutters.vue";
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  reactive,
+  watch,
+  watchEffect,
+} from "vue";
+import { v4 as uuidv4 } from "uuid"; // init props
 import { createPositionFromPoint } from "../utils/dom";
 import { CssClassesUtil } from "../utils/annotatedTextUtils";
 import { UserActionState, useStateObjectsStore } from "../state";
@@ -61,6 +20,7 @@ import AnnotatedLinesUtil from "../utils/annotatedTextUtils/AnnotatedLinesUtil";
 import type { AnnotationInternal } from "../types/Annotation";
 import { hasCustomEventListener } from "../utils/events";
 import { Debugger } from "../utils/debugger";
+import { ComputeAnnotations } from "../compute/compute_annotations";
 import type { AnnotatedTextProps, MouseEventPayload } from "@/types/props";
 import type { AnnotatedTextEmits } from "@/types/emits";
 
@@ -106,10 +66,39 @@ const { updateState, createState, userState, hoverState } = statesStore;
 
 const userStateLabel = computed(() => userState.value.state);
 
+const id = `annotated-text-${uuidv4()}`;
+
 const linesUtil = new AnnotatedLinesUtil(
   props,
   updateState.value,
   createState.value,
+);
+
+const computeAnnotations = new ComputeAnnotations(props.lines);
+
+// get a reference to annotatedTextDraw
+
+onMounted(() => {
+  computeAnnotations.init(id);
+});
+
+watch(
+  () => props.lines,
+  () => {
+    computeAnnotations.setLines(props.lines);
+
+    // TODO draw annotations
+  },
+);
+
+watch(
+  () => props.annotations,
+  () => {
+    computeAnnotations.setAnnotations(props.annotations);
+
+    // TODO draw annotations
+  },
+  { immediate: true },
 );
 
 watchEffect(() => {
@@ -422,4 +411,8 @@ onMouseMoveHandlers.set(
     }
   },
 );
+
+onUnmounted(() => {
+  computeAnnotations.destroy();
+});
 </script>

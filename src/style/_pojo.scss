@@ -1,0 +1,34 @@
+.ghent-cdh-annotation {
+  &-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1000;
+
+    .handle {
+      pointer-events: all;
+    }
+  }
+
+  &-wrapper {
+    position: relative;
+  }
+
+  &-text {
+    grid-template-columns: max-content auto;
+    align-items: center;
+
+    .content {
+      line-height: var(--line-height, initial);
+      padding-top: var(--line-padding, 0);
+      padding-bottom: var(--line-padding, 0);
+      padding: 12px;
+    }
+
+    .gutter {
+      margin-left: var(--gutter-left);
+      padding-left: 8px;
+    }
+  }
+}

@@ -4,9 +4,9 @@ import fsExtra from "fs-extra";
 import semver from "semver";
 import  yargs from "yargs";
 import conventionalChangelog from "conventional-changelog";
+import { hideBin } from 'yargs/helpers';
 import  path from "path";
 import fs from "fs";
-import { hideBin } from 'yargs/helpers';
 
 const git = simpleGit();
 
