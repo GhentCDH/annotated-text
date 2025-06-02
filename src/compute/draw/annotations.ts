@@ -10,16 +10,18 @@ export const drawAnnotation = (
   svg: AnnotationSvg,
 ) => {
   const config = model.config;
+  if (annotation.path.border)
+    svg
+      .append("path")
+      .attr("data-annotation-uid", annotation.annotationUuid)
+      .attr("data-annotation-role", "border")
+      .attr("stroke-width", config.text.border)
+      .attr("d", annotation.path.border);
   const rect = svg
-    .append("rect")
+    .append("path")
     .attr("data-annotation-uid", annotation.annotationUuid)
-    .attr("x", annotation.dimensions.x)
-    .attr("y", annotation.dimensions.y)
-    .attr("width", annotation.dimensions.width)
-    .attr("height", annotation.dimensions.height)
-    .attr("stroke-width", config.text.border)
-    .attr("rx", config.text.borderRadius) // rounded corners
-    .attr("ry", config.text.borderRadius);
+    .attr("data-annotation-role", "fill")
+    .attr("d", annotation.path.fill);
 
   colorAnnotation(svg, annotation.annotationUuid, annotation.color.default);
 

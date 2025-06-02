@@ -25,6 +25,7 @@ export const drawAnnotations = (
 
   drawComputedAnnotations(textAnnotationModel, svg);
 
+  return svg;
   // return svg.node();
 
   // draw a rectangle

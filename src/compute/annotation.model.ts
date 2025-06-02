@@ -28,7 +28,7 @@ export type AnnotationDraw = {
   uuid: string;
   annotationUuid: string;
   lineNumber: number;
-  dimensions: Dimensions;
+  path: { border?: string; fill: string };
   weight: number;
   color: {
     default: AnnotationDrawColor;

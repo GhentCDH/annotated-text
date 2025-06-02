@@ -9,6 +9,7 @@ import {
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
+import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(
@@ -62,17 +63,14 @@ const createGutter = (model: TextAnnotationModel, gutter: AnnotatedGutter) => {
 
   // Add the gutterwidth as padding
   const x = (gutterWidth + gutterGap) * (gutter.weight ?? 0);
+  const height = lastLine.dimensions.y + lastLine.dimensions.height - y - 5;
+
   model.addDrawAnnotation({
     weight: gutter.weight,
     uuid: uuidv4(),
     annotationUuid: gutter.id,
     lineNumber: gutter.firstLine,
-    dimensions: {
-      x,
-      y,
-      width: gutterWidth,
-      height: lastLine.dimensions.y + lastLine.dimensions.height - y - 5,
-    },
+    path: createGutterPath(x, y, gutterWidth, height),
     color: getColors(model.config.hover.color, gutter, false),
   });
 };
@@ -135,25 +133,38 @@ const createTextAnnotation = (
   annotation: TextAnnotation,
 ) => {
   const lines = model.getLinesForAnnotation(annotation.id);
+  const radius = model.config.text.borderRadius;
 
-  lines.forEach((line) => {
+  lines.forEach((line, index: number) => {
     const rects = getRanges(annotation, line);
 
     const padding = model.config.text.padding * annotation.weight;
     const height = model.config.text.lineHeight + padding * 2;
+    const prevEnd = lines[index - 1]?.end;
+    const isFirstLine = !prevEnd || prevEnd <= annotation.start;
+    const nextLine = lines[index + 1]?.start;
+    const isLastLine = !nextLine || annotation.end <= nextLine;
 
-    rects.forEach((rect) => {
+    rects.forEach((rect, index) => {
+      const x = getX(parentDimensions, rect);
+      const y = getY(parentDimensions, rect) - padding;
+      const leftBorder = isFirstLine && index === 0;
+      const rightBorder = isLastLine && index === rects.length - 1;
+
       model.addDrawAnnotation({
         weight: annotation.weight,
         uuid: uuidv4(),
         annotationUuid: annotation.id,
         lineNumber: line.lineNumber,
-        dimensions: {
-          x: getX(parentDimensions, rect),
-          y: getY(parentDimensions, rect) - padding,
+        path: createAnnotationPath({
+          x: x,
+          y: y,
           width: rect.width,
           height: height,
-        },
+          r: radius,
+          leftBorder: leftBorder,
+          rightBorder: rightBorder,
+        }),
         color: getColors(model.config.hover.color, annotation),
       });
     });

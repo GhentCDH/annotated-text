@@ -4,15 +4,16 @@ import { AnnotationDrawColor } from "../../annotation.model";
 export const findRelatedAnnotations = (
   svg: AnnotationSvg,
   annotationUuid: string,
+  selector = "",
 ) => {
   const annotations = svg.selectAll(
-    `[data-annotation-uid="${annotationUuid}"]`,
+    `[data-annotation-uid="${annotationUuid}"]${selector}`,
   );
 
   if (annotations.empty()) {
-    console.warn(
-      `Could not find annotation with uuid ${annotationUuid} to color`,
-    );
+    // console.warn(
+    //   `Could not find annotation with uuid ${annotationUuid} to color`,
+    // );
     return null;
   }
 
@@ -24,7 +25,17 @@ export const colorAnnotation = (
   annotationUuid: string,
   color: AnnotationDrawColor,
 ) => {
-  const annotations = findRelatedAnnotations(svg, annotationUuid);
+  const borders = findRelatedAnnotations(
+    svg,
+    annotationUuid,
+    `[data-annotation-role="border"]`,
+  );
+  const fills = findRelatedAnnotations(
+    svg,
+    annotationUuid,
+    '[data-annotation-role="fill"]',
+  );
 
-  annotations?.attr("fill", color.fill).attr("stroke", color.border);
+  fills?.attr("fill", color.fill).attr("stroke", "none");
+  borders?.attr("fill", "none").attr("stroke", color.border);
 };
