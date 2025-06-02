@@ -1,6 +1,6 @@
 import { AnnotationSvg } from "./svg.types";
-import { colorAnnotation } from "../draw/annotations";
 import { AnnotationDraw, AnnotationDrawColor } from "../annotation.model";
+import { colorAnnotation } from "../draw/utils/annotation";
 
 export class IdCollection {
   private ids = new Map<

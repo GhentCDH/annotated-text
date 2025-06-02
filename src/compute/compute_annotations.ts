@@ -127,6 +127,7 @@ export class ComputeAnnotations {
   private highlightedIds = new IdCollection("hover");
 
   public highlightAnnotations(ids: string[]): void {
+    return;
     this.highlightedIds.changeIds(
       this.svgElement,
       ids?.map((i) => this.textAnnotationModel.getAnnotationDraw(i)[0]) ?? [],
