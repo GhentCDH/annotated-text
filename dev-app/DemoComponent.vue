@@ -24,6 +24,10 @@ import {
 import { textToLines } from "./Utils";
 import { annotationsGreek as annotations, textGreek as text } from "./data";
 import AnnotatedTextPojo from "../src/components/AnnotatedTextPojo.vue";
+import {
+  AnnotationEventData,
+  AnnotationEventType,
+} from "../src/compute/events";
 
 const textLines = textToLines(text);
 
@@ -62,6 +66,26 @@ const props = reactive({
 function slotCondition(slotProps: { annotation: Annotation }) {
   return selectedAnnotations.has(slotProps.annotation.id);
 }
+
+const onAnnotationEvent = (
+  event: MouseEvent,
+  type: AnnotationEventType,
+  data: AnnotationEventData,
+) => {
+  switch (type) {
+    case "mouse-enter":
+      onAnnotationMouseOver(data.annotation, event);
+      break;
+    case "mouse-leave":
+      onAnnotationMouseLeave(data.annotation, event);
+      break;
+    case "click":
+      onAnnotationClick(data.annotation, event);
+      break;
+    default:
+      Debugger.warn("Unhandled annotation event type: ", type);
+  }
+};
 
 const onAnnotationMouseOver = function (
   annotation: Annotation,
@@ -180,48 +204,15 @@ const onKeyPressed = function (
   <hr />
   <div class="text-components">
     <AnnotatedTextPojo
+      v-bind="props"
       key="text"
       :component-id="'1'"
       :annotations="props.annoList"
-      :hovered-annotations="props.hoveredList"
+      :highlight-annotations="props.hoveredList"
       :selected-annotations="props.selectedList"
-      :lines="textLines"
-      :debug="props.debug"
-      :verbose="props.verbose"
-      :show-labels="props.showLabels"
-      :render="props.renderNested ? 'nested' : 'flat'"
-      :display="props.target"
-      :allow-edit="props.allowEdit"
-      :allow-create="props.allowCreate"
-      :listen-to-on-updating="false"
-      :listen-to-on-update-start="true"
-      @annotation-select="onAnnotationClick"
-      @annotation-update-begin="onAnnotationUpdateBegin"
-      @annotation-updating="onAnnotationUpdating"
-      @annotation-update-end="onAnnotationUpdateEnd"
-      @key-pressed="onKeyPressed"
-      @annotation-create-begin="onAnnotationCreateBegin"
-      @annotation-creating="onAnnotationCreating"
-      @annotation-create-end="onAnnotationCreateEnd"
-      @annotation-mouse-over="onAnnotationMouseOver"
-      @annotation-mouse-leave="onAnnotationMouseLeave"
-    >
-      <template #annotation-after="slotProps">
-        <template v-if="slotCondition(slotProps)">
-          <span>
-            <FontAwesomeIcon :icon="faRemove" style="color: red" />
-          </span>
-          <span>
-            <FontAwesomeIcon :icon="faImportant" style="color: orange" />
-          </span>
-          <span>
-            <FontAwesomeIcon :icon="faValidate" style="color: green" />
-          </span>
-        </template>
-        <input v-if="props.showSelects" type="checkbox" />
-      </template>
-      <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
-    </AnnotatedTextPojo>
+      :text-lines="textLines"
+      @event="onAnnotationEvent"
+    />
     <AnnotatedText
       key="text"
       :component-id="'1'"

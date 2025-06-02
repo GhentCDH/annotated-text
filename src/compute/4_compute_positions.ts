@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Annotation } from "@ghentcdh/vue-component-annotated-text";
 import {
   AnnotatedGutter,
+  AnnotationDrawColor,
   TextAnnotation,
   TextAnnotationModel,
   TextLine,
@@ -72,9 +73,7 @@ const createGutter = (model: TextAnnotationModel, gutter: AnnotatedGutter) => {
       width: gutterWidth,
       height: lastLine.dimensions.y + lastLine.dimensions.height - y - 5,
     },
-    color: {
-      fill: gutter.color.gutterColor,
-    },
+    color: getColors(model.config.hover.color, gutter, false),
   });
 };
 
@@ -112,6 +111,24 @@ const getRanges = (annotation: Annotation, line: TextLine) => {
   return Array.from(rects);
 };
 
+const getColors = (
+  hoverColor: AnnotationDrawColor,
+  annotation: TextAnnotation,
+  borders = true,
+) => {
+  return {
+    default: {
+      fill: annotation.color.background,
+      border: borders ? annotation.color.border : undefined,
+    } as AnnotationDrawColor,
+    hover: hoverColor,
+    active: {
+      fill: annotation.color.backgroundActive,
+      border: borders ? annotation.color.borderActive : undefined,
+    } as AnnotationDrawColor,
+  };
+};
+
 const createTextAnnotation = (
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -137,10 +154,7 @@ const createTextAnnotation = (
           width: rect.width,
           height: height,
         },
-        color: {
-          fill: annotation.color.background,
-          border: annotation.color.border,
-        },
+        color: getColors(model.config.hover.color, annotation),
       });
     });
   });

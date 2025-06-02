@@ -19,13 +19,22 @@ export type TextAnnotation = Annotation & {
 
 export type TextAnnotationColor = AnnotationColor & {};
 
+export type AnnotationDrawColor = {
+  fill: string;
+  border?: string;
+};
+
 export type AnnotationDraw = {
   uuid: string;
   annotationUuid: string;
   lineNumber: number;
   dimensions: Dimensions;
   weight: number;
-  color: { fill: string; border?: string };
+  color: {
+    default: AnnotationDrawColor;
+    active: AnnotationDrawColor;
+    hover: AnnotationDrawColor;
+  };
 };
 
 export type AnnotatedGutter = TextAnnotation & {
@@ -50,20 +59,29 @@ export interface TextAnnotationModel {
   annotations: TextAnnotation[];
 
   clearDrawAnnotation(): void;
+
   addDrawAnnotation(annotation: AnnotationDraw): void;
+
   setAnnotation(
     annotation: TextAnnotation,
     lines: TextLine[],
     calculateWeights?: boolean,
   ): void;
+
   removeAnnotation(
     annotation: TextAnnotation,
     calculateWeights?: boolean,
   ): void;
 
   // getGutter(line: number): Annotation[];
+  getAnnotation(id: number): Annotation;
+
+  getAnnotationDraw(annotationUuid: string): AnnotationDraw[];
+
   getAnnotations(line: number): Annotation[];
+
   getLinesForAnnotation(annotationId: string): TextLine[];
+
   // getMaxLineWeight(line: number): number;
 
   maxGutterWeight: number;
@@ -104,9 +122,19 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   get annotations() {
     return Array.from(this.annotationsMap.values()) as TextAnnotation[];
   }
+
+  getAnnotation(id: string) {
+    return this.annotationsMap.get(id);
+  }
+
+  getAnnotationDraw(id: string) {
+    return this.drawAnnotations.filter((d) => d.annotationUuid === id);
+  }
+
   clearDrawAnnotation() {
     this.drawAnnotations = [];
   }
+
   addDrawAnnotation(annotation: AnnotationDraw) {
     this.drawAnnotations.push(annotation);
   }

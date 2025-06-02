@@ -1,4 +1,4 @@
-import { select } from "d3";
+import { drag, select } from "d3";
 import { TextAnnotationModel } from "./annotation.model";
 
 import { styles } from "./styles.const";
@@ -25,7 +25,7 @@ export const drawAnnotations = (
 
   drawComputedAnnotations(textAnnotationModel, svg);
 
-  return svg.node();
+  // return svg.node();
 
   // draw a rectangle
   const rectData = {
@@ -61,5 +61,5 @@ export const drawAnnotations = (
     handle.attr("cy", rectData.y + newHeight);
   }
 
-  return svg.node();
+  return svg;
 };

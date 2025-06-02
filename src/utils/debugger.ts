@@ -28,6 +28,10 @@ export class Debugger {
     return this.instance._debugEnabled;
   }
 
+  public static warn(...message: any) {
+    console.warn(message);
+  }
+
   public static debug(...message: any) {
     if (!this.debugEnabled) return;
 

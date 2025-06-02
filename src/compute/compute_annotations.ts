@@ -9,6 +9,8 @@ import { drawAnnotations, drawText } from "./draw";
 import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";
+import { IdCollection } from "./model/id.collection";
+import { AnnotationSvg } from "./model/svg.types";
 import { Annotation, Line } from "../index";
 
 export class ComputeAnnotations {
@@ -16,7 +18,8 @@ export class ComputeAnnotations {
   private annotations: Annotation[];
   private element: HTMLElement;
   private textElement: HTMLElement;
-  private svgElement: SVGSVGElement;
+  private svgElement: AnnotationSvg;
+  private svgNode: SVGElement;
   private resizeObserver: ResizeObserver;
 
   constructor(
@@ -66,6 +69,8 @@ export class ComputeAnnotations {
       this.textElement,
       this.textAnnotationModel,
     );
+    this.highlightedIds.colorIds(this.svgElement);
+    this.activeIds.colorIds(this.svgElement);
   }
 
   public init(id: string) {
@@ -96,8 +101,8 @@ export class ComputeAnnotations {
   }
 
   private redrawSvg() {
-    if (this.svgElement) {
-      this.element.removeChild(this.svgElement);
+    if (this.svgNode) {
+      this.element.removeChild(this.svgNode);
     }
     this.textAnnotationModel = computeLinePositions(
       this.textAnnotationModel,
@@ -110,11 +115,37 @@ export class ComputeAnnotations {
     );
 
     this.drawSvg();
-    this.element.append(this.svgElement);
+    this.svgNode = this.svgElement.node();
+    this.element.append(this.svgNode);
   }
 
   public destroy() {
     this.resizeObserver.unobserve(this.element);
     this.resizeObserver.disconnect();
+  }
+
+  private highlightedIds = new IdCollection("hover");
+
+  public highlightAnnotations(ids: string[]): void {
+    this.highlightedIds.changeIds(
+      this.svgElement,
+      ids?.map((i) => this.textAnnotationModel.getAnnotationDraw(i)[0]) ?? [],
+      [],
+      // this.activeIds.getIds(),
+    );
+    // TODO decide which one has more priority?
+    this.activeIds.colorIds(this.svgElement);
+  }
+
+  private activeIds = new IdCollection("active");
+
+  public selectAnnotations(ids: string[]): void {
+    this.highlightedIds.removeId(ids);
+    this.activeIds.changeIds(
+      this.svgElement,
+      ids?.map((i) => this.textAnnotationModel.getAnnotationDraw(i)[0]) ?? [],
+      [],
+    );
+    // TODO decide which one has more priority?
   }
 }
