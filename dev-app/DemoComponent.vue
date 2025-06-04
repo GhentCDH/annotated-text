@@ -31,13 +31,12 @@ import {
 
 const textLines = textToLines(text);
 
-const annotationMap: Map<string, Annotation> = annotations.reduce(
-  (map, anno) => {
+const annotationMap: Map<string, Annotation> = annotations
+  // .slice(0, 2)
+  .reduce((map, anno) => {
     map.set(anno.id, { ...anno });
     return map;
-  },
-  new Map(),
-);
+  }, new Map());
 
 const hoveredAnnotationsState: Map<string, Annotation> = new Map();
 const selectedAnnotations: Map<string, Annotation> = new Map();
@@ -81,6 +80,11 @@ const onAnnotationEvent = (
       break;
     case "click":
       onAnnotationClick(data.annotation, event);
+      break;
+    case "annotation-edit--end":
+      annotationMap.set(data.annotation.id, data.annotation);
+      props.annoList = Array.from(annotationMap.values());
+
       break;
     default:
       Debugger.warn("Unhandled annotation event type: ", type);
@@ -211,6 +215,8 @@ const onKeyPressed = function (
       :highlight-annotations="props.hoveredList"
       :selected-annotations="props.selectedList"
       :text-lines="textLines"
+      :allow-edit="props.allowEdit"
+      :allow-create="props.allowCreate"
       @event="onAnnotationEvent"
     />
     <AnnotatedText

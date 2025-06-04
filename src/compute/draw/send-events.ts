@@ -10,6 +10,7 @@ export const sendEvent = (
   eventMetadata: AnnotationMetadata,
   event: AnnotationEventType,
   mouseEvent: MouseEvent,
+  additionalData = {},
 ) => {
   const { annotation, model } = eventMetadata();
   const fullAnnotation = model.getAnnotation(annotation.annotationUuid);
@@ -19,6 +20,7 @@ export const sendEvent = (
     event,
     data: {
       annotation: fullAnnotation,
+      ...additionalData,
     },
   });
 

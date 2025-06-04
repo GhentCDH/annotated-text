@@ -57,9 +57,9 @@ export interface AnnotatedTextPojoProps {
   /**
    * Whether to allow editing annotations
    */
-  // allowEdit?: boolean;
+  allowEdit?: boolean;
   /**
    * Whether to allow creating new annotations
    */
-  // allowCreate?: boolean;
+  allowCreate?: boolean;
 }

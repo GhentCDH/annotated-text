@@ -72,6 +72,7 @@ const createGutter = (model: TextAnnotationModel, gutter: AnnotatedGutter) => {
     lineNumber: gutter.firstLine,
     path: createGutterPath(x, y, gutterWidth, height),
     color: getColors(model.config.hover.color, gutter, false),
+    draggable: {},
   });
 };
 
@@ -127,13 +128,15 @@ const getColors = (
   };
 };
 
-const createTextAnnotation = (
+export const createTextAnnotation = (
+  lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
 ) => {
-  const lines = model.getLinesForAnnotation(annotation.id);
   const radius = model.config.text.borderRadius;
+
+  const draws = [];
 
   lines.forEach((line, index: number) => {
     const rects = getRanges(annotation, line);
@@ -151,7 +154,7 @@ const createTextAnnotation = (
       const leftBorder = isFirstLine && index === 0;
       const rightBorder = isLastLine && index === rects.length - 1;
 
-      model.addDrawAnnotation({
+      draws.push({
         weight: annotation.weight,
         uuid: uuidv4(),
         annotationUuid: annotation.id,
@@ -165,15 +168,22 @@ const createTextAnnotation = (
           leftBorder: leftBorder,
           rightBorder: rightBorder,
         }),
+        draggable: {
+          start: leftBorder ? { x, y, height } : undefined,
+          end: rightBorder ? { x: x + rect.width, y, height } : undefined,
+        },
         color: getColors(model.config.hover.color, annotation),
       });
     });
   });
+
+  return draws;
 };
 
-export const computeAnnotations = (
+export const createAndAssignDrawAnnotation = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
+  annotation: TextAnnotation,
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
@@ -182,7 +192,20 @@ export const computeAnnotations = (
     "x",
     "y",
   );
+  createTextAnnotation(
+    model.getLinesForAnnotation(annotation.id),
+    parentDimensions,
+    model,
+    annotation,
+  ).forEach((a) => model.addDrawAnnotation(a));
 
+  return model;
+};
+
+export const computeAnnotations = (
+  model: TextAnnotationModel,
+  textElement: HTMLElement,
+) => {
   // Compute positions of gutters
 
   model.annotations
@@ -191,7 +214,7 @@ export const computeAnnotations = (
       if (annotation.isGutter) {
         createGutter(model, annotation as AnnotatedGutter);
       } else {
-        createTextAnnotation(parentDimensions, model, annotation);
+        createAndAssignDrawAnnotation(model, textElement, annotation);
       }
     });
 

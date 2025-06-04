@@ -8,6 +8,8 @@
 
     .handle {
       pointer-events: all;
+      cursor: col-resize;
+      z-index: 20;
     }
   }
 

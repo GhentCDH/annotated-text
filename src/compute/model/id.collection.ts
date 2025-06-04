@@ -1,6 +1,5 @@
-import { AnnotationSvg } from "./svg.types";
+import { SvgModel } from "./svg.types";
 import { AnnotationDraw, AnnotationDrawColor } from "../annotation.model";
-import { colorAnnotation } from "../draw/utils/annotation";
 
 export class IdCollection {
   private ids = new Map<
@@ -15,7 +14,7 @@ export class IdCollection {
   }
 
   public changeIds(
-    svgElement: AnnotationSvg,
+    svg: SvgModel,
     annotations: AnnotationDraw[],
     ignoreIds: string[],
   ): void {
@@ -30,7 +29,7 @@ export class IdCollection {
       );
     removeIds.forEach((uuid) => {
       const color = this.ids.get(uuid);
-      colorAnnotation(svgElement, uuid, color.default);
+      svg.colorAnnotation(uuid, color.default);
     });
     this.ids.clear();
     annotations.forEach((a) => {
@@ -40,13 +39,13 @@ export class IdCollection {
         selected: a.color[this.color],
         default: a.color.default,
       });
-      colorAnnotation(svgElement, a.annotationUuid, color);
+      svg.colorAnnotation(a.annotationUuid, color);
     });
   }
 
-  public colorIds(svgElement: AnnotationSvg) {
+  public colorIds(svg: SvgModel) {
     this.ids.forEach((color, annotationUuid) => {
-      colorAnnotation(svgElement, annotationUuid, color.selected);
+      svg.colorAnnotation(annotationUuid, color.selected);
     });
   }
 }

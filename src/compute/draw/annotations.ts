@@ -1,40 +1,61 @@
 import { hoverAnnotation, leaveAnnotation } from "./events/hover";
 import { clickAnnotation, doubleClickAnnotation } from "./events/click";
-import { colorAnnotation } from "./utils/annotation";
-import { AnnotationSvg } from "../model/svg.types";
-import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
+import { drawAnnotationHandles } from "./events/drag";
+import { SvgModel } from "../model/svg.types";
+import { AnnotationDraw } from "../annotation.model";
+import { AnnotationConfig } from "../model/annotation.config";
 
-export const drawAnnotation = (
+export const drawAnnotationContent = (
   annotation: AnnotationDraw,
-  model: TextAnnotationModel,
-  svg: AnnotationSvg,
+  svg: SvgModel,
+  config: AnnotationConfig,
 ) => {
-  const config = model.config;
-  if (annotation.path.border)
-    svg
+  let border = null;
+  const annotationGroup = svg.annotations
+    .append("g")
+    .attr("data-annotation-uid", annotation.annotationUuid);
+
+  if (annotation.path.border) {
+    border = annotationGroup
       .append("path")
       .attr("data-annotation-uid", annotation.annotationUuid)
       .attr("data-annotation-role", "border")
       .attr("stroke-width", config.text.border)
-      .attr("d", annotation.path.border);
-  const rect = svg
+      .attr("d", annotation.path.border)
+      .attr("fill", "none")
+      .attr("stroke", annotation.color.default.border);
+  }
+  const rect = annotationGroup
     .append("path")
     .attr("data-annotation-uid", annotation.annotationUuid)
     .attr("data-annotation-role", "fill")
-    .attr("d", annotation.path.fill);
+    .attr("d", annotation.path.fill)
+    .attr("border", "none")
+    .attr("fill", annotation.color.default.fill);
 
-  colorAnnotation(svg, annotation.annotationUuid, annotation.color.default);
-
+  return { rect, border };
+};
+export const drawAnnotation = (
+  svgModel: SvgModel,
+  annotation: AnnotationDraw,
+) => {
   const eventMetadata = () => {
     return {
       annotation,
-      model,
+      model: svgModel.model,
+      textElement: svgModel.textElement,
     };
   };
 
+  const config = svgModel.model.config;
+  const { rect } = drawAnnotationContent(annotation, svgModel, config);
+  drawAnnotationHandles(annotation, svgModel.model, svgModel);
+
+  svgModel.colorAnnotation(annotation.annotationUuid, annotation.color.default);
+
   rect
-    .on("mouseover", hoverAnnotation(rect, eventMetadata, svg))
-    .on("mouseleave", leaveAnnotation(rect, eventMetadata, svg))
+    .on("mouseover", hoverAnnotation(rect, eventMetadata, svgModel))
+    .on("mouseleave", leaveAnnotation(rect, eventMetadata, svgModel))
     // TODO check double click also fires click event
     .on("dblclick", doubleClickAnnotation(rect, eventMetadata))
     .on("click", clickAnnotation(rect, eventMetadata));
@@ -42,13 +63,10 @@ export const drawAnnotation = (
   return rect;
 };
 
-export const drawComputedAnnotations = (
-  model: TextAnnotationModel,
-  svg: SVGElement,
-) => {
-  model.drawAnnotations
+export const drawComputedAnnotations = (svgModel: SvgModel) => {
+  svgModel.model.drawAnnotations
     .sort((a1, a2) => (a1.weight > a2.weight ? -1 : 1))
     .forEach((annotation) => {
-      drawAnnotation(annotation, model, svg);
+      drawAnnotation(svgModel, annotation);
     });
 };

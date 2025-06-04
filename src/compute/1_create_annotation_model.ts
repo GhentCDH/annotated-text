@@ -20,7 +20,7 @@ export const createAnnotationModel = (
   // const gutters: Record<number, AnnotatedGutter> = {};
 
   lines?.forEach((line, lineNumber) => {
-    const textLine = { ...line, lineNumber, uuid: uuidv4() } as TextLine;
+    const textLine = { uuid: uuidv4(), lineNumber, ...line } as TextLine;
     lineMap.set(lineNumber, textLine);
     lineAnnotationMap.set(lineNumber, []);
 

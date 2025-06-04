@@ -2,6 +2,7 @@ import { Debugger } from "@ghentcdh/vue-component-annotated-text";
 import { AnnotationEvent } from "../events";
 
 export const DefaultConfig = {
+  actions: { edit: false },
   gutter: {
     width: 3,
     gap: 6,
@@ -11,6 +12,7 @@ export const DefaultConfig = {
     lineHeight: 20,
     borderRadius: 3,
     border: 3,
+    handleRadius: 6,
   },
   hover: {
     color: {

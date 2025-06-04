@@ -25,37 +25,45 @@ const getAnnotationColor = (annotation: Annotation): TextAnnotationColor => {
   return color;
 };
 
-export const assignAnnotationToLines = (
-  model: TextAnnotationModel,
-  _annotation: Annotation,
-  calculateWeights = true,
+export const getLinesForAnnotation = (
+  allLines: TextLine[],
+  annotation: Annotation,
 ) => {
   const lines: TextLine[] = [];
 
-  const annotation = {
-    ..._annotation,
-    color: getAnnotationColor(_annotation),
-  } as TextAnnotation;
-
-  let startLineIndex = model.lines.findIndex((line) =>
+  let startLineIndex = allLines.findIndex((line) =>
     isStartLine(line.start, line.end, annotation.start),
   );
   if (startLineIndex < 0) startLineIndex = 0;
 
-  for (let i = startLineIndex; i < model.lines.length; i++) {
-    const line = model.lines[i];
+  for (let i = startLineIndex; i < allLines.length; i++) {
+    const line = allLines[i];
     if (line.start > annotation.end) {
-      i = model.lines.length;
+      i = allLines.length;
       break;
     }
 
     lines.push(line);
 
     if (annotation.end <= line.end) {
-      i = model.lines.length;
+      i = allLines.length;
       break;
     }
   }
+
+  return lines;
+};
+
+export const assignAnnotationToLines = (
+  model: TextAnnotationModel,
+  _annotation: Annotation,
+  calculateWeights = true,
+) => {
+  const annotation = {
+    ..._annotation,
+    color: getAnnotationColor(_annotation),
+  } as TextAnnotation;
+  const lines = getLinesForAnnotation(model.lines, annotation);
 
   model.setAnnotation(annotation, lines, calculateWeights);
 
@@ -75,6 +83,7 @@ export const assignAnnotationsToLines = (
   model: TextAnnotationModel,
   annotations: Annotation[],
 ): TextAnnotationModel => {
+  model.resetAnnotations();
   annotations.forEach((annotation) => {
     assignAnnotationToLines(model, annotation, false);
   });

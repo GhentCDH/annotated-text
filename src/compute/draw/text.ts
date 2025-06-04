@@ -20,6 +20,7 @@ const createText = (textLine: TextLine) => {
   textDiv.className = styles.line.text.wrapper;
   textDiv.innerText = `${textLine.text}`;
   textDiv.setAttribute("data-line-uid", textLine.uuid);
+  textDiv.setAttribute("data-annotation-role", "line");
 
   return textDiv;
 };

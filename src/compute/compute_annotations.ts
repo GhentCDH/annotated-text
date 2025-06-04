@@ -1,16 +1,13 @@
-import { TextAnnotationModel, TextLine } from "./annotation.model";
+import { TextAnnotationModel } from "./annotation.model";
 import { createAnnotationModel } from "./1_create_annotation_model";
-import {
-  assignAnnotationsToLines,
-  reAssignAnnotationToLine,
-} from "./2_assign_annotation_to_line";
+import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
 import { computeAnnotationsOnLines } from "./3_compute_annotations_on_line";
 import { drawAnnotations, drawText } from "./draw";
 import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";
 import { IdCollection } from "./model/id.collection";
-import { AnnotationSvg } from "./model/svg.types";
+import { SvgModel } from "./model/svg.types";
 import { Annotation, Line } from "../index";
 
 export class ComputeAnnotations {
@@ -18,23 +15,25 @@ export class ComputeAnnotations {
   private annotations: Annotation[];
   private element: HTMLElement;
   private textElement: HTMLElement;
-  private svgElement: AnnotationSvg;
+  private svgModel: SvgModel;
   private svgNode: SVGElement;
   private resizeObserver: ResizeObserver;
+  private lines: Line[];
+  private config: Partial<AnnotationConfig>;
 
-  constructor(
-    lines: Line[],
-    private readonly config: Partial<AnnotationConfig> = {},
-  ) {
+  constructor(lines: Line[], config: Partial<AnnotationConfig> = {}) {
+    this.lines = lines;
     this.textAnnotationModel = createAnnotationModel(config, lines);
+    this.config = config;
   }
 
   public setLines(lines: Line[]): void {
+    this.lines = lines;
     this.textAnnotationModel = createAnnotationModel(this.config, lines);
-    this.setAnnotations(this.annotations ?? []);
+    this.setAnnotations(this.annotations ?? [], false);
   }
 
-  public setAnnotations(annotations: Annotation[]): void {
+  public setAnnotations(annotations: Annotation[], redraw: true): void {
     this.annotations = annotations;
     this.textAnnotationModel = assignAnnotationsToLines(
       this.textAnnotationModel,
@@ -43,21 +42,7 @@ export class ComputeAnnotations {
     this.textAnnotationModel = computeAnnotationsOnLines(
       this.textAnnotationModel,
     );
-  }
-
-  public updateAnnotation(annotation: Annotation): void {
-    this.textAnnotationModel = reAssignAnnotationToLine(
-      this.textAnnotationModel,
-      annotation,
-    );
-    this.textAnnotationModel = computePositions(
-      this.textAnnotationModel,
-      this.textElement,
-    );
-  }
-
-  public getLines(): TextLine[] {
-    return this.textAnnotationModel.lines;
+    if (redraw) this.redrawSvg();
   }
 
   private drawText() {
@@ -65,34 +50,26 @@ export class ComputeAnnotations {
   }
 
   private drawSvg() {
-    this.svgElement = drawAnnotations(
-      this.textElement,
-      this.textAnnotationModel,
-    );
-    this.highlightedIds.colorIds(this.svgElement);
-    this.activeIds.colorIds(this.svgElement);
+    this.svgModel = drawAnnotations(this.textElement, this.textAnnotationModel);
+    this.highlightedIds.colorIds(this.svgModel);
+    this.activeIds.colorIds(this.svgModel);
   }
 
   public init(id: string) {
     if (this.textElement) {
-      console.warn("element already initialized");
-      return;
+      console.warn("element already initialized, clear and reainitialize");
     }
+
     this.element = document.getElementById(id);
     this.element.innerHTML = "";
 
     this.drawText();
     this.element.append(this.textElement);
-
     this.redrawSvg();
     this.element.classList.add(styles.wrapper);
 
     this.resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-
-        this.redrawSvg();
-      }
+      this.redrawSvg();
     });
 
     if (this.element) {
@@ -100,7 +77,11 @@ export class ComputeAnnotations {
     }
   }
 
-  private redrawSvg() {
+  public redrawSvg() {
+    if (!this.textElement) {
+      console.warn("text element not initialized, cannot redraw svg");
+      return;
+    }
     if (this.svgNode) {
       this.element.removeChild(this.svgNode);
     }
@@ -115,26 +96,30 @@ export class ComputeAnnotations {
     );
 
     this.drawSvg();
-    this.svgNode = this.svgElement.node();
+    this.svgNode = this.svgModel.node();
     this.element.append(this.svgNode);
   }
 
   public destroy() {
     this.resizeObserver.unobserve(this.element);
     this.resizeObserver.disconnect();
+    this.element.innerHTML = "";
+    this.textElement = null;
+    this.svgNode = null;
+    this.textAnnotationModel = null;
   }
 
   private highlightedIds = new IdCollection("hover");
 
   public highlightAnnotations(ids: string[]): void {
     this.highlightedIds.changeIds(
-      this.svgElement,
+      this.svgModel,
       ids?.map((i) => this.textAnnotationModel.getAnnotationDraw(i)[0]) ?? [],
       [],
       // this.activeIds.getIds(),
     );
     // TODO decide which one has more priority?
-    this.activeIds.colorIds(this.svgElement);
+    this.activeIds.colorIds(this.svgModel);
   }
 
   private activeIds = new IdCollection("active");
@@ -142,10 +127,21 @@ export class ComputeAnnotations {
   public selectAnnotations(ids: string[]): void {
     this.highlightedIds.removeId(ids);
     this.activeIds.changeIds(
-      this.svgElement,
+      this.svgModel,
       ids?.map((i) => this.textAnnotationModel.getAnnotationDraw(i)[0]) ?? [],
       [],
     );
     // TODO decide which one has more priority?
+  }
+
+  public changeConfig(config: Partial<AnnotationConfig>) {
+    // TODO only regenerate what is needed
+    const id = this.element.id;
+    this.destroy();
+    this.config = config;
+    this.textAnnotationModel = createAnnotationModel(config, this.lines);
+    this.setLines(this.lines);
+    this.setAnnotations(this.annotations);
+    this.init(id);
   }
 }
