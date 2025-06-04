@@ -1,7 +1,9 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
+import { Debugger } from "@ghentcdh/vue-component-annotated-text";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
+import { drawAnnotation } from "../draw/annotations";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -90,5 +92,14 @@ export class SvgModel {
 
   node() {
     return this.svg.node();
+  }
+
+  drawAnnotations() {
+    const now = Date.now();
+
+    this.model.drawAnnotations
+      .sort((a1, a2) => (a1.weight > a2.weight ? -1 : 1))
+      .forEach((annotation) => drawAnnotation(this, annotation));
+    Debugger.time(now, "--- drawComputedAnnotations ");
   }
 }

@@ -57,8 +57,17 @@ const getY = <E extends { y: number }>(parentElement: E, element: E) => {
 const createGutter = (model: TextAnnotationModel, gutter: AnnotatedGutter) => {
   const gutterWidth = model.config.gutter.width;
   const gutterGap = model.config.gutter.gap;
-  const firstLine = model.lines[gutter.firstLine];
-  const lastLine = model.lines[gutter.firstLine + gutter.totalLines - 1];
+
+  const lines = model.getLinesForAnnotation(gutter.id);
+
+  const firstLine = lines[0];
+  const lastLine = lines[lines.length - 1];
+
+  if (!firstLine || !lastLine) {
+    console.warn("no first or last line in the gutter");
+    return;
+  }
+
   const y = firstLine.dimensions.y;
 
   // Add the gutterwidth as padding

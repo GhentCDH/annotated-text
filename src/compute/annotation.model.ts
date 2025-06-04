@@ -41,8 +41,8 @@ export type AnnotationDraw = {
 };
 
 export type AnnotatedGutter = TextAnnotation & {
-  totalLines: number;
-  firstLine: number;
+  // totalLines: number;
+  // firstLine: number;
 };
 
 export type TextLine = Line & {
@@ -212,7 +212,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
       ...annotation,
       totalLines: lines.length,
       // lines are sorted!
-      firstLine: lines[0].lineNumber,
+      // firstLine: lines[0].lineNumber,
     } as AnnotatedGutter);
   }
 

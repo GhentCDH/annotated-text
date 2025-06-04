@@ -62,7 +62,7 @@ const vueComponent = ref(false);
       key="text"
       :component-id="'1'"
       :annotations="annotations"
-      :lines="largeTextLines"
+      :text-lines="largeTextLines"
     />
     <AnnotatedText
       v-if="vueComponent"

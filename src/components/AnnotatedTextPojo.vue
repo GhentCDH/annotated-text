@@ -51,6 +51,7 @@ const computeAnnotations = new ComputeAnnotations(
 // get a reference to annotatedTextDraw
 
 onMounted(() => {
+  computeAnnotations.setAnnotations(props.annotations, false);
   computeAnnotations.init(id);
 });
 
@@ -66,7 +67,7 @@ watch(
   () => {
     computeAnnotations.setAnnotations(props.annotations);
   },
-  { immediate: true },
+  // { immediate: true },
 );
 
 watchEffect(() => {

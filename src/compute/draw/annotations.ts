@@ -39,6 +39,7 @@ export const drawAnnotation = (
   svgModel: SvgModel,
   annotation: AnnotationDraw,
 ) => {
+  // return a promise that resloves to a function that draws the annotation
   const eventMetadata = () => {
     return {
       annotation,
@@ -49,9 +50,8 @@ export const drawAnnotation = (
 
   const config = svgModel.model.config;
   const { rect } = drawAnnotationContent(annotation, svgModel, config);
-  drawAnnotationHandles(annotation, svgModel.model, svgModel);
 
-  svgModel.colorAnnotation(annotation.annotationUuid, annotation.color.default);
+  drawAnnotationHandles(annotation, svgModel.model, svgModel);
 
   rect
     .on("mouseover", hoverAnnotation(rect, eventMetadata, svgModel))
@@ -59,14 +59,4 @@ export const drawAnnotation = (
     // TODO check double click also fires click event
     .on("dblclick", doubleClickAnnotation(rect, eventMetadata))
     .on("click", clickAnnotation(rect, eventMetadata));
-
-  return rect;
-};
-
-export const drawComputedAnnotations = (svgModel: SvgModel) => {
-  svgModel.model.drawAnnotations
-    .sort((a1, a2) => (a1.weight > a2.weight ? -1 : 1))
-    .forEach((annotation) => {
-      drawAnnotation(svgModel, annotation);
-    });
 };

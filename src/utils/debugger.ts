@@ -32,6 +32,17 @@ export class Debugger {
     console.warn(message);
   }
 
+  public static time(startTime: number, message: string) {
+    const endTime = Date.now();
+    const tookTime = endTime - startTime;
+    const logMessage = `TIMER: ${message} took ${tookTime} ms , ${tookTime / 1000} s`;
+    if (tookTime > 1000) {
+      console.warn(logMessage);
+    } else {
+      console.log(logMessage);
+    }
+  }
+
   public static debug(...message: any) {
     if (!this.debugEnabled) return;
 

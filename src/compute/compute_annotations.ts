@@ -2,13 +2,13 @@ import { TextAnnotationModel } from "./annotation.model";
 import { createAnnotationModel } from "./1_create_annotation_model";
 import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
 import { computeAnnotationsOnLines } from "./3_compute_annotations_on_line";
-import { drawAnnotations, drawText } from "./draw";
+import { drawText } from "./draw";
 import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
-import { Annotation, Line } from "../index";
+import { Annotation, Debugger, Line } from "../index";
 
 export class ComputeAnnotations {
   private textAnnotationModel: TextAnnotationModel;
@@ -33,7 +33,7 @@ export class ComputeAnnotations {
     this.setAnnotations(this.annotations ?? [], false);
   }
 
-  public setAnnotations(annotations: Annotation[], redraw: true): void {
+  public setAnnotations(annotations: Annotation[], redraw = true): void {
     this.annotations = annotations;
     this.textAnnotationModel = assignAnnotationsToLines(
       this.textAnnotationModel,
@@ -42,6 +42,7 @@ export class ComputeAnnotations {
     this.textAnnotationModel = computeAnnotationsOnLines(
       this.textAnnotationModel,
     );
+
     if (redraw) this.redrawSvg();
   }
 
@@ -50,7 +51,7 @@ export class ComputeAnnotations {
   }
 
   private drawSvg() {
-    this.svgModel = drawAnnotations(this.textElement, this.textAnnotationModel);
+    this.svgModel.drawAnnotations();
     this.highlightedIds.colorIds(this.svgModel);
     this.activeIds.colorIds(this.svgModel);
   }
@@ -68,8 +69,11 @@ export class ComputeAnnotations {
     this.redrawSvg();
     this.element.classList.add(styles.wrapper);
 
+    let initialized = false;
     this.resizeObserver = new ResizeObserver((entries) => {
-      this.redrawSvg();
+      Debugger.debug("resize detected", initialized);
+      if (initialized) this.redrawSvg();
+      initialized = true;
     });
 
     if (this.element) {
@@ -77,7 +81,7 @@ export class ComputeAnnotations {
     }
   }
 
-  public redrawSvg() {
+  private redrawSvg() {
     if (!this.textElement) {
       console.warn("text element not initialized, cannot redraw svg");
       return;
@@ -95,9 +99,11 @@ export class ComputeAnnotations {
       this.textElement,
     );
 
-    this.drawSvg();
+    this.svgModel = new SvgModel(this.textElement, this.textAnnotationModel);
+
     this.svgNode = this.svgModel.node();
     this.element.append(this.svgNode);
+    this.drawSvg();
   }
 
   public destroy() {
@@ -136,6 +142,7 @@ export class ComputeAnnotations {
 
   public changeConfig(config: Partial<AnnotationConfig>) {
     // TODO only regenerate what is needed
+    // For now the annotations render quite fast so to be evaluated
     const id = this.element.id;
     this.destroy();
     this.config = config;
