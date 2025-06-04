@@ -1,10 +1,11 @@
 # Large text with large annotation set
+
 # Example
 
 <script setup>
 //
 import {
-  AnnotatedText,
+  AnnotatedTextV2,
   Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
@@ -24,10 +25,10 @@ const textLines = largeTextLines
 </script>
 
 
-<AnnotatedText
+<AnnotatedTextV2
 key="text"
 :component-id="'1'"
 :annotations="annot"
-:lines="textLines"
+:text-lines="textLines"
 />
 

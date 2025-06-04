@@ -2,7 +2,8 @@
 //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
 //character indexes.
 import { maxBy } from "lodash-es";
-import { AnnotatedGutter, TextAnnotation } from "../annotation.model";
+import { AnnotatedGutter, TextAnnotation, TextLine } from "../annotation.model";
+import { sortAnnotations } from "../draw/utils/sort";
 
 export const calculateGutterAnnotationWeightsAndEnrich = (
   annotations: AnnotatedGutter[],
@@ -16,7 +17,7 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
     return aLength - bLength;
   };
 
-  annotations = annotations.sort(compareAnnotations);
+  annotations = annotations.sort(sortAnnotations).reverse();
 
   let weight = 0;
 
@@ -27,10 +28,6 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
 
   //reverse weights, makes sure longest is at the right, not left (close to the text)
   return Math.max(...annotations.map((e) => e.weight));
-};
-
-const compareAnnotations = (a: TextAnnotation, b: TextAnnotation): number => {
-  return a.start - b.start === 0 ? -1 : 1;
 };
 
 function isIntersection(a: TextAnnotation, b: TextAnnotation): boolean {
@@ -54,7 +51,7 @@ const countOverlaps = (
 const calculateLineWeights = (annotations: TextAnnotation[]) => {
   let maxWeight = 0;
 
-  annotations.sort(compareAnnotations).forEach((annotation) => {
+  annotations.sort(sortAnnotations).forEach((annotation) => {
     // If there is already a weight just ignore it for now
     if (annotation.weight) {
       return;
@@ -79,12 +76,22 @@ const calculateLineWeights = (annotations: TextAnnotation[]) => {
 };
 
 export const calculateAnnotationWeights = (
+  lines: TextLine[],
   annotationMap: Map<number, TextAnnotation[]>,
 ) => {
   let maxWeight = 0;
 
-  annotationMap.values().forEach((annotations) => {
-    const weight = calculateLineWeights(annotations);
+  // 1. first calculate all the weights for each line
+  lines.forEach((line) => {
+    const annotations = annotationMap.get(line.lineNumber) ?? [];
+    calculateLineWeights(annotations);
+  });
+
+  // 2. get the max line wights
+  lines.forEach((line) => {
+    const annotations = annotationMap.get(line.lineNumber) ?? [];
+    const weight = maxBy(annotations, (a) => a.weight)?.weight ?? 0;
+    line.maxLineWeight = weight;
     if (maxWeight < weight) maxWeight = weight;
   });
   return maxWeight;

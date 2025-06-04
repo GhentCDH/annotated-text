@@ -5,7 +5,7 @@ import {
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
-import { Annotation, createAnnotationColor } from "../index";
+import { Annotation, createAnnotationColor, Debugger } from "../index";
 
 const isStartLine = memoize(
   (lineStart: number, lineEnd: number, start: number) => {
@@ -63,6 +63,12 @@ export const assignAnnotationToLines = (
     ..._annotation,
     color: getAnnotationColor(_annotation),
   } as TextAnnotation;
+  if (annotation.start >= annotation.end) {
+    Debugger.warn(
+      `Invalid annotation: start (${annotation.start}) must be less than end (${annotation.end})`,
+    );
+  }
+
   const lines = getLinesForAnnotation(model.lines, annotation);
 
   model.setAnnotation(annotation, lines, calculateWeights);

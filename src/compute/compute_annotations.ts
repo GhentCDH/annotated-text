@@ -2,7 +2,7 @@ import { TextAnnotationModel } from "./annotation.model";
 import { createAnnotationModel } from "./1_create_annotation_model";
 import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
 import { computeAnnotationsOnLines } from "./3_compute_annotations_on_line";
-import { drawText } from "./draw";
+import { drawText } from "./draw/text";
 import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";

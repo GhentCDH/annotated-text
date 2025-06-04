@@ -51,6 +51,7 @@ export type TextLine = Line & {
   color: TextAnnotationColor;
   dimensions: Dimensions;
   element: HTMLElement;
+  maxLineWeight: number;
 };
 
 export interface TextAnnotationModel {
@@ -269,7 +270,10 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   calculateLinesWeights() {
-    this.maxLineWeight = calculateAnnotationWeights(this.lineAnnotationMap);
+    this.maxLineWeight = calculateAnnotationWeights(
+      this.lines,
+      this.lineAnnotationMap,
+    );
   }
 
   calculateAllWeights() {

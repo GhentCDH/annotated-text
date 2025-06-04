@@ -217,15 +217,13 @@ export const computeAnnotations = (
 ) => {
   // Compute positions of gutters
 
-  model.annotations
-    .sort((a1, a2) => (a2.start < a1.start ? -1 : 1))
-    .forEach((annotation) => {
-      if (annotation.isGutter) {
-        createGutter(model, annotation as AnnotatedGutter);
-      } else {
-        createAndAssignDrawAnnotation(model, textElement, annotation);
-      }
-    });
+  model.annotations.forEach((annotation) => {
+    if (annotation.isGutter) {
+      createGutter(model, annotation as AnnotatedGutter);
+    } else {
+      createAndAssignDrawAnnotation(model, textElement, annotation);
+    }
+  });
 
   return model;
 };

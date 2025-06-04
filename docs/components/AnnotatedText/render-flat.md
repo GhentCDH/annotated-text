@@ -9,6 +9,7 @@ in a flat manner, without nesting them.
 
 
 <script setup>
+//
 import {
   AnnotatedText,
   Debugger,
@@ -29,5 +30,7 @@ const textLines = lines;
 :render="'flat'"
 />
 
-<style module>
-</style>
+#V2
+:::warning
+No support for render flat in V2 yet.
+:::

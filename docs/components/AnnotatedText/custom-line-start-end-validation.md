@@ -1,8 +1,9 @@
 # AnnotatedText
 
-
 <script setup>
+//
 import {
+  AnnotatedTextV2,
   AnnotatedText,
   Debugger,
   UserActionState,
@@ -48,10 +49,11 @@ const onAnnotationUpdating = function (updateState) {
 
 ## A custom line start and end validation
 
-This example shows how to implement a custom line start and end validation. The `onAnnotationUpdateBegin` and `onAnnotationUpdating` functions are used to adjust the start and end of the annotation. In this example, the start is decreased by 2 and the end is increased by 2.
+This example shows how to implement a custom line start and end validation. The `onAnnotationUpdateBegin` and
+`onAnnotationUpdating` functions are used to adjust the start and end of the annotation. In this example, the start is
+decreased by 2 and the end is increased by 2.
 
 <AnnotatedText
-key="text"
 :component-id="'1'"
 :annotations="annot"
 :lines="textLines"
@@ -61,6 +63,21 @@ key="text"
 :listen-to-on-updating="true"
 @annotation-update-begin="onAnnotationUpdateBegin"
 @annotation-updating="onAnnotationUpdating"
+/>
+<hr />
+
+## V2
+
+:::warning
+TODO add snapper to V2
+:::
+
+<AnnotatedTextV2
+:component-id="'1'"
+:annotations="annot"
+:text-lines="textLines"
+:can-edit="true"
+:allow-edit="true"
 />
 
 <style module>

@@ -4,9 +4,17 @@ AnnotatedText
 
 # Event handling
 
+## V2
+
+:::warning
+Add event handling docs
+
+:::
+
 ## Mouse events
 
 <script setup>
+//
 import {
   AnnotatedText,
   Debugger,
@@ -81,6 +89,7 @@ Double Clicked annotation:
 
 :::warning
 Add more event handler documentation
+
 :::
 
 ## Documentation on emits:
