@@ -206,7 +206,7 @@ const onKeyPressed = function (
   </menu>
 
   <hr />
-  <div class="text-components">
+  <div class="demo-grid">
     <div>
       <h1>V2</h1>
       <AnnotatedTextV2

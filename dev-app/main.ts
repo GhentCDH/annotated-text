@@ -2,6 +2,7 @@ import { createApp } from "vue";
 
 import App from "./App.vue";
 import { IntersectDirective } from "../src/intersect-directive";
+import "./styles.scss";
 
 const app = createApp(App);
 

@@ -1,33 +1,86 @@
 //this function is similar to the weights for span annotations but there is one difference
 //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
 //character indexes.
-import { maxBy } from "lodash-es";
-import { AnnotatedGutter, TextAnnotation, TextLine } from "../annotation.model";
+import { maxBy, sortBy } from "lodash-es";
+import {
+  AnnotatedGutter,
+  TextAnnotation,
+  TextAnnotationModel,
+  TextLine,
+} from "../annotation.model";
 import { sortAnnotations } from "../draw/utils/sort";
 
 export const calculateGutterAnnotationWeightsAndEnrich = (
+  model: TextAnnotationModel,
   annotations: AnnotatedGutter[],
 ) => {
-  const compareAnnotations = function (
-    a: AnnotatedGutter,
-    b: AnnotatedGutter,
-  ): number {
-    const aLength = a.end - a.start;
-    const bLength = b.end - b.start;
-    return aLength - bLength;
-  };
-
-  annotations = annotations.sort(sortAnnotations).reverse();
-
-  let weight = 0;
+  // decide for eacht line how many annotations can be in the gutter
+  const annotationsInGutter = new Map<
+    string,
+    { annotation: TextAnnotation; height: number; index: number }[]
+  >();
 
   annotations.forEach((annotation) => {
-    annotation.weight = weight;
-    weight++;
+    const lines = model.getLinesForAnnotation(annotation.id);
+    const height = lines.length;
+    lines.forEach((line, index) => {
+      const value = annotationsInGutter.get(line.uuid) ?? [];
+      value.push({ annotation, height, index });
+      annotationsInGutter.set(line.uuid, value);
+    });
   });
 
-  //reverse weights, makes sure longest is at the right, not left (close to the text)
-  return Math.max(...annotations.map((e) => e.weight));
+  let maxWeight = 0;
+
+  // Assign the weights to the annotations, from top to bottom
+  model.lines.forEach((line) => {
+    if (!annotationsInGutter.has(line.uuid)) {
+      // no annotations on this line so no weights are set
+      return;
+    }
+    const sortAnnotations = sortBy(
+      annotationsInGutter.get(line.uuid),
+      (a) => -a.height,
+    );
+    // if (line.lineNumber > 3) return;
+    const weightsInLine = sortAnnotations
+      .map((a) => a.annotation.weight)
+      .filter((w) => w !== undefined);
+    // if (line.lineNumber > 5) return;
+    sortAnnotations.forEach((lineAnnotation) => {
+      if (lineAnnotation.index > 0) {
+        if (!lineAnnotation.annotation.weight === undefined) {
+          console.warn("no weight for annotation", lineAnnotation.annotation);
+        }
+        return;
+      }
+
+      if (lineAnnotation.annotation.weight !== undefined) {
+        console.warn(
+          "!!! weight for annotation already set?",
+          lineAnnotation.annotation,
+        );
+        return;
+      }
+      // Decide the next weight for that annotation on this line
+      let weight = 0;
+
+      while (lineAnnotation.annotation.weight === undefined) {
+        if (weightsInLine.includes(weight)) {
+          weight++;
+        } else {
+          weightsInLine.push(weight);
+          lineAnnotation.annotation.weight = weight;
+        }
+
+        if (maxWeight < weight) {
+          maxWeight = weight;
+        }
+      }
+    });
+  });
+
+  return maxWeight;
 };
 
 function isIntersection(a: TextAnnotation, b: TextAnnotation): boolean {

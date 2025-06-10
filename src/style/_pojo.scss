@@ -15,9 +15,15 @@
 
   &-wrapper {
     position: relative;
+    display: block;
+    width: 100%;
   }
 
   &-text {
+    //position: absolute;
+    //top: 0;
+    //left: 0;
+    //z-index: 99;
     grid-template-columns: max-content auto;
     align-items: center;
 

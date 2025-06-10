@@ -10,6 +10,7 @@ import {
   TextLine,
 } from "./annotation.model";
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
+import { getMinMaxBy } from "./draw/utils/min-max.by";
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(
@@ -37,7 +38,7 @@ export const computeLinePositions = (
     line.element = textLine;
     line.dimensions = {
       x: lineDimensions.x - parentDimensions.x,
-      y: lineDimensions.y - parentDimensions.y,
+      y: lineDimensions.y, //- parentDimensions.y,
       height: lineDimensions.height,
       width: lineDimensions.width,
     };
@@ -54,31 +55,36 @@ const getY = <E extends { y: number }>(parentElement: E, element: E) => {
   return element.y - parentElement.y;
 };
 
-const createGutter = (model: TextAnnotationModel, gutter: AnnotatedGutter) => {
+const createGutter = (
+  model: TextAnnotationModel,
+  parentDimensions: { x: number; y: number },
+  gutter: AnnotatedGutter,
+) => {
   const gutterWidth = model.config.gutter.width;
   const gutterGap = model.config.gutter.gap;
 
   const lines = model.getLinesForAnnotation(gutter.id);
 
-  const firstLine = lines[0];
-  const lastLine = lines[lines.length - 1];
+  const { min: firstLine, max: lastLine } = getMinMaxBy(
+    lines,
+    (line) => line.lineNumber,
+  );
 
-  if (!firstLine || !lastLine) {
-    console.warn("no first or last line in the gutter");
-    return;
-  }
-
-  const y = firstLine.dimensions.y;
+  const y = getY(parentDimensions, firstLine.element.getBoundingClientRect());
+  const y1 = getY(parentDimensions, lastLine.element.getBoundingClientRect());
+  const lastLineHeight = lastLine.element.getBoundingClientRect().height;
 
   // Add the gutterwidth as padding
-  const x = (gutterWidth + gutterGap) * (gutter.weight ?? 0);
-  const height = lastLine.dimensions.y + lastLine.dimensions.height - y - 5;
+  // We want to have the most gutters closest to the text
+  const weight = model.maxGutterWeight - gutter.weight ?? 0;
+  const x = (gutterWidth + gutterGap) * weight;
+  const height = y1 - y + lastLineHeight;
 
   model.addDrawAnnotation({
     weight: gutter.weight,
     uuid: uuidv4(),
     annotationUuid: gutter.id,
-    lineNumber: gutter.firstLine,
+    lineNumber: firstLine.lineNumber,
     path: createGutterPath(x, y, gutterWidth, height),
     color: getColors(model.config.hover.color, gutter, false),
     draggable: {},
@@ -219,7 +225,11 @@ export const computeAnnotations = (
 
   model.annotations.forEach((annotation) => {
     if (annotation.isGutter) {
-      createGutter(model, annotation as AnnotatedGutter);
+      createGutter(
+        model,
+        textElement.getBoundingClientRect(),
+        annotation as AnnotatedGutter,
+      );
     } else {
       createAndAssignDrawAnnotation(model, textElement, annotation);
     }

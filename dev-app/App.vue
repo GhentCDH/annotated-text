@@ -2,16 +2,24 @@
 import { ref } from "vue";
 import DemoComponent from "./DemoComponent.vue";
 import LargeDemoComponent from "./LargeDemoComponent.vue";
+import GutterDemoComponent from "./GutterDemoComponent.vue";
 
-const largeComponent = ref(false);
+const largeComponent = ref("gutters");
 </script>
 
 <template>
   <label>
-    <input type="checkbox" value="true" v-model="largeComponent" />Large
+    <input type="radio" value="demo" v-model="largeComponent" />Demo
   </label>
-  <LargeDemoComponent v-if="largeComponent" />
-  <DemoComponent v-else />
+  <label>
+    <input type="radio" value="large" v-model="largeComponent" />Large
+  </label>
+  <label>
+    <input type="radio" value="gutters" v-model="largeComponent" />Gutters
+  </label>
+  <LargeDemoComponent v-if="largeComponent === 'large'" />
+  <DemoComponent v-if="largeComponent === 'demo'" />
+  <GutterDemoComponent v-if="largeComponent === 'gutters'" />
 </template>
 
 <style></style>

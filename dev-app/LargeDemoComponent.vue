@@ -56,7 +56,7 @@ const vueComponent = ref(false);
   </div>
 
   <hr />
-  <div class="text-components">
+  <div class="demo-grid">
     <AnnotatedTextPojo
       v-if="pojoComponent"
       key="text"

@@ -1,5 +1,5 @@
 <template>
-  <div class="pojo" :id="id"></div>
+  <div :id="id"></div>
 </template>
 
 <script setup lang="ts">

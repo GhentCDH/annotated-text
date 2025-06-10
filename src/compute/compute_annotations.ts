@@ -102,7 +102,7 @@ export class ComputeAnnotations {
     this.svgModel = new SvgModel(this.textElement, this.textAnnotationModel);
 
     this.svgNode = this.svgModel.node();
-    this.element.append(this.svgNode);
+    this.element.prepend(this.svgNode);
     this.drawSvg();
   }
 
