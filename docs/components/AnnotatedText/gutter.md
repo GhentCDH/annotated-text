@@ -16,10 +16,6 @@ import { lines, annotationsWithGutters } from "@demo";
 
 </script>
 
-:::warning
-Fix gutter weights
-:::
-
 ## Gutter example
 
 <div style="display: grid;  grid-template-columns: repeat(2, 1fr);"> 
