@@ -158,7 +158,6 @@ export const createTextAnnotation = (
   const draws = [];
   const padding = model.config.text.padding * annotation.weight;
   const height = model.config.text.lineHeight + padding * 2;
-
   lines.forEach((line, index: number) => {
     const rects = getRanges(annotation, line);
 

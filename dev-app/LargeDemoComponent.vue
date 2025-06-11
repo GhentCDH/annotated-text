@@ -3,9 +3,11 @@ import { computed, ref } from "vue";
 import {
   AnnotatedText,
   Annotation,
+  Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
 import { largeAnntoations, largeTextLines } from "@demo";
 import AnnotatedTextPojo from "../src/components/AnnotatedTextPojo.vue";
+import { AnnotationEventType } from "../src/compute/events";
 
 const typesSet = new Set<string>();
 largeAnntoations.map((a) => {
@@ -17,12 +19,22 @@ const types = Array.from(typesSet);
 const selectedTypes = ref([]);
 const annotations = computed(
   () =>
-    largeAnntoations.filter((a) => {
-      if (selectedTypes.value.length === 0) return true;
-      return selectedTypes.value.includes(a.type);
-    }) as unknown as Annotation[],
+    largeAnntoations
+      // .filter((t) => t.id === 1508168)
+      .filter((a) => {
+        if (selectedTypes.value.length === 0) return true;
+        return selectedTypes.value.includes(a.type);
+      }) as unknown as Annotation[],
 );
 
+const onEvent = (event, eventType: AnnotationEventType, data) => {
+  switch (eventType) {
+    case "click":
+      Debugger.debug("Annotation clicked", event, data);
+      break;
+  }
+};
+Debugger.setDebug(true);
 const pojoComponent = ref(true);
 const vueComponent = ref(false);
 </script>
@@ -63,6 +75,7 @@ const vueComponent = ref(false);
       :component-id="'1'"
       :annotations="annotations"
       :text-lines="largeTextLines"
+      @event="onEvent"
     />
     <AnnotatedText
       v-if="vueComponent"

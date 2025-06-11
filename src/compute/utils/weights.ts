@@ -2,6 +2,7 @@
 //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
 //character indexes.
 import { maxBy, sortBy } from "lodash-es";
+import { isIntersection } from "./intersect";
 import {
   AnnotatedGutter,
   TextAnnotation,
@@ -82,13 +83,6 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
 
   return maxWeight;
 };
-
-function isIntersection(a: TextAnnotation, b: TextAnnotation): boolean {
-  const start = Math.max(a.start, b.start);
-  const end = Math.min(a.end, b.end);
-
-  return start < end;
-}
 
 const countOverlaps = (
   annotations: TextAnnotation[],

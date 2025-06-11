@@ -5,6 +5,7 @@ import {
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
+import { isIntersection } from "./utils/intersect";
 import { Annotation, createAnnotationColor, Debugger } from "../index";
 
 const isStartLine = memoize(
@@ -31,14 +32,32 @@ export const getLinesForAnnotation = (
 ) => {
   const lines: TextLine[] = [];
 
-  let startLineIndex = allLines.findIndex((line) =>
-    isStartLine(line.start, line.end, annotation.start),
-  );
-  if (startLineIndex < 0) startLineIndex = 0;
+  const startLineIndex = allLines.findIndex((line, idx) => {
+    const start = isStartLine(line.start, line.end, annotation.start);
+    if (start) return true;
+    const nextLine = allLines[idx + 1];
 
+    return nextLine && annotation.start < nextLine.start;
+  });
+
+  if (startLineIndex < 0) {
+    return;
+  }
   for (let i = startLineIndex; i < allLines.length; i++) {
     const line = allLines[i];
-    lines.push(line);
+
+    if (annotation.end < line.start) {
+      // console.log("----");
+      // console.log(annotation.start, annotation.end, line.start);
+      // console.warn("eat the annotation", annotation, "on line", line);
+      // console.log(lines);
+      // i = allLines.length;
+      // break;
+    }
+
+    if (isIntersection(line, annotation)) {
+      lines.push(line);
+    }
 
     if (annotation.end <= line.end) {
       i = allLines.length;
@@ -66,18 +85,28 @@ export const assignAnnotationToLines = (
   if (model.textLength < annotation.start) {
     Debugger.warn(
       `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
+      annotation,
     );
     return model;
   }
   if (model.textLength < model.textLength) {
     Debugger.warn(
       `Invalid annotation: end (${annotation.start}) must be less than text length (${model.textLength})`,
+      annotation,
     );
 
     // Maybe update the annotation end so it ends somewhere?
   }
 
   const lines = getLinesForAnnotation(model.lines, annotation);
+
+  if (!lines?.length) {
+    Debugger.warn(
+      "Invalid annotation: no lines found for annotation",
+      annotation,
+    );
+    return;
+  }
 
   model.setAnnotation(annotation, lines, calculateWeights);
 
