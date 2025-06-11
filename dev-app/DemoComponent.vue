@@ -84,7 +84,10 @@ const onAnnotationEvent = (
     case "annotation-edit--end":
       annotationMap.set(data.annotation.id, data.annotation);
       props.annoList = Array.from(annotationMap.values());
-
+      break;
+    case "annotation-create--end":
+      annotationMap.set(data.annotation.id, data.annotation);
+      props.annoList = Array.from(annotationMap.values());
       break;
     default:
       Debugger.warn("Unhandled annotation event type: ", type);

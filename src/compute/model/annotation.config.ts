@@ -1,8 +1,12 @@
-import { Debugger } from "@ghentcdh/vue-component-annotated-text";
+import {
+  createAnnotationColor,
+  Debugger,
+} from "@ghentcdh/vue-component-annotated-text";
+import { v4 as uuidv4 } from "uuid";
 import { AnnotationEvent } from "../events";
 
 export const DefaultConfig = {
-  actions: { edit: false },
+  actions: { edit: false, create: false },
   gutter: {
     width: 3,
     gap: 6,
@@ -25,8 +29,18 @@ export const DefaultConfig = {
      *  If return true, then on hover it becomes the active color
      */
     hover: (annotation) => true,
+    /**
+     * Create a new annotation object with default values.
+     */
+    create: () => {
+      return {
+        id: uuidv4(),
+        isGutter: false,
+        color: createAnnotationColor("#f51720"),
+      };
+    },
   },
-  onEvent: (event: AnnotationEvent) => {
+  onEvent: <T>(event: AnnotationEvent<T>) => {
     Debugger.debug("default event listener", event);
   },
 } as const;

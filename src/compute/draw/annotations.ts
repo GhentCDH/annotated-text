@@ -51,7 +51,7 @@ export const drawAnnotation = (
   const config = svgModel.model.config;
   const { rect } = drawAnnotationContent(annotation, svgModel, config);
 
-  drawAnnotationHandles(annotation, svgModel.model, svgModel);
+  drawAnnotationHandles(annotation, svgModel);
 
   rect
     .on("mouseover", hoverAnnotation(rect, eventMetadata, svgModel))

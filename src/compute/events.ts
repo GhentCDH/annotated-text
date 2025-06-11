@@ -7,15 +7,13 @@ export type AnnotationEventType =
   | "double-click"
   | "annotation-edit--start"
   | "annotation-edit--end"
-  | "annotation-edit--move";
+  | "annotation-edit--move"
+  | "annotation-create--start"
+  | "annotation-create--end"
+  | "annotation-create--move";
 
 export type AnnotationEventData = {
   annotation: Annotation;
-};
-
-export type AnnotationEventDrag = AnnotationEventData & {
-  start: number;
-  end: number;
 };
 
 export type AnnotationEvent<DATA extends AnnotationEventData> = {

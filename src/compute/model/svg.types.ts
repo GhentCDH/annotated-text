@@ -4,6 +4,7 @@ import { Debugger } from "@ghentcdh/vue-component-annotated-text";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
 import { drawAnnotation } from "../draw/annotations";
+import { createNewBlock } from "../draw/annotations/create";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -48,6 +49,8 @@ export class SvgModel {
     this.handles = this.svg
       .append("g")
       .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.HANDLE);
+
+    createNewBlock(this);
   }
 
   removeAnnotations(annotationUuid: string, selector = "") {
