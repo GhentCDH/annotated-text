@@ -16,9 +16,10 @@ export const createNewBlock = (svgModel: SvgModel) => {
 
   let startIndex: number;
   let drawing = false;
+  let drawingAndMove = false;
   let dummyAnnotation: TextAnnotation | null = null;
 
-  const createDummyAnnotation = (event) => {
+  const createDummyAnnotation = (event, draw = false) => {
     const [clientX, clientY] = pointer(event);
     // const [x, y] = pointer(event);
     const x = clientX + container.getBoundingClientRect().x;
@@ -42,10 +43,11 @@ export const createNewBlock = (svgModel: SvgModel) => {
 
     dummyAnnotation.start = Math.min(_start, _end);
     dummyAnnotation.end = Math.max(_start, _end);
-    drawDummyAnnotation(svgModel, dummyAnnotation, {
-      border: dummyAnnotation.color.border,
-      fill: dummyAnnotation.color.background,
-    });
+    if (draw)
+      drawDummyAnnotation(svgModel, dummyAnnotation, {
+        border: dummyAnnotation.color.border,
+        fill: dummyAnnotation.color.background,
+      });
 
     return { x, y };
   };
@@ -54,9 +56,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
     if (!svgModel.model.config.actions.create) return null;
     if (svgModel.model.blockEvents || drawing) return;
 
-    svgModel.model.blockEvents = true;
     drawing = true;
-
     createDummyAnnotation(event);
 
     if (!dummyAnnotation) {
@@ -79,7 +79,9 @@ export const createNewBlock = (svgModel: SvgModel) => {
   svg.on("mousemove", (event) => {
     if (!drawing) return;
 
-    createDummyAnnotation(event);
+    svgModel.model.blockEvents = true;
+    drawingAndMove = true;
+    createDummyAnnotation(event, true);
     sendEvent1(
       {
         model: svgModel.model,
@@ -93,9 +95,10 @@ export const createNewBlock = (svgModel: SvgModel) => {
   });
 
   svg.on("mouseup", () => {
-    if (!drawing) return;
-
     drawing = false;
+    if (!drawingAndMove) return;
+
+    drawingAndMove = false;
     svgModel.model.blockEvents = false;
     removeDummyAnnotation(svgModel);
 

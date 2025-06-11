@@ -15,6 +15,14 @@ export const drawAnnotationContent = (
     .append("g")
     .attr("data-annotation-uid", annotation.annotationUuid);
 
+  const rect = annotationGroup
+    .append("path")
+    .attr("data-annotation-uid", annotation.annotationUuid)
+    .attr("data-annotation-start", annotation.lineNumber)
+    .attr("data-annotation-role", "fill")
+    .attr("d", annotation.path.fill)
+    .attr("border", "none")
+    .attr("fill", annotation.color.default.fill);
   if (annotation.path.border) {
     border = annotationGroup
       .append("path")
@@ -25,16 +33,10 @@ export const drawAnnotationContent = (
       .attr("fill", "none")
       .attr("stroke", annotation.color.default.border);
   }
-  const rect = annotationGroup
-    .append("path")
-    .attr("data-annotation-uid", annotation.annotationUuid)
-    .attr("data-annotation-role", "fill")
-    .attr("d", annotation.path.fill)
-    .attr("border", "none")
-    .attr("fill", annotation.color.default.fill);
 
   return { rect, border };
 };
+
 export const drawAnnotation = (
   svgModel: SvgModel,
   annotation: AnnotationDraw,

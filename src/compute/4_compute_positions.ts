@@ -116,9 +116,13 @@ const getRanges = (annotation: Annotation, line: TextLine) => {
   const textNode = lineElement.firstChild;
 
   const { start, end } = getTextRange(annotation, line);
+
+  // End is negative if the annotation is not in the line, but maybe in the gutter
+  if (end < 0) return null;
+
   const range = document.createRange();
-  range.setStart(textNode, start); // start at 5th character
-  range.setEnd(textNode, end); // end); // end at 10th character
+  range.setStart(textNode, start);
+  range.setEnd(textNode, end);
 
   const rects = range.getClientRects();
 
@@ -152,22 +156,24 @@ export const createTextAnnotation = (
   const radius = model.config.text.borderRadius;
 
   const draws = [];
+  const padding = model.config.text.padding * annotation.weight;
+  const height = model.config.text.lineHeight + padding * 2;
 
   lines.forEach((line, index: number) => {
     const rects = getRanges(annotation, line);
 
-    const padding = model.config.text.padding * annotation.weight;
-    const height = model.config.text.lineHeight + padding * 2;
     const prevEnd = lines[index - 1]?.end;
     const isFirstLine = !prevEnd || prevEnd <= annotation.start;
-    const nextLine = lines[index + 1]?.start;
-    const isLastLine = !nextLine || annotation.end <= nextLine;
 
-    rects.forEach((rect, index) => {
+    const nextLine = lines[index + 1]?.start;
+    const isLastLine = !nextLine || annotation.end < nextLine;
+
+    rects?.forEach((rect, rectIdx) => {
       const x = getX(parentDimensions, rect);
       const y = getY(parentDimensions, rect) - padding;
-      const leftBorder = isFirstLine && index === 0;
-      const rightBorder = isLastLine && index === rects.length - 1;
+      const leftBorder = isFirstLine && rectIdx === 0;
+      const lastRect = rectIdx === rects.length - 1;
+      const rightBorder = lastRect && isLastLine;
 
       draws.push({
         weight: annotation.weight,

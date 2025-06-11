@@ -55,6 +55,9 @@ export type TextLine = Line & {
 };
 
 export interface TextAnnotationModel {
+  /**
+   * If blockevents is true some events are blocked like editing or creating
+   */
   blockEvents: boolean;
   lines: TextLine[];
 
@@ -62,6 +65,8 @@ export interface TextAnnotationModel {
   drawAnnotations: AnnotationDraw[];
 
   annotations: TextAnnotation[];
+
+  textLength: number;
 
   clearDrawAnnotation(): void;
 
@@ -91,8 +96,6 @@ export interface TextAnnotationModel {
 
   getLinesForAnnotation(annotationId: string): TextLine[];
 
-  // getMaxLineWeight(line: number): number;
-
   maxGutterWeight: number;
   maxLineWeight: number;
 
@@ -116,14 +119,17 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   maxGutterWeight: number = 0;
   maxLineWeight: number = 0;
   readonly gutterAnnotationIds = new Set<string>();
+  public textLength = 0;
   drawAnnotations: AnnotationDraw[] = [];
+  private readonly lineAnnotationMap = new Map<number, TextAnnotation[]>();
+  private readonly lineGutterMap = new Map<number, TextAnnotation[]>();
 
   constructor(
     public config: AnnotationConfig,
     public lines: TextLine[],
-    private lineAnnotationMap: Map<number, TextAnnotation[]>,
-    private lineGutterMap: Map<number, TextAnnotation[]>,
-  ) {}
+  ) {
+    this.resetAnnotations();
+  }
 
   resetAnnotations() {
     this.annotationLineMap.clear();
@@ -132,9 +138,13 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     this.maxLineWeight = 0;
     this.gutterAnnotationIds.clear();
     this.drawAnnotations = [];
+    this.textLength = 0;
     this.lines.forEach((line) => {
       this.lineAnnotationMap.set(line.lineNumber, []);
       this.lineGutterMap.set(line.lineNumber, []);
+      if (this.maxLineWeight < line.end) {
+        this.textLength = line.end;
+      }
     });
   }
 

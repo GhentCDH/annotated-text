@@ -12,10 +12,10 @@ export const DefaultConfig = {
     gap: 6,
   },
   text: {
-    padding: 4,
-    lineHeight: 20,
+    padding: 3,
+    lineHeight: 22,
     borderRadius: 3,
-    border: 3,
+    border: 2,
     handleRadius: 6,
   },
   hover: {

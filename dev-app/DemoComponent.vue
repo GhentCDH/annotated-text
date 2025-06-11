@@ -30,8 +30,10 @@ import {
 } from "../src/compute/events";
 
 const textLines = textToLines(text);
+// .slice(0, 4);
 
 const annotationMap: Map<string, Annotation> = annotations
+  // .filter((a) => ["576753"].some((i) => i === a.id))
   // .slice(0, 2)
   .reduce((map, anno) => {
     map.set(anno.id, { ...anno });
@@ -79,6 +81,7 @@ const onAnnotationEvent = (
       onAnnotationMouseLeave(data.annotation, event);
       break;
     case "click":
+      Debugger.debug("Annotation clicked: ", data.annotation);
       onAnnotationClick(data.annotation, event);
       break;
     case "annotation-edit--end":

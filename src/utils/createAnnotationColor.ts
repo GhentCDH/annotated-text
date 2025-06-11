@@ -25,7 +25,7 @@ type Config = {
 const defaultConfig: Config = {
   opacity: {
     background: 0.3,
-    border: 0.3,
+    border: 0.6,
     backgroundActive: 0.8,
     borderActive: 0.9,
     gutter: 0.3,
@@ -63,8 +63,8 @@ export const createAnnotationColor = (
 
   return {
     border: `rgba(${rgbColor},${opacity.border})`,
-    background: `rgba(${rgbColor},${opacity.border})`,
-    borderActive: `rgba(${rgbColor},${opacity.border})`,
+    background: `rgba(${rgbColor},${opacity.background})`,
+    borderActive: `rgba(${rgbColor},${opacity.borderActive})`,
     backgroundActive: `rgba(${rgbColor},${opacity.backgroundActive})`,
     // backgroundActive: `color-mix(in srgb, white, ${color} ${
     //   opacity.backgroundActive * 100

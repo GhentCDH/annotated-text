@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { cloneDeep, merge } from "lodash-es";
 import {
-  TextAnnotation,
   TextAnnotationModel,
   TextAnnotationModelImpl,
   TextLine,
@@ -14,24 +13,16 @@ export const createAnnotationModel = (
   lines: Line[],
 ): TextAnnotationModel => {
   const textLines: TextLine[] = [];
-  const lineMap: Map<number, TextLine> = new Map();
-  const lineAnnotationMap: Map<number, TextAnnotation[]> = new Map();
-  const lineGutterMap: Map<number, TextAnnotation[]> = new Map();
   // const gutters: Record<number, AnnotatedGutter> = {};
 
   lines?.forEach((line, lineNumber) => {
     const textLine = { uuid: uuidv4(), lineNumber, ...line } as TextLine;
-    lineMap.set(lineNumber, textLine);
-    lineAnnotationMap.set(lineNumber, []);
 
     textLines.push(textLine);
-    lineGutterMap.set(lineNumber, []);
   });
 
   return new TextAnnotationModelImpl(
     merge(cloneDeep(DefaultConfig), config),
     textLines,
-    lineAnnotationMap,
-    lineGutterMap,
   );
 };

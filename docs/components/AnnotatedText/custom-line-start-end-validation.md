@@ -45,6 +45,14 @@ const onAnnotationUpdating = function (updateState) {
 
   updateState.confirmUpdate();
 };
+
+const listenToEvents = (event, type, data)=>{
+    switch(type){
+        case 'click':
+            console.log('click', event, data);
+            break;
+    }
+}
 </script>
 
 ## A custom line start and end validation
@@ -78,6 +86,7 @@ TODO add snapper to V2
 :text-lines="textLines"
 :can-edit="true"
 :allow-edit="true"
+@event="listenToEvents"
 />
 
 <style module>

@@ -38,11 +38,6 @@ export const getLinesForAnnotation = (
 
   for (let i = startLineIndex; i < allLines.length; i++) {
     const line = allLines[i];
-    if (line.start > annotation.end) {
-      i = allLines.length;
-      break;
-    }
-
     lines.push(line);
 
     if (annotation.end <= line.end) {
@@ -67,6 +62,19 @@ export const assignAnnotationToLines = (
     Debugger.warn(
       `Invalid annotation: start (${annotation.start}) must be less than end (${annotation.end})`,
     );
+  }
+  if (model.textLength < annotation.start) {
+    Debugger.warn(
+      `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
+    );
+    return model;
+  }
+  if (model.textLength < model.textLength) {
+    Debugger.warn(
+      `Invalid annotation: end (${annotation.start}) must be less than text length (${model.textLength})`,
+    );
+
+    // Maybe update the annotation end so it ends somewhere?
   }
 
   const lines = getLinesForAnnotation(model.lines, annotation);
