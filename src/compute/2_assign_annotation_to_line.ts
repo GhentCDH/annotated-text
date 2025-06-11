@@ -78,9 +78,10 @@ export const assignAnnotationToLines = (
 
 export const reAssignAnnotationToLine = (
   model: TextAnnotationModel,
-  annotation: Annotation,
+  annotation: TextAnnotation,
+  calculateWeights = false,
 ): TextAnnotationModel => {
-  model.removeAnnotation(annotation, false);
+  model.removeAnnotation(annotation, calculateWeights);
 
   return assignAnnotationToLines(model, annotation);
 };
@@ -88,10 +89,11 @@ export const reAssignAnnotationToLine = (
 export const assignAnnotationsToLines = (
   model: TextAnnotationModel,
   annotations: Annotation[],
+  calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
   annotations.forEach((annotation) => {
-    assignAnnotationToLines(model, annotation, false);
+    assignAnnotationToLines(model, annotation, calculateWeights);
   });
 
   return model;

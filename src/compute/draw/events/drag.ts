@@ -1,16 +1,14 @@
 import { drag } from "d3";
-import { DUMMY_UID, SVG_ID, SvgModel } from "../../model/svg.types";
-import { sendEvent1 } from "../send-events";
+import { SVG_ID, SvgModel } from "../../model/svg.types";
 import {
   AnnotationDraw,
   Dimensions,
   TextAnnotationModel,
 } from "../../annotation.model";
 import { AnnotationEventType } from "../../events";
-import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
-import { drawAnnotation } from "../annotations";
-import { reAssignAnnotationToLine } from "../../2_assign_annotation_to_line";
 import { editAnnotations } from "../annotations/edit";
+import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
+import { sendEvent1 } from "../send-events";
 
 export const drawAnnotationHandles = (
   annotation: AnnotationDraw,
@@ -44,7 +42,7 @@ export const drawHandle = (
   let dragResult = null;
   const onDragEnd = (event) => {
     model.blockEvents = false;
-    svg.removeAnnotations(DUMMY_UID);
+    removeDummyAnnotation(svg);
     sendEvent1(
       { model, annotation },
       { event: "annotation-edit--end", mouseEvent: event },
@@ -57,14 +55,7 @@ export const drawHandle = (
 
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
-    svg.removeAnnotations(annotation.annotationUuid);
-
-    reAssignAnnotationToLine(model, dragResult, true);
-    createAndAssignDrawAnnotation(model, svg.textElement, dragResult)
-      .getDrawAnnotations(annotation.annotationUuid)
-      .forEach((a) => {
-        drawAnnotation(svg, a);
-      });
+    recreateAnnotation(svg, dragResult);
   };
 
   const onDrag = (eventType: AnnotationEventType) => (event) => {

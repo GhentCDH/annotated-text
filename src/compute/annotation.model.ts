@@ -218,7 +218,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   removeAnnotation(annotation: TextAnnotation, calculateWeights = true): void {
-    const originalLines = this.annotationLineMap.get(annotation.id);
+    const originalLines = this.annotationLineMap.get(annotation.id) ?? [];
     this.annotationsMap.delete(annotation.id);
     if (isGutter(annotation.target)) {
       this.gutterAnnotationIds.delete(annotation.id);

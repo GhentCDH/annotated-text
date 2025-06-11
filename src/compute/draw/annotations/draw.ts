@@ -5,9 +5,15 @@ import {
   TextAnnotationModel,
 } from "../../annotation.model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
-import { getLinesForAnnotation } from "../../2_assign_annotation_to_line";
-import { createTextAnnotation } from "../../4_compute_positions";
-import { drawAnnotationContent } from "../annotations";
+import {
+  getLinesForAnnotation,
+  reAssignAnnotationToLine,
+} from "../../2_assign_annotation_to_line";
+import {
+  createAndAssignDrawAnnotation,
+  createTextAnnotation,
+} from "../../4_compute_positions";
+import { drawAnnotation, drawAnnotationContent } from "../annotations";
 import { isInsideBoundingRect } from "../utils/bounding-rect";
 
 export function getCharacterFromTextNodesAtPoint(
@@ -85,7 +91,7 @@ export const removeDummyAnnotation = (svgModel: SvgModel) => {
 export const drawDummyAnnotation = (
   svgModel: SvgModel,
   dummyAnnotation: TextAnnotation,
-  color: AnnotationDrawColor,
+  color?: AnnotationDrawColor,
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
   const { model, textElement } = svgModel;
@@ -102,5 +108,21 @@ export const drawDummyAnnotation = (
       model.config,
     ),
   );
+
   svgModel.colorAnnotation(DUMMY_UID, color);
+};
+
+export const recreateAnnotation = (
+  svg: SvgModel,
+  annotation: TextAnnotation,
+) => {
+  const { model } = svg;
+  svg.removeAnnotations(annotation.id);
+
+  reAssignAnnotationToLine(model, annotation, true);
+  createAndAssignDrawAnnotation(model, svg.textElement, annotation)
+    .getDrawAnnotations(annotation.id)
+    .forEach((a) => {
+      drawAnnotation(svg, a);
+    });
 };

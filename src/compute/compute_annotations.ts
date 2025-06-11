@@ -27,6 +27,10 @@ export class ComputeAnnotations {
     this.config = config;
   }
 
+  get completeConfig() {
+    return this.textAnnotationModel.config;
+  }
+
   public setLines(lines: Line[]): void {
     this.lines = lines;
     this.textAnnotationModel = createAnnotationModel(this.config, lines);

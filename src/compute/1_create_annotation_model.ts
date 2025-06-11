@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { merge } from "lodash-es";
+import { cloneDeep, merge } from "lodash-es";
 import {
   TextAnnotation,
   TextAnnotationModel,
@@ -29,7 +29,7 @@ export const createAnnotationModel = (
   });
 
   return new TextAnnotationModelImpl(
-    merge(DefaultConfig, config),
+    merge(cloneDeep(DefaultConfig), config),
     textLines,
     lineAnnotationMap,
     lineGutterMap,

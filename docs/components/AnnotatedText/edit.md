@@ -53,6 +53,8 @@ key="text"
 :component-id="'1'"
 :annotations="annotations_1"
 :textLines="textLines_1"
+:allow-create="false"
+:allow-edit="false"
 />
 
 ## Line edit only component
@@ -73,6 +75,7 @@ key="text"
 :annotations="annotations_2"
 :textLines="textLines_2"
 :allow-edit="true"
+:allow-create="false"
 />
 
 ## Line edit and create component
@@ -88,9 +91,6 @@ key="text"
 
 ## V2
 
-:::warning
-TODO add create support
-:::
 <AnnotatedTextV2
 key="text"
 :component-id="'1'"

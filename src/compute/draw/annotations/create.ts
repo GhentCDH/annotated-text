@@ -3,6 +3,7 @@ import { Debugger } from "@ghentcdh/vue-component-annotated-text";
 import {
   drawDummyAnnotation,
   getCharacterFromTextNodesAtPoint,
+  recreateAnnotation,
   removeDummyAnnotation,
 } from "./draw";
 import { SvgModel } from "../../model/svg.types";
@@ -102,6 +103,8 @@ export const createNewBlock = (svgModel: SvgModel) => {
       Debugger.warn("no dummy annotation found, canceling");
       return;
     }
+
+    recreateAnnotation(svgModel, dummyAnnotation);
 
     sendEvent1(
       {

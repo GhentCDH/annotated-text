@@ -1,4 +1,8 @@
-import { drawDummyAnnotation, getCharacterFromTextNodesAtPoint } from "./draw";
+import {
+  drawDummyAnnotation,
+  getCharacterFromTextNodesAtPoint,
+  removeDummyAnnotation,
+} from "./draw";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, TextAnnotation } from "../../annotation.model";
 import { sendEvent1 } from "../send-events";
@@ -48,7 +52,7 @@ export const editAnnotations = (
     },
   );
 
-  svg.removeAnnotations(DUMMY_UID);
+  removeDummyAnnotation(svg);
   drawDummyAnnotation(svg, dummyAnnotation, annotation.color.hover);
 
   return dummyAnnotation;
