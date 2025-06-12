@@ -5,12 +5,12 @@ import {
   Annotation,
   Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
-import { largeAnntoations, largeTextLines } from "@demo";
+import { largeAnnotations, largeTextLines } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 import { AnnotationEventType } from "../src/compute/events";
 
 const typesSet = new Set<string>();
-largeAnntoations.map((a) => {
+largeAnnotations.map((a) => {
   if (a.type) {
     typesSet.add(a.type);
   }
@@ -19,7 +19,7 @@ const types = Array.from(typesSet);
 const selectedTypes = ref([]);
 const annotations = computed(
   () =>
-    largeAnntoations
+    largeAnnotations
       // .filter((t) => t.id === 1508168)
       .filter((a) => {
         if (selectedTypes.value.length === 0) return true;

@@ -1,4 +1,4 @@
-export const largeAnntoations = [
+export const largeAnnotations = [
   {
     id: 653998,
     start: 2085,

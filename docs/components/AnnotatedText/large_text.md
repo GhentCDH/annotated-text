@@ -9,7 +9,7 @@ import {
   Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
-import { largeTextLines, largeAnntoations } from "@demo";
+import { largeTextLines, largeAnnotations } from "@demo";
 
 
 const  onMouseDown=(e, payload) =>{
@@ -20,7 +20,7 @@ function onMouseMove(e, payload) {
  console.log('mouse Move', e, payload);
 }
 
-const annot = largeAnntoations;
+const annot = largeAnnotations;
 const textLines = largeTextLines
 </script>
 
