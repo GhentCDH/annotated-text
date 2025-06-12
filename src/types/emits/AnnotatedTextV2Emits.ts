@@ -5,7 +5,7 @@ import type {
 } from "../../state";
 import { AnnotationEventData, AnnotationEventType } from "../../compute/events";
 
-export type AnnotatedTextPojoEmits = {
+export type AnnotatedTextV2Emits = {
   event: [
     mouseEvent: MouseEvent,
     type: AnnotationEventType,

@@ -6,7 +6,7 @@ import {
   Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
 import { largeAnntoations, largeTextLines } from "@demo";
-import AnnotatedTextPojo from "../src/components/AnnotatedTextPojo.vue";
+import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 import { AnnotationEventType } from "../src/compute/events";
 
 const typesSet = new Set<string>();
@@ -35,7 +35,7 @@ const onEvent = (event, eventType: AnnotationEventType, data) => {
   }
 };
 Debugger.setDebug(true);
-const pojoComponent = ref(true);
+const v2Component = ref(true);
 const vueComponent = ref(false);
 </script>
 
@@ -45,10 +45,10 @@ const vueComponent = ref(false);
     <input
       type="checkbox"
       value="true"
-      v-model="pojoComponent"
-      @click="() => console.log('text pojo')"
+      v-model="v2Component"
+      @click="() => console.log('V2')"
     />
-    POJO
+    V2
   </label>
   <label>
     <input
@@ -69,8 +69,8 @@ const vueComponent = ref(false);
 
   <hr />
   <div class="demo-grid">
-    <AnnotatedTextPojo
-      v-if="pojoComponent"
+    <AnnotatedTextV2
+      v-if="v2Component"
       key="text"
       :component-id="'1'"
       :annotations="annotations"

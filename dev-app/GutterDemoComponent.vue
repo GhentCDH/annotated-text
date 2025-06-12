@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { AnnotatedText } from "@ghentcdh/vue-component-annotated-text";
 import { annotationsWithGutters, lines } from "@demo";
-import AnnotatedTextPojo from "../src/components/AnnotatedTextPojo.vue";
+import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 
 const typesSet = new Set<string>();
 const annotations = annotationsWithGutters;
@@ -18,7 +18,7 @@ const annotations = annotationsWithGutters;
       :annotations="annotations"
       :lines="lines"
     />
-    <AnnotatedTextPojo
+    <AnnotatedTextV2
       key="text"
       :component-id="'1'"
       :annotations="annotations"

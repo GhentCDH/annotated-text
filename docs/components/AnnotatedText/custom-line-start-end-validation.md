@@ -88,10 +88,6 @@ decreased by 2 and the end is increased by 2.
 
 ## V2
 
-:::warning
-TODO add snapper to V2
-:::
-
 <AnnotatedTextV2
 :component-id="'1'"
 :annotations="annot"

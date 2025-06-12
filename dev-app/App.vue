@@ -4,7 +4,7 @@ import DemoComponent from "./DemoComponent.vue";
 import LargeDemoComponent from "./LargeDemoComponent.vue";
 import GutterDemoComponent from "./GutterDemoComponent.vue";
 
-const largeComponent = ref("large");
+const largeComponent = ref("demo");
 </script>
 
 <template>

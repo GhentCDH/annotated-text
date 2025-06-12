@@ -9,12 +9,12 @@ import { Debugger } from "../utils/debugger";
 import { ComputeAnnotations } from "../compute/compute_annotations";
 import { AnnotationEvent, AnnotationEventData } from "../compute/events";
 import { AnnotationConfig } from "../compute/model/annotation.config";
-import { AnnotatedTextPojoProps } from "@/types/props";
-import { AnnotatedTextPojoEmits } from "@/types/emits";
+import { AnnotatedTextV2Props } from "@/types/props";
+import { AnnotatedTextV2Emits } from "@/types/emits";
 
 // init props
 
-const props = withDefaults(defineProps<AnnotatedTextPojoProps>(), {
+const props = withDefaults(defineProps<AnnotatedTextV2Props>(), {
   annotations: () => [],
   selectedAnnotations: () => [],
   hoveredAnnotations: () => [],
@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<AnnotatedTextPojoProps>(), {
 });
 
 // define emits
-const emit = defineEmits<AnnotatedTextPojoEmits>();
+const emit = defineEmits<AnnotatedTextV2Emits>();
 
 const id = `annotated-text-${uuidv4()}`;
 
