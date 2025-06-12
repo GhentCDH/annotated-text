@@ -1,9 +1,16 @@
 import {
+  Annotation,
   createAnnotationColor,
   Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
 import { v4 as uuidv4 } from "uuid";
-import { AnnotationEvent } from "../events";
+import { AnnotationEvent, AnnotationEventData } from "../events";
+
+export type SnapperAction = "move-start" | "move-end";
+export type SnapperFn = (
+  action: SnapperAction,
+  annotation: Annotation,
+) => { start: number; end: number };
 
 export const DefaultConfig = {
   actions: { edit: false, create: false },
@@ -28,7 +35,7 @@ export const DefaultConfig = {
     /**
      *  If return true, then on hover it becomes the active color
      */
-    hover: (annotation) => true,
+    hover: (annotation: Annotation) => true,
     /**
      * Create a new annotation object with default values.
      */
@@ -39,8 +46,16 @@ export const DefaultConfig = {
         color: createAnnotationColor("#f51720"),
       };
     },
+    /**
+     * Use a word snapper function to adjust the start and end indices of an annotation.
+     * @param action
+     * @param annotation
+     */
+    useSnapper: (action: SnapperAction, annotation: Annotation) => {
+      return { start: annotation.start, end: annotation.end };
+    },
   },
-  onEvent: <T>(event: AnnotationEvent<T>) => {
+  onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
     Debugger.debug("default event listener", event);
   },
 } as const;

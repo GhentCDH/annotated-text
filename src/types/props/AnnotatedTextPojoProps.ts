@@ -1,7 +1,9 @@
 import type { Annotation } from "../Annotation";
 import type { Line } from "../AnnotatedText";
+import { SnapperFn } from "../../compute/model/annotation.config";
 
 export interface AnnotatedTextPojoProps {
+  useSnapper: SnapperFn;
   /**
    * List of annotations to be displayed
    */

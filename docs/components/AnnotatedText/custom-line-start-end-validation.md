@@ -31,8 +31,6 @@ const fixOffset = function (updateState) {
           updateState.newStart = updateState.newStart-2;
           break;
     }
-
-
 };
 
 const onAnnotationUpdateBegin = function (updateState) {
@@ -44,6 +42,20 @@ const onAnnotationUpdating = function (updateState) {
   fixOffset(updateState);
 
   updateState.confirmUpdate();
+};
+
+const useSnapper = (action, payload) => { 
+    const {start, end} = payload;
+    switch(action) {
+        case 'move-end':
+          return {start, end: end -2};
+          break;
+        case 'move-start':
+          return {start: start +2, end};
+          break;
+    }
+    
+    return {start, end};
 };
 
 const listenToEvents = (event, type, data)=>{
@@ -86,6 +98,7 @@ TODO add snapper to V2
 :text-lines="textLines"
 :can-edit="true"
 :allow-edit="true"
+:use-snapper="useSnapper"
 @event="listenToEvents"
 />
 

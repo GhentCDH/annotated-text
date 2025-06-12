@@ -44,6 +44,13 @@ export const editAnnotations = (
     annotationUuid: DUMMY_UID,
   } as unknown as TextAnnotation;
 
+  const snapper = model.config.visualEvent.useSnapper(
+    target === "start" ? "move-start" : "move-end",
+    dummyAnnotation,
+  );
+  dummyAnnotation.start = snapper.start;
+  dummyAnnotation.end = snapper.end;
+
   sendEvent1(
     { model: svg.model, annotation },
     { event: eventType },

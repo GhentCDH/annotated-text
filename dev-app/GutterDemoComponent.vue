@@ -4,7 +4,6 @@ import { annotationsWithGutters, lines } from "@demo";
 import AnnotatedTextPojo from "../src/components/AnnotatedTextPojo.vue";
 
 const typesSet = new Set<string>();
-const types = Array.from(typesSet);
 const annotations = annotationsWithGutters;
 </script>
 

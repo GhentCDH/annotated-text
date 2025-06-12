@@ -7,7 +7,7 @@ import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid"; // init props
 import { Debugger } from "../utils/debugger";
 import { ComputeAnnotations } from "../compute/compute_annotations";
-import { AnnotationEvent } from "../compute/events";
+import { AnnotationEvent, AnnotationEventData } from "../compute/events";
 import { AnnotationConfig } from "../compute/model/annotation.config";
 import { AnnotatedTextPojoProps } from "@/types/props";
 import { AnnotatedTextPojoEmits } from "@/types/emits";
@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<AnnotatedTextPojoProps>(), {
   verbose: false,
   allowEdit: false,
   allowCreate: false,
+  useSnapper: undefined,
 });
 
 // define emits
@@ -37,10 +38,13 @@ const createConfig = (): Partial<AnnotationConfig> => {
       edit: props.allowEdit ?? false,
       create: props.allowCreate ?? false,
     },
-    onEvent: (event: AnnotationEvent) => {
+    onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
       emit("event", null, event.event, event.data);
     },
-  };
+    visualEvent: {
+      useSnapper: props.useSnapper,
+    },
+  } as Partial<AnnotationConfig>;
 };
 
 const computeAnnotations = new ComputeAnnotations(
