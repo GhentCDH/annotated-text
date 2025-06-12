@@ -40,7 +40,7 @@ const createText = (
   textDiv.style.setProperty("--line-padding", `${linePadding}px`);
   textDiv.style.setProperty("--line-height", `${lineHeight}px`);
 
-  textDiv.className = styles.line.text.wrapper;
+  textDiv.className = `${styles.line.text.wrapper} ${text.rtl ? "rtl" : ""}`;
   textDiv.innerText = `${textLine.text}`;
   textDiv.setAttribute("data-line-uid", textLine.uuid);
   textDiv.setAttribute("data-annotation-role", "line");
@@ -49,12 +49,12 @@ const createText = (
 };
 
 export const drawText = (textAnnotationModel: TextAnnotationModel) => {
-  const { gutter, text } = textAnnotationModel.config;
+  const { gutter } = textAnnotationModel.config;
   const gutterWidth = gutter.width + gutter.gap;
   const gutterPaddingLeft = gutterWidth * textAnnotationModel.maxGutterWeight;
 
   const textDiv = document.createElement("div");
-  textDiv.className = `${styles.text} ${text.rtl ? "rtl" : "ltr"}`;
+  textDiv.className = `${styles.text} `;
 
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 

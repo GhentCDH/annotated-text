@@ -37,7 +37,7 @@
       padding-left: 8px;
     }
 
-    &.rtl {
+    .rtl {
       direction: rtl;
       unicode-bidi: isolate; /* or embed */
     }
