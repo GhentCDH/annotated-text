@@ -1,11 +1,11 @@
 import { pointer } from "d3";
-import { Debugger } from "@ghentcdh/vue-component-annotated-text";
 import {
   drawDummyAnnotation,
   getCharacterFromTextNodesAtPoint,
   recreateAnnotation,
   removeDummyAnnotation,
 } from "./draw";
+import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
 import { TextAnnotation } from "../../annotation.model";
 import { sendEvent1 } from "../send-events";

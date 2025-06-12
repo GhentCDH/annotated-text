@@ -21,6 +21,4 @@ export { UserActionState } from "./state";
 
 export * from "./utils/debugger";
 
-export type { AnnotationColor } from "./types/AnnotationColor";
-export * from "./utils/createAnnotationColor";
 export type { AnnotatedTextEmits } from "./types/emits";

@@ -3,7 +3,6 @@ import { AnnotatedText } from "@ghentcdh/vue-component-annotated-text";
 import { annotationsWithGutters, lines } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 
-const typesSet = new Set<string>();
 const annotations = annotationsWithGutters;
 </script>
 

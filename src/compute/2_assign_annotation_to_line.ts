@@ -6,7 +6,9 @@ import {
   TextLine,
 } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
-import { Annotation, createAnnotationColor, Debugger } from "../index";
+import { Annotation } from "../types/Annotation";
+import { Debugger } from "../utils/debugger";
+import { createAnnotationColor } from "../utils/createAnnotationColor";
 
 const isStartLine = memoize(
   (lineStart: number, lineEnd: number, start: number) => {

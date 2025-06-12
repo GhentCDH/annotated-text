@@ -8,7 +8,9 @@ import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
-import { Annotation, Debugger, Line } from "../index";
+import { Line } from "../types/AnnotatedText";
+import { Annotation } from "../types/Annotation";
+import { Debugger } from "../utils/debugger";
 
 export class ComputeAnnotations {
   private textAnnotationModel: TextAnnotationModel;

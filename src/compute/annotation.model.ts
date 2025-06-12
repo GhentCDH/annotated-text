@@ -4,7 +4,9 @@ import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
 } from "./utils/weights";
-import { Annotation, type AnnotationColor, Line } from "../index";
+import { Line } from "../types/AnnotatedText";
+import { Annotation } from "../types/Annotation";
+import { AnnotationColor } from "../types/AnnotationColor";
 
 export type Dimensions = {
   height: number;

@@ -1,6 +1,6 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
-import { Debugger } from "@ghentcdh/vue-component-annotated-text";
+import { Debugger } from "../../utils/debugger";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
 import { drawAnnotation } from "../draw/annotations";
@@ -41,7 +41,7 @@ export class SvgModel {
       .attr("width", width)
       .attr("height", height)
       .style("font-family", "sans-serif")
-      .style("font-size", "16px");
+      .style("font-size", "16px") as any;
 
     this.annotations = this.svg
       .append("g")

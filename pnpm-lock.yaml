@@ -42,6 +42,9 @@ importers:
       '@types/d3':
         specifier: 7.4.3
         version: 7.4.3
+      '@types/d3-selection':
+        specifier: 3.0.11
+        version: 3.0.11
       '@types/jsdom':
         specifier: ^21.1.7
         version: 21.1.7

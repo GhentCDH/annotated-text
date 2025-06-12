@@ -6,7 +6,7 @@ import {
   TextLine,
 } from "./annotation.model";
 import { AnnotationConfig, DefaultConfig } from "./model/annotation.config";
-import { Line } from "../index";
+import { Line } from "../types/AnnotatedText";
 
 export const createAnnotationModel = (
   config: Partial<AnnotationConfig>,

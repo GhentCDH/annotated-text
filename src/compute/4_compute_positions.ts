@@ -1,7 +1,6 @@
 import { pick } from "lodash-es";
 
 import { v4 as uuidv4 } from "uuid";
-import { Annotation } from "@ghentcdh/vue-component-annotated-text";
 import {
   AnnotatedGutter,
   AnnotationDrawColor,
@@ -11,6 +10,7 @@ import {
 } from "./annotation.model";
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
+import { Annotation } from "../types/Annotation";
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(
@@ -38,9 +38,8 @@ export const computeLinePositions = (
     line.element = textLine;
     line.dimensions = {
       x: lineDimensions.x - parentDimensions.x,
-      y: lineDimensions.y, //- parentDimensions.y,
+      y: lineDimensions.y,
       height: lineDimensions.height,
-      width: lineDimensions.width,
     };
   });
 
@@ -76,7 +75,7 @@ const createGutter = (
 
   // Add the gutterwidth as padding
   // We want to have the most gutters closest to the text
-  const weight = model.maxGutterWeight - gutter.weight ?? 0;
+  const weight = model.maxGutterWeight - gutter.weight;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
 

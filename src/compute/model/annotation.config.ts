@@ -1,10 +1,8 @@
-import {
-  Annotation,
-  createAnnotationColor,
-  Debugger,
-} from "@ghentcdh/vue-component-annotated-text";
 import { v4 as uuidv4 } from "uuid";
 import { AnnotationEvent, AnnotationEventData } from "../events";
+import { Annotation } from "../../types/Annotation";
+import { Debugger } from "../../utils/debugger";
+import { createAnnotationColor } from "../../utils/createAnnotationColor";
 
 export type SnapperAction = "move-start" | "move-end";
 export type SnapperFn = (
