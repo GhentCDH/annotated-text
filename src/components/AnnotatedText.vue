@@ -23,7 +23,6 @@
         @annotation-click="onClick"
         @annotation-double-click="onDoubleClick"
       />
-
       <!-- line -->
       <div class="content">
         <AnnotatedLine

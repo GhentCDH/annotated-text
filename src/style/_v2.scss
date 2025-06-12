@@ -1,0 +1,45 @@
+.ghent-cdh-annotation {
+  &-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    //pointer-events: none;
+    z-index: 1000;
+
+    .handle {
+      pointer-events: all;
+      cursor: col-resize;
+      z-index: 20;
+    }
+  }
+
+  &-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  &-text {
+    //position: absolute;
+    //top: 0;
+    //left: 0;
+    //z-index: 99;
+    grid-template-columns: max-content auto;
+    align-items: center;
+
+    .content {
+      line-height: var(--line-height, initial);
+      padding-bottom: var(--line-padding, 0);
+    }
+
+    .gutter {
+      margin-left: var(--gutter-left);
+      padding-left: 8px;
+    }
+
+    .rtl {
+      direction: rtl;
+      unicode-bidi: isolate; /* or embed */
+    }
+  }
+}

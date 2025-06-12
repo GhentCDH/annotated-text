@@ -2,11 +2,13 @@
 AnnotatedText
 ---
 
-# AnnotatedText
+# AnnotatedText Edit and Create Example
 
 <script setup>
+//
 import {
   AnnotatedText,
+  AnnotatedTextV2,
   Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
@@ -34,6 +36,7 @@ const textLines_3 = cloneDeep(textLines);
 </script>
 
 ## Line read only component
+
 <ClientOnly>
 <AnnotatedText
     key="text"
@@ -42,6 +45,17 @@ const textLines_3 = cloneDeep(textLines);
     :lines="textLines_1"
 />
 </ClientOnly>
+
+## V2
+
+<AnnotatedTextV2
+key="text"
+:component-id="'1'"
+:annotations="annotations_1"
+:textLines="textLines_1"
+:allow-create="false"
+:allow-edit="false"
+/>
 
 ## Line edit only component
 
@@ -53,7 +67,19 @@ key="text"
 :allow-edit="true"
 />
 
+## V2
+
+<AnnotatedTextV2
+key="text"
+:component-id="'1'"
+:annotations="annotations_2"
+:textLines="textLines_2"
+:allow-edit="true"
+:allow-create="false"
+/>
+
 ## Line edit and create component
+
 <AnnotatedText
 key="text"
 :component-id="'3'"
@@ -63,5 +89,25 @@ key="text"
 :allow-create="true"
 />
 
-<style module>
-</style>
+## V2
+
+<AnnotatedTextV2
+key="text"
+:component-id="'1'"
+:annotations="annotations_3"
+:text-lines="textLines_3"
+:allow-edit="true"
+:allow-create="true"
+/>
+
+## Right to left support
+
+<AnnotatedTextV2
+key="text"
+:component-id="'1'"
+:annotations="annotations_3"
+:text-lines="textLines_3"
+:allow-edit="true"
+:allow-create="true"
+:rtl="true"
+/>

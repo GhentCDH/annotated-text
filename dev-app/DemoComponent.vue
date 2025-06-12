@@ -18,21 +18,27 @@ import type {
 } from "@ghentcdh/vue-component-annotated-text";
 import {
   AnnotatedText,
+  AnnotatedTextV2,
   Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
 import { textToLines } from "./Utils";
 import { annotationsGreek as annotations, textGreek as text } from "./data";
+import {
+  AnnotationEventData,
+  AnnotationEventType,
+} from "../src/compute/events";
 
 const textLines = textToLines(text);
+// .slice(0, 4);
 
-const annotationMap: Map<string, Annotation> = annotations.reduce(
-  (map, anno) => {
+const annotationMap: Map<string, Annotation> = annotations
+  // .filter((a) => ["576753"].some((i) => i === a.id))
+  // .slice(0, 2)
+  .reduce((map, anno) => {
     map.set(anno.id, { ...anno });
     return map;
-  },
-  new Map(),
-);
+  }, new Map());
 
 const hoveredAnnotationsState: Map<string, Annotation> = new Map();
 const selectedAnnotations: Map<string, Annotation> = new Map();
@@ -54,13 +60,42 @@ const props = reactive({
   annoList: Array.from(annotationMap.values()),
   hoveredList: Array.from(hoveredAnnotationsState.keys()),
   selectedList: Array.from(selectedAnnotations.keys()),
-
   secondComponent: false,
+  rtl: false,
 });
 
 function slotCondition(slotProps: { annotation: Annotation }) {
   return selectedAnnotations.has(slotProps.annotation.id);
 }
+
+const onAnnotationEvent = (
+  event: MouseEvent,
+  type: AnnotationEventType,
+  data: AnnotationEventData,
+) => {
+  switch (type) {
+    case "mouse-enter":
+      onAnnotationMouseOver(data.annotation, event);
+      break;
+    case "mouse-leave":
+      onAnnotationMouseLeave(data.annotation, event);
+      break;
+    case "click":
+      Debugger.debug("Annotation clicked: ", data.annotation);
+      onAnnotationClick(data.annotation, event);
+      break;
+    case "annotation-edit--end":
+      annotationMap.set(data.annotation.id, data.annotation);
+      props.annoList = Array.from(annotationMap.values());
+      break;
+    case "annotation-create--end":
+      annotationMap.set(data.annotation.id, data.annotation);
+      props.annoList = Array.from(annotationMap.values());
+      break;
+    default:
+      Debugger.warn("Unhandled annotation event type: ", type);
+  }
+};
 
 const onAnnotationMouseOver = function (
   annotation: Annotation,
@@ -170,83 +205,104 @@ const onKeyPressed = function (
       | <input v-model="props.allowEdit" type="checkbox" />
       <label>Allow Edits</label>
       | <input v-model="props.allowCreate" type="checkbox" />
-      <label>Allow Create</label>
+      <label>Allow Create</label> |
+      <input v-model="props.rtl" type="checkbox" />
+      <label>Right-to-left</label>
       | <input v-model="props.secondComponent" type="checkbox" />
       <label>Second Component</label>
     </form>
   </menu>
 
   <hr />
-  <div class="text-components">
-    <AnnotatedText
-      key="text"
-      :component-id="'1'"
-      :annotations="props.annoList"
-      :hovered-annotations="props.hoveredList"
-      :selected-annotations="props.selectedList"
-      :lines="textLines"
-      :debug="props.debug"
-      :verbose="props.verbose"
-      :show-labels="props.showLabels"
-      :render="props.renderNested ? 'nested' : 'flat'"
-      :display="props.target"
-      :allow-edit="props.allowEdit"
-      :allow-create="props.allowCreate"
-      :listen-to-on-updating="false"
-      :listen-to-on-update-start="true"
-      @annotation-select="onAnnotationClick"
-      @annotation-update-begin="onAnnotationUpdateBegin"
-      @annotation-updating="onAnnotationUpdating"
-      @annotation-update-end="onAnnotationUpdateEnd"
-      @key-pressed="onKeyPressed"
-      @annotation-create-begin="onAnnotationCreateBegin"
-      @annotation-creating="onAnnotationCreating"
-      @annotation-create-end="onAnnotationCreateEnd"
-      @annotation-mouse-over="onAnnotationMouseOver"
-      @annotation-mouse-leave="onAnnotationMouseLeave"
-    >
-      <template #annotation-after="slotProps">
-        <template v-if="slotCondition(slotProps)">
-          <span>
-            <FontAwesomeIcon :icon="faRemove" style="color: red" />
-          </span>
-          <span>
-            <FontAwesomeIcon :icon="faImportant" style="color: orange" />
-          </span>
-          <span>
-            <FontAwesomeIcon :icon="faValidate" style="color: green" />
-          </span>
+  <div class="demo-grid">
+    <div>
+      <h1>V2</h1>
+      <AnnotatedTextV2
+        v-bind="props"
+        key="text"
+        :component-id="'1'"
+        :annotations="props.annoList"
+        :highlight-annotations="props.hoveredList"
+        :selected-annotations="props.selectedList"
+        :text-lines="textLines"
+        :allow-edit="props.allowEdit"
+        :allow-create="props.allowCreate"
+        :rtl="props.rtl"
+        @event="onAnnotationEvent"
+      />
+    </div>
+    <div>
+      <h1>V1</h1>
+      <AnnotatedText
+        key="text"
+        :component-id="'1'"
+        :annotations="props.annoList"
+        :hovered-annotations="props.hoveredList"
+        :selected-annotations="props.selectedList"
+        :lines="textLines"
+        :debug="props.debug"
+        :verbose="props.verbose"
+        :show-labels="props.showLabels"
+        :render="props.renderNested ? 'nested' : 'flat'"
+        :display="props.target"
+        :allow-edit="props.allowEdit"
+        :allow-create="props.allowCreate"
+        :listen-to-on-updating="false"
+        :listen-to-on-update-start="true"
+        @annotation-select="onAnnotationClick"
+        @annotation-update-begin="onAnnotationUpdateBegin"
+        @annotation-updating="onAnnotationUpdating"
+        @annotation-update-end="onAnnotationUpdateEnd"
+        @key-pressed="onKeyPressed"
+        @annotation-create-begin="onAnnotationCreateBegin"
+        @annotation-creating="onAnnotationCreating"
+        @annotation-create-end="onAnnotationCreateEnd"
+        @annotation-mouse-over="onAnnotationMouseOver"
+        @annotation-mouse-leave="onAnnotationMouseLeave"
+      >
+        <template #annotation-after="slotProps">
+          <template v-if="slotCondition(slotProps)">
+            <span>
+              <FontAwesomeIcon :icon="faRemove" style="color: red" />
+            </span>
+            <span>
+              <FontAwesomeIcon :icon="faImportant" style="color: orange" />
+            </span>
+            <span>
+              <FontAwesomeIcon :icon="faValidate" style="color: green" />
+            </span>
+          </template>
+          <input v-if="props.showSelects" type="checkbox" />
         </template>
-        <input v-if="props.showSelects" type="checkbox" />
-      </template>
-      <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
-    </AnnotatedText>
-    <AnnotatedText
-      v-if="props.secondComponent"
-      key="text"
-      :component-id="'2'"
-      :annotations="props.annoList"
-      :hovered-annotations="props.hoveredList"
-      :selected-annotations="props.selectedList"
-      :lines="textLines"
-      :debug="props.debug"
-      :show-labels="props.showLabels"
-      :render="props.renderNested ? 'nested' : 'flat'"
-      :display="props.target"
-      :allow-edit="props.allowEdit"
-      :allow-create="props.allowCreate"
-      :listen-to-on-key-pressed="true"
-      @annotation-select="onAnnotationClick"
-      @annotation-update-begin="onAnnotationUpdateBegin"
-      @annotation-updating="onAnnotationUpdating"
-      @annotation-update-end="onAnnotationUpdateEnd"
-      @key-pressed="onKeyPressed"
-      @annotation-create-begin="onAnnotationCreateBegin"
-      @annotation-creating="onAnnotationCreating"
-      @annotation-create-end="onAnnotationCreateEnd"
-      @annotation-mouse-over="onAnnotationMouseOver"
-      @annotation-mouse-leave="onAnnotationMouseLeave"
-    />
+        <!--      <template #annotation-end="slotProps"> {{slotProps.annotationId}} </template>-->
+      </AnnotatedText>
+      <AnnotatedText
+        v-if="props.secondComponent"
+        key="text"
+        :component-id="'2'"
+        :annotations="props.annoList"
+        :hovered-annotations="props.hoveredList"
+        :selected-annotations="props.selectedList"
+        :lines="textLines"
+        :debug="props.debug"
+        :show-labels="props.showLabels"
+        :render="props.renderNested ? 'nested' : 'flat'"
+        :display="props.target"
+        :allow-edit="props.allowEdit"
+        :allow-create="props.allowCreate"
+        :listen-to-on-key-pressed="true"
+        @annotation-select="onAnnotationClick"
+        @annotation-update-begin="onAnnotationUpdateBegin"
+        @annotation-updating="onAnnotationUpdating"
+        @annotation-update-end="onAnnotationUpdateEnd"
+        @key-pressed="onKeyPressed"
+        @annotation-create-begin="onAnnotationCreateBegin"
+        @annotation-creating="onAnnotationCreating"
+        @annotation-create-end="onAnnotationCreateEnd"
+        @annotation-mouse-over="onAnnotationMouseOver"
+        @annotation-mouse-leave="onAnnotationMouseLeave"
+      />
+    </div>
   </div>
 </template>
 

@@ -1,3 +1,5 @@
+import { annotationColors } from "../../dev-app/const";
+
 export const annotationsWithGutters = [
   {
     start: 1,
@@ -15,7 +17,7 @@ export const annotationsWithGutters = [
   {
     start: 3,
     end: 3756,
-    class: "annotation--color-5",
+    color: annotationColors["5"],
     target: "gutter",
     label: "handshift",
     id: "1900230",
@@ -23,7 +25,7 @@ export const annotationsWithGutters = [
   {
     start: 21,
     end: 30,
-    class: "annotation--color-4",
+    color: annotationColors["4"],
     target: "gutter",
     label: "typography",
     id: "576750",
@@ -31,7 +33,7 @@ export const annotationsWithGutters = [
   {
     start: 44,
     end: 57,
-    class: "annotation--color-5",
+    color: annotationColors["5"],
     target: "gutter",
     label: "typography",
     id: "576751",
@@ -39,7 +41,7 @@ export const annotationsWithGutters = [
   {
     start: 72,
     end: 85,
-    class: "annotation--color-6",
+    color: annotationColors["6"],
     target: "gutter",
     label: "typography",
     id: "576752",
@@ -112,7 +114,7 @@ export const annotationsWithGutters = [
   {
     start: 150,
     end: 213,
-    class: "annotation--color-5",
+    color: annotationColors["5"],
     target: "gutter",
     label: "morpho_syntactical",
     id: "277229",
@@ -133,7 +135,7 @@ export const annotationsWithGutters = [
   {
     start: 214,
     end: 220,
-    class: "annotation--color-7",
+    color: annotationColors["7"],
     target: "gutter",
     label: "typography",
     id: "576753",
@@ -141,7 +143,7 @@ export const annotationsWithGutters = [
   {
     start: 316,
     end: 361,
-    class: "annotation--color-6",
+    color: annotationColors["6"],
     target: "gutter",
     label: "morpho_syntactical",
     id: "277230",
@@ -175,7 +177,7 @@ export const annotationsWithGutters = [
   {
     start: 422,
     end: 483,
-    class: "annotation--color-7",
+    color: annotationColors["7"],
 
     target: "gutter",
     label: "morpho_syntactical",
@@ -184,7 +186,7 @@ export const annotationsWithGutters = [
   {
     start: 470,
     end: 483,
-    class: "annotation--color-8",
+    color: annotationColors["8"],
 
     target: "gutter",
     label: "typography",
@@ -193,7 +195,7 @@ export const annotationsWithGutters = [
   {
     start: 484,
     end: 597,
-    class: "annotation--color-9",
+    color: annotationColors["9"],
 
     target: "gutter",
     label: "morpho_syntactical",
@@ -202,7 +204,7 @@ export const annotationsWithGutters = [
   {
     start: 484,
     end: 516,
-    class: "annotation--color-8",
+    color: annotationColors["8"],
 
     target: "gutter",
     label: "morpho_syntactical",
@@ -211,7 +213,7 @@ export const annotationsWithGutters = [
   {
     start: 579,
     end: 636,
-    class: "annotation--color-4",
+    color: annotationColors["4"],
 
     target: "gutter",
     label: "morpho_syntactical",
@@ -220,7 +222,7 @@ export const annotationsWithGutters = [
   {
     start: 710,
     end: 759,
-    class: "annotation--color-4",
+    color: annotationColors["4"],
 
     target: "gutter",
     label: "gts",
@@ -229,7 +231,7 @@ export const annotationsWithGutters = [
   {
     start: 715,
     end: 725,
-    class: "annotation--color-9",
+    color: annotationColors["9"],
 
     target: "gutter",
     label: "typography",

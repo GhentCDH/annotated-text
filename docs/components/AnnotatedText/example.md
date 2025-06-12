@@ -5,10 +5,12 @@ AnnotatedText
 # Example
 
 <script setup>
+//
 import {
   AnnotatedText,
   Debugger,
   UserActionState,
+  AnnotatedTextV2
 } from "@ghentcdh/vue-component-annotated-text";
 import { lines, annotations } from "@demo";
 
@@ -34,5 +36,11 @@ key="text"
 :lines="textLines"
 />
 
-<style module>
-</style>
+## V2
+
+<AnnotatedTextV2
+key="text"
+:component-id="'1'"
+:annotations="annot"
+:text-lines="textLines"
+/>

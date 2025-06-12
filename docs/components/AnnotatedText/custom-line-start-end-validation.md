@@ -1,8 +1,9 @@
 # AnnotatedText
 
-
 <script setup>
+//
 import {
+  AnnotatedTextV2,
   AnnotatedText,
   Debugger,
   UserActionState,
@@ -30,8 +31,6 @@ const fixOffset = function (updateState) {
           updateState.newStart = updateState.newStart-2;
           break;
     }
-
-
 };
 
 const onAnnotationUpdateBegin = function (updateState) {
@@ -44,14 +43,37 @@ const onAnnotationUpdating = function (updateState) {
 
   updateState.confirmUpdate();
 };
+
+const useSnapper = (action, payload) => { 
+    const {start, end} = payload;
+    switch(action) {
+        case 'move-end':
+          return {start, end: end -2};
+          break;
+        case 'move-start':
+          return {start: start +2, end};
+          break;
+    }
+    
+    return {start, end};
+};
+
+const listenToEvents = (event, type, data)=>{
+    switch(type){
+        case 'click':
+            console.log('click', event, data);
+            break;
+    }
+}
 </script>
 
 ## A custom line start and end validation
 
-This example shows how to implement a custom line start and end validation. The `onAnnotationUpdateBegin` and `onAnnotationUpdating` functions are used to adjust the start and end of the annotation. In this example, the start is decreased by 2 and the end is increased by 2.
+This example shows how to implement a custom line start and end validation. The `onAnnotationUpdateBegin` and
+`onAnnotationUpdating` functions are used to adjust the start and end of the annotation. In this example, the start is
+decreased by 2 and the end is increased by 2.
 
 <AnnotatedText
-key="text"
 :component-id="'1'"
 :annotations="annot"
 :lines="textLines"
@@ -61,6 +83,19 @@ key="text"
 :listen-to-on-updating="true"
 @annotation-update-begin="onAnnotationUpdateBegin"
 @annotation-updating="onAnnotationUpdating"
+/>
+<hr />
+
+## V2
+
+<AnnotatedTextV2
+:component-id="'1'"
+:annotations="annot"
+:text-lines="textLines"
+:can-edit="true"
+:allow-edit="true"
+:use-snapper="useSnapper"
+@event="listenToEvents"
 />
 
 <style module>

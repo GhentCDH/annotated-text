@@ -61,7 +61,7 @@ export class UpdateAnnotationState {
     origEnd: number | null = null,
     origStart: number | null = null,
     newEnd: number,
-    newStart: number
+    newStart: number,
   ) {
     this.action = action;
     this.handlePosition = handlePosition;
@@ -93,5 +93,9 @@ export class UpdateAnnotationState {
       this.annotation.start = this.newStart;
       this.annotation.end = this.newEnd;
     }
+  }
+
+  getAnnotation() {
+    return cloneDeep(this.annotation);
   }
 }

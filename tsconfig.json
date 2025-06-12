@@ -6,15 +6,20 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": false,
     "outDir": "dist",
-//    "declarationDir": "dist",
+    //    "declarationDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@ghentcdh/vue-component-annotated-text": ["./src/index.ts"],
+      "@ghentcdh/vue-component-annotated-text": [
+        "./src/index.ts"
+      ],
       "@/types/props": [
         "./src/types/props/index.ts"
-      ], 
+      ],
       "@/types/emits": [
         "./src/types/emits/index.ts"
+      ],
+      "@demo": [
+        "./docs/demo/index.ts"
       ]
     },
     "moduleResolution": "node",
