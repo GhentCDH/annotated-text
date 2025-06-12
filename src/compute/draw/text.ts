@@ -49,12 +49,12 @@ const createText = (
 };
 
 export const drawText = (textAnnotationModel: TextAnnotationModel) => {
-  const { gutter } = textAnnotationModel.config;
+  const { gutter, text } = textAnnotationModel.config;
   const gutterWidth = gutter.width + gutter.gap;
   const gutterPaddingLeft = gutterWidth * textAnnotationModel.maxGutterWeight;
 
   const textDiv = document.createElement("div");
-  textDiv.className = styles.text;
+  textDiv.className = `${styles.text} ${text.rtl ? "rtl" : "ltr"}`;
 
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 

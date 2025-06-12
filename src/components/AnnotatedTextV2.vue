@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<AnnotatedTextV2Props>(), {
   allowEdit: false,
   allowCreate: false,
   useSnapper: undefined,
+  rtl: false,
 });
 
 // define emits
@@ -38,6 +39,7 @@ const createConfig = (): Partial<AnnotationConfig> => {
       edit: props.allowEdit ?? false,
       create: props.allowCreate ?? false,
     },
+    text: { rtl: props.rtl },
     onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
       emit("event", null, event.event, event.data);
     },
@@ -74,6 +76,14 @@ watch(
   // { immediate: true },
 );
 
+watch(
+  () => props.rtl,
+  () => {
+    computeAnnotations.changeConfig(createConfig());
+  },
+  // { immediate: true },
+);
+
 watchEffect(() => {
   Debugger.setDebug(props.debug);
   Debugger.setVerbose(props.verbose);
@@ -103,6 +113,13 @@ watch(
 );
 watch(
   () => props.allowCreate,
+  () => {
+    computeAnnotations.changeConfig(createConfig());
+  },
+);
+
+watch(
+  () => props.rtl,
   () => {
     computeAnnotations.changeConfig(createConfig());
   },

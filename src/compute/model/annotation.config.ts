@@ -24,6 +24,7 @@ export const DefaultConfig = {
     borderRadius: 3,
     border: 2,
     handleRadius: 6,
+    rtl: false,
   },
   hover: {
     color: {

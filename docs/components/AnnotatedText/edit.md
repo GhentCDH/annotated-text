@@ -100,5 +100,14 @@ key="text"
 :allow-create="true"
 />
 
-<style module>
-</style>
+## Right to left support
+
+<AnnotatedTextV2
+key="text"
+:component-id="'1'"
+:annotations="annotations_3"
+:text-lines="textLines_3"
+:allow-edit="true"
+:allow-create="true"
+:rtl="true"
+/>

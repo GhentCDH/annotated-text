@@ -36,5 +36,10 @@
       margin-left: var(--gutter-left);
       padding-left: 8px;
     }
+
+    &.rtl {
+      direction: rtl;
+      unicode-bidi: isolate; /* or embed */
+    }
   }
 }

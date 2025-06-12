@@ -3,7 +3,10 @@ import type { Line } from "../AnnotatedText";
 import { SnapperFn } from "../../compute/model/annotation.config";
 
 export interface AnnotatedTextV2Props {
-  useSnapper: SnapperFn;
+  /**
+   * If the selection should have another logic than character index selection, then add it here
+   */
+  useSnapper?: SnapperFn | undefined;
   /**
    * List of annotations to be displayed
    */
@@ -21,10 +24,6 @@ export interface AnnotatedTextV2Props {
    */
   textLines: Line[];
   /**
-   * @deprecated
-   */
-  // annotationOffset?: number;
-  /**
    * Whether verbose debug messages are printed
    */
   debug?: boolean;
@@ -33,30 +32,6 @@ export interface AnnotatedTextV2Props {
    */
   verbose?: boolean;
   /**
-   * only default theme available for now
-   */
-  // theme?: string;
-  /**
-   * @deprecated
-   */
-  // render?: RenderType;
-  /**
-   * Whether to display text or gutter annotations
-   */
-  // display?: AnnotationTarget;
-  /**
-   * Whether to show the labels
-   */
-  // showLabels?: boolean;
-  /**
-   * Whether to automatically calculate weights
-   */
-  // autoAnnotationWeights?: boolean;
-  /**
-   * Object to define classes for styles.
-   */
-  // style?: AnnotationStyle;
-  /**
    * Whether to allow editing annotations
    */
   allowEdit?: boolean;
@@ -64,4 +39,8 @@ export interface AnnotatedTextV2Props {
    * Whether to allow creating new annotations
    */
   allowCreate?: boolean;
+  /**
+   * Right to left text direction
+   */
+  rtl?: boolean;
 }

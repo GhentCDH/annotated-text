@@ -21,3 +21,9 @@ export type AnnotationEvent<DATA extends AnnotationEventData> = {
   mouseEvent?: MouseEvent;
   data: DATA;
 };
+
+export type AnnotationErrorEvent = {
+  code: string;
+  error: string;
+  message: any;
+};

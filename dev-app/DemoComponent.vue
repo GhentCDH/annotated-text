@@ -60,8 +60,8 @@ const props = reactive({
   annoList: Array.from(annotationMap.values()),
   hoveredList: Array.from(hoveredAnnotationsState.keys()),
   selectedList: Array.from(selectedAnnotations.keys()),
-
   secondComponent: false,
+  rtl: false,
 });
 
 function slotCondition(slotProps: { annotation: Annotation }) {
@@ -205,7 +205,9 @@ const onKeyPressed = function (
       | <input v-model="props.allowEdit" type="checkbox" />
       <label>Allow Edits</label>
       | <input v-model="props.allowCreate" type="checkbox" />
-      <label>Allow Create</label>
+      <label>Allow Create</label> |
+      <input v-model="props.rtl" type="checkbox" />
+      <label>Right-to-left</label>
       | <input v-model="props.secondComponent" type="checkbox" />
       <label>Second Component</label>
     </form>
@@ -225,6 +227,7 @@ const onKeyPressed = function (
         :text-lines="textLines"
         :allow-edit="props.allowEdit"
         :allow-create="props.allowCreate"
+        :rtl="props.rtl"
         @event="onAnnotationEvent"
       />
     </div>
