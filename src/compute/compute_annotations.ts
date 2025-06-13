@@ -93,7 +93,7 @@ export class ComputeAnnotations {
       return;
     }
     if (this.svgNode) {
-      this.element.removeChild(this.svgNode);
+      this.element?.removeChild(this.svgNode);
     }
     this.textAnnotationModel = computeLinePositions(
       this.textAnnotationModel,

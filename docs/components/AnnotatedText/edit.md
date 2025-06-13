@@ -39,7 +39,6 @@ const textLines_3 = cloneDeep(textLines);
 
 <ClientOnly>
 <AnnotatedText
-    key="text"
     :component-id="'1'" 
     :annotations="annotations_1"
     :lines="textLines_1"
@@ -49,7 +48,6 @@ const textLines_3 = cloneDeep(textLines);
 ## V2
 
 <AnnotatedTextV2
-key="text"
 :component-id="'1'"
 :annotations="annotations_1"
 :textLines="textLines_1"

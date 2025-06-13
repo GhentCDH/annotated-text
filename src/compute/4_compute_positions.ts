@@ -11,6 +11,7 @@ import {
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
 import { Annotation } from "../types/Annotation";
+import { Debugger } from "../utils/debugger";
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(
@@ -32,7 +33,12 @@ export const computeLinePositions = (
 
   model.lines.forEach((line) => {
     const textLine = findTextLine(textElement, line);
-
+    if (!textLine) {
+      Debugger.debug(
+        `Text line with UUID ${line.uuid} not found in the text element.`,
+      );
+      return;
+    }
     const bbox = textLine.getBoundingClientRect();
     const lineDimensions = pick(bbox, "width", "height", "x", "y");
     line.element = textLine;
