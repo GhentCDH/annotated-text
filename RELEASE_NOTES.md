@@ -1,9 +1,9 @@
-# [2.0.0-beta.3](https://github.com/GhentCDH/vue_component_annotated_text/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2025-06-19)
+# [2.0.0-beta.4](https://github.com/GhentCDH/vue_component_annotated_text/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2025-06-19)
 
 
-### Features
+### Bug Fixes
 
-* improve v2 ([#61](https://github.com/GhentCDH/vue_component_annotated_text/issues/61)) ([aae7048](https://github.com/GhentCDH/vue_component_annotated_text/commit/aae70485645ed41ce48fd0247a71971edfec29bd))
+* types directory ([dd7c5be](https://github.com/GhentCDH/vue_component_annotated_text/commit/dd7c5be8a66a07accbdf1b55c2427aad2750a78f))
 
 
 
