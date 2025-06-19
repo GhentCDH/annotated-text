@@ -5,7 +5,7 @@ import {
 } from "./draw";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, TextAnnotation } from "../../annotation.model";
-import { sendEvent1 } from "../send-events";
+import { sendEvent } from "../send-events";
 import { AnnotationEventType } from "../../events";
 
 export const editAnnotations = (
@@ -51,7 +51,7 @@ export const editAnnotations = (
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
 
-  sendEvent1(
+  sendEvent(
     { model: svg.model, annotation },
     { event: eventType },
     {

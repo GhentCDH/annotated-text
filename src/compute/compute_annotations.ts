@@ -23,9 +23,8 @@ export class ComputeAnnotations {
   private lines: Line[];
   private config: Partial<AnnotationConfig>;
 
-  constructor(lines: Line[], config: Partial<AnnotationConfig> = {}) {
-    this.lines = lines;
-    this.textAnnotationModel = createAnnotationModel(config, lines);
+  constructor(config: Partial<AnnotationConfig> = {}) {
+    this.lines = [];
     this.config = config;
   }
 
@@ -33,14 +32,25 @@ export class ComputeAnnotations {
     return this.textAnnotationModel.config;
   }
 
-  public setLines(lines: Line[]): void {
+  public setLines(lines: Line[], redraw = true): void {
     this.lines = lines;
     this.textAnnotationModel = createAnnotationModel(this.config, lines);
-    this.setAnnotations(this.annotations ?? [], false);
+    this.setAnnotations(this.annotations ?? [], redraw);
   }
 
   public setAnnotations(annotations: Annotation[], redraw = true): void {
     this.annotations = annotations;
+
+    if (!this.textAnnotationModel) {
+      Debugger.debug("Annotations set before lines, cannot set annotations");
+      return;
+    }
+
+    if (!this.lines?.length) {
+      Debugger.debug("------ no lines set, cannot set annotations");
+      return;
+    }
+
     this.textAnnotationModel = assignAnnotationsToLines(
       this.textAnnotationModel,
       annotations,
@@ -70,8 +80,9 @@ export class ComputeAnnotations {
     this.element = document.getElementById(id);
     this.element.innerHTML = "";
 
-    this.drawText();
-    this.element.append(this.textElement);
+    if (!this.textAnnotationModel) {
+      return;
+    }
     this.redrawSvg();
     this.element.classList.add(styles.wrapper);
 
@@ -88,13 +99,18 @@ export class ComputeAnnotations {
   }
 
   private redrawSvg() {
-    if (!this.textElement) {
-      console.warn("text element not initialized, cannot redraw svg");
-      return;
-    }
+    // if (!this.textElement) {
+    //   console.warn("text element not initialized, cannot redraw svg");
+    //   return;
+    // }
     if (this.svgNode) {
       this.element?.removeChild(this.svgNode);
     }
+    if (this.textElement) {
+      this.element?.removeChild(this.textElement);
+    }
+    this.drawText();
+    this.element.append(this.textElement);
     this.textAnnotationModel = computeLinePositions(
       this.textAnnotationModel,
       this.textElement,

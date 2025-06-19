@@ -42,13 +42,6 @@ export const drawAnnotation = (
   annotation: AnnotationDraw,
 ) => {
   // return a promise that resloves to a function that draws the annotation
-  const eventMetadata = () => {
-    return {
-      annotation,
-      model: svgModel.model,
-      textElement: svgModel.textElement,
-    };
-  };
 
   const config = svgModel.model.config;
   const { rect } = drawAnnotationContent(annotation, svgModel, config);
@@ -56,9 +49,9 @@ export const drawAnnotation = (
   drawAnnotationHandles(annotation, svgModel);
 
   rect
-    .on("mouseover", hoverAnnotation(rect, eventMetadata, svgModel))
-    .on("mouseleave", leaveAnnotation(rect, eventMetadata, svgModel))
+    .on("mouseover", hoverAnnotation(rect, annotation, svgModel))
+    .on("mouseleave", leaveAnnotation(rect, annotation, svgModel))
     // TODO check double click also fires click event
-    .on("dblclick", doubleClickAnnotation(rect, eventMetadata))
-    .on("click", clickAnnotation(rect, eventMetadata));
+    .on("dblclick", doubleClickAnnotation(rect, annotation, svgModel))
+    .on("click", clickAnnotation(rect, annotation, svgModel));
 };

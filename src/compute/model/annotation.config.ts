@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { ErrorCode, Errors } from "./errors";
 import { AnnotationEvent, AnnotationEventData } from "../events";
 import { Annotation } from "../../types/Annotation";
 import { Debugger } from "../../utils/debugger";
@@ -56,6 +57,9 @@ export const DefaultConfig = {
   },
   onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
     Debugger.debug("default event listener", event);
+  },
+  onError: (error: ErrorCode, message: string, ...params: any[]) => {
+    Debugger.warn(`[${Errors[error]}] - `, message, ...params);
   },
 } as const;
 

@@ -1,19 +1,22 @@
-import { AnnotationMetadata, sendEvent } from "../send-events";
-import { AnnotationRect } from "../../model/svg.types";
+import { sendEvent } from "../send-events";
+import { AnnotationRect, SvgModel } from "../../model/svg.types";
+import { AnnotationDraw } from "../../annotation.model";
 
 export const clickAnnotation =
-  (rect: AnnotationRect, eventMetadata: AnnotationMetadata) => (event) => {
-    const { model } = eventMetadata();
+  (rect: AnnotationRect, annotation: AnnotationDraw, svgModel: SvgModel) =>
+  (mouseEvent) => {
+    const model = svgModel.model;
     if (model.blockEvents) return;
 
-    sendEvent(eventMetadata, "click", event);
+    sendEvent({ model, annotation }, { event: "double-click", mouseEvent });
   };
 
 export const doubleClickAnnotation =
-  (rect: AnnotationRect, eventMetadata: AnnotationMetadata) => (event) => {
-    const { model } = eventMetadata();
+  (rect: AnnotationRect, annotation: AnnotationDraw, svgModel: SvgModel) =>
+  (mouseEvent) => {
+    const model = svgModel.model;
     if (model.blockEvents) return;
 
-    event.preventDefault();
-    sendEvent(eventMetadata, "double-click", event);
+    mouseEvent.preventDefault();
+    sendEvent({ model, annotation }, { event: "double-click", mouseEvent });
   };
