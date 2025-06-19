@@ -8,7 +8,7 @@ export const clickAnnotation =
     const model = svgModel.model;
     if (model.blockEvents) return;
 
-    sendEvent({ model, annotation }, { event: "double-click", mouseEvent });
+    sendEvent({ model, annotation }, { event: "click", mouseEvent });
   };
 
 export const doubleClickAnnotation =
