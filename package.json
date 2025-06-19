@@ -8,7 +8,7 @@
   "version": "2.0.0-beta.3",
   "exports": {
     ".": {
-      "types": "./dist/vue-component-annotated-text.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/vue-component-annotated-text.js",
       "require": "./dist/vue-component-annotated-text.cjs"
     },
@@ -29,7 +29,7 @@
     "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs",
     "docs:build": "pnpm run docs:build:typedoc && pnpm run build &&  pnpm run  docs:build:menu && pnpm run   docs:build:vuepress",
     "docs:preview": "vuepress dev docs",
-    "docs:dev": "pnpm run docs:build:typedoc && pnpm run docs:build:menu && vitepress dev docs",
+    "docs:dev": "pnpm run docs:build:typedoc && pnpm run docs:build:menu && vuepress dev docs",
     "test:vue3": "vitest --environment jsdom --root src/",
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
     "build:types": "vue-tsc --project tsconfig.build.json ",
