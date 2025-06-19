@@ -34,7 +34,7 @@
     "test:coverage": "vitest --environment jsdom --root src/ --coverage",
     "build:types": "vue-tsc --project tsconfig.build.json ",
     "build": "  vite build && pnpm run build:types ",
-    "build:watch": "  vite build --watch  ",
+    "build:watch": "vite build --watch",
     "type-check": "vue-tsc --noEmit --composite false",
     "lint": "eslint src/. dev-app/. tools/.",
     "lint:fix": "eslint src/. dev-app/. tools/. --fix",
