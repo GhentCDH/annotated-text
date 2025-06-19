@@ -29,7 +29,7 @@ export class Debugger {
   }
 
   public static warn(...message: any) {
-    console.warn(message);
+    console.warn(...message);
   }
 
   public static time(startTime: number, message: string) {
@@ -39,7 +39,7 @@ export class Debugger {
     if (tookTime > 1000) {
       console.warn(logMessage);
     } else {
-      console.log(logMessage);
+      console.debug(logMessage);
     }
   }
 

@@ -8,7 +8,7 @@ import {
 import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
 import { TextAnnotation } from "../../annotation.model";
-import { sendEvent1 } from "../send-events";
+import { sendEvent } from "../send-events";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
@@ -64,7 +64,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
       return;
     }
 
-    sendEvent1(
+    sendEvent(
       {
         model: svgModel.model,
         annotation: {
@@ -82,7 +82,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
     svgModel.model.blockEvents = true;
     drawingAndMove = true;
     createDummyAnnotation(event, true);
-    sendEvent1(
+    sendEvent(
       {
         model: svgModel.model,
         annotation: {
@@ -109,7 +109,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
 
     recreateAnnotation(svgModel, dummyAnnotation);
 
-    sendEvent1(
+    sendEvent(
       {
         model: svgModel.model,
         annotation: {

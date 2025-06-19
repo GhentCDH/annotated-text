@@ -127,8 +127,8 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   private readonly lineGutterMap = new Map<number, TextAnnotation[]>();
 
   constructor(
-    public config: AnnotationConfig,
-    public lines: TextLine[],
+    public readonly config: AnnotationConfig,
+    public readonly lines: TextLine[],
   ) {
     this.resetAnnotations();
   }
@@ -144,7 +144,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     this.lines.forEach((line) => {
       this.lineAnnotationMap.set(line.lineNumber, []);
       this.lineGutterMap.set(line.lineNumber, []);
-      if (this.maxLineWeight < line.end) {
+      if (this.textLength < line.end) {
         this.textLength = line.end;
       }
     });

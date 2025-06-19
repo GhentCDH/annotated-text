@@ -96,12 +96,14 @@ const createGutter = (
   });
 };
 
-const getTextRange = (annotation: Annotation, line: TextLine) => {
-  const lineElement = line.element;
+const getTextRange = (
+  annotation: Annotation,
+  line: TextLine,
+  textNode: ChildNode,
+) => {
   let start = annotation.start - line.start;
   let end = annotation.end - line.start + 1;
 
-  const textNode = lineElement.firstChild;
   const textLength = textNode.textContent.length;
 
   if (start < 0) {
@@ -118,9 +120,19 @@ const getTextRange = (annotation: Annotation, line: TextLine) => {
 
 const getRanges = (annotation: Annotation, line: TextLine) => {
   const lineElement = line.element;
+  if (!lineElement) {
+    Debugger.debug(
+      "No textelement for line",
+      line.lineNumber,
+      "found for annotation",
+      annotation.id,
+    );
+
+    return null;
+  }
   const textNode = lineElement.firstChild;
 
-  const { start, end } = getTextRange(annotation, line);
+  const { start, end } = getTextRange(annotation, line, textNode);
 
   // End is negative if the annotation is not in the line, but maybe in the gutter
   if (end < 0) return null;

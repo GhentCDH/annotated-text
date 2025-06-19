@@ -80,20 +80,24 @@ export const assignAnnotationToLines = (
     color: getAnnotationColor(_annotation),
   } as TextAnnotation;
   if (annotation.start >= annotation.end) {
-    Debugger.warn(
-      `Invalid annotation: start (${annotation.start}) must be less than end (${annotation.end})`,
+    model.config.onError(
+      "INVALID_ANNOTATION",
+      `start (${annotation.start}) must be less than end (${annotation.end})`,
+      annotation,
     );
   }
   if (model.textLength < annotation.start) {
-    Debugger.warn(
+    model.config.onError(
+      "INVALID_ANNOTATION",
       `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
       annotation,
     );
     return model;
   }
-  if (model.textLength < model.textLength) {
-    Debugger.warn(
-      `Invalid annotation: end (${annotation.start}) must be less than text length (${model.textLength})`,
+  if (model.textLength < annotation.end) {
+    model.config.onError(
+      "INVALID_ANNOTATION",
+      `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
       annotation,
     );
 

@@ -8,7 +8,7 @@ import {
 import { AnnotationEventType } from "../../events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
-import { sendEvent1 } from "../send-events";
+import { sendEvent } from "../send-events";
 
 export const drawAnnotationHandles = (
   annotation: AnnotationDraw,
@@ -43,7 +43,7 @@ export const drawHandle = (
   const onDragEnd = (event) => {
     model.blockEvents = false;
     removeDummyAnnotation(svg);
-    sendEvent1(
+    sendEvent(
       { model, annotation },
       { event: "annotation-edit--end", mouseEvent: event },
       {

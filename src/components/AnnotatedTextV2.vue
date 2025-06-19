@@ -4,11 +4,11 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { v4 as uuidv4 } from "uuid"; // init props
+import { v4 as uuidv4 } from "uuid";
 import { Debugger } from "../utils/debugger";
-import { ComputeAnnotations } from "../compute/compute_annotations";
 import { AnnotationEvent, AnnotationEventData } from "../compute/events";
 import { AnnotationConfig } from "../compute/model/annotation.config";
+import { AnnotatedText_ } from "../compute";
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
 
@@ -49,29 +49,29 @@ const createConfig = (): Partial<AnnotationConfig> => {
   } as Partial<AnnotationConfig>;
 };
 
-const computeAnnotations = new ComputeAnnotations(
-  props.textLines,
-  createConfig(),
-);
+const textAnnotation = AnnotatedText_.init(createConfig());
 
 // get a reference to annotatedTextDraw
 
 onMounted(() => {
-  computeAnnotations.setAnnotations(props.annotations, false);
-  computeAnnotations.init(id);
+  textAnnotation.setLines(props.textLines, false);
+  textAnnotation.setAnnotations(props.annotations, false);
+  textAnnotation.init(id);
+  textAnnotation.highlightAnnotations(props.highlightAnnotations);
+  textAnnotation.selectAnnotations(props.selectedAnnotations);
 });
 
 watch(
   () => props.textLines,
   () => {
-    computeAnnotations.setLines(props.textLines);
+    textAnnotation.setLines(props.textLines);
   },
 );
 
 watch(
   () => props.annotations,
   () => {
-    computeAnnotations.setAnnotations(props.annotations);
+    textAnnotation.setAnnotations(props.annotations);
   },
   // { immediate: true },
 );
@@ -79,7 +79,7 @@ watch(
 watch(
   () => props.rtl,
   () => {
-    computeAnnotations.changeConfig(createConfig());
+    textAnnotation.changeConfig(createConfig());
   },
   // { immediate: true },
 );
@@ -92,40 +92,38 @@ watchEffect(() => {
 watch(
   () => props.highlightAnnotations,
   () => {
-    computeAnnotations.highlightAnnotations(props.highlightAnnotations);
+    textAnnotation.highlightAnnotations(props.highlightAnnotations);
   },
-  { immediate: true },
 );
 
 watch(
   () => props.selectedAnnotations,
   () => {
-    computeAnnotations.selectAnnotations(props.selectedAnnotations);
+    textAnnotation.selectAnnotations(props.selectedAnnotations);
   },
-  { immediate: true },
 );
 
 watch(
   () => props.allowEdit,
   () => {
-    computeAnnotations.changeConfig(createConfig());
+    textAnnotation.changeConfig(createConfig());
   },
 );
 watch(
   () => props.allowCreate,
   () => {
-    computeAnnotations.changeConfig(createConfig());
+    textAnnotation.changeConfig(createConfig());
   },
 );
 
 watch(
   () => props.rtl,
   () => {
-    computeAnnotations.changeConfig(createConfig());
+    textAnnotation.changeConfig(createConfig());
   },
 );
 
 onUnmounted(() => {
-  computeAnnotations.destroy();
+  textAnnotation.destroy();
 });
 </script>
