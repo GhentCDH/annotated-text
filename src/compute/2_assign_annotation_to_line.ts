@@ -97,7 +97,7 @@ export const assignAnnotationToLines = (
   if (model.textLength < model.textLength) {
     model.config.onError(
       "INVALID_ANNOTATION",
-      `Invalid annotation: end (${annotation.start}) must be less than text length (${model.textLength})`,
+      `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
       annotation,
     );
 
