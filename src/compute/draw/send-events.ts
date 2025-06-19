@@ -7,7 +7,7 @@ export const sendEvent = (
     annotation,
   }: {
     model: TextAnnotationModel;
-    annotation?: Pick<AnnotationDraw, "annotationUuid">;
+    annotation: Pick<AnnotationDraw, "annotationUuid">;
   },
   {
     event,
