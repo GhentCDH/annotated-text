@@ -16,7 +16,7 @@ export const annotations = [
   },
   {
     start: 3,
-    end: 3756,
+    end: 1343,
     color: annotationColors["5"],
     target: "gutter",
     label: "handshift",
