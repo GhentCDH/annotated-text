@@ -136,9 +136,11 @@ export class ComputeAnnotations {
   }
 
   public destroy() {
-    this.resizeObserver.unobserve(this.element);
-    this.resizeObserver.disconnect();
-    this.element.innerHTML = "";
+    if (this.element) {
+      this.resizeObserver?.unobserve(this.element);
+      this.element.innerHTML = "";
+    }
+    this.resizeObserver?.disconnect();
     this.textElement = null;
     this.svgNode = null;
     this.textAnnotationModel = null;

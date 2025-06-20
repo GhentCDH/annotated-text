@@ -39,7 +39,7 @@
 
     .rtl {
       direction: rtl;
-      unicode-bidi: isolate; /* or embed */
+      unicode-bidi: bidi-override;
     }
   }
 }
