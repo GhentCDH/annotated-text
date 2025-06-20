@@ -104,6 +104,10 @@ const getTextRange = (
   let start = annotation.start - line.start;
   let end = annotation.end - line.start + 1;
 
+  if (!textNode?.textContent) {
+    return { start: -1, end: -1 };
+  }
+
   const textLength = textNode.textContent.length;
 
   if (start < 0) {
