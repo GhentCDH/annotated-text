@@ -111,10 +111,10 @@ const getTextRange = (
   } else if (start > textLength) {
     start = textLength;
   }
-  if (end > textLength) {
-    end = textNode.textContent.length;
-  }
 
+  if (end > textLength) {
+    end = textLength;
+  }
   return { start, end };
 };
 
@@ -187,9 +187,14 @@ export const createTextAnnotation = (
     rects?.forEach((rect, rectIdx) => {
       const x = getX(parentDimensions, rect);
       const y = getY(parentDimensions, rect) - padding;
-      const leftBorder = isFirstLine && rectIdx === 0;
+      let leftBorder = isFirstLine && rectIdx === 0;
       const lastRect = rectIdx === rects.length - 1;
-      const rightBorder = lastRect && isLastLine;
+      let rightBorder = lastRect && isLastLine;
+      if (model.config.text.rtl) {
+        const r = rightBorder;
+        rightBorder = leftBorder;
+        leftBorder = r;
+      }
 
       draws.push({
         weight: annotation.weight,
