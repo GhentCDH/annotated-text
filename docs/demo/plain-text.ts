@@ -8,8 +8,6 @@ Duis pharetra vitae nisl nec mattis. Proin scelerisque feugiat mollis. Ut vel ni
 Mauris rhoncus odio ipsum, in lacinia nisl feugiat id. Aliquam eu sollicitudin lorem, ac porta dolor. Integer eleifend et metus eu bibendum. Praesent fringilla luctus blandit. Sed sit amet faucibus velit, et laoreet nisl. Nunc rutrum viverra leo, a viverra nisi vehicula hendrerit. Phasellus sodales a elit sed tincidunt. Cras nec ligula auctor massa auctor viverra. Pellentesque imperdiet, lacus quis efficitur venenatis, enim sem ultrices nulla, at ornare turpis erat ut tortor. Phasellus finibus nisl ut rhoncus suscipit. Vivamus finibus suscipit lorem. Donec egestas purus nec tincidunt mattis. Sed molestie elementum hendrerit.
 `;
 
-// TODO add annotations for markdown
-
 const annotations = [
   {
     start: 228,
