@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
-      - run: pnpm run docs:build
+      - run: DOCS_BASE=/vue_component_annotated_text  pnpm run docs:build
   test:
     runs-on: ubuntu-latest
     needs: install-deps

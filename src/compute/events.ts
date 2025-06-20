@@ -26,4 +26,5 @@ export type AnnotationErrorEvent = {
   code: string;
   error: string;
   message: any;
+  params?: any[];
 };
