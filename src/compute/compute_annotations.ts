@@ -12,6 +12,8 @@ import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
 
+const document = globalThis.document || null;
+
 export class ComputeAnnotations {
   private textAnnotationModel: TextAnnotationModel;
   private annotations: Annotation[];
@@ -77,7 +79,12 @@ export class ComputeAnnotations {
       console.warn("element already initialized, clear and reainitialize");
     }
 
-    this.element = document.getElementById(id);
+    this.element = document?.getElementById(id);
+    if (!this.element) {
+      console.error("element not found", id);
+      return;
+    }
+
     this.element.innerHTML = "";
 
     if (!this.textAnnotationModel) {
