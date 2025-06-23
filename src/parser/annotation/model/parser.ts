@@ -1,4 +1,4 @@
-import { Annotation } from "@ghentcdh/vue-component-annotated-text";
+import { Annotation } from "../../../types/Annotation";
 
 export type TextAnnotationParserConfig<ANNOTATION> = {
   parse: (annotation: ANNOTATION) => Annotation | null;

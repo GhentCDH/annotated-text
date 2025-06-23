@@ -15,9 +15,10 @@ export const TextualBodySchema = z.object({
 export type TextualBody = z.infer<typeof TextualBodySchema>;
 
 export const TextualBodyClassifyingPurposeEnumSchema = z.enum(["tagging"]);
-export type TextualBodyClassifyingPurposeEnum = z.infer<
+export type TextualBodyClassifyingPurpose = z.infer<
   typeof TextualBodyClassifyingPurposeEnumSchema
 >;
+
 export const TextualBodyClassifyingSchema = z.object({
   type: z.enum(["TextualBody"]).default("TextualBody"),
   purpose: TextualBodyClassifyingPurposeEnumSchema.default("tagging"),

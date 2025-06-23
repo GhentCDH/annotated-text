@@ -1,11 +1,9 @@
-import {
-  Annotation,
-  createAnnotationColor,
-  TextAnnotationParserConfig,
-} from "@ghentcdh/vue-component-annotated-text";
 import { cloneDeep } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
+import { TextAnnotationParserConfig } from "./model/parser";
 import { TextAnnotation } from "../../compute/annotation.model";
+import { Annotation } from "../../types/Annotation";
+import { createAnnotationColor } from "../../utils/createAnnotationColor";
 
 const parseAnnotation = (annotation: TextAnnotation): Annotation => {
   return cloneDeep(annotation);

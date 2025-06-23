@@ -1,7 +1,7 @@
 import { pick } from "lodash-es";
 
 import { v4 as uuidv4 } from "uuid";
-import { AnnotationConfig } from "@ghentcdh/vue-component-annotated-text";
+import { AnnotationConfig } from "./model/annotation.config";
 import {
   AnnotatedGutter,
   AnnotationDrawColor,

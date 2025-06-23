@@ -1,8 +1,8 @@
-import { Annotation } from "@ghentcdh/vue-component-annotated-text";
 import { W3CAnnotation } from "./model";
 import { findTextPositionSelector } from "./utils";
 import { createTextSelectionAnnotation } from "./utils/text-selection-annotation";
 import { TextAnnotationParserConfig } from "../model/parser";
+import { Annotation } from "../../../types/Annotation";
 
 const parseAnnotation = (sourceUri?: string) => {
   return (annotation: W3CAnnotation): Annotation => {

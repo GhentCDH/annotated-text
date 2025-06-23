@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { AnnotatedText } from "@ghentcdh/vue-component-annotated-text";
+import {
+  AnnotatedText,
+  Annotation,
+} from "@ghentcdh/vue-component-annotated-text";
 import { annotationsWithGutters, lines } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 
-const annotations = annotationsWithGutters;
+const annotations = annotationsWithGutters as Annotation[];
 </script>
 
 <template>

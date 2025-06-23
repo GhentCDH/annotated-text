@@ -62,12 +62,7 @@ export const updateTextSelectionAnnotation = (
   selectedText: string,
   annotation: AnnotationUpdate,
 ): W3CAnnotation => {
-  const textualBody = createTextualBody(
-    selectedText,
-    sourceUri,
-    language,
-    annotation,
-  );
+  const textualBody = createTextualBody(selectedText, sourceUri, language);
   const textPositionSelector = createTextPositionSelector(
     sourceUri,
     language,
