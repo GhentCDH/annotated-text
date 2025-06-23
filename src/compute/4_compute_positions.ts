@@ -1,6 +1,7 @@
 import { pick } from "lodash-es";
 
 import { v4 as uuidv4 } from "uuid";
+import { AnnotationConfig } from "@ghentcdh/vue-component-annotated-text";
 import {
   AnnotatedGutter,
   AnnotationDrawColor,
@@ -91,7 +92,7 @@ const createGutter = (
     annotationUuid: gutter.id,
     lineNumber: firstLine.lineNumber,
     path: createGutterPath(x, y, gutterWidth, height),
-    color: getColors(model.config.hover.color, gutter, false),
+    color: getColors(model.config, gutter, false),
     draggable: {},
   });
 };
@@ -151,19 +152,22 @@ const getRanges = (annotation: Annotation, line: TextLine) => {
 };
 
 const getColors = (
-  hoverColor: AnnotationDrawColor,
+  config: AnnotationConfig,
   annotation: TextAnnotation,
   borders = true,
 ) => {
+  const hoverColor = config.hover.color;
+  const color = config.visualEvent.color(annotation);
+
   return {
     default: {
-      fill: annotation.color.background,
-      border: borders ? annotation.color.border : undefined,
+      fill: color.background,
+      border: borders ? color.border : undefined,
     } as AnnotationDrawColor,
     hover: hoverColor,
     active: {
-      fill: annotation.color.backgroundActive,
-      border: borders ? annotation.color.borderActive : undefined,
+      fill: color.backgroundActive,
+      border: borders ? color.borderActive : undefined,
     } as AnnotationDrawColor,
   };
 };
@@ -218,7 +222,7 @@ export const createTextAnnotation = (
           start: leftBorder ? { x, y, height } : undefined,
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
-        color: getColors(model.config.hover.color, annotation),
+        color: getColors(model.config, annotation),
       });
     });
   });

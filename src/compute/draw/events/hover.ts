@@ -14,7 +14,6 @@ export const hoverAnnotation =
         mouseEvent,
       },
     );
-
     if (model.config.visualEvent.hover(fullAnnotation)) {
       svg.colorAnnotation(annotation.annotationUuid, annotation.color.hover);
     }

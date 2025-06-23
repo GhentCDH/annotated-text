@@ -1,32 +1,18 @@
 import memoize from "memoizee";
 import {
   TextAnnotation,
-  TextAnnotationColor,
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
-import { createAnnotationColor } from "../utils/createAnnotationColor";
 
 const isStartLine = memoize(
   (lineStart: number, lineEnd: number, start: number) => {
     return start >= lineStart && start < lineEnd;
   },
 );
-
-const getAnnotationColor = (annotation: Annotation): TextAnnotationColor => {
-  let color = {} as TextAnnotationColor;
-  if (annotation.color)
-    if (typeof annotation.color === "string") {
-      color = createAnnotationColor(annotation.color);
-    } else {
-      color = { ...annotation.color };
-    }
-
-  return color;
-};
 
 export const getLinesForAnnotation = (
   allLines: TextLine[],
@@ -77,8 +63,8 @@ export const assignAnnotationToLines = (
 ) => {
   const annotation = {
     ..._annotation,
-    color: getAnnotationColor(_annotation),
   } as TextAnnotation;
+
   if (annotation.start >= annotation.end) {
     model.config.onError(
       "INVALID_ANNOTATION",

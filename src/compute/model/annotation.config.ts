@@ -40,6 +40,14 @@ export const DefaultConfig = {
      */
     hover: (annotation: Annotation) => true,
     /**
+     * Get the color of the annotation, by default the annotation.color.
+     * If the annotation does not have a color, it will create color
+     * @param annotation
+     */
+    color: (annotation: Annotation) => {
+      return annotation?.color || createAnnotationColor("#4B7BF5");
+    },
+    /**
      * Create a new annotation object with default values.
      */
     create: () => {

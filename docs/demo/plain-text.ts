@@ -23,7 +23,54 @@ const annotations = [
   },
 ] as Annotation[];
 
+const w3cAnnotations = {
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  items: [
+    {
+      id: "ann-1",
+      motivation: "tagging",
+      "@context": "http://www.w3.org/ns/anno.jsonld",
+      target: [
+        {
+          type: "Text",
+          selector: {
+            start: 228,
+            end: 488,
+            type: "TextPositionSelector",
+          },
+          textDirection: "ltr",
+        },
+      ],
+    },
+    {
+      id: "ann-2",
+      motivation: "tagging",
+      "@context": "http://www.w3.org/ns/anno.jsonld",
+      body: [
+        {
+          type: "TextualBody",
+          value: "example",
+          purpose: "tagging",
+        },
+      ],
+      target: [
+        {
+          type: "Text",
+          selector: {
+            start: 1343,
+            end: 1356,
+            type: "TextPositionSelector",
+          },
+          textDirection: "ltr",
+        },
+      ],
+    },
+  ],
+  type: "AnnotationPage",
+};
+
 export const plainText = {
   text,
   annotations,
+  w3cAnnotations,
 };

@@ -12,6 +12,8 @@ import { splitTextInLines } from "./utils/split-text-in-lines";
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
+import { W3CAnnotation } from "../w3c/model";
+import { W3C } from "../w3c/parse-annotations";
 
 const document = globalThis.document || null;
 
@@ -43,6 +45,10 @@ export class ComputeAnnotations {
     this.lines = lines;
     this.textAnnotationModel = createAnnotationModel(this.config, lines);
     this.setAnnotations(this.annotations ?? [], redraw);
+  }
+
+  public setW3CAnnotations(annotations: W3CAnnotation[], redraw = true): void {
+    this.setAnnotations(W3C.parseAnnotations(annotations), redraw);
   }
 
   public setAnnotations(annotations: Annotation[], redraw = true): void {
