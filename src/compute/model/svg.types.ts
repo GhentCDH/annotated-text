@@ -85,6 +85,10 @@ export class SvgModel {
   }
 
   colorAnnotation(annotationUuid: string, color: AnnotationDrawColor) {
+    if (!color) {
+      Debugger.warn("No color provided for annotation", annotationUuid);
+      return;
+    }
     this.findFills(annotationUuid)
       ?.attr("fill", color.fill)
       .attr("stroke", "none");

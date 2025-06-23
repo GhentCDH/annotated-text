@@ -1,32 +1,19 @@
 import memoize from "memoizee";
+import { cloneDeep } from "lodash-es";
 import {
   TextAnnotation,
-  TextAnnotationColor,
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
-import { createAnnotationColor } from "../utils/createAnnotationColor";
 
 const isStartLine = memoize(
   (lineStart: number, lineEnd: number, start: number) => {
     return start >= lineStart && start < lineEnd;
   },
 );
-
-const getAnnotationColor = (annotation: Annotation): TextAnnotationColor => {
-  let color = {} as TextAnnotationColor;
-  if (annotation.color)
-    if (typeof annotation.color === "string") {
-      color = createAnnotationColor(annotation.color);
-    } else {
-      color = { ...annotation.color };
-    }
-
-  return color;
-};
 
 export const getLinesForAnnotation = (
   allLines: TextLine[],
@@ -75,10 +62,8 @@ export const assignAnnotationToLines = (
   _annotation: Annotation,
   calculateWeights = true,
 ) => {
-  const annotation = {
-    ..._annotation,
-    color: getAnnotationColor(_annotation),
-  } as TextAnnotation;
+  const annotation = _annotation as TextAnnotation;
+
   if (annotation.start >= annotation.end) {
     model.config.onError(
       "INVALID_ANNOTATION",
@@ -129,14 +114,17 @@ export const reAssignAnnotationToLine = (
   return assignAnnotationToLines(model, annotation);
 };
 
-export const assignAnnotationsToLines = (
+export const assignAnnotationsToLines = <ANNOTATION>(
   model: TextAnnotationModel,
-  annotations: Annotation[],
+  annotations: ANNOTATION[],
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
   annotations.forEach((annotation) => {
-    assignAnnotationToLines(model, annotation, calculateWeights);
+    const clonedAnnotation = model.parser.parse(cloneDeep(annotation));
+    if (!clonedAnnotation) return;
+
+    assignAnnotationToLines(model, clonedAnnotation, calculateWeights);
   });
 
   return model;

@@ -55,7 +55,7 @@ export const editAnnotations = (
     { model: svg.model, annotation },
     { event: eventType },
     {
-      annotation: dummyAnnotation,
+      annotation: model.parser.format(dummyAnnotation, "", false),
     },
   );
 

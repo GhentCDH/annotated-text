@@ -47,7 +47,7 @@ export const drawHandle = (
       { model, annotation },
       { event: "annotation-edit--end", mouseEvent: event },
       {
-        annotation: dragResult,
+        annotation: model.parser.format(dragResult, "", false),
       },
     );
 
