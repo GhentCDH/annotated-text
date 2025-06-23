@@ -6,3 +6,4 @@ export * from "./large_annotation_set";
 export * from "./waitUntilElementExists";
 
 export * from "./plain-text";
+export * from "./w3c-annotations";

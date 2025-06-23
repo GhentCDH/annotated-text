@@ -12,6 +12,8 @@ import { sendEvent } from "../send-events";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
+  const model = svgModel.model;
+
   const svg = svgModel.svg;
 
   let startIndex: number;
@@ -29,7 +31,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
     const newIndex = character.newIndex;
     if (!dummyAnnotation) {
       dummyAnnotation = {
-        ...svgModel.model.config.visualEvent.create(),
+        ...model.config.visualEvent.create(),
         weight: 1,
         start: newIndex,
         end: newIndex + 5,
@@ -72,7 +74,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
         },
       },
       { event: "annotation-create--start" },
-      { annotation: dummyAnnotation },
+      { annotation: model.parser.format(dummyAnnotation, "", true) },
     );
   });
 
@@ -90,12 +92,13 @@ export const createNewBlock = (svgModel: SvgModel) => {
         },
       },
       { event: "annotation-create--move" },
-      { annotation: dummyAnnotation },
+      { annotation: model.parser.format(dummyAnnotation, "", true) },
     );
   });
 
   svg.on("mouseup", () => {
     drawing = false;
+
     if (!drawingAndMove) return;
 
     drawingAndMove = false;
@@ -117,7 +120,8 @@ export const createNewBlock = (svgModel: SvgModel) => {
         },
       },
       { event: "annotation-create--end" },
-      { annotation: dummyAnnotation },
+      { annotation: model.parser.format(dummyAnnotation, "", true) },
     );
+    dummyAnnotation = null;
   });
 };

@@ -42,7 +42,7 @@ const textAnnotations = annotations.slice(0,6);
 const textLines = lines.slice(0,4);
 
 const createAnnotations = (id, config) => {
-console.log("createAnnotations", id, config);
+    console.log("createAnnotations", id, config);
     waitUntilElementExists(id).then((element) => {
         const textAnnotation = AnnotatedText_.init(config);
         textAnnotation.setLines(textLines, false);

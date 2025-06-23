@@ -11,7 +11,7 @@ to render the component and its annotations.
 ```
 
 Once the container is created and available in the DOM, you can create an instance of the AnnotatedText component.
-The config can be set to an empty object, as the component will use the default [configuration](./config.md).
+The config can be set to an empty object, as the component will use the default [configuration](config/index).
 
 ```ts
 import { AnnotatedText_ } from "@ghentcdh/vue-component-annotated-text";

@@ -12,8 +12,8 @@ import { splitTextInLines } from "./utils/split-text-in-lines";
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
-import { W3CAnnotation } from "../w3c/model";
-import { W3C } from "../w3c/parse-annotations";
+import { TextAnnotationParserConfig } from "../parser/annotation";
+import { DefaultAnnotationParser } from "../parser/annotation/default.parser";
 
 const document = globalThis.document || null;
 
@@ -27,14 +27,19 @@ export class ComputeAnnotations {
   private resizeObserver: ResizeObserver;
   private lines: Line[];
   private config: Partial<AnnotationConfig>;
+  private parser: TextAnnotationParserConfig<any> = DefaultAnnotationParser();
 
   constructor(config: Partial<AnnotationConfig> = {}) {
     this.lines = [];
     this.config = config;
   }
 
-  get completeConfig() {
-    return this.textAnnotationModel.config;
+  public setParser(parser: TextAnnotationParserConfig<any>) {
+    this.parser = parser;
+    if (!this.textAnnotationModel) {
+      return;
+    }
+    this.textAnnotationModel.parser = this.parser;
   }
 
   public setText(text: string, redraw = true): void {
@@ -44,15 +49,15 @@ export class ComputeAnnotations {
   public setLines(lines: Line[], redraw = true): void {
     this.lines = lines;
     this.textAnnotationModel = createAnnotationModel(this.config, lines);
+    this.textAnnotationModel.parser = this.parser;
     this.setAnnotations(this.annotations ?? [], redraw);
   }
 
-  public setW3CAnnotations(annotations: W3CAnnotation[], redraw = true): void {
-    this.setAnnotations(W3C.parseAnnotations(annotations), redraw);
-  }
-
-  public setAnnotations(annotations: Annotation[], redraw = true): void {
-    this.annotations = annotations;
+  public setAnnotations<ANNOTATION = any>(
+    annotations: ANNOTATION[],
+    redraw = true,
+  ): void {
+    this.annotations = annotations as Annotation[];
 
     if (!this.textAnnotationModel) {
       Debugger.debug("Annotations set before lines, cannot set annotations");
@@ -64,7 +69,7 @@ export class ComputeAnnotations {
       return;
     }
 
-    this.textAnnotationModel = assignAnnotationsToLines(
+    this.textAnnotationModel = assignAnnotationsToLines<ANNOTATION>(
       this.textAnnotationModel,
       annotations,
     );

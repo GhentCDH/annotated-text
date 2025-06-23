@@ -76,13 +76,13 @@ snapper: (action, payload) => {
 }
 ```
 
-More information about the snapper can be found in the [snapper documentation](./snapper.md).
+More information about the snapper can be found in the [snapper documentation](../snapper/index).
 
 ## Events
 
 > Allows emitting events, default is logging to the console.debug
 
-More information about the events can be found in the [events documentation](./event-handlers.md).
+More information about the events can be found in the [events documentation](event-handlers.md).
 
 ```typescript
 onEvent: ({ mouseEvent, event, data }: AnnotationEvent) => {

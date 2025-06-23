@@ -1,4 +1,5 @@
 import memoize from "memoizee";
+import { cloneDeep } from "lodash-es";
 import {
   TextAnnotation,
   TextAnnotationModel,
@@ -61,9 +62,7 @@ export const assignAnnotationToLines = (
   _annotation: Annotation,
   calculateWeights = true,
 ) => {
-  const annotation = {
-    ..._annotation,
-  } as TextAnnotation;
+  const annotation = _annotation as TextAnnotation;
 
   if (annotation.start >= annotation.end) {
     model.config.onError(
@@ -115,14 +114,17 @@ export const reAssignAnnotationToLine = (
   return assignAnnotationToLines(model, annotation);
 };
 
-export const assignAnnotationsToLines = (
+export const assignAnnotationsToLines = <ANNOTATION>(
   model: TextAnnotationModel,
-  annotations: Annotation[],
+  annotations: ANNOTATION[],
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
   annotations.forEach((annotation) => {
-    assignAnnotationToLines(model, annotation, calculateWeights);
+    const clonedAnnotation = model.parser.parse(cloneDeep(annotation));
+    if (!clonedAnnotation) return;
+
+    assignAnnotationToLines(model, clonedAnnotation, calculateWeights);
   });
 
   return model;
