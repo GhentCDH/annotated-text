@@ -30,6 +30,7 @@
     .content {
       line-height: var(--line-height, initial);
       padding-bottom: var(--line-padding, 0);
+      min-height: var(--line-height, initial);
     }
 
     .gutter {

@@ -32,12 +32,9 @@ Don't forget to replace do destroy the component when it is no longer needed to 
   textAnnotation.destroy();
 ```
 
-```ts
-
 ## Example
 
-<div id="annotated-text" onload="createAnnotations()">ann</div>
-
+<div id="annotated-text">ann</div>
 
 <script setup>
 //
@@ -50,6 +47,7 @@ waitUntilElementExists(id).then((element) => {
   createAnnotations();
 });
 
+const textAnnotation = AnnotatedText_.init({});
 const createAnnotations = ()=>{
     textAnnotation.setLines(lines, false);
     textAnnotation.setAnnotations(annotations, false);
