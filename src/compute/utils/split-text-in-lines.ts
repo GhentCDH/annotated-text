@@ -12,7 +12,7 @@ export const splitTextInLines = (text: string): TextLine[] => {
       end,
       id: `line-${index}`,
       text,
-    };
+    } as unknown as TextLine;
 
     start = end;
 
