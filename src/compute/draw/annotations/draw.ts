@@ -101,11 +101,12 @@ export const drawDummyAnnotation = (
     textElement.getBoundingClientRect(),
     model,
     dummyAnnotation,
+    svgModel.annotationAdapter,
   ).forEach((a) =>
     drawAnnotationContent(
       { ...a, annotationUuid: DUMMY_UID },
       svgModel,
-      model.config,
+      svgModel.annotationAdapter.config,
     ),
   );
 
@@ -113,16 +114,21 @@ export const drawDummyAnnotation = (
 };
 
 export const recreateAnnotation = (
-  svg: SvgModel,
+  svgModel: SvgModel,
   annotation: TextAnnotation,
 ) => {
-  const { model } = svg;
-  svg.removeAnnotations(annotation.id);
+  const { model } = svgModel;
+  svgModel.removeAnnotations(annotation.id);
 
   reAssignAnnotationToLine(model, annotation, true);
-  createAndAssignDrawAnnotation(model, svg.textElement, annotation)
+  createAndAssignDrawAnnotation(
+    model,
+    svgModel.textElement,
+    annotation,
+    svgModel.annotationAdapter,
+  )
     .getDrawAnnotations(annotation.id)
     .forEach((a) => {
-      drawAnnotation(svg, a);
+      drawAnnotation(svgModel, a);
     });
 };

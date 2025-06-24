@@ -1,13 +1,12 @@
 import { isGutter } from "./utils/predicates";
-import { AnnotationConfig } from "./model/annotation.config";
 import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
 } from "./utils/weights";
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
-import { AnnotationColor } from "../types/AnnotationColor";
-import { TextAnnotationParserConfig } from "../parser/annotation";
+import { EventListener } from "../events/event.listener";
+import { TextDirection } from "../adapter/line";
 
 export type Dimensions = {
   height: number;
@@ -19,8 +18,6 @@ export type TextAnnotation = Annotation & {
   weight: number;
   isGutter: boolean;
 };
-
-export type TextAnnotationColor = AnnotationColor & {};
 
 export type AnnotationDrawColor = {
   fill: string;
@@ -52,13 +49,18 @@ export type AnnotatedGutter = TextAnnotation & {
 export type TextLine = Line & {
   lineNumber: number;
   uuid: string;
-  color: TextAnnotationColor;
   dimensions: Dimensions;
   element: HTMLElement;
   maxLineWeight: number;
 };
 
 export interface TextAnnotationModel {
+  // Configuration for the annotation model
+  textDirection: TextDirection;
+
+  // Event listener
+  eventListener: EventListener;
+
   /**
    * If blockevents is true some events are blocked like editing or creating
    */
@@ -92,7 +94,7 @@ export interface TextAnnotationModel {
   ): void;
 
   // getGutter(line: number): Annotation[];
-  getAnnotation(id: string): Annotation;
+  getAnnotation(id: string): TextAnnotation;
 
   getAnnotationDraw(annotationUuid: string): AnnotationDraw[];
 
@@ -105,15 +107,13 @@ export interface TextAnnotationModel {
 
   calculateAllWeights(): void;
 
-  config: AnnotationConfig;
-
   getLine(lineUid: string): TextLine | undefined;
-
-  parser?: TextAnnotationParserConfig<any>;
 }
 
 export class TextAnnotationModelImpl implements TextAnnotationModel {
+  textDirection: TextDirection;
   blockEvents: boolean = false;
+
   readonly annotationLineMap: Map<string, TextLine[]> = new Map<
     string,
     TextLine[]
@@ -129,11 +129,10 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   drawAnnotations: AnnotationDraw[] = [];
   private readonly lineAnnotationMap = new Map<number, TextAnnotation[]>();
   private readonly lineGutterMap = new Map<number, TextAnnotation[]>();
-  public parser?: TextAnnotationParserConfig<any>;
 
   constructor(
-    public readonly config: AnnotationConfig,
     public readonly lines: TextLine[],
+    public readonly eventListener: EventListener,
   ) {
     this.resetAnnotations();
   }

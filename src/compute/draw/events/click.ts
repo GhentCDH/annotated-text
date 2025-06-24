@@ -1,4 +1,3 @@
-import { sendEvent } from "../send-events";
 import { AnnotationRect, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 
@@ -7,8 +6,11 @@ export const clickAnnotation =
   (mouseEvent) => {
     const model = svgModel.model;
     if (model.blockEvents) return;
-
-    sendEvent({ model, annotation }, { event: "click", mouseEvent });
+    svgModel.sendEvent({
+      event: "click",
+      mouseEvent,
+      annotationUuid: annotation?.annotationUuid || "",
+    });
   };
 
 export const doubleClickAnnotation =
@@ -18,5 +20,10 @@ export const doubleClickAnnotation =
     if (model.blockEvents) return;
 
     mouseEvent.preventDefault();
-    sendEvent({ model, annotation }, { event: "double-click", mouseEvent });
+
+    svgModel.sendEvent({
+      event: "double-click",
+      mouseEvent,
+      annotationUuid: annotation?.annotationUuid || "",
+    });
   };

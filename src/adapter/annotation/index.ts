@@ -1,0 +1,6 @@
+export * from "./model/parser";
+export * from "./w3c/model";
+
+export * from "./AnnotationAdapter";
+export * from "./DefaultAnnotationAdapter";
+export * from "./w3c/W3CAnnotationAdapter";

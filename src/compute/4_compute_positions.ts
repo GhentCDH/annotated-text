@@ -1,7 +1,6 @@
 import { pick } from "lodash-es";
 
 import { v4 as uuidv4 } from "uuid";
-import { AnnotationConfig } from "./model/annotation.config";
 import {
   AnnotatedGutter,
   AnnotationDrawColor,
@@ -11,6 +10,7 @@ import {
 } from "./annotation.model";
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
+import { AnnotationAdapter } from "../adapter/annotation";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
 
@@ -65,9 +65,11 @@ const createGutter = (
   model: TextAnnotationModel,
   parentDimensions: { x: number; y: number },
   gutter: AnnotatedGutter,
+  annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const gutterWidth = model.config.gutter.width;
-  const gutterGap = model.config.gutter.gap;
+  const config = annotationAdapter.config;
+  const gutterWidth = config.gutter.width;
+  const gutterGap = config.gutter.gap;
 
   const lines = model.getLinesForAnnotation(gutter.id);
 
@@ -92,7 +94,7 @@ const createGutter = (
     annotationUuid: gutter.id,
     lineNumber: firstLine.lineNumber,
     path: createGutterPath(x, y, gutterWidth, height),
-    color: getColors(model.config, gutter, false),
+    color: getColors(annotationAdapter, gutter, false),
     draggable: {},
   });
 };
@@ -152,12 +154,12 @@ const getRanges = (annotation: Annotation, line: TextLine) => {
 };
 
 const getColors = (
-  config: AnnotationConfig,
+  adapter: AnnotationAdapter<any>,
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const hoverColor = config.hover.color;
-  const color = config.visualEvent.color(annotation);
+  const hoverColor = adapter.config.hover.color;
+  const color = adapter.color(annotation);
 
   return {
     default: {
@@ -177,12 +179,14 @@ export const createTextAnnotation = (
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
+  annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const radius = model.config.text.borderRadius;
+  const { config } = annotationAdapter;
+  const radius = config.text.borderRadius;
 
   const draws = [];
-  const padding = model.config.text.padding * annotation.weight;
-  const height = model.config.text.lineHeight + padding * 2;
+  const padding = config.text.padding * annotation.weight;
+  const height = config.text.lineHeight + padding * 2;
   lines.forEach((line, index: number) => {
     const rects = getRanges(annotation, line);
 
@@ -198,7 +202,7 @@ export const createTextAnnotation = (
       let leftBorder = isFirstLine && rectIdx === 0;
       const lastRect = rectIdx === rects.length - 1;
       let rightBorder = lastRect && isLastLine;
-      if (model.config.text.rtl) {
+      if (model.textDirection === "rtl") {
         const r = rightBorder;
         rightBorder = leftBorder;
         leftBorder = r;
@@ -222,7 +226,7 @@ export const createTextAnnotation = (
           start: leftBorder ? { x, y, height } : undefined,
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
-        color: getColors(model.config, annotation),
+        color: getColors(annotationAdapter, annotation),
       });
     });
   });
@@ -234,6 +238,7 @@ export const createAndAssignDrawAnnotation = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotation: TextAnnotation,
+  annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
@@ -247,6 +252,7 @@ export const createAndAssignDrawAnnotation = (
     parentDimensions,
     model,
     annotation,
+    annotationAdapter,
   ).forEach((a) => model.addDrawAnnotation(a));
 
   return model;
@@ -255,6 +261,7 @@ export const createAndAssignDrawAnnotation = (
 export const computeAnnotations = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
+  annotationAdapter: AnnotationAdapter<any>,
 ) => {
   // Compute positions of gutters
 
@@ -264,9 +271,15 @@ export const computeAnnotations = (
         model,
         textElement.getBoundingClientRect(),
         annotation as AnnotatedGutter,
+        annotationAdapter,
       );
     } else {
-      createAndAssignDrawAnnotation(model, textElement, annotation);
+      createAndAssignDrawAnnotation(
+        model,
+        textElement,
+        annotation,
+        annotationAdapter,
+      );
     }
   });
 
@@ -276,9 +289,10 @@ export const computeAnnotations = (
 export const computePositions = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
+  annotationAdapter: AnnotationAdapter<any>,
 ) => {
   model.clearDrawAnnotation();
-  computeAnnotations(model, textElement);
+  computeAnnotations(model, textElement, annotationAdapter);
 
   return model;
 };

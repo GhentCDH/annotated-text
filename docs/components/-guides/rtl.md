@@ -12,11 +12,12 @@ Rtl can be configured in the AnnotatedText component by setting the `text.rtl` p
 the text is rendered correctly in a right-to-left format.
 
 ```typescript
-const textAnnotation = AnnotatedText_.init({
-  text: {
-    rtl: true, // Enable right to left rendering
-  },
-});
+createAnnotatedText(id,
+  {
+    line: { textDirection: 'rtl' }
+  })
+  .setLines(textLines)
+  .setAnnotations(textAnnotations);
 ```
 
 ### Example
@@ -24,32 +25,67 @@ const textAnnotation = AnnotatedText_.init({
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { AnnotatedText_ } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
 import { lines, annotations, waitUntilElementExists } from "@demo";
 
 const textAnnotations = annotations;
 const textLines = lines;
+const id = `rtl`;
 
-
-const createAnnotations = (id, config) => {
-    waitUntilElementExists(id).then((element) => {
-        const textAnnotation = AnnotatedText_.init(config);
-        textAnnotation.setLines(textLines, false);
-        textAnnotation.setAnnotations(textAnnotations, false);
-        textAnnotation.init(id);
-    });
-}
-
-createAnnotations("rtl", {
-    actions: {
-        create: true,
-        edit: true,
-    }, 
-    text: {
-        rtl: true, // Enable right to left rendering
-    },
+waitUntilElementExists(id).then((element) => {
+    const textAnnotation = createAnnotatedText(id, 
+        {
+           line: {textDirection: 'rtl'}
+        }, 
+        { 
+            actions: {
+                create: true,
+                edit: true,
+            }
+        }
+    )
+    .setLines(textLines)
+    .setAnnotations(textAnnotations);
 });
 
 </script>
 
-<div id="rtl"></div>
+## Plain text
+
+Also in plain text mode, the `text.rtl` property can be set to `true` to enable right-to-left rendering.
+
+```typescript
+createAnnotatedText(id,
+  {
+    line: PlainTextAdapter({
+      textDirection: 'rtl'
+    })
+  })
+  .setLines(textLines)
+  .setAnnotations(textAnnotations);
+```
+
+<div id="plain-text-example"></div>
+
+<script setup>
+//
+import { onMounted, onUnmounted, watch, watchEffect } from "vue";
+import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { waitUntilElementExists, plainText } from "@demo";
+const id = `plain-text-example`;
+
+waitUntilElementExists(id).then((element) => {
+    createAnnotatedText(id,
+        {
+            line: PlainTextAdapter({
+                textDirection: 'rtl'
+            })
+        }, 
+        { actions: {
+            create: true, 
+            edit: true
+        }})
+    .setLines(plainText.text)
+    .setAnnotations(plainText.annotations);
+});
+</script>

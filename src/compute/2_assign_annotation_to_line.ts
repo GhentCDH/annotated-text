@@ -1,11 +1,11 @@
 import memoize from "memoizee";
-import { cloneDeep } from "lodash-es";
 import {
   TextAnnotation,
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
+import { AnnotationAdapter } from "../adapter/annotation";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
 
@@ -65,14 +65,14 @@ export const assignAnnotationToLines = (
   const annotation = _annotation as TextAnnotation;
 
   if (annotation.start >= annotation.end) {
-    model.config.onError(
+    model.eventListener.sendError(
       "INVALID_ANNOTATION",
       `start (${annotation.start}) must be less than end (${annotation.end})`,
       annotation,
     );
   }
   if (model.textLength < annotation.start) {
-    model.config.onError(
+    model.eventListener.sendError(
       "INVALID_ANNOTATION",
       `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
       annotation,
@@ -80,7 +80,7 @@ export const assignAnnotationToLines = (
     return model;
   }
   if (model.textLength < annotation.end) {
-    model.config.onError(
+    model.eventListener.sendError(
       "INVALID_ANNOTATION",
       `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
       annotation,
@@ -116,12 +116,14 @@ export const reAssignAnnotationToLine = (
 
 export const assignAnnotationsToLines = <ANNOTATION>(
   model: TextAnnotationModel,
+  annotationAdapter: AnnotationAdapter<ANNOTATION>,
   annotations: ANNOTATION[],
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
-  annotations.forEach((annotation) => {
-    const clonedAnnotation = model.parser.parse(cloneDeep(annotation));
+
+  annotations?.forEach((annotation) => {
+    const clonedAnnotation = annotationAdapter.parse(annotation);
     if (!clonedAnnotation) return;
 
     assignAnnotationToLines(model, clonedAnnotation, calculateWeights);

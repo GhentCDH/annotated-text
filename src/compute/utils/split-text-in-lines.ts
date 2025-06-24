@@ -1,5 +1,9 @@
 import { TextLine } from "../annotation.model";
 
+/**
+ * @deprecated
+ * @param text
+ */
 export const splitTextInLines = (text: string): TextLine[] => {
   const lines = text.split(`\n`);
   let start = 0;

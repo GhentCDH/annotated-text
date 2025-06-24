@@ -6,9 +6,10 @@
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { Debugger } from "../utils/debugger";
-import { AnnotationEvent, AnnotationEventData } from "../compute/events";
-import { AnnotationConfig } from "../compute/model/annotation.config";
-import { AnnotatedText_ } from "../compute";
+import { createAnnotatedText } from "../compute";
+import { CreateAnnotations } from "../compute/CreateAnnotations";
+import { Annotation } from "../types/Annotation";
+import { Line } from "../types/AnnotatedText";
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
 
@@ -33,45 +34,44 @@ const emit = defineEmits<AnnotatedTextV2Emits>();
 
 const id = `annotated-text-${uuidv4()}`;
 
-const createConfig = (): Partial<AnnotationConfig> => {
-  return {
-    actions: {
-      edit: props.allowEdit ?? false,
-      create: props.allowCreate ?? false,
-    },
-    text: { rtl: props.rtl },
-    onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
-      emit("event", null, event.event, event.data);
-    },
-    visualEvent: {
-      useSnapper: props.useSnapper,
-    },
-  } as Partial<AnnotationConfig>;
-};
-
-const textAnnotation = AnnotatedText_.init(createConfig());
+let textAnnotation: CreateAnnotations<Line[], Annotation>;
 
 // get a reference to annotatedTextDraw
 
+const createText = () => {
+  textAnnotation?.destroy();
+  textAnnotation = createAnnotatedText(id, {
+    line: { textDirection: props.rtl ? "rtl" : "ltr" },
+    annotation: {
+      edit: props.allowEdit,
+      create: props.allowCreate,
+      snapper: props.useSnapper,
+    },
+  })
+    .setLines(props.textLines, false)
+    .setAnnotations(props.annotations)
+    .highlightAnnotations(props.highlightAnnotations)
+    .selectAnnotations(props.selectedAnnotations)
+    .on("all", (event) =>
+      emit("event", event.mouseEvent, event.event, event.data),
+    );
+};
+
 onMounted(() => {
-  textAnnotation.setLines(props.textLines, false);
-  textAnnotation.setAnnotations(props.annotations, false);
-  textAnnotation.init(id);
-  textAnnotation.highlightAnnotations(props.highlightAnnotations);
-  textAnnotation.selectAnnotations(props.selectedAnnotations);
+  createText();
 });
 
 watch(
   () => props.textLines,
   () => {
-    textAnnotation.setLines(props.textLines);
+    textAnnotation?.setLines(props.textLines);
   },
 );
 
 watch(
   () => props.annotations,
   () => {
-    textAnnotation.setAnnotations(props.annotations);
+    textAnnotation?.setAnnotations(props.annotations);
   },
   // { immediate: true },
 );
@@ -79,7 +79,7 @@ watch(
 watch(
   () => props.rtl,
   () => {
-    textAnnotation.changeConfig(createConfig());
+    createText();
   },
   // { immediate: true },
 );
@@ -92,38 +92,38 @@ watchEffect(() => {
 watch(
   () => props.highlightAnnotations,
   () => {
-    textAnnotation.highlightAnnotations(props.highlightAnnotations);
+    textAnnotation?.highlightAnnotations(props.highlightAnnotations);
   },
 );
 
 watch(
   () => props.selectedAnnotations,
   () => {
-    textAnnotation.selectAnnotations(props.selectedAnnotations);
+    textAnnotation?.selectAnnotations(props.selectedAnnotations);
   },
 );
 
 watch(
   () => props.allowEdit,
   () => {
-    textAnnotation.changeConfig(createConfig());
+    textAnnotation?.annotationAdapter.enableEdit(props.allowEdit);
   },
 );
 watch(
   () => props.allowCreate,
   () => {
-    textAnnotation.changeConfig(createConfig());
+    textAnnotation?.annotationAdapter.enableCreate(props.allowCreate);
   },
 );
 
 watch(
   () => props.rtl,
   () => {
-    textAnnotation.changeConfig(createConfig());
+    textAnnotation?.lineAdapter.setTextDirection(props.rtl ? "rtl" : "ltr");
   },
 );
 
 onUnmounted(() => {
-  textAnnotation.destroy();
+  textAnnotation?.destroy();
 });
 </script>

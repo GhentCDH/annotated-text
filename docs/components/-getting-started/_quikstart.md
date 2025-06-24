@@ -14,16 +14,13 @@ Once the container is created and available in the DOM, you can create an instan
 The config can be set to an empty object, as the component will use the default [configuration](config/index).
 
 ```ts
-import { AnnotatedText_ } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
 
 const id = `annotated-text-{uuid}`;
 
-const textAnnotation = AnnotatedText_.init({});
-
-// Render the textlines and annotations
-textAnnotation.setLines(textLines, false);
-textAnnotation.setAnnotations(annotations, false);
-textAnnotation.init(id);
+const textAnnotation = createAnnotatedText(id)
+  .setLines(lines)
+  .setAnnotations(annotations);
 ``` 
 
 Don't forget to replace do destroy the component when it is no longer needed to avoid memory leaks.
@@ -39,19 +36,15 @@ Don't forget to replace do destroy the component when it is no longer needed to 
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { AnnotatedText_ } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
 import { lines, annotations, waitUntilElementExists } from "@demo";
 const id = `annotated-text`;
 
 waitUntilElementExists(id).then((element) => {
-  createAnnotations();
+    createAnnotatedText(id)
+    .setLines(lines)
+    .setAnnotations(annotations);
 });
 
-const textAnnotation = AnnotatedText_.init({});
-const createAnnotations = ()=>{
-    textAnnotation.setLines(lines, false);
-    textAnnotation.setAnnotations(annotations, false);
-    textAnnotation.init(id);
-}
 </script>
 

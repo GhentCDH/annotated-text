@@ -1,28 +1,29 @@
-import { v4 as uuidv4 } from "uuid";
-import { cloneDeep, merge } from "lodash-es";
 import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
-  TextLine,
 } from "./annotation.model";
-import { AnnotationConfig, DefaultConfig } from "./model/annotation.config";
-import { Line } from "../types/AnnotatedText";
+import { DefaultLineAdapter, LineAdapter } from "../adapter/line";
+import { Debugger } from "../utils/debugger";
+import { EventListener } from "../events/event.listener";
 
-export const createAnnotationModel = (
-  config: Partial<AnnotationConfig>,
-  lines: Line[],
+export const createAnnotationModel = <LINE>(
+  lines: LINE,
+  lineAdapter?: LineAdapter<LINE>,
+  eventListener?: EventListener,
 ): TextAnnotationModel => {
-  const textLines: TextLine[] = [];
   // const gutters: Record<number, AnnotatedGutter> = {};
+  if (!lineAdapter) {
+    console.warn("No lineAdapter provided, using DefaultLineAdapter");
+    lineAdapter = DefaultLineAdapter() as LineAdapter<LINE>;
+  }
 
-  lines?.forEach((line, lineNumber) => {
-    const textLine = { uuid: uuidv4(), lineNumber, ...line } as TextLine;
+  Debugger.debug(`Use lineadapter`, lineAdapter.name);
 
-    textLines.push(textLine);
-  });
-
-  return new TextAnnotationModelImpl(
-    merge(cloneDeep(DefaultConfig), config),
-    textLines,
+  const annotationModel = new TextAnnotationModelImpl(
+    lineAdapter.parse(lines),
+    eventListener ?? new EventListener(),
   );
+  annotationModel.textDirection = lineAdapter.textDirection;
+
+  return annotationModel;
 };

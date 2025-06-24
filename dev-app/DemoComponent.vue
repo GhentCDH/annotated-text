@@ -24,10 +24,7 @@ import {
 } from "@ghentcdh/vue-component-annotated-text";
 import { textToLines } from "./Utils";
 import { annotationsGreek as annotations, textGreek as text } from "./data";
-import {
-  AnnotationEventData,
-  AnnotationEventType,
-} from "../src/compute/events";
+import { AnnotationEventData, AnnotationEventType } from "../src/events/events";
 
 const textLines = textToLines(text);
 // .slice(0, 4);
