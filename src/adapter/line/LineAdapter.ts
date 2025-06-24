@@ -1,21 +1,23 @@
 import { TextLine } from "../../compute/annotation.model";
+import { BaseAdapter } from "../BaseAdapter";
 
 export type TextDirection = "ltr" | "rtl";
 
-export abstract class LineAdapter<LINE> {
-  abstract name: string;
-
+export abstract class LineAdapter<LINE> extends BaseAdapter {
   textDirection: TextDirection = "ltr";
 
   abstract parse(lines: LINE): TextLine[];
 
   setLtr() {
-    this.textDirection = "ltr";
-    return this;
+    return this.setTextDirection("ltr");
   }
 
   setRtl() {
-    this.textDirection = "rtl";
+    return this.setTextDirection("rtl");
+  }
+
+  setTextDirection(textDirection: TextDirection) {
+    this.textDirection = textDirection;
     return this;
   }
 }
@@ -29,11 +31,7 @@ export const createLineAdapter = <LINE>(
   params: createLineAdapterParams<LINE>,
 ): LineAdapter<LINE> => {
   if (params.textDirection) {
-    if (params.textDirection === "ltr") {
-      adapter.setLtr();
-    } else if (params.textDirection === "rtl") {
-      adapter.setRtl();
-    }
+    adapter.setTextDirection(params.textDirection);
   }
   return adapter;
 };

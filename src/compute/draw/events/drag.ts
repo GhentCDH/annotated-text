@@ -13,10 +13,6 @@ export const drawAnnotationHandles = (
   annotation: AnnotationDraw,
   svgModel: SvgModel,
 ) => {
-  const model = svgModel.model as TextAnnotationModel;
-  // console.log(model.config.actions);
-  if (!model.config.actions.edit) return;
-
   if (annotation.path.border) {
     // TODO add condition to check if annotation is draggable
 
@@ -60,6 +56,7 @@ export const drawHandle = (
   };
 
   const onDrag = (eventType: AnnotationEventType) => (event) => {
+    if (!svgModel.annotationAdapter.edit) return;
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
     dragResult =
@@ -72,11 +69,10 @@ export const drawHandle = (
     .append("rect")
     .attr(SVG_ID.ANNOTATION_UID, annotation.annotationUuid)
     .attr(SVG_ID.ANNOTATION_ROLE, "handle")
-    .attr("class", "handle")
     .attr("width", width)
     .attr("height", dimensions.height)
     .attr("fill", "gray")
-    .attr("opacity", 0)
+    .attr("opacity", 1)
     .attr("x", dimensions.x - width / 2)
     .attr("y", dimensions.y)
     .call(
@@ -85,5 +81,8 @@ export const drawHandle = (
         .on("start", onDrag("annotation-edit--start"))
         .on("end", onDragEnd),
     );
+  handle.on("mouseenter", () => {
+    handle.attr("class", svgModel.annotationAdapter.edit ? "handle" : "");
+  });
   return handle;
 };

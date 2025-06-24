@@ -9,6 +9,8 @@ import { Debugger } from "../utils/debugger";
 import { AnnotationConfig } from "../compute/model/annotation.config";
 import { createAnnotatedText } from "../compute";
 import { CreateAnnotations } from "../compute/CreateAnnotations";
+import { Annotation } from "../types/Annotation";
+import { Line } from "../types/AnnotatedText";
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
 
@@ -35,17 +37,13 @@ const id = `annotated-text-${uuidv4()}`;
 
 const createConfig = (): Partial<AnnotationConfig> => {
   return {
-    actions: {
-      edit: props.allowEdit ?? false,
-      create: props.allowCreate ?? false,
-    },
     visualEvent: {
       useSnapper: props.useSnapper,
     },
   } as Partial<AnnotationConfig>;
 };
 
-let textAnnotation: CreateAnnotations<any>;
+let textAnnotation: CreateAnnotations<Line, Annotation>;
 
 // get a reference to annotatedTextDraw
 
@@ -55,6 +53,11 @@ const createText = () => {
     id,
     {
       line: { textDirection: props.rtl ? "rtl" : "ltr" },
+      annotation: {
+        edit: props.allowEdit,
+        create: props.allowCreate,
+        // useSnapper: props.useSnapper,
+      },
     },
     createConfig(),
   )
@@ -116,20 +119,20 @@ watch(
 watch(
   () => props.allowEdit,
   () => {
-    textAnnotation?.changeConfig(createConfig());
+    textAnnotation?.annotationAdapter.enableEdit(props.allowEdit);
   },
 );
 watch(
   () => props.allowCreate,
   () => {
-    textAnnotation?.changeConfig(createConfig());
+    textAnnotation?.annotationAdapter.enableCreate(props.allowCreate);
   },
 );
 
 watch(
   () => props.rtl,
   () => {
-    textAnnotation?.changeConfig(createConfig());
+    textAnnotation?.lineAdapter.setTextDirection(props.rtl ? "rtl" : "ltr");
   },
 );
 

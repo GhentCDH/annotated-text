@@ -54,7 +54,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
   };
 
   svg.on("mousedown", (event) => {
-    if (!svgModel.model.config.actions.create) return null;
+    if (!svgModel.annotationAdapter.create) return null;
     if (svgModel.model.blockEvents || drawing) return;
 
     drawing = true;

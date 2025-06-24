@@ -98,7 +98,7 @@ export interface TextAnnotationModel {
   ): void;
 
   // getGutter(line: number): Annotation[];
-  getAnnotation(id: string): Annotation;
+  getAnnotation(id: string): TextAnnotation;
 
   getAnnotationDraw(annotationUuid: string): AnnotationDraw[];
 

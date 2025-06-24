@@ -39,7 +39,7 @@ export class SvgModel {
     public readonly textElement: HTMLElement,
     public readonly model: TextAnnotationModel,
     private readonly eventListener: EventListener,
-    private readonly annotationAdapter: AnnotationAdapter<any>,
+    public readonly annotationAdapter: AnnotationAdapter<any>,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
@@ -136,7 +136,7 @@ export class SvgModel {
     const annotationData = {
       annotation: fullAnnotation,
       ...additionalData,
-    } as AnnotationEventData;
+    };
 
     annotationData.annotation = this.annotationAdapter.format(
       annotationData.annotation,
@@ -144,7 +144,11 @@ export class SvgModel {
       isNew,
     );
 
-    this.eventListener.sendEvent(event, mouseEvent, annotationData);
+    this.eventListener.sendEvent(
+      event,
+      mouseEvent,
+      annotationData as AnnotationEventData,
+    );
 
     return fullAnnotation;
   }

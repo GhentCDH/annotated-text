@@ -13,7 +13,6 @@ import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
-import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
 import { AnnotationAdapter } from "../adapter/annotation";
 import { EventListener, EventListenerType } from "../events/event.listener";
@@ -21,20 +20,29 @@ import { EventListener, EventListenerType } from "../events/event.listener";
 const document = globalThis.document || null;
 
 export type CreateAnnotations<LINE, ANNOTATION> = {
-  setLines: (lines: LINE, redraw?: boolean) => CreateAnnotations<LINE>;
+  setLines: (
+    lines: LINE,
+    redraw?: boolean,
+  ) => CreateAnnotations<LINE, ANNOTATION>;
   setAnnotations: <ANNOTATION = any>(
     annotations: ANNOTATION[],
     redraw?: boolean,
-  ) => CreateAnnotations<LINE>;
-  highlightAnnotations: (ids: string[]) => CreateAnnotations<LINE>;
-  selectAnnotations: (ids: string[]) => CreateAnnotations<LINE>;
-  changeConfig: (config: Partial<AnnotationConfig>) => CreateAnnotations<LINE>;
+  ) => CreateAnnotations<LINE, ANNOTATION>;
+  highlightAnnotations: (ids: string[]) => CreateAnnotations<LINE, ANNOTATION>;
+  selectAnnotations: (ids: string[]) => CreateAnnotations<LINE, ANNOTATION>;
+  changeConfig: (
+    config: Partial<AnnotationConfig>,
+  ) => CreateAnnotations<LINE, ANNOTATION>;
   on: (
     event: EventListenerType,
     callback: EventCallback,
-  ) => CreateAnnotations<LINE>;
-  onError: (callback: ErrorEventCallback) => CreateAnnotations<LINE>;
-  destroy: () => CreateAnnotations<LINE>;
+  ) => CreateAnnotations<LINE, ANNOTATION>;
+  onError: (
+    callback: ErrorEventCallback,
+  ) => CreateAnnotations<LINE, ANNOTATION>;
+  destroy: () => CreateAnnotations<LINE, ANNOTATION>;
+  lineAdapter: LineAdapter<LINE>;
+  annotationAdapter: AnnotationAdapter<ANNOTATION>;
 };
 
 export class CreateAnnotationsImpl<LINE, ANNOTATION>
@@ -53,12 +61,20 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
 
   constructor(
     private readonly id: string,
-    private readonly lineAdapter: LineAdapter<LINE>,
-    private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
+    public readonly lineAdapter: LineAdapter<LINE>,
+    public readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
     config: Partial<AnnotationConfig> = {},
   ) {
     this.config = config;
-    this.init(id);
+    this.init();
+    this.annotationAdapter.setConfigListener(this.configListener());
+    this.lineAdapter.setConfigListener(this.configListener());
+  }
+
+  private configListener() {
+    return () => {
+      this.recreateAnnotationModel();
+    };
   }
 
   private createAnnotationModel() {
@@ -79,7 +95,7 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
   }
 
   public setAnnotations<ANNOTATION>(annotations: ANNOTATION[], redraw = true) {
-    this.annotations = annotations as Annotation[];
+    this.annotations = annotations;
 
     if (!this.textAnnotationModel) {
       Debugger.debug("Annotations set before lines, cannot set annotations");
@@ -125,7 +141,8 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
     this.activeIds.colorIds(this.svgModel);
   }
 
-  private init(id: string) {
+  private init() {
+    const id = this.id;
     if (this.textElement) {
       console.warn("element already initialized, clear and reainitialize");
     }
@@ -168,7 +185,7 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
       this.element?.removeChild(this.textElement);
     }
     this.drawText();
-    this.element.append(this.textElement);
+    this.element?.append(this.textElement);
     this.textAnnotationModel = computeLinePositions(
       this.textAnnotationModel,
       this.textElement,
@@ -187,7 +204,7 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
     );
 
     this.svgNode = this.svgModel.node();
-    this.element.prepend(this.svgNode);
+    this.element?.prepend(this.svgNode);
     this.drawSvg();
   }
 
@@ -229,14 +246,9 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
     return this;
   }
 
-  public changeConfig(config: Partial<AnnotationConfig>) {
-    // TODO only regenerate what is needed
-    // For now the annotations render quite fast so to be evaluated
-    const id = this.element.id;
+  private recreateAnnotationModel() {
     this.destroy();
-    this.config = config;
     this.createAnnotationModel().setAnnotations(this.annotations);
-    this.init(id);
     return this;
   }
 }

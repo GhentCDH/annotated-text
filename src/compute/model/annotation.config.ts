@@ -9,7 +9,6 @@ export type SnapperFn = (
 ) => { start: number; end: number };
 
 export const DefaultConfig = {
-  actions: { edit: false, create: false },
   gutter: {
     width: 3,
     gap: 6,

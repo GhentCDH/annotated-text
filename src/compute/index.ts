@@ -2,6 +2,7 @@ import { AnnotationConfig } from "./model/annotation.config";
 import { CreateAnnotations, CreateAnnotationsImpl } from "./CreateAnnotations";
 import {
   AnnotationAdapter,
+  createAnnotationAdapterParams,
   DefaultAnnotationAdapter,
 } from "../adapter/annotation";
 import {
@@ -16,7 +17,7 @@ type createAnnotatedTextParams<LINE, ANNOTATION> = {
   line?: LineAdapter<LINE> | createLineAdapterParams<LINE>;
   annotation?:
     | AnnotationAdapter<ANNOTATION>
-    | createLineAdapterParams<ANNOTATION>;
+    | createAnnotationAdapterParams<ANNOTATION>;
 };
 
 export const createAnnotatedText = <LINE = Line[], ANNOTATION = Annotation>(
