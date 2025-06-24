@@ -3,7 +3,7 @@ import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
 } from "./utils/weights";
-import type { Annotation , type TextAnnotation, type TextLine } from "../model";
+import { type Annotation, type TextAnnotation, type TextLine } from "../model";
 
 import { EventListener } from "../events/event.listener";
 import { TextDirection } from "../adapter/line";
