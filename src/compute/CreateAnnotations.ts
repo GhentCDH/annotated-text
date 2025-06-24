@@ -15,16 +15,12 @@ import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
-import {
-  AnnotationAdapter,
-  TextAnnotationParserConfig,
-} from "../adapter/annotation";
-import { DefaultAnnotationParser } from "../adapter/annotation/default.parser";
+import { AnnotationAdapter } from "../adapter/annotation";
 import { EventListener, EventListenerType } from "../events/event.listener";
 
 const document = globalThis.document || null;
 
-export type CreateAnnotations<LINE> = {
+export type CreateAnnotations<LINE, ANNOTATION> = {
   setLines: (lines: LINE, redraw?: boolean) => CreateAnnotations<LINE>;
   setAnnotations: <ANNOTATION = any>(
     annotations: ANNOTATION[],
@@ -41,9 +37,11 @@ export type CreateAnnotations<LINE> = {
   destroy: () => CreateAnnotations<LINE>;
 };
 
-export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
+export class CreateAnnotationsImpl<LINE, ANNOTATION>
+  implements CreateAnnotations<LINE, ANNOTATION>
+{
   private textAnnotationModel: TextAnnotationModel;
-  private annotations: Annotation[];
+  private annotations: ANNOTATION[];
   private element: HTMLElement;
   private textElement: HTMLElement;
   private svgModel: SvgModel;
@@ -51,25 +49,16 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
   private resizeObserver: ResizeObserver;
   private lines: LINE;
   private config: Partial<AnnotationConfig>;
-  private parser: TextAnnotationParserConfig<any> = DefaultAnnotationParser();
   private eventListener = new EventListener();
 
   constructor(
     private readonly id: string,
-    private readonly lineAdapter?: LineAdapter<LINE>,
-    private readonly annotationAdapter?: AnnotationAdapter,
+    private readonly lineAdapter: LineAdapter<LINE>,
+    private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
     config: Partial<AnnotationConfig> = {},
   ) {
     this.config = config;
     this.init(id);
-  }
-
-  public setParser(parser: TextAnnotationParserConfig<any>) {
-    this.parser = parser;
-    if (!this.textAnnotationModel) {
-      return;
-    }
-    this.textAnnotationModel.parser = this.parser;
   }
 
   private createAnnotationModel() {
@@ -80,8 +69,6 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
       this.eventListener,
     );
 
-    // TODO remove the parser, replace by annotationAdapter
-    this.textAnnotationModel.parser = this.parser;
     return this;
   }
 
@@ -91,10 +78,7 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
     return this;
   }
 
-  public setAnnotations<ANNOTATION = any>(
-    annotations: ANNOTATION[],
-    redraw = true,
-  ) {
+  public setAnnotations<ANNOTATION>(annotations: ANNOTATION[], redraw = true) {
     this.annotations = annotations as Annotation[];
 
     if (!this.textAnnotationModel) {
@@ -109,6 +93,7 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
 
     this.textAnnotationModel = assignAnnotationsToLines<ANNOTATION>(
       this.textAnnotationModel,
+      this.annotationAdapter,
       annotations,
     );
     this.textAnnotationModel = computeAnnotationsOnLines(
@@ -198,6 +183,7 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
       this.textElement,
       this.textAnnotationModel,
       this.eventListener,
+      this.annotationAdapter,
     );
 
     this.svgNode = this.svgModel.node();

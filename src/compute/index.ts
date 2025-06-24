@@ -1,44 +1,30 @@
 import { AnnotationConfig } from "./model/annotation.config";
-import { ComputeAnnotations } from "./compute_annotations";
 import { CreateAnnotations, CreateAnnotationsImpl } from "./CreateAnnotations";
-import { DefaultAnnotationAdapter } from "../adapter/annotation";
+import {
+  AnnotationAdapter,
+  DefaultAnnotationAdapter,
+} from "../adapter/annotation";
 import {
   createLineAdapterParams,
   DefaultLineAdapter,
   LineAdapter,
 } from "../adapter/line";
 import { Line } from "../types/AnnotatedText";
+import { Annotation } from "../types/Annotation";
 
-/**
- * @Deprecated
- */
-export const AnnotatedText_ = {
-  // TODO use adapters
-  //
-  /**
-   * TextAdapter - to transform the lines
-   *  AnnotationAdapter - to transform the annotations f.e. w3cADAPTER
-   *  Create for each type of adapter a default adapter
-   *  Create eventadapter?
-   *   Add on('event') functionality
-   * @param config
-   */
-  init: (config: Partial<AnnotationConfig>) => {
-    return new ComputeAnnotations(config);
-  },
+type createAnnotatedTextParams<LINE, ANNOTATION> = {
+  line?: LineAdapter<LINE> | createLineAdapterParams<LINE>;
+  annotation?:
+    | AnnotationAdapter<ANNOTATION>
+    | createLineAdapterParams<ANNOTATION>;
 };
 
-type createAnnotatedTextParams<LINE> = {
-  line?: LineAdapter<LINE> | createLineAdapterParams<any>;
-  annotationAdapter?: createLineAdapterParams<LINE>;
-};
-
-export const createAnnotatedText = <LINE = Line[]>(
+export const createAnnotatedText = <LINE = Line[], ANNOTATION = Annotation>(
   id: string,
-  params: createAnnotatedTextParams<LINE> = {},
+  params: createAnnotatedTextParams<LINE, ANNOTATION> = {},
   // TODO Should become deprecated!
   config: Partial<AnnotationConfig> = {},
-): CreateAnnotations<LINE> => {
+): CreateAnnotations<LINE, ANNOTATION> => {
   let lineAdapter: LineAdapter<LINE>;
   if (params.line instanceof LineAdapter) {
     lineAdapter = params.line;
@@ -46,8 +32,14 @@ export const createAnnotatedText = <LINE = Line[]>(
     lineAdapter = DefaultLineAdapter(params.line ?? {}) as LineAdapter<LINE>;
   }
 
-  const annotationAdapter =
-    params.annotationAdapter || DefaultAnnotationAdapter();
+  let annotationAdapter: AnnotationAdapter<ANNOTATION>;
+  if (params.annotation instanceof AnnotationAdapter) {
+    annotationAdapter = params.annotation;
+  } else {
+    annotationAdapter = DefaultAnnotationAdapter(
+      params.annotation ?? {},
+    ) as AnnotationAdapter<ANNOTATION>;
+  }
 
   return new CreateAnnotationsImpl<LINE>(
     id,

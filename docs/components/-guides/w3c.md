@@ -41,10 +41,13 @@ Then add annotations with the `setAnnotations` method. The method accepts an arr
 indicate whether to update the view or not.
 
 ```typescript
-import { AnnotationW3CParser } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/vue-component-annotated-text";
 
-textAnnotation.setParser(AnnotationW3CParser());
-textAnnotation.setAnnotations(w3cAnnotations, false);
+createAnnotatedText(id, {
+  annotation: W3CAnnotationAdapter()
+})
+  .setLines(w3cText.text, false)
+  .setAnnotations(w3cText.w3cAnnotations.items)
 ```
 
 ### Example
@@ -57,8 +60,10 @@ textAnnotation.setAnnotations(w3cAnnotations, false);
 Sometimes you might have annotations from different sources. In that case, you can specify the source ID when
 initializing the parser.
 
-```typescript
-  textAnnotation.setParser(AnnotationW3CParser(`https://example.com/source1`));
+```typescript 
+  annotation: W3CAnnotationAdapter({
+  sourceId: `https://example.com/source1`
+})
 ```
 
 <div id="w3c-multiple-sources"></div>
@@ -67,34 +72,38 @@ initializing the parser.
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { AnnotatedText_, AnnotationW3CParser } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { waitUntilElementExists, w3cText } from "@demo";
 
-
 const createAnnotations = (id, sourceId)=>{
+
     waitUntilElementExists(id).then((element) => {
-        const textAnnotation = AnnotatedText_.init({
-             actions: {
-                create: true,
-                edit: true,
-            },
-            onEvent: ({ mouseEvent, event, data }) => {
-                const events = [`annotation-create--start`,     
-                                `annotation-create--move`, 
-                                `annotation-create--end`,
-                                `annotation-edit--start`, 
-                                `annotation-edit--move`, 
-                                `annotation-edit--end`];
-                if(!events.includes(event)) return
-                const logger = document.getElementById(`${id}--logger`);
-                if(!logger) return;
-                logger.innerHTML = `<p><b>${event}</b>: ${JSON.stringify(data.annotation, null, 2)}</p>`;
-            }
+        createAnnotatedText(id,
+            {
+               line: PlainTextAdapter(),
+                annotation: W3CAnnotationAdapter({  
+                   sourceUri: sourceId,
+                })
+            }, 
+            { actions: {
+                create: true, 
+                edit: true
+            }})
+        .setLines(w3cText.text, false)
+        .setAnnotations(w3cText.w3cAnnotations.items)
+        .on('all', ({ mouseEvent, event, data }) => {
+            const events = [`annotation-create--start`,     
+                            `annotation-create--move`, 
+                            `annotation-create--end`,
+                            `annotation-edit--start`, 
+                            `annotation-edit--move`, 
+                            `annotation-edit--end`];
+            if(!events.includes(event)) return
+            const logger = document.getElementById(`${id}--logger`);
+console.log(data)
+            if(!logger) return;
+            logger.innerHTML = `<p><b>${event}</b>: ${JSON.stringify(data.annotation, null, 2)}</p>`;
         });
-        textAnnotation.setText(w3cText.text, false);
-        textAnnotation.setParser(AnnotationW3CParser(sourceId));
-        textAnnotation.setAnnotations(w3cText.w3cAnnotations.items, false);
-        textAnnotation.init(id);
     });
 }
 

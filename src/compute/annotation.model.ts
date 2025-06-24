@@ -8,7 +8,6 @@ import {
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { AnnotationColor } from "../types/AnnotationColor";
-import { TextAnnotationParserConfig } from "../adapter/annotation";
 import { EventListener } from "../events/event.listener";
 
 export type Dimensions = {
@@ -115,8 +114,6 @@ export interface TextAnnotationModel {
   config: AnnotationConfig;
 
   getLine(lineUid: string): TextLine | undefined;
-
-  parser?: TextAnnotationParserConfig<any>;
 }
 
 export class TextAnnotationModelImpl implements TextAnnotationModel {
@@ -138,7 +135,6 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   drawAnnotations: AnnotationDraw[] = [];
   private readonly lineAnnotationMap = new Map<number, TextAnnotation[]>();
   private readonly lineGutterMap = new Map<number, TextAnnotation[]>();
-  public parser?: TextAnnotationParserConfig<any>;
 
   constructor(
     public readonly config: AnnotationConfig,

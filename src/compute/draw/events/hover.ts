@@ -2,31 +2,37 @@ import { AnnotationRect, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 
 export const hoverAnnotation =
-  (rect: AnnotationRect, annotation: AnnotationDraw, svg: SvgModel) =>
+  (rect: AnnotationRect, annotation: AnnotationDraw, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
-    const model = svg.model;
+    const model = svgModel.model;
     if (model.blockEvents) return;
-    const fullAnnotation = svg.sendEvent({
+    const fullAnnotation = svgModel.sendEvent({
       event: "mouse-enter",
       mouseEvent,
       annotationUuid: annotation?.uuid || "",
     });
     if (model.config.visualEvent.hover(fullAnnotation)) {
-      svg.colorAnnotation(annotation.annotationUuid, annotation.color.hover);
+      svgModel.colorAnnotation(
+        annotation.annotationUuid,
+        annotation.color.hover,
+      );
     }
   };
 
 export const leaveAnnotation =
-  (rect: AnnotationRect, annotation: AnnotationDraw, svg: SvgModel) =>
+  (rect: AnnotationRect, annotation: AnnotationDraw, svgModel: SvgModel) =>
   (mouseEvent) => {
-    const model = svg.model;
+    const model = svgModel.model;
 
     if (model.blockEvents) return;
 
-    svg.sendEvent({
+    svgModel.sendEvent({
       event: "mouse-leave",
       mouseEvent,
       annotationUuid: annotation?.uuid || "",
     });
-    svg.colorAnnotation(annotation.annotationUuid, annotation.color.default);
+    svgModel.colorAnnotation(
+      annotation.annotationUuid,
+      annotation.color.default,
+    );
   };

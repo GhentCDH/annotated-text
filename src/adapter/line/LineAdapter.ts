@@ -3,8 +3,9 @@ import { TextLine } from "../../compute/annotation.model";
 export type TextDirection = "ltr" | "rtl";
 
 export abstract class LineAdapter<LINE> {
-  textDirection: TextDirection = "ltr";
   abstract name: string;
+
+  textDirection: TextDirection = "ltr";
 
   abstract parse(lines: LINE): TextLine[];
 

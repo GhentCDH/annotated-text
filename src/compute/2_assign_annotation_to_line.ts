@@ -1,5 +1,5 @@
 import memoize from "memoizee";
-import { cloneDeep } from "lodash-es";
+import { AnnotationAdapter } from "@ghentcdh/vue-component-annotated-text";
 import {
   TextAnnotation,
   TextAnnotationModel,
@@ -116,12 +116,14 @@ export const reAssignAnnotationToLine = (
 
 export const assignAnnotationsToLines = <ANNOTATION>(
   model: TextAnnotationModel,
+  annotationAdapter: AnnotationAdapter<ANNOTATION>,
   annotations: ANNOTATION[],
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
+
   annotations.forEach((annotation) => {
-    const clonedAnnotation = model.parser.parse(cloneDeep(annotation));
+    const clonedAnnotation = annotationAdapter.parse(annotation);
     if (!clonedAnnotation) return;
 
     assignAnnotationToLines(model, clonedAnnotation, calculateWeights);

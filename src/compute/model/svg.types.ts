@@ -1,6 +1,7 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
 import {
+  AnnotationAdapter,
   AnnotationEventData,
   AnnotationEventType,
 } from "@ghentcdh/vue-component-annotated-text";
@@ -38,6 +39,7 @@ export class SvgModel {
     public readonly textElement: HTMLElement,
     public readonly model: TextAnnotationModel,
     private readonly eventListener: EventListener,
+    private readonly annotationAdapter: AnnotationAdapter<any>,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
@@ -136,7 +138,7 @@ export class SvgModel {
       ...additionalData,
     } as AnnotationEventData;
 
-    annotationData.annotation = this.model.parser.format(
+    annotationData.annotation = this.annotationAdapter.format(
       annotationData.annotation,
       "",
       isNew,
