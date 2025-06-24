@@ -76,7 +76,7 @@ snapper: (action, payload) => {
 }
 ```
 
-More information about the snapper can be found in the [snapper documentation](../snapper/index).
+More information about the snapper can be found in the [snapper documentation](snapper.md).
 
 ## Events
 

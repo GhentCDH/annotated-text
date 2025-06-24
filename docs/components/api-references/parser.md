@@ -42,4 +42,4 @@ textAnnotation.setAnnotations(customAnnotations);
 
 By default the W3C parser is used to parse the annotations. You can set the parser in the `AnnotatedText` component.
 
-> More information can be found in the [W3C Web Annotation Data Model parser](./w3c.md)
+> More information can be found in the [W3C Web Annotation Data Model parser](../-guides/w3c.md)
