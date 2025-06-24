@@ -1,4 +1,3 @@
-import { sendEvent } from "../send-events";
 import { AnnotationRect, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 
@@ -7,13 +6,11 @@ export const hoverAnnotation =
   (mouseEvent: MouseEvent) => {
     const model = svg.model;
     if (model.blockEvents) return;
-    const fullAnnotation = sendEvent(
-      { model, annotation },
-      {
-        event: "mouse-enter",
-        mouseEvent,
-      },
-    );
+    const fullAnnotation = svg.sendEvent({
+      event: "mouse-enter",
+      mouseEvent,
+      annotationUuid: annotation?.uuid || "",
+    });
     if (model.config.visualEvent.hover(fullAnnotation)) {
       svg.colorAnnotation(annotation.annotationUuid, annotation.color.hover);
     }
@@ -26,6 +23,10 @@ export const leaveAnnotation =
 
     if (model.blockEvents) return;
 
-    sendEvent({ model, annotation }, { event: "mouse-leave", mouseEvent });
+    svg.sendEvent({
+      event: "mouse-leave",
+      mouseEvent,
+      annotationUuid: annotation?.uuid || "",
+    });
     svg.colorAnnotation(annotation.annotationUuid, annotation.color.default);
   };

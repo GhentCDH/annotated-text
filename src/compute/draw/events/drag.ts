@@ -5,10 +5,9 @@ import {
   Dimensions,
   TextAnnotationModel,
 } from "../../annotation.model";
-import { AnnotationEventType } from "../../events";
+import { AnnotationEventType } from "../../../events/events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
-import { sendEvent } from "../send-events";
 
 export const drawAnnotationHandles = (
   annotation: AnnotationDraw,
@@ -32,42 +31,44 @@ export const drawAnnotationHandles = (
 };
 
 export const drawHandle = (
-  svg: SvgModel,
+  svgModel: SvgModel,
   annotation: AnnotationDraw,
   dimensions: Dimensions,
   target: "start" | "end",
 ) => {
-  const model = svg.model as TextAnnotationModel;
+  const model = svgModel.model as TextAnnotationModel;
   const handleRadius = model.config.text.handleRadius;
   let dragResult = null;
   const onDragEnd = (event) => {
     model.blockEvents = false;
-    removeDummyAnnotation(svg);
-    sendEvent(
-      { model, annotation },
-      { event: "annotation-edit--end", mouseEvent: event },
+    removeDummyAnnotation(svgModel);
+
+    svgModel.sendEvent(
       {
-        annotation: model.parser.format(dragResult, "", false),
+        event: "annotation-edit--end",
+        mouseEvent: event,
+        annotationUuid: annotation?.uuid || "",
       },
+      { annotation: dragResult },
     );
 
     if (!dragResult) return;
 
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
-    recreateAnnotation(svg, dragResult);
+    recreateAnnotation(svgModel, dragResult);
   };
 
   const onDrag = (eventType: AnnotationEventType) => (event) => {
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
     dragResult =
-      editAnnotations(svg, x, y, annotation, target, handle, eventType) ??
+      editAnnotations(svgModel, x, y, annotation, target, handle, eventType) ??
       dragResult;
   };
 
   const width = handleRadius;
-  const handle = svg.handles
+  const handle = svgModel.handles
     .append("rect")
     .attr(SVG_ID.ANNOTATION_UID, annotation.annotationUuid)
     .attr(SVG_ID.ANNOTATION_ROLE, "handle")

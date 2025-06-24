@@ -65,14 +65,14 @@ export const assignAnnotationToLines = (
   const annotation = _annotation as TextAnnotation;
 
   if (annotation.start >= annotation.end) {
-    model.config.onError(
+    model.eventListener.sendError(
       "INVALID_ANNOTATION",
       `start (${annotation.start}) must be less than end (${annotation.end})`,
       annotation,
     );
   }
   if (model.textLength < annotation.start) {
-    model.config.onError(
+    model.eventListener.sendError(
       "INVALID_ANNOTATION",
       `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
       annotation,
@@ -80,7 +80,7 @@ export const assignAnnotationToLines = (
     return model;
   }
   if (model.textLength < annotation.end) {
-    model.config.onError(
+    model.eventListener.sendError(
       "INVALID_ANNOTATION",
       `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
       annotation,

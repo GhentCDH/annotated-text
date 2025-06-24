@@ -11,6 +11,7 @@ export const createAnnotationModel = <LINE>(
   config: Partial<AnnotationConfig>,
   lines: LINE,
   lineAdapter?: LineAdapter<LINE>,
+  eventListener?: EventListener,
 ): TextAnnotationModel => {
   // const gutters: Record<number, AnnotatedGutter> = {};
   if (!lineAdapter) {
@@ -23,6 +24,7 @@ export const createAnnotationModel = <LINE>(
   const annotationModel = new TextAnnotationModelImpl(
     merge(cloneDeep(DefaultConfig), config),
     lineAdapter.parse(lines),
+    eventListener ?? new EventListener(),
   );
   annotationModel.textDirection = lineAdapter.textDirection;
 

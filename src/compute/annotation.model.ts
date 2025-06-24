@@ -9,6 +9,7 @@ import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { AnnotationColor } from "../types/AnnotationColor";
 import { TextAnnotationParserConfig } from "../adapter/annotation";
+import { EventListener } from "../events/event.listener";
 
 export type Dimensions = {
   height: number;
@@ -61,6 +62,9 @@ export type TextLine = Line & {
 export interface TextAnnotationModel {
   // Configuration for the annotation model
   textDirection: TextDirection;
+
+  // Event listener
+  eventListener: EventListener;
 
   /**
    * If blockevents is true some events are blocked like editing or creating
@@ -139,6 +143,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   constructor(
     public readonly config: AnnotationConfig,
     public readonly lines: TextLine[],
+    public readonly eventListener: EventListener,
   ) {
     this.resetAnnotations();
   }

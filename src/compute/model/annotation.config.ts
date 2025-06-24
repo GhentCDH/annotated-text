@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { ErrorCode, Errors } from "./errors";
-import { AnnotationEvent, AnnotationEventData } from "../events";
 import { Annotation } from "../../types/Annotation";
-import { Debugger } from "../../utils/debugger";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 
 export type SnapperAction = "move-start" | "move-end";
@@ -61,12 +58,6 @@ export const DefaultConfig = {
     useSnapper: (action: SnapperAction, annotation: Annotation) => {
       return { start: annotation.start, end: annotation.end };
     },
-  },
-  onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
-    Debugger.debug("default event listener", event);
-  },
-  onError: (error: ErrorCode, message: string, ...params: any[]) => {
-    Debugger.warn(`[${Errors[error]}] - `, message, ...params);
   },
 } as const;
 

@@ -5,8 +5,7 @@ import {
 } from "./draw";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, TextAnnotation } from "../../annotation.model";
-import { sendEvent } from "../send-events";
-import { AnnotationEventType } from "../../events";
+import { AnnotationEventType } from "../../../events/events";
 
 export const editAnnotations = (
   svg: SvgModel,
@@ -51,12 +50,13 @@ export const editAnnotations = (
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
 
-  sendEvent(
-    { model: svg.model, annotation },
-    { event: eventType },
+  svg.sendEvent(
     {
-      annotation: model.parser.format(dummyAnnotation, "", false),
+      event: eventType,
+      isNew: false,
+      annotationUuid: dummyAnnotation?.id || "",
     },
+    { annotation: dummyAnnotation },
   );
 
   removeDummyAnnotation(svg);

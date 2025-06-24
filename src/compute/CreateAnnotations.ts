@@ -1,4 +1,8 @@
-import { LineAdapter } from "@ghentcdh/vue-component-annotated-text";
+import {
+  ErrorEventCallback,
+  EventCallback,
+  LineAdapter,
+} from "@ghentcdh/vue-component-annotated-text";
 import { TextAnnotationModel } from "./annotation.model";
 import { createAnnotationModel } from "./1_create_annotation_model";
 import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
@@ -16,6 +20,7 @@ import {
   TextAnnotationParserConfig,
 } from "../adapter/annotation";
 import { DefaultAnnotationParser } from "../adapter/annotation/default.parser";
+import { EventListener, EventListenerType } from "../events/event.listener";
 
 const document = globalThis.document || null;
 
@@ -28,6 +33,11 @@ export type CreateAnnotations<LINE> = {
   highlightAnnotations: (ids: string[]) => CreateAnnotations<LINE>;
   selectAnnotations: (ids: string[]) => CreateAnnotations<LINE>;
   changeConfig: (config: Partial<AnnotationConfig>) => CreateAnnotations<LINE>;
+  on: (
+    event: EventListenerType,
+    callback: EventCallback,
+  ) => CreateAnnotations<LINE>;
+  onError: (callback: ErrorEventCallback) => CreateAnnotations<LINE>;
   destroy: () => CreateAnnotations<LINE>;
 };
 
@@ -42,6 +52,7 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
   private lines: LINE;
   private config: Partial<AnnotationConfig>;
   private parser: TextAnnotationParserConfig<any> = DefaultAnnotationParser();
+  private eventListener = new EventListener();
 
   constructor(
     private readonly id: string,
@@ -66,6 +77,7 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
       this.config,
       this.lines,
       this.lineAdapter,
+      this.eventListener,
     );
 
     // TODO remove the parser, replace by annotationAdapter
@@ -75,10 +87,8 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
 
   public setLines(lines: LINE, redraw = true) {
     this.lines = lines;
-    return this.createAnnotationModel().setAnnotations(
-      this.annotations ?? [],
-      redraw,
-    );
+    this.createAnnotationModel().setAnnotations(this.annotations ?? [], redraw);
+    return this;
   }
 
   public setAnnotations<ANNOTATION = any>(
@@ -106,6 +116,17 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
     );
 
     if (redraw) this.redrawSvg();
+
+    return this;
+  }
+
+  public on(event: EventListenerType, callback: EventCallback) {
+    this.eventListener.register(event, callback);
+    return this;
+  }
+
+  public onError(callback: ErrorEventCallback) {
+    this.eventListener.registerError(callback);
     return this;
   }
 
@@ -173,7 +194,11 @@ export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
       this.textElement,
     );
 
-    this.svgModel = new SvgModel(this.textElement, this.textAnnotationModel);
+    this.svgModel = new SvgModel(
+      this.textElement,
+      this.textAnnotationModel,
+      this.eventListener,
+    );
 
     this.svgNode = this.svgModel.node();
     this.element.prepend(this.svgNode);

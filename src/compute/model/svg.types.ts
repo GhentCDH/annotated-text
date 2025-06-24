@@ -1,10 +1,15 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
+import {
+  AnnotationEventData,
+  AnnotationEventType,
+} from "@ghentcdh/vue-component-annotated-text";
 import { Debugger } from "../../utils/debugger";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
 import { drawAnnotation } from "../draw/annotations";
 import { createNewBlock } from "../draw/annotations/create";
+import { EventListener } from "../../events/event.listener";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -32,6 +37,7 @@ export class SvgModel {
   constructor(
     public readonly textElement: HTMLElement,
     public readonly model: TextAnnotationModel,
+    private readonly eventListener: EventListener,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
@@ -108,5 +114,36 @@ export class SvgModel {
       .sort((a1, a2) => (a1.weight > a2.weight ? -1 : 1))
       .forEach((annotation) => drawAnnotation(this, annotation));
     Debugger.time(now, "--- drawComputedAnnotations ");
+  }
+
+  sendEvent(
+    {
+      event,
+      mouseEvent,
+      isNew,
+      annotationUuid,
+    }: {
+      event: AnnotationEventType;
+      mouseEvent?: MouseEvent;
+      isNew?: boolean;
+      annotationUuid: string;
+    },
+    additionalData = {},
+  ) {
+    const fullAnnotation = this.model.getAnnotation(annotationUuid);
+    const annotationData = {
+      annotation: fullAnnotation,
+      ...additionalData,
+    } as AnnotationEventData;
+
+    annotationData.annotation = this.model.parser.format(
+      annotationData.annotation,
+      "",
+      isNew,
+    );
+
+    this.eventListener.sendEvent(event, mouseEvent, annotationData);
+
+    return fullAnnotation;
   }
 }

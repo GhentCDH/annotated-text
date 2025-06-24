@@ -8,7 +8,6 @@ import {
 import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
 import { TextAnnotation } from "../../annotation.model";
-import { sendEvent } from "../send-events";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
@@ -66,15 +65,14 @@ export const createNewBlock = (svgModel: SvgModel) => {
       return;
     }
 
-    sendEvent(
+    svgModel.sendEvent(
       {
-        model: svgModel.model,
-        annotation: {
-          annotationUuid: dummyAnnotation?.id || "",
-        },
+        event: "annotation-create--start",
+        mouseEvent: event,
+        isNew: true,
+        annotationUuid: dummyAnnotation?.id || "",
       },
-      { event: "annotation-create--start" },
-      { annotation: model.parser.format(dummyAnnotation, "", true) },
+      { annotation: dummyAnnotation },
     );
   });
 
@@ -84,19 +82,19 @@ export const createNewBlock = (svgModel: SvgModel) => {
     svgModel.model.blockEvents = true;
     drawingAndMove = true;
     createDummyAnnotation(event, true);
-    sendEvent(
+
+    svgModel.sendEvent(
       {
-        model: svgModel.model,
-        annotation: {
-          annotationUuid: dummyAnnotation?.id || "",
-        },
+        event: "annotation-create--move",
+        mouseEvent: event,
+        isNew: true,
+        annotationUuid: dummyAnnotation?.id || "",
       },
-      { event: "annotation-create--move" },
-      { annotation: model.parser.format(dummyAnnotation, "", true) },
+      { annotation: dummyAnnotation },
     );
   });
 
-  svg.on("mouseup", () => {
+  svg.on("mouseup", (mouseEvent) => {
     drawing = false;
 
     if (!drawingAndMove) return;
@@ -112,15 +110,14 @@ export const createNewBlock = (svgModel: SvgModel) => {
 
     recreateAnnotation(svgModel, dummyAnnotation);
 
-    sendEvent(
+    svgModel.sendEvent(
       {
-        model: svgModel.model,
-        annotation: {
-          annotationUuid: dummyAnnotation?.id || "",
-        },
+        event: "annotation-create--end",
+        mouseEvent,
+        isNew: true,
+        annotationUuid: dummyAnnotation?.id || "",
       },
-      { event: "annotation-create--end" },
-      { annotation: model.parser.format(dummyAnnotation, "", true) },
+      { annotation: dummyAnnotation },
     );
     dummyAnnotation = null;
   });

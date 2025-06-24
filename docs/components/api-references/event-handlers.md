@@ -1,16 +1,19 @@
 # Event handling
 
-Annotation events are handled by the annotation component. The component emits different events based on user
-interactions with the annotations.
+Annotation events are handled by the annotation component.
+The component emits different events based on user interactions with the annotations.
 
-A annotation listener can be added through the configuration of the component.
+One or multiple event handlers can be registered to the component using the `on` method.
 
 ```typescript
-const textAnnotation = AnnotatedText_.init({
-  onEvent: ({ mouseEvent, event, data }) => {
+const textAnnotation = createAnnotatedText(id)
+  .on('all', ({ mouseEvent, event, data }) => {
+    // To handle all events
     console.log(mouseEvent, event, data);
-  },
-});
+  })
+  .on('click', () => {
+    // handle click event
+  });
 ```
 
 By default the events will be logged to the console with debug statements.
@@ -35,35 +38,34 @@ By default the events will be logged to the console with debug statements.
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { AnnotatedText_ } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
 import { lines, annotations, waitUntilElementExists } from "@demo";
 
 const textAnnotations = annotations.slice(0,6);
 const textLines = lines.slice(0,4);
+const id = "annotation-log";
 
-const createAnnotations = (id, config) => {
-    console.log("createAnnotations", id, config);
-    waitUntilElementExists(id).then((element) => {
-        const textAnnotation = AnnotatedText_.init(config);
-        textAnnotation.setLines(textLines, false);
-        textAnnotation.setAnnotations(textAnnotations, false);
-        textAnnotation.init(id);
-    });
-}
-
-createAnnotations("annotation-log", {
-    actions: {
-        create: true,
-        edit: true,
-    },
-    onEvent: ({ mouseEvent, event, data }) => {
+waitUntilElementExists(id).then((element) => {
+    createAnnotatedText(id,{},
+        {
+            actions: {
+                create: true,
+                edit: true,
+            }
+        }
+    )
+    .setLines(lines)
+    .setAnnotations(annotations)
+    .on('all', ({ mouseEvent, event, data }) => {
         console.log(mouseEvent, event, data);
         const logger = document.getElementById("annotation-logger");
-        logger.innerHTML = `<p><b>${event}</b>: ${data.annotation.id}</p>`;
-        const log = document.getElementById("annotation-log");
-        // log.scrollTop = log.scrollHeight; // Scroll to the bottom
-    }
+        if (logger) {
+            logger.innerHTML = `<p><b>${event}</b>: ${data.annotation.id}</p>`;
+        }
+    })
+;
 });
+
 
 </script>
 

@@ -7,7 +7,7 @@ import {
 } from "@ghentcdh/vue-component-annotated-text";
 import { largeAnnotations, largeTextLines } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
-import { AnnotationEventType } from "../src/compute/events";
+import { AnnotationEventType } from "../src/events/events";
 
 const typesSet = new Set<string>();
 largeAnnotations.map((a) => {

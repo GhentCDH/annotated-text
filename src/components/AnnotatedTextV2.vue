@@ -6,7 +6,6 @@
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { Debugger } from "../utils/debugger";
-import { AnnotationEvent, AnnotationEventData } from "../compute/events";
 import { AnnotationConfig } from "../compute/model/annotation.config";
 import { createAnnotatedText } from "../compute";
 import { CreateAnnotations } from "../compute/CreateAnnotations";
@@ -40,9 +39,6 @@ const createConfig = (): Partial<AnnotationConfig> => {
       edit: props.allowEdit ?? false,
       create: props.allowCreate ?? false,
     },
-    onEvent: <T extends AnnotationEventData>(event: AnnotationEvent<T>) => {
-      emit("event", null, event.event, event.data);
-    },
     visualEvent: {
       useSnapper: props.useSnapper,
     },
@@ -58,14 +54,17 @@ const createText = () => {
   textAnnotation = createAnnotatedText(
     id,
     {
-      textDirection: props.rtl ? "rtl" : "ltr",
+      line: { textDirection: props.rtl ? "rtl" : "ltr" },
     },
     createConfig(),
   )
     .setLines(props.textLines, false)
     .setAnnotations(props.annotations)
     .highlightAnnotations(props.highlightAnnotations)
-    .selectAnnotations(props.selectedAnnotations);
+    .selectAnnotations(props.selectedAnnotations)
+    .on("all", (event) =>
+      emit("event", event.mouseEvent, event.event, event.data),
+    );
 };
 
 onMounted(() => {

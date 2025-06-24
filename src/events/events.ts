@@ -28,3 +28,9 @@ export type AnnotationErrorEvent = {
   message: any;
   params?: any[];
 };
+
+export type EventCallback<
+  DATA extends AnnotationEventData = AnnotationEventData,
+> = (data: AnnotationEvent<DATA>) => void;
+
+export type ErrorEventCallback = (data: AnnotationErrorEvent) => void;
