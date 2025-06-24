@@ -1,4 +1,4 @@
-import { Annotation } from "../types/Annotation";
+import type { Annotation } from "../model";
 
 export type AnnotationEventType =
   | "mouse-enter"

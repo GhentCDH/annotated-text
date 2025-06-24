@@ -1,12 +1,9 @@
 import memoize from "memoizee";
-import {
-  TextAnnotation,
-  TextAnnotationModel,
-  TextLine,
-} from "./annotation.model";
+import { TextAnnotationModel } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
+import type { Annotation, TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
-import { Annotation } from "../types/Annotation";
+
 import { Debugger } from "../utils/debugger";
 
 const isStartLine = memoize(

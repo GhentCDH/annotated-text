@@ -1,4 +1,5 @@
-import type { Annotation, AnnotationInternal } from "./Annotation";
+import type { AnnotationInternal } from "./Annotation";
+import type { Annotation, Line } from "../model";
 
 export interface AnnotationStyle {
   defaultClass: string;
@@ -32,13 +33,6 @@ export interface Paragraph {
   lines: Line[];
   start?: number;
   end?: number;
-  gutter?: string;
-}
-
-export interface Line {
-  text: string;
-  start: number;
-  end: number;
   gutter?: string;
 }
 

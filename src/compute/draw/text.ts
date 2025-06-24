@@ -1,7 +1,8 @@
 import memoize from "memoizee";
 import { TextDirection } from "../../adapter/line";
 import { AnnotationAdapter } from "../../adapter/annotation";
-import { TextAnnotationModel, TextLine } from "../annotation.model";
+import { TextAnnotationModel } from "../annotation.model";
+import { type TextLine } from "../../model";
 import { styles } from "../styles.const";
 
 const document = globalThis.document || null;

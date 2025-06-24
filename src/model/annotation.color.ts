@@ -1,3 +1,14 @@
+import { z } from "zod/v4";
+
+export const annotationColorSchema = z.object({
+  border: z.string(),
+  background: z.string(),
+  borderActive: z.string(),
+  backgroundActive: z.string(),
+  gutterColor: z.string(),
+  color: z.string(),
+});
+
 /**
  * Represents the color properties for an annotation.
  *
@@ -9,11 +20,4 @@
  * @property {string} borderActive - The color of the border when active.
  * @property {string} backgroundActive - The color of the background when active.
  */
-export interface AnnotationColor {
-  border: string;
-  background: string;
-  borderActive: string;
-  backgroundActive: string;
-  gutterColor: string;
-  color: string;
-}
+export type AnnotationColor = z.infer<typeof annotationColorSchema>;

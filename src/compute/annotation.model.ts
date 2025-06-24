@@ -3,8 +3,8 @@ import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
 } from "./utils/weights";
-import { Line } from "../types/AnnotatedText";
-import { Annotation } from "../types/Annotation";
+import { type Annotation, type TextAnnotation, type TextLine } from "../model";
+
 import { EventListener } from "../events/event.listener";
 import { TextDirection } from "../adapter/line";
 
@@ -12,11 +12,6 @@ export type Dimensions = {
   height: number;
   x: number;
   y: number;
-};
-
-export type TextAnnotation = Annotation & {
-  weight: number;
-  isGutter: boolean;
 };
 
 export type AnnotationDrawColor = {
@@ -41,19 +36,6 @@ export type AnnotationDraw = {
   };
 };
 
-export type AnnotatedGutter = TextAnnotation & {
-  // totalLines: number;
-  // firstLine: number;
-};
-
-export type TextLine = Line & {
-  lineNumber: number;
-  uuid: string;
-  dimensions: Dimensions;
-  element: HTMLElement;
-  maxLineWeight: number;
-};
-
 export interface TextAnnotationModel {
   // Configuration for the annotation model
   textDirection: TextDirection;
@@ -67,7 +49,7 @@ export interface TextAnnotationModel {
   blockEvents: boolean;
   lines: TextLine[];
 
-  gutterAnnotations: AnnotatedGutter[];
+  gutterAnnotations: TextAnnotation[];
   drawAnnotations: AnnotationDraw[];
 
   annotations: TextAnnotation[];
@@ -120,7 +102,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   >();
   readonly annotationsMap: Map<string, TextAnnotation> = new Map<
     string,
-    TextAnnotation | AnnotatedGutter
+    TextAnnotation
   >();
   maxGutterWeight: number = 0;
   maxLineWeight: number = 0;
@@ -155,8 +137,8 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   get gutterAnnotations() {
-    return Array.from(this.gutterAnnotationIds).map(
-      (id) => this.annotationsMap.get(id) as AnnotatedGutter,
+    return Array.from(this.gutterAnnotationIds).map((id) =>
+      this.annotationsMap.get(id),
     );
   }
 
@@ -225,12 +207,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
 
   private setGutterAnntoation(annotation: TextAnnotation, lines: TextLine[]) {
     this.gutterAnnotationIds.add(annotation.id);
-    this.annotationsMap.set(annotation.id, {
-      ...annotation,
-      totalLines: lines.length,
-      // lines are sorted!
-      // firstLine: lines[0].lineNumber,
-    } as AnnotatedGutter);
+    this.annotationsMap.set(annotation.id, annotation);
   }
 
   removeAnnotation(annotation: TextAnnotation, calculateWeights = true): void {

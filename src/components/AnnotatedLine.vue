@@ -72,9 +72,11 @@
 import { computed } from "vue";
 import RecursiveAnnotatedTokenPartText from "./RecursiveAnnotatedTokenPartText.vue";
 import TextOnly from "./text/TextOnly.vue";
-import type { Annotation, AnnotationInternal } from "../types/Annotation";
+import type { Annotation } from "../model";
+
 import type { ActionType, WordPart } from "../types/AnnotatedText";
 import { annotationStyle } from "../utils/annotatedTextUtils/AnnotatedTextUtils/annotation.style";
+import { AnnotationInternal } from "../types/Annotation";
 import type { AnnotatedLineEmits, AnnotatedLineProps } from "@/types/props";
 
 const props = withDefaults(defineProps<AnnotatedLineProps>(), {

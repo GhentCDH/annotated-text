@@ -1,9 +1,9 @@
 import { pick } from "lodash-es";
 import {
   AnnotationDrawColor,
-  TextAnnotation,
   TextAnnotationModel,
 } from "../../annotation.model";
+import { type TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import {
   getLinesForAnnotation,

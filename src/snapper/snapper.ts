@@ -1,4 +1,4 @@
-import { TextAnnotation } from "../compute/annotation.model";
+import { type TextAnnotation } from "../model";
 
 export type SnapperAction = "move-start" | "move-end";
 export type SnapperFn = (

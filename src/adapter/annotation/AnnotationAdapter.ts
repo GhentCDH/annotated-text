@@ -1,10 +1,10 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
-import { TextAnnotation } from "../../compute/annotation.model";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
-import { Annotation } from "../../types/Annotation";
-import { DefaultSnapper, SnapperFn } from "../../snapper/snapper";
+import type { Annotation, TextAnnotation } from "../../model";
+
+import { DefaultSnapper, SnapperFn } from "../../snapper";
 
 const config = {
   gutter: {

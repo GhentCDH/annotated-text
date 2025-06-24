@@ -1,6 +1,9 @@
 import memoize from "memoizee";
-import type { AnnotationColor } from "../../../types/AnnotationColor";
+import type { AnnotationColor } from "../../../model";
 
+/**
+ * @deprecated
+ */
 const annotationStyle_ = (color: AnnotationColor): string[] => {
   if (!color) return [];
 

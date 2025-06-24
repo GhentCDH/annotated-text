@@ -7,7 +7,7 @@ import {
 } from "./draw";
 import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
-import { TextAnnotation } from "../../annotation.model";
+import { type TextAnnotation } from "../../../model";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;

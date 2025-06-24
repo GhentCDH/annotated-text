@@ -1,3 +1,8 @@
+/**
+ * @deprecated
+ * @param x
+ * @param y
+ */
 const createPositionFromPoint = (
   x: number,
   y: number,

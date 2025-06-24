@@ -4,6 +4,9 @@ import type { AnnotationInternal } from "../../types/Annotation";
 
 import type { AnnotationStyle } from "../../types/AnnotatedText";
 
+/**
+ * @deprecated
+ */
 export type CssClassUtilProps = {
   /**
    * Object to define classes for styles.

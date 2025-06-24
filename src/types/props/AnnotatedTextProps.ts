@@ -1,5 +1,6 @@
-import type { Annotation, AnnotationTarget } from "../Annotation";
-import type { AnnotationStyle, Line, RenderType } from "../AnnotatedText";
+import type { AnnotationStyle, RenderType } from "../AnnotatedText";
+
+import type { Annotation, AnnotationTarget, Line } from "../../model";
 
 export interface AnnotatedTextProps {
   /**

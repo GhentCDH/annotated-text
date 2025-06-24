@@ -1,11 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import {
   createLineAdapter,
   createLineAdapterParams,
   LineAdapter,
 } from "./LineAdapter";
-import { TextLine } from "../../compute/annotation.model";
-import { Line } from "../../types/AnnotatedText";
+import { type Line, type TextLine, textLineSchema } from "../../model";
 
 export class PlainTextAdapterImpl extends LineAdapter<string> {
   name = "PlainTextAdapter";
@@ -17,14 +15,13 @@ export class PlainTextAdapterImpl extends LineAdapter<string> {
     const result = lines.map((text, index) => {
       // Add additional 1 because the \n symbol consist of 2 characters
       const end = start + text.length + 1;
-      const line = {
-        uuid: uuidv4(),
+      const line = textLineSchema.parse({
         lineNumber: index,
         start,
         end,
         id: `line-${index}`,
         text,
-      } as unknown as TextLine;
+      }) as TextLine;
 
       start = end;
 

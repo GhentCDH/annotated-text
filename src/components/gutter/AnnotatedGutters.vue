@@ -20,7 +20,8 @@
 
 <script setup lang="ts">
 import { annotationGutterClasses } from "./annotationGutter.classes";
-import type { Annotation } from "../../types/Annotation";
+import type { Annotation } from "../../model";
+
 import type { AnnotatedGutterEmits, AnnotatedGutterProps } from "@/types/props";
 
 withDefaults(defineProps<AnnotatedGutterProps>(), {

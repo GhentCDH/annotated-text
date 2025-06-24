@@ -1,5 +1,5 @@
-import { TextLine } from "../../compute/annotation.model";
 import { BaseAdapter } from "../BaseAdapter";
+import { type TextLine } from "../../model";
 
 export type TextDirection = "ltr" | "rtl";
 

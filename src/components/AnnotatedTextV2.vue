@@ -8,8 +8,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Debugger } from "../utils/debugger";
 import { createAnnotatedText } from "../compute";
 import { CreateAnnotations } from "../compute/CreateAnnotations";
-import { Annotation } from "../types/Annotation";
-import { Line } from "../types/AnnotatedText";
+import type { Annotation, Line } from "../model";
+
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
 

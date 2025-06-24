@@ -1,4 +1,9 @@
 type Span<T> = [number, number, T[]];
+/**
+ * @deprecated
+ * @param ranges
+ * @constructor
+ */
 
 /*
   ranges should be an array of [begNum, endNum, data] tuples,
@@ -6,7 +11,7 @@ type Span<T> = [number, number, T[]];
   Works best if ranges is rougly sorted by begNum/endNum
 */
 export function FlattenRanges<T>(
-  ranges: Iterable<[number, number, T]>
+  ranges: Iterable<[number, number, T]>,
 ): Span<T>[] {
   const spans: [number, T[]][] = [[0, []]];
   for (const range of ranges) {
@@ -51,7 +56,7 @@ export function FlattenRanges<T>(
       fullSpans.push([spans[idx][0], spans[idx + 1][0], spans[idx][1]] as [
         number,
         number,
-        T[]
+        T[],
       ]);
     }
   }
