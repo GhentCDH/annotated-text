@@ -6,6 +6,7 @@ import {
 import { AnnotationConfig, DefaultConfig } from "./model/annotation.config";
 import { DefaultLineAdapter, LineAdapter } from "../adapter/line";
 import { Debugger } from "../utils/debugger";
+import { EventListener } from "../events/event.listener";
 
 export const createAnnotationModel = <LINE>(
   config: Partial<AnnotationConfig>,
