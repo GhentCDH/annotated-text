@@ -9,8 +9,9 @@ export const hoverAnnotation =
     const fullAnnotation = svgModel.sendEvent({
       event: "mouse-enter",
       mouseEvent,
-      annotationUuid: annotation?.uuid || "",
+      annotationUuid: annotation?.annotationUuid || "",
     });
+
     if (svgModel.annotationAdapter.hover(fullAnnotation)) {
       svgModel.colorAnnotation(
         annotation.annotationUuid,
@@ -29,7 +30,7 @@ export const leaveAnnotation =
     svgModel.sendEvent({
       event: "mouse-leave",
       mouseEvent,
-      annotationUuid: annotation?.uuid || "",
+      annotationUuid: annotation?.annotationUuid || "",
     });
     svgModel.colorAnnotation(
       annotation.annotationUuid,
