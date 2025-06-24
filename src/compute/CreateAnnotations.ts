@@ -136,6 +136,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   }
 
   private init() {
+    if (!document) return;
     const id = this.id;
     if (this.textElement) {
       console.warn("element already initialized, clear and reainitialize");
@@ -168,6 +169,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   }
 
   private redrawSvg() {
+    if (!document) return;
     // if (!this.textElement) {
     //   console.warn("text element not initialized, cannot redraw svg");
     //   return;

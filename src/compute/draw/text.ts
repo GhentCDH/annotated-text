@@ -4,8 +4,10 @@ import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAnnotationModel, TextLine } from "../annotation.model";
 import { styles } from "../styles.const";
 
+const document = globalThis.document || null;
+
 const createGutter = (textLine: TextLine) => {
-  const gutterDiv = document.createElement("div");
+  const gutterDiv = document?.createElement("div");
   // gutterDiv.style.padding = `0 0 0 ${gutterPaddingLeft} px`;
 
   // pass gutter-weight css variable
@@ -56,11 +58,12 @@ export const drawText = (
   textAnnotationModel: TextAnnotationModel,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
+  if (!document) return;
   const { gutter } = annotationAdapter.config;
   const gutterWidth = gutter.width + gutter.gap;
   const gutterPaddingLeft = gutterWidth * textAnnotationModel.maxGutterWeight;
 
-  const textDiv = document.createElement("div");
+  const textDiv = document?.createElement("div");
   textDiv.className = `${styles.text} `;
 
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);

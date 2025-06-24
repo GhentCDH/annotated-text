@@ -11,7 +11,6 @@ import { TextAnnotation } from "../../annotation.model";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
-  const model = svgModel.model;
 
   const svg = svgModel.svg;
   const adapter = svgModel.annotationAdapter;

@@ -3,7 +3,8 @@ name: Publish Docs
 on:
   workflow_dispatch:
   push:
-    types: [ documentation ]
+    tags:
+      - v*.*.*
 
 env:
   DEPENDENCIES_CACHE: cache-node-modules
