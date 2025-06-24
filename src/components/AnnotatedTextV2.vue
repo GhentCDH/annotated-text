@@ -6,7 +6,6 @@
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { Debugger } from "../utils/debugger";
-import { AnnotationConfig } from "../compute/model/annotation.config";
 import { createAnnotatedText } from "../compute";
 import { CreateAnnotations } from "../compute/CreateAnnotations";
 import { Annotation } from "../types/Annotation";
@@ -35,32 +34,20 @@ const emit = defineEmits<AnnotatedTextV2Emits>();
 
 const id = `annotated-text-${uuidv4()}`;
 
-const createConfig = (): Partial<AnnotationConfig> => {
-  return {
-    visualEvent: {
-      useSnapper: props.useSnapper,
-    },
-  } as Partial<AnnotationConfig>;
-};
-
-let textAnnotation: CreateAnnotations<Line, Annotation>;
+let textAnnotation: CreateAnnotations<Line[], Annotation>;
 
 // get a reference to annotatedTextDraw
 
 const createText = () => {
   textAnnotation?.destroy();
-  textAnnotation = createAnnotatedText(
-    id,
-    {
-      line: { textDirection: props.rtl ? "rtl" : "ltr" },
-      annotation: {
-        edit: props.allowEdit,
-        create: props.allowCreate,
-        // useSnapper: props.useSnapper,
-      },
+  textAnnotation = createAnnotatedText(id, {
+    line: { textDirection: props.rtl ? "rtl" : "ltr" },
+    annotation: {
+      edit: props.allowEdit,
+      create: props.allowCreate,
+      snapper: props.useSnapper,
     },
-    createConfig(),
-  )
+  })
     .setLines(props.textLines, false)
     .setAnnotations(props.annotations)
     .highlightAnnotations(props.highlightAnnotations)

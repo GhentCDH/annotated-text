@@ -3,7 +3,7 @@ import { clickAnnotation, doubleClickAnnotation } from "./events/click";
 import { drawAnnotationHandles } from "./events/drag";
 import { SvgModel } from "../model/svg.types";
 import { AnnotationDraw } from "../annotation.model";
-import { AnnotationConfig } from "../model/annotation.config";
+import { AnnotationConfig } from "../../adapter/annotation";
 
 export const drawAnnotationContent = (
   annotation: AnnotationDraw,
@@ -43,7 +43,7 @@ export const drawAnnotation = (
 ) => {
   // return a promise that resloves to a function that draws the annotation
 
-  const config = svgModel.model.config;
+  const config = svgModel.annotationAdapter.config;
   const { rect } = drawAnnotationContent(annotation, svgModel, config);
 
   drawAnnotationHandles(annotation, svgModel);

@@ -10,7 +10,6 @@ import { computeAnnotationsOnLines } from "./3_compute_annotations_on_line";
 import { drawText } from "./draw/text";
 import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
-import { AnnotationConfig } from "./model/annotation.config";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
 import { Debugger } from "../utils/debugger";
@@ -19,34 +18,31 @@ import { EventListener, EventListenerType } from "../events/event.listener";
 
 const document = globalThis.document || null;
 
-export type CreateAnnotations<LINE, ANNOTATION> = {
+export type CreateAnnotations<LINES, ANNOTATION> = {
   setLines: (
-    lines: LINE,
+    lines: LINES,
     redraw?: boolean,
-  ) => CreateAnnotations<LINE, ANNOTATION>;
+  ) => CreateAnnotations<LINES, ANNOTATION>;
   setAnnotations: <ANNOTATION = any>(
     annotations: ANNOTATION[],
     redraw?: boolean,
-  ) => CreateAnnotations<LINE, ANNOTATION>;
-  highlightAnnotations: (ids: string[]) => CreateAnnotations<LINE, ANNOTATION>;
-  selectAnnotations: (ids: string[]) => CreateAnnotations<LINE, ANNOTATION>;
-  changeConfig: (
-    config: Partial<AnnotationConfig>,
-  ) => CreateAnnotations<LINE, ANNOTATION>;
+  ) => CreateAnnotations<LINES, ANNOTATION>;
+  highlightAnnotations: (ids: string[]) => CreateAnnotations<LINES, ANNOTATION>;
+  selectAnnotations: (ids: string[]) => CreateAnnotations<LINES, ANNOTATION>;
   on: (
     event: EventListenerType,
     callback: EventCallback,
-  ) => CreateAnnotations<LINE, ANNOTATION>;
+  ) => CreateAnnotations<LINES, ANNOTATION>;
   onError: (
     callback: ErrorEventCallback,
-  ) => CreateAnnotations<LINE, ANNOTATION>;
-  destroy: () => CreateAnnotations<LINE, ANNOTATION>;
-  lineAdapter: LineAdapter<LINE>;
+  ) => CreateAnnotations<LINES, ANNOTATION>;
+  destroy: () => CreateAnnotations<LINES, ANNOTATION>;
+  lineAdapter: LineAdapter<LINES>;
   annotationAdapter: AnnotationAdapter<ANNOTATION>;
 };
 
-export class CreateAnnotationsImpl<LINE, ANNOTATION>
-  implements CreateAnnotations<LINE, ANNOTATION>
+export class CreateAnnotationsImpl<LINES, ANNOTATION>
+  implements CreateAnnotations<LINES, ANNOTATION>
 {
   private textAnnotationModel: TextAnnotationModel;
   private annotations: ANNOTATION[];
@@ -55,17 +51,14 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
   private svgModel: SvgModel;
   private svgNode: SVGElement;
   private resizeObserver: ResizeObserver;
-  private lines: LINE;
-  private config: Partial<AnnotationConfig>;
+  private lines: LINES;
   private eventListener = new EventListener();
 
   constructor(
     private readonly id: string,
-    public readonly lineAdapter: LineAdapter<LINE>,
+    public readonly lineAdapter: LineAdapter<LINES>,
     public readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
-    config: Partial<AnnotationConfig> = {},
   ) {
-    this.config = config;
     this.init();
     this.annotationAdapter.setConfigListener(this.configListener());
     this.lineAdapter.setConfigListener(this.configListener());
@@ -79,7 +72,6 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
 
   private createAnnotationModel() {
     this.textAnnotationModel = createAnnotationModel(
-      this.config,
       this.lines,
       this.lineAdapter,
       this.eventListener,
@@ -88,7 +80,7 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
     return this;
   }
 
-  public setLines(lines: LINE, redraw = true) {
+  public setLines(lines: LINES, redraw = true) {
     this.lines = lines;
     this.createAnnotationModel().setAnnotations(this.annotations ?? [], redraw);
     return this;
@@ -132,7 +124,10 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
   }
 
   private drawText() {
-    this.textElement = drawText(this.textAnnotationModel);
+    this.textElement = drawText(
+      this.textAnnotationModel,
+      this.annotationAdapter,
+    );
   }
 
   private drawSvg() {
@@ -194,6 +189,7 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
     this.textAnnotationModel = computePositions(
       this.textAnnotationModel,
       this.textElement,
+      this.annotationAdapter,
     );
 
     this.svgModel = new SvgModel(
@@ -217,6 +213,7 @@ export class CreateAnnotationsImpl<LINE, ANNOTATION>
     this.textElement = null;
     this.svgNode = null;
     this.textAnnotationModel = null;
+    return this;
   }
 
   private highlightedIds = new IdCollection("hover");

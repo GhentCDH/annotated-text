@@ -8,7 +8,7 @@ import { AnnotationDraw, TextAnnotation } from "../../annotation.model";
 import { AnnotationEventType } from "../../../events/events";
 
 export const editAnnotations = (
-  svg: SvgModel,
+  svgModel: SvgModel,
   x: number,
   y: number,
   annotation: AnnotationDraw,
@@ -16,12 +16,12 @@ export const editAnnotations = (
   handle: any,
   eventType: AnnotationEventType,
 ) => {
-  const { model } = svg;
+  const { model } = svgModel;
 
   model.blockEvents = true;
 
-  const width = model.config.text.handleRadius;
-  const result = getCharacterFromTextNodesAtPoint(x, y, svg);
+  const width = svgModel.annotationAdapter.config.text.handleRadius;
+  const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
 
   if (!result) return null;
   handle.attr("x", result.dimensions.x - width / 2);
@@ -43,14 +43,14 @@ export const editAnnotations = (
     annotationUuid: DUMMY_UID,
   } as unknown as TextAnnotation;
 
-  const snapper = model.config.visualEvent.useSnapper(
+  const snapper = svgModel.annotationAdapter.snapper(
     target === "start" ? "move-start" : "move-end",
     dummyAnnotation,
   );
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
 
-  svg.sendEvent(
+  svgModel.sendEvent(
     {
       event: eventType,
       isNew: false,
@@ -59,8 +59,8 @@ export const editAnnotations = (
     { annotation: dummyAnnotation },
   );
 
-  removeDummyAnnotation(svg);
-  drawDummyAnnotation(svg, dummyAnnotation, annotation.color.hover);
+  removeDummyAnnotation(svgModel);
+  drawDummyAnnotation(svgModel, dummyAnnotation, annotation.color.hover);
 
   return dummyAnnotation;
 };

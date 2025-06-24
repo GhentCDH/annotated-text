@@ -12,7 +12,10 @@ created.
 
 ```typescript
 
-const useSnapper = (action, payload) => {
+const useSnapper: SnapperFn = (
+  action: SnapperAction,
+  annotation: TextAnnotation,
+) => {
   const { start, end } = payload;
   switch (action) {
     case 'move-end':
@@ -26,12 +29,21 @@ const useSnapper = (action, payload) => {
   return { start, end };
 };
 
+createAnnotatedText(id,
+  {
+    annotation: {
+      edit: true,
+      create: true,
+      snapper: useSnapper
+    },
+  });
+
 ```
 
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { AnnotatedText_ } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { lines, annotations, waitUntilElementExists } from "@demo";
 
 const textAnnotations = annotations;
@@ -50,24 +62,30 @@ const useSnapper = (action, payload) => {
   return { start, end };
 };
 
-const createAnnotations = (id, config) => {
-    waitUntilElementExists(id).then((element) => {
-        const textAnnotation = AnnotatedText_.init(config);
-        textAnnotation.setLines(textLines, false);
-        textAnnotation.setAnnotations(textAnnotations, false);
-        textAnnotation.init(id);
-    });
-}
+const id = `simpleSnapper`;
 
-createAnnotations("simpleSnapper", {
-    actions: {
-      create: true,
-      edit: true,
-    },
-     visualEvent: {
-      useSnapper: useSnapper,
-    },
+waitUntilElementExists(id).then((element) => {
+    const textAnnotation =  createAnnotatedText(id,
+    {
+        annotation: {
+            edit: true, 
+            create: true, 
+            snapper: useSnapper
+        },
+    })
+    .setLines(textLines, false)
+    .setAnnotations(textAnnotations);
 });
+
+// createAnnotations("simpleSnapper", {
+//     actions: {
+//       create: true,
+//       edit: true,
+//     },
+//      visualEvent: {
+//       useSnapper: useSnapper,
+//     },
+// });
 
 </script>
 

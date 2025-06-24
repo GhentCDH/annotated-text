@@ -1,4 +1,3 @@
-import { AnnotationConfig } from "./model/annotation.config";
 import { CreateAnnotations, CreateAnnotationsImpl } from "./CreateAnnotations";
 import {
   AnnotationAdapter,
@@ -13,24 +12,22 @@ import {
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 
-type createAnnotatedTextParams<LINE, ANNOTATION> = {
-  line?: LineAdapter<LINE> | createLineAdapterParams<LINE>;
+type createAnnotatedTextParams<LINES, ANNOTATION> = {
+  line?: LineAdapter<LINES> | createLineAdapterParams<LINES>;
   annotation?:
     | AnnotationAdapter<ANNOTATION>
     | createAnnotationAdapterParams<ANNOTATION>;
 };
 
-export const createAnnotatedText = <LINE = Line[], ANNOTATION = Annotation>(
+export const createAnnotatedText = <LINES = Line[], ANNOTATION = Annotation>(
   id: string,
-  params: createAnnotatedTextParams<LINE, ANNOTATION> = {},
-  // TODO Should become deprecated!
-  config: Partial<AnnotationConfig> = {},
-): CreateAnnotations<LINE, ANNOTATION> => {
-  let lineAdapter: LineAdapter<LINE>;
+  params: createAnnotatedTextParams<LINES, ANNOTATION> = {},
+): CreateAnnotations<LINES, ANNOTATION> => {
+  let lineAdapter: LineAdapter<LINES>;
   if (params.line instanceof LineAdapter) {
     lineAdapter = params.line;
   } else {
-    lineAdapter = DefaultLineAdapter(params.line ?? {}) as LineAdapter<LINE>;
+    lineAdapter = DefaultLineAdapter(params.line ?? {}) as LineAdapter<LINES>;
   }
 
   let annotationAdapter: AnnotationAdapter<ANNOTATION>;
@@ -42,10 +39,9 @@ export const createAnnotatedText = <LINE = Line[], ANNOTATION = Annotation>(
     ) as AnnotationAdapter<ANNOTATION>;
   }
 
-  return new CreateAnnotationsImpl<LINE>(
+  return new CreateAnnotationsImpl<LINES, ANNOTATION>(
     id,
     lineAdapter,
     annotationAdapter,
-    config,
   );
 };

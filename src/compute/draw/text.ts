@@ -1,5 +1,8 @@
 import memoize from "memoizee";
-import { TextDirection } from "@ghentcdh/vue-component-annotated-text";
+import {
+  AnnotationAdapter,
+  TextDirection,
+} from "@ghentcdh/vue-component-annotated-text";
 import { TextAnnotationModel, TextLine } from "../annotation.model";
 import { styles } from "../styles.const";
 
@@ -29,10 +32,11 @@ const createText = (
   textLine: TextLine,
   textAnnotationModel: TextAnnotationModel,
   textDirection: TextDirection,
+  annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const textDiv = document.createElement("div");
 
-  const { text } = textAnnotationModel.config;
+  const { text } = annotationAdapter.config;
   const { linePadding, lineHeight } = calculateLinePadding(
     text.padding,
     textLine.maxLineWeight,
@@ -50,8 +54,11 @@ const createText = (
   return textDiv;
 };
 
-export const drawText = (textAnnotationModel: TextAnnotationModel) => {
-  const { gutter } = textAnnotationModel.config;
+export const drawText = (
+  textAnnotationModel: TextAnnotationModel,
+  annotationAdapter: AnnotationAdapter<any>,
+) => {
+  const { gutter } = annotationAdapter.config;
   const gutterWidth = gutter.width + gutter.gap;
   const gutterPaddingLeft = gutterWidth * textAnnotationModel.maxGutterWeight;
 
@@ -63,7 +70,12 @@ export const drawText = (textAnnotationModel: TextAnnotationModel) => {
   textAnnotationModel.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line));
     textDiv.appendChild(
-      createText(line, textAnnotationModel, textAnnotationModel.textDirection),
+      createText(
+        line,
+        textAnnotationModel,
+        textAnnotationModel.textDirection,
+        annotationAdapter,
+      ),
     );
   });
 

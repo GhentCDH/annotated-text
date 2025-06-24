@@ -1,13 +1,11 @@
 import { TextDirection } from "@ghentcdh/vue-component-annotated-text";
 import { isGutter } from "./utils/predicates";
-import { AnnotationConfig } from "./model/annotation.config";
 import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
 } from "./utils/weights";
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
-import { AnnotationColor } from "../types/AnnotationColor";
 import { EventListener } from "../events/event.listener";
 
 export type Dimensions = {
@@ -20,8 +18,6 @@ export type TextAnnotation = Annotation & {
   weight: number;
   isGutter: boolean;
 };
-
-export type TextAnnotationColor = AnnotationColor & {};
 
 export type AnnotationDrawColor = {
   fill: string;
@@ -111,8 +107,6 @@ export interface TextAnnotationModel {
 
   calculateAllWeights(): void;
 
-  config: AnnotationConfig;
-
   getLine(lineUid: string): TextLine | undefined;
 }
 
@@ -137,7 +131,6 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   private readonly lineGutterMap = new Map<number, TextAnnotation[]>();
 
   constructor(
-    public readonly config: AnnotationConfig,
     public readonly lines: TextLine[],
     public readonly eventListener: EventListener,
   ) {

@@ -33,7 +33,8 @@ export const drawHandle = (
   target: "start" | "end",
 ) => {
   const model = svgModel.model as TextAnnotationModel;
-  const handleRadius = model.config.text.handleRadius;
+  const config = svgModel.annotationAdapter.config;
+  const handleRadius = config.text.handleRadius;
   let dragResult = null;
   const onDragEnd = (event) => {
     model.blockEvents = false;
@@ -72,7 +73,7 @@ export const drawHandle = (
     .attr("width", width)
     .attr("height", dimensions.height)
     .attr("fill", "gray")
-    .attr("opacity", 1)
+    .attr("opacity", 0)
     .attr("x", dimensions.x - width / 2)
     .attr("y", dimensions.y)
     .call(

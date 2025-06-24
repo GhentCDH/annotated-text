@@ -14,6 +14,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
   const model = svgModel.model;
 
   const svg = svgModel.svg;
+  const adapter = svgModel.annotationAdapter;
 
   let startIndex: number;
   let drawing = false;
@@ -30,7 +31,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
     const newIndex = character.newIndex;
     if (!dummyAnnotation) {
       dummyAnnotation = {
-        ...model.config.visualEvent.create(),
+        ...adapter.createAnnotation(),
         weight: 1,
         start: newIndex,
         end: newIndex + 5,

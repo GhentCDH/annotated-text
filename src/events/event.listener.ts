@@ -25,7 +25,7 @@ export class EventListener {
     this.eventMap.get(event).push(callback);
   }
 
-  public registerError(event: EventListenerType, callback: ErrorEventCallback) {
+  public registerError(callback: ErrorEventCallback) {
     this.errorSet.push(callback);
   }
 
