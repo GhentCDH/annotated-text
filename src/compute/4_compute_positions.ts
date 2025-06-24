@@ -198,7 +198,7 @@ export const createTextAnnotation = (
       let leftBorder = isFirstLine && rectIdx === 0;
       const lastRect = rectIdx === rects.length - 1;
       let rightBorder = lastRect && isLastLine;
-      if (model.config.text.rtl) {
+      if (model.textDirection === "rtl") {
         const r = rightBorder;
         rightBorder = leftBorder;
         leftBorder = r;

@@ -9,4 +9,6 @@ export * from "./utils/createAnnotationColor";
 export { default as AnnotatedTextV2 } from "./components/AnnotatedTextV2.vue";
 export * from "./compute/index";
 export * from "./compute/events";
-export * from "./parser/annotation";
+
+export * from "./adapter/annotation";
+export * from "./adapter/line";

@@ -1,4 +1,5 @@
 import memoize from "memoizee";
+import { TextDirection } from "@ghentcdh/vue-component-annotated-text";
 import { TextAnnotationModel, TextLine } from "../annotation.model";
 import { styles } from "../styles.const";
 
@@ -27,6 +28,7 @@ const calculateLinePadding = memoize(
 const createText = (
   textLine: TextLine,
   textAnnotationModel: TextAnnotationModel,
+  textDirection: TextDirection,
 ) => {
   const textDiv = document.createElement("div");
 
@@ -40,7 +42,7 @@ const createText = (
   textDiv.style.setProperty("--line-padding", `${linePadding}px`);
   textDiv.style.setProperty("--line-height", `${lineHeight}px`);
 
-  textDiv.className = `${styles.line.text.wrapper} ${text.rtl ? "rtl" : ""}`;
+  textDiv.className = `${styles.line.text.wrapper} ${textDirection}`;
   textDiv.innerText = `${textLine.text}`;
   textDiv.setAttribute("data-line-uid", textLine.uuid);
   textDiv.setAttribute("data-annotation-role", "line");
@@ -60,7 +62,9 @@ export const drawText = (textAnnotationModel: TextAnnotationModel) => {
 
   textAnnotationModel.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line));
-    textDiv.appendChild(createText(line, textAnnotationModel));
+    textDiv.appendChild(
+      createText(line, textAnnotationModel, textAnnotationModel.textDirection),
+    );
   });
 
   return textDiv;

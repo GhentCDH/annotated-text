@@ -1,3 +1,4 @@
+import { LineAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { TextAnnotationModel } from "./annotation.model";
 import { createAnnotationModel } from "./1_create_annotation_model";
 import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
@@ -8,19 +9,29 @@ import { styles } from "./styles.const";
 import { AnnotationConfig } from "./model/annotation.config";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
-import { splitTextInLines } from "./utils/split-text-in-lines";
-import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
-import { TextAnnotationParserConfig } from "../adapter/annotation";
+import {
+  AnnotationAdapter,
+  TextAnnotationParserConfig,
+} from "../adapter/annotation";
 import { DefaultAnnotationParser } from "../adapter/annotation/default.parser";
 
 const document = globalThis.document || null;
 
-/**
- * @deprecated use CreateAnnotations instead
- */
-export class ComputeAnnotations {
+export type CreateAnnotations<LINE> = {
+  setLines: (lines: LINE, redraw?: boolean) => CreateAnnotations<LINE>;
+  setAnnotations: <ANNOTATION = any>(
+    annotations: ANNOTATION[],
+    redraw?: boolean,
+  ) => CreateAnnotations<LINE>;
+  highlightAnnotations: (ids: string[]) => CreateAnnotations<LINE>;
+  selectAnnotations: (ids: string[]) => CreateAnnotations<LINE>;
+  changeConfig: (config: Partial<AnnotationConfig>) => CreateAnnotations<LINE>;
+  destroy: () => CreateAnnotations<LINE>;
+};
+
+export class CreateAnnotationsImpl<LINE> implements CreateAnnotations<LINE> {
   private textAnnotationModel: TextAnnotationModel;
   private annotations: Annotation[];
   private element: HTMLElement;
@@ -28,13 +39,18 @@ export class ComputeAnnotations {
   private svgModel: SvgModel;
   private svgNode: SVGElement;
   private resizeObserver: ResizeObserver;
-  private lines: Line[];
+  private lines: LINE;
   private config: Partial<AnnotationConfig>;
   private parser: TextAnnotationParserConfig<any> = DefaultAnnotationParser();
 
-  constructor(config: Partial<AnnotationConfig> = {}) {
-    this.lines = [];
+  constructor(
+    private readonly id: string,
+    private readonly lineAdapter?: LineAdapter<LINE>,
+    private readonly annotationAdapter?: AnnotationAdapter,
+    config: Partial<AnnotationConfig> = {},
+  ) {
     this.config = config;
+    this.init(id);
   }
 
   public setParser(parser: TextAnnotationParserConfig<any>) {
@@ -45,32 +61,40 @@ export class ComputeAnnotations {
     this.textAnnotationModel.parser = this.parser;
   }
 
-  public setText(text: string, redraw = true): void {
-    this.setLines(splitTextInLines(text), redraw);
+  private createAnnotationModel() {
+    this.textAnnotationModel = createAnnotationModel(
+      this.config,
+      this.lines,
+      this.lineAdapter,
+    );
+
+    // TODO remove the parser, replace by annotationAdapter
+    this.textAnnotationModel.parser = this.parser;
+    return this;
   }
 
-  public setLines(lines: Line[], redraw = true): void {
+  public setLines(lines: LINE, redraw = true) {
     this.lines = lines;
-
-    this.textAnnotationModel = createAnnotationModel(this.config, lines);
-    this.textAnnotationModel.parser = this.parser;
-    this.setAnnotations(this.annotations ?? [], redraw);
+    return this.createAnnotationModel().setAnnotations(
+      this.annotations ?? [],
+      redraw,
+    );
   }
 
   public setAnnotations<ANNOTATION = any>(
     annotations: ANNOTATION[],
     redraw = true,
-  ): void {
+  ) {
     this.annotations = annotations as Annotation[];
 
     if (!this.textAnnotationModel) {
       Debugger.debug("Annotations set before lines, cannot set annotations");
-      return;
+      return this;
     }
 
-    if (!this.lines?.length) {
+    if (!this.lines) {
       Debugger.debug("------ no lines set, cannot set annotations");
-      return;
+      return this;
     }
 
     this.textAnnotationModel = assignAnnotationsToLines<ANNOTATION>(
@@ -82,6 +106,7 @@ export class ComputeAnnotations {
     );
 
     if (redraw) this.redrawSvg();
+    return this;
   }
 
   private drawText() {
@@ -94,7 +119,7 @@ export class ComputeAnnotations {
     this.activeIds.colorIds(this.svgModel);
   }
 
-  public init(id: string) {
+  private init(id: string) {
     if (this.textElement) {
       console.warn("element already initialized, clear and reainitialize");
     }
@@ -107,10 +132,6 @@ export class ComputeAnnotations {
 
     this.element.innerHTML = "";
 
-    if (!this.textAnnotationModel) {
-      return;
-    }
-    this.redrawSvg();
     this.element.classList.add(styles.wrapper);
 
     let initialized = false;
@@ -119,10 +140,14 @@ export class ComputeAnnotations {
       if (initialized) this.redrawSvg();
       initialized = true;
     });
-
     if (this.element) {
       this.resizeObserver.observe(this.element);
     }
+
+    if (!this.textAnnotationModel) {
+      return;
+    }
+    this.redrawSvg();
   }
 
   private redrawSvg() {
@@ -168,7 +193,7 @@ export class ComputeAnnotations {
 
   private highlightedIds = new IdCollection("hover");
 
-  public highlightAnnotations(ids: string[]): void {
+  public highlightAnnotations(ids: string[]) {
     this.highlightedIds.changeIds(
       this.svgModel,
       ids?.map((i) => this.textAnnotationModel.getAnnotationDraw(i)[0]) ?? [],
@@ -177,11 +202,12 @@ export class ComputeAnnotations {
     );
     // TODO decide which one has more priority?
     this.activeIds.colorIds(this.svgModel);
+    return this;
   }
 
   private activeIds = new IdCollection("active");
 
-  public selectAnnotations(ids: string[]): void {
+  public selectAnnotations(ids: string[]) {
     this.highlightedIds.removeId(ids);
     this.activeIds.changeIds(
       this.svgModel,
@@ -189,6 +215,7 @@ export class ComputeAnnotations {
       [],
     );
     // TODO decide which one has more priority?
+    return this;
   }
 
   public changeConfig(config: Partial<AnnotationConfig>) {
@@ -197,9 +224,8 @@ export class ComputeAnnotations {
     const id = this.element.id;
     this.destroy();
     this.config = config;
-    this.textAnnotationModel = createAnnotationModel(config, this.lines);
-    this.setLines(this.lines);
-    this.setAnnotations(this.annotations);
+    this.createAnnotationModel().setAnnotations(this.annotations);
     this.init(id);
+    return this;
   }
 }

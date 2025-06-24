@@ -23,10 +23,6 @@ export const DefaultConfig = {
     borderRadius: 3,
     border: 2,
     handleRadius: 6,
-    /**
-     * Support for right-to-left text.
-     */
-    rtl: false,
   },
   hover: {
     color: {

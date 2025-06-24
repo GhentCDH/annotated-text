@@ -1,3 +1,4 @@
+import { TextDirection } from "@ghentcdh/vue-component-annotated-text";
 import { isGutter } from "./utils/predicates";
 import { AnnotationConfig } from "./model/annotation.config";
 import {
@@ -7,7 +8,7 @@ import {
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { AnnotationColor } from "../types/AnnotationColor";
-import { TextAnnotationParserConfig } from "../parser/annotation";
+import { TextAnnotationParserConfig } from "../adapter/annotation";
 
 export type Dimensions = {
   height: number;
@@ -52,13 +53,15 @@ export type AnnotatedGutter = TextAnnotation & {
 export type TextLine = Line & {
   lineNumber: number;
   uuid: string;
-  color: TextAnnotationColor;
   dimensions: Dimensions;
   element: HTMLElement;
   maxLineWeight: number;
 };
 
 export interface TextAnnotationModel {
+  // Configuration for the annotation model
+  textDirection: TextDirection;
+
   /**
    * If blockevents is true some events are blocked like editing or creating
    */
@@ -113,7 +116,9 @@ export interface TextAnnotationModel {
 }
 
 export class TextAnnotationModelImpl implements TextAnnotationModel {
+  textDirection: TextDirection;
   blockEvents: boolean = false;
+
   readonly annotationLineMap: Map<string, TextLine[]> = new Map<
     string,
     TextLine[]
