@@ -1,17 +1,25 @@
-import { cloneDeep, omit } from "lodash-es";
 import {
   AnnotationAdapter,
   createAnnotationAdapter,
   createAnnotationAdapterParams,
 } from "./AnnotationAdapter";
-import { Annotation } from "../../types/Annotation";
-import { TextAnnotation } from "../../compute/annotation.model";
+import {
+  type Annotation,
+  annotationSchema,
+  type TextAnnotation,
+  textAnnotationSchema,
+} from "../../model";
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
   name = "DefaultAnnotationAdapter";
 
   parse(annotation: Annotation): TextAnnotation {
-    return cloneDeep(annotation) as TextAnnotation;
+    const data = textAnnotationSchema.safeParse(annotation);
+    if (!data.success) {
+      console.warn(annotation, data.error);
+      return annotation as TextAnnotation;
+    }
+    return data.data;
   }
 
   format(
@@ -19,7 +27,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     textSelection: string,
     isNew: boolean,
   ): Annotation {
-    return omit(annotation, "uuid") as Annotation;
+    return annotationSchema.parse(annotation);
   }
 }
 

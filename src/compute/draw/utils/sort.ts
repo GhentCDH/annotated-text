@@ -1,4 +1,4 @@
-import { TextAnnotation } from "../../annotation.model";
+import { TextAnnotation } from "../../../model";
 
 export const sortAnnotations = (
   a: TextAnnotation,

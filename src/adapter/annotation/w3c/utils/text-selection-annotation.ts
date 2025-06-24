@@ -6,7 +6,7 @@ import {
   TextualBodySchema,
   W3CAnnotationSchema,
 } from "../model";
-import { TextAnnotation } from "../../../../compute/annotation.model";
+import { type TextAnnotation } from "../../../../model/";
 
 type AnnotationUpdate = Pick<TextAnnotation, "start" | "end"> & { id?: string };
 

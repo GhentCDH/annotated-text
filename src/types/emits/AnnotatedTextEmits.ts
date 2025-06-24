@@ -4,7 +4,8 @@ import type {
   UserState,
 } from "../../state";
 import { UserActionState } from "../../state";
-import type { Annotation } from "../Annotation";
+import type { Annotation } from "../../model";
+
 import type { MouseEventPayload } from "@/types/props";
 
 export type AnnotatedTextEmits = {

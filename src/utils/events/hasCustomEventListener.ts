@@ -1,5 +1,9 @@
-import { getCurrentInstance, toHandlerKey, camelize } from "vue";
+import { camelize, getCurrentInstance, toHandlerKey } from "vue";
 
+/**
+ * @deprecated
+ * @param eventName
+ */
 export function hasCustomEventListener(eventName: string) {
   const instance = getCurrentInstance();
   if (!instance) {

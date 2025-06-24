@@ -9,8 +9,7 @@ import {
   DefaultLineAdapter,
   LineAdapter,
 } from "../adapter/line";
-import { Line } from "../types/AnnotatedText";
-import { Annotation } from "../types/Annotation";
+import type { Annotation, Line } from "../model";
 
 type createAnnotatedTextParams<LINES, ANNOTATION> = {
   line?: LineAdapter<LINES> | createLineAdapterParams<LINES>;

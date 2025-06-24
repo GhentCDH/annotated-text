@@ -1,11 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import {
   createLineAdapter,
   createLineAdapterParams,
   LineAdapter,
 } from "./LineAdapter";
-import { TextLine } from "../../compute/annotation.model";
-import { Line } from "../../types/AnnotatedText";
+import { type Line, type TextLine, textLineSchema } from "../../model";
 
 export class DefaultLineAdapterImpl extends LineAdapter<Line[]> {
   name = "DefaultLineAdapter";
@@ -14,7 +12,7 @@ export class DefaultLineAdapterImpl extends LineAdapter<Line[]> {
     if (!lines) return [];
     // Default implementation simply returns the lines as they are
     return lines.map((line, lineNumber) => {
-      return { uuid: uuidv4(), lineNumber, ...line } as TextLine;
+      return textLineSchema.parse({ lineNumber, ...line });
     });
   }
 }

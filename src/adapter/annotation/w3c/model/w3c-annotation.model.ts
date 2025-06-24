@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const AnnotationTypeBody = z.object({
   type: z.enum(["AnnotationType"]).default("AnnotationType"),

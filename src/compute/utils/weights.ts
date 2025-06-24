@@ -3,17 +3,13 @@
 //character indexes.
 import { maxBy, sortBy } from "lodash-es";
 import { isIntersection } from "./intersect";
-import {
-  AnnotatedGutter,
-  TextAnnotation,
-  TextAnnotationModel,
-  TextLine,
-} from "../annotation.model";
+import { TextAnnotationModel } from "../annotation.model";
 import { sortAnnotations } from "../draw/utils/sort";
+import { type TextAnnotation, type TextLine } from "../../model";
 
 export const calculateGutterAnnotationWeightsAndEnrich = (
   model: TextAnnotationModel,
-  annotations: AnnotatedGutter[],
+  annotations: TextAnnotation[],
 ) => {
   // decide for eacht line how many annotations can be in the gutter
   const annotationsInGutter = new Map<

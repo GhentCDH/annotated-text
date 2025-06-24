@@ -4,7 +4,8 @@ import {
   removeDummyAnnotation,
 } from "./draw";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
-import { AnnotationDraw, TextAnnotation } from "../../annotation.model";
+import { AnnotationDraw } from "../../annotation.model";
+import { type TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
 
 export const editAnnotations = (

@@ -6,10 +6,8 @@ export type {
   AnnotationActionPayload,
   AnnotationActionState,
 } from "./types/AnnotatedText";
-export type { Annotation, AnnotationTarget } from "./types/Annotation";
 export type { ActionType } from "./types/AnnotatedText";
 export type { Paragraph } from "./types/AnnotatedText";
-export type { Line } from "./types/AnnotatedText";
 export type { AnnotatedTextProps } from "./types/props";
 
 export type {

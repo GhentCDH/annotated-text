@@ -5,17 +5,14 @@ import type { CreateAnnotationState, UpdateAnnotationState } from "../../state";
 import type {
   AnnotatedLine,
   AnnotatedWord,
-  Line,
   RangeWithAnnotation,
   RangeWithAnnotations,
   Word,
   WordPart,
 } from "../../types/AnnotatedText";
-import type {
-  AnnotationInternal,
-  AnnotationTarget,
-} from "../../types/Annotation";
+import type { AnnotationInternal } from "../../types/Annotation";
 import { Debugger } from "../debugger";
+import { AnnotationTarget, Line } from "../../model";
 import type { AnnotatedTextProps } from "@/types/props";
 
 // Some consts needed for the utils class
@@ -24,7 +21,7 @@ const annotationEndOffsetFix = 1;
 // caculate interval of an intersection
 const intersectInterval = (
   a: [number, number],
-  b: [number, number]
+  b: [number, number],
 ): [number, number] | null => {
   const min = a[0] < b[0] ? a : b;
   const max = min == a ? b : a;
@@ -36,6 +33,9 @@ const intersectInterval = (
   return [max[0], min[1] < max[1] ? min[1] : max[1]];
 };
 
+/**
+ * @deprecated
+ */
 // Utils class containing logic needed in the AnnotatedText component
 export default class AnnotatedLinesUtil {
   props: AnnotatedTextProps;
@@ -45,7 +45,7 @@ export default class AnnotatedLinesUtil {
   constructor(
     props: AnnotatedTextProps,
     editState: UpdateAnnotationState,
-    createState: CreateAnnotationState
+    createState: CreateAnnotationState,
   ) {
     this.props = props;
     this.editState = editState;
@@ -73,7 +73,7 @@ export default class AnnotatedLinesUtil {
   private gutterAnnotations = computed((): AnnotationInternal[] => {
     Debugger.debug("** refresh gutterAnnotations **");
     const gutterAnnotations = this.allAnnotations.value.filter(
-      (annotation) => annotation.target === "gutter"
+      (annotation) => annotation.target === "gutter",
     );
 
     Debugger.debug(gutterAnnotations);
@@ -85,7 +85,7 @@ export default class AnnotatedLinesUtil {
   // etali end position = position of next char not included in range
   // ex: in "abcdef", span [0,2] is "ab"
   private prepareRanges = (
-    annotations: AnnotationInternal[]
+    annotations: AnnotationInternal[],
   ): RangeWithAnnotation[] => {
     Debugger.debug("** prepare ranges for_annotations **");
     Debugger.debug(annotations);
@@ -112,17 +112,17 @@ export default class AnnotatedLinesUtil {
           Math.max(0, annotation.start - this.props.annotationOffset),
           annotation.end + annotationEndOffsetFix - this.props.annotationOffset,
           annotation,
-        ] satisfies RangeWithAnnotation
+        ] satisfies RangeWithAnnotation,
     );
   };
 
   // give a certain weight to each annotation based on their position
   private calculateAnnotationWeights = function (
-    annotations: AnnotationInternal[]
+    annotations: AnnotationInternal[],
   ) {
     const compareAnnotations = function (
       a: AnnotationInternal,
-      b: AnnotationInternal
+      b: AnnotationInternal,
     ): number {
       return a.start - b.start === 0 ? b.end - a.end : a.start - b.start;
     };
@@ -152,11 +152,11 @@ export default class AnnotatedLinesUtil {
   //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
   //character indexes.
   private calculateGutterAnnotationWeights = (
-    annotations: AnnotationInternal[]
+    annotations: AnnotationInternal[],
   ) => {
     const compareAnnotations = function (
       a: AnnotationInternal,
-      b: AnnotationInternal
+      b: AnnotationInternal,
     ): number {
       const aLength = a.end - a.start;
       const bLength = b.end - b.start;
@@ -173,7 +173,7 @@ export default class AnnotatedLinesUtil {
 
     //reverse weights, makes sure longest is at the right, not left (close to the text)
     const maxGutterWeight = Math.max(
-      ...this.gutterAnnotations.value.map((e) => e.weight)
+      ...this.gutterAnnotations.value.map((e) => e.weight),
     );
     annotations.forEach(function (annotation) {
       annotation.weight = maxGutterWeight - annotation.weight;
@@ -205,7 +205,7 @@ export default class AnnotatedLinesUtil {
     ranges = ranges.sort((a, b) =>
       Number(a[0]) - Number(b[0]) === 0
         ? Number(a[1]) - Number(b[1])
-        : Number(a[0]) - Number(b[0])
+        : Number(a[0]) - Number(b[0]),
     );
 
     // flatten ranges
@@ -215,7 +215,7 @@ export default class AnnotatedLinesUtil {
   private createAnnotatedWord = (word: Word): AnnotatedWord => {
     let rangesInScope: RangeWithAnnotations[] =
       this.flattenedRanges.value.filter((range: RangeWithAnnotations) =>
-        intersectInterval([range[0], range[1] - 1], [word.start, word.end])
+        intersectInterval([range[0], range[1] - 1], [word.start, word.end]),
       );
 
     const display = this.props.display;
@@ -237,13 +237,13 @@ export default class AnnotatedLinesUtil {
             typeof word.text === "string"
               ? word.text.substring(
                   range[0] - word.start,
-                  range[1] - word.start
+                  range[1] - word.start,
                 )
               : "",
           annotations,
           maxAnnotationWeight: maxBy(annotations, (a) => a.weight)?.weight ?? 0,
         } satisfies WordPart;
-      }
+      },
     );
 
     return {
@@ -260,7 +260,7 @@ export default class AnnotatedLinesUtil {
     // get all flattened ranges for this line
     const rangesInScope: RangeWithAnnotations[] =
       this.flattenedRanges.value.filter((range: RangeWithAnnotations) =>
-        intersectInterval([range[0], range[1] - 1], [line.start, line.end])
+        intersectInterval([range[0], range[1] - 1], [line.start, line.end]),
       );
 
     // get gutter annotations for this line
@@ -277,7 +277,7 @@ export default class AnnotatedLinesUtil {
     lineGutterAnnotations = [...new Set(lineGutterAnnotations)];
 
     const maxGutterWeight = Math.max(
-      ...this.gutterAnnotations.value.map((e) => e.weight)
+      ...this.gutterAnnotations.value.map((e) => e.weight),
     );
 
     for (let w = 0; w <= maxGutterWeight; w++) {
@@ -337,7 +337,7 @@ export default class AnnotatedLinesUtil {
   // Map every line to an annotated line
   annotatedLines = computed((): AnnotatedLine[] => {
     const lines = this.props.lines.map((line) =>
-      this.createAnnotatedLine(line)
+      this.createAnnotatedLine(line),
     );
     Debugger.debug(`** annotated lines **`);
     Debugger.debug(lines);

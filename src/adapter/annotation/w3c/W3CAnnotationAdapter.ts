@@ -6,7 +6,7 @@ import {
   createAnnotationAdapter,
   createAnnotationAdapterParams,
 } from "../AnnotationAdapter";
-import { TextAnnotation } from "../../../compute/annotation.model";
+import { type TextAnnotation, textAnnotationSchema } from "../../../model";
 
 export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   name = "W3CAnnotationAdapter";
@@ -25,11 +25,11 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
 
     if (!selector) return null;
 
-    return {
+    return textAnnotationSchema.parse({
       id: annotation.id,
       start: selector.start,
       end: selector.end,
-    } as TextAnnotation;
+    });
   }
 
   format(

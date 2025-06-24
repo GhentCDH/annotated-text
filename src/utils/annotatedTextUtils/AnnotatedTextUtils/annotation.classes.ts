@@ -18,7 +18,7 @@ const annotationClasses_ = (
   isEditState: boolean,
   isHoverState: boolean,
   isSelectState: boolean,
-  allowCreate: boolean
+  allowCreate: boolean,
 ): string[] => {
   const classes = [
     style.defaultClass,
@@ -37,6 +37,9 @@ const annotationClasses_ = (
   return classes.filter((item) => item);
 };
 
+/**
+ * @deprecated
+ */
 export const annotationClassesMemoizee = memoize(annotationClasses_, {
   normalizer: (args) => {
     // args is arguments object as accessible in memoized function
@@ -44,6 +47,9 @@ export const annotationClassesMemoizee = memoize(annotationClasses_, {
   },
 });
 
+/**
+ * @deprecated
+ */
 export const annotationClasses = (
   annotation: AnnotationInternal,
   editAnnotation: AnnotationInternal | undefined,
@@ -52,7 +58,7 @@ export const annotationClasses = (
   end: number,
   allowCreate: boolean,
   selectedAnnotations: string[],
-  hoveredAnnotations: string[]
+  hoveredAnnotations: string[],
 ) => {
   const isEditState = editAnnotation && annotation === editAnnotation;
 
@@ -73,6 +79,6 @@ export const annotationClasses = (
     isEditState,
     isHoverState,
     isSelectState,
-    allowCreate
+    allowCreate,
   );
 };

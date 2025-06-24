@@ -1,17 +1,12 @@
 import { pick } from "lodash-es";
 
 import { v4 as uuidv4 } from "uuid";
-import {
-  AnnotatedGutter,
-  AnnotationDrawColor,
-  TextAnnotation,
-  TextAnnotationModel,
-  TextLine,
-} from "./annotation.model";
+import { AnnotationDrawColor, TextAnnotationModel } from "./annotation.model";
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
+import type { Annotation, TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
-import { Annotation } from "../types/Annotation";
+
 import { Debugger } from "../utils/debugger";
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
@@ -43,11 +38,6 @@ export const computeLinePositions = (
     const bbox = textLine.getBoundingClientRect();
     const lineDimensions = pick(bbox, "width", "height", "x", "y");
     line.element = textLine;
-    line.dimensions = {
-      x: lineDimensions.x - parentDimensions.x,
-      y: lineDimensions.y,
-      height: lineDimensions.height,
-    };
   });
 
   return model;
@@ -64,7 +54,7 @@ const getY = <E extends { y: number }>(parentElement: E, element: E) => {
 const createGutter = (
   model: TextAnnotationModel,
   parentDimensions: { x: number; y: number },
-  gutter: AnnotatedGutter,
+  gutter: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const config = annotationAdapter.config;
@@ -270,7 +260,7 @@ export const computeAnnotations = (
       createGutter(
         model,
         textElement.getBoundingClientRect(),
-        annotation as AnnotatedGutter,
+        annotation,
         annotationAdapter,
       );
     } else {
