@@ -1,11 +1,11 @@
 import {
   AnnotationEventData,
   AnnotationEventType,
-  Debugger,
   ErrorEventCallback,
   EventCallback,
-} from "@ghentcdh/vue-component-annotated-text";
-import { ErrorCode, Errors } from "../compute/model/errors";
+} from "./events";
+import { ErrorCode, Errors } from "./errors";
+import { Debugger } from "../utils/debugger";
 
 export type EventListenerType = AnnotationEventType | "all";
 

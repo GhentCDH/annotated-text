@@ -6,11 +6,10 @@ export const clickAnnotation =
   (mouseEvent) => {
     const model = svgModel.model;
     if (model.blockEvents) return;
-
     svgModel.sendEvent({
       event: "click",
       mouseEvent,
-      annotationUuid: annotation?.uuid || "",
+      annotationUuid: annotation?.annotationUuid || "",
     });
   };
 
@@ -25,6 +24,6 @@ export const doubleClickAnnotation =
     svgModel.sendEvent({
       event: "double-click",
       mouseEvent,
-      annotationUuid: annotation?.uuid || "",
+      annotationUuid: annotation?.annotationUuid || "",
     });
   };

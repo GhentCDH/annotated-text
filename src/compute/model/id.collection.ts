@@ -24,7 +24,7 @@ export class IdCollection {
         (id) =>
           !annotations.some(
             (a) =>
-              a.annotationUuid === id && !ignoreIds.includes(a.annotationUuid),
+              a?.annotationUuid === id && !ignoreIds.includes(a.annotationUuid),
           ),
       );
     removeIds.forEach((uuid) => {

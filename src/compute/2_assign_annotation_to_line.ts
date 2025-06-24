@@ -1,11 +1,11 @@
 import memoize from "memoizee";
-import { AnnotationAdapter } from "@ghentcdh/vue-component-annotated-text";
 import {
   TextAnnotation,
   TextAnnotationModel,
   TextLine,
 } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
+import { AnnotationAdapter } from "../adapter/annotation";
 import { Annotation } from "../types/Annotation";
 import { Debugger } from "../utils/debugger";
 
@@ -122,7 +122,7 @@ export const assignAnnotationsToLines = <ANNOTATION>(
 ): TextAnnotationModel => {
   model.resetAnnotations();
 
-  annotations.forEach((annotation) => {
+  annotations?.forEach((annotation) => {
     const clonedAnnotation = annotationAdapter.parse(annotation);
     if (!clonedAnnotation) return;
 

@@ -53,7 +53,7 @@ type W3CAnnotationAdapterParams = {
 } & createAnnotationAdapterParams<W3CAnnotation>;
 
 export const W3CAnnotationAdapter = (
-  params?: W3CAnnotationAdapterParams = {},
+  params: W3CAnnotationAdapterParams = {},
 ): AnnotationAdapter<W3CAnnotation> => {
   return createAnnotationAdapter(
     new W3CAnnotationAdapterImpl(params.sourceUri, params.language),

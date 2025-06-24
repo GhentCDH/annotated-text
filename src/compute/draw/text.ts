@@ -1,8 +1,6 @@
 import memoize from "memoizee";
-import {
-  AnnotationAdapter,
-  TextDirection,
-} from "@ghentcdh/vue-component-annotated-text";
+import { TextDirection } from "../../adapter/line";
+import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAnnotationModel, TextLine } from "../annotation.model";
 import { styles } from "../styles.const";
 

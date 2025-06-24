@@ -1,8 +1,3 @@
-import {
-  ErrorEventCallback,
-  EventCallback,
-  LineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
 import { TextAnnotationModel } from "./annotation.model";
 import { createAnnotationModel } from "./1_create_annotation_model";
 import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
@@ -12,6 +7,8 @@ import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
+import { LineAdapter } from "../adapter/line";
+import { ErrorEventCallback, EventCallback } from "../events";
 import { Debugger } from "../utils/debugger";
 import { AnnotationAdapter } from "../adapter/annotation";
 import { EventListener, EventListenerType } from "../events/event.listener";
@@ -23,7 +20,7 @@ export type CreateAnnotations<LINES, ANNOTATION> = {
     lines: LINES,
     redraw?: boolean,
   ) => CreateAnnotations<LINES, ANNOTATION>;
-  setAnnotations: <ANNOTATION = any>(
+  setAnnotations: (
     annotations: ANNOTATION[],
     redraw?: boolean,
   ) => CreateAnnotations<LINES, ANNOTATION>;
@@ -82,11 +79,13 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
 
   public setLines(lines: LINES, redraw = true) {
     this.lines = lines;
-    this.createAnnotationModel().setAnnotations(this.annotations ?? [], redraw);
+    this.createAnnotationModel();
+    this.setAnnotations(this.annotations, redraw);
+
     return this;
   }
 
-  public setAnnotations<ANNOTATION>(annotations: ANNOTATION[], redraw = true) {
+  public setAnnotations(annotations: ANNOTATION[], redraw = true) {
     this.annotations = annotations;
 
     if (!this.textAnnotationModel) {
@@ -99,7 +98,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
       return this;
     }
 
-    this.textAnnotationModel = assignAnnotationsToLines<ANNOTATION>(
+    this.textAnnotationModel = assignAnnotationsToLines(
       this.textAnnotationModel,
       this.annotationAdapter,
       annotations,
@@ -213,6 +212,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
     this.textElement = null;
     this.svgNode = null;
     this.textAnnotationModel = null;
+
     return this;
   }
 
@@ -245,7 +245,8 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
 
   private recreateAnnotationModel() {
     this.destroy();
-    this.createAnnotationModel().setAnnotations(this.annotations);
+    this.createAnnotationModel();
+    this.setAnnotations(this.annotations);
     return this;
   }
 }

@@ -1,5 +1,4 @@
-import { cloneDeep } from "lodash-es";
-import { v4 as uuidv4 } from "uuid";
+import { cloneDeep, omit } from "lodash-es";
 import {
   AnnotationAdapter,
   createAnnotationAdapter,
@@ -7,7 +6,6 @@ import {
 } from "./AnnotationAdapter";
 import { Annotation } from "../../types/Annotation";
 import { TextAnnotation } from "../../compute/annotation.model";
-import { createAnnotationColor } from "../../utils/createAnnotationColor";
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
   name = "DefaultAnnotationAdapter";
@@ -21,17 +19,12 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     textSelection: string,
     isNew: boolean,
   ): Annotation {
-    return {
-      id: uuidv4(),
-      isGutter: false,
-      color: createAnnotationColor("#f51720"),
-      ...annotation,
-    } as Annotation;
+    return omit(annotation, "uuid") as Annotation;
   }
 }
 
 export const DefaultAnnotationAdapter = (
-  params?: createAnnotationAdapterParams<Annotation> = {},
+  params: createAnnotationAdapterParams<Annotation> = {},
 ): AnnotationAdapter<Annotation> => {
   return createAnnotationAdapter(new DefaultAnnotationAdapterImpl(), params);
 };

@@ -1,4 +1,3 @@
-import { TextDirection } from "@ghentcdh/vue-component-annotated-text";
 import { isGutter } from "./utils/predicates";
 import {
   calculateAnnotationWeights,
@@ -7,6 +6,7 @@ import {
 import { Line } from "../types/AnnotatedText";
 import { Annotation } from "../types/Annotation";
 import { EventListener } from "../events/event.listener";
+import { TextDirection } from "../adapter/line";
 
 export type Dimensions = {
   height: number;
