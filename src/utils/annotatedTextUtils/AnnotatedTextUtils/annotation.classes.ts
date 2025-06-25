@@ -2,6 +2,7 @@ import memoize from "memoizee";
 import { pick } from "lodash-es";
 import type { AnnotationStyle } from "../../../types/AnnotatedText";
 import type { AnnotationInternal } from "../../../types/Annotation";
+import type { AnnotationId } from "../../../model";
 
 const AnnotationFields = ["weight", "color", "class"] as const;
 type AnnotationField = (typeof AnnotationFields)[number];
@@ -57,8 +58,8 @@ export const annotationClasses = (
   start: number,
   end: number,
   allowCreate: boolean,
-  selectedAnnotations: string[],
-  hoveredAnnotations: string[],
+  selectedAnnotations: AnnotationId[],
+  hoveredAnnotations: AnnotationId[],
 ) => {
   const isEditState = editAnnotation && annotation === editAnnotation;
 

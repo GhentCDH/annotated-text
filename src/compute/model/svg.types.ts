@@ -8,6 +8,7 @@ import { drawAnnotation } from "../draw/annotations";
 import { createNewBlock } from "../draw/annotations/create";
 import { EventListener } from "../../events/event.listener";
 import { AnnotationAdapter } from "../../adapter/annotation";
+import { type AnnotationId } from "../../model";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -58,12 +59,12 @@ export class SvgModel {
     createNewBlock(this);
   }
 
-  removeAnnotations(annotationUuid: string, selector = "") {
+  removeAnnotations(annotationUuid: AnnotationId, selector = "") {
     this.findRelatedAnnotations(annotationUuid, selector)?.remove();
     return this;
   }
 
-  findRelatedAnnotations(annotationUuid: string, selector = "") {
+  findRelatedAnnotations(annotationUuid: AnnotationId, selector = "") {
     const annotations = this.svg.selectAll(
       `[data-annotation-uid="${annotationUuid}"]${selector}`,
     );
@@ -75,21 +76,21 @@ export class SvgModel {
     return annotations;
   }
 
-  findFills(annotationUuid: string) {
+  findFills(annotationUuid: AnnotationId) {
     return this.findRelatedAnnotations(
       annotationUuid,
       `[${SVG_ID.ANNOTATION_ROLE}="${SVG_ROLE.FILL}"]`,
     );
   }
 
-  findBorders(annotationUuid: string) {
+  findBorders(annotationUuid: AnnotationId) {
     return this.findRelatedAnnotations(
       annotationUuid,
       `[${SVG_ID.ANNOTATION_ROLE}="${SVG_ROLE.BORDER}"]`,
     );
   }
 
-  colorAnnotation(annotationUuid: string, color: AnnotationDrawColor) {
+  colorAnnotation(annotationUuid: AnnotationId, color: AnnotationDrawColor) {
     if (!color) {
       Debugger.warn("No color provided for annotation", annotationUuid);
       return;
@@ -125,7 +126,7 @@ export class SvgModel {
       event: AnnotationEventType;
       mouseEvent?: MouseEvent;
       isNew?: boolean;
-      annotationUuid: string;
+      annotationUuid: AnnotationId;
     },
     additionalData = {},
   ) {

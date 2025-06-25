@@ -55,7 +55,7 @@ export const editAnnotations = (
     {
       event: eventType,
       isNew: false,
-      annotationUuid: dummyAnnotation?.id || "",
+      annotationUuid: dummyAnnotation?.id.toString() || "",
     },
     { annotation: dummyAnnotation },
   );

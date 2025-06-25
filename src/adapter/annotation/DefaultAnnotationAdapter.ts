@@ -27,7 +27,12 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     textSelection: string,
     isNew: boolean,
   ): Annotation {
-    return annotationSchema.parse(annotation);
+    const data = annotationSchema.safeParse(annotation);
+    if (!data.success) {
+      console.warn(annotation, data.error);
+      return annotation as Annotation;
+    }
+    return data.data;
   }
 }
 

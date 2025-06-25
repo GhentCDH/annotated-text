@@ -3,7 +3,12 @@ import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
 } from "./utils/weights";
-import { type Annotation, type TextAnnotation, type TextLine } from "../model";
+import {
+  type Annotation,
+  type AnnotationId,
+  type TextAnnotation,
+  type TextLine,
+} from "../model";
 
 import { EventListener } from "../events/event.listener";
 import { TextDirection } from "../adapter/line";
@@ -21,7 +26,7 @@ export type AnnotationDrawColor = {
 
 export type AnnotationDraw = {
   uuid: string;
-  annotationUuid: string;
+  annotationUuid: AnnotationId;
   lineNumber: number;
   path: { border?: string; fill: string };
   draggable: {
@@ -60,7 +65,7 @@ export interface TextAnnotationModel {
 
   addDrawAnnotation(annotation: AnnotationDraw): void;
 
-  getDrawAnnotations(annotationUuid: string): AnnotationDraw[];
+  getDrawAnnotations(annotationUuid: AnnotationId): AnnotationDraw[];
 
   resetAnnotations(): void;
 
@@ -76,13 +81,13 @@ export interface TextAnnotationModel {
   ): void;
 
   // getGutter(line: number): Annotation[];
-  getAnnotation(id: string): TextAnnotation;
+  getAnnotation(id: AnnotationId): TextAnnotation;
 
-  getAnnotationDraw(annotationUuid: string): AnnotationDraw[];
+  getAnnotationDraw(annotationUuid: AnnotationId): AnnotationDraw[];
 
   getAnnotations(line: number): Annotation[];
 
-  getLinesForAnnotation(annotationId: string): TextLine[];
+  getLinesForAnnotation(annotationId: AnnotationId): TextLine[];
 
   maxGutterWeight: number;
   maxLineWeight: number;
@@ -96,17 +101,11 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   textDirection: TextDirection;
   blockEvents: boolean = false;
 
-  readonly annotationLineMap: Map<string, TextLine[]> = new Map<
-    string,
-    TextLine[]
-  >();
-  readonly annotationsMap: Map<string, TextAnnotation> = new Map<
-    string,
-    TextAnnotation
-  >();
+  readonly annotationLineMap = new Map<AnnotationId, TextLine[]>();
+  readonly annotationsMap = new Map<AnnotationId, TextAnnotation>();
   maxGutterWeight: number = 0;
   maxLineWeight: number = 0;
-  readonly gutterAnnotationIds = new Set<string>();
+  readonly gutterAnnotationIds = new Set<AnnotationId>();
   public textLength = 0;
   drawAnnotations: AnnotationDraw[] = [];
   private readonly lineAnnotationMap = new Map<number, TextAnnotation[]>();

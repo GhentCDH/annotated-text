@@ -1,22 +1,23 @@
 import { SvgModel } from "./svg.types";
 import { AnnotationDraw, AnnotationDrawColor } from "../annotation.model";
+import { type AnnotationId } from "../../model";
 
 export class IdCollection {
   private ids = new Map<
-    string,
+    AnnotationId,
     { selected: AnnotationDrawColor; default: AnnotationDrawColor }
   >();
 
   constructor(private readonly color: "active" | "hover") {}
 
-  public removeId(ids: string[]) {
+  public removeId(ids: AnnotationId[]) {
     ids?.forEach((id) => this.ids?.delete(id));
   }
 
   public changeIds(
     svg: SvgModel,
     annotations: AnnotationDraw[],
-    ignoreIds: string[],
+    ignoreIds: AnnotationId[],
   ): void {
     const removeIds = this.ids
       .keys()

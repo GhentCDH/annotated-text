@@ -6,9 +6,11 @@ import {
   TextualBodySchema,
   W3CAnnotationSchema,
 } from "../model";
-import { type TextAnnotation } from "../../../../model/";
+import { AnnotationId, type TextAnnotation } from "../../../../model/";
 
-type AnnotationUpdate = Pick<TextAnnotation, "start" | "end"> & { id?: string };
+type AnnotationUpdate = Pick<TextAnnotation, "start" | "end"> & {
+  id?: AnnotationId;
+};
 
 export const createTextualBody = (
   textValue: string,

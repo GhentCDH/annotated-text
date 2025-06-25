@@ -6,9 +6,9 @@ export const annotationTargetSchema = z.union([
   z.literal("text"),
 ]);
 export type AnnotationTarget = z.infer<typeof annotationTargetSchema>;
-
+export const annotationIdSchema = z.union([z.string(), z.number()]);
 export const annotationSchema = z.object({
-  id: z.string(),
+  id: annotationIdSchema,
   start: z.number(),
   end: z.number(),
   // TODO should be implemented in v2 if needed
@@ -18,7 +18,7 @@ export const annotationSchema = z.object({
   target: annotationTargetSchema.optional(),
   color: annotationColorSchema.nullish(),
 });
-
+export type AnnotationId = z.infer<typeof annotationIdSchema>;
 /**
  * Represents an annotation with various properties.
  * @property {string} id - The unique identifier for the annotation.
