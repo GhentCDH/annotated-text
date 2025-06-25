@@ -11,6 +11,7 @@ import {
 } from "../adapter/line";
 import type { Annotation, Line } from "../model";
 
+export type { CreateAnnotations } from "./CreateAnnotations";
 type createAnnotatedTextParams<LINES, ANNOTATION> = {
   line?: LineAdapter<LINES> | createLineAdapterParams<LINES>;
   annotation?:

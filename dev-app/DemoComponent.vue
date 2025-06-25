@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import type {
   Annotation,
+  AnnotationId,
   AnnotationTarget,
   CreateAnnotationState,
   UpdateAnnotationState,
@@ -29,7 +30,7 @@ import { AnnotationEventData, AnnotationEventType } from "../src/events/events";
 const textLines = textToLines(text);
 // .slice(0, 4);
 
-const annotationMap: Map<string, Annotation> = annotations
+const annotationMap: Map<AnnotationId, Annotation> = annotations
   // .filter((a) => ["576753"].some((i) => i === a.id))
   // .slice(0, 2)
   .reduce((map, anno) => {
@@ -37,8 +38,8 @@ const annotationMap: Map<string, Annotation> = annotations
     return map;
   }, new Map());
 
-const hoveredAnnotationsState: Map<string, Annotation> = new Map();
-const selectedAnnotations: Map<string, Annotation> = new Map();
+const hoveredAnnotationsState: Map<AnnotationId, Annotation> = new Map();
+const selectedAnnotations: Map<AnnotationId, Annotation> = new Map();
 
 const props = reactive({
   showLabels: false,
