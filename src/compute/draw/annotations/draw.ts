@@ -101,6 +101,7 @@ export const drawDummyAnnotation = (
     textElement.getBoundingClientRect(),
     model,
     dummyAnnotation,
+    svgModel.lineAdapter,
     svgModel.annotationAdapter,
   ).forEach((a) =>
     drawAnnotationContent(
@@ -126,6 +127,7 @@ export const recreateAnnotation = (
     svgModel.textElement,
     annotation,
     svgModel.annotationAdapter,
+    svgModel.lineAdapter,
   )
     .getDrawAnnotations(annotation.id)
     .forEach((a) => {

@@ -1,5 +1,6 @@
 import { BaseAdapter } from "../BaseAdapter";
 import { type TextLine } from "../../model";
+import { getRanges } from "../../compute/utils/ranges/get-range";
 
 export type TextDirection = "ltr" | "rtl";
 
@@ -19,6 +20,14 @@ export abstract class LineAdapter<LINE> extends BaseAdapter {
   setTextDirection(textDirection: TextDirection) {
     this.textDirection = textDirection;
     return this;
+  }
+
+  getLineHtml(line: TextLine): string {
+    return line.text;
+  }
+
+  getRanges(annotation: any, line: TextLine): DOMRect[] | null {
+    return getRanges(annotation, line);
   }
 }
 

@@ -1,5 +1,6 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
+import { LineAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { AnnotationEventData, AnnotationEventType } from "../../events";
 import { Debugger } from "../../utils/debugger";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
@@ -38,6 +39,7 @@ export class SvgModel {
     public readonly model: TextAnnotationModel,
     private readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
+    public readonly lineAdapter: LineAdapter<any>,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
