@@ -14,7 +14,7 @@ import {
   createTextAnnotation,
 } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
-import { isInsideBoundingRect } from "../utils/bounding-rect";
+import { findLineElement, isInsideBoundingRect } from "../utils/bounding-rect";
 
 export function getCharacterFromTextNodesAtPoint(
   x: number,
@@ -35,35 +35,36 @@ export function getCharacterFromTextNodesAtPoint(
     if (!node.textContent) continue;
     if (!isInsideBoundingRect(x, y, node.parentElement.getBoundingClientRect()))
       continue;
+    const { lineUid, offset } = findLineElement(node);
 
-    // search the character in the text node
-    const text = node.textContent!;
-    const lineElement = node.parentNode as HTMLElement;
-    const lineUid = lineElement.getAttribute("data-line-uid");
     if (!lineUid) {
       console.warn("no line found at", lineUid);
       continue;
     }
+
     const line = model.getLine(lineUid!);
 
-    // TODO here comes the snapper in place, first guess the character then apply the snapper
+    // search the character in the text node
+    const text = node.textContent!;
+    // const { lineUid, offset } = findLineElement(node);
+
     for (let i = 0; i < text.length; i++) {
       const range = document.createRange();
       range.setStart(node, i);
       range.setEnd(node, i + 1);
 
-      const rects = range.getClientRects();
+      const rects = [range.getBoundingClientRect()];
       for (const rect of rects) {
         if (isInsideBoundingRect(x, y, rect)) {
           const parentDimensions = pick(
             container.getBoundingClientRect(),
             "width",
-            "height",
+            -"height",
             "x",
             "y",
           );
 
-          const newIndex = line.start + i;
+          const newIndex = line.start + i + offset;
 
           const dimensions = {
             x: rect.x - parentDimensions.x,

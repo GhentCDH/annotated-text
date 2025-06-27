@@ -55,5 +55,5 @@ const annotations = [
 
 export const markdownText = {
   text,
-  annotations: annotations,
+  annotations: annotations.slice(0, 0),
 };
