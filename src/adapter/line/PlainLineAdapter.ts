@@ -21,7 +21,7 @@ export class PlainTextAdapterImpl extends LineAdapter<string> {
         end,
         id: `line-${index}`,
         text: textLine,
-        html: `<p>${textLine}</p>`,
+        html: `${textLine}`,
         flatText: textLine,
       }) as TextLine;
 
