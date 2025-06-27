@@ -48,7 +48,7 @@ const createText = (
   textDiv.style.setProperty("--line-height", `${lineHeight}px`);
 
   textDiv.className = `${styles.line.text.wrapper} ${textDirection}`;
-  textDiv.innerHTML = lineAdapter.getLineHtml(textLine);
+  textDiv.innerHTML = lineAdapter?.flatText ? textLine.flatText : textLine.html;
   textDiv.setAttribute("data-line-uid", textLine.uuid);
   textDiv.setAttribute("data-annotation-role", "line");
 

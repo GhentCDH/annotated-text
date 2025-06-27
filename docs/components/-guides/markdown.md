@@ -1,7 +1,13 @@
 # Markdown Text
 
-Markdown text is supported in the `AnnotatedText` component. You can use the `MarkdownTextAdapter` to render plain text
-with
+Markdown text is supported in the `AnnotatedText` component. You can use the `MarkdownTextAdapter` to render plain text.
+
+The positions of the annotations are based on the absolute text, so markdown is stripped out when calculating the
+positions of the annotations.
+
+f.e. ```abc **test** def``` will have the annotation on the text `test` at position 4-8.
+
+## Use
 
 ```typescript
 import { createAnnotatedText, MarkdownTextAdapter } from "@ghentcdh/vue-component-annotated-text";
@@ -14,12 +20,13 @@ const textAnnotation = createAnnotatedText(id,
   .setAnnotations(plainText.annotations);
 ```
 
-The original text:
-<pre>{{markdownText.text}}</pre>
-
 ## Example
 
+The original text, rendered as flat text:
 <div id="plain-text-example"></div>
+
+### Rendered as markdown text:
+
 <div id="markdown-text-example"></div>
 
 <script setup>
@@ -34,7 +41,7 @@ waitUntilElementExists(id_).then((element) => {
 console.log('----PlainTextAdapter', id_);
     createAnnotatedText(id_,
         {
-            line: PlainTextAdapter(),
+            line: MarkdownTextAdapter({flatText: true}),
             annotation: {
                 create: true,
                 edit: true
@@ -54,8 +61,8 @@ console.log('----MarkdownTextAdapter', id_);
                 edit: true
             },
         })
-    .setLines(markdownText.text)
-    .setAnnotations(markdownText.annotations);
+     .setLines(markdownText.text)
+     .setAnnotations(markdownText.annotations);
 });
 
 </script>

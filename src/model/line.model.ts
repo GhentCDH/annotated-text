@@ -14,6 +14,8 @@ export const textLineSchema = lineSchema.extend({
   lineNumber: z.number(),
   uuid: z.string().default(uuidv4),
   maxLineWeight: z.number().default(0),
+  flatText: z.string(),
+  html: z.string(),
 });
 
 export type TextLine = z.infer<typeof textLineSchema> & {

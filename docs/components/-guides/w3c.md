@@ -82,9 +82,7 @@ const createAnnotations = (id, sourceId)=>{
             {
                line: PlainTextAdapter(),
                 annotation: W3CAnnotationAdapter({  
-                   sourceUri: sourceId,
-                }),
-                annotation: {
+                    sourceUri: sourceId,
                     create: true,
                     edit: true
                 },

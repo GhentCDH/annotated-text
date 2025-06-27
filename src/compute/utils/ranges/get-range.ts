@@ -4,28 +4,12 @@ import {
   TextLine,
 } from "@ghentcdh/vue-component-annotated-text";
 
-export const getTextRange = (
-  annotation: Annotation,
-  line: TextLine,
-  textNode: ChildNode,
-) => {
+export const getTextRange = (annotation: Annotation, line: TextLine) => {
   let start = annotation.start - line.start;
-  let end = annotation.end - line.start + 1;
-
-  if (!textNode?.textContent) {
-    return { start: -1, end: -1 };
-  }
-
-  const textLength = textNode.textContent.length;
+  const end = annotation.end - line.start + 1;
 
   if (start < 0) {
     start = 0;
-  } else if (start > textLength) {
-    start = textLength;
-  }
-
-  if (end > textLength) {
-    end = textLength;
   }
   return { start, end };
 };
@@ -50,18 +34,22 @@ export const getRanges = (annotation: Annotation, line: TextLine) => {
   }
   const textNode = lineElement.firstChild;
 
-  const { start, end } = getTextRange(annotation, line, textNode);
+  const { start, end } = getTextRange(annotation, line);
 
   // End is negative if the annotation is not in the line, but maybe in the gutter
-  if (end < 0) return null;
+  if (end < 0) {
+    return null;
+  }
 
-  const rects = getRangesRect(textNode, start, end);
+  return alignRects(getRangesRect(lineElement, start, end));
+};
+
+const alignRects = (rects: DOMRect[]) => {
+  // If multiple rects on the same line, merge them
   return rects.flat();
 };
 
 /**
- * This should go in the adapter,
- * for markdown we can calculate the offset of the hidden text that is replaced by a html element
  * @param textNode
  * @param start
  * @param end
@@ -71,15 +59,46 @@ export const getRangesRect = (
   start: number,
   end: number,
 ) => {
-  if (!textNode || !textNode.textContent) {
+  if (!textNode) {
     return [];
   }
 
+  // if (!textNode || !textNode.textContent) {
+  //   return [];
+  // }
+
+  if (textNode.childNodes?.length > 0) {
+    let offset = 0;
+    const rects: DOMRect[] = [];
+    for (const child of textNode.childNodes) {
+      if (offset > end) {
+        break;
+      }
+      // Ofset can be calculated here if needed
+
+      const childLength = child.textContent.length;
+
+      const childRects = getRangesRect(child, start - offset, end - offset);
+      offset += childLength;
+
+      rects.push(...childRects);
+    }
+    return rects;
+  }
+
+  const length = textNode.textContent.length;
+  if (start < 0) {
+    start = 0;
+  }
+  if (start >= length) {
+    return [];
+  }
+
+  const newEnd = Math.min(length, end);
   const range = document.createRange();
   range.setStart(textNode, start);
-  range.setEnd(textNode, end);
+  range.setEnd(textNode, newEnd);
 
   const rects = range.getClientRects();
-
-  return Array.from(rects);
+  return Array.from(rects).flat();
 };

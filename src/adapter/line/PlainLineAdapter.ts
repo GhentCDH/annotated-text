@@ -12,7 +12,7 @@ export class PlainTextAdapterImpl extends LineAdapter<string> {
     const lines = text?.split(`\n`) ?? [""];
     let start = 0;
 
-    const result = lines.map((text, index) => {
+    const result = lines.map((textLine, index) => {
       // Add additional 1 because the \n symbol consist of 2 characters
       const end = start + text.length + 1;
       const line = textLineSchema.parse({
@@ -20,7 +20,9 @@ export class PlainTextAdapterImpl extends LineAdapter<string> {
         start,
         end,
         id: `line-${index}`,
-        text,
+        text: textLine,
+        html: textLine,
+        flatText: textLine,
       }) as TextLine;
 
       start = end;
