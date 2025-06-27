@@ -82,13 +82,11 @@ const createAnnotations = (id, sourceId)=>{
             {
                line: PlainTextAdapter(),
                 annotation: W3CAnnotationAdapter({  
-                   sourceUri: sourceId,
-                })
-            }, 
-            { actions: {
-                create: true, 
-                edit: true
-            }})
+                   sourceUri: sourceId,  
+                    create: true,
+                    edit: true
+                }),
+            }, )
         .setLines(w3cText.text, false)
         .setAnnotations(w3cText.w3cAnnotations.items)
         .on('all', ({ mouseEvent, event, data }) => {

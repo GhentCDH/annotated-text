@@ -1,5 +1,5 @@
 import memoize from "memoizee";
-import { TextDirection } from "../../adapter/line";
+import { LineAdapter, TextDirection } from "../../adapter/line";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAnnotationModel } from "../annotation.model";
 import { type TextLine } from "../../model";
@@ -31,8 +31,8 @@ const calculateLinePadding = memoize(
 
 const createText = (
   textLine: TextLine,
-  textAnnotationModel: TextAnnotationModel,
   textDirection: TextDirection,
+  lineAdapter: LineAdapter<any>,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const textDiv = document.createElement("div");
@@ -48,7 +48,7 @@ const createText = (
   textDiv.style.setProperty("--line-height", `${lineHeight}px`);
 
   textDiv.className = `${styles.line.text.wrapper} ${textDirection}`;
-  textDiv.innerText = `${textLine.text}`;
+  textDiv.innerHTML = lineAdapter?.flatText ? textLine.flatText : textLine.html;
   textDiv.setAttribute("data-line-uid", textLine.uuid);
   textDiv.setAttribute("data-annotation-role", "line");
 
@@ -57,6 +57,7 @@ const createText = (
 
 export const drawText = (
   textAnnotationModel: TextAnnotationModel,
+  lineAdapter: LineAdapter<any>,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   if (!document) return;
@@ -74,8 +75,8 @@ export const drawText = (
     textDiv.appendChild(
       createText(
         line,
-        textAnnotationModel,
         textAnnotationModel.textDirection,
+        lineAdapter,
         annotationAdapter,
       ),
     );

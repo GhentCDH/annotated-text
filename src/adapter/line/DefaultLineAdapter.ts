@@ -12,7 +12,12 @@ export class DefaultLineAdapterImpl extends LineAdapter<Line[]> {
     if (!lines) return [];
     // Default implementation simply returns the lines as they are
     return lines.map((line, lineNumber) => {
-      return textLineSchema.parse({ lineNumber, ...line });
+      return textLineSchema.parse({
+        lineNumber,
+        ...line,
+        html: line.text,
+        flatText: line.text,
+      }) as TextLine;
     });
   }
 }

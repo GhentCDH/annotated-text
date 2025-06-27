@@ -33,11 +33,11 @@ waitUntilElementExists(id).then((element) => {
     createAnnotatedText(id,
         {
             line: PlainTextAdapter(),
-        }, 
-        { actions: {
-            create: true, 
-            edit: true
-        }})
+            annotation: {
+                create: true,
+                edit: true
+            },
+        })
     .setLines(plainText.text)
     .setAnnotations(plainText.annotations);
 });

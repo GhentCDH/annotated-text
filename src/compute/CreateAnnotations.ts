@@ -125,6 +125,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   private drawText() {
     this.textElement = drawText(
       this.textAnnotationModel,
+      this.lineAdapter,
       this.annotationAdapter,
     );
   }
@@ -191,6 +192,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
       this.textAnnotationModel,
       this.textElement,
       this.annotationAdapter,
+      this.lineAdapter,
     );
 
     this.svgModel = new SvgModel(
@@ -198,6 +200,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
       this.textAnnotationModel,
       this.eventListener,
       this.annotationAdapter,
+      this.lineAdapter,
     );
 
     this.svgNode = this.svgModel.node();

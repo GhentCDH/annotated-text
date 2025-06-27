@@ -35,14 +35,12 @@ const id = `rtl`;
 waitUntilElementExists(id).then((element) => {
     const textAnnotation = createAnnotatedText(id, 
         {
-           line: {textDirection: 'rtl'}
-        }, 
-        { 
-            actions: {
+           line: {textDirection: 'rtl',},
+            annotation: {
                 create: true,
-                edit: true,
-            }
-        }
+                edit: true
+            },
+        }, 
     )
     .setLines(textLines)
     .setAnnotations(textAnnotations);

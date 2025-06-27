@@ -4,8 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import { AnnotationDrawColor, TextAnnotationModel } from "./annotation.model";
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
-import type { Annotation, TextAnnotation, TextLine } from "../model";
+import type { TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
+import { LineAdapter } from "../adapter/line";
 
 import { Debugger } from "../utils/debugger";
 
@@ -89,60 +90,6 @@ const createGutter = (
   });
 };
 
-const getTextRange = (
-  annotation: Annotation,
-  line: TextLine,
-  textNode: ChildNode,
-) => {
-  let start = annotation.start - line.start;
-  let end = annotation.end - line.start + 1;
-
-  if (!textNode?.textContent) {
-    return { start: -1, end: -1 };
-  }
-
-  const textLength = textNode.textContent.length;
-
-  if (start < 0) {
-    start = 0;
-  } else if (start > textLength) {
-    start = textLength;
-  }
-
-  if (end > textLength) {
-    end = textLength;
-  }
-  return { start, end };
-};
-
-const getRanges = (annotation: Annotation, line: TextLine) => {
-  const lineElement = line.element;
-  if (!lineElement) {
-    Debugger.debug(
-      "No textelement for line",
-      line.lineNumber,
-      "found for annotation",
-      annotation.id,
-    );
-
-    return null;
-  }
-  const textNode = lineElement.firstChild;
-
-  const { start, end } = getTextRange(annotation, line, textNode);
-
-  // End is negative if the annotation is not in the line, but maybe in the gutter
-  if (end < 0) return null;
-
-  const range = document.createRange();
-  range.setStart(textNode, start);
-  range.setEnd(textNode, end);
-
-  const rects = range.getClientRects();
-
-  return Array.from(rects);
-};
-
 const getColors = (
   adapter: AnnotationAdapter<any>,
   annotation: TextAnnotation,
@@ -169,6 +116,7 @@ export const createTextAnnotation = (
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
+  lineAdapter: LineAdapter<any>,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const { config } = annotationAdapter;
@@ -178,7 +126,7 @@ export const createTextAnnotation = (
   const padding = config.text.padding * annotation.weight;
   const height = config.text.lineHeight + padding * 2;
   lines.forEach((line, index: number) => {
-    const rects = getRanges(annotation, line);
+    const rects = lineAdapter.getRanges(annotation, line);
 
     const prevEnd = lines[index - 1]?.end;
     const isFirstLine = !prevEnd || prevEnd <= annotation.start;
@@ -229,6 +177,7 @@ export const createAndAssignDrawAnnotation = (
   textElement: HTMLElement,
   annotation: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
+  lineAdapter: LineAdapter<any>,
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
@@ -242,6 +191,7 @@ export const createAndAssignDrawAnnotation = (
     parentDimensions,
     model,
     annotation,
+    lineAdapter,
     annotationAdapter,
   ).forEach((a) => model.addDrawAnnotation(a));
 
@@ -252,6 +202,7 @@ export const computeAnnotations = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
+  lineAdapter: LineAdapter<any>,
 ) => {
   // Compute positions of gutters
 
@@ -269,6 +220,7 @@ export const computeAnnotations = (
         textElement,
         annotation,
         annotationAdapter,
+        lineAdapter,
       );
     }
   });
@@ -280,9 +232,10 @@ export const computePositions = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
+  lineAdapter: LineAdapter<any>,
 ) => {
   model.clearDrawAnnotation();
-  computeAnnotations(model, textElement, annotationAdapter);
+  computeAnnotations(model, textElement, annotationAdapter, lineAdapter);
 
   return model;
 };

@@ -56,7 +56,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
   svg.on("mousedown", (event) => {
     if (!svgModel.annotationAdapter.create) return null;
     if (svgModel.model.blockEvents || drawing) return;
-
+    dummyAnnotation = null;
     drawing = true;
     createDummyAnnotation(event);
 
