@@ -70,7 +70,6 @@ export const getRangesRect = (
       if (offset > end) {
         break;
       }
-      // Ofset can be calculated here if needed
 
       const childLength = child.textContent.length;
 

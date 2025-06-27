@@ -46,11 +46,10 @@ const textLines = lines.slice(0,4);
 const id = "annotation-log";
 
 waitUntilElementExists(id).then((element) => {
-    createAnnotatedText(id,{},
-        {
-            actions: {
+    createAnnotatedText(id, {  
+            annotation: {
                 create: true,
-                edit: true,
+                edit: true
             }
         }
     )
