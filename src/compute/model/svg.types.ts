@@ -1,6 +1,5 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
-import { LineAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { AnnotationEventData, AnnotationEventType } from "../../events";
 import { Debugger } from "../../utils/debugger";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
@@ -9,6 +8,7 @@ import { drawAnnotation } from "../draw/annotations";
 import { createNewBlock } from "../draw/annotations/create";
 import { EventListener } from "../../events/event.listener";
 import { AnnotationAdapter } from "../../adapter/annotation";
+import { LineAdapter } from "../../adapter/line";
 import { type AnnotationId } from "../../model";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;

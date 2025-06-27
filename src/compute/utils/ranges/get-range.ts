@@ -1,8 +1,5 @@
-import {
-  Annotation,
-  Debugger,
-  TextLine,
-} from "@ghentcdh/vue-component-annotated-text";
+import { Annotation, TextLine } from "../../../model";
+import { Debugger } from "../../../utils/debugger";
 
 export const getTextRange = (annotation: Annotation, line: TextLine) => {
   let start = annotation.start - line.start;
@@ -32,7 +29,6 @@ export const getRanges = (annotation: Annotation, line: TextLine) => {
 
     return null;
   }
-  const textNode = lineElement.firstChild;
 
   const { start, end } = getTextRange(annotation, line);
 

@@ -1,12 +1,12 @@
 import { pick } from "lodash-es";
 
 import { v4 as uuidv4 } from "uuid";
-import { LineAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { AnnotationDrawColor, TextAnnotationModel } from "./annotation.model";
 import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
 import type { TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
+import { LineAdapter } from "../adapter/line";
 
 import { Debugger } from "../utils/debugger";
 
