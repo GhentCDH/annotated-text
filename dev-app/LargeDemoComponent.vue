@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import {
-  AnnotatedText,
+  AnnotatedTextV2,
   Annotation,
   Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
 import { largeGreekText } from "@demo";
-import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 import { AnnotationEventType } from "../src/events/events";
 
 const typesSet = new Set<string>();
@@ -68,14 +67,6 @@ const vueComponent = ref(false);
       :annotations="annotations"
       :text="largeGreekText.text"
       @event="onEvent"
-    />
-    <AnnotatedText
-      v-if="vueComponent"
-      @click="console.log('text vue')"
-      key="text"
-      :component-id="'1'"
-      :annotations="annotations"
-      :lines="largeGreekText.lines"
     />
   </div>
 </template>

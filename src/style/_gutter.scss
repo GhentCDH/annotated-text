@@ -1,103 +1,20 @@
-$gutter-bg-color: rgba(red, 0.3);
-
-$annotated-text-annotation-colors: (
-  "1": #f51720,
-  "2": #008d7c,
-  "3": #ffbc05,
-  "4": #8aff05,
-  "5": #ff7ec3,
-  "6": #05d1ff,
-  "7": #6200d1,
-  "8": #424600,
-  "9": #613900,
-);
-
 :root {
-  --gutter-bg-color: #{$gutter-bg-color};
+  --gutter--border-right: 1px solid rgba(gray, 0.08);
 }
 
-@mixin createGutterColor() {
-  $background-color: var(--gutter-bg-color);
+.ghent-cdh-annotation {
+  &-text {
+    .gutter {
+      margin-left: var(--gutter-left);
+      padding-left: 8px;
+      border-right: var(--gutter--border-right);
 
-  background-color: var(--gutter-bg-color, $gutter-bg-color);
-}
-
-.annotated-text {
-  .gutter {
-    user-select: none;
-    border-right: 1px solid rgba(gray, 0.08);
-  }
-
-  .gutter.text {
-    padding-right: 0.5em;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .annotation--gutter-spacer {
-    cursor: default;
-  }
-
-  &.annotated-text--render-nested.theme-default {
-    .gutter-annotations {
-      direction: rtl;
-      margin: 0;
-      display: block;
-      padding: 0;
-
-      .annotation {
-        display: inline-block;
-        margin-left: 0.4em;
-        min-width: 3px;
-        min-height: 100%;
+      &.text {
+        padding-right: 0.5em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
-
-      @each $name, $color in $annotated-text-annotation-colors {
-        .annotation--color-#{$name} {
-          --gutter-bg-color: #{rgba($color, 0.3)};
-          @include createGutterColor();
-        }
-      }
-
-      .annotation--color-custom {
-        @include createGutterColor();
-      }
-    }
-  }
-
-  &.annotated-text--render-flat.theme-default {
-    .gutter-annotations {
-      direction: rtl;
-      margin: 0;
-      display: block;
-      padding: 0;
-
-      .annotation {
-        display: inline-block;
-        margin-left: 0.4em;
-        min-width: 3px;
-        min-height: 100%;
-      }
-
-      @each $name, $color in $annotated-text-annotation-colors {
-        .annotation--color-#{$name} {
-          background: $color;
-          label {
-            padding: 2px 2px 0;
-          }
-        }
-      }
-    }
-  }
-
-  &.annotated-text--show-labels {
-    //do not show labels in gutter annotations, change display property to show labels
-    .gutter-annotations .annotation.annotation--end label {
-      padding-top: 2px;
-      padding-left: 2px;
-      display: none;
-      user-select: none;
     }
   }
 }

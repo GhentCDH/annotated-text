@@ -1,2 +1,1 @@
-export type * from "./AnnotatedTextEmits";
-export type * from "./AnnotatedTextV2Emits";
+export * from "./AnnotatedTextV2Emits";
