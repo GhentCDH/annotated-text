@@ -4,17 +4,17 @@ import { getRanges } from "../../compute/utils/ranges/get-range";
 
 export type TextDirection = "ltr" | "rtl";
 
-export abstract class LineAdapter<LINE> extends BaseAdapter {
+export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
   flatText: boolean = false;
 
-  abstract parse(lines: LINE): TextLine[];
+  abstract parse(text: string): TextLine[];
 
-  setLtr() {
+  ltr() {
     return this.setTextDirection("ltr");
   }
 
-  setRtl() {
+  rtl() {
     return this.setTextDirection("rtl");
   }
 
@@ -33,15 +33,25 @@ export abstract class LineAdapter<LINE> extends BaseAdapter {
   }
 }
 
-export type createLineAdapterParams<LINE> = {
+export type createTextAdapterParams = {
+  /**
+   * The text direction for the adapter.
+   * Can be either 'ltr' (left-to-right) or 'rtl' (right-to-left).
+   * Defaults to 'ltr'.
+   */
   textDirection?: TextDirection;
-  flatText?: boolean; // If true, the adapter will return flat text instead of HTML
+  /**
+   * If true, the adapter will return flat text instead of HTML.
+   * This is useful for plain text processing or when HTML formatting is not needed.
+   * Defaults to false.
+   */
+  flatText?: boolean;
 };
 
-export const createLineAdapter = <LINE>(
-  adapter: LineAdapter<LINE>,
-  params: createLineAdapterParams<LINE>,
-): LineAdapter<LINE> => {
+export const createLineAdapter = (
+  adapter: TextAdapter,
+  params: createTextAdapterParams,
+): TextAdapter => {
   if (params.textDirection) {
     adapter.setTextDirection(params.textDirection);
   }

@@ -6,7 +6,7 @@ import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
 import type { TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
-import { LineAdapter } from "../adapter/line";
+import { TextAdapter } from "../adapter/line";
 
 import { Debugger } from "../utils/debugger";
 
@@ -116,7 +116,7 @@ export const createTextAnnotation = (
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
-  lineAdapter: LineAdapter<any>,
+  lineAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const { config } = annotationAdapter;
@@ -177,7 +177,7 @@ export const createAndAssignDrawAnnotation = (
   textElement: HTMLElement,
   annotation: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
-  lineAdapter: LineAdapter<any>,
+  lineAdapter: TextAdapter,
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
@@ -202,7 +202,7 @@ export const computeAnnotations = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
-  lineAdapter: LineAdapter<any>,
+  lineAdapter: TextAdapter,
 ) => {
   // Compute positions of gutters
 
@@ -232,7 +232,7 @@ export const computePositions = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
-  lineAdapter: LineAdapter<any>,
+  lineAdapter: TextAdapter,
 ) => {
   model.clearDrawAnnotation();
   computeAnnotations(model, textElement, annotationAdapter, lineAdapter);

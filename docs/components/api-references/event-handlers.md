@@ -38,23 +38,22 @@ By default the events will be logged to the console with debug statements.
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
-import { lines, annotations, waitUntilElementExists } from "@demo";
+import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { waitUntilElementExists, plainText } from "@demo";
 
-const textAnnotations = annotations.slice(0,6);
-const textLines = lines.slice(0,4);
 const id = "annotation-log";
 
 waitUntilElementExists(id).then((element) => {
-    createAnnotatedText(id, {  
+    createAnnotatedText(id,
+        {
+            text: PlainTextAdapter(),
             annotation: {
                 create: true,
                 edit: true
-            }
-        }
-    )
-    .setLines(lines)
-    .setAnnotations(annotations)
+            },
+        })
+    .setText(plainText.text)
+    .setAnnotations(plainText.annotations)
     .on('all', ({ mouseEvent, event, data }) => {
         console.log(mouseEvent, event, data);
         const logger = document.getElementById("annotation-logger");

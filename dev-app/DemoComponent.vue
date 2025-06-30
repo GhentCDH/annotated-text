@@ -23,10 +23,11 @@ import {
   Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
+import { greekText } from "@demo";
 import { textToLines } from "./Utils";
-import { annotationsGreek as annotations, textGreek as text } from "./data";
 import { AnnotationEventData, AnnotationEventType } from "../src/events/events";
 
+const { text, annotations } = greekText;
 const textLines = textToLines(text);
 // .slice(0, 4);
 
@@ -222,7 +223,7 @@ const onKeyPressed = function (
         :annotations="props.annoList"
         :highlight-annotations="props.hoveredList"
         :selected-annotations="props.selectedList"
-        :text-lines="textLines"
+        :text="text"
         :allow-edit="props.allowEdit"
         :allow-create="props.allowCreate"
         :rtl="props.rtl"

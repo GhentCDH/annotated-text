@@ -7,6 +7,9 @@ positions of the annotations.
 
 f.e. ```abc **test** def``` will have the annotation on the text `test` at position 4-8.
 
+Internally it uses `markdown-it` to format the text, so you can use all the features of `markdown-it` to format the
+text.
+
 ## Use
 
 ```typescript
@@ -41,13 +44,13 @@ waitUntilElementExists(id_).then((element) => {
 console.log('----PlainTextAdapter', id_);
     createAnnotatedText(id_,
         {
-            line: MarkdownTextAdapter({flatText: true}),
+            text: MarkdownTextAdapter({flatText: true}),
             annotation: {
                 create: true,
                 edit: true
             },
         })
-    .setLines(markdownText.text)
+    .setText(markdownText.text)
     .setAnnotations(markdownText.annotations);
 });
 
@@ -55,13 +58,13 @@ waitUntilElementExists(id).then((element) => {
 console.log('----MarkdownTextAdapter', id_);
     createAnnotatedText(id,
         {
-            line: MarkdownTextAdapter(),
+            text: MarkdownTextAdapter(),
             annotation: {
                 create: true,
                 edit: true
             },
         })
-     .setLines(markdownText.text)
+     .setText(markdownText.text)
      .setAnnotations(markdownText.annotations);
 });
 

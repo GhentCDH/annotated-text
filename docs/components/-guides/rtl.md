@@ -14,76 +14,56 @@ the text is rendered correctly in a right-to-left format.
 ```typescript
 createAnnotatedText(id,
   {
-    line: { textDirection: 'rtl' }
+    text: { textDirection: 'rtl' }
   })
-  .setLines(textLines)
+  .setText(text)
   .setAnnotations(textAnnotations);
 ```
 
 ### Example
-
-<script setup>
-//
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
-import { lines, annotations, waitUntilElementExists } from "@demo";
-
-const textAnnotations = annotations;
-const textLines = lines;
-const id = `rtl`;
-
-waitUntilElementExists(id).then((element) => {
-    const textAnnotation = createAnnotatedText(id, 
-        {
-           line: {textDirection: 'rtl',},
-            annotation: {
-                create: true,
-                edit: true
-            },
-        }, 
-    )
-    .setLines(textLines)
-    .setAnnotations(textAnnotations);
-});
-
-</script>
-
-## Plain text
-
-Also in plain text mode, the `text.rtl` property can be set to `true` to enable right-to-left rendering.
-
-```typescript
-createAnnotatedText(id,
-  {
-    line: PlainTextAdapter({
-      textDirection: 'rtl'
-    })
-  })
-  .setLines(textLines)
-  .setAnnotations(textAnnotations);
-```
 
 <div id="plain-text-example"></div>
 
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists, plainText } from "@demo";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { plainText, waitUntilElementExists, greekText } from "@demo";
 const id = `plain-text-example`;
+const greek_id = `greek-text-example`;
+console.log('foooo')
 
 waitUntilElementExists(id).then((element) => {
     createAnnotatedText(id,
-        {
-            line: PlainTextAdapter({
-                textDirection: 'rtl'
-            })
-        }, 
-        { actions: {
-            create: true, 
-            edit: true
-        }})
-    .setLines(plainText.text)
+        {  
+            text: { textDirection: 'rtl' },
+            annotation: {edit: true, create: true},
+        })
+    .setText(plainText.text)
     .setAnnotations(plainText.annotations);
 });
+
+waitUntilElementExists(greek_id).then((element) => {
+    createAnnotatedText(greek_id,
+        {  
+            text: TextLineAdapter({ textDirection: 'rtl' }),
+            annotation: {edit: true, create: true},
+        })
+    .setText(greekText.text)
+    .setAnnotations(greekText.annotations);
+});
+
 </script>
+
+### Example with line numbers text
+
+If you use the `TextLineAdapter`, you can also enable right to left rendering by setting the `textDirection` property to
+`rtl`.
+
+```typescript
+ createAnnotatedText(id, {
+  text: TextLineAdapter({ textDirection: 'rtl' })
+})
+```
+
+<div id="greek-text-example"></div>

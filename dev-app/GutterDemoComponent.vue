@@ -3,10 +3,10 @@ import {
   AnnotatedText,
   Annotation,
 } from "@ghentcdh/vue-component-annotated-text";
-import { annotationsWithGutters, lines } from "@demo";
+import { greekText } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 
-const annotations = annotationsWithGutters as Annotation[];
+const annotations = greekText.annotationsWithGutters as Annotation[];
 </script>
 
 <template>
@@ -17,14 +17,14 @@ const annotations = annotationsWithGutters as Annotation[];
       @click="console.log('text vue')"
       key="text"
       :component-id="'1'"
-      :annotations="annotations"
-      :lines="lines"
+      :annotations="greekText.annotationsWithGutters"
+      :lines="greekText.lines"
     />
     <AnnotatedTextV2
       key="text"
       :component-id="'1'"
       :annotations="annotations"
-      :text-lines="lines"
+      :text="greekText.text"
     />
   </div>
 </template>

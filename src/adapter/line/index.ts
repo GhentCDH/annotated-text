@@ -1,4 +1,4 @@
-export * from "./LineAdapter";
-export * from "./PlainLineAdapter";
-export * from "./DefaultLineAdapter";
+export * from "./TextAdapter";
+export * from "./PlainTextAdapter";
 export * from "./markdown/MarkdownAdapter";
+export * from "./textline/TextLineAdapter";

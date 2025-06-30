@@ -5,7 +5,7 @@ import LargeDemoComponent from "./LargeDemoComponent.vue";
 import GutterDemoComponent from "./GutterDemoComponent.vue";
 import RtlComponent from "./RtlComponent.vue";
 
-const largeComponent = ref("demo");
+const largeComponent = ref("large");
 </script>
 
 <template>

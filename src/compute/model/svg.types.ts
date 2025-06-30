@@ -8,7 +8,7 @@ import { drawAnnotation } from "../draw/annotations";
 import { createNewBlock } from "../draw/annotations/create";
 import { EventListener } from "../../events/event.listener";
 import { AnnotationAdapter } from "../../adapter/annotation";
-import { LineAdapter } from "../../adapter/line";
+import { TextAdapter } from "../../adapter/line";
 import { type AnnotationId } from "../../model";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
@@ -39,7 +39,7 @@ export class SvgModel {
     public readonly model: TextAnnotationModel,
     private readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
-    public readonly lineAdapter: LineAdapter<any>,
+    public readonly lineAdapter: TextAdapter,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;

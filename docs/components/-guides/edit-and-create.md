@@ -33,17 +33,18 @@ textAnnotation.annotationAdapter.enableCreate(true);
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { lines, annotations, waitUntilElementExists } from "@demo";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { greekText, waitUntilElementExists } from "@demo";
 const id = `create-edit-example`;
 
 waitUntilElementExists(id).then((element) => {
     createAnnotatedText(id,
-        {
+        {  
+            text: TextLineAdapter(),
             annotation: {edit: true, create: true},
         })
-    .setLines(lines)
-    .setAnnotations(annotations);
+    .setText(greekText.text)
+    .setAnnotations(greekText.annotations);
 });
 
 </script>

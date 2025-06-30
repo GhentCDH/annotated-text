@@ -5,21 +5,20 @@ import {
   Annotation,
   Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
-import { largeAnnotations, largeTextLines } from "@demo";
+import { largeGreekText } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 import { AnnotationEventType } from "../src/events/events";
 
 const typesSet = new Set<string>();
-largeAnnotations.map((a) => {
+largeGreekText.annotations.map((a) => {
   if (a.type) {
     typesSet.add(a.type);
   }
 });
-const types = Array.from(typesSet);
 const selectedTypes = ref([]);
 const annotations = computed(
   () =>
-    largeAnnotations
+    largeGreekText.annotations
       // .filter((t) => t.id === 1508168)
       .filter((a) => {
         if (selectedTypes.value.length === 0) return true;
@@ -57,15 +56,8 @@ const vueComponent = ref(false);
       v-model="vueComponent"
       @click="() => console.log('text vue')"
     />
-    Vue
+    V1
   </label>
-  {{ selectedTypes }}
-  <div class="flex">
-    <label v-for="type in types" :key="type">
-      <input type="checkbox" v-model="selectedTypes" :value="type" />
-      {{ type }}
-    </label>
-  </div>
 
   <hr />
   <div class="demo-grid">
@@ -74,7 +66,7 @@ const vueComponent = ref(false);
       key="text"
       :component-id="'1'"
       :annotations="annotations"
-      :text-lines="largeTextLines"
+      :text="largeGreekText.text"
       @event="onEvent"
     />
     <AnnotatedText
@@ -83,7 +75,7 @@ const vueComponent = ref(false);
       key="text"
       :component-id="'1'"
       :annotations="annotations"
-      :lines="largeTextLines"
+      :lines="largeGreekText.lines"
     />
   </div>
 </template>

@@ -43,50 +43,41 @@ createAnnotatedText(id,
 <script setup>
 //
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { lines, annotations, waitUntilElementExists } from "@demo";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { greekText, waitUntilElementExists } from "@demo";
 
-const textAnnotations = annotations;
-const textLines = lines;
 
 const useSnapper = (action, payload) => {
-  const { start, end } = payload;
-  switch (action) {
-    case 'move-end':
-      return { start, end: end - 2 };
-      break;
-    case 'move-start':
-      return { start: start + 2, end };
-      break;
-  }
-  return { start, end };
+const { start, end } = payload;
+switch (action) {
+case 'move-end':
+return { start, end: end - 2 };
+break;
+case 'move-start':
+return { start: start + 2, end };
+break;
+}
+return { start, end };
 };
 
 const id = `simpleSnapper`;
 
 waitUntilElementExists(id).then((element) => {
-    const textAnnotation =  createAnnotatedText(id,
-    {
-        annotation: {
-            edit: true, 
-            create: true, 
-            snapper: useSnapper
-        },
-    })
-    .setLines(textLines, false)
-    .setAnnotations(textAnnotations);
+const textAnnotation = createAnnotatedText(id,
+{
+text: TextLineAdapter(),
+annotation: {
+edit: true,
+create: true,
+snapper: useSnapper
+},
+})
+.setText(greekText.text)
+.setAnnotations(greekText.annotations);
 });
 
-// createAnnotations("simpleSnapper", {
-//     actions: {
-//       create: true,
-//       edit: true,
-//     },
-//      visualEvent: {
-//       useSnapper: useSnapper,
-//     },
-// });
 
 </script>
+
 
 <div id="simpleSnapper"></div>

@@ -7,7 +7,7 @@ import { computeLinePositions, computePositions } from "./4_compute_positions";
 import { styles } from "./styles.const";
 import { IdCollection } from "./model/id.collection";
 import { SvgModel } from "./model/svg.types";
-import { LineAdapter } from "../adapter/line";
+import { TextAdapter } from "../adapter/line";
 import { ErrorEventCallback, EventCallback } from "../events";
 import { Debugger } from "../utils/debugger";
 import { AnnotationAdapter } from "../adapter/annotation";
@@ -16,8 +16,8 @@ import { EventListener, EventListenerType } from "../events/event.listener";
 const document = globalThis.document || null;
 
 export type CreateAnnotations<LINES, ANNOTATION> = {
-  setLines: (
-    lines: LINES,
+  setText: (
+    text: string,
     redraw?: boolean,
   ) => CreateAnnotations<LINES, ANNOTATION>;
   setAnnotations: (
@@ -34,7 +34,7 @@ export type CreateAnnotations<LINES, ANNOTATION> = {
     callback: ErrorEventCallback,
   ) => CreateAnnotations<LINES, ANNOTATION>;
   destroy: () => CreateAnnotations<LINES, ANNOTATION>;
-  lineAdapter: LineAdapter<LINES>;
+  lineAdapter: TextAdapter;
   annotationAdapter: AnnotationAdapter<ANNOTATION>;
 };
 
@@ -48,12 +48,12 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   private svgModel: SvgModel;
   private svgNode: SVGElement;
   private resizeObserver: ResizeObserver;
-  private lines: LINES;
+  private text: string;
   private eventListener = new EventListener();
 
   constructor(
     private readonly id: string,
-    public readonly lineAdapter: LineAdapter<LINES>,
+    public readonly lineAdapter: TextAdapter,
     public readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
   ) {
     this.init();
@@ -69,7 +69,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
 
   private createAnnotationModel() {
     this.textAnnotationModel = createAnnotationModel(
-      this.lines,
+      this.text,
       this.lineAdapter,
       this.eventListener,
     );
@@ -77,8 +77,8 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
     return this;
   }
 
-  public setLines(lines: LINES, redraw = true) {
-    this.lines = lines;
+  public setText(text: string, redraw = true) {
+    this.text = text || "";
     this.createAnnotationModel();
     this.setAnnotations(this.annotations, redraw);
 
@@ -93,7 +93,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
       return this;
     }
 
-    if (!this.lines) {
+    if (!this.text) {
       Debugger.debug("------ no lines set, cannot set annotations");
       return this;
     }

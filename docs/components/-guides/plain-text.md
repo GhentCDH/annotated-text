@@ -11,7 +11,7 @@ const textAnnotation = createAnnotatedText(id,
   {
     lineAdapter: PlainTextAdapter(),
   })
-  .setLines(plainText.lines)
+  .setText(plainText.text)
   .setAnnotations(plainText.annotations);
 ```
 
@@ -32,13 +32,13 @@ const id = `plain-text-example`;
 waitUntilElementExists(id).then((element) => {
     createAnnotatedText(id,
         {
-            line: PlainTextAdapter(),
+            text: PlainTextAdapter(),
             annotation: {
                 create: true,
                 edit: true
             },
         })
-    .setLines(plainText.text)
+    .setText(plainText.text)
     .setAnnotations(plainText.annotations);
 });
 
