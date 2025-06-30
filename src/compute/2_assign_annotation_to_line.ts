@@ -1,4 +1,5 @@
 import memoize from "memoizee";
+import { TextAdapter } from "@ghentcdh/vue-component-annotated-text";
 import { TextAnnotationModel } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
 import { TextAdapter } from "../adapter/line";
