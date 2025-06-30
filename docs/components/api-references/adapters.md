@@ -25,9 +25,9 @@ createAnnotatedText(id, {
 
 The **default** adapter is the PlainTextAdapter.
 
-- [PlainTextAdapter](../-guides/plain-text.md) Plain text adapter converts the text to single line text, splitting the
+- [PlainTextAdapter](../-guides/3-plain-text) Plain text adapter converts the text to single line text, splitting the
   text on newlines `\n`.
-- [MarkdownTextAdapter](../-guides/markdown.md) Markdown text adapter converts the text to a markdown format, stripping
+- [MarkdownTextAdapter](../-guides/3-markdown) Markdown text adapter converts the text to a markdown format, stripping
   out the markdown syntax.
 - [TextLineAdapter](../-guides/text-line.md) Text line adapter converts the text to a line based format, splitting the
   text on newlines `\n` and filter out the textline numbers.

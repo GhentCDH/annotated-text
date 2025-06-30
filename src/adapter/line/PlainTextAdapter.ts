@@ -1,3 +1,4 @@
+import memoize from "memoizee";
 import {
   createLineAdapter,
   createTextAdapterParams,
@@ -5,32 +6,40 @@ import {
 } from "./TextAdapter";
 import { type TextLine, textLineSchema } from "../../model";
 
+const textToLines = memoize((text: string): TextLine[] => {
+  const lines = text?.split(`\n`) ?? [""];
+  let start = 0;
+
+  const result = lines.map((textLine, index) => {
+    // Add additional 1 because the \n symbol consist of 2 characters
+    const end = start + text.length + 1;
+    const line = textLineSchema.parse({
+      lineNumber: index,
+      start,
+      end,
+      id: `line-${index}`,
+      text: textLine,
+      html: `${textLine}`,
+      flatText: textLine,
+    }) as TextLine;
+
+    start = end;
+
+    return line;
+  });
+
+  return result;
+});
+
+/***
+ * PlainTextAdapterImpl is a simple implementation of TextAdapter that parses plain text into TextLine objects.
+ * It does not handle any special formatting or annotations, just plain text lines.
+ */
 export class PlainTextAdapterImpl extends TextAdapter {
   name = "PlainTextAdapter";
 
   parse(text: string): TextLine[] {
-    const lines = text?.split(`\n`) ?? [""];
-    let start = 0;
-
-    const result = lines.map((textLine, index) => {
-      // Add additional 1 because the \n symbol consist of 2 characters
-      const end = start + text.length + 1;
-      const line = textLineSchema.parse({
-        lineNumber: index,
-        start,
-        end,
-        id: `line-${index}`,
-        text: textLine,
-        html: `${textLine}`,
-        flatText: textLine,
-      }) as TextLine;
-
-      start = end;
-
-      return line;
-    });
-
-    return result;
+    return textToLines(text);
   }
 }
 

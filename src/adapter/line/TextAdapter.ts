@@ -4,9 +4,12 @@ import { getRanges } from "../../compute/utils/ranges/get-range";
 
 export type TextDirection = "ltr" | "rtl";
 
+export type Limit = { start: number; end: number };
+
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
   flatText: boolean = false;
+  limit: Limit | null = null;
 
   abstract parse(text: string): TextLine[];
 
@@ -31,6 +34,10 @@ export abstract class TextAdapter extends BaseAdapter {
     this.flatText = flatText;
     return this;
   }
+
+  setLimit(limit?: Limit) {
+    this.limit = limit ?? null;
+  }
 }
 
 export type createTextAdapterParams = {
@@ -46,6 +53,11 @@ export type createTextAdapterParams = {
    * Defaults to false.
    */
   flatText?: boolean;
+  /**
+   * Defines the range of positions in the text that the adapter should consider.
+   * Each lines that intersects with this range will be included in the output.
+   */
+  limit?: Limit | null;
 };
 
 export const createLineAdapter = (
@@ -56,5 +68,7 @@ export const createLineAdapter = (
     adapter.setTextDirection(params.textDirection);
   }
   adapter.setFlatText(!!params.flatText);
+  adapter.setLimit(params.limit);
+
   return adapter;
 };

@@ -1,6 +1,7 @@
+import memoize from "memoizee";
 import { type TextLine, textLineSchema } from "../../../model";
 
-export const textToLines = (text: string): TextLine[] => {
+export const textToLines = memoize((text: string): TextLine[] => {
   text = text.replace(/\r\n/g, "\n").replace(/\u000b/g, "\n");
   const regLineNumber = /^([0-9/]+[a-z]?)\./g;
   let lineStart = 0;
@@ -46,4 +47,4 @@ export const textToLines = (text: string): TextLine[] => {
     // lineObjects[i].end = Math.max(lineObjects[i].end, lineObjects[i].start);
   }
   return lineObjects;
-};
+});
