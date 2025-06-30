@@ -10,4 +10,3 @@ export * from "./adapter/line";
 export * from "./adapter/annotation";
 export * from "./model";
 export * from "./utils/debugger";
-export * from "./utils/createAnnotationColor";
