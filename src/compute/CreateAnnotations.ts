@@ -78,7 +78,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   }
 
   public setText(text: string, redraw = true) {
-    this.text = text;
+    this.text = text || "";
     this.createAnnotationModel();
     this.setAnnotations(this.annotations, redraw);
 

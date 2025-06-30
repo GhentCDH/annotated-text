@@ -10,6 +10,7 @@ import { createAnnotatedText } from "../compute";
 import { CreateAnnotations } from "../compute/CreateAnnotations";
 import type { Annotation, Line } from "../model";
 
+import { TextLineAdapter } from "../adapter/line";
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
 
@@ -41,14 +42,14 @@ let textAnnotation: CreateAnnotations<Line[], Annotation>;
 const createText = () => {
   textAnnotation?.destroy();
   textAnnotation = createAnnotatedText(id, {
-    line: { textDirection: props.rtl ? "rtl" : "ltr" },
+    text: TextLineAdapter({ textDirection: props.rtl ? "rtl" : "ltr" }),
     annotation: {
       edit: props.allowEdit,
       create: props.allowCreate,
       snapper: props.useSnapper,
     },
   })
-    .setLines(props.textLines, false)
+    .setText(props.text, false)
     .setAnnotations(props.annotations)
     .highlightAnnotations(props.highlightAnnotations)
     .selectAnnotations(props.selectedAnnotations)
@@ -62,9 +63,9 @@ onMounted(() => {
 });
 
 watch(
-  () => props.textLines,
+  () => props.text,
   () => {
-    textAnnotation?.setLines(props.textLines);
+    textAnnotation?.setText(props.text);
   },
 );
 

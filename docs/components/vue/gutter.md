@@ -12,7 +12,7 @@ import {
   Debugger,
   UserActionState,
 } from "@ghentcdh/vue-component-annotated-text";
-import { lines, annotationsWithGutters } from "@demo";
+import {  greekText } from "@demo";
 
 </script>
 
@@ -27,8 +27,8 @@ import { lines, annotationsWithGutters } from "@demo";
 <AnnotatedText
 key="text"
 :component-id="'1'"
-:annotations="annotationsWithGutters"
-:lines="lines"
+:annotations="greekText.annotationsWithGutters"
+:text="greekText.text"
 />
 </div>
 <div>
@@ -37,8 +37,8 @@ key="text"
 <AnnotatedTextV2
 key="text"
 :component-id="'1'"
-:annotations="annotationsWithGutters"
-:textLines="lines"
+:annotations="greekText.annotationsWithGutters"
+:lines="greekText.lines"
 />
 </div>
 </ClientOnly>

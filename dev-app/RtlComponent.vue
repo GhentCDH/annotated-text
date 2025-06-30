@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { annotations, lines } from "@demo";
+import { greekText } from "@demo";
 import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
-
-const annotations_ = annotations;
 </script>
 
 <template>
@@ -14,8 +12,8 @@ const annotations_ = annotations;
       <AnnotatedTextV2
         key="text"
         :component-id="'1'"
-        :annotations="annotations_"
-        :text-lines="lines"
+        :text="greekText.text"
+        :annotations="greekText.annotations"
       />
     </div>
     <div>
@@ -23,8 +21,8 @@ const annotations_ = annotations;
       <AnnotatedTextV2
         key="text"
         :component-id="'1'"
-        :annotations="annotations_"
-        :text-lines="lines"
+        :annotations="greekText.annotations"
+        :text="greekText.text"
         :rtl="true"
       />
     </div>

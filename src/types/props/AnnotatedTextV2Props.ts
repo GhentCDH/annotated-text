@@ -1,4 +1,4 @@
-import { Annotation, Line } from "../../model";
+import { Annotation } from "../../model";
 import { SnapperFn } from "../../snapper";
 
 export interface AnnotatedTextV2Props {
@@ -19,9 +19,9 @@ export interface AnnotatedTextV2Props {
    */
   highlightAnnotations?: string[];
   /**
-   * List of lines
+   * Text
    */
-  textLines: Line[];
+  text: string;
   /**
    * Whether verbose debug messages are printed
    */

@@ -1,3 +1,4 @@
+import { Annotation } from "@ghentcdh/vue-component-annotated-text";
 import { annotationColors } from "../../dev-app/const";
 
 export const annotationsWithGutters = [
@@ -255,4 +256,4 @@ export const annotationsWithGutters = [
     label: "typography",
     id: "576755",
   },
-];
+] as Annotation[];
