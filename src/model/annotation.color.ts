@@ -1,12 +1,12 @@
 import { z } from "zod/v4";
 
 export const annotationColorSchema = z.object({
-  border: z.string(),
-  background: z.string(),
-  borderActive: z.string(),
-  backgroundActive: z.string(),
-  gutterColor: z.string(),
-  color: z.string(),
+  border: z.string().optional(),
+  background: z.string().optional(),
+  borderActive: z.string().optional(),
+  backgroundActive: z.string().optional(),
+  gutterColor: z.string().optional(),
+  color: z.string().optional(),
 });
 
 /**

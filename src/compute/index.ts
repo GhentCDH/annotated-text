@@ -5,15 +5,15 @@ import {
   DefaultAnnotationAdapter,
 } from "../adapter/annotation";
 import {
-  createLineAdapterParams,
-  DefaultLineAdapter,
-  LineAdapter,
+  createTextAdapterParams,
+  PlainTextAdapter,
+  TextAdapter,
 } from "../adapter/line";
 import type { Annotation, Line } from "../model";
 
 export type { CreateAnnotations } from "./CreateAnnotations";
 type createAnnotatedTextParams<LINES, ANNOTATION> = {
-  line?: LineAdapter<LINES> | createLineAdapterParams<LINES>;
+  text?: TextAdapter | createTextAdapterParams;
   annotation?:
     | AnnotationAdapter<ANNOTATION>
     | createAnnotationAdapterParams<ANNOTATION>;
@@ -23,11 +23,11 @@ export const createAnnotatedText = <LINES = Line[], ANNOTATION = Annotation>(
   id: string,
   params: createAnnotatedTextParams<LINES, ANNOTATION> = {},
 ): CreateAnnotations<LINES, ANNOTATION> => {
-  let lineAdapter: LineAdapter<LINES>;
-  if (params.line instanceof LineAdapter) {
-    lineAdapter = params.line;
+  let lineAdapter: TextAdapter;
+  if (params.text instanceof TextAdapter) {
+    lineAdapter = params.text;
   } else {
-    lineAdapter = DefaultLineAdapter(params.line ?? {}) as LineAdapter<LINES>;
+    lineAdapter = PlainTextAdapter(params.text ?? {}) as TextAdapter;
   }
 
   let annotationAdapter: AnnotationAdapter<ANNOTATION>;

@@ -46,7 +46,7 @@ import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/vue-compone
 createAnnotatedText(id, {
   annotation: W3CAnnotationAdapter()
 })
-  .setLines(w3cText.text, false)
+  .setText(w3cText.text, false)
   .setAnnotations(w3cText.w3cAnnotations.items)
 ```
 
@@ -80,14 +80,14 @@ const createAnnotations = (id, sourceId)=>{
     waitUntilElementExists(id).then((element) => {
         createAnnotatedText(id,
             {
-               line: PlainTextAdapter(),
                 annotation: W3CAnnotationAdapter({  
                    sourceUri: sourceId,  
                     create: true,
                     edit: true
                 }),
-            }, )
-        .setLines(w3cText.text, false)
+            },
+        )
+        .setText(w3cText.text, false)
         .setAnnotations(w3cText.w3cAnnotations.items)
         .on('all', ({ mouseEvent, event, data }) => {
             const events = [`annotation-create--start`,     

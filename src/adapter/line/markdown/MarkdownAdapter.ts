@@ -1,12 +1,12 @@
 import { replaceMarkdownToHtml, stripHtmlFromText } from "./parser";
 import {
   createLineAdapter,
-  createLineAdapterParams,
-  LineAdapter,
-} from "../LineAdapter";
-import { type Line, type TextLine, textLineSchema } from "../../../model";
+  createTextAdapterParams,
+  TextAdapter,
+} from "../TextAdapter";
+import { type TextLine, textLineSchema } from "../../../model";
 
-export class MarkdownTextAdapterImpl extends LineAdapter<string> {
+export class MarkdownTextAdapterImpl extends TextAdapter {
   name = "MarkdownLineAdapter";
 
   parse(text: string): TextLine[] {
@@ -27,8 +27,6 @@ export class MarkdownTextAdapterImpl extends LineAdapter<string> {
   }
 }
 
-export const MarkdownTextAdapter = (
-  params: createLineAdapterParams<Line[]> = {},
-) => {
+export const MarkdownTextAdapter = (params: createTextAdapterParams = {}) => {
   return createLineAdapter(new MarkdownTextAdapterImpl(), params);
 };

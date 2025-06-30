@@ -1,11 +1,11 @@
 import {
   createLineAdapter,
-  createLineAdapterParams,
-  LineAdapter,
-} from "./LineAdapter";
-import { type Line, type TextLine, textLineSchema } from "../../model";
+  createTextAdapterParams,
+  TextAdapter,
+} from "./TextAdapter";
+import { type TextLine, textLineSchema } from "../../model";
 
-export class PlainTextAdapterImpl extends LineAdapter<string> {
+export class PlainTextAdapterImpl extends TextAdapter {
   name = "PlainTextAdapter";
 
   parse(text: string): TextLine[] {
@@ -34,8 +34,6 @@ export class PlainTextAdapterImpl extends LineAdapter<string> {
   }
 }
 
-export const PlainTextAdapter = (
-  params: createLineAdapterParams<Line[]> = {},
-) => {
+export const PlainTextAdapter = (params: createTextAdapterParams = {}) => {
   return createLineAdapter(new PlainTextAdapterImpl(), params);
 };
