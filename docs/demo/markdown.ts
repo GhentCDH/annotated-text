@@ -1,4 +1,4 @@
-import { annotationColors } from "../../dev-app/const";
+import { annotationColors } from "./const";
 import { Annotation } from "../../src";
 
 export const text = `**Markdown** 

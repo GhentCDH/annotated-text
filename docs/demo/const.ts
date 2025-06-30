@@ -1,4 +1,4 @@
-import { createAnnotationColors } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotationColors } from "../../src";
 
 const colorDictionary: { [key: string]: string } = {
   "1": "#f51720",

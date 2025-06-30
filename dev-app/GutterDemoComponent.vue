@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import {
-  AnnotatedText,
+  AnnotatedTextV2,
   Annotation,
 } from "@ghentcdh/vue-component-annotated-text";
 import { greekText } from "@demo";
-import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
 
 const annotations = greekText.annotationsWithGutters as Annotation[];
 </script>
@@ -13,13 +12,6 @@ const annotations = greekText.annotationsWithGutters as Annotation[];
   <h4>Vue Lots of annotations component</h4>
   <hr />
   <div class="demo-grid">
-    <AnnotatedText
-      @click="console.log('text vue')"
-      key="text"
-      :component-id="'1'"
-      :annotations="greekText.annotationsWithGutters"
-      :lines="greekText.lines"
-    />
     <AnnotatedTextV2
       key="text"
       :component-id="'1'"

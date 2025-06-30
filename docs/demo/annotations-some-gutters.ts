@@ -1,5 +1,5 @@
 import { Annotation } from "@ghentcdh/vue-component-annotated-text";
-import { annotationColors } from "../../dev-app/const";
+import { annotationColors } from "./const";
 
 export const annotationsWithGutters = [
   {

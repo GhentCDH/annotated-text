@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { greekText } from "@demo";
-import AnnotatedTextV2 from "../src/components/AnnotatedTextV2.vue";
+import { AnnotatedTextV2 } from "@ghentcdh/vue-component-annotated-text";
 </script>
 
 <template>
