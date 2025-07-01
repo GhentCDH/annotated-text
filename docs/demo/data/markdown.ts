@@ -1,5 +1,5 @@
+import { Annotation } from "@ghentcdh/vue-component-annotated-text";
 import { annotationColors } from "./const";
-import { Annotation } from "../../src";
 
 export const text = `**Markdown** 
 

@@ -4,7 +4,7 @@ export const waitUntilElementExists = (id: string) => {
   return new Promise((resolve) => {
     if (!document) {
       resolve(null);
-      return;
+      return null;
     }
     const checkExist = setInterval(() => {
       const element = document?.getElementById(id);

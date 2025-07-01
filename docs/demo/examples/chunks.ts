@@ -1,15 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
 import {
+  Annotation,
   createAnnotatedText,
-  TextAnnotation,
   TextLineAdapter,
 } from "@ghentcdh/vue-component-annotated-text";
 import { waitUntilElementExists } from "../waitUntilElementExists";
 import { greekText } from "../data";
 
-const createChunk = (element: HTMLElement, annotation: TextAnnotation) => {
+const document = globalThis.document;
+
+const createChunk = (element: HTMLElement, annotation: Annotation) => {
   const id = uuidv4();
-  const div = document.createElement(`div`);
+  const div = document?.createElement(`div`);
   div.setAttribute("id", id);
   div.style.border = "1px solid black";
   element.appendChild(div);
@@ -24,7 +26,7 @@ const createChunk = (element: HTMLElement, annotation: TextAnnotation) => {
 };
 
 export const textWithChunks = (id: string, chunksId: string) => {
-  const annotations: TextAnnotation[] = greekText.annotations
+  const annotations = greekText.annotations
     .filter((a) => a.target === "text")
     .slice(0, 10);
   const annotationsMap = {};
@@ -47,7 +49,7 @@ export const textWithChunks = (id: string, chunksId: string) => {
     annotations.forEach((annotation) => {
       annotationsMap[annotation.id] = {
         annotation,
-        annotatedText: createChunk(element, annotation),
+        annotatedText: createChunk(element as HTMLElement, annotation),
       };
     });
   });

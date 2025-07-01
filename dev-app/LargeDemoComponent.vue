@@ -2,11 +2,11 @@
 import { computed, ref } from "vue";
 import {
   AnnotatedTextV2,
-  Annotation,
+  type Annotation,
+  type AnnotationEventType,
   Debugger,
 } from "@ghentcdh/vue-component-annotated-text";
 import { largeGreekText } from "@demo";
-import { AnnotationEventType } from "../src/events/events";
 
 const typesSet = new Set<string>();
 largeGreekText.annotations.map((a) => {

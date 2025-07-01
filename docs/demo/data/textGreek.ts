@@ -1,3 +1,4 @@
+import { Annotation } from "@ghentcdh/vue-component-annotated-text";
 import { annotations } from "./annotations";
 import { annotationsWithGutters } from "./annotations-some-gutters";
 import { lines } from "./line";
@@ -15,7 +16,7 @@ export const greekText = {
 };
 
 export const largeGreekText = {
-  annotations: largeAnnotations,
+  annotations: largeAnnotations as Annotation[],
   text: largeTextLines.map((line) => `${line.gutter} ${line.text}`).join("\n"),
   lines: largeTextLines,
 };
