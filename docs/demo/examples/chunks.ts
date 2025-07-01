@@ -28,7 +28,7 @@ export const textWithChunks = (id: string, chunksId: string) => {
     .filter((a) => a.target === "text")
     .slice(0, 10);
 
-  waitUntilElementExists(id).then((element) => {
+  waitUntilElementExists(id).then(() => {
     createAnnotatedText(id, {
       text: TextLineAdapter(),
       annotation: { create: true, edit: true },

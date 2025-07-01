@@ -20,14 +20,6 @@ export const computeLinePositions = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
 ) => {
-  const parentDimensions = pick(
-    textElement.getBoundingClientRect(),
-    "width",
-    "height",
-    "x",
-    "y",
-  );
-
   model.lines.forEach((line) => {
     const textLine = findTextLine(textElement, line);
     if (!textLine) {
@@ -36,8 +28,6 @@ export const computeLinePositions = (
       );
       return;
     }
-    const bbox = textLine.getBoundingClientRect();
-    const lineDimensions = pick(bbox, "width", "height", "x", "y");
     line.element = textLine;
   });
 

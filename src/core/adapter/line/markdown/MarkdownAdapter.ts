@@ -7,7 +7,7 @@ import {
 } from "../TextAdapter";
 import { type TextLine, textLineSchema } from "../../../model";
 
-const textToLines = memoize((text: string): TextLine[] => {
+const _textToLines = memoize((text: string): TextLine[] => {
   const html = replaceMarkdownToHtml(text);
   const flatText = stripHtmlFromText(html);
   const length = flatText.length;
@@ -23,6 +23,11 @@ const textToLines = memoize((text: string): TextLine[] => {
     }),
   ];
 });
+
+export const textToLines = (text: string): TextLine[] => {
+  // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
+  return _textToLines(text).map((line) => textLineSchema.parse(line));
+};
 
 /**
  * MarkdownTextAdapterImpl is a TextAdapter implementation that parses markdown text into TextLine objects.

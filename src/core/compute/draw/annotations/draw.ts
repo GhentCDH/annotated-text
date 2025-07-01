@@ -97,6 +97,7 @@ export const drawDummyAnnotation = (
   svgModel.removeAnnotations(DUMMY_UID);
   const { model, textElement } = svgModel;
   const lines = getLinesForAnnotation(model.lines, dummyAnnotation);
+
   createTextAnnotation(
     lines,
     textElement.getBoundingClientRect(),
@@ -104,13 +105,13 @@ export const drawDummyAnnotation = (
     dummyAnnotation,
     svgModel.lineAdapter,
     svgModel.annotationAdapter,
-  ).forEach((a) =>
+  ).forEach((a) => {
     drawAnnotationContent(
       { ...a, annotationUuid: DUMMY_UID },
       svgModel,
       svgModel.annotationAdapter.config,
-    ),
-  );
+    );
+  });
 
   svgModel.colorAnnotation(DUMMY_UID, color);
 };
