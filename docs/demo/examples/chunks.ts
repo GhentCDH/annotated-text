@@ -14,7 +14,7 @@ const createChunk = (element: HTMLElement, annotation: TextAnnotation) => {
   div.style.border = "1px solid black";
   element.appendChild(div);
 
-  createAnnotatedText(id, {
+  return createAnnotatedText(id, {
     text: TextLineAdapter({
       limit: { start: annotation.start, end: annotation.end },
     }),
@@ -27,17 +27,28 @@ export const textWithChunks = (id: string, chunksId: string) => {
   const annotations: TextAnnotation[] = greekText.annotations
     .filter((a) => a.target === "text")
     .slice(0, 10);
-
+  const annotationsMap = {};
   waitUntilElementExists(id).then(() => {
     createAnnotatedText(id, {
       text: TextLineAdapter(),
       annotation: { create: true, edit: true },
     })
       .setText(greekText.text)
-      .setAnnotations(annotations);
+      .setAnnotations(annotations)
+      .on("annotation-edit--move", ({ data }) => {
+        const annotation = data.annotation;
+        annotationsMap[annotation.id].annotatedText
+          .setAnnotations([annotation])
+          .changeTextAdapter("limit", annotation);
+      });
   });
 
   waitUntilElementExists(chunksId).then((element) => {
-    annotations.forEach((annotation) => createChunk(element, annotation));
+    annotations.forEach((annotation) => {
+      annotationsMap[annotation.id] = {
+        annotation,
+        annotatedText: createChunk(element, annotation),
+      };
+    });
   });
 };

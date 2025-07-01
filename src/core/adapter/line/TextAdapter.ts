@@ -9,36 +9,46 @@ export type Limit = { start: number; end: number };
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
   flatText: boolean = false;
-  limit: Limit | null = null;
+  private _limit: Limit | null = null;
 
   abstract parse(text: string): TextLine[];
-
-  ltr() {
-    return this.setTextDirection("ltr");
-  }
-
-  rtl() {
-    return this.setTextDirection("rtl");
-  }
-
-  setTextDirection(textDirection: TextDirection) {
-    this.textDirection = textDirection;
-    return this;
-  }
 
   getRanges(annotation: any, line: TextLine): DOMRect[] | null {
     return getRanges(annotation, line);
   }
 
-  setFlatText(flatText: boolean) {
-    this.flatText = flatText;
-    return this;
+  set limit(limit: Limit | null) {
+    this._limit = limit;
   }
 
-  setLimit(limit?: Limit) {
-    this.limit = limit ?? null;
+  get limit(): Limit | null {
+    return this._limit;
+  }
+
+  setConfig<KEY extends CONFIG_KEYS>(key: KEY, value: CONFIG_VALUES<KEY>) {
+    switch (key) {
+      case "textDirection":
+        this.textDirection = value as TextDirection;
+        this.changeConfig();
+        break;
+      case "flatText":
+        this.flatText = !!value;
+        this.changeConfig();
+        break;
+      case "limit":
+        this.limit = value as Limit | null;
+        this.changeConfig();
+        break;
+      default:
+        console.warn("Unsupported config key:", value);
+      // super.setConfig(value, key);
+    }
   }
 }
+
+type CONFIG = InstanceType<typeof TextAdapter>;
+export type CONFIG_KEYS = keyof CONFIG;
+export type CONFIG_VALUES<K extends CONFIG_KEYS> = CONFIG[K];
 
 export type createTextAdapterParams = {
   /**
@@ -65,10 +75,10 @@ export const createLineAdapter = (
   params: createTextAdapterParams,
 ): TextAdapter => {
   if (params.textDirection) {
-    adapter.setTextDirection(params.textDirection);
+    adapter.textDirection = params.textDirection;
   }
-  adapter.setFlatText(!!params.flatText);
-  adapter.setLimit(params.limit);
+  adapter.flatText = !!params.flatText;
+  adapter.limit = params.limit;
 
   return adapter;
 };

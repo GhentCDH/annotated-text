@@ -24,7 +24,7 @@ const _textToLines = memoize((text: string): TextLine[] => {
   ];
 });
 
-export const textToLines = (text: string): TextLine[] => {
+const textToLines = (text: string): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
   return _textToLines(text).map((line) => textLineSchema.parse(line));
 };

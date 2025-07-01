@@ -1,4 +1,4 @@
-import { AnnotationEventData, AnnotationEventType } from "../../events/events";
+import type { AnnotationEventData, AnnotationEventType } from "../../core";
 
 export type AnnotatedTextV2Emits = {
   /**
