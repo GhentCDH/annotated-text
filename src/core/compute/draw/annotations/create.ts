@@ -44,6 +44,14 @@ export const createNewBlock = (svgModel: SvgModel) => {
 
     dummyAnnotation.start = Math.min(_start, _end);
     dummyAnnotation.end = Math.max(_start, _end);
+
+    const snapper = svgModel.annotationAdapter.snapper(
+      _start < _end ? "move-start" : "move-end",
+      dummyAnnotation,
+    );
+    dummyAnnotation.start = snapper.start;
+    dummyAnnotation.end = snapper.end;
+
     if (draw)
       drawDummyAnnotation(svgModel, dummyAnnotation, {
         border: dummyAnnotation.color.border,
