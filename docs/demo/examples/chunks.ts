@@ -12,6 +12,8 @@ const document = globalThis.document;
 const createChunk = (element: HTMLElement, annotation: Annotation) => {
   const id = uuidv4();
   const div = document?.createElement(`div`);
+  if (!div) return;
+
   div.setAttribute("id", id);
   div.style.border = "1px solid black";
   element.appendChild(div);
