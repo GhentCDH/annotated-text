@@ -23,11 +23,11 @@ export const createAnnotatedText = <LINES = Line[], ANNOTATION = Annotation>(
   id: string,
   params: createAnnotatedTextParams<LINES, ANNOTATION> = {},
 ): CreateAnnotations<LINES, ANNOTATION> => {
-  let lineAdapter: TextAdapter;
+  let textAdapter: TextAdapter;
   if (params.text instanceof TextAdapter) {
-    lineAdapter = params.text;
+    textAdapter = params.text;
   } else {
-    lineAdapter = PlainTextAdapter(params.text ?? {}) as TextAdapter;
+    textAdapter = PlainTextAdapter(params.text ?? {}) as TextAdapter;
   }
 
   let annotationAdapter: AnnotationAdapter<ANNOTATION>;
@@ -41,7 +41,7 @@ export const createAnnotatedText = <LINES = Line[], ANNOTATION = Annotation>(
 
   return new CreateAnnotationsImpl<LINES, ANNOTATION>(
     id,
-    lineAdapter,
+    textAdapter,
     annotationAdapter,
   );
 };

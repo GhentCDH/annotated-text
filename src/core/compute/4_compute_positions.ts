@@ -20,14 +20,6 @@ export const computeLinePositions = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
 ) => {
-  const parentDimensions = pick(
-    textElement.getBoundingClientRect(),
-    "width",
-    "height",
-    "x",
-    "y",
-  );
-
   model.lines.forEach((line) => {
     const textLine = findTextLine(textElement, line);
     if (!textLine) {
@@ -36,8 +28,6 @@ export const computeLinePositions = (
       );
       return;
     }
-    const bbox = textLine.getBoundingClientRect();
-    const lineDimensions = pick(bbox, "width", "height", "x", "y");
     line.element = textLine;
   });
 
@@ -116,7 +106,7 @@ export const createTextAnnotation = (
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
-  lineAdapter: TextAdapter,
+  textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const { config } = annotationAdapter;
@@ -126,7 +116,7 @@ export const createTextAnnotation = (
   const padding = config.text.padding * annotation.weight;
   const height = config.text.lineHeight + padding * 2;
   lines.forEach((line, index: number) => {
-    const rects = lineAdapter.getRanges(annotation, line);
+    const rects = textAdapter.getRanges(annotation, line);
 
     const prevEnd = lines[index - 1]?.end;
     const isFirstLine = !prevEnd || prevEnd <= annotation.start;
@@ -177,7 +167,7 @@ export const createAndAssignDrawAnnotation = (
   textElement: HTMLElement,
   annotation: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
-  lineAdapter: TextAdapter,
+  textAdapter: TextAdapter,
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
@@ -191,7 +181,7 @@ export const createAndAssignDrawAnnotation = (
     parentDimensions,
     model,
     annotation,
-    lineAdapter,
+    textAdapter,
     annotationAdapter,
   ).forEach((a) => model.addDrawAnnotation(a));
 
@@ -202,7 +192,7 @@ export const computeAnnotations = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
-  lineAdapter: TextAdapter,
+  textAdapter: TextAdapter,
 ) => {
   // Compute positions of gutters
 
@@ -220,7 +210,7 @@ export const computeAnnotations = (
         textElement,
         annotation,
         annotationAdapter,
-        lineAdapter,
+        textAdapter,
       );
     }
   });
@@ -232,10 +222,10 @@ export const computePositions = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
-  lineAdapter: TextAdapter,
+  textAdapter: TextAdapter,
 ) => {
   model.clearDrawAnnotation();
-  computeAnnotations(model, textElement, annotationAdapter, lineAdapter);
+  computeAnnotations(model, textElement, annotationAdapter, textAdapter);
 
   return model;
 };

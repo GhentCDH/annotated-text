@@ -34,7 +34,7 @@ export type CreateAnnotations<LINES, ANNOTATION> = {
     callback: ErrorEventCallback,
   ) => CreateAnnotations<LINES, ANNOTATION>;
   destroy: () => CreateAnnotations<LINES, ANNOTATION>;
-  lineAdapter: TextAdapter;
+  textAdapter: TextAdapter;
   annotationAdapter: AnnotationAdapter<ANNOTATION>;
 };
 
@@ -53,12 +53,12 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
 
   constructor(
     private readonly id: string,
-    public readonly lineAdapter: TextAdapter,
+    public readonly textAdapter: TextAdapter,
     public readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
   ) {
     this.init();
     this.annotationAdapter.setConfigListener(this.configListener());
-    this.lineAdapter.setConfigListener(this.configListener());
+    this.textAdapter.setConfigListener(this.configListener());
   }
 
   private configListener() {
@@ -70,7 +70,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   private createAnnotationModel() {
     this.textAnnotationModel = createAnnotationModel(
       this.text,
-      this.lineAdapter,
+      this.textAdapter,
       this.eventListener,
     );
 
@@ -101,7 +101,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
     this.textAnnotationModel = assignAnnotationsToLines(
       this.textAnnotationModel,
       this.annotationAdapter,
-      this.lineAdapter,
+      this.textAdapter,
       annotations,
     );
     this.textAnnotationModel = computeAnnotationsOnLines(
@@ -126,7 +126,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
   private drawText() {
     this.textElement = drawText(
       this.textAnnotationModel,
-      this.lineAdapter,
+      this.textAdapter,
       this.annotationAdapter,
     );
   }
@@ -193,7 +193,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
       this.textAnnotationModel,
       this.textElement,
       this.annotationAdapter,
-      this.lineAdapter,
+      this.textAdapter,
     );
 
     this.svgModel = new SvgModel(
@@ -201,7 +201,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
       this.textAnnotationModel,
       this.eventListener,
       this.annotationAdapter,
-      this.lineAdapter,
+      this.textAdapter,
     );
 
     this.svgNode = this.svgModel.node();

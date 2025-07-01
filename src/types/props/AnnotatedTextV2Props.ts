@@ -1,5 +1,4 @@
-import { Annotation } from "../../model";
-import { SnapperFn } from "../../snapper";
+import type { Annotation, SnapperFn } from "../../core";
 
 export interface AnnotatedTextV2Props {
   /**

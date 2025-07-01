@@ -32,7 +32,7 @@ const calculateLinePadding = memoize(
 const createText = (
   textLine: TextLine,
   textDirection: TextDirection,
-  lineAdapter: TextAdapter,
+  textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   const textDiv = document.createElement("div");
@@ -48,7 +48,7 @@ const createText = (
   textDiv.style.setProperty("--line-height", `${lineHeight}px`);
 
   textDiv.className = `${styles.line.text.wrapper} ${textDirection}`;
-  textDiv.innerHTML = lineAdapter?.flatText ? textLine.flatText : textLine.html;
+  textDiv.innerHTML = textAdapter?.flatText ? textLine.flatText : textLine.html;
   textDiv.setAttribute("data-line-uid", textLine.uuid);
   textDiv.setAttribute("data-annotation-role", "line");
 
@@ -57,7 +57,7 @@ const createText = (
 
 export const drawText = (
   textAnnotationModel: TextAnnotationModel,
-  lineAdapter: TextAdapter,
+  textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   if (!document) return;
@@ -76,7 +76,7 @@ export const drawText = (
       createText(
         line,
         textAnnotationModel.textDirection,
-        lineAdapter,
+        textAdapter,
         annotationAdapter,
       ),
     );

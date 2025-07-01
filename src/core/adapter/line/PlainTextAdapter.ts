@@ -6,7 +6,7 @@ import {
 } from "./TextAdapter";
 import { type TextLine, textLineSchema } from "../../model";
 
-const textToLines = memoize((text: string): TextLine[] => {
+const _textToLines = memoize((text: string): TextLine[] => {
   const lines = text?.split(`\n`) ?? [""];
   let start = 0;
 
@@ -30,6 +30,11 @@ const textToLines = memoize((text: string): TextLine[] => {
 
   return result;
 });
+
+const textToLines = (text: string): TextLine[] => {
+  // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
+  return _textToLines(text).map((line) => textLineSchema.parse(line));
+};
 
 /***
  * PlainTextAdapterImpl is a simple implementation of TextAdapter that parses plain text into TextLine objects.

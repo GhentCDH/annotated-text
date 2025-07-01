@@ -1,7 +1,7 @@
 import memoize from "memoizee";
 import { type TextLine, textLineSchema } from "../../../model";
 
-export const textToLines = memoize((text: string): TextLine[] => {
+export const _textToLines = memoize((text: string): TextLine[] => {
   text = text.replace(/\r\n/g, "\n").replace(/\u000b/g, "\n");
   const regLineNumber = /^([0-9/]+[a-z]?)\./g;
   let lineStart = 0;
@@ -48,3 +48,8 @@ export const textToLines = memoize((text: string): TextLine[] => {
   }
   return lineObjects;
 });
+
+export const textToLines = (text: string): TextLine[] => {
+  // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
+  return _textToLines(text).map((line) => textLineSchema.parse(line));
+};
