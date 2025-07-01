@@ -116,7 +116,7 @@ watch(
 watch(
   () => props.rtl,
   () => {
-    textAnnotation?.lineAdapter.setConfig(
+    textAnnotation?.textAdapter.setConfig(
       "textDirection",
       props.rtl ? "rtl" : "ltr",
     );

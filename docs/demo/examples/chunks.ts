@@ -39,7 +39,7 @@ export const textWithChunks = (id: string, chunksId: string) => {
         const annotation = data.annotation;
         annotationsMap[annotation.id].annotatedText
           .setAnnotations([annotation])
-          .changeTextAdapter("limit", annotation);
+          .lineAdapter.setConfig("limit", annotation);
       });
   });
 

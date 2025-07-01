@@ -39,7 +39,7 @@ export class SvgModel {
     public readonly model: TextAnnotationModel,
     private readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
-    public readonly lineAdapter: TextAdapter,
+    public readonly textAdapter: TextAdapter,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
