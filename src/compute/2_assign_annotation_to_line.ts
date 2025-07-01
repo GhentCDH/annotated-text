@@ -1,6 +1,7 @@
 import memoize from "memoizee";
 import { TextAnnotationModel } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
+import { TextAdapter } from "../adapter/line";
 import type { Annotation, TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
 
@@ -114,6 +115,7 @@ export const reAssignAnnotationToLine = (
 export const assignAnnotationsToLines = <ANNOTATION>(
   model: TextAnnotationModel,
   annotationAdapter: AnnotationAdapter<ANNOTATION>,
+  textAdapter: TextAdapter,
   annotations: ANNOTATION[],
   calculateWeights = false,
 ): TextAnnotationModel => {
@@ -122,6 +124,13 @@ export const assignAnnotationsToLines = <ANNOTATION>(
   annotations?.forEach((annotation) => {
     const clonedAnnotation = annotationAdapter.parse(annotation);
     if (!clonedAnnotation) return;
+
+    if (
+      textAdapter.limit &&
+      !isIntersection(clonedAnnotation, textAdapter.limit)
+    ) {
+      return;
+    }
 
     assignAnnotationToLines(model, clonedAnnotation, calculateWeights);
   });

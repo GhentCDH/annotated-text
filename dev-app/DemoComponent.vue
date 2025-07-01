@@ -49,10 +49,6 @@ const props = reactive({
   rtl: false,
 });
 
-function slotCondition(slotProps: { annotation: Annotation }) {
-  return selectedAnnotations.has(slotProps.annotation.id);
-}
-
 const onAnnotationEvent = (
   event: MouseEvent,
   type: AnnotationEventType,

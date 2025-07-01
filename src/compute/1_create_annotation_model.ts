@@ -2,28 +2,27 @@ import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
 } from "./annotation.model";
-import { PlainTextAdapter, TextAdapter } from "../adapter/line";
+import { isIntersection } from "./utils/intersect";
+import { TextAdapter } from "../adapter/line";
 import { Debugger } from "../utils/debugger";
 import { EventListener } from "../events/event.listener";
 
 export const createAnnotationModel = (
   text: string,
-  lineAdapter?: TextAdapter,
-  eventListener?: EventListener,
+  textAdapter: TextAdapter,
+  eventListener: EventListener,
 ): TextAnnotationModel => {
-  // const gutters: Record<number, AnnotatedGutter> = {};
-  if (!lineAdapter) {
-    console.warn("No lineAdapter provided, using PlainTextAdapter");
-    lineAdapter = PlainTextAdapter() as TextAdapter;
-  }
+  Debugger.debug(`Use lineadapter`, textAdapter.name);
+  let lines = textAdapter.parse(text);
 
-  Debugger.debug(`Use lineadapter`, lineAdapter.name);
+  if (textAdapter.limit)
+    lines = lines.filter((line) => isIntersection(line, textAdapter.limit));
 
   const annotationModel = new TextAnnotationModelImpl(
-    lineAdapter.parse(text),
+    lines,
     eventListener ?? new EventListener(),
   );
-  annotationModel.textDirection = lineAdapter.textDirection;
+  annotationModel.textDirection = textAdapter.textDirection;
 
   return annotationModel;
 };

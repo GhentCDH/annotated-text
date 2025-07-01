@@ -101,6 +101,7 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
     this.textAnnotationModel = assignAnnotationsToLines(
       this.textAnnotationModel,
       this.annotationAdapter,
+      this.lineAdapter,
       annotations,
     );
     this.textAnnotationModel = computeAnnotationsOnLines(
