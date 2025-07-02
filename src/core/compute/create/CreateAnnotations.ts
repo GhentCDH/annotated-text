@@ -1,4 +1,4 @@
-import { CreateAnnotations } from "./CreateAnnotations.model";
+import { AnnotatedText } from "./CreateAnnotations.model";
 import { TextAnnotationModel } from "../annotation.model";
 import { EventListener, EventListenerType } from "../../events/event.listener";
 import {
@@ -25,7 +25,7 @@ import { drawText } from "../draw/text";
 const document = globalThis.document || null;
 
 export class CreateAnnotationsImpl<ANNOTATION>
-  implements CreateAnnotations<ANNOTATION>
+  implements AnnotatedText<ANNOTATION>
 {
   private textAnnotationModel: TextAnnotationModel;
   private annotations: ANNOTATION[];
@@ -255,6 +255,26 @@ export class CreateAnnotationsImpl<ANNOTATION>
     value: TEXT_CONFIG_VALUES<KEY>,
   ) {
     this.textAdapter.setConfig(key, value);
+    return this;
+  }
+
+  scrollToAnnotation(id: string) {
+    const lines = this.textAnnotationModel.getLinesForAnnotation(id);
+    if (!lines) {
+      console.warn("No lines found for annotation", id);
+      return this;
+    }
+
+    const lineElement = lines[0].element;
+    if (!lineElement) {
+      console.warn("No line element found for annotation", id);
+      return this;
+    }
+    lineElement.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
     return this;
   }
 }

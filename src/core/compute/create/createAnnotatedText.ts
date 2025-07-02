@@ -1,4 +1,4 @@
-import { CreateAnnotations } from "./CreateAnnotations.model";
+import { AnnotatedText } from "./CreateAnnotations.model";
 import { CreateAnnotationsImpl } from "./CreateAnnotations";
 import {
   createTextAdapterParams,
@@ -19,7 +19,7 @@ type createAnnotatedTextParams<ANNOTATION> = {
 export const createAnnotatedText = <ANNOTATION = Annotation>(
   id: string,
   params: createAnnotatedTextParams<ANNOTATION> = {},
-): CreateAnnotations<ANNOTATION> => {
+): AnnotatedText<ANNOTATION> => {
   let textAdapter: TextAdapter;
   if (params.text instanceof TextAdapter) {
     textAdapter = params.text;
