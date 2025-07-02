@@ -17,6 +17,7 @@ export const annotationSchema = z.object({
   weight: z.number().optional(),
   target: annotationTargetSchema.optional(),
   color: annotationColorSchema.nullish(),
+  textSelection: z.string().optional(),
 });
 export type AnnotationId = z.infer<typeof annotationIdSchema>;
 /**

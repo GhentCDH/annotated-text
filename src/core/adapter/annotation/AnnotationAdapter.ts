@@ -70,11 +70,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * @param textSelection
    * @param isNew
    */
-  abstract format(
-    annotation: TextAnnotation,
-    textSelection: string,
-    isNew: boolean,
-  ): ANNOTATION;
+  abstract format(annotation: TextAnnotation, isNew: boolean): ANNOTATION;
 
   /**
    * Get the color of the annotation, by default the annotation.color.

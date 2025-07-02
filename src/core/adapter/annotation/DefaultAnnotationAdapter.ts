@@ -22,12 +22,11 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     return data.data;
   }
 
-  format(
-    annotation: TextAnnotation,
-    textSelection: string,
-    isNew: boolean,
-  ): Annotation {
-    const data = annotationSchema.safeParse(annotation);
+  format(annotation: TextAnnotation, isNew: boolean): Annotation {
+    const data = annotationSchema.safeParse({
+      ...annotation,
+      textSelection: this.text.substring(annotation.start, annotation.end + 1),
+    });
     if (!data.success) {
       console.warn(annotation, data.error);
       return annotation as Annotation;
