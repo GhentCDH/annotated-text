@@ -1,6 +1,6 @@
 import { textToLines } from "./text_utilities";
 import {
-  createLineAdapter,
+  createTextAdapter,
   createTextAdapterParams,
   TextAdapter,
 } from "../TextAdapter";
@@ -21,5 +21,5 @@ export class TextLineAdapterImpl extends TextAdapter {
 }
 
 export const TextLineAdapter = (params: createTextAdapterParams = {}) => {
-  return createLineAdapter(new TextLineAdapterImpl(), params);
+  return createTextAdapter(new TextLineAdapterImpl(), params);
 };

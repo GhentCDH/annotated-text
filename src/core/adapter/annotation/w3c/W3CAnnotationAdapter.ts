@@ -32,16 +32,12 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
     });
   }
 
-  format(
-    annotation: TextAnnotation,
-    textSelection: string,
-    isNew: boolean,
-  ): W3CAnnotation {
+  format(annotation: TextAnnotation, isNew: boolean): W3CAnnotation {
     if (!annotation) return null;
     return createTextSelectionAnnotation(
       this.sourceUri,
       this.language,
-      textSelection,
+      this.text.substring(annotation.start, annotation.end + 1),
       annotation,
     );
   }

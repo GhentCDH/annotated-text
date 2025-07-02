@@ -17,11 +17,11 @@ export abstract class TextAdapter extends BaseAdapter {
     return getRanges(annotation, line);
   }
 
-  set limit(limit: Limit | null) {
-    this._limit = limit;
+  set limit(limit: Limit | null | undefined) {
+    this._limit = limit ?? null;
   }
 
-  get limit(): Limit | null {
+  get limit() {
     return this._limit;
   }
 
@@ -79,7 +79,7 @@ export type createTextAdapterParams = {
   limit?: Limit | null;
 };
 
-export const createLineAdapter = (
+export const createTextAdapter = (
   adapter: TextAdapter,
   params: createTextAdapterParams,
 ): TextAdapter => {

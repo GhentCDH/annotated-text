@@ -4,7 +4,8 @@ import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 import type { Annotation, TextAnnotation } from "../../model";
 
-import { DefaultSnapper, SnapperFn } from "../../snapper";
+import type { Snapper } from "../text/snapper";
+import { DefaultSnapper } from "../text/snapper";
 
 const config = {
   gutter: {
@@ -43,12 +44,19 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    */
   public config: AnnotationConfig;
 
+  protected text: string;
+
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.
    * @param action
    * @param annotation
    */
-  public snapper: SnapperFn = DefaultSnapper;
+  public snapper: Snapper = new DefaultSnapper();
+
+  public setText(text: string) {
+    this.text = text;
+    this.snapper.setText(text);
+  }
 
   /**
    * Parse an annotation object into a TextAnnotation.
@@ -62,11 +70,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * @param textSelection
    * @param isNew
    */
-  abstract format(
-    annotation: TextAnnotation,
-    textSelection: string,
-    isNew: boolean,
-  ): ANNOTATION;
+  abstract format(annotation: TextAnnotation, isNew: boolean): ANNOTATION;
 
   /**
    * Get the color of the annotation, by default the annotation.color.
@@ -116,6 +120,10 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
         this.config = merge(cloneDeep(config), value);
         this.changeConfig();
         break;
+      case "snapper":
+        this.snapper = value as Snapper;
+        this.snapper.setText(this.text);
+        break;
       default:
         console.warn("Unsupported config key:", value);
       // super.setConfig(value, key);
@@ -132,7 +140,7 @@ export type createAnnotationAdapterParams = {
   create?: boolean;
   edit?: boolean;
   config?: Partial<AnnotationConfig>;
-  snapper?: SnapperFn;
+  snapper?: Snapper;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -146,7 +154,7 @@ export const createAnnotationAdapter = <ANNOTATION>(
     adapter.create = params.create;
   }
   adapter.config = merge(cloneDeep(config), params.config);
-  adapter.snapper = params.snapper ?? DefaultSnapper;
+  adapter.snapper = params.snapper ?? new DefaultSnapper();
 
   return adapter;
 };

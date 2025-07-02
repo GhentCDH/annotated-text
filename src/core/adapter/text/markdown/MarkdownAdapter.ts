@@ -1,7 +1,7 @@
 import memoize from "memoizee";
 import { replaceMarkdownToHtml, stripHtmlFromText } from "./parser";
 import {
-  createLineAdapter,
+  createTextAdapter,
   createTextAdapterParams,
   TextAdapter,
 } from "../TextAdapter";
@@ -42,5 +42,5 @@ export class MarkdownTextAdapterImpl extends TextAdapter {
 }
 
 export const MarkdownTextAdapter = (params: createTextAdapterParams = {}) => {
-  return createLineAdapter(new MarkdownTextAdapterImpl(), params);
+  return createTextAdapter(new MarkdownTextAdapterImpl(), params);
 };

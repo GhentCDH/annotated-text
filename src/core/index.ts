@@ -4,7 +4,6 @@ export * from "./utils/createAnnotationColor";
 export * from "./compute";
 
 export * from "./events";
-export * from "./snapper";
 export * from "./adapter/text";
 export * from "./adapter/annotation";
 export * from "./model";

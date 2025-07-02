@@ -40,7 +40,7 @@ export const editAnnotations = (
     annotationUuid: DUMMY_UID,
   } as unknown as TextAnnotation;
 
-  const snapper = svgModel.annotationAdapter.snapper(
+  const snapper = svgModel.annotationAdapter.snapper.fixOffset(
     target === "start" ? "move-start" : "move-end",
     dummyAnnotation,
   );

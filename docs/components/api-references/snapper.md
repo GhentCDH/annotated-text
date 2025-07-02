@@ -5,79 +5,50 @@ can be used to create a more intuitive user experience when interacting with ann
 F.E. when you want to use a word snapper, you can use the snapper to adjust the start and end positions of the
 annotation to the nearest word boundaries.
 
+The default snapper just returns the start and end positions of the annotation without any modifications.
+
+Following snappers are available:
+
+- **WordSnapper**: This snapper adjusts the start and end positions of the annotation to the nearest word boundaries.
+
 ## Example
 
 An example of how to use the snapper, to adjust the start and end positions of an annotation when it is moved or
 created.
 
 ```typescript
-
-const useSnapper: SnapperFn = (
-  action: SnapperAction,
-  annotation: TextAnnotation,
-) => {
-  const { start, end } = payload;
-  switch (action) {
-    case 'move-end':
-      return { start, end: end - 2 };
-      break;
-    case 'move-start':
-      return { start: start + 2, end };
-      break;
+class CustomSnapper extends Snapper {
+  fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
+    const { start, end } = annotation;
+    switch (action) {
+      case "move-end":
+        return { start, end: end - 2, modified: true };
+      case "move-start":
+        return { start: start + 2, end, modified: true };
+    }
+    return { start, end, modified: false };
   }
-
-  return { start, end };
-};
+}
 
 createAnnotatedText(id,
   {
     annotation: {
       edit: true,
       create: true,
-      snapper: useSnapper
+      snapper: new CustomSnapper(),
     },
   });
 
-```
+``` 
+
+<div id="annotation--snapper"></div>
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { greekText, waitUntilElementExists } from "@demo";
+import { snapper } from "@demo";
 
-
-const useSnapper = (action, payload) => {
-const { start, end } = payload;
-switch (action) {
-case 'move-end':
-return { start, end: end - 2 };
-break;
-case 'move-start':
-return { start: start + 2, end };
-break;
-}
-return { start, end };
-};
-
-const id = `simpleSnapper`;
-
-waitUntilElementExists(id).then((element) => {
-const textAnnotation = createAnnotatedText(id,
-{
-text: TextLineAdapter(),
-annotation: {
-edit: true,
-create: true,
-snapper: useSnapper
-},
-})
-.setText(greekText.text)
-.setAnnotations(greekText.annotations);
-});
-
+snapper('annotation--snapper')
 
 </script>
 
 
-<div id="simpleSnapper"></div>

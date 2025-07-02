@@ -20,6 +20,9 @@ importers:
       memoizee:
         specifier: ^0.4.17
         version: 0.4.17
+      tokenizr:
+        specifier: 1.7.0
+        version: 1.7.0
       zod:
         specifier: 3.25.67
         version: 3.25.67
@@ -5114,6 +5117,9 @@ packages:
 
   token-stream@1.0.0:
     resolution: {integrity: sha512-VSsyNPPW74RpHwR8Fc21uubwHY7wMDeJLys2IX5zJNih+OnAnaifKHo+1LHT7DAdloQ7apeaaWg8l7qnf/TnEg==}
+
+  tokenizr@1.7.0:
+    resolution: {integrity: sha512-XHJRmcTZRK4xr9Rjci/Z5JerDwV4SOczO7G/hhrIddNLDJY9hZY7pX6vC7GvDUtlfjFb0BvBblE5JAVKbB2OEQ==}
 
   tough-cookie@5.1.2:
     resolution: {integrity: sha512-FVDYdxtnj0G6Qm/DhNPSb8Ju59ULcup3tuJxkFb5K8Bv2pUXILbf0xZWU8PX8Ov19OXljbUyveOFwRMwkXzO+A==}
@@ -11265,6 +11271,8 @@ snapshots:
       is-number: 7.0.0
 
   token-stream@1.0.0: {}
+
+  tokenizr@1.7.0: {}
 
   tough-cookie@5.1.2:
     dependencies:
