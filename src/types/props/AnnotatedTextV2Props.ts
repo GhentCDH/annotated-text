@@ -1,10 +1,11 @@
-import type { Annotation, SnapperFn } from "../../core";
+import type { Annotation } from "../../core";
+import type { Snapper } from "../../core/adapter/text";
 
 export interface AnnotatedTextV2Props {
   /**
    * If the selection should have another logic than character index selection, then add it here
    */
-  useSnapper?: SnapperFn | undefined;
+  useSnapper?: Snapper | undefined;
   /**
    * List of annotations to be displayed
    */

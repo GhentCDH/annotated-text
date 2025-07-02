@@ -1,6 +1,6 @@
 import memoize from "memoizee";
 import {
-  createLineAdapter,
+  createTextAdapter,
   createTextAdapterParams,
   TextAdapter,
 } from "./TextAdapter";
@@ -49,5 +49,5 @@ export class PlainTextAdapterImpl extends TextAdapter {
 }
 
 export const PlainTextAdapter = (params: createTextAdapterParams = {}) => {
-  return createLineAdapter(new PlainTextAdapterImpl(), params);
+  return createTextAdapter(new PlainTextAdapterImpl(), params);
 };

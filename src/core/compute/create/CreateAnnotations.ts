@@ -59,6 +59,7 @@ export class CreateAnnotationsImpl<ANNOTATION>
       this.textAdapter,
       this.eventListener,
     );
+    this.annotationAdapter.setText(this.text);
 
     return this;
   }
