@@ -1,7 +1,7 @@
 import memoize from "memoizee";
 import { TextAnnotationModel } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
-import { TextAdapter } from "../adapter/line";
+import { TextAdapter } from "../adapter/text";
 import type { Annotation, TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
 

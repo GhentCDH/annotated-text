@@ -8,7 +8,7 @@ import { drawAnnotation } from "../draw/annotations";
 import { createNewBlock } from "../draw/annotations/create";
 import { EventListener } from "../../events/event.listener";
 import { AnnotationAdapter } from "../../adapter/annotation";
-import { TextAdapter } from "../../adapter/line";
+import { TextAdapter } from "../../adapter/text";
 import { type AnnotationId } from "../../model";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;

@@ -6,7 +6,7 @@ import { createAnnotationPath, createGutterPath } from "./utils/create-path";
 import { getMinMaxBy } from "./draw/utils/min-max.by";
 import type { TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
-import { TextAdapter } from "../adapter/line";
+import { TextAdapter } from "../adapter/text";
 
 import { Debugger } from "../utils/debugger";
 

@@ -3,7 +3,7 @@ import {
   TextAnnotationModelImpl,
 } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
-import { TextAdapter } from "../adapter/line";
+import { TextAdapter } from "../adapter/text";
 import { Debugger } from "../utils/debugger";
 import { EventListener } from "../events/event.listener";
 

@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import type { Annotation, CreateAnnotations, Line } from "../core";
+import type { Annotation, CreateAnnotations } from "../core";
 import { createAnnotatedText, Debugger, TextLineAdapter } from "../core";
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
@@ -31,7 +31,7 @@ const emit = defineEmits<AnnotatedTextV2Emits>();
 
 const id = `annotated-text-${uuidv4()}`;
 
-let textAnnotation: CreateAnnotations<Line[], Annotation>;
+let textAnnotation: CreateAnnotations<Annotation>;
 
 // get a reference to annotatedTextDraw
 
@@ -103,20 +103,20 @@ watch(
 watch(
   () => props.allowEdit,
   () => {
-    textAnnotation?.annotationAdapter.enableEdit(props.allowEdit);
+    textAnnotation?.changeAnnotationAdapterConfig("edit", props.allowEdit);
   },
 );
 watch(
   () => props.allowCreate,
   () => {
-    textAnnotation?.annotationAdapter.enableCreate(props.allowCreate);
+    textAnnotation?.changeAnnotationAdapterConfig("create", props.allowCreate);
   },
 );
 
 watch(
   () => props.rtl,
   () => {
-    textAnnotation?.textAdapter.setConfig(
+    textAnnotation.changeTextAdapterConfig(
       "textDirection",
       props.rtl ? "rtl" : "ltr",
     );
