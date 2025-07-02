@@ -4,13 +4,35 @@ import { getRanges } from "../../compute/utils/ranges/get-range";
 
 export type TextDirection = "ltr" | "rtl";
 
-export type Limit = { start: number; end: number };
+export type Limit = {
+  /**
+   * The start position in the text from which to consider lines.
+   * This is inclusive.
+   **/
+  start: number;
+  /**
+   * The end position in the text up to which to consider lines.
+   * This is exclusive.
+   **/
+  end: number;
+  /**
+   * If true, characters that are outside the range will be ignored.
+   * If false, lines that intersect with the range will be included.
+   * Defaults to false.
+   */
+  ignoreLines?: boolean;
+} | null;
 
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
   flatText: boolean = false;
   private _limit: Limit | null = null;
 
+  /**
+   * Parses the given text into an array of TextLine objects.
+   * The parser is also responsible for handling text limits.
+   * @param text
+   */
   abstract parse(text: string): TextLine[];
 
   getRanges(annotation: any, line: TextLine): DOMRect[] | null {

@@ -13,26 +13,40 @@ createAnnotatedText(id,
   })
 ```
 
+if the property `ignoreLines` is set to `true`, Only the characters between the start and end index will be displayed,
+line start and end are ignored.
+
 ## Example
 
-<div id="create-edit-example"></div>
+<div style="display: grid;
+  grid-template-columns: repeat(2, 1fr);gap: 1rem;">
+    <strong>Ignore Lines=false</strong>
+    <strong>Ignore Lines=true</strong>
+    <h4 style="">Plain text</h4>
+    <div></div>
+    <div id="plaintext--ignore-lines-false"></div>
+    <div id="plaintext--ignore-lines"></div>
+    <h4 style="">markdown</h4>
+    <div></div>
+    <div id="markdown--ignore-lines-false"></div>
+    <div id="markdown--ignore-lines"></div>
+    <h4 style="">Lines</h4>
+    <div></div>
+    <div id="lines--ignore-lines-false"></div>
+    <div id="lines--ignore-lines"></div>
+</div>
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { greekText, waitUntilElementExists } from "@demo";
-const id = `create-edit-example`;
+import { limitLinesPlainText, limitLinesMarkdown, limitLinesLineText } from "@demo";
 
-waitUntilElementExists(id).then((element) => {
-    createAnnotatedText(id,
-        {  
-            text: TextLineAdapter({limit: {start: 99, end: 180}}),
-            annotation: {edit: true, create: true},
-        })
-    .setText(greekText.text)
-    .setAnnotations(greekText.annotations);
-});
+
+limitLinesPlainText(`plaintext--ignore-lines-false`);
+limitLinesPlainText(`plaintext--ignore-lines`, true);
+limitLinesMarkdown(`markdown--ignore-lines-false`);
+limitLinesMarkdown(`markdown--ignore-lines`, true);
+limitLinesLineText(`lines--ignore-lines-false`);
+limitLinesLineText(`lines--ignore-lines`, true);
 
 </script>
 
