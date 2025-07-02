@@ -26,7 +26,7 @@ class CustomSnapper extends Snapper {
       case "move-start":
         return { start: start + 2, end, modified: true };
     }
-    return { start, end };
+    return { start, end, modified: false };
   }
 }
 
