@@ -1,8 +1,9 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
+import { DefaultAnnotationColor } from "./DefaultAnnotationColor";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
-import type { Annotation, TextAnnotation } from "../../model";
+import type { Annotation, AnnotationColor, TextAnnotation } from "../../model";
 
 import type { Snapper } from "../text/snapper";
 import { DefaultSnapper } from "../text/snapper";
@@ -43,6 +44,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * Configuration for styling the annotations, can be used to override default styles.
    */
   public config: AnnotationConfig;
+  public colorFn = DefaultAnnotationColor;
 
   protected text: string;
 
@@ -73,12 +75,13 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   abstract format(annotation: TextAnnotation, isNew: boolean): ANNOTATION;
 
   /**
-   * Get the color of the annotation, by default the annotation.color.
-   * If the annotation does not have a color, it will create color
+   * Get the color of the annotation, it uses the color function to determine the color.
+   * By default it uses the DefaultAnnotationColor function, which returns the color field of on the annotation.
+   * If not provided it will render a color.
    * @param annotation
    */
   color(annotation: TextAnnotation) {
-    return annotation?.color || createAnnotationColor("#4B7BF5");
+    return this.colorFn(annotation);
   }
 
   /**
@@ -141,6 +144,7 @@ export type createAnnotationAdapterParams = {
   edit?: boolean;
   config?: Partial<AnnotationConfig>;
   snapper?: Snapper;
+  colorFn?: (annotation: TextAnnotation) => AnnotationColor;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -155,6 +159,7 @@ export const createAnnotationAdapter = <ANNOTATION>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.snapper = params.snapper ?? new DefaultSnapper();
+  adapter.colorFn = params.colorFn ?? DefaultAnnotationColor;
 
   return adapter;
 };
