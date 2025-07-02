@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import type { Annotation, CreateAnnotations } from "../core";
+import type { AnnotatedText, Annotation } from "../core";
 import { createAnnotatedText, Debugger, TextLineAdapter } from "../core";
 import { AnnotatedTextV2Props } from "@/types/props";
 import { AnnotatedTextV2Emits } from "@/types/emits";
@@ -31,7 +31,7 @@ const emit = defineEmits<AnnotatedTextV2Emits>();
 
 const id = `annotated-text-${uuidv4()}`;
 
-let textAnnotation: CreateAnnotations<Annotation>;
+let textAnnotation: AnnotatedText<Annotation>;
 
 // get a reference to annotatedTextDraw
 
