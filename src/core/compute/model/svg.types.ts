@@ -140,7 +140,6 @@ export class SvgModel {
 
     annotationData.annotation = this.annotationAdapter.format(
       annotationData.annotation,
-      "",
       isNew,
     );
 
