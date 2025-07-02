@@ -11,7 +11,7 @@ import {
 } from "../model";
 
 import { EventListener } from "../events/event.listener";
-import { TextDirection } from "../adapter/line";
+import { TextDirection } from "../adapter/text";
 
 export type Dimensions = {
   height: number;

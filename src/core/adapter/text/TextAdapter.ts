@@ -25,7 +25,16 @@ export abstract class TextAdapter extends BaseAdapter {
     return this._limit;
   }
 
-  setConfig<KEY extends CONFIG_KEYS>(key: KEY, value: CONFIG_VALUES<KEY>) {
+  /**
+   * Change the configuration of the adapter, it will update the eventlistener if rerendering of the annotations is needed.
+   * f.e. if the text direction changes, the adapter will emit a change event to update the annotations.
+   * @param key
+   * @param value
+   */
+  setConfig<KEY extends TEXT_CONFIG_KEYS>(
+    key: KEY,
+    value: TEXT_CONFIG_VALUES<KEY>,
+  ) {
     switch (key) {
       case "textDirection":
         this.textDirection = value as TextDirection;
@@ -47,8 +56,8 @@ export abstract class TextAdapter extends BaseAdapter {
 }
 
 type CONFIG = InstanceType<typeof TextAdapter>;
-export type CONFIG_KEYS = keyof CONFIG;
-export type CONFIG_VALUES<K extends CONFIG_KEYS> = CONFIG[K];
+export type TEXT_CONFIG_KEYS = keyof CONFIG;
+export type TEXT_CONFIG_VALUES<K extends TEXT_CONFIG_KEYS> = CONFIG[K];
 
 export type createTextAdapterParams = {
   /**

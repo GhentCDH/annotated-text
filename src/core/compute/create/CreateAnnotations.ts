@@ -1,45 +1,31 @@
-import { TextAnnotationModel } from "./annotation.model";
-import { createAnnotationModel } from "./1_create_annotation_model";
-import { assignAnnotationsToLines } from "./2_assign_annotation_to_line";
-import { computeAnnotationsOnLines } from "./3_compute_annotations_on_line";
-import { drawText } from "./draw/text";
-import { computeLinePositions, computePositions } from "./4_compute_positions";
-import { styles } from "./styles.const";
-import { IdCollection } from "./model/id.collection";
-import { SvgModel } from "./model/svg.types";
-import { TextAdapter } from "../adapter/line";
-import { ErrorEventCallback, EventCallback } from "../events";
-import { Debugger } from "../utils/debugger";
-import { AnnotationAdapter } from "../adapter/annotation";
-import { EventListener, EventListenerType } from "../events/event.listener";
+import { CreateAnnotations } from "./CreateAnnotations.model";
+import { TextAnnotationModel } from "../annotation.model";
+import { EventListener, EventListenerType } from "../../events/event.listener";
+import {
+  TEXT_CONFIG_KEYS,
+  TEXT_CONFIG_VALUES,
+  TextAdapter,
+} from "../../adapter/text";
+import {
+  ANNOTATION_CONFIG_KEYS,
+  ANNOTATION_CONFIG_VALUES,
+  AnnotationAdapter,
+} from "../../adapter/annotation";
+import { createAnnotationModel } from "../1_create_annotation_model";
+import { SvgModel } from "../model/svg.types";
+import { IdCollection } from "../model/id.collection";
+import { Debugger } from "../../utils/debugger";
+import { computeLinePositions, computePositions } from "../4_compute_positions";
+import { styles } from "../styles.const";
+import { computeAnnotationsOnLines } from "../3_compute_annotations_on_line";
+import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
+import { ErrorEventCallback, EventCallback } from "../../events";
+import { drawText } from "../draw/text";
 
 const document = globalThis.document || null;
 
-export type CreateAnnotations<LINES, ANNOTATION> = {
-  setText: (
-    text: string,
-    redraw?: boolean,
-  ) => CreateAnnotations<LINES, ANNOTATION>;
-  setAnnotations: (
-    annotations: ANNOTATION[],
-    redraw?: boolean,
-  ) => CreateAnnotations<LINES, ANNOTATION>;
-  highlightAnnotations: (ids: string[]) => CreateAnnotations<LINES, ANNOTATION>;
-  selectAnnotations: (ids: string[]) => CreateAnnotations<LINES, ANNOTATION>;
-  on: (
-    event: EventListenerType,
-    callback: EventCallback,
-  ) => CreateAnnotations<LINES, ANNOTATION>;
-  onError: (
-    callback: ErrorEventCallback,
-  ) => CreateAnnotations<LINES, ANNOTATION>;
-  destroy: () => CreateAnnotations<LINES, ANNOTATION>;
-  textAdapter: TextAdapter;
-  annotationAdapter: AnnotationAdapter<ANNOTATION>;
-};
-
-export class CreateAnnotationsImpl<LINES, ANNOTATION>
-  implements CreateAnnotations<LINES, ANNOTATION>
+export class CreateAnnotationsImpl<ANNOTATION>
+  implements CreateAnnotations<ANNOTATION>
 {
   private textAnnotationModel: TextAnnotationModel;
   private annotations: ANNOTATION[];
@@ -53,8 +39,8 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
 
   constructor(
     private readonly id: string,
-    public readonly textAdapter: TextAdapter,
-    public readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
+    private readonly textAdapter: TextAdapter,
+    private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
   ) {
     this.init();
     this.annotationAdapter.setConfigListener(this.configListener());
@@ -253,6 +239,22 @@ export class CreateAnnotationsImpl<LINES, ANNOTATION>
     this.destroy();
     this.createAnnotationModel();
     this.setAnnotations(this.annotations);
+    return this;
+  }
+
+  changeAnnotationAdapterConfig<KEY extends ANNOTATION_CONFIG_KEYS>(
+    key: KEY,
+    value: ANNOTATION_CONFIG_VALUES<KEY>,
+  ) {
+    this.annotationAdapter.setConfig(key, value);
+    return this;
+  }
+
+  changeTextAdapterConfig<KEY extends TEXT_CONFIG_KEYS>(
+    key: KEY,
+    value: TEXT_CONFIG_VALUES<KEY>,
+  ) {
+    this.textAdapter.setConfig(key, value);
     return this;
   }
 }

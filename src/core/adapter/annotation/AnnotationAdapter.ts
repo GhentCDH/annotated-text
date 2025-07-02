@@ -28,10 +28,20 @@ const config = {
 export type AnnotationConfig = typeof config;
 
 export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
+  /**
+   * If true, creation of annotations is enabled.
+   * @param params
+   */
   public create: boolean = false;
+  /**
+   * If true, edit of annotations is enabled.
+   * @param params
+   */
   public edit: boolean = false;
+  /**
+   * Configuration for styling the annotations, can be used to override default styles.
+   */
   public config: AnnotationConfig;
-  public annotation: Annotation;
 
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.
@@ -59,26 +69,6 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   ): ANNOTATION;
 
   /**
-   * Enable or disable edit mode
-   * @param edit
-   */
-  enableEdit(edit: boolean = true): this {
-    this.edit = edit;
-
-    return this;
-  }
-
-  /**
-   * Enable or disable create mode
-   * @param create
-   */
-  enableCreate(create: boolean = true): this {
-    this.create = create;
-
-    return this;
-  }
-
-  /**
    * Get the color of the annotation, by default the annotation.color.
    * If the annotation does not have a color, it will create color
    * @param annotation
@@ -104,24 +94,56 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
       color: createAnnotationColor("#f51720"),
     } as TextAnnotation;
   }
+
+  /**
+   * Change the configuration of the adapter, it will update the eventlistener if rerendering of the annotations is needed.
+   * f.e. if the text direction changes, the adapter will emit a change event to update the annotations.
+   * @param key
+   * @param value
+   */
+  setConfig<KEY extends ANNOTATION_CONFIG_KEYS>(
+    key: KEY,
+    value: ANNOTATION_CONFIG_VALUES<KEY>,
+  ) {
+    switch (key) {
+      case "edit":
+        this.edit = value as boolean;
+        break;
+      case "create":
+        this.edit = value as boolean;
+        break;
+      case "config":
+        this.config = merge(cloneDeep(config), value);
+        this.changeConfig();
+        break;
+      default:
+        console.warn("Unsupported config key:", value);
+      // super.setConfig(value, key);
+    }
+  }
 }
 
-export type createAnnotationAdapterParams<ANNOTATION> = {
+type CONFIG = InstanceType<typeof AnnotationAdapter>;
+export type ANNOTATION_CONFIG_KEYS = keyof CONFIG;
+export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
+  CONFIG[K];
+
+export type createAnnotationAdapterParams = {
   create?: boolean;
   edit?: boolean;
-  config?: AnnotationConfig;
+  config?: Partial<AnnotationConfig>;
   snapper?: SnapperFn;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
   adapter: AnnotationAdapter<ANNOTATION>,
-  params: createAnnotationAdapterParams<ANNOTATION>,
+  params: createAnnotationAdapterParams,
 ): AnnotationAdapter<ANNOTATION> => {
   if (params.edit) {
-    adapter.enableEdit(params.edit);
+    adapter.edit = params.edit;
   }
   if (params.create) {
-    adapter.enableCreate(params.create);
+    adapter.create = params.create;
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.snapper = params.snapper ?? DefaultSnapper;

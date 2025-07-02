@@ -1,5 +1,5 @@
 import memoize from "memoizee";
-import { TextAdapter, TextDirection } from "../../adapter/line";
+import { TextAdapter, TextDirection } from "../../adapter/text";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAnnotationModel } from "../annotation.model";
 import { type TextLine } from "../../model";
