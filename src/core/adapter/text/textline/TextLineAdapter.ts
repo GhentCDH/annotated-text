@@ -6,46 +6,31 @@ import {
   TextAdapter,
 } from "../TextAdapter";
 import { type TextLine, textLineSchema } from "../../../model";
-import { isIntersection } from "../../../compute/utils/intersect";
+import { mapLineToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
 
-const mapLineToLimit = (line: TextLine, limit: Limit): TextLine => {
-  if (!isIntersection(line, limit)) {
-    return null;
-  }
-
-  if (!limit || !limit.ignoreLines) {
-    return textLineSchema.parse(line);
-  }
-
-  const updateLine = (start: number, end: number) => {
-    const s_diff = start === line.start ? 0 : start - line.start;
-    const e_diff = line.end === end ? line.end : line.end - end;
-    const flatText = line.flatText.substring(s_diff, e_diff);
-    line = textLineSchema.parse({
-      ...line,
-      text: flatText,
-      flatText,
-      html: flatText,
-      start: start,
-      end,
-    });
-  };
-
-  if (line.start < limit.start) {
-    updateLine(limit.start, line.end);
-  }
-
-  if (line.end > limit.end) {
-    updateLine(line.start, limit.end);
-  }
-
-  return textLineSchema.parse(line);
+const updateLine: UpdateLineFn = (
+  line: TextLine,
+  start: number,
+  end: number,
+): TextLine => {
+  const s_diff = start === line.start ? 0 : start - line.start;
+  const e_diff = line.end === end ? line.end : line.end - end;
+  const flatText = line.flatText.substring(s_diff, e_diff);
+  return textLineSchema.parse({
+    ...line,
+    text: flatText,
+    flatText,
+    html: flatText,
+    start: start,
+    end,
+  });
 };
 
 const textToLines = (text: string, limit: Limit): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
-  return _textToLines(text)
-    .map((line) => mapLineToLimit(line, limit))
+  const lines = _textToLines(text);
+  return lines
+    .map((line) => mapLineToLimit(line, limit, updateLine))
     .filter(Boolean);
 };
 

@@ -1,5 +1,9 @@
 import memoize from "memoizee";
-import { replaceMarkdownToHtml, stripHtmlFromText } from "./parser";
+import {
+  getPartialMarkdown,
+  replaceMarkdownToHtml,
+  stripHtmlFromText,
+} from "./parser";
 import {
   createTextAdapter,
   createTextAdapterParams,
@@ -7,7 +11,7 @@ import {
   TextAdapter,
 } from "../TextAdapter";
 import { type TextLine, textLineSchema } from "../../../model";
-import { isIntersection } from "../../../compute/utils/intersect";
+import { mapLineToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
 
 const _textToLines = memoize((text: string): TextLine[] => {
   // Split into paragraphs we do it ourself
@@ -18,6 +22,7 @@ const _textToLines = memoize((text: string): TextLine[] => {
 
     const html = replaceMarkdownToHtml(textLine);
     const flatText = stripHtmlFromText(html);
+
     const length = flatText.length;
     const end = start + length;
 
@@ -26,7 +31,7 @@ const _textToLines = memoize((text: string): TextLine[] => {
       start,
       end,
       id: `line-${index}`,
-      text: text,
+      text: textLine,
       html,
       flatText,
     }) as TextLine;
@@ -37,48 +42,33 @@ const _textToLines = memoize((text: string): TextLine[] => {
   });
 });
 
-const mapLineToLimit = (line: TextLine, limit: Limit): TextLine => {
-  if (!isIntersection(line, limit)) {
-    return null;
-  }
+const updateLine: UpdateLineFn = (
+  line: TextLine,
+  start: number,
+  end: number,
+): TextLine => {
+  const s_diff = start === line.start ? 0 : start - line.start;
+  const e_diff = line.end === end ? line.end : line.end - end;
+  const flatText = line.flatText.substring(s_diff, e_diff);
 
-  if (!limit || !limit.ignoreLines) {
-    return textLineSchema.parse(line);
-  }
-
-  const updateLine = (start: number, end: number) => {
-    const s_diff = start === line.start ? 0 : start - line.start;
-    const e_diff = line.end === end ? line.end : line.end - end;
-    const flatText = line.flatText.substring(s_diff, e_diff);
-
-    // FIXME: the html is not updated here, it should be updated as well
-
-    line = textLineSchema.parse({
-      ...line,
-      text: flatText,
-      flatText,
-      html: flatText,
-      start: start,
-      end,
-    });
-  };
-
-  if (line.start < limit.start) {
-    updateLine(limit.start, line.end);
-  }
-
-  if (line.end > limit.end) {
-    updateLine(line.start, limit.end);
-  }
-
-  return textLineSchema.parse(line);
+  // FIXME: the html is no longer formatted, it should be updated as well
+  const { html, text } = getPartialMarkdown(line.text, s_diff, e_diff);
+  return textLineSchema.parse({
+    ...line,
+    text,
+    flatText,
+    html,
+    start: start,
+    end,
+  });
 };
 
 const textToLines = (text: string, limit: Limit): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
   const lines = _textToLines(text);
-
-  return lines.map((line) => mapLineToLimit(line, limit)).filter(Boolean);
+  return lines
+    .map((line) => mapLineToLimit(line, limit, updateLine))
+    .filter(Boolean);
 };
 
 /**
