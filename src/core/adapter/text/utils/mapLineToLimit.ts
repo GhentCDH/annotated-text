@@ -1,9 +1,6 @@
-import {
-  Limit,
-  TextLine,
-  textLineSchema,
-} from "@ghentcdh/vue-component-annotated-text";
+import { type TextLine, textLineSchema } from "../../../model";
 import { isIntersection } from "../../../compute/utils/intersect";
+import { Limit } from "../TextAdapter";
 
 export type UpdateLineFn = (
   textLine: TextLine,

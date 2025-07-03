@@ -7,7 +7,7 @@ import {
 import {
   createTextAdapter,
   createTextAdapterParams,
-  Limit,
+  type Limit,
   TextAdapter,
 } from "../TextAdapter";
 import { type TextLine, textLineSchema } from "../../../model";
@@ -18,13 +18,11 @@ const _textToLines = memoize((text: string): TextLine[] => {
   const lines = text?.split(`\n\n`) ?? [""];
   let start = 0;
   return lines.map((textLine, index) => {
-    // Add additional 1 because the \n symbol consist of 2 characters
-
     const html = replaceMarkdownToHtml(textLine);
     const flatText = stripHtmlFromText(html);
 
-    const length = flatText.length;
-    const end = start + length;
+    // Add additional 1 because the \n symbol consist of 2 characters
+    const end = start + textLine.length + 1;
 
     const line = textLineSchema.parse({
       lineNumber: index,
