@@ -2,7 +2,6 @@ import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
 } from "./annotation.model";
-import { isIntersection } from "./utils/intersect";
 import { TextAdapter } from "../adapter/text";
 import { Debugger } from "../utils/debugger";
 import { EventListener } from "../events/event.listener";
@@ -13,10 +12,7 @@ export const createAnnotationModel = (
   eventListener: EventListener,
 ): TextAnnotationModel => {
   Debugger.debug(`Use lineadapter`, textAdapter.name);
-  let lines = textAdapter.parse(text);
-
-  if (textAdapter.limit)
-    lines = lines.filter((line) => isIntersection(line, textAdapter.limit));
+  const lines = textAdapter.parse(text);
 
   const annotationModel = new TextAnnotationModelImpl(
     lines,
