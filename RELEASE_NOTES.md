@@ -1,4 +1,4 @@
-# [2.0.0-beta.9](https://github.com/GhentCDH/vue_component_annotated_text/compare/v2.0.0-beta.8...v2.0.0-beta.9) (2025-07-03)
+# [2.0.0-beta.10](https://github.com/GhentCDH/vue_component_annotated_text/compare/v2.0.0-beta.8...v2.0.0-beta.10) (2025-07-03)
 
 
 ### Features
