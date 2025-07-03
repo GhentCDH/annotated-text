@@ -1,13 +1,13 @@
-# [2.0.0-beta.8](https://github.com/GhentCDH/vue_component_annotated_text/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2025-07-01)
+# [2.0.0-beta.9](https://github.com/GhentCDH/vue_component_annotated_text/compare/v2.0.0-beta.8...v2.0.0-beta.9) (2025-07-03)
 
 
 ### Features
 
-* accept text as input ([#71](https://github.com/GhentCDH/vue_component_annotated_text/issues/71)) ([2d584ea](https://github.com/GhentCDH/vue_component_annotated_text/commit/2d584eace69a3ee3cf43c4e0ff233b3746abae98))
-* fix caching issue ([#74](https://github.com/GhentCDH/vue_component_annotated_text/issues/74)) ([f4a2a8f](https://github.com/GhentCDH/vue_component_annotated_text/commit/f4a2a8f7f5e1d66e5fbf19ec44ba022827aa9e19))
-* limit lines ([#73](https://github.com/GhentCDH/vue_component_annotated_text/issues/73)) ([927eab1](https://github.com/GhentCDH/vue_component_annotated_text/commit/927eab1854226c84f3e958e0db7a2a78b1a66dbb))
-* markdown adapter ([#70](https://github.com/GhentCDH/vue_component_annotated_text/issues/70)) ([d2d2076](https://github.com/GhentCDH/vue_component_annotated_text/commit/d2d2076df89fc0d69b8487f59f81ecc990c28262))
-* remove v1 code ([#72](https://github.com/GhentCDH/vue_component_annotated_text/issues/72)) ([1f9eae9](https://github.com/GhentCDH/vue_component_annotated_text/commit/1f9eae99f95ef4efaf8dd72d26e19e12105c4881))
+* add scroll to annotation ([#76](https://github.com/GhentCDH/vue_component_annotated_text/issues/76)) ([1f6c276](https://github.com/GhentCDH/vue_component_annotated_text/commit/1f6c276ba1df149e74d59b7a2a66a6d46958f27e))
+* add some documentation ([#75](https://github.com/GhentCDH/vue_component_annotated_text/issues/75)) ([b6bb4f6](https://github.com/GhentCDH/vue_component_annotated_text/commit/b6bb4f6013f826fd34e766aa6082eb888fab3c8f))
+* add wordsnapper ([#77](https://github.com/GhentCDH/vue_component_annotated_text/issues/77)) ([4db9da1](https://github.com/GhentCDH/vue_component_annotated_text/commit/4db9da170ea2556a3b125c3a6473b2b57a14fb18))
+* conditional color annotations ([#78](https://github.com/GhentCDH/vue_component_annotated_text/issues/78)) ([032f955](https://github.com/GhentCDH/vue_component_annotated_text/commit/032f955473b3eec671f3dd5c824150a55ead0605))
+* limit text display on characters ([#79](https://github.com/GhentCDH/vue_component_annotated_text/issues/79)) ([6bf1980](https://github.com/GhentCDH/vue_component_annotated_text/commit/6bf19808ce88c02f01595dffe4bb9aff72b4be4c))
 
 
 
