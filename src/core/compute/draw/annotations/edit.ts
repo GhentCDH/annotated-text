@@ -50,7 +50,6 @@ export const editAnnotations = (
   svgModel.sendEvent(
     {
       event: eventType,
-      isNew: false,
       annotationUuid: dummyAnnotation?.id.toString() || "",
     },
     { annotation: dummyAnnotation },

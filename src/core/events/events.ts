@@ -34,3 +34,16 @@ export type EventCallback<
 > = (data: AnnotationEvent<DATA>) => void;
 
 export type ErrorEventCallback = (data: AnnotationErrorEvent) => void;
+
+export const NEW_EVENTS: AnnotationEventType[] = [
+  "annotation-create--move",
+  "annotation-create--start",
+  "annotation-create--end",
+] as const;
+
+export const CHANGED_EVENTS: AnnotationEventType[] = [
+  ...NEW_EVENTS,
+  "annotation-edit--move",
+  "annotation-edit--start",
+  "annotation-edit--end",
+] as const;

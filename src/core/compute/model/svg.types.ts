@@ -1,6 +1,11 @@
 import { Selection } from "d3-selection";
 import { select } from "d3";
-import { AnnotationEventData, AnnotationEventType } from "../../events";
+import {
+  AnnotationEventData,
+  AnnotationEventType,
+  CHANGED_EVENTS,
+  NEW_EVENTS,
+} from "../../events";
 import { Debugger } from "../../utils/debugger";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
@@ -122,12 +127,10 @@ export class SvgModel {
     {
       event,
       mouseEvent,
-      isNew,
       annotationUuid,
     }: {
       event: AnnotationEventType;
       mouseEvent?: MouseEvent;
-      isNew?: boolean;
       annotationUuid: AnnotationId;
     },
     additionalData = {},
@@ -137,10 +140,13 @@ export class SvgModel {
       annotation: fullAnnotation,
       ...additionalData,
     };
+    const isNew = NEW_EVENTS.includes(event);
+    const hasChanged = CHANGED_EVENTS.includes(event);
 
     annotationData.annotation = this.annotationAdapter.format(
       annotationData.annotation,
       isNew,
+      hasChanged,
     );
 
     this.eventListener.sendEvent(

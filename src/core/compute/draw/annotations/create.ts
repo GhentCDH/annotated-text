@@ -77,7 +77,6 @@ export const createNewBlock = (svgModel: SvgModel) => {
       {
         event: "annotation-create--start",
         mouseEvent: event,
-        isNew: true,
         annotationUuid: dummyAnnotation?.id || "",
       },
       { annotation: dummyAnnotation },
@@ -95,7 +94,6 @@ export const createNewBlock = (svgModel: SvgModel) => {
       {
         event: "annotation-create--move",
         mouseEvent: event,
-        isNew: true,
         annotationUuid: dummyAnnotation?.id || "",
       },
       { annotation: dummyAnnotation },
@@ -122,7 +120,6 @@ export const createNewBlock = (svgModel: SvgModel) => {
       {
         event: "annotation-create--end",
         mouseEvent,
-        isNew: true,
         annotationUuid: dummyAnnotation?.id || "",
       },
       { annotation: dummyAnnotation },

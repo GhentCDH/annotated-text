@@ -1,7 +1,6 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 import { DefaultAnnotationColor } from "./DefaultAnnotationColor";
-import { W3CAnnotation } from "./w3c/model";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 import {
@@ -150,7 +149,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     this.originalAnnotations.set(annotationId, originalAnnotation);
   }
 
-  getAnnotation(annotationId: AnnotationId): W3CAnnotation {
+  getAnnotation(annotationId: AnnotationId): ANNOTATION {
     return this.originalAnnotations.get(annotationId);
   }
 }
@@ -170,7 +169,7 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
 
 export const createAnnotationAdapter = <ANNOTATION>(
   adapter: AnnotationAdapter<ANNOTATION>,
-  params: createAnnotationAdapterParams<Annotation>,
+  params: createAnnotationAdapterParams<ANNOTATION>,
 ): AnnotationAdapter<ANNOTATION> => {
   if (params.edit) {
     adapter.edit = params.edit;
@@ -180,7 +179,7 @@ export const createAnnotationAdapter = <ANNOTATION>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.snapper = params.snapper ?? new DefaultSnapper();
-  adapter.colorFn = params.colorFn ?? DefaultAnnotationColor;
+  adapter.colorFn = params.colorFn ?? (DefaultAnnotationColor as any);
 
   return adapter;
 };
