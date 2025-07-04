@@ -1,9 +1,15 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 import { DefaultAnnotationColor } from "./DefaultAnnotationColor";
+import { W3CAnnotation } from "./w3c/model";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
-import type { Annotation, AnnotationColor, TextAnnotation } from "../../model";
+import {
+  Annotation,
+  AnnotationColor,
+  AnnotationId,
+  TextAnnotation,
+} from "../../model";
 
 import type { Snapper } from "../text/snapper";
 import { DefaultSnapper } from "../text/snapper";
@@ -30,6 +36,8 @@ const config = {
 export type AnnotationConfig = typeof config;
 
 export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
+  protected readonly originalAnnotations = new Map<AnnotationId, ANNOTATION>();
+
   /**
    * If true, creation of annotations is enabled.
    * @param params
@@ -71,8 +79,13 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * @param annotation
    * @param textSelection
    * @param isNew
+   * @param hasChanged - if the annotation has changes then create the annotation again, otherwise return the original annotation that has been cached.
    */
-  abstract format(annotation: TextAnnotation, isNew: boolean): ANNOTATION;
+  abstract format(
+    annotation: TextAnnotation,
+    isNew: boolean,
+    hasChanged: boolean,
+  ): ANNOTATION;
 
   /**
    * Get the color of the annotation, it uses the color function to determine the color.
@@ -81,7 +94,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * @param annotation
    */
   color(annotation: TextAnnotation) {
-    return this.colorFn(annotation);
+    return this.colorFn(this.getAnnotation(annotation.id));
   }
 
   /**
@@ -132,6 +145,14 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
       // super.setConfig(value, key);
     }
   }
+
+  addAnnotation(annotationId: AnnotationId, originalAnnotation: ANNOTATION) {
+    this.originalAnnotations.set(annotationId, originalAnnotation);
+  }
+
+  getAnnotation(annotationId: AnnotationId): W3CAnnotation {
+    return this.originalAnnotations.get(annotationId);
+  }
 }
 
 type CONFIG = InstanceType<typeof AnnotationAdapter>;
@@ -139,17 +160,17 @@ export type ANNOTATION_CONFIG_KEYS = keyof CONFIG;
 export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
   CONFIG[K];
 
-export type createAnnotationAdapterParams = {
+export type createAnnotationAdapterParams<ANNOTATION> = {
   create?: boolean;
   edit?: boolean;
   config?: Partial<AnnotationConfig>;
   snapper?: Snapper;
-  colorFn?: (annotation: TextAnnotation) => AnnotationColor;
+  colorFn?: (annotation: ANNOTATION) => AnnotationColor;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
   adapter: AnnotationAdapter<ANNOTATION>,
-  params: createAnnotationAdapterParams,
+  params: createAnnotationAdapterParams<Annotation>,
 ): AnnotationAdapter<ANNOTATION> => {
   if (params.edit) {
     adapter.edit = params.edit;

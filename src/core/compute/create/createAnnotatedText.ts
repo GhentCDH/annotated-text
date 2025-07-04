@@ -14,7 +14,9 @@ import type { Annotation } from "../../model/";
 
 type createAnnotatedTextParams<ANNOTATION> = {
   text?: TextAdapter | createTextAdapterParams;
-  annotation?: AnnotationAdapter<ANNOTATION> | createAnnotationAdapterParams;
+  annotation?:
+    | AnnotationAdapter<ANNOTATION>
+    | createAnnotationAdapterParams<ANNOTATION>;
 };
 export const createAnnotatedText = <ANNOTATION = Annotation>(
   id: string,
@@ -32,8 +34,8 @@ export const createAnnotatedText = <ANNOTATION = Annotation>(
     annotationAdapter = params.annotation;
   } else {
     annotationAdapter = DefaultAnnotationAdapter(
-      params.annotation ?? {},
-    ) as AnnotationAdapter<ANNOTATION>;
+      (params.annotation as any) ?? {},
+    ) as unknown as AnnotationAdapter<ANNOTATION>;
   }
 
   return new CreateAnnotationsImpl<ANNOTATION>(

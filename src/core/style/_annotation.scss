@@ -4,12 +4,12 @@
     top: 0;
     left: 0;
     //pointer-events: none;
-    z-index: 1000;
+    //z-index: 1000;
 
     .handle {
       pointer-events: all;
       cursor: col-resize;
-      z-index: 20;
+      //z-index: 20;
     }
   }
 

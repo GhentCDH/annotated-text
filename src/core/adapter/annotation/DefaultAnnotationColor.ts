@@ -1,10 +1,10 @@
-import type { AnnotationColor, TextAnnotation } from "../../model";
+import type { Annotation, AnnotationColor } from "../../model";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 
-export type ColorFn = (annotation: TextAnnotation) => AnnotationColor;
+export type ColorFn<ANNOTATION> = (annotation: ANNOTATION) => AnnotationColor;
 
-export const DefaultAnnotationColor: ColorFn = (
-  annotation: TextAnnotation,
+export const DefaultAnnotationColor = (
+  annotation: ANNOTATION,
 ): AnnotationColor => {
-  return annotation?.color || createAnnotationColor("#4B7BF5");
+  return (annotation as Annotation)?.color || createAnnotationColor("#4B7BF5");
 };
