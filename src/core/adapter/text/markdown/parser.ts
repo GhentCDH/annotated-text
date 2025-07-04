@@ -1,9 +1,13 @@
 import markdownit, { type Token } from "markdown-it";
 
-const md = markdownit().disable("list");
+const md = markdownit({
+  html: false,
+}).disable("list");
+
+const markdownEnv = {};
 
 export const replaceMarkdownToHtml = (text: string): string => {
-  return md.renderInline(text);
+  return md.renderInline(text, markdownEnv);
 };
 
 const document = globalThis.document;
@@ -34,7 +38,7 @@ export const getPartialMarkdown = (
   start: number,
   end: number,
 ) => {
-  const parsedLines = md.parseInline(text);
+  const parsedLines = md.parseInline(text, markdownEnv);
 
   const tokens = parsedLines.map((token) => findTokenInRange(token, 0)).flat();
 

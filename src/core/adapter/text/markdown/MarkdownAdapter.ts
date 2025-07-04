@@ -22,7 +22,7 @@ const _textToLines = memoize((text: string): TextLine[] => {
     const flatText = stripHtmlFromText(html);
 
     // Add additional 1 because the \n symbol consist of 2 characters
-    const end = start + textLine.length + 1;
+    const end = start + textLine.length;
 
     const line = textLineSchema.parse({
       lineNumber: index,
@@ -64,9 +64,11 @@ const updateLine: UpdateLineFn = (
 const textToLines = (text: string, limit: Limit): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
   const lines = _textToLines(text);
-  return lines
+  const result = lines
     .map((line) => mapLineToLimit(line, limit, updateLine))
     .filter(Boolean);
+
+  return result;
 };
 
 /**
