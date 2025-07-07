@@ -6,6 +6,7 @@ export type UpdateLineFn = (
   textLine: TextLine,
   start: number,
   end: number,
+  isStart: boolean,
 ) => TextLine;
 
 export const mapLineToLimit = (
@@ -27,11 +28,11 @@ export const mapLineToLimit = (
 
   let line = textLine;
   if (line.start < limit.start) {
-    line = updateLine(line, limit.start, line.end);
+    line = updateLine(line, limit.start, line.end, true);
   }
 
   if (line.end > limit.end) {
-    line = updateLine(line, line.start, limit.end);
+    line = updateLine(line, line.start, limit.end, false);
   }
 
   return textLineSchema.parse(line);

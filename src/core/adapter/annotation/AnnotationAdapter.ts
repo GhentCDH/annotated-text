@@ -129,7 +129,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
         this.edit = value as boolean;
         break;
       case "create":
-        this.edit = value as boolean;
+        this.create = value as boolean;
         break;
       case "config":
         this.config = merge(cloneDeep(config), value);

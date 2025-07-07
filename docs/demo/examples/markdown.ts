@@ -9,7 +9,7 @@ export const markdown_1 = (id: string) => {
   waitUntilElementExists(id).then((element) => {
     createAnnotatedText(id, {
       text: MarkdownTextAdapter({
-        limit: { start: 604, end: 1490, ignoreLines: true },
+        limit: { start: 0, end: 423, ignoreLines: true },
       }),
     }).setText(markdown1.text);
     // .setAnnotations(greekText.annotationsWithGutters);

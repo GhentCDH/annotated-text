@@ -22,7 +22,7 @@ const _textToLines = memoize((text: string): TextLine[] => {
     const flatText = stripHtmlFromText(html);
 
     // Add additional 1 because the \n symbol consist of 2 characters
-    const end = start + textLine.length;
+    const end = start + textLine.length + 1;
 
     const line = textLineSchema.parse({
       lineNumber: index,
@@ -44,12 +44,16 @@ const updateLine: UpdateLineFn = (
   line: TextLine,
   start: number,
   end: number,
+  isStart: boolean = true,
 ): TextLine => {
-  const s_diff = start === line.start ? 0 : start - line.start;
-  const e_diff = line.end === end ? line.end : line.end - end;
+  const s_diff = isStart ? start - line.start : 0;
+  let e_diff = line.end;
+
+  if (start !== 0 && !isStart) {
+    e_diff = line.end - end;
+  }
   const flatText = line.flatText.substring(s_diff, e_diff);
 
-  // FIXME: the html is no longer formatted, it should be updated as well
   const { html, text } = getPartialMarkdown(line.text, s_diff, e_diff);
   return textLineSchema.parse({
     ...line,
