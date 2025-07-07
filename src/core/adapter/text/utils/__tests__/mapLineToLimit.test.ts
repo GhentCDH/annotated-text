@@ -11,7 +11,7 @@ vi.mock("../../../../compute/utils/intersect", () => ({
 }));
 
 vi.mock("../../../../model", async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = (await importOriginal()) as any;
   return {
     ...actual,
     textLineSchema: {
@@ -37,11 +37,11 @@ describe("getDiff", () => {
 
 describe("mapLineToLimit", () => {
   const text = "abcdefghij";
-  const baseLine: TextLine = {
+  const baseLine = {
     start: 0,
     end: 10,
     text,
-  };
+  } as TextLine;
 
   const mockUpdateLine: UpdateLineFn = vi.fn((line, start, end, diff) => ({
     ...line,
@@ -51,7 +51,7 @@ describe("mapLineToLimit", () => {
   }));
 
   beforeEach(() => {
-    mockUpdateLine.mockClear();
+    (mockUpdateLine as any).mockClear();
   });
 
   it("returns parsed line when no limit is provided", () => {
