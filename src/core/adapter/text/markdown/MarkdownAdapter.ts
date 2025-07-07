@@ -44,12 +44,16 @@ const updateLine: UpdateLineFn = (
   line: TextLine,
   start: number,
   end: number,
+  isStart: boolean = true,
 ): TextLine => {
-  const s_diff = start === line.start ? 0 : start - line.start;
-  const e_diff = line.end === end ? line.end : line.end - end;
+  const s_diff = isStart ? start - line.start : 0;
+  let e_diff = line.end;
+
+  if (start !== 0 && !isStart) {
+    e_diff = line.end - end;
+  }
   const flatText = line.flatText.substring(s_diff, e_diff);
 
-  // FIXME: the html is no longer formatted, it should be updated as well
   const { html, text } = getPartialMarkdown(line.text, s_diff, e_diff);
   return textLineSchema.parse({
     ...line,
@@ -64,9 +68,11 @@ const updateLine: UpdateLineFn = (
 const textToLines = (text: string, limit: Limit): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
   const lines = _textToLines(text);
-  return lines
+  const result = lines
     .map((line) => mapLineToLimit(line, limit, updateLine))
     .filter(Boolean);
+
+  return result;
 };
 
 /**
