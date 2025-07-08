@@ -34,6 +34,7 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
       end: selector.end,
     });
 
+    parsedAnnotation.isGutter = this.gutterFn(annotation);
     super.addAnnotation(parsedAnnotation.id, annotation);
 
     return parsedAnnotation;

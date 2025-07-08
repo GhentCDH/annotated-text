@@ -1,4 +1,3 @@
-import { isGutter } from "./utils/predicates";
 import {
   calculateAnnotationWeights,
   calculateGutterAnnotationWeightsAndEnrich,
@@ -185,21 +184,20 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     calculateWeights = true,
   ): void {
     this.annotationLineMap.set(annotation.id, lines);
-    annotation.isGutter = isGutter(annotation.target);
 
-    if (isGutter(annotation.target)) {
+    if (annotation.isGutter) {
       this.setGutterAnntoation(annotation, lines);
     } else {
       this.annotationsMap.set(annotation.id, annotation);
     }
 
-    const lineMap = isGutter(annotation.target)
+    const lineMap = annotation.isGutter
       ? this.lineGutterMap
       : this.lineAnnotationMap;
     lines.forEach((line) => lineMap.get(line.lineNumber).push(annotation));
 
     if (calculateWeights) {
-      if (isGutter(annotation.target)) this.calculateMaxGutterWeight();
+      if (annotation.isGutter) this.calculateMaxGutterWeight();
       else this.calculateLinesWeights();
     }
   }
@@ -212,7 +210,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   removeAnnotation(annotation: TextAnnotation, calculateWeights = true): void {
     const originalLines = this.annotationLineMap.get(annotation.id) ?? [];
     this.annotationsMap.delete(annotation.id);
-    if (isGutter(annotation.target)) {
+    if (annotation.isGutter) {
       this.gutterAnnotationIds.delete(annotation.id);
       this.removeAnnotationGutter(originalLines, annotation);
     } else {
@@ -222,7 +220,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     this.annotationLineMap.delete(annotation.id);
 
     if (calculateWeights) {
-      if (isGutter(annotation.target)) this.calculateMaxGutterWeight();
+      if (annotation.isGutter) this.calculateMaxGutterWeight();
       else this.calculateLinesWeights();
     }
 
