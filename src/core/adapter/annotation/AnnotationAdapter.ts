@@ -48,7 +48,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    */
   public config: AnnotationConfig;
   public colorFn = DefaultAnnotationColor;
-  public guttterFn = DefaultAnnotationGutter;
+  public gutterFn = DefaultAnnotationGutter;
 
   protected text: string;
 
@@ -94,7 +94,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   }
 
   isGutter(annotation: TextAnnotation) {
-    return this.guttterFn(this.getAnnotation(annotation.id));
+    return this.gutterFn(this.getAnnotation(annotation.id));
   }
 
   /**

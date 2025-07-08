@@ -22,7 +22,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
       parsedAnnotation = annotation as TextAnnotation;
     } else parsedAnnotation = data.data;
 
-    parsedAnnotation.isGutter = this.guttterFn(parsedAnnotation);
+    parsedAnnotation.isGutter = this.gutterFn(parsedAnnotation);
     super.addAnnotation(parsedAnnotation.id, annotation);
 
     return parsedAnnotation;
