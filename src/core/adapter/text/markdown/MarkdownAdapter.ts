@@ -44,17 +44,11 @@ const updateLine: UpdateLineFn = (
   line: TextLine,
   start: number,
   end: number,
-  isStart: boolean = true,
+  diff: { start: number; end: number },
 ): TextLine => {
-  const s_diff = isStart ? start - line.start : 0;
-  let e_diff = line.end;
+  const flatText = line.flatText.substring(diff.start, diff.end);
 
-  if (start !== 0 && !isStart) {
-    e_diff = line.end - end;
-  }
-  const flatText = line.flatText.substring(s_diff, e_diff);
-
-  const { html, text } = getPartialMarkdown(line.text, s_diff, e_diff);
+  const { html, text } = getPartialMarkdown(line.text, diff.start, diff.end);
   return textLineSchema.parse({
     ...line,
     text,

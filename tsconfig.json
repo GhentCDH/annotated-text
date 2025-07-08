@@ -8,6 +8,7 @@
     "outDir": "dist",
     //    "declarationDir": "dist",
     "baseUrl": ".",
+    "skipLibCheck": true,
     "paths": {
       "@ghentcdh/vue-component-annotated-text": [
         "./src/index.ts"

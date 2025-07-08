@@ -1,19 +1,36 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "types": [
+      "vite/client"
+    ],
     "declaration": true,
     "emitDeclarationOnly": true,
-    "outDir": "dist/types", // Or wherever you want to emit .d.ts files
-    "rootDir": "src", // IMPORTANT: limit to src folder
-    "composite": true, // Required if using project references
+    "outDir": "dist/types",
+    // Or wherever you want to emit .d.ts files
+    "rootDir": "src",
+    // IMPORTANT: limit to src folder
+    "composite": true,
+    // Required if using project references
     "skipLibCheck": true,
     "noEmit": false,
     "paths": {
-      "@/types/props": ["./src/types/props/index.ts"],
-      "@/types/emits": ["./src/types/emits/index.ts"]
+      "@/types/props": [
+        "./src/types/props/index.ts"
+      ],
+      "@/types/emits": [
+        "./src/types/emits/index.ts"
+      ]
     },
     "moduleResolution": "node",
     "target": "ESNext"
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/**/__tests__/*",
+    "dev-app/*.vue",
+    "dev-app/*.ts"
+  ]
 }

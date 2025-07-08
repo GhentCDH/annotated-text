@@ -19,6 +19,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "VueComponentAnnotatedText",
+      // fileName: "index",
       formats: ["es", "cjs"],
     },
     rollupOptions: {
@@ -32,8 +33,13 @@ export default defineConfig({
     outDir: "dist",
   },
   test: {
+    globals: true,
+    environment: "jsdom",
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    reporters: ["default"],
     coverage: {
-      reportsDirectory: "../test_coverage",
+      reportsDirectory: "../coverage/apps/frontend",
+      provider: "v8",
     },
   },
   resolve: {},

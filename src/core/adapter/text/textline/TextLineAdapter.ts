@@ -12,10 +12,9 @@ const updateLine: UpdateLineFn = (
   line: TextLine,
   start: number,
   end: number,
+  diff: { start: number; end: number },
 ): TextLine => {
-  const s_diff = start === line.start ? 0 : start - line.start;
-  const e_diff = line.end === end ? line.end : line.end - end;
-  const flatText = line.flatText.substring(s_diff, e_diff);
+  const flatText = line.flatText.substring(diff.start, diff.end);
   return textLineSchema.parse({
     ...line,
     text: flatText,
