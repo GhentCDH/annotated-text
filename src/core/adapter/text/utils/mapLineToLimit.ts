@@ -1,3 +1,4 @@
+import memoize from "memoizee";
 import { type TextLine, textLineSchema } from "../../../model";
 import { isIntersection } from "../../../compute/utils/intersect";
 import { Limit } from "../TextAdapter";
@@ -9,17 +10,23 @@ export type UpdateLineFn = (
   diff: { start: number; end: number },
 ) => TextLine;
 
+const getStart = memoize((lineStart: number, limitStart: number) => {
+  if (limitStart <= lineStart) return 0;
+  return limitStart - lineStart;
+});
+
+const getEnd = memoize(
+  (lineStart: number, lineEnd: number, limitEnd: number) => {
+    if (lineEnd <= limitEnd) return lineEnd - lineStart;
+    return limitEnd - lineStart;
+  },
+);
+
 export const getDiff = (line: TextLine, limit: Limit) => {
-  const { start, end } = limit;
-  const s_diff = start === line.start ? 0 : start - line.start;
-  let e_diff = line.end;
+  const start = getStart(line.start, limit.start);
+  const end = getEnd(line.start, line.end, limit.end);
 
-  if (line.end !== end) {
-    const endDiff = line.end - end;
-    e_diff = line.text.length - endDiff + 1;
-  }
-
-  return { start: s_diff, end: e_diff };
+  return { start, end };
 };
 
 export const mapLineToLimit = (
@@ -31,12 +38,12 @@ export const mapLineToLimit = (
     return textLineSchema.parse(textLine);
   }
 
-  if (!limit.ignoreLines) {
-    return textLineSchema.parse(textLine);
-  }
-
   if (!isIntersection(textLine, limit)) {
     return null;
+  }
+
+  if (!limit.ignoreLines) {
+    return textLineSchema.parse(textLine);
   }
 
   let line = textLine;
@@ -51,4 +58,14 @@ export const mapLineToLimit = (
   }
 
   return textLineSchema.parse(line);
+};
+
+export const mapLinesToLimit = (
+  textLines: TextLine[],
+  limit: Limit,
+  updateLine: UpdateLineFn,
+): TextLine[] => {
+  return textLines
+    .map((line) => mapLineToLimit(line, limit, updateLine))
+    .filter(Boolean);
 };

@@ -11,7 +11,7 @@ import {
   TextAdapter,
 } from "../TextAdapter";
 import { type TextLine, textLineSchema } from "../../../model";
-import { mapLineToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
+import { mapLinesToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
 
 const _textToLines = memoize((text: string): TextLine[] => {
   // Split into paragraphs we do it ourself
@@ -62,11 +62,7 @@ const updateLine: UpdateLineFn = (
 const textToLines = (text: string, limit: Limit): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
   const lines = _textToLines(text);
-  const result = lines
-    .map((line) => mapLineToLimit(line, limit, updateLine))
-    .filter(Boolean);
-
-  return result;
+  return mapLinesToLimit(lines, limit, updateLine);
 };
 
 /**

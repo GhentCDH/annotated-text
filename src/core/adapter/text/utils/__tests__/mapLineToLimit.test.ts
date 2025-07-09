@@ -1,6 +1,11 @@
 // write vitest on mapLineToLimit.ts
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getDiff, mapLineToLimit, type UpdateLineFn } from "../mapLineToLimit";
+import {
+  getDiff,
+  mapLinesToLimit,
+  mapLineToLimit,
+  type UpdateLineFn,
+} from "../mapLineToLimit";
 import { type TextLine } from "../../../../model";
 import { isIntersection } from "../../../../compute/utils/intersect";
 import { type Limit } from "../../TextAdapter";
@@ -21,18 +26,23 @@ vi.mock("../../../../model", async (importOriginal) => {
 });
 
 describe("getDiff", () => {
-  it("should return correct diff when start matches", () => {
-    const line = { start: 0, end: 10, text: "abcdefghij" } as TextLine;
-    const result = getDiff(line, { start: 0, end: 10 });
-    expect(result).toEqual({ start: 0, end: 10 });
-  });
-
-  it("should calculate non-zero start diff and end diff", () => {
-    const line = { start: 2, end: 10, text: "cdefghij" } as TextLine;
-    const result = getDiff(line, { start: 4, end: 8 });
-    // endDiff = 2 => e_diff = 8 - 2 + 1 = 7
-    expect(result).toEqual({ start: 2, end: 7 });
-  });
+  const text = `Lorem ipsum dolor sit amet, **consectetur** adipiscing elit.`;
+  it.each`
+    lineStart | lineEnd | limitStart | limitEnd | expected
+    ${0}      | ${10}   | ${0}       | ${10}    | ${{ start: 0, end: 10 }}
+    ${72}     | ${100}  | ${72}      | ${85}    | ${{ start: 0, end: 13 }}
+    ${54}     | ${100}  | ${1}       | ${89}    | ${{ start: 0, end: 35 }}
+    ${54}     | ${100}  | ${44}      | ${57}    | ${{ start: 0, end: 3 }}
+    ${44}     | ${100}  | ${54}      | ${57}    | ${{ start: 10, end: 13 }}
+    ${44}     | ${100}  | ${54}      | ${105}   | ${{ start: 10, end: 56 }}
+  `(
+    "returns $expected for line: [$lineStart, $lineEnd] and limit: [$limitStart, $limitEnd]",
+    ({ lineStart, lineEnd, limitStart, limitEnd, expected }) => {
+      const line = { start: lineStart, end: lineEnd, text } as TextLine;
+      const limit = { start: limitStart, end: limitEnd };
+      expect(getDiff(line, limit)).toEqual(expected);
+    },
+  );
 });
 
 describe("mapLineToLimit", () => {
@@ -69,7 +79,7 @@ describe("mapLineToLimit", () => {
     expect(result).toBeNull();
   });
 
-  it("returns parsed line if ignoreLines is false", () => {
+  it("returns parsed line if ignoreLines is false and intersects", () => {
     (isIntersection as any).mockReturnValue(true);
     const result = mapLineToLimit(
       baseLine,
@@ -104,7 +114,6 @@ describe("mapLineToLimit", () => {
   });
 
   it("updates only end when end > limit.end", () => {
-    (isIntersection as any).mockReturnValue(true);
     const line = { start: 2, end: 12, text: "cdefghijkl" } as TextLine;
     const limit: Limit = { start: 2, end: 8, ignoreLines: true };
 
@@ -113,6 +122,36 @@ describe("mapLineToLimit", () => {
     expect(mockUpdateLine).toHaveBeenCalledTimes(1);
     expect(result.start).toBe(2);
     expect(result.end).toBe(8);
-    expect(result.text).toBe("cdefghi");
+    expect(result.text).toBe("cdefgh");
+  });
+
+  describe("mapLinesToLimit", () => {
+    const line1 = { start: 0, end: 5, text: "abcde" } as TextLine;
+    const line2 = { start: 5, end: 10, text: "fghij" } as TextLine;
+    const limit: Limit = { start: 2, end: 8 };
+
+    beforeEach(() => {
+      vi.restoreAllMocks();
+    });
+
+    it("filters out falsy results from mapLineToLimit", () => {
+      (isIntersection as any)
+        .mockImplementationOnce(() => false)
+        .mockImplementationOnce(() => true);
+      const result = mapLinesToLimit(
+        [line1, line2],
+        { start: 2, end: 8 },
+        mockUpdateLine,
+      );
+
+      expect(result).toEqual([line2]);
+    });
+
+    it("returns an empty array if all lines are filtered out", () => {
+      (isIntersection as any).mockReturnValue(false);
+      const result = mapLinesToLimit([line1, line2], limit, mockUpdateLine);
+
+      expect(result).toEqual([]);
+    });
   });
 });
