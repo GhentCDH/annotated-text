@@ -38,7 +38,7 @@ describe("getDiff", () => {
   `(
     "returns $expected for line: [$lineStart, $lineEnd] and limit: [$limitStart, $limitEnd]",
     ({ lineStart, lineEnd, limitStart, limitEnd, expected }) => {
-      const line = { start: lineStart, end: lineEnd, text };
+      const line = { start: lineStart, end: lineEnd, text } as TextLine;
       const limit = { start: limitStart, end: limitEnd };
       expect(getDiff(line, limit)).toEqual(expected);
     },
@@ -126,8 +126,8 @@ describe("mapLineToLimit", () => {
   });
 
   describe("mapLinesToLimit", () => {
-    const line1: TextLine = { start: 0, end: 5, text: "abcde" };
-    const line2: TextLine = { start: 5, end: 10, text: "fghij" };
+    const line1 = { start: 0, end: 5, text: "abcde" } as TextLine;
+    const line2 = { start: 5, end: 10, text: "fghij" } as TextLine;
     const limit: Limit = { start: 2, end: 8 };
 
     beforeEach(() => {

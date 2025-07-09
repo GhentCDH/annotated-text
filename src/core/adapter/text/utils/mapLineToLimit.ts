@@ -64,7 +64,7 @@ export const mapLinesToLimit = (
   textLines: TextLine[],
   limit: Limit,
   updateLine: UpdateLineFn,
-): TextLine => {
+): TextLine[] => {
   return textLines
     .map((line) => mapLineToLimit(line, limit, updateLine))
     .filter(Boolean);
