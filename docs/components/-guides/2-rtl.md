@@ -26,14 +26,14 @@ createAnnotatedText(id,
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { plainText, waitUntilElementExists, greekText } from "@demo";
+import { onMounted } from "vue";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { plainText, greekText } from "@demo";
 const id = `plain-text-example`;
 const greek_id = `greek-text-example`;
-console.log('foooo')
 
-waitUntilElementExists(id).then((element) => {
+onMounted(()=> {
+    clearAnnotatedTextCache()
     createAnnotatedText(id,
         {  
             text: { textDirection: 'rtl' },
@@ -41,9 +41,7 @@ waitUntilElementExists(id).then((element) => {
         })
     .setText(plainText.text)
     .setAnnotations(plainText.annotations);
-});
 
-waitUntilElementExists(greek_id).then((element) => {
     createAnnotatedText(greek_id,
         {  
             text: TextLineAdapter({ textDirection: 'rtl' }),

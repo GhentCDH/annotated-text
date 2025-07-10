@@ -1,6 +1,5 @@
 # Show annotations details
 
-<ClientOnly>
 <div style="display: grid;
   grid-template-columns: repeat(2, 1fr);">
     <div id="annotated-text"></div>
@@ -11,7 +10,12 @@
 //
 import { textWithChunks } from "@demo";
 
-textWithChunks('annotated-text', 'annotated-text--details')
+import { onMounted } from "vue";
+import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+
+onMounted(()=> {
+    clearAnnotatedTextCache();
+    textWithChunks('annotated-text', 'annotated-text--details')
+});
 
 </script>
-</ClientOnly>

@@ -37,13 +37,14 @@ By default the events will be logged to the console with debug statements.
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists, plainText } from "@demo";
+import { onMounted } from "vue";
+import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/vue-component-annotated-text";
+import { plainText } from "@demo";
 
 const id = "annotation-log";
 
-waitUntilElementExists(id).then((element) => {
+onMounted(()=> {
+    clearAnnotatedTextCache()
     createAnnotatedText(id,
         {
             text: PlainTextAdapter(),
@@ -61,7 +62,7 @@ waitUntilElementExists(id).then((element) => {
             logger.innerHTML = `<p><b>${event}</b>: ${data.annotation.id}</p>`;
         }
     })
-;
+
 });
 
 

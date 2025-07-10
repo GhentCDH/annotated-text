@@ -24,12 +24,13 @@ The original text:
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists, plainText } from "@demo";
+import { onMounted } from "vue";
+import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { plainText } from "@demo";
 const id = `plain-text-example`;
 
-waitUntilElementExists(id).then((element) => {
+onMounted(()=> {
+    clearAnnotatedTextCache()
     createAnnotatedText(id,
         {
             text: PlainTextAdapter(),

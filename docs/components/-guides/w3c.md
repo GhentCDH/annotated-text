@@ -71,13 +71,12 @@ initializing the parser.
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists, w3cText } from "@demo";
+import { onMounted, onUnmounted } from "vue";
+import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter,clearAnnotatedTextCache } from "@ghentcdh/vue-component-annotated-text";
+import { w3cText } from "@demo";
 
 const createAnnotations = (id, sourceId)=>{
 
-    waitUntilElementExists(id).then((element) => {
         createAnnotatedText(id,
             {
                 annotation: W3CAnnotationAdapter({  
@@ -102,10 +101,11 @@ console.log(data)
             if(!logger) return;
             logger.innerHTML = `<p><b>${event}</b>: ${JSON.stringify(data.annotation, null, 2)}</p>`;
         });
-    });
 }
 
-createAnnotations(`w3c-simple-text`);
-createAnnotations(`w3c-multiple-sources`, w3cText.sourceId);
-
+onMounted(()=> {
+    clearAnnotatedTextCache()
+    createAnnotations(`w3c-simple-text`);
+    createAnnotations(`w3c-multiple-sources`, w3cText.sourceId);
+});
 </script>

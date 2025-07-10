@@ -38,15 +38,19 @@ line start and end are ignored.
 
 <script setup>
 //
+import { onMounted } from "vue";
+import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
 import { limitLinesPlainText, limitLinesMarkdown, limitLinesLineText } from "@demo";
 
 
-limitLinesPlainText(`plaintext--ignore-lines-false`);
-limitLinesPlainText(`plaintext--ignore-lines`, true);
-limitLinesMarkdown(`markdown--ignore-lines-false`);
-limitLinesMarkdown(`markdown--ignore-lines`, true);
-limitLinesLineText(`lines--ignore-lines-false`);
-limitLinesLineText(`lines--ignore-lines`, true);
-
+onMounted(()=> {
+    clearAnnotatedTextCache();
+    limitLinesPlainText(`plaintext--ignore-lines-false`);
+    limitLinesPlainText(`plaintext--ignore-lines`, true);
+    limitLinesMarkdown(`markdown--ignore-lines-false`);
+    limitLinesMarkdown(`markdown--ignore-lines`, true);
+    limitLinesLineText(`lines--ignore-lines-false`);
+    limitLinesLineText(`lines--ignore-lines`, true);
+});
 </script>
 

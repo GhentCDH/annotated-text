@@ -9,17 +9,22 @@ takes an annotation ID as an argument and scrolls the view to that annotation.
 
 # Example
 
-<ClientOnly>
 <div style="display: grid;
   grid-template-columns: repeat(2, 1fr);">
     <div id="annotated-scroll"></div>
 </div>
 
+
 <script setup>
 //
+import { onMounted } from "vue";
+
+import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
 import { scrollToAnnotation } from "@demo";
 
-scrollToAnnotation('annotated-scroll')
+onMounted(()=> {
+    clearAnnotatedTextCache();
+    scrollToAnnotation('annotated-scroll');
+});
 
 </script>
-</ClientOnly>
