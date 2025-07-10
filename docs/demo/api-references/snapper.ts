@@ -6,7 +6,6 @@ import {
   TextAnnotation,
   TextLineAdapter,
 } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists } from "../waitUntilElementExists";
 import { greekText } from "../data";
 
 class CustomSnapper extends Snapper {
@@ -23,16 +22,14 @@ class CustomSnapper extends Snapper {
 }
 
 export const snapper = (id: string) => {
-  waitUntilElementExists(id).then((element) => {
-    createAnnotatedText(id, {
-      text: TextLineAdapter(),
-      annotation: {
-        edit: true,
-        create: true,
-        snapper: new CustomSnapper(),
-      },
-    })
-      .setText(greekText.text)
-      .setAnnotations(greekText.annotations);
-  });
+  createAnnotatedText(id, {
+    text: TextLineAdapter(),
+    annotation: {
+      edit: true,
+      create: true,
+      snapper: new CustomSnapper(),
+    },
+  })
+    .setText(greekText.text)
+    .setAnnotations(greekText.annotations);
 };

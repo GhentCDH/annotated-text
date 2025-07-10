@@ -37,12 +37,13 @@ Don't forget to replace do destroy the component when it is no longer needed to 
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { greekText, waitUntilElementExists } from "@demo";
+import { onMounted, onUnmounted } from "vue";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { greekText } from "@demo";
 const id = `annotated-text-greek`;
 
-waitUntilElementExists(id,).then((element) => {
+onMounted(()=> {
+    clearAnnotatedTextCache()
     createAnnotatedText(id,  {
         text: TextLineAdapter()
     })

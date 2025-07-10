@@ -32,12 +32,13 @@ textAnnotation.annotationAdapter.enableCreate(true);
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { greekText, waitUntilElementExists } from "@demo";
+import { onMounted } from "vue";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { greekText } from "@demo";
 const id = `create-edit-example`;
 
-waitUntilElementExists(id).then((element) => {
+onMounted(()=> {
+    clearAnnotatedTextCache()
     createAnnotatedText(id,
         {  
             text: TextLineAdapter(),
@@ -46,6 +47,5 @@ waitUntilElementExists(id).then((element) => {
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 });
-
 </script>
 

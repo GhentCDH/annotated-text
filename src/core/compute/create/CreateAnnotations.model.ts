@@ -27,6 +27,31 @@ export type AnnotatedText<ANNOTATION> = {
     annotations: ANNOTATION[],
     redraw?: boolean,
   ) => AnnotatedText<ANNOTATION>;
+
+  /**
+   * Add a single annotation to the model. If you update the complete list of annotations, on a large set than it can start hanging.
+   * If the annotation with this id already exists, it will update the annotation.
+   *
+   * @param annotation
+   */
+  addAnnotation: (annotation: ANNOTATION) => AnnotatedText<ANNOTATION>;
+
+  /**
+   * Update an existing annotation in the model.
+   * If the annotation with this id does not exist, it will add the annotation.
+   *
+   */
+  updateAnnotation: (
+    id: AnnotationId,
+    annotation: ANNOTATION,
+  ) => AnnotatedText<ANNOTATION>;
+
+  /**
+   * Delete an existing annotation in the model.
+   *
+   */
+  deleteAnnotation: (id: AnnotationId) => AnnotatedText<ANNOTATION>;
+
   /**
    * Highlight annotations by their IDs.
    * @param ids

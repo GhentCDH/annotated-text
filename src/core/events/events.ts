@@ -10,7 +10,8 @@ export type AnnotationEventType =
   | "annotation-edit--move"
   | "annotation-create--start"
   | "annotation-create--end"
-  | "annotation-create--move";
+  | "annotation-create--move"
+  | "destroy";
 
 export type AnnotationEventData = {
   annotation: Annotation;

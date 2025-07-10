@@ -47,8 +47,13 @@ createAnnotatedText(id,
 //
 import { snapper } from "@demo";
 
-snapper('annotation--snapper')
+import { onMounted } from "vue";
+import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
 
+onMounted(()=> {
+    clearAnnotatedTextCache();
+    snapper('annotation--snapper')
+});
 </script>
 
 

@@ -34,14 +34,14 @@ The original text, rendered as flat text:
 
 <script setup>
 //
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { createAnnotatedText, MarkdownTextAdapter, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists, markdownText } from "@demo";
+import { onMounted } from "vue";
+import { createAnnotatedText, MarkdownTextAdapter, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/vue-component-annotated-text";
+import {  markdownText } from "@demo";
 const id = `markdown-text-example`;
 
 const id_   = `plain-text-example`;
-waitUntilElementExists(id_).then((element) => {
-console.log('----PlainTextAdapter', id_);
+onMounted(()=> {
+    clearAnnotatedTextCache()
     createAnnotatedText(id_,
         {
             text: MarkdownTextAdapter({flatText: true}),
@@ -52,10 +52,7 @@ console.log('----PlainTextAdapter', id_);
         })
     .setText(markdownText.text)
     .setAnnotations(markdownText.annotations);
-});
 
-waitUntilElementExists(id).then((element) => {
-console.log('----MarkdownTextAdapter', id_);
     createAnnotatedText(id,
         {
             text: MarkdownTextAdapter(),

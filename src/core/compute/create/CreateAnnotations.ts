@@ -21,6 +21,7 @@ import { computeAnnotationsOnLines } from "../3_compute_annotations_on_line";
 import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
 import { ErrorEventCallback, EventCallback } from "../../events";
 import { drawText } from "../draw/text";
+import { recreateAnnotation } from "../draw/annotations/draw";
 
 const document = globalThis.document || null;
 
@@ -197,6 +198,7 @@ export class CreateAnnotationsImpl<ANNOTATION>
   }
 
   public destroy() {
+    this.eventListener.sendEvent("destroy", null, null);
     if (this.element) {
       this.resizeObserver?.unobserve(this.element);
       this.element.innerHTML = "";
@@ -276,6 +278,31 @@ export class CreateAnnotationsImpl<ANNOTATION>
       block: "center",
       inline: "nearest",
     });
+    return this;
+  }
+
+  addAnnotation(annotation: ANNOTATION): CreateAnnotationsImpl<ANNOTATION> {
+    // TODO not sure if we should check
+    this.annotations.push(annotation);
+    recreateAnnotation(this.svgModel, this.annotationAdapter.parse(annotation));
+    return this;
+  }
+
+  updateAnnotation(
+    id: string,
+    annotation: ANNOTATION,
+  ): CreateAnnotationsImpl<ANNOTATION> {
+    // TODO not sure if we should check
+    this.annotations.push(annotation);
+    recreateAnnotation(this.svgModel, this.annotationAdapter.parse(annotation));
+    return this;
+  }
+
+  deleteAnnotation(id: string): CreateAnnotationsImpl<ANNOTATION> {
+    const annotation = this.textAnnotationModel.getAnnotation(id);
+    this.textAnnotationModel.removeAnnotation(annotation, true);
+    this.svgModel.removeAnnotations(annotation.id);
+
     return this;
   }
 }

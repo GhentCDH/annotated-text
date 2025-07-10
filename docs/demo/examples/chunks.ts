@@ -4,7 +4,6 @@ import {
   createAnnotatedText,
   TextLineAdapter,
 } from "@ghentcdh/vue-component-annotated-text";
-import { waitUntilElementExists } from "../waitUntilElementExists";
 import { greekText } from "../data";
 
 const document = globalThis.document;
@@ -32,27 +31,23 @@ export const textWithChunks = (id: string, chunksId: string) => {
     .filter((a) => a.target === "text")
     .slice(0, 10);
   const annotationsMap = {};
-  waitUntilElementExists(id).then(() => {
-    createAnnotatedText(id, {
-      text: TextLineAdapter(),
-      annotation: { create: true, edit: true },
-    })
-      .setText(greekText.text)
-      .setAnnotations(annotations)
-      .on("annotation-edit--move", ({ data }) => {
-        const annotation = data.annotation;
-        annotationsMap[annotation.id].annotatedText
-          .setAnnotations([annotation])
-          .lineAdapter.setConfig("limit", annotation);
-      });
-  });
-
-  waitUntilElementExists(chunksId).then((element) => {
-    annotations.forEach((annotation) => {
-      annotationsMap[annotation.id] = {
-        annotation,
-        annotatedText: createChunk(element as HTMLElement, annotation),
-      };
+  const element = document.getElementById(id);
+  createAnnotatedText(id, {
+    text: TextLineAdapter(),
+    annotation: { create: true, edit: true },
+  })
+    .setText(greekText.text)
+    .setAnnotations(annotations)
+    .on("annotation-edit--move", ({ data }) => {
+      const annotation = data.annotation;
+      annotationsMap[annotation.id].annotatedText
+        .setAnnotations([annotation])
+        .lineAdapter.setConfig("limit", annotation);
     });
+  annotations.forEach((annotation) => {
+    annotationsMap[annotation.id] = {
+      annotation,
+      annotatedText: createChunk(element as HTMLElement, annotation),
+    };
   });
 };

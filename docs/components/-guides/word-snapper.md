@@ -9,16 +9,20 @@ useful when you want to ensure that the user can only select whole words, preven
 
 # Example
 
-<ClientOnly>
 <div>
     <div id="annotated--word-snapper"></div>
 </div>
 
 <script setup>
 //
+import { onMounted } from "vue";
+
+import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
 import { wordSnapper } from "@demo";
 
-wordSnapper('annotated--word-snapper')
+onMounted(()=> {
+    clearAnnotatedTextCache();
+    wordSnapper('annotated--word-snapper')
+});
 
 </script>
-</ClientOnly>
