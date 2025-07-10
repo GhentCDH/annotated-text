@@ -22,14 +22,16 @@ import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
 import { ErrorEventCallback, EventCallback } from "../../events";
 import { drawText } from "../draw/text";
 import { recreateAnnotation } from "../draw/annotations/draw";
+import { AnnotationId } from "../../model";
 
 const document = globalThis.document || null;
+export type BaseAnnotation = { id: AnnotationId };
 
-export class CreateAnnotationsImpl<ANNOTATION>
+export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   implements AnnotatedText<ANNOTATION>
 {
   private textAnnotationModel: TextAnnotationModel;
-  private annotations: ANNOTATION[];
+  private annotationsMap = new Map<AnnotationId, ANNOTATION>();
   private element: HTMLElement;
   private textElement: HTMLElement;
   private svgModel: SvgModel;
@@ -65,16 +67,23 @@ export class CreateAnnotationsImpl<ANNOTATION>
     return this;
   }
 
+  private annotations() {
+    return Array.from(this.annotationsMap.values());
+  }
+
   public setText(text: string, redraw = true) {
     this.text = text || "";
     this.createAnnotationModel();
-    this.setAnnotations(this.annotations, redraw);
+    this.setAnnotations(this.annotations(), redraw);
 
     return this;
   }
 
   public setAnnotations(annotations: ANNOTATION[], redraw = true) {
-    this.annotations = annotations;
+    this.annotationsMap.clear();
+    annotations.forEach((annotation) => {
+      this.annotationsMap.set(annotation.id, annotation);
+    });
 
     if (!this.textAnnotationModel) {
       Debugger.debug("Annotations set before lines, cannot set annotations");
@@ -241,7 +250,10 @@ export class CreateAnnotationsImpl<ANNOTATION>
   private recreateAnnotationModel() {
     this.destroy();
     this.createAnnotationModel();
-    this.setAnnotations(this.annotations);
+    this.annotationsMap.clear();
+    this.annotations().forEach((annotation) => {
+      this.annotationsMap.set(annotation.id, annotation);
+    });
     return this;
   }
 
@@ -283,17 +295,21 @@ export class CreateAnnotationsImpl<ANNOTATION>
 
   addAnnotation(annotation: ANNOTATION): CreateAnnotationsImpl<ANNOTATION> {
     // TODO not sure if we should check
-    this.annotations.push(annotation);
+    if (this.annotationsMap.has(annotation.id)) {
+      return this.updateAnnotation(annotation.id, annotation);
+    }
     recreateAnnotation(this.svgModel, this.annotationAdapter.parse(annotation));
     return this;
   }
 
   updateAnnotation(
-    id: string,
+    id: AnnotationId,
     annotation: ANNOTATION,
   ): CreateAnnotationsImpl<ANNOTATION> {
     // TODO not sure if we should check
-    this.annotations.push(annotation);
+    if (!this.annotationsMap.has(annotation.id)) {
+      return this.addAnnotation(annotation);
+    }
     recreateAnnotation(this.svgModel, this.annotationAdapter.parse(annotation));
     return this;
   }
@@ -302,6 +318,7 @@ export class CreateAnnotationsImpl<ANNOTATION>
     const annotation = this.textAnnotationModel.getAnnotation(id);
     this.textAnnotationModel.removeAnnotation(annotation, true);
     this.svgModel.removeAnnotations(annotation.id);
+    this.annotationsMap.delete(annotation.id);
 
     return this;
   }

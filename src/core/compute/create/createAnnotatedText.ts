@@ -1,5 +1,5 @@
 import { AnnotatedText } from "./CreateAnnotations.model";
-import { CreateAnnotationsImpl } from "./CreateAnnotations";
+import { BaseAnnotation, CreateAnnotationsImpl } from "./CreateAnnotations";
 import {
   createTextAdapterParams,
   PlainTextAdapter,
@@ -22,7 +22,9 @@ type createAnnotatedTextParams<ANNOTATION> = {
 
 const annotatedTextCache = new Map<string, AnnotatedText<any>>();
 
-export const createAnnotatedText = <ANNOTATION = Annotation>(
+export const createAnnotatedText = <
+  ANNOTATION extends BaseAnnotation = Annotation,
+>(
   id: string,
   params: createAnnotatedTextParams<ANNOTATION> = {},
 ): AnnotatedText<ANNOTATION> => {
