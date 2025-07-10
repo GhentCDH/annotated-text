@@ -1,5 +1,7 @@
 # Interaction between components
 
+If you edit on the right side, the left side will update automatically. and vice versa.
+
 <div id="annotated-text--interaction"></div>
 
 <script setup>

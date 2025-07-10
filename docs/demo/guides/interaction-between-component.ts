@@ -72,14 +72,6 @@ export const interActionBetweenComponents = (id: string) => {
       getAnnotatedText(getDivId(annotation.id)).highlightAnnotations([
         annotation.id,
       ]);
-    })
-    .on("mouse-leave", (event) => {
-      const annotation = event.data.annotation as Annotation;
-      getAnnotatedText(getDivId(annotation.id)).highlightAnnotations([]);
-    })
-    .on("annotation-edit--end", (event) => {
-      const annotation = event.data.annotation as Annotation;
-      getAnnotatedText(getDivId(annotation.id)).highlightAnnotations([]);
     });
 
   annotations.forEach((annotation) => {
