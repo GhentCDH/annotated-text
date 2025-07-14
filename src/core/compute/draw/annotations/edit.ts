@@ -1,8 +1,47 @@
 import { drawDummyAnnotation, getCharacterFromTextNodesAtPoint } from "./draw";
+import { SnapperAction } from "../../../adapter/text/snapper";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 import { type TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
+
+export const sendDummyAnnotationEvent = (
+  annotation: AnnotationDraw,
+  { start, end }: { start: number; end: number },
+  svgModel: SvgModel,
+  action: SnapperAction,
+  eventType: AnnotationEventType,
+) => {
+  const originalAnnotation = svgModel.model.getAnnotation(
+    annotation.annotationUuid,
+  );
+  // create dummy annotation
+  const dummyAnnotation = {
+    ...originalAnnotation,
+    start,
+    end,
+    annotationUuid: DUMMY_UID,
+  } as unknown as TextAnnotation;
+
+  const snapper = svgModel.annotationAdapter.snapper.fixOffset(
+    action,
+    dummyAnnotation,
+  );
+  dummyAnnotation.start = snapper.start;
+  dummyAnnotation.end = snapper.end;
+
+  svgModel.sendEvent(
+    {
+      event: eventType,
+      annotationUuid: dummyAnnotation?.id.toString() || "",
+    },
+    { annotation: dummyAnnotation },
+  );
+
+  drawDummyAnnotation(svgModel, dummyAnnotation, annotation.color.hover);
+
+  return dummyAnnotation;
+};
 
 export const editAnnotations = (
   svgModel: SvgModel,
@@ -32,30 +71,14 @@ export const editAnnotations = (
   const start = Math.min(_start, _end);
   const end = Math.max(_start, _end);
 
-  // create dummy annotation
-  const dummyAnnotation = {
-    ...originalAnnotation,
-    start,
-    end,
-    annotationUuid: DUMMY_UID,
-  } as unknown as TextAnnotation;
-
-  const snapper = svgModel.annotationAdapter.snapper.fixOffset(
-    target === "start" ? "move-start" : "move-end",
-    dummyAnnotation,
-  );
-  dummyAnnotation.start = snapper.start;
-  dummyAnnotation.end = snapper.end;
-
-  svgModel.sendEvent(
+  return sendDummyAnnotationEvent(
+    annotation,
     {
-      event: eventType,
-      annotationUuid: dummyAnnotation?.id.toString() || "",
+      start,
+      end,
     },
-    { annotation: dummyAnnotation },
+    svgModel,
+    target === "start" ? "move-start" : "move-end",
+    eventType,
   );
-
-  drawDummyAnnotation(svgModel, dummyAnnotation, annotation.color.hover);
-
-  return dummyAnnotation;
 };

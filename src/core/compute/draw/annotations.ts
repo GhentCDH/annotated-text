@@ -1,6 +1,7 @@
 import { hoverAnnotation, leaveAnnotation } from "./events/hover";
 import { clickAnnotation, doubleClickAnnotation } from "./events/click";
 import { drawAnnotationHandles } from "./events/drag";
+import { addDraggableAnnotation } from "./annotations/drag-annotation";
 import { SvgModel } from "../model/svg.types";
 import { AnnotationDraw } from "../annotation.model";
 import { AnnotationConfig } from "../../adapter/annotation";
@@ -53,5 +54,6 @@ export const drawAnnotation = (
     .on("mouseleave", leaveAnnotation(rect, annotation, svgModel))
     // TODO check double click also fires click event
     .on("dblclick", doubleClickAnnotation(rect, annotation, svgModel))
-    .on("click", clickAnnotation(rect, annotation, svgModel));
+    .on("click", clickAnnotation(rect, annotation, svgModel))
+    .call(addDraggableAnnotation(svgModel, annotation));
 };

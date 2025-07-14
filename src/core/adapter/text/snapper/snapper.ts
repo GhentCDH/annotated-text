@@ -6,7 +6,7 @@ export type SnapperResult = {
   modified: boolean;
 };
 
-export type SnapperAction = "move-start" | "move-end";
+export type SnapperAction = "move-start" | "move-end" | "drag";
 
 export abstract class Snapper {
   setText(text: string) {}
