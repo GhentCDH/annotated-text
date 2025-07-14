@@ -1,11 +1,11 @@
 import { drag } from "d3";
-import { TextAnnotation } from "@ghentcdh/vue-component-annotated-text";
 import { sendDummyAnnotationEvent } from "./edit";
 import {
   getCharacterFromTextNodesAtPoint,
   recreateAnnotation,
   removeDummyAnnotation,
 } from "./draw";
+import { TextAnnotation } from "../../../model";
 import { SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, Dimensions } from "../../annotation.model";
 

@@ -1,5 +1,5 @@
-import { SnapperAction } from "@ghentcdh/vue-component-annotated-text";
 import { drawDummyAnnotation, getCharacterFromTextNodesAtPoint } from "./draw";
+import { SnapperAction } from "../../../adapter/text/snapper";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 import { type TextAnnotation } from "../../../model";
