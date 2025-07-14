@@ -1,5 +1,14 @@
+import memoize from "memoizee";
+
+export const insideRange = memoize((a: number, b: number, value: number) => {
+  return value >= a && value <= b;
+});
+
 export const isInsideBoundingRect = (x: number, y: number, rect: DOMRect) => {
-  return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  return (
+    insideRange(rect.left, rect.right, x) &&
+    insideRange(rect.top, rect.bottom, y)
+  );
 };
 
 const findOffset = (node: HTMLElement, parentNode: HTMLElement, offset = 0) => {
@@ -34,7 +43,6 @@ export const findLineElement = (node: Node) => {
       }
     }
   }
-
   offset = findOffset(node as HTMLElement, lineElement);
   return { lineElement, lineUid, offset };
 };

@@ -8,11 +8,11 @@ import { AnnotationConfig } from "../../adapter/annotation";
 
 export const drawAnnotationContent = (
   annotation: AnnotationDraw,
-  svg: SvgModel,
+  svgModel: SvgModel,
   config: AnnotationConfig,
 ) => {
   let border = null;
-  const annotationGroup = svg.annotations
+  const annotationGroup = svgModel.annotations
     .append("g")
     .attr("data-annotation-uid", annotation.annotationUuid);
 
@@ -23,7 +23,8 @@ export const drawAnnotationContent = (
     .attr("data-annotation-role", "fill")
     .attr("d", annotation.path.fill)
     .attr("border", "none")
-    .attr("fill", annotation.color.default.fill);
+    .attr("fill", annotation.color.default.fill)
+    .call(addDraggableAnnotation(svgModel, annotation));
   if (annotation.path.border) {
     border = annotationGroup
       .append("path")
@@ -32,7 +33,8 @@ export const drawAnnotationContent = (
       .attr("stroke-width", config.text.border)
       .attr("d", annotation.path.border)
       .attr("fill", "none")
-      .attr("stroke", annotation.color.default.border);
+      .attr("stroke", annotation.color.default.border)
+      .call(addDraggableAnnotation(svgModel, annotation));
   }
 
   return { rect, border };
@@ -54,6 +56,5 @@ export const drawAnnotation = (
     .on("mouseleave", leaveAnnotation(rect, annotation, svgModel))
     // TODO check double click also fires click event
     .on("dblclick", doubleClickAnnotation(rect, annotation, svgModel))
-    .on("click", clickAnnotation(rect, annotation, svgModel))
-    .call(addDraggableAnnotation(svgModel, annotation));
+    .on("click", clickAnnotation(rect, annotation, svgModel));
 };

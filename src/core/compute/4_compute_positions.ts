@@ -77,6 +77,7 @@ const createGutter = (
     path: createGutterPath(x, y, gutterWidth, height),
     color: getColors(annotationAdapter, gutter, false),
     draggable: {},
+    height: { x, y, height },
   });
 };
 
@@ -86,6 +87,7 @@ const getColors = (
   borders = true,
 ) => {
   const hoverColor = adapter.config.hover.color;
+  const editColor = adapter.config.edit.color;
   const color = adapter.color(annotation);
 
   return {
@@ -94,6 +96,10 @@ const getColors = (
       border: borders ? color.border : undefined,
     } as AnnotationDrawColor,
     hover: hoverColor,
+    edit: {
+      fill: color.background,
+      border: borders ? editColor.border : undefined,
+    },
     active: {
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
@@ -154,6 +160,7 @@ export const createTextAnnotation = (
           start: leftBorder ? { x, y, height } : undefined,
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
+        height: { x, y, height },
         color: getColors(annotationAdapter, annotation),
       });
     });

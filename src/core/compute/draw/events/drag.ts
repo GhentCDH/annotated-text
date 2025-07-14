@@ -5,6 +5,7 @@ import {
   Dimensions,
   TextAnnotationModel,
 } from "../../annotation.model";
+import { TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
@@ -35,7 +36,7 @@ export const drawHandle = (
   const model = svgModel.model as TextAnnotationModel;
   const config = svgModel.annotationAdapter.config;
   const handleRadius = config.text.handleRadius;
-  let dragResult = null;
+  let dragResult: TextAnnotation = null;
   const onDragEnd = (event) => {
     model.blockEvents = false;
     removeDummyAnnotation(svgModel);
@@ -51,6 +52,10 @@ export const drawHandle = (
 
     if (!dragResult) return;
 
+    const originalAnnotation = svgModel.model.getAnnotation(
+      annotation.annotationUuid,
+    );
+    dragResult.weight = originalAnnotation.weight;
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dragResult);
@@ -60,6 +65,7 @@ export const drawHandle = (
     if (!svgModel.annotationAdapter.edit) return;
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
+
     dragResult =
       editAnnotations(svgModel, x, y, annotation, target, handle, eventType) ??
       dragResult;
