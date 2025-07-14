@@ -14,7 +14,11 @@ import {
   createTextAnnotation,
 } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
-import { findLineElement, isInsideBoundingRect } from "../utils/bounding-rect";
+import {
+  findLineElement,
+  insideRange,
+  isInsideBoundingRect,
+} from "../utils/bounding-rect";
 
 export function getCharacterFromTextNodesAtPoint(
   x: number,
@@ -33,6 +37,7 @@ export function getCharacterFromTextNodesAtPoint(
   while ((node = walker.nextNode() as Text | null)) {
     // Check if position is inside the text node
     if (!node.textContent) continue;
+    const parentRect = node.parentElement.getBoundingClientRect();
     if (!isInsideBoundingRect(x, y, node.parentElement.getBoundingClientRect()))
       continue;
     const { lineUid, offset } = findLineElement(node);
@@ -55,7 +60,7 @@ export function getCharacterFromTextNodesAtPoint(
 
       const rects = [range.getBoundingClientRect()];
       for (const rect of rects) {
-        if (isInsideBoundingRect(x, y, rect)) {
+        if (insideRange(rect.left, rect.right, x)) {
           const parentDimensions = pick(
             container.getBoundingClientRect(),
             "width",

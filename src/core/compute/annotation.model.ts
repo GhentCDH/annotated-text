@@ -32,11 +32,13 @@ export type AnnotationDraw = {
     start?: Dimensions;
     end?: Dimensions;
   };
+  height: Dimensions;
   weight: number;
   color: {
     default: AnnotationDrawColor;
     active: AnnotationDrawColor;
     hover: AnnotationDrawColor;
+    edit: AnnotationDrawColor;
   };
 };
 

@@ -21,6 +21,7 @@ export const sendDummyAnnotationEvent = (
     start,
     end,
     annotationUuid: DUMMY_UID,
+    weight: originalAnnotation.weight + 1,
   } as unknown as TextAnnotation;
 
   const snapper = svgModel.annotationAdapter.snapper.fixOffset(
@@ -38,7 +39,7 @@ export const sendDummyAnnotationEvent = (
     { annotation: dummyAnnotation },
   );
 
-  drawDummyAnnotation(svgModel, dummyAnnotation, annotation.color.hover);
+  drawDummyAnnotation(svgModel, dummyAnnotation, annotation.color.edit);
 
   return dummyAnnotation;
 };
@@ -56,12 +57,9 @@ export const editAnnotations = (
 
   model.blockEvents = true;
 
-  const width = svgModel.annotationAdapter.config.text.handleRadius;
   const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
 
   if (!result) return null;
-  handle.attr("x", result.dimensions.x - width / 2);
-  handle.attr("y", result.dimensions.y);
 
   const { newIndex } = result;
 

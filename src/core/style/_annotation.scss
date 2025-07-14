@@ -11,6 +11,10 @@
       cursor: col-resize;
       //z-index: 20;
     }
+
+    .move {
+      cursor: move;
+    }
   }
 
   &-wrapper {

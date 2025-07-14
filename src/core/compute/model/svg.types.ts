@@ -110,6 +110,11 @@ export class SvgModel {
       .attr("stroke", color.border);
   }
 
+  setClass(annotationUuid: AnnotationId, cssClass: string) {
+    this.findFills(annotationUuid)?.attr("class", cssClass);
+    this.findBorders(annotationUuid)?.attr("class", cssClass);
+  }
+
   node() {
     return this.svg.node();
   }

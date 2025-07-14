@@ -6,7 +6,7 @@ import {
   removeDummyAnnotation,
 } from "./draw";
 import { TextAnnotation } from "../../../model";
-import { SvgModel } from "../../model/svg.types";
+import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, Dimensions } from "../../annotation.model";
 
 export const addDraggableAnnotation = (
@@ -46,6 +46,7 @@ export const addDraggableAnnotation = (
       event: "annotation-edit--start",
       annotationUuid: annotation?.annotationUuid.toString() || "",
     });
+    svgModel.setClass(annotation.annotationUuid, "move");
   };
 
   const onDragMove = () => (event) => {
@@ -70,13 +71,16 @@ export const addDraggableAnnotation = (
       "drag",
       "annotation-edit--move",
     );
+    svgModel.setClass(DUMMY_UID, "move");
   };
   const onDragEnd = () => (event) => {
+    svgModel.setClass(annotation.annotationUuid, "");
     if (!dragBusy) return;
     dragBusy = false;
     svgModel.model.blockEvents = false;
 
     removeDummyAnnotation(svgModel);
+    if (!dummyAnnotation) return;
     svgModel.sendEvent(
       {
         event: "annotation-edit--end",
@@ -85,6 +89,7 @@ export const addDraggableAnnotation = (
       { annotation: dummyAnnotation },
     );
 
+    dummyAnnotation.weight = originalAnnotation.weight;
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dummyAnnotation);

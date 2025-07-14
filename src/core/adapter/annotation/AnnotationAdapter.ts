@@ -15,11 +15,16 @@ const config = {
     gap: 6,
   },
   text: {
-    padding: 3,
+    padding: 6,
     lineHeight: 22,
-    borderRadius: 3,
+    borderRadius: 6,
     border: 2,
     handleRadius: 6,
+  },
+  edit: {
+    color: {
+      border: "rgba(255,0,0,0.9)",
+    },
   },
   hover: {
     color: {
