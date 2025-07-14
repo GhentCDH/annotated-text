@@ -1,0 +1,97 @@
+import { drag } from "d3";
+import { TextAnnotation } from "@ghentcdh/vue-component-annotated-text";
+import { sendDummyAnnotationEvent } from "./edit";
+import {
+  getCharacterFromTextNodesAtPoint,
+  recreateAnnotation,
+  removeDummyAnnotation,
+} from "./draw";
+import { SvgModel } from "../../model/svg.types";
+import { AnnotationDraw, Dimensions } from "../../annotation.model";
+
+export const addDraggableAnnotation = (
+  svgModel: SvgModel,
+  annotation: AnnotationDraw,
+) => {
+  let dragBusy = false;
+  let dummyAnnotation: TextAnnotation = null;
+
+  let startDimensions: Dimensions = null;
+  let endDimensions: Dimensions = null;
+  let originalAnnotation: TextAnnotation = null;
+  let pickupIndex = 0;
+
+  const onDragStart = () => (event) => {
+    const draws = svgModel.model.getAnnotationDraw(annotation.annotationUuid);
+    startDimensions = draws.find((d) => d.draggable.start)?.draggable?.start;
+    endDimensions = draws.find((d) => d.draggable.end)?.draggable?.end;
+    originalAnnotation = svgModel.model.getAnnotation(
+      annotation.annotationUuid,
+    );
+
+    // if (!startDimensions || !endDimensions) return;
+    if (!svgModel.annotationAdapter.edit) return;
+    if (svgModel.model.blockEvents) return;
+
+    const x = event.sourceEvent.clientX;
+    const y = event.sourceEvent.clientY;
+    const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
+    if (!result) return;
+    pickupIndex = result.newIndex;
+
+    svgModel.model.blockEvents = true;
+    dragBusy = true;
+
+    svgModel.sendEvent({
+      event: "annotation-edit--start",
+      annotationUuid: annotation?.annotationUuid.toString() || "",
+    });
+  };
+
+  const onDragMove = () => (event) => {
+    if (!startDimensions || !endDimensions) return;
+    if (!dragBusy) return;
+
+    const x = event.sourceEvent.clientX;
+    const y = event.sourceEvent.clientY;
+    const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
+    if (!result) return null;
+
+    const delta = result.newIndex - pickupIndex;
+    const startIndex = originalAnnotation.start + delta;
+    const endIndex = originalAnnotation.end + delta;
+    dummyAnnotation = sendDummyAnnotationEvent(
+      annotation,
+      {
+        start: startIndex,
+        end: endIndex,
+      },
+      svgModel,
+      "drag",
+      "annotation-edit--move",
+    );
+  };
+  const onDragEnd = () => (event) => {
+    if (!dragBusy) return;
+    dragBusy = false;
+    svgModel.model.blockEvents = false;
+
+    removeDummyAnnotation(svgModel);
+    svgModel.sendEvent(
+      {
+        event: "annotation-edit--end",
+        annotationUuid: dummyAnnotation?.id.toString() || "",
+      },
+      { annotation: dummyAnnotation },
+    );
+
+    // On annotation end the dummy annotation is removed,
+    // and the existing annotation replaced by the new one
+    recreateAnnotation(svgModel, dummyAnnotation);
+  };
+
+  return drag()
+    .on("drag", onDragMove())
+    .on("start", onDragStart())
+    .on("end", onDragEnd());
+};
