@@ -48,13 +48,18 @@ export const createTextSelectionAnnotation = (
   selectedText: string,
   annotation: AnnotationUpdate,
 ): W3CAnnotation => {
-  return W3CAnnotationSchema.parse({
+  const parsedAnnotation = W3CAnnotationSchema.safeParse({
     // The W3C Annotation model
     id: annotation.id,
     "@context": "http://www.w3.org/ns/anno.jsonld",
     body: [createTextualBody(selectedText, sourceUri, language)],
     target: [createTextPositionSelector(sourceUri, language, annotation)],
   });
+  if (parsedAnnotation.error) {
+    console.error(parsedAnnotation.error);
+    throw new Error("Invalid W3C Annotation format");
+  }
+  return parsedAnnotation.data;
 };
 
 export const updateTextSelectionAnnotation = (
@@ -71,7 +76,7 @@ export const updateTextSelectionAnnotation = (
     annotation,
   );
 
-  return W3CAnnotationSchema.parse({
+  const parsedAnnotation = W3CAnnotationSchema.safeParse({
     // The W3C Annotation model
     ...originalAnnotation,
     body: getBody(originalAnnotation).map((b) =>
@@ -81,4 +86,10 @@ export const updateTextSelectionAnnotation = (
       t.type === textPositionSelector.type ? textPositionSelector : t,
     ),
   });
+
+  if (parsedAnnotation.error) {
+    console.error(parsedAnnotation.error);
+    throw new Error("Invalid W3C Annotation format");
+  }
+  return parsedAnnotation.data;
 };

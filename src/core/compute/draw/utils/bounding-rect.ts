@@ -54,5 +54,6 @@ export const findLineElement = (node: Node) => {
 };
 
 export const calculateOffset = memoize((lineHeight: number, height: number) => {
-  return (lineHeight - height) / 2;
+  // Offset should be an integer value
+  return Math.round((lineHeight - height) / 2);
 });

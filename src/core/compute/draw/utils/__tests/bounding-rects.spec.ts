@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { insideRange, isInsideBoundingRect } from "../bounding-rect";
+import {
+  calculateOffset,
+  insideRange,
+  isInsideBoundingRect,
+} from "../bounding-rect";
 
 describe("insideRange", () => {
   it.each`
@@ -44,6 +48,21 @@ describe("isInsideBoundingRect", () => {
     ({ x, y, left, right, top, bottom, expected }) => {
       const rect = { left, right, top, bottom } as DOMRect;
       expect(isInsideBoundingRect(x, y, rect)).toBe(expected);
+    },
+  );
+});
+describe("calculateOffset", () => {
+  it.each`
+    lineHeight | height | expected
+    ${20}      | ${10}  | ${5}
+    ${10}      | ${10}  | ${0}
+    ${15}      | ${10}  | ${3}
+    ${10}      | ${20}  | ${-5}
+    ${25}      | ${12}  | ${7}
+  `(
+    "returns $expected for lineHeight=$lineHeight and height=$height",
+    ({ lineHeight, height, expected }) => {
+      expect(calculateOffset(lineHeight, height)).toBe(expected);
     },
   );
 });
