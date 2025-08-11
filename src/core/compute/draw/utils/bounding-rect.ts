@@ -1,8 +1,11 @@
 import memoize from "memoizee";
 
-export const insideRange = memoize((a: number, b: number, value: number) => {
-  return value >= a && value <= b;
-});
+export const insideRange = memoize(
+  (left: number, right: number, value: number, offset?: number) => {
+    if (!offset) offset = 0;
+    return value >= left - offset && value <= right + offset;
+  },
+);
 
 export const isInsideBoundingRect = (x: number, y: number, rect: DOMRect) => {
   return (
@@ -43,6 +46,13 @@ export const findLineElement = (node: Node) => {
       }
     }
   }
+  const _lineHeight = window.getComputedStyle(lineElement).lineHeight;
+  const lineHeight = Number(_lineHeight.substring(0, _lineHeight.length - 2));
+
   offset = findOffset(node as HTMLElement, lineElement);
-  return { lineElement, lineUid, offset };
+  return { lineElement, lineUid, offset, lineHeight };
 };
+
+export const calculateOffset = memoize((lineHeight: number, height: number) => {
+  return (lineHeight - height) / 2;
+});

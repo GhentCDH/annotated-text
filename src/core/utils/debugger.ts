@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 export class Debugger {
   private _verboseEnabled: boolean;
-  private _debugEnabled: boolean;
+  private _debugEnabled: boolean = false;
   private static _instance: Debugger;
 
   private constructor() {}
