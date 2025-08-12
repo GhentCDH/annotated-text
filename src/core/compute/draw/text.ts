@@ -1,5 +1,5 @@
 import memoize from "memoizee";
-import { Debugger } from "@ghentcdh/vue-component-annotated-text";
+import { Debugger } from "../../utils/debugger";
 import { TextAdapter, TextDirection } from "../../adapter/text";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAnnotationModel } from "../annotation.model";
