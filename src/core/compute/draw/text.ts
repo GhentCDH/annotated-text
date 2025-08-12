@@ -1,4 +1,5 @@
 import memoize from "memoizee";
+import { Debugger } from "../../utils/debugger";
 import { TextAdapter, TextDirection } from "../../adapter/text";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAnnotationModel } from "../annotation.model";
@@ -60,7 +61,10 @@ export const drawText = (
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  if (!document) return;
+  if (!document) {
+    Debugger.debug("no document available, cannot draw text");
+    return;
+  }
   const { gutter } = annotationAdapter.config;
   const gutterWidth = gutter.width + gutter.gap;
   const gutterPaddingLeft = gutterWidth * textAnnotationModel.maxGutterWeight;
@@ -70,6 +74,7 @@ export const drawText = (
 
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 
+  Debugger.debug("Draw the lines", textAnnotationModel.lines.length);
   textAnnotationModel.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line));
     textDiv.appendChild(

@@ -254,6 +254,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     this.annotations().forEach((annotation) => {
       this.annotationsMap.set(annotation.id, annotation);
     });
+    this.redrawSvg();
     return this;
   }
 

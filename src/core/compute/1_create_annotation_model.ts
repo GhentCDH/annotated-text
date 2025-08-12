@@ -13,7 +13,6 @@ export const createAnnotationModel = (
 ): TextAnnotationModel => {
   Debugger.debug(`Use lineadapter`, textAdapter.name);
   const lines = textAdapter.parse(text);
-
   const annotationModel = new TextAnnotationModelImpl(
     lines,
     eventListener ?? new EventListener(),
