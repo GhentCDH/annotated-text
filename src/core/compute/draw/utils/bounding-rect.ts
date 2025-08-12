@@ -1,8 +1,7 @@
 import memoize from "memoizee";
 
 export const insideRange = memoize(
-  (left: number, right: number, value: number, offset?: number) => {
-    if (!offset) offset = 0;
+  (left: number, right: number, value: number, offset: number = 0) => {
     return value >= left - offset && value <= right + offset;
   },
 );
@@ -47,7 +46,7 @@ export const findLineElement = (node: Node) => {
     }
   }
   const _lineHeight = window.getComputedStyle(lineElement).lineHeight;
-  const lineHeight = Number(_lineHeight.substring(0, _lineHeight.length - 2));
+  const lineHeight = parseFloat(_lineHeight);
 
   offset = findOffset(node as HTMLElement, lineElement);
   return { lineElement, lineUid, offset, lineHeight };
