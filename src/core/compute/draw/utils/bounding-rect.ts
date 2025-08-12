@@ -1,7 +1,8 @@
 import memoize from "memoizee";
 
 export const insideRange = memoize(
-  (left: number, right: number, value: number, offset: number = 0) => {
+  (left: number, right: number, value: number, offset?: number) => {
+    if (!offset) offset = 0;
     return value >= left - offset && value <= right + offset;
   },
 );
