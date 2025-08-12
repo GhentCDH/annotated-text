@@ -74,7 +74,7 @@ export function getCharacterFromTextNodesAtPoint(
             "y",
           );
 
-          const newIndex = line.start + i + offset;
+          const newIndex = line.start + i;
 
           const dimensions = {
             x: rect.x - parentDimensions.x,

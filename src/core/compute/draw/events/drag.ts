@@ -67,7 +67,7 @@ export const drawHandle = (
     const y = event.sourceEvent.clientY;
 
     dragResult =
-      editAnnotations(svgModel, x, y, annotation, target, handle, eventType) ??
+      editAnnotations(svgModel, x, y, annotation, target, eventType) ??
       dragResult;
   };
 

@@ -30,18 +30,46 @@ export class WordSnapper implements Snapper {
     }
   }
 
-  fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
+  private fixStart(annotation: TextAnnotation): SnapperResult {
     const { start: newStart, end: newEnd } = annotation;
+
     const closestStart =
       this.mapStartCharIndexToToken[newStart] ??
       this.mapStartCharIndexToToken[newEnd];
+
+    return {
+      start: closestStart,
+      modified: closestStart !== newStart,
+      end: newEnd,
+    };
+  }
+
+  private fixEnd(annotation: TextAnnotation): SnapperResult {
+    const { start: newStart, end: newEnd } = annotation;
+
     const closestEnd =
       this.mapStopCharIndexToToken[newEnd] ??
       this.mapStopCharIndexToToken[newStart];
+
     return {
-      start: closestStart,
+      start: newStart,
+      modified: closestEnd !== newEnd,
       end: closestEnd,
-      modified: closestStart !== newStart || closestEnd !== newEnd,
     };
+  }
+
+  fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
+    switch (action) {
+      case "move-start":
+        return this.fixStart(annotation);
+      case "move-end":
+        return this.fixEnd(annotation);
+      case "drag":
+        const { start, modified: modifiedStart } = this.fixStart(annotation);
+        const { end, modified: modifiedEnd } = this.fixEnd(annotation);
+        return { start, end, modified: modifiedStart || modifiedEnd };
+      default:
+        throw new Error("Unknown snapper action");
+    }
   }
 }

@@ -31,7 +31,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
     if (!dummyAnnotation) {
       dummyAnnotation = {
         ...adapter.createAnnotation(),
-        weight: 1,
+        weight: 0,
         start: newIndex,
         end: newIndex + 5,
       } as unknown as TextAnnotation;

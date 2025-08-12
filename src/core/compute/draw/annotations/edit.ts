@@ -50,7 +50,6 @@ export const editAnnotations = (
   y: number,
   annotation: AnnotationDraw,
   target: "start" | "end",
-  handle: any,
   eventType: AnnotationEventType,
 ) => {
   const { model } = svgModel;
