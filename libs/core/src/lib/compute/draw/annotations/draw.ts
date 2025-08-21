@@ -9,10 +9,7 @@ import {
   getLinesForAnnotation,
   reAssignAnnotationToLine,
 } from "../../2_assign_annotation_to_line";
-import {
-  createAndAssignDrawAnnotation,
-  createTextAnnotation,
-} from "../../4_compute_positions";
+import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
 import {
   calculateOffset,
@@ -20,6 +17,7 @@ import {
   insideRange,
   isInsideBoundingRect,
 } from "../utils/bounding-rect";
+import { TextAnnotationRender } from "../../compute/TextAnnotationRender";
 
 export function getCharacterFromTextNodesAtPoint(
   x: number,
@@ -110,7 +108,7 @@ export const drawDummyAnnotation = (
   const { model, textElement } = svgModel;
   const lines = getLinesForAnnotation(model.lines, dummyAnnotation);
 
-  createTextAnnotation(
+  TextAnnotationRender(
     lines,
     textElement.getBoundingClientRect(),
     model,

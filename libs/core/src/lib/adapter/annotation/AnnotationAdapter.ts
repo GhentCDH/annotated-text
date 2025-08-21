@@ -2,6 +2,7 @@ import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 import { ColorFn, DefaultAnnotationColor } from "./DefaultAnnotationColor";
 import { DefaultAnnotationGutter, GutterFn } from "./DefaultAnnotationGutter";
+import { DefaultAnnotationRender } from "./DefaultAnnotationRender";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
@@ -54,6 +55,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public config?: AnnotationConfig;
   public colorFn = DefaultAnnotationColor;
   public gutterFn = DefaultAnnotationGutter;
+  public renderFn = DefaultAnnotationRender;
 
   protected text: string = "";
 
