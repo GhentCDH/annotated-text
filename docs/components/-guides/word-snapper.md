@@ -17,7 +17,7 @@ useful when you want to ensure that the user can only select whole words, preven
 //
 import { onMounted } from "vue";
 
-import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 import { wordSnapper } from "@demo";
 
 onMounted(()=> {

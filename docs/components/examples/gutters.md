@@ -1,16 +1,16 @@
 # Gutter
 
-<div id="annotated-text--gutters"></div>
+<div id="annotated_text--gutters"></div>
 
 <script setup>
 //
 import { gutters } from "@demo";
 import { onMounted, onUnmounted } from "vue";
-import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 
 onMounted(()=> {
     clearAnnotatedTextCache();
-    gutters('annotated-text--gutters')
+    gutters('annotated_text--gutters')
 })
 
 </script>

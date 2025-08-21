@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<AnnotatedTextV2Props>(), {
 // define emits
 const emit = defineEmits<AnnotatedTextV2Emits>();
 
-const id = `annotated-text-${uuidv4()}`;
+const id = `annotated_text-${uuidv4()}`;
 
 let textAnnotation: AnnotatedText<Annotation>;
 

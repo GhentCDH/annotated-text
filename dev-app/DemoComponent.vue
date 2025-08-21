@@ -6,11 +6,8 @@ import type {
   Annotation,
   AnnotationId,
   AnnotationTarget,
-} from "@ghentcdh/vue-component-annotated-text";
-import {
-  AnnotatedTextV2,
-  Debugger,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
+import { AnnotatedTextV2, Debugger } from "@ghentcdh/annotated_text";
 import { greekText } from "@demo";
 import { AnnotationEventData, AnnotationEventType } from "../src/events/events";
 

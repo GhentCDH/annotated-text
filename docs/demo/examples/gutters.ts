@@ -1,7 +1,4 @@
-import {
-  createAnnotatedText,
-  TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated_text";
 import { greekText } from "../data";
 
 export const gutters = (id: string) => {

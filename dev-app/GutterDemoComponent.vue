@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import {
-  AnnotatedTextV2,
-  Annotation,
-} from "@ghentcdh/vue-component-annotated-text";
+import { AnnotatedTextV2, Annotation } from "@ghentcdh/annotated_text";
 import { greekText } from "@demo";
 
 const annotations = greekText.annotationsWithGutters as Annotation[];

@@ -1,16 +1,16 @@
 # Large dataset
 
-<div id="annotated-text--large"></div>
+<div id="annotated_text--large"></div>
 
 <script setup>
 //
 import { largeText } from "@demo";
 
 import { onMounted } from "vue";
-import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 
 onMounted(()=> {
     clearAnnotatedTextCache();
-    largeText('annotated-text--large')
+    largeText('annotated_text--large')
 });
 </script>

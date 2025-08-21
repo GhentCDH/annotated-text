@@ -10,7 +10,7 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "paths": {
-      "@ghentcdh/vue-component-annotated-text": [
+      "@ghentcdh/annotated_text": [
         "./src/index.ts"
       ],
       "@/types/props": [

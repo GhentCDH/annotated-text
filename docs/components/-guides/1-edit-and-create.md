@@ -4,7 +4,7 @@ By default, edit and create annotations are disabled.
 You can enable them by on the AnotationAdapter when creating the AnnotatedText component.
 
 ```typescript
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/annotated_text";
 
 createAnnotatedText(id,
   {
@@ -15,7 +15,7 @@ createAnnotatedText(id,
 Or you can enable/disable them on the fly by.
 
 ```typescript
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/annotated_text";
 
 // Create the annotated text component with the ID
 const textAnnotation = createAnnotatedText(id);
@@ -33,7 +33,7 @@ textAnnotation.annotationAdapter.enableCreate(true);
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 import { greekText } from "@demo";
 const id = `create-edit-example`;
 

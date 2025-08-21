@@ -2,7 +2,7 @@ import {
   AnnotatedText,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { v4 as uuidv4 } from "uuid";
 import { greekText } from "../data";
 

@@ -1,23 +1,23 @@
 {
-  "name": "@ghentcdh/vue-component-annotated-text",
+  "name": "@ghentcdh/annotated_text",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/GhentCDH/vue_component_annotated_text"
+    "url": "https://github.com/GhentCDH/annotated_text"
   },
   "version": "2.0.0-beta.14",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/vue-component-annotated-text.js",
-      "require": "./dist/vue-component-annotated-text.cjs"
+      "import": "./dist/annotated_text.js",
+      "require": "./dist/annotated_text.cjs"
     },
     "./style.css": {
-      "import": "./dist/vue-component-annotated-text.css"
+      "import": "./dist/annotated_text.css"
     }
   },
   "type": "module",
-  "style": "./dist/vue-component-annotated-text.css",
+  "style": "./dist/annotated_text.css",
   "files": [
     "dist/**/*"
   ],

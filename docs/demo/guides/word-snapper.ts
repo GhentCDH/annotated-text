@@ -1,7 +1,4 @@
-import {
-  createAnnotatedText,
-  WordSnapper,
-} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, WordSnapper } from "@ghentcdh/annotated_text";
 import { plainText } from "../data";
 
 export const wordSnapper = (id: string) => {

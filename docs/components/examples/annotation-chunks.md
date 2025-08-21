@@ -2,8 +2,8 @@
 
 <div style="display: grid;
   grid-template-columns: repeat(2, 1fr);">
-    <div id="annotated-text"></div>
-    <div id="annotated-text--details" style="display: flex; flex-direction: column; gap:8px"></div>
+    <div id="annotated_text"></div>
+    <div id="annotated_text--details" style="display: flex; flex-direction: column; gap:8px"></div>
 </div>
 
 <script setup>
@@ -11,11 +11,11 @@
 import { textWithChunks } from "@demo";
 
 import { onMounted } from "vue";
-import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 
 onMounted(()=> {
     clearAnnotatedTextCache();
-    textWithChunks('annotated-text', 'annotated-text--details')
+    textWithChunks('annotated_text', 'annotated_text--details')
 });
 
 </script>

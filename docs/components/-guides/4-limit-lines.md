@@ -5,7 +5,7 @@ You can limit the number of lines displayed in the AnnotatedText component, by p
 This limit contains a start and end index in the text, which will be used to determine the lines to display.
 
 ```typescript
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/annotated_text";
 
 createAnnotatedText(id,
   {
@@ -39,7 +39,7 @@ line start and end are ignored.
 <script setup>
 //
 import { onMounted } from "vue";
-import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 import { limitLinesPlainText, limitLinesMarkdown, limitLinesLineText } from "@demo";
 
 

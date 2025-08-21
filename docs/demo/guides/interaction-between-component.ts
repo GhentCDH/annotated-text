@@ -4,7 +4,7 @@ import {
   createAnnotatedText,
   getAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { SuperLargeText } from "../examples/super-large-text";
 
 const getDivId = (id: AnnotationId) => {

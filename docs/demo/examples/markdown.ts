@@ -1,7 +1,7 @@
 import {
   createAnnotatedText,
   MarkdownTextAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { markdown1 } from "../data/markdown-1";
 
 export const markdown_1 = (

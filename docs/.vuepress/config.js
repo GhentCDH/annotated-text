@@ -7,8 +7,8 @@ import componentsSideBar from "../components/typedoc_sidebar.json";
 import apiSideBar from "../api/typedoc_sidebar.json";
 
 export default defineUserConfig({
-  base: "vue_component_annotated_text",
-  title: "Vue annotated text component",
+  base: "annotated_text",
+  title: "Annotated text component",
   lastUpdated: true,
   cleanUrls: true,
   metaChunk: true,
@@ -17,7 +17,7 @@ export default defineUserConfig({
       plugins: [],
       resolve: {
         alias: {
-          "@ghentcdh/vue-component-annotated-text": fileURLToPath(
+          "@ghentcdh/annotated_text": fileURLToPath(
             new URL("../../src/index.ts", import.meta.url),
           ),
           "@dev-app": fileURLToPath(
@@ -34,7 +34,7 @@ export default defineUserConfig({
   // },
   theme: hopeTheme({
     darkmode: "disable",
-    docsRepo: "https://github.com/GhentCDH/vue_component_annotated_text",
+    docsRepo: "https://github.com/GhentCDH/annotated_text",
     docsBranch: "main",
     docsDir: "docs",
     // editLinkPattern: ':repo/tree/:branch/:path',
@@ -43,7 +43,7 @@ export default defineUserConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/GhentCDH/vue_component_annotated_text",
+        link: "https://github.com/GhentCDH/annotated_text",
       },
     ],
     // colorModeSwitch: false,

@@ -5,7 +5,7 @@ import {
   type Annotation,
   type AnnotationEventType,
   Debugger,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { largeGreekText } from "@demo";
 
 const typesSet = new Set<string>();

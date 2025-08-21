@@ -3,7 +3,7 @@ import {
   Annotation,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { greekText } from "../data";
 
 const document = globalThis.document;

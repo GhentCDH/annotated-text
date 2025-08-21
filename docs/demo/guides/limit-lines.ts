@@ -5,7 +5,7 @@ import {
   EventCallback,
   MarkdownTextAdapter,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { greekText, markdownText, plainText } from "../data";
 
 const printPosition = (event: EventCallback) => {

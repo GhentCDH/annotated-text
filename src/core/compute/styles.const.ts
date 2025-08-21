@@ -1,7 +1,7 @@
 const prefix = "ghent-cdh-annotation";
 
 export const styles = {
-  text: `annotated-text ${prefix}-text`,
+  text: `annotated_text ${prefix}-text`,
   svg: `${prefix}-svg`,
   wrapper: `${prefix}-wrapper`,
   line: {

@@ -16,9 +16,9 @@ By default the text will be rendered as PlainText, but you can also use an adapt
 format.
 
 ```ts
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/annotated_text";
 
-const id = `annotated-text-{uuid}`;
+const id = `annotated_text-{uuid}`;
 
 const textAnnotation = createAnnotatedText(id)
   .setText(text)
@@ -33,14 +33,14 @@ Don't forget to replace do destroy the component when it is no longer needed to 
 
 ## Example
 
-<div id="annotated-text-greek"></div>
+<div id="annotated_text-greek"></div>
 
 <script setup>
 //
 import { onMounted, onUnmounted } from "vue";
-import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
 import { greekText } from "@demo";
-const id = `annotated-text-greek`;
+const id = `annotated_text-greek`;
 
 onMounted(()=> {
     clearAnnotatedTextCache()

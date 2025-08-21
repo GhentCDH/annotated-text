@@ -5,7 +5,7 @@ import {
   SnapperResult,
   TextAnnotation,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated_text";
 import { greekText } from "../data";
 
 class CustomSnapper extends Snapper {
