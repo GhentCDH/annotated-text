@@ -44,7 +44,11 @@ export const createAndAssignDrawAnnotation = (
     "x",
     "y",
   );
-  const rendered = annotationAdapter.renderFn(annotation, annotation.isGutter)(
+  const rendered = annotationAdapter.renderFn(
+    annotation,
+    annotation.isGutter,
+    annotationAdapter.defaultRender,
+  )(
     model.getLinesForAnnotation(annotation.id),
     parentDimensions,
     model,

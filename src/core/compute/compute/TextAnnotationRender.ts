@@ -5,20 +5,25 @@ import {
   TextAnnotation,
   TextLine,
 } from "@ghentcdh/vue-component-annotated-text";
-import { getColors } from "./colors";
+import { getColors, GetColorsFn } from "./colors";
 import { getX, getY } from "./helpers";
-import { TextAnnotationModel } from "../annotation.model";
-import { createAnnotationPath } from "../utils/create-path";
+import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
+import {
+  createAnnotationPath,
+  createAnnotationPathFn,
+} from "../utils/create-path";
 import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
 
-export const TextAnnotationRender: AnnotationRender = (
+export const createTextAnnotationRender: AnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
-) => {
+  pathFn: createAnnotationPathFn,
+  getColorsFn: GetColorsFn,
+): AnnotationDraw[] => {
   const { config } = annotationAdapter;
   const radius = config.text.borderRadius;
 
@@ -52,7 +57,7 @@ export const TextAnnotationRender: AnnotationRender = (
         uuid: uuidv4(),
         annotationUuid: annotation.id,
         lineNumber: line.lineNumber,
-        path: createAnnotationPath({
+        path: pathFn({
           x: x,
           y: y,
           width: rect.width,
@@ -66,10 +71,32 @@ export const TextAnnotationRender: AnnotationRender = (
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
         height: { x, y, height },
-        color: getColors(annotationAdapter, annotation),
+        color: getColorsFn(annotationAdapter, annotation),
       });
     });
   });
+
+  return draws;
+};
+
+export const TextAnnotationRender: AnnotationRender = (
+  lines: TextLine[],
+  parentDimensions: { x: number; y: number },
+  model: TextAnnotationModel,
+  annotation: TextAnnotation,
+  textAdapter: TextAdapter,
+  annotationAdapter: AnnotationAdapter<any>,
+) => {
+  const draws = createTextAnnotationRender(
+    lines,
+    parentDimensions,
+    model,
+    annotation,
+    textAdapter,
+    annotationAdapter,
+    createAnnotationPath,
+    getColors,
+  );
 
   return { draws, isGutter: false };
 };

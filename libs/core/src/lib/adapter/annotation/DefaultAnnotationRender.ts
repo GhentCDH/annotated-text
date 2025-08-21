@@ -10,14 +10,23 @@ import {
 } from "../../compute/annotation.model";
 import { TextAnnotationRender } from "../../compute/compute/TextAnnotationRender";
 import { GutterAnnotationRender } from "../../compute/compute/GutterAnnotationRender";
+import { UnderLineAnnotationRender } from "../../compute/compute/UnderLineAnnotationRender";
 
-export type GutterFn<ANNOTATION> = (annotation: ANNOTATION) => boolean;
+export type DefaultRenders = "highlight" | "underline";
+export type AnnotationRenderFn<ANNOTATION> = (
+  annotation: ANNOTATION,
+) => AnnotationRender;
 
 export const DefaultAnnotationRender = <ANNOTATION>(
   annotation: ANNOTATION,
   isGutter: boolean,
+  rendererName: DefaultRenders,
 ): AnnotationRender => {
-  return isGutter ? GutterAnnotationRender : TextAnnotationRender;
+  return isGutter
+    ? GutterAnnotationRender
+    : rendererName === "highlight"
+      ? TextAnnotationRender
+      : UnderLineAnnotationRender;
 };
 
 export type AnnotationRender = (

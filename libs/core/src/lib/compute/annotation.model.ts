@@ -29,6 +29,12 @@ export type AnnotationDrawColors = {
   edit: AnnotationDrawColor;
 };
 
+export type AnnotationDrawColors = {
+  default: AnnotationDrawColor;
+  active: AnnotationDrawColor;
+  hover: AnnotationDrawColor;
+  edit: AnnotationDrawColor;
+};
 export type AnnotationDraw = {
   uuid: string;
   annotationUuid: AnnotationId;

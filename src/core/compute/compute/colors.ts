@@ -2,9 +2,15 @@ import {
   AnnotationAdapter,
   type TextAnnotation,
 } from "@ghentcdh/vue-component-annotated-text";
-import { AnnotationDrawColor } from "../annotation.model";
+import { AnnotationDrawColor, AnnotationDrawColors } from "../annotation.model";
 
-export const getColors = (
+export type GetColorsFn = (
+  adapter: AnnotationAdapter<any>,
+  annotation: TextAnnotation,
+  borders: boolean,
+) => AnnotationDrawColors;
+
+export const getColors: GetColorsFn = (
   adapter: AnnotationAdapter<any>,
   annotation: TextAnnotation,
   borders = true,

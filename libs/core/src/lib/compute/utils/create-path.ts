@@ -69,7 +69,7 @@ const createAnnotationBorder = ({
   return path.flat().join(" ");
 };
 
-const createAnnotationFill = ({
+export const createAnnotationFill = ({
   x,
   y,
   width,
@@ -99,7 +99,14 @@ const createAnnotationFill = ({
   return path.flat().join(" ");
 };
 
-export const createAnnotationPath = (params: PathParams) => {
+export type createAnnotationPathFn = (params: PathParams) => {
+  border?: string[];
+  fill?: string[];
+};
+
+export const createAnnotationPath: createAnnotationPathFn = (
+  params: PathParams,
+) => {
   const border = createAnnotationBorder(params);
   const fill = createAnnotationFill(params);
 
