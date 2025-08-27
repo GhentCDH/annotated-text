@@ -38,7 +38,7 @@ By default the events will be logged to the console with debug statements.
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/annotated_text";
+import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
 import { plainText } from "@demo";
 
 const id = "annotation-log";

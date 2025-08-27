@@ -1,4 +1,4 @@
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated_text";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
 
 export const gutters = (id: string) => {

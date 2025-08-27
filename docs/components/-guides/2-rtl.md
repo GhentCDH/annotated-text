@@ -27,7 +27,7 @@ createAnnotatedText(id,
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 import { plainText, greekText } from "@demo";
 const id = `plain-text-example`;
 const greek_id = `greek-text-example`;

@@ -1,4 +1,4 @@
-import { createAnnotatedText, WordSnapper } from "@ghentcdh/annotated_text";
+import { createAnnotatedText, WordSnapper } from "@ghentcdh/annotated-text";
 import { plainText } from "../data";
 
 export const wordSnapper = (id: string) => {

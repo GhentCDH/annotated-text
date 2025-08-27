@@ -13,7 +13,7 @@ While using `createAnnotatedText` you can pass the adapter as an option to the `
 You can also pass properties that will be used by the default adapter. f.e. `textDirection` for the text adapter.
 
 ```typescript
-import { TextLineAdapter } from "@ghentcdh/annotated_text";
+import { TextLineAdapter } from "@ghentcdh/annotated-text";
 
 createAnnotatedText(id, {
   text: TextLineAdapter(),

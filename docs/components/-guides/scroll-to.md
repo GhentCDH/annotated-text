@@ -19,7 +19,7 @@ takes an annotation ID as an argument and scrolls the view to that annotation.
 //
 import { onMounted } from "vue";
 
-import { clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 import { scrollToAnnotation } from "@demo";
 
 onMounted(()=> {

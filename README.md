@@ -1,6 +1,6 @@
-![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fannotated_text?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40ghentcdh%2Fannotated_text)
-[![Build](https://github.com/GhentCDH/annotated_text/actions/workflows/merge-request.yml/badge.svg)](https://github.com/GhentCDH/annotated_text/actions/workflows/merge-request.yml)
-[![Publish](https://github.com/GhentCDH/annotated_text/actions/workflows/publish.yml/badge.svg)](https://github.com/GhentCDH/annotated_text/actions/workflows/publish.yml)
+![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fannotated-text?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40ghentcdh%2Fannotated-text)
+[![Build](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml/badge.svg)](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml)
+[![Publish](https://github.com/GhentCDH/annotated-text/actions/workflows/publish.yml/badge.svg)](https://github.com/GhentCDH/annotated-text/actions/workflows/publish.yml)
 
 # Component annotated text
 
@@ -31,20 +31,20 @@ Following annotation formats are supported:
 
 ## Documentation
 
-To build the docs run `pnpm run docs:build` or access [Github Docs](https://ghentcdh.github.io/annotated_text)
+To build the docs run `pnpm run docs:build` or access [Github Docs](https://ghentcdh.github.io/annotated-text)
 
 ## Creating a new release
 
 Documentation on releases can be found
-on: [Release documentation](https://ghentcdh.github.io/annotated_text/release/)
+on: [Release documentation](https://ghentcdh.github.io/annotated-text/release/)
 
 ## Minimal working example
 
 More Information in
-the [Getting started documentation](https://ghentcdh.github.io/annotated_text/components/-getting-started/quikstart.html)
+the [Getting started documentation](https://ghentcdh.github.io/annotated-text/components/-getting-started/quikstart.html)
 
 ```scss
-@use '@ghentcdh/annotated_text/style.css' as *;
+@use '@ghentcdh/annotated-text/style.css' as *;
 ```
 
 ````html
@@ -53,9 +53,9 @@ the [Getting started documentation](https://ghentcdh.github.io/annotated_text/co
 ````
 
 ```ts
-import { createAnnotatedText } from "@ghentcdh/annotated_text";
+import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
-const id = `annotated_text-{uuid}`;
+const id = `annotated-text-{uuid}`;
 
 const textAnnotation = createAnnotatedText(id)
   .setText(text)

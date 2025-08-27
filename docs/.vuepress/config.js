@@ -7,7 +7,7 @@ import componentsSideBar from "../components/typedoc_sidebar.json";
 import apiSideBar from "../api/typedoc_sidebar.json";
 
 export default defineUserConfig({
-  base: "annotated_text",
+  base: "annotated-text",
   title: "Annotated text component",
   lastUpdated: true,
   cleanUrls: true,
@@ -17,11 +17,8 @@ export default defineUserConfig({
       plugins: [],
       resolve: {
         alias: {
-          "@ghentcdh/annotated_text": fileURLToPath(
-            new URL("../../src/index.ts", import.meta.url),
-          ),
-          "@dev-app": fileURLToPath(
-            new URL("../../dev-app/index.ts", import.meta.url),
+          "@ghentcdh/annotated-text": fileURLToPath(
+            new URL("../../libs/core/src/index.ts", import.meta.url),
           ),
           "@demo": fileURLToPath(new URL("../demo/index.ts", import.meta.url)),
         },
@@ -34,7 +31,7 @@ export default defineUserConfig({
   // },
   theme: hopeTheme({
     darkmode: "disable",
-    docsRepo: "https://github.com/GhentCDH/annotated_text",
+    docsRepo: "https://github.com/GhentCDH/annotated-text",
     docsBranch: "main",
     docsDir: "docs",
     // editLinkPattern: ':repo/tree/:branch/:path',
@@ -43,7 +40,7 @@ export default defineUserConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/GhentCDH/annotated_text",
+        link: "https://github.com/GhentCDH/annotated-text",
       },
     ],
     // colorModeSwitch: false,

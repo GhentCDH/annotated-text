@@ -5,7 +5,7 @@ import {
   EventCallback,
   MarkdownTextAdapter,
   TextLineAdapter,
-} from "@ghentcdh/annotated_text";
+} from "@ghentcdh/annotated-text";
 import { greekText, markdownText, plainText } from "../data";
 
 const printPosition = (event: EventCallback) => {

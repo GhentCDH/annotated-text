@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": false,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/types/emits": [
+        "./src/types/emits/index.ts"
+      ],
+      "@/types/props": [
+        "./src/types/props/index.ts"
+      ],
+      "@demo": [
+        "./docs/demo/index.ts"
+      ],
+      "@ghentcdh/annotated-text": [
+        "./libs/core/src/index.ts"
+      ],
+      "@ghentcdh/annotated-text-vue-component": [
+        "./libs/vue-component/src/index.ts"
+      ]
+    }
+  }
+}

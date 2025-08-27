@@ -4,7 +4,7 @@ import {
   createAnnotatedText,
   getAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated_text";
+} from "@ghentcdh/annotated-text";
 import { SuperLargeText } from "../examples/super-large-text";
 
 const getDivId = (id: AnnotationId) => {

@@ -1,0 +1,23 @@
+{
+  "name": "@ghentcdh/annotated-text",
+  "version": "0.1.0",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
+    },
+    "./style.css": {
+      "import": "./dist/annotated-text.css"
+    }
+  },
+  "types": "./index.d.ts",
+  "files": [
+    "**/*"
+  ]
+}

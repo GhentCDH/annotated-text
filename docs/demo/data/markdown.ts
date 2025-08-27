@@ -1,4 +1,4 @@
-import { Annotation } from "@ghentcdh/annotated_text";
+import { Annotation } from "@ghentcdh/annotated-text";
 import { annotationColors } from "./const";
 
 export const text = `**Markdown** 

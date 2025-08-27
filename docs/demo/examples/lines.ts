@@ -2,7 +2,7 @@ import {
   Annotation,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated_text";
+} from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
 
 const createAnnotatedTextWithLines = (

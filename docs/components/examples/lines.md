@@ -12,7 +12,7 @@
 import { linesAllAnnotationInSelection,} from "@demo";
 
 import { onMounted } from "vue";
-import { clearAnnotatedTextCache } from "@ghentcdh/annotated_text";
+import { clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
 
 onMounted(()=> {
     clearAnnotatedTextCache();

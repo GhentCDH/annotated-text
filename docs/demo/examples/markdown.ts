@@ -1,7 +1,7 @@
 import {
   createAnnotatedText,
   MarkdownTextAdapter,
-} from "@ghentcdh/annotated_text";
+} from "@ghentcdh/annotated-text";
 import { markdown1 } from "../data/markdown-1";
 
 export const markdown_1 = (

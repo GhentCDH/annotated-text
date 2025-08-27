@@ -2,7 +2,7 @@ import {
   AnnotatedText,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated_text";
+} from "@ghentcdh/annotated-text";
 import { v4 as uuidv4 } from "uuid";
 import { greekText } from "../data";
 

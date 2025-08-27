@@ -5,7 +5,7 @@ import {
   SnapperResult,
   TextAnnotation,
   TextLineAdapter,
-} from "@ghentcdh/annotated_text";
+} from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
 
 class CustomSnapper extends Snapper {

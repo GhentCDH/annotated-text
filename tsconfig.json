@@ -1,37 +1,12 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "declaration": false,
     "outDir": "dist",
-    //    "declarationDir": "dist",
-    "baseUrl": ".",
-    "skipLibCheck": true,
-    "paths": {
-      "@ghentcdh/annotated_text": [
-        "./src/index.ts"
-      ],
-      "@/types/props": [
-        "./src/types/props/index.ts"
-      ],
-      "@/types/emits": [
-        "./src/types/emits/index.ts"
-      ],
-      "@demo": [
-        "./docs/demo/index.ts"
-      ]
-    },
-    "moduleResolution": "node",
-    "target": "ESNext"
+    "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "dev-app/*.vue",
-    "dev-app/*.ts"
-  ]
+  ],
+  "extends": "./tsconfig.base.json"
 }

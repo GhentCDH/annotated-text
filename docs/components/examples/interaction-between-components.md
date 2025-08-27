@@ -2,17 +2,17 @@
 
 If you edit on the right side, the left side will update automatically. and vice versa.
 
-<div id="annotated_text--interaction"></div>
+<div id="annotated-text--interaction"></div>
 
 <script setup>
 //
 import { interActionBetweenComponents } from "@demo";
 import { onMounted } from "vue";
-import { createAnnotatedText, clearAnnotatedTextCache} from "@ghentcdh/annotated_text";
+import { createAnnotatedText, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 
 
 onMounted(()=> {
     clearAnnotatedTextCache();
-    interActionBetweenComponents('annotated_text--interaction')
+    interActionBetweenComponents('annotated-text--interaction')
 });
 </script>
