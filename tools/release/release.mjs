@@ -50,6 +50,7 @@ async function bumpVersion(type) {
 async function gitCommitAndTag(version) {
   return git
     .add("package.json")
+    .add("libs/core/package.json")
     .add("RELEASE_NOTES.md")
     .commit(`chore(release): v${version}`)
     .addTag(`v${version}`)
