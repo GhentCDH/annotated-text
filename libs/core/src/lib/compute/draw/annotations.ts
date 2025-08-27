@@ -16,15 +16,18 @@ export const drawAnnotationContent = (
     .append("g")
     .attr("data-annotation-uid", annotation.annotationUuid);
 
-  const rect = annotationGroup
-    .append("path")
-    .attr("data-annotation-uid", annotation.annotationUuid)
-    .attr("data-annotation-start", annotation.lineNumber)
-    .attr("data-annotation-role", "fill")
-    .attr("d", annotation.path.fill)
-    .attr("border", "none")
-    .attr("fill", annotation.color.default.fill!)
-    .call(addDraggableAnnotation(svgModel, annotation));
+  let rect;
+  if (annotation.path.border) {
+    rect = annotationGroup
+      .append("path")
+      .attr("data-annotation-uid", annotation.annotationUuid)
+      .attr("data-annotation-start", annotation.lineNumber)
+      .attr("data-annotation-role", "fill")
+      .attr("d", annotation.path.fill!)
+      .attr("border", "none")
+      .attr("fill", annotation.color.default.fill!)
+      .call(addDraggableAnnotation(svgModel, annotation));
+  }
   if (annotation.path.border) {
     border = annotationGroup
       .append("path")
@@ -52,7 +55,7 @@ export const drawAnnotation = (
   drawAnnotationHandles(annotation, svgModel);
 
   rect
-    .on("mouseover", hoverAnnotation(rect, annotation, svgModel))
+    ?.on("mouseover", hoverAnnotation(rect, annotation, svgModel))
     .on("mouseleave", leaveAnnotation(rect, annotation, svgModel))
     // TODO check double click also fires click event
     .on("dblclick", doubleClickAnnotation(rect, annotation, svgModel))

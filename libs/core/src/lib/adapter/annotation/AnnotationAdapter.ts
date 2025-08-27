@@ -2,6 +2,11 @@ import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 import { ColorFn, DefaultAnnotationColor } from "./DefaultAnnotationColor";
 import { DefaultAnnotationGutter, GutterFn } from "./DefaultAnnotationGutter";
+import {
+  AnnotationRenderFn,
+  DefaultAnnotationRender,
+  DefaultRenders,
+} from "./DefaultAnnotationRender";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
@@ -54,6 +59,8 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public config?: AnnotationConfig;
   public colorFn = DefaultAnnotationColor;
   public gutterFn = DefaultAnnotationGutter;
+  public renderFn = DefaultAnnotationRender;
+  public defaultRender: DefaultRenders;
 
   protected text: string = "";
 
@@ -172,6 +179,8 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   snapper?: Snapper;
   colorFn?: ColorFn<ANNOTATION>;
   gutterFn?: GutterFn<ANNOTATION>;
+  renderFn?: AnnotationRenderFn<ANNOTATION>;
+  defaultRender?: DefaultRenders;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -188,6 +197,8 @@ export const createAnnotationAdapter = <ANNOTATION>(
   adapter.snapper = params.snapper ?? new DefaultSnapper();
   adapter.colorFn = params.colorFn ?? (DefaultAnnotationColor as any);
   adapter.gutterFn = params.gutterFn ?? (DefaultAnnotationGutter as any);
+  adapter.defaultRender = params.defaultRender ?? "highlight";
+  adapter.renderFn = params.renderFn ?? (DefaultAnnotationRender as any);
 
   return adapter;
 };
