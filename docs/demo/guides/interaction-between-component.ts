@@ -4,7 +4,7 @@ import {
   createAnnotatedText,
   getAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated-text";
 import { SuperLargeText } from "../examples/super-large-text";
 
 const getDivId = (id: AnnotationId) => {
@@ -40,7 +40,7 @@ export const interActionBetweenComponents = (id: string) => {
   const element = document.getElementById(id);
   const annotations = SuperLargeText.annotations.filter(
     (a) => a.target === "text",
-  );
+  ) as Annotation[];
   // .slice(0, 40);
 
   const textContainer = document.createElement("div");

@@ -16,7 +16,7 @@ By default the text will be rendered as PlainText, but you can also use an adapt
 format.
 
 ```ts
-import { createAnnotatedText } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
 const id = `annotated-text-{uuid}`;
 
@@ -38,7 +38,7 @@ Don't forget to replace do destroy the component when it is no longer needed to 
 <script setup>
 //
 import { onMounted, onUnmounted } from "vue";
-import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 import { greekText } from "@demo";
 const id = `annotated-text-greek`;
 

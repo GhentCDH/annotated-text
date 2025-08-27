@@ -8,7 +8,7 @@ If you edit on the right side, the left side will update automatically. and vice
 //
 import { interActionBetweenComponents } from "@demo";
 import { onMounted } from "vue";
-import { createAnnotatedText, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 
 
 onMounted(()=> {

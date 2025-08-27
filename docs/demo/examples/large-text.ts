@@ -1,7 +1,4 @@
-import {
-  createAnnotatedText,
-  TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated-text";
 import { largeGreekText } from "../data";
 
 export const largeText = (id: string) => {

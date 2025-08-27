@@ -1,14 +1,8 @@
 /* eslint-disable no-console */
-import {
-  Annotation,
-  createAnnotatedText,
-  EventCallback,
-  MarkdownTextAdapter,
-  TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+import { Annotation, createAnnotatedText, MarkdownTextAdapter, TextLineAdapter } from "@ghentcdh/annotated-text";
 import { greekText, markdownText, plainText } from "../data";
 
-const printPosition = (event: EventCallback) => {
+const printPosition = (event: any) => {
   const annotation = event.data.annotation as Annotation;
   console.log("Annotation start:", annotation.start, " end:", annotation.end);
 };

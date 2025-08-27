@@ -13,7 +13,7 @@ text.
 ## Use
 
 ```typescript
-import { createAnnotatedText, MarkdownTextAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, MarkdownTextAdapter } from "@ghentcdh/annotated-text";
 
 const textAnnotation = createAnnotatedText(id,
   {
@@ -35,7 +35,7 @@ The original text, rendered as flat text:
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, MarkdownTextAdapter, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, MarkdownTextAdapter, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
 import {  markdownText } from "@demo";
 const id = `markdown-text-example`;
 

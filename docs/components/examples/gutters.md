@@ -6,7 +6,7 @@
 //
 import { gutters } from "@demo";
 import { onMounted, onUnmounted } from "vue";
-import { clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 
 onMounted(()=> {
     clearAnnotatedTextCache();

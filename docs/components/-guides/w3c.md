@@ -41,7 +41,7 @@ Then add annotations with the `setAnnotations` method. The method accepts an arr
 indicate whether to update the view or not.
 
 ```typescript
-import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/annotated-text";
 
 createAnnotatedText(id, {
   annotation: W3CAnnotationAdapter()
@@ -72,7 +72,7 @@ initializing the parser.
 <script setup>
 //
 import { onMounted, onUnmounted } from "vue";
-import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter,clearAnnotatedTextCache } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter,clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
 import { w3cText } from "@demo";
 
 const createAnnotations = (id, sourceId)=>{

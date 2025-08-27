@@ -1,16 +1,31 @@
 {
   "compilerOptions": {
-    "target": "ES2020",                           // Modern JavaScript target
-    "module": "CommonJS",                         // For Node.js compatibility
+    "target": "ES2020",
+    // Modern JavaScript target
+    "module": "CommonJS",
+    // For Node.js compatibility
     "moduleResolution": "node",
-    "outDir": "dist",                             // Where compiled .js files go
-    "rootDir": ".",                               // Project root
-    "strict": true,                               // Enables all strict type-checking options
-    "esModuleInterop": true,                      // Allows default imports from CommonJS
-    "skipLibCheck": true,                         // Speeds up compilation
-    "forceConsistentCasingInFileNames": true,     // Prevents casing issues
-    "resolveJsonModule": true                     // Allows importing JSON
+    "outDir": "dist",
+    // Where compiled .js files go
+    "rootDir": ".",
+    // Project root
+    "strict": true,
+    // Enables all strict type-checking options
+    "esModuleInterop": true,
+    // Allows default imports from CommonJS
+    "skipLibCheck": true,
+    // Speeds up compilation
+    "forceConsistentCasingInFileNames": true,
+    // Prevents casing issues
+    "resolveJsonModule": true
+    // Allows importing JSON
   },
-  "include": ["tools/**/*", "src/**/*"],          // Adjust to match where your .ts files are
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "tools/**/*"
+  ],
+  // Adjust to match where your .ts files are
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

@@ -1,0 +1,27 @@
+import { AnnotationRect, SvgModel } from "../../model/svg.types";
+import { AnnotationDraw } from "../../annotation.model";
+
+export const clickAnnotation =
+  (rect: AnnotationRect, annotation: AnnotationDraw, svgModel: SvgModel) =>
+  (mouseEvent: MouseEvent) => {
+    if (svgModel.model.blockEvents) return;
+    svgModel.sendEvent({
+      event: "click",
+      mouseEvent,
+      annotationUuid: annotation?.annotationUuid || "",
+    });
+  };
+
+export const doubleClickAnnotation =
+  (rect: AnnotationRect, annotation: AnnotationDraw, svgModel: SvgModel) =>
+  (mouseEvent: MouseEvent) => {
+    if (svgModel.model.blockEvents) return;
+
+    mouseEvent.preventDefault();
+
+    svgModel.sendEvent({
+      event: "double-click",
+      mouseEvent,
+      annotationUuid: annotation?.annotationUuid || "",
+    });
+  };

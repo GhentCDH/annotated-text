@@ -5,7 +5,7 @@ By default, the `AnnotatedText` component uses an internal lines model to displa
 You can use the `PlainTextAdapter` to adapt the component to work with plain text instead of lines.
 
 ```typescript
-import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/annotated-text";
 
 const textAnnotation = createAnnotatedText(id,
   {
@@ -25,7 +25,7 @@ The original text:
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache} from "@ghentcdh/vue-component-annotated-text";
+import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 import { plainText } from "@demo";
 const id = `plain-text-example`;
 
