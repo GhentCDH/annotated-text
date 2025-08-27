@@ -2,10 +2,10 @@
 import { simpleGit } from "simple-git";
 import fsExtra from "fs-extra";
 import semver from "semver";
-import  yargs from "yargs";
+import yargs from "yargs";
 import conventionalChangelog from "conventional-changelog";
-import { hideBin } from 'yargs/helpers';
-import  path from "path";
+import { hideBin } from "yargs/helpers";
+import path from "path";
 import fs from "fs";
 
 const git = simpleGit();
@@ -30,9 +30,9 @@ async function bumpVersion(type) {
   console.log(pkgPath);
   const pkg = await fsExtra.readJson(pkgPath);
   const currentVersion = pkg.version;
-  console.log('currentVersion', currentVersion);
+  console.log("currentVersion", currentVersion);
   const newVersion = semver.inc(currentVersion, type);
-console.log('newVersion', newVersion);
+  console.log("newVersion", newVersion);
   if (!newVersion) throw new Error("Version bump failed");
 
   pkg.version = newVersion;
@@ -42,7 +42,7 @@ console.log('newVersion', newVersion);
 }
 
 async function gitCommitAndTag(version) {
- return  git
+  return git
     .add("package.json")
     .add("RELEASE_NOTES.md")
     .commit(`chore(release): v${version}`)
@@ -56,21 +56,14 @@ async function gitCommitAndTag(version) {
 }
 
 (async () => {
-  console.log('🚀 Starting release process...');
+  console.log("🚀 Starting release process...");
   const options = yargs(hideBin(process.argv))
     .version(false)
     .option("version", {
       alias: "v",
       // type: "string",
-      description: 'Specify the release type (semantic versioning)',
-      choices: [
-        'patch',
-        'minor',
-        'major',
-        'prepatch',
-        'prerelease',
-        'release'
-      ],
+      description: "Specify the release type (semantic versioning)",
+      choices: ["patch", "minor", "major", "prepatch", "prerelease", "release"],
       demandOption: true,
     })
     .help()

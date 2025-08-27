@@ -19,5 +19,13 @@
   "types": "./index.d.ts",
   "files": [
     "**/*"
-  ]
+  ],
+  "dependencies": {
+    "d3": "7.9.0",
+    "lodash-es": "^4.17.21",
+    "markdown-it": "14.1.0",
+    "memoizee": "^0.4.17",
+    "tokenizr": "1.7.0",
+    "zod": "3.25.67"
+  }
 }
