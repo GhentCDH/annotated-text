@@ -52,7 +52,8 @@
   ],
   "release": {
     "projects": [
-      "*"
+      "*",
+      "!@ghentcdh/annotated-text"
     ],
     "version": {
       "preVersionCommand": "npx nx run-many -t build"

@@ -29,6 +29,7 @@ async function bumpVersion(type) {
   const pkgPath = path.resolve(process.cwd(), "package.json");
   console.log(pkgPath);
   const pkg = await fsExtra.readJson(pkgPath);
+
   const currentVersion = pkg.version;
   console.log("currentVersion", currentVersion);
   const newVersion = semver.inc(currentVersion, type);
@@ -37,8 +38,11 @@ async function bumpVersion(type) {
 
   pkg.version = newVersion;
   await fsExtra.writeJson(pkgPath, pkg, { spaces: 2 });
+
+  const corePkg = await fsExtra.readJson(pkgPath);
+  corePkg.version = newVersion;
   const corePath = path.resolve(process.cwd(), "libs/core/package.json");
-  await fsExtra.writeJson(corePath, pkg, { spaces: 2 });
+  await fsExtra.writeJson(corePath, corePkg, { spaces: 2 });
   console.log(`🔧 Bumped version: ${currentVersion} → ${newVersion}`);
   return newVersion;
 }
