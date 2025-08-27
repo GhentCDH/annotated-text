@@ -5,10 +5,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch, watchEffect } from "vue";
 import { v4 as uuidv4 } from "uuid";
-import type { AnnotatedText, Annotation } from "../core";
-import { createAnnotatedText, Debugger, TextLineAdapter } from "../core";
-import { AnnotatedTextV2Props } from "@/types/props";
-import { AnnotatedTextV2Emits } from "@/types/emits";
+import type { AnnotatedText, Annotation } from "@ghentcdh/annotated-text";
+import {
+  createAnnotatedText,
+  Debugger,
+  TextLineAdapter,
+} from "@ghentcdh/annotated-text";
+import { AnnotatedTextV2Props } from "../types/props";
+import { AnnotatedTextV2Emits } from "../types/emits";
 
 // init props
 
