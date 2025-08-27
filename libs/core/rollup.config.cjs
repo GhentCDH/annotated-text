@@ -3,10 +3,10 @@ const { withNx } = require("@nx/rollup/with-nx");
 module.exports = withNx(
   {
     main: "./src/index.ts",
-    outputPath: "../dist/core",
+    outputPath: "../../dist/libs/core",
     tsConfig: "./tsconfig.lib.json",
     compiler: "swc",
-    format: ["cjs", "esm"],
+    format: ["cjs", "esm", "es"],
     assets: [{ input: "{projectRoot}", output: ".", glob: "*.md" }],
   },
   {

@@ -51,8 +51,17 @@
     }
   ],
   "release": {
+    "projects": [
+      "*"
+    ],
     "version": {
-      "preVersionCommand": "pnpm dlx nx run-many -t build"
+      "preVersionCommand": "npx nx run-many -t build"
+    },
+    "changelog": {
+      "automaticFromRef": true,
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
     }
   }
 }

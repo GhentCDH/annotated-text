@@ -28,11 +28,13 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm dlx nx run-many -t build
+        run: npx nx run-many -t build --parallel --max-parallel=6
 
       - name: Publish package on NPM
-        run: pnpm publish --access public --no-git-checks --force --verbose
+        run: npx nx release publish --access public
+        shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+

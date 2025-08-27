@@ -34,7 +34,6 @@
     "test:coverage": "nx test --environment jsdom --root src/ --coverage",
     "type-check": "vue-tsc --noEmit --composite false",
     "prepare": "husky install",
-    "upgrade": "vue upgrade",
     "release": "node tools/release/release.mjs"
   },
   "dependencies": {

@@ -37,6 +37,8 @@ async function bumpVersion(type) {
 
   pkg.version = newVersion;
   await fsExtra.writeJson(pkgPath, pkg, { spaces: 2 });
+  const corePath = path.resolve(process.cwd(), "libs/core/package.json");
+  await fsExtra.writeJson(corePath, pkg, { spaces: 2 });
   console.log(`🔧 Bumped version: ${currentVersion} → ${newVersion}`);
   return newVersion;
 }

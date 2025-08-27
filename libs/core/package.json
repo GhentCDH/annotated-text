@@ -2,30 +2,34 @@
   "name": "@ghentcdh/annotated-text",
   "version": "0.0.1",
   "type": "module",
+  "license": "MIT",
   "sideEffects": false,
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js",
-      "require": "./index.cjs"
-    },
-    "./style.css": {
-      "import": "./dist/annotated-text.css"
-    }
-  },
-  "types": "./index.d.ts",
   "files": [
-    "**/*"
+    "*.js",
+    "*.cjs",
+    "*.d.ts",
+    "*.css",
+    "assets/**"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "d3": "7.9.0",
     "lodash-es": "^4.17.21",
     "markdown-it": "14.1.0",
     "memoizee": "^0.4.17",
     "tokenizr": "1.7.0",
     "zod": "3.25.67"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs",
+      "import": "./index.js",
+      "default": "./index.js"
+    },
+    "./styles.css": "./index.cjs.css",
+    "./package.json": "./package.json"
   }
 }
