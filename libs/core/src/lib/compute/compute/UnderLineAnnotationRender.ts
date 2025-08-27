@@ -22,7 +22,7 @@ export const getColorsUnderline: GetColorsFn = (
   const color = adapter.color(annotation);
   return {
     default: {
-      fill: "rgba(0,0,0,0) ",
+      fill: "rgba(0,0,0,0)",
       border: borders ? color.border : undefined,
     } as AnnotationDrawColor,
     hover: hoverColor,

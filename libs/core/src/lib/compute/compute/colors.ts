@@ -1,6 +1,6 @@
 import { AnnotationAdapter } from "../../adapter";
 import { TextAnnotation } from "../../model";
-import { AnnotationDrawColor, AnnotationDrawColors } from "../annotation.model";
+import { AnnotationDrawColors } from "../annotation.model";
 
 export type GetColorsFn = (
   adapter: AnnotationAdapter<any>,
@@ -22,7 +22,7 @@ export const getColors: GetColorsFn = (
     default: {
       fill: color.background,
       border: borders ? color.border : undefined,
-    } as AnnotationDrawColor,
+    },
     hover: hoverColor,
     edit: {
       fill: color.background,
@@ -31,6 +31,6 @@ export const getColors: GetColorsFn = (
     active: {
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
-    } as AnnotationDrawColor,
+    },
   };
 };
