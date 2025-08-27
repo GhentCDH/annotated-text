@@ -51,10 +51,10 @@ const createText = () => {
   })
     .setText(props.text, false)
     .setAnnotations(props.annotations)
-    .highlightAnnotations(props.highlightAnnotations)
+    .highlightAnnotations(props.highlightAnnotations!)
     .selectAnnotations(props.selectedAnnotations)
     .on("all", (event) =>
-      emit("event", event.mouseEvent, event.event, event.data),
+      emit("event", event.mouseEvent as any, event.event, event.data!),
     );
 };
 
@@ -93,7 +93,7 @@ watchEffect(() => {
 watch(
   () => props.highlightAnnotations,
   () => {
-    textAnnotation?.highlightAnnotations(props.highlightAnnotations);
+    textAnnotation?.highlightAnnotations(props.highlightAnnotations!);
   },
 );
 

@@ -1,8 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/out-tsc",
-    "types": ["vite/client"]
+    "outDir": "../../dist/out-tsc",
+    "types": [
+      "vite/client"
+    ]
   },
   "include": [
     "src/**/*.js",

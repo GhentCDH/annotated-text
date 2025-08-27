@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { type Annotation, Debugger } from "@ghentcdh/annotated-text";
+import {
+  type Annotation,
+  AnnotationEventType,
+  Debugger,
+} from "@ghentcdh/annotated-text";
 import { largeGreekText } from "@demo";
 import { AnnotatedTextV2 } from "@ghentcdh/annotated-text-vue-component";
 
 const typesSet = new Set<string>();
-largeGreekText.annotations.map((a) => {
+largeGreekText.annotations.map((a: any) => {
   if (a.type) {
     typesSet.add(a.type);
   }
@@ -15,13 +19,13 @@ const annotations = computed(
   () =>
     largeGreekText.annotations
       // .filter((t) => t.id === 1508168)
-      .filter((a) => {
+      .filter((a: any) => {
         if (selectedTypes.value.length === 0) return true;
         return selectedTypes.value.includes(a.type);
       }) as unknown as Annotation[],
 );
 
-const onEvent = (event, eventType: AnnotationEventType, data) => {
+const onEvent = (event: any, eventType: AnnotationEventType, data: any) => {
   switch (eventType) {
     case "click":
       Debugger.debug("Annotation clicked", event, data);

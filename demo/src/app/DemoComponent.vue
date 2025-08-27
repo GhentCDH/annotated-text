@@ -4,15 +4,13 @@
 import { reactive } from "vue";
 import type {
   Annotation,
+  AnnotationEventData,
+  AnnotationEventType,
   AnnotationId,
   AnnotationTarget,
 } from "@ghentcdh/annotated-text";
 import { Debugger } from "@ghentcdh/annotated-text";
-import {
-  AnnotatedTextV2,
-  AnnotationEventData,
-  AnnotationEventType,
-} from "@ghentcdh/annotated-text-vue-component";
+import { AnnotatedTextV2 } from "@ghentcdh/annotated-text-vue-component";
 import { greekText } from "@demo";
 
 const { text, annotations } = greekText;

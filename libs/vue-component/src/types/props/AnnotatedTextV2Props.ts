@@ -1,4 +1,8 @@
-import type { Annotation, Snapper } from "@ghentcdh/annotated-text";
+import type {
+  Annotation,
+  AnnotationId,
+  Snapper,
+} from "@ghentcdh/annotated-text";
 
 export interface AnnotatedTextV2Props {
   /**
@@ -12,11 +16,11 @@ export interface AnnotatedTextV2Props {
   /**
    * List of annotation ID's that are selected. Those will get the "active" style class
    */
-  selectedAnnotations?: string[];
+  selectedAnnotations?: AnnotationId[];
   /**
    * List of annotation ID's that are hovered. Those will get the "hovered" style class.
    */
-  highlightAnnotations?: string[];
+  highlightAnnotations?: AnnotationId[];
   /**
    * Text
    */

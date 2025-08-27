@@ -45,6 +45,6 @@ export default defineConfig({
       all: true,
       include: ["src/**/*.ts"],
       exclude: ["src/**/*.{spec,test}.ts"],
-    },
+    } as any,
   },
 });

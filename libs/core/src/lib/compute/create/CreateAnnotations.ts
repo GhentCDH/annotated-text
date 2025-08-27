@@ -225,7 +225,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   private highlightedIds = new IdCollection("hover");
 
-  public highlightAnnotations(ids: string[]) {
+  public highlightAnnotations(ids: AnnotationId[]) {
     const annotations =
       ids?.map((i) => this.textAnnotationModel?.getAnnotationDraw(i)[0]) ?? [];
     this.highlightedIds.changeIds(
@@ -241,7 +241,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   private activeIds = new IdCollection("active");
 
-  public selectAnnotations(ids: string[]) {
+  public selectAnnotations(ids: AnnotationId[]) {
     this.highlightedIds.removeId(ids);
     const annotations =
       ids?.map((i) => this.textAnnotationModel?.getAnnotationDraw(i)[0]) ?? [];

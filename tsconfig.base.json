@@ -1,18 +1,18 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
     "target": "ESNext",
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/types/emits": [
-        "./src/types/emits/index.ts"
-      ],
-      "@/types/props": [
-        "./src/types/props/index.ts"
-      ],
       "@demo": [
         "./docs/demo/index.ts"
       ],
@@ -23,5 +23,9 @@
         "./libs/vue-component/src/index.ts"
       ]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

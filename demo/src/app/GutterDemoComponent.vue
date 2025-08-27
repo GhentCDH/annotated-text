@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  AnnotatedTextV2,
-  AnnotationEventData,
-  AnnotationEventType,
-} from "@ghentcdh/annotated-text-vue-component";
+import { AnnotatedTextV2 } from "@ghentcdh/annotated-text-vue-component";
 import { Annotation } from "@ghentcdh/annotated-text";
 import { greekText } from "@demo";
 

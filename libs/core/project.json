@@ -1,12 +1,12 @@
 {
   "name": "core",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "core/src",
+  "sourceRoot": "libs/core/src",
   "projectType": "library",
   "release": {
     "version": {
       "manifestRootsToUpdate": [
-        "dist/{projectRoot}"
+        "../../dist/{projectRoot}"
       ],
       "currentVersionResolver": "git-tag",
       "fallbackCurrentVersionResolver": "disk"

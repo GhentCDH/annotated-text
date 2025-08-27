@@ -8,9 +8,9 @@ This repository contains a reusable Javascript component to visualize text annot
 linguistic analysis, text structure or other annotations on unicode text. It is best explained by the following
 screenshots:
 
-![Annotations](docs/_media/annotations.png)
+![Annotations](../../docs/_media/annotations.png)
 
-![Edit](docs/_media/editAnnotation.png)
+![Edit](../../docs/_media/editAnnotation.png)
 
 Following text formats are supported:
 

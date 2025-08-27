@@ -19,16 +19,14 @@ export class IdCollection {
     annotations: AnnotationDraw[],
     ignoreIds: AnnotationId[],
   ): void {
-    const removeIds = this.ids
-      .keys()
-      .filter(
-        (id) =>
-          !annotations.some(
-            (a) =>
-              a?.annotationUuid === id && !ignoreIds.includes(a.annotationUuid),
-          ),
-      );
-    removeIds.forEach((uuid) => {
+    const removeIds = (this.ids.keys() as any).filter(
+      (id: AnnotationId) =>
+        !annotations.some(
+          (a) =>
+            a?.annotationUuid === id && !ignoreIds.includes(a.annotationUuid),
+        ),
+    );
+    removeIds.forEach((uuid: string) => {
       const color = this.ids.get(uuid)!;
       svg.colorAnnotation(uuid, color.default);
     });

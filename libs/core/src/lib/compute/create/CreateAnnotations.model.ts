@@ -47,12 +47,12 @@ export interface AnnotatedText<ANNOTATION> {
    * Highlight annotations by their IDs.
    * @param ids
    */
-  highlightAnnotations: (ids: string[]) => this;
+  highlightAnnotations: (ids: AnnotationId[]) => this;
   /**
    * A list of selected annotations, if this is handled outside the model,
    * @param ids
    */
-  selectAnnotations: (ids: string[]) => this;
+  selectAnnotations: (ids: AnnotationId[]) => this;
   /**
    * Register an event listener for the annotation model.
    * @param event
