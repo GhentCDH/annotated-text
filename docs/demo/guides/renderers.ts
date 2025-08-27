@@ -1,9 +1,8 @@
- 
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/vue-component-annotated-text";
+} from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
 
 export const RenderUnderline = (id_default: string, id_underline: string) => {

@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextAnnotation,
-  TextLine,
-} from "@ghentcdh/vue-component-annotated-text";
+import { TextAnnotation, TextLine } from "../../model";
+import { TextAdapter } from "../../adapter/text";
+import { AnnotationAdapter } from "../../adapter/annotation";
 import { getColors, GetColorsFn } from "./colors";
 import { getX, getY } from "./helpers";
 import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
@@ -14,7 +11,7 @@ import {
 } from "../utils/create-path";
 import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
 
-export const createTextAnnotationRender: AnnotationRender = (
+export const createTextAnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -24,11 +21,11 @@ export const createTextAnnotationRender: AnnotationRender = (
   pathFn: createAnnotationPathFn,
   getColorsFn: GetColorsFn,
 ): AnnotationDraw[] => {
-  const { config } = annotationAdapter;
+  const config = annotationAdapter.config!;
   const radius = config.text.borderRadius;
 
-  const draws = [];
-  const padding = config.text.padding * annotation.weight;
+  const draws: AnnotationDraw[] = [];
+  const padding = config.text.padding * annotation.weight!;
   const height = config.text.lineHeight + padding * 2;
 
   lines.forEach((line, index: number) => {
@@ -53,7 +50,7 @@ export const createTextAnnotationRender: AnnotationRender = (
       }
 
       draws.push({
-        weight: annotation.weight,
+        weight: annotation.weight!,
         uuid: uuidv4(),
         annotationUuid: annotation.id,
         lineNumber: line.lineNumber,
@@ -71,7 +68,7 @@ export const createTextAnnotationRender: AnnotationRender = (
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
         height: { x, y, height },
-        color: getColorsFn(annotationAdapter, annotation),
+        color: getColorsFn(annotationAdapter, annotation, true),
       });
     });
   });

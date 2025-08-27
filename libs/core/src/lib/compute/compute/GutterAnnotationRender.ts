@@ -1,16 +1,13 @@
-import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextAnnotation,
-  TextLine,
-} from "@ghentcdh/vue-component-annotated-text";
 import { v4 as uuidv4 } from "uuid";
 import { getColors } from "./colors";
 import { getY } from "./helpers";
 import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
-import { TextAnnotationModel } from "../annotation.model";
+import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
 import { getMinMaxBy } from "../draw/utils/min-max.by";
 import { createGutterPath } from "../utils/create-path";
+import { TextAnnotation, TextLine } from "../../model";
+import { TextAdapter } from "../../adapter/text";
+import { AnnotationAdapter } from "../../adapter/annotation";
 
 export const GutterAnnotationRender: AnnotationRender = (
   lines: TextLine[],
@@ -20,7 +17,7 @@ export const GutterAnnotationRender: AnnotationRender = (
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const config = annotationAdapter.config;
+  const config = annotationAdapter.config!;
   const gutterWidth = config.gutter.width;
   const gutterGap = config.gutter.gap;
 
@@ -29,19 +26,19 @@ export const GutterAnnotationRender: AnnotationRender = (
     (line) => line.lineNumber,
   );
 
-  const y = getY(parentDimensions, firstLine.element.getBoundingClientRect());
-  const y1 = getY(parentDimensions, lastLine.element.getBoundingClientRect());
-  const lastLineHeight = lastLine.element.getBoundingClientRect().height;
+  const y = getY(parentDimensions, firstLine.element!.getBoundingClientRect());
+  const y1 = getY(parentDimensions, lastLine.element!.getBoundingClientRect());
+  const lastLineHeight = lastLine.element!.getBoundingClientRect().height;
 
   // Add the gutterwidth as padding
   // We want to have the most gutters closest to the text
-  const weight = model.maxGutterWeight - annotation.weight;
+  const weight = model.maxGutterWeight - annotation.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
 
-  const draws = [
+  const draws: AnnotationDraw[] = [
     {
-      weight: annotation.weight,
+      weight: annotation.weight!,
       uuid: uuidv4(),
       annotationUuid: annotation.id,
       lineNumber: firstLine.lineNumber,

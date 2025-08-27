@@ -22,12 +22,6 @@ export type AnnotationDrawColor = {
   fill: string | undefined;
   border?: string | undefined;
 };
-export type AnnotationDrawColors = {
-  default: AnnotationDrawColor;
-  active: AnnotationDrawColor;
-  hover: AnnotationDrawColor;
-  edit: AnnotationDrawColor;
-};
 
 export type AnnotationDrawColors = {
   default: AnnotationDrawColor;
@@ -35,11 +29,14 @@ export type AnnotationDrawColors = {
   hover: AnnotationDrawColor;
   edit: AnnotationDrawColor;
 };
+
+export type AnnotationDrawPath = { border?: string; fill?: string };
+
 export type AnnotationDraw = {
   uuid: string;
   annotationUuid: AnnotationId;
   lineNumber: number;
-  path: { border?: string; fill: string };
+  path: AnnotationDrawPath;
   draggable: {
     start?: Dimensions;
     end?: Dimensions;

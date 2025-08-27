@@ -115,7 +115,7 @@ export const drawDummyAnnotation = (
     dummyAnnotation,
     svgModel.textAdapter,
     svgModel.annotationAdapter,
-  ).forEach((a) => {
+  ).draws.forEach((a) => {
     drawAnnotationContent(
       { ...a, annotationUuid: DUMMY_UID },
       svgModel,

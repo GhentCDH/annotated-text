@@ -1,10 +1,4 @@
-import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextAnnotation,
-  TextLine,
-} from "@ghentcdh/vue-component-annotated-text";
-import { createTextAnnotationRender } from "./TextAnnotationRender";
+import { TextAnnotation, TextLine } from "../../model";
 import { GetColorsFn } from "./colors";
 import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
 import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
@@ -13,14 +7,18 @@ import {
   createAnnotationPathFn,
   PathParams,
 } from "../utils/create-path";
+import { TextAdapter } from "../../adapter/text";
+import { AnnotationAdapter } from "../../adapter/annotation";
+import { createTextAnnotationRender } from "./TextAnnotationRender";
 
 export const getColorsUnderline: GetColorsFn = (
   adapter: AnnotationAdapter<any>,
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const hoverColor = adapter.config.hover.color;
-  const editColor = adapter.config.edit.color;
+  const config = adapter.config!;
+  const hoverColor = config.hover.color;
+  const editColor = config.edit.color;
   const color = adapter.color(annotation);
   return {
     default: {
@@ -43,10 +41,10 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   const fill = createAnnotationFill(params);
   const { x, y, height, width } = params;
   return {
-    border: [
+    border:
       // move to top-left
       `M ${x} ${y + height} h ${width}`,
-    ],
+
     fill,
   };
 };

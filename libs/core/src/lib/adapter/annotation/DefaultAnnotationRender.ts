@@ -1,16 +1,13 @@
 import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextAnnotation,
-  TextLine,
-} from "@ghentcdh/vue-component-annotated-text";
-import {
   AnnotationDraw,
   TextAnnotationModel,
 } from "../../compute/annotation.model";
 import { TextAnnotationRender } from "../../compute/compute/TextAnnotationRender";
 import { GutterAnnotationRender } from "../../compute/compute/GutterAnnotationRender";
 import { UnderLineAnnotationRender } from "../../compute/compute/UnderLineAnnotationRender";
+import { TextAnnotation, TextLine } from "../../model";
+import { TextAdapter } from "../text/TextAdapter";
+import { AnnotationAdapter } from "../annotation";
 
 export type DefaultRenders = "highlight" | "underline";
 export type AnnotationRenderFn<ANNOTATION> = (

@@ -1,7 +1,5 @@
-import {
-  AnnotationAdapter,
-  type TextAnnotation,
-} from "@ghentcdh/vue-component-annotated-text";
+import { AnnotationAdapter } from "../../adapter";
+import { TextAnnotation } from "../../model";
 import { AnnotationDrawColor, AnnotationDrawColors } from "../annotation.model";
 
 export type GetColorsFn = (
@@ -15,8 +13,9 @@ export const getColors: GetColorsFn = (
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const hoverColor = adapter.config.hover.color;
-  const editColor = adapter.config.edit.color;
+  const config = adapter.config!;
+  const hoverColor = config.hover.color;
+  const editColor = config.edit.color;
   const color = adapter.color(annotation);
 
   return {

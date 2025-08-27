@@ -1,4 +1,5 @@
 import memoize from "memoizee";
+import { AnnotationDrawPath } from "../annotation.model";
 
 export type PathParams = {
   x: number;
@@ -99,10 +100,7 @@ export const createAnnotationFill = ({
   return path.flat().join(" ");
 };
 
-export type createAnnotationPathFn = (params: PathParams) => {
-  border?: string[];
-  fill?: string[];
-};
+export type createAnnotationPathFn = (params: PathParams) => AnnotationDrawPath;
 
 export const createAnnotationPath: createAnnotationPathFn = (
   params: PathParams,
