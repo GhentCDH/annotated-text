@@ -6,15 +6,15 @@
     "url": "https://github.com/GhentCDH/annotated-text",
     "directory": "libs/core"
   },
-  "version": "0.5.2",
+  "version": "0.6.0",
   "type": "module",
   "main": "./index.cjs",
   "module": "./index.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
-      "require": "./index.cjs",
-      "import": "./index.js"
+      "require": "./index.cjs.js",
+      "import": "./index.esm.js"
     },
     "./annotated-text.css": "./index.esm.css",
     "./package.json": "./package.json"
