@@ -1,15 +1,13 @@
 import { AnnotatedText } from "./CreateAnnotations.model";
 import { BaseAnnotation, CreateAnnotationsImpl } from "./CreateAnnotations";
 import {
-  createTextAdapterParams,
-  PlainTextAdapter,
-  TextAdapter,
-} from "../../adapter/text";
-import {
   AnnotationAdapter,
   createAnnotationAdapterParams,
+  createTextAdapterParams,
   DefaultAnnotationAdapter,
-} from "../../adapter/annotation";
+  PlainTextAdapter,
+  TextAdapter,
+} from "../../adapter";
 import type { Annotation } from "../../model/";
 import { Debugger } from "../../utils/debugger";
 

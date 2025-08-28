@@ -5,12 +5,7 @@ export const annotations = [
   {
     start: 1,
     end: 89,
-    color: {
-      border: "rgba(255,188,5,0.3)",
-      background: "rgba(255,188,5,0.3)",
-      borderActive: "rgba(255,188,5,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #ffbc05 30)",
-    },
+    color: annotationColors["8"],
     target: "text",
     label: "gts",
     id: "3004789",
@@ -50,12 +45,7 @@ export const annotations = [
   {
     start: 87,
     end: 94,
-    color: {
-      border: "rgba(245,23,32,0.3)",
-      background: "rgba(245,23,32,0.3)",
-      borderActive: "rgba(245,23,32,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #f51720 30)",
-    },
+    color: annotationColors["1"],
     target: "text",
     label: "orthography",
     id: "147849",
@@ -63,12 +53,7 @@ export const annotations = [
   {
     start: 89,
     end: 710,
-    color: {
-      border: "rgba(0,141,124,0.3)",
-      background: "rgba(0,141,124,0.3)",
-      borderActive: "rgba(0,141,124,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #008d7c 30)",
-    },
+    color: annotationColors["2"],
     target: "gutter",
     label: "gts",
     id: "3004788",
@@ -76,12 +61,7 @@ export const annotations = [
   {
     start: 95,
     end: 101,
-    color: {
-      border: "rgba(0,141,124,0.3)",
-      background: "rgba(0,141,124,0.3)",
-      borderActive: "rgba(0,141,124,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #008d7c 30)",
-    },
+    color: annotationColors["1"],
     target: "text",
     label: "orthography",
     id: "147850",
@@ -89,12 +69,7 @@ export const annotations = [
   {
     start: 111,
     end: 119,
-    color: {
-      border: "rgba(255,188,5,0.3)",
-      background: "rgba(255,188,5,0.3)",
-      borderActive: "rgba(255,188,5,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #ffbc05 30)",
-    },
+    color: annotationColors["9"],
     target: "text",
     label: "orthography",
     id: "147851",
@@ -102,12 +77,7 @@ export const annotations = [
   {
     start: 126,
     end: 141,
-    color: {
-      border: "rgba(245,23,32,0.3)",
-      background: "rgba(245,23,32,0.3)",
-      borderActive: "rgba(245,23,32,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #f51720 30)",
-    },
+    color: annotationColors["1"],
     target: "text",
     label: "typography",
     id: "443498",
@@ -123,12 +93,7 @@ export const annotations = [
   {
     start: 175,
     end: 193,
-    color: {
-      border: "rgba(0,141,124,0.3)",
-      background: "rgba(0,141,124,0.3)",
-      borderActive: "rgba(0,141,124,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #008d7c 30)",
-    },
+    color: annotationColors["2"],
     target: "text",
     label: "typography",
     id: "443499",
@@ -152,12 +117,7 @@ export const annotations = [
   {
     start: 335,
     end: 338,
-    color: {
-      border: "rgba(245,23,32,0.3)",
-      background: "rgba(245,23,32,0.3)",
-      borderActive: "rgba(245,23,32,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #f51720 30)",
-    },
+    color: annotationColors["1"],
     target: "text",
     label: "morpho_syntactical",
     id: "1445646",
@@ -165,12 +125,7 @@ export const annotations = [
   {
     start: 375,
     end: 392,
-    color: {
-      border: "rgba(255,188,5,0.3)",
-      background: "rgba(255,188,5,0.3)",
-      borderActive: "rgba(255,188,5,0.3)",
-      backgroundActive: "color-mix(in srgb, white, #ffbc05 30)",
-    },
+    color: annotationColors["8"],
     target: "text",
     label: "typography",
     id: "443500",

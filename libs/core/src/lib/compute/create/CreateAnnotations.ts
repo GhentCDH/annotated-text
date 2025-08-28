@@ -1,5 +1,5 @@
 import { AnnotatedText } from "./CreateAnnotations.model";
-import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
+import { TextAnnotationModel } from "../annotation.model";
 import { EventListener, EventListenerType } from "../../events/event.listener";
 import {
   TEXT_CONFIG_KEYS,
@@ -13,7 +13,6 @@ import {
 } from "../../adapter/annotation";
 import { createAnnotationModel } from "../1_create_annotation_model";
 import { SvgModel } from "../model/svg.types";
-import { IdCollection } from "../model/id.collection";
 import { Debugger } from "../../utils/debugger";
 import { computeLinePositions, computePositions } from "../4_compute_positions";
 import { styles } from "../styles.const";
@@ -23,6 +22,7 @@ import { ErrorEventCallback, EventCallback } from "../../events";
 import { drawText } from "../draw/text";
 import { recreateAnnotation } from "../draw/annotations/draw";
 import { AnnotationId } from "../../model";
+import { AnnotationColors } from "../model/annotation.colors";
 
 const document = globalThis.document || null;
 export type BaseAnnotation = { id: AnnotationId };
@@ -39,6 +39,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private resizeObserver: ResizeObserver;
   private text: string;
   private eventListener = new EventListener();
+  private readonly annotationColors = new AnnotationColors();
 
   constructor(
     private readonly id: string,
@@ -130,8 +131,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   private drawSvg() {
     this.svgModel.drawAnnotations();
-    this.highlightedIds.colorIds(this.svgModel);
-    this.activeIds.colorIds(this.svgModel);
+    this.annotationColors.color(this.svgModel);
   }
 
   private init() {
@@ -202,6 +202,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.eventListener,
       this.annotationAdapter,
       this.textAdapter,
+      this.annotationColors,
     );
 
     this.svgNode = this.svgModel.node();
@@ -223,35 +224,13 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     return this;
   }
 
-  private highlightedIds = new IdCollection("hover");
-
   public highlightAnnotations(ids: AnnotationId[]) {
-    const annotations =
-      ids?.map((i) => this.textAnnotationModel?.getAnnotationDraw(i)[0]) ?? [];
-    this.highlightedIds.changeIds(
-      this.svgModel,
-      annotations as AnnotationDraw[],
-      [],
-      // this.activeIds.getIds(),
-    );
-    // TODO decide which one has more priority?
-    this.activeIds.colorIds(this.svgModel);
+    this.annotationColors.highlightAnnotations(ids, this.svgModel);
     return this;
   }
 
-  private activeIds = new IdCollection("active");
-
   public selectAnnotations(ids: AnnotationId[]) {
-    this.highlightedIds.removeId(ids);
-    const annotations =
-      ids?.map((i) => this.textAnnotationModel?.getAnnotationDraw(i)[0]) ?? [];
-
-    this.activeIds.changeIds(
-      this.svgModel,
-      annotations as AnnotationDraw[],
-      [],
-    );
-    // TODO decide which one has more priority?
+    this.annotationColors.selectAnnotations(ids, this.svgModel);
     return this;
   }
 
