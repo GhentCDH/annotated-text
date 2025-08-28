@@ -17,7 +17,7 @@ export const drawAnnotationContent = (
     .attr("data-annotation-uid", annotation.annotationUuid);
 
   let rect;
-  if (annotation.path.border) {
+  if (annotation.path.fill) {
     rect = annotationGroup
       .append("path")
       .attr("data-annotation-uid", annotation.annotationUuid)
