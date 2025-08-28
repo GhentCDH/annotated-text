@@ -49,8 +49,5 @@ export const GutterAnnotationRender: AnnotationRender = (
     },
   ];
 
-  console.log(x, y, gutterWidth, height, draws);
-  console.log(draws);
-
   return { draws, isGutter: true };
 };

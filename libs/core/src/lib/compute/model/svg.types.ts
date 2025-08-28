@@ -15,6 +15,7 @@ import { EventListener } from "../../events/event.listener";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAdapter } from "../../adapter/text";
 import { type AnnotationId } from "../../model";
+import { AnnotationColors } from "./annotation.colors";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -45,6 +46,7 @@ export class SvgModel {
     private readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
     public readonly textAdapter: TextAdapter,
+    public readonly annotationColors: AnnotationColors,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
@@ -101,6 +103,23 @@ export class SvgModel {
       annotationUuid,
       `[${SVG_ID.ANNOTATION_ROLE}="${SVG_ROLE.BORDER}"]`,
     );
+  }
+
+  resetAnnotationColor(annotationUuid: AnnotationId) {
+    const annotation = this.model.getDrawAnnotations(annotationUuid)[0];
+    if (!annotation) {
+      Debugger.warn("No annotation found for uuid", annotationUuid);
+      return;
+    }
+
+    const color = this.annotationColors.getAnnotationColor(annotation);
+
+    if (!color) {
+      Debugger.warn("No default color found for annotation", annotationUuid);
+      return;
+    }
+
+    this.colorAnnotation(annotationUuid, color);
   }
 
   colorAnnotation(annotationUuid: AnnotationId, color: AnnotationDrawColor) {

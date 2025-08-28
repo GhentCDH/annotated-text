@@ -30,8 +30,6 @@ export const leaveAnnotation =
       mouseEvent,
       annotationUuid: annotation?.annotationUuid || "",
     });
-    svgModel.colorAnnotation(
-      annotation.annotationUuid,
-      annotation.color.default,
-    );
+
+    svgModel.resetAnnotationColor(annotation.annotationUuid);
   };
