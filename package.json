@@ -119,6 +119,7 @@
     "uuid": "^11.1.0",
     "verdaccio": "^6.0.5",
     "vite": "^6.2.6",
+    "vite-plugin-checker": "0.10.3",
     "vite-plugin-dts": "^4.5.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitepress": "^1.6.3",

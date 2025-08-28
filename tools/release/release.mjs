@@ -27,6 +27,7 @@ async function generateChangelog() {
 
 async function bumpVersion(type) {
   const pkgPath = path.resolve(process.cwd(), "package.json");
+  const corePath = path.resolve(process.cwd(), "libs/core/package.json");
   console.log(pkgPath);
   const pkg = await fsExtra.readJson(pkgPath);
 
@@ -39,9 +40,8 @@ async function bumpVersion(type) {
   pkg.version = newVersion;
   await fsExtra.writeJson(pkgPath, pkg, { spaces: 2 });
 
-  const corePkg = await fsExtra.readJson(pkgPath);
+  const corePkg = await fsExtra.readJson(corePath);
   corePkg.version = newVersion;
-  const corePath = path.resolve(process.cwd(), "libs/core/package.json");
   await fsExtra.writeJson(corePath, corePkg, { spaces: 2 });
   console.log(`🔧 Bumped version: ${currentVersion} → ${newVersion}`);
   return newVersion;

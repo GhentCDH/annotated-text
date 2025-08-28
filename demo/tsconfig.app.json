@@ -1,8 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../dist/out-tsc",
-    "types": ["vite/client"]
+    "outDir": "../dist",
+    "types": [
+      "vite/client"
+    ]
   },
   "exclude": [
     "src/**/*.spec.ts",
@@ -10,5 +12,10 @@
     "src/**/*.spec.vue",
     "src/**/*.test.vue"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.vue"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.vue"
+  ]
 }
