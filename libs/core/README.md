@@ -43,16 +43,13 @@ on: [Release documentation](https://ghentcdh.github.io/annotated-text/release/)
 More Information in
 the [Getting started documentation](https://ghentcdh.github.io/annotated-text/components/-getting-started/quikstart.html)
 
-```scss
-@use '@ghentcdh/annotated-text/style.css' as *;
-```
-
 ````html
 
 <div :id="id"></div>
 ````
 
-```ts
+```ts 
+import '@ghentcdh/annotated-text/annotated-text.css';
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
 const id = `annotated-text-{uuid}`;
