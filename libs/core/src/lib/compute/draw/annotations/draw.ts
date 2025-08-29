@@ -1,8 +1,4 @@
-import { pick } from "lodash-es";
-import {
-  AnnotationDrawColor,
-  TextAnnotationModel,
-} from "../../annotation.model";
+import { AnnotationDrawColor } from "../../annotation.model";
 import { type TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import {
@@ -11,89 +7,7 @@ import {
 } from "../../2_assign_annotation_to_line";
 import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
-import {
-  calculateOffset,
-  findLineElement,
-  insideRange,
-  isInsideBoundingRect,
-} from "../utils/bounding-rect";
 import { TextAnnotationRender } from "../../compute/TextAnnotationRender";
-
-export function getCharacterFromTextNodesAtPoint(
-  x: number,
-  y: number,
-  svg: SvgModel,
-) {
-  const container = svg.textElement;
-  const model = svg.model as TextAnnotationModel;
-  const walker = document.createTreeWalker(
-    container,
-    NodeFilter.SHOW_TEXT,
-    null,
-  );
-  let node: Text | null;
-
-  while ((node = walker.nextNode() as Text | null)) {
-    // Check if position is inside the text node
-    if (!node.textContent) continue;
-    if (
-      !isInsideBoundingRect(x, y, node.parentElement!.getBoundingClientRect())
-    )
-      continue;
-    const { lineUid, lineHeight } = findLineElement(node);
-
-    if (!lineUid) {
-      console.warn("no line found at", lineUid);
-      continue;
-    }
-
-    const line = model.getLine(lineUid!)!;
-
-    // search the character in the text node
-    const text = node.textContent!;
-    // const { lineUid, offset } = findLineElement(node);
-
-    for (let i = 0; i < text.length; i++) {
-      const range = document.createRange();
-      range.setStart(node, i);
-      range.setEnd(node, i + 1);
-
-      const rects = [range.getBoundingClientRect()];
-      for (const rect of rects) {
-        // Test if the x coordinate is inside the bounding rect
-        if (insideRange(rect.left, rect.right, x)) {
-          const offset = calculateOffset(lineHeight, rect.height);
-          // Test if the y coordinate is inside the bounding rect
-          if (!insideRange(rect.top, rect.bottom, y, offset)) continue;
-
-          const parentDimensions = pick(
-            container.getBoundingClientRect(),
-            "width",
-            "height",
-            "x",
-            "y",
-          );
-
-          const newIndex = line.start + i;
-
-          const dimensions = {
-            x: rect.x - parentDimensions.x,
-            y: rect.y - parentDimensions.y,
-          };
-
-          return {
-            offset: i,
-            newIndex,
-            dimensions,
-            line,
-          };
-        }
-      }
-    }
-  }
-
-  return null;
-}
 
 export const removeDummyAnnotation = (svgModel: SvgModel) => {
   svgModel.removeAnnotations(DUMMY_UID);

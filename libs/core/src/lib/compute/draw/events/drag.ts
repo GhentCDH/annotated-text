@@ -37,7 +37,8 @@ export const drawHandle = (
   const config = svgModel.annotationAdapter.config!;
   const handleRadius = config.text.handleRadius;
   let dragResult: TextAnnotation | null = null;
-  const onDragEnd = (event: MouseEvent) => {
+
+  const onEditDragEnd = (event: MouseEvent) => {
     model.blockEvents = false;
     removeDummyAnnotation(svgModel);
 
@@ -61,14 +62,21 @@ export const drawHandle = (
     recreateAnnotation(svgModel, dragResult);
   };
 
-  const onDrag = (eventType: AnnotationEventType) => (event: any) => {
+  const onEditDrag = (eventType: AnnotationEventType) => (event: any) => {
     if (!svgModel.annotationAdapter.edit) return;
+
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
 
     dragResult =
       editAnnotations(svgModel, x, y, annotation, target, eventType) ??
       dragResult;
+  };
+
+  const onEditDragStart = (event: any) => {
+    if (!svgModel.annotationAdapter.edit) return;
+
+    return onEditDrag("annotation-edit--start")(event);
   };
 
   const width = handleRadius;
@@ -84,9 +92,9 @@ export const drawHandle = (
     .attr("y", dimensions.y)
     .call(
       drag()
-        .on("drag", onDrag("annotation-edit--move"))
-        .on("start", onDrag("annotation-edit--start"))
-        .on("end", onDragEnd) as any,
+        .on("drag", onEditDrag("annotation-edit--move"))
+        .on("start", onEditDragStart)
+        .on("end", onEditDragEnd) as any,
     );
   handle.on("mouseenter", () => {
     handle.attr("class", svgModel.annotationAdapter.edit ? "handle" : "");

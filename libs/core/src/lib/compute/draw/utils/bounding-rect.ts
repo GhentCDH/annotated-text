@@ -1,4 +1,5 @@
 import memoize from "memoizee";
+import { SVG_ID } from "../../model/svg.types";
 
 export const insideRange = memoize(
   (left: number, right: number, value: number, offset?: number) => {
@@ -36,7 +37,7 @@ const findOffset = (node: HTMLElement, parentNode: HTMLElement, offset = 0) => {
 export const findLineElement = (node: Node) => {
   const parentNode = node.parentNode as HTMLElement;
   let lineElement = parentNode;
-  let lineUid = lineElement.getAttribute("data-line-uid");
+  let lineUid = lineElement.getAttribute(SVG_ID.LINE_UID);
   let offset = 0;
 
   if (!lineUid) {
@@ -44,11 +45,14 @@ export const findLineElement = (node: Node) => {
     while (lineElement && !lineUid) {
       lineElement = lineElement.parentNode as HTMLElement;
       if (lineElement) {
-        lineUid = lineElement.getAttribute("data-line-uid");
+        lineUid = lineElement.getAttribute?.(SVG_ID.LINE_UID);
       }
     }
   }
-  const _lineHeight = window.getComputedStyle(lineElement).lineHeight;
+  if (!lineElement)
+    return { lineElement: null, lineUid: null, offset: 0, lineHeight: 0 };
+  
+  const _lineHeight = window.getComputedStyle?.(lineElement).lineHeight;
   const lineHeight = parseFloat(_lineHeight);
 
   offset = findOffset(node as HTMLElement, lineElement);

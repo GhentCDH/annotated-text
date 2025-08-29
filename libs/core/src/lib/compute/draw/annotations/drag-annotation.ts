@@ -1,13 +1,10 @@
 import { drag } from "d3";
 import { sendDummyAnnotationEvent } from "./edit";
-import {
-  getCharacterFromTextNodesAtPoint,
-  recreateAnnotation,
-  removeDummyAnnotation,
-} from "./draw";
+import { recreateAnnotation, removeDummyAnnotation } from "./draw";
 import { TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, Dimensions } from "../../annotation.model";
+import { getCharacterFromTextNodesAtPoint } from "../../position";
 
 export const addDraggableAnnotation = (
   svgModel: SvgModel,
@@ -22,6 +19,9 @@ export const addDraggableAnnotation = (
   let pickupIndex = 0;
 
   const onDragStart = () => (event: any) => {
+    if (!svgModel.annotationAdapter.edit) return;
+    if (svgModel.model.blockEvents) return;
+
     const draws = svgModel.model.getAnnotationDraw(annotation.annotationUuid);
     startDimensions = draws.find((d) => d.draggable.start)!.draggable
       ?.start as Dimensions;
@@ -32,8 +32,6 @@ export const addDraggableAnnotation = (
     );
 
     // if (!startDimensions || !endDimensions) return;
-    if (!svgModel.annotationAdapter.edit) return;
-    if (svgModel.model.blockEvents) return;
 
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;

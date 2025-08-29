@@ -1,10 +1,13 @@
 import memoize from "memoizee";
-import { Debugger } from "../../utils/debugger";
-import { TextAdapter, TextDirection } from "../../adapter/text";
-import { AnnotationAdapter } from "../../adapter/annotation";
-import { TextAnnotationModel } from "../annotation.model";
-import { type TextLine } from "../../model";
-import { styles } from "../styles.const";
+import { Debugger } from "../../../utils/debugger";
+import {
+  AnnotationAdapter,
+  TextAdapter,
+  TextDirection,
+} from "../../../adapter";
+import { TextAnnotationModel } from "../../annotation.model";
+import { type TextLine } from "../../../model";
+import { styles } from "../../styles.const";
 
 const document = globalThis.document || null;
 
