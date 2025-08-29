@@ -41,6 +41,7 @@
     "lodash-es": "^4.17.21",
     "markdown-it": "14.1.0",
     "memoizee": "^0.4.17",
+    "rbush": "4.0.1",
     "tokenizr": "1.7.0",
     "zod": "3.25.67"
   },
@@ -71,6 +72,7 @@
     "@types/markdown-it": "14.1.2",
     "@types/memoizee": "0.4.12",
     "@types/node": "^22.14.1",
+    "@types/rbush": "4.0.0",
     "@types/semver": "7.7.0",
     "@types/uuid": "^10.0.0",
     "@types/yargs": "17.0.33",

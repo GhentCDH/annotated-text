@@ -16,6 +16,8 @@ import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAdapter } from "../../adapter/text";
 import { type AnnotationId } from "../../model";
 import { AnnotationColors } from "./annotation.colors";
+import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
+import RBush from "rbush";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -26,6 +28,7 @@ export const DUMMY_UID = "dummy-uid";
 export const SVG_ID = {
   ANNOTATION_UID: "data-annotation-uid",
   ANNOTATION_ROLE: "data-annotation-role",
+  LINE_UID: "data-line-uid",
 };
 
 export const SVG_ROLE = {
@@ -39,6 +42,7 @@ export class SvgModel {
   readonly annotations: AnnotationSvg;
   readonly handles: AnnotationSvg;
   readonly svg: AnnotationSvg;
+  readonly textTree: RBush<TextRasterItem>;
 
   constructor(
     public readonly textElement: HTMLElement,
@@ -57,7 +61,6 @@ export class SvgModel {
       .attr("height", height)
       .style("font-family", "sans-serif")
       .style("font-size", "16px") as any;
-
     this.annotations = this.svg
       .append("g")
       .attr(
@@ -70,7 +73,7 @@ export class SvgModel {
         SVG_ID.ANNOTATION_ROLE,
         SVG_ROLE.HANDLE,
       ) as unknown as AnnotationSvg;
-
+    this.textTree = drawTextRaster(this);
     createNewBlock(this);
   }
 

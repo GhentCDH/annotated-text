@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@demo": [
+        "./docs/demo/index.ts"
+      ],
+      "@ghentcdh/annotated-text": [
+        "./libs/core/src/index.ts"
+      ],
+      "@ghentcdh/annotated-text-vue-component": [
+        "./libs/vue-component/src/index.ts"
+      ]
+    }
+  },
+  "extends": "../../../../../../../../../libs/core/tsconfig.lib.json"
+}

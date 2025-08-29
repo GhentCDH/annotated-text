@@ -1,9 +1,10 @@
-import { drawDummyAnnotation, getCharacterFromTextNodesAtPoint } from "./draw";
+import { drawDummyAnnotation } from "./draw";
 import { SnapperAction } from "../../../adapter/text/snapper";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 import { type TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
+import { getCharacterFromTextNodesAtPoint } from "../../position";
 
 export const sendDummyAnnotationEvent = (
   annotation: AnnotationDraw,

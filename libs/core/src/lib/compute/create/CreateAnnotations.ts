@@ -19,7 +19,7 @@ import { styles } from "../styles.const";
 import { computeAnnotationsOnLines } from "../3_compute_annotations_on_line";
 import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
 import { ErrorEventCallback, EventCallback } from "../../events";
-import { drawText } from "../draw/text";
+import { drawText } from "../draw/text/text";
 import { recreateAnnotation } from "../draw/annotations/draw";
 import { AnnotationId } from "../../model";
 import { AnnotationColors } from "../model/annotation.colors";
@@ -61,9 +61,9 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     this.textAnnotationModel = createAnnotationModel(
       this.text,
       this.textAdapter,
+      this.annotationAdapter,
       this.eventListener,
     );
-    this.annotationAdapter.setText(this.text);
 
     return this;
   }
@@ -127,6 +127,8 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.textAdapter,
       this.annotationAdapter,
     );
+
+    return this;
   }
 
   private drawSvg() {

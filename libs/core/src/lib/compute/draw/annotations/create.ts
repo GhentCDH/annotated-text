@@ -1,13 +1,13 @@
 import { pointer } from "d3";
 import {
   drawDummyAnnotation,
-  getCharacterFromTextNodesAtPoint,
   recreateAnnotation,
   removeDummyAnnotation,
 } from "./draw";
 import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
 import { type TextAnnotation } from "../../../model";
+import { getCharacterFromTextNodesAtPoint } from "../../position";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
@@ -61,7 +61,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
     return { x, y };
   };
 
-  svg.on("mousedown", (event: any) => {
+  const startCreateAnnotation = (event: any) => {
     if (!svgModel.annotationAdapter.create) return;
     if (svgModel.model.blockEvents || drawing) return;
     dummyAnnotation = null;
@@ -81,7 +81,9 @@ export const createNewBlock = (svgModel: SvgModel) => {
       },
       { annotation: dummyAnnotation },
     );
-  });
+  };
+
+  svg.on("mousedown", startCreateAnnotation);
 
   svg.on("mousemove", (event) => {
     if (!drawing) return;
