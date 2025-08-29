@@ -47,25 +47,23 @@ export const drawTextRaster = (svgModel: SvgModel) => {
       range.setStart(node, i);
       range.setEnd(node, i + 1);
 
-      const rects = [range.getBoundingClientRect()];
-      for (const rect of rects) {
-        const offset = calculateOffset(lineHeight, rect.height);
-        const textPosition = line.start + i + prevEnd;
-        const minX = rect.x - container.getBoundingClientRect().x;
-        const minY = rect.y - container.getBoundingClientRect().y - offset;
-        const width = rect.width;
-        const height = rect.height + offset * 2;
+      const rect = range.getBoundingClientRect();
+      const offset = calculateOffset(lineHeight, rect.height);
+      const textPosition = line.start + i + prevEnd;
+      const minX = rect.x - container.getBoundingClientRect().x;
+      const minY = rect.y - container.getBoundingClientRect().y - offset;
+      const width = rect.width;
+      const height = rect.height + offset * 2;
 
-        const item = {
-          minX: minX,
-          minY: minY,
-          maxX: minX + width,
-          maxY: minY + height,
-          textPosition,
-          text: text[i],
-        };
-        tree.insert(item);
-      }
+      const item = {
+        minX: minX,
+        minY: minY,
+        maxX: minX + width,
+        maxY: minY + height,
+        textPosition,
+        text: text[i],
+      };
+      tree.insert(item);
     }
 
     prevEnd += text.length;
