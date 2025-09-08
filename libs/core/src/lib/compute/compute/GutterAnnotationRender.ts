@@ -2,7 +2,11 @@ import { v4 as uuidv4 } from "uuid";
 import { getColors } from "./colors";
 import { getY } from "./helpers";
 import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
-import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
+import {
+  AnnotationDimension,
+  AnnotationDraw,
+  TextAnnotationModel,
+} from "../annotation.model";
 import { getMinMaxBy } from "../draw/utils/min-max.by";
 import { createGutterPath } from "../utils/create-path";
 import { TextAnnotation, TextLine } from "../../model";
@@ -29,6 +33,11 @@ export const GutterAnnotationRender: AnnotationRender = (
   const y = getY(parentDimensions, firstLine.element!.getBoundingClientRect());
   const y1 = getY(parentDimensions, lastLine.element!.getBoundingClientRect());
   const lastLineHeight = lastLine.element!.getBoundingClientRect().height;
+  const startPosition: AnnotationDimension = {
+    x: 0,
+    y1: y,
+    y2: y1,
+  };
 
   // Add the gutterwidth as padding
   // We want to have the most gutters closest to the text
@@ -49,5 +58,5 @@ export const GutterAnnotationRender: AnnotationRender = (
     },
   ];
 
-  return { draws, isGutter: true };
+  return { draws, isGutter: true, startPosition };
 };

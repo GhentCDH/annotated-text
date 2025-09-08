@@ -5,7 +5,7 @@ import {
 } from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
 
-export const RenderTag = (id: string) => {
+export const RenderTag = (id: string, enabledOnHover?: boolean) => {
   clearAnnotatedTextCache();
 
   createAnnotatedText(id, {
@@ -14,6 +14,11 @@ export const RenderTag = (id: string) => {
       edit: true,
       create: true,
       defaultRender: "underline",
+      tagConfig: {
+        enabled: true,
+        enabledOnHover,
+        tagFn: (annotation) => annotation.label ?? "No label",
+      },
     },
   })
     .setText(greekText.text)

@@ -1,4 +1,5 @@
 import {
+  AnnotationDimension,
   AnnotationDraw,
   TextAnnotationModel,
 } from "../../compute/annotation.model";
@@ -33,4 +34,8 @@ export type AnnotationRender = (
   annotation: TextAnnotation,
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
-) => { draws: AnnotationDraw[]; isGutter: boolean };
+) => {
+  draws: AnnotationDraw[];
+  isGutter: boolean;
+  startPosition: AnnotationDimension;
+};

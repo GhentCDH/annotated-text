@@ -62,7 +62,6 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.text,
       this.textAdapter,
       this.annotationAdapter,
-      this.eventListener,
     );
 
     return this;

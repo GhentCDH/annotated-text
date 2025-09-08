@@ -13,6 +13,7 @@ import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
+import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 
 const config = {
   gutter: {
@@ -60,7 +61,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public colorFn = DefaultAnnotationColor;
   public gutterFn = DefaultAnnotationGutter;
   public renderFn = DefaultAnnotationRender;
-  public tagConfig: TagConfig;
+  public tagConfig: TagConfig<ANNOTATION>;
   public defaultRender: DefaultRenders;
 
   protected text: string = "";
@@ -173,24 +174,6 @@ export type ANNOTATION_CONFIG_KEYS = keyof CONFIG;
 export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
   CONFIG[K];
 
-export type TagConfig = {
-  /**
-   * If true, tags are enabled and will be rendered, when hovering over an annotation.
-   * @default false
-   */
-  enabledOnHover?: boolean;
-  /**
-   * If true, tags are always enabled and will be rendered.
-   * @default false
-   */
-  enabled: boolean;
-  /**
-   * Function to get the tag string from an annotation.
-   * @param annotation
-   */
-  tagFn: (annotation: ANNOTATION) => string;
-};
-
 export type createAnnotationAdapterParams<ANNOTATION> = {
   create?: boolean;
   edit?: boolean;
@@ -200,7 +183,7 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   gutterFn?: GutterFn<ANNOTATION>;
   renderFn?: AnnotationRenderFn<ANNOTATION>;
   defaultRender?: DefaultRenders;
-  tags?: TagConfig;
+  tagConfig?: Partial<TagConfig<ANNOTATION>>;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -219,11 +202,10 @@ export const createAnnotationAdapter = <ANNOTATION>(
   adapter.gutterFn = params.gutterFn ?? (DefaultAnnotationGutter as any);
   adapter.defaultRender = params.defaultRender ?? "highlight";
   adapter.renderFn = params.renderFn ?? (DefaultAnnotationRender as any);
-  adapter.tag = params.tags ?? {
-    enabledOnHover: false,
-    enabled: false,
-    tagFn: () => "",
-  };
+  adapter.tagConfig = merge(
+    cloneDeep(DefaultTagConfig),
+    params.tagConfig ?? {},
+  );
 
   return adapter;
 };

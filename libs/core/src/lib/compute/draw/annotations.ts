@@ -2,7 +2,7 @@ import { hoverAnnotation, leaveAnnotation } from "./events/hover";
 import { clickAnnotation, doubleClickAnnotation } from "./events/click";
 import { drawAnnotationHandles } from "./events/drag";
 import { addDraggableAnnotation } from "./annotations/drag-annotation";
-import { SvgModel } from "../model/svg.types";
+import { SVG_ID, SVG_ROLE, SvgModel } from "../model/svg.types";
 import { AnnotationDraw } from "../annotation.model";
 import { AnnotationConfig } from "../../adapter/annotation";
 
@@ -20,9 +20,9 @@ export const drawAnnotationContent = (
   if (annotation.path.fill) {
     rect = annotationGroup
       .append("path")
-      .attr("data-annotation-uid", annotation.annotationUuid)
+      .attr(SVG_ID.ANNOTATION_UID, annotation.annotationUuid)
       .attr("data-annotation-start", annotation.lineNumber)
-      .attr("data-annotation-role", "fill")
+      .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.FILL)
       .attr("d", annotation.path.fill!)
       .attr("border", "none")
       .attr("fill", annotation.color.default.fill!)
@@ -31,8 +31,8 @@ export const drawAnnotationContent = (
   if (annotation.path.border) {
     border = annotationGroup
       .append("path")
-      .attr("data-annotation-uid", annotation.annotationUuid)
-      .attr("data-annotation-role", "border")
+      .attr(SVG_ID.ANNOTATION_UID, annotation.annotationUuid)
+      .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.BORDER)
       .attr("stroke-width", config.text.border)
       .attr("d", annotation.path.border)
       .attr("fill", "none")

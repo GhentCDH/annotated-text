@@ -57,7 +57,7 @@ export const UnderLineAnnotationRender: AnnotationRender = (
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const draws = createTextAnnotationRender(
+  const { draws, startPosition } = createTextAnnotationRender(
     lines,
     parentDimensions,
     model,
@@ -68,5 +68,5 @@ export const UnderLineAnnotationRender: AnnotationRender = (
     getColorsUnderline,
   );
 
-  return { draws, isGutter: false };
+  return { draws, isGutter: false, startPosition };
 };
