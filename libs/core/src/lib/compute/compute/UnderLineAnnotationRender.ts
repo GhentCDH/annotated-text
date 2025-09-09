@@ -1,6 +1,10 @@
 import { TextAnnotation, TextLine } from "../../model";
 import { GetColorsFn } from "./colors";
-import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
+import {
+  AnnotationDrawColor,
+  AnnotationDrawColors,
+  TextAnnotationModel,
+} from "../annotation.model";
 import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
 import {
   createAnnotationFill,
@@ -36,10 +40,10 @@ export const getColorsUnderline: GetColorsFn = (
     } as AnnotationDrawColor,
     tag: {
       fill: color.tagBackground,
-      border: borders ? color.border : undefined,
+      border: color.border,
       text: color.tagColor,
     },
-  };
+  } as AnnotationDrawColors;
 };
 
 const createUnderline: createAnnotationPathFn = (params: PathParams) => {

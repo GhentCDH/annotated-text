@@ -34,8 +34,8 @@ export const getColors: GetColorsFn = (
     },
     tag: {
       fill: color.tagBackground,
-      border: borders ? color.border : undefined,
+      border: color.border,
       text: color.tagColor,
     },
-  };
+  } as AnnotationDrawColors;
 };

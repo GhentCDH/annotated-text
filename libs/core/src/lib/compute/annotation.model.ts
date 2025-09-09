@@ -23,7 +23,7 @@ export type AnnotationDrawColor = {
 
 export type AnnotationDrawColors = {
   default: AnnotationDrawColor;
-  tag: AnnotationDrawColor & { text: string };
+  tag: { text: string; fill: string; border: string };
   active: AnnotationDrawColor;
   hover: AnnotationDrawColor;
   edit: AnnotationDrawColor;
