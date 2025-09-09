@@ -53,3 +53,4 @@ coverage
 .github/instructions/nx.instructions.md
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
+/tmp
