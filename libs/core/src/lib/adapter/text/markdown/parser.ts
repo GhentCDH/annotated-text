@@ -13,6 +13,7 @@ export const replaceMarkdownToHtml = (text: string): string => {
 const document = globalThis.document;
 export const stripHtmlFromText = (text: string) => {
   const div = document?.createElement("div") ?? ({} as HTMLElement);
+  div.innerHTML = text;
   return div.textContent || div.innerText || "";
 };
 
