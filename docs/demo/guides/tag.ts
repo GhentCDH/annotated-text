@@ -4,8 +4,13 @@ import {
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
+import { DefaultRenders } from "../../../libs/core/src/lib/adapter/annotation/DefaultAnnotationRender";
 
-export const RenderTag = (id: string, enabledOnHover?: boolean) => {
+export const RenderTag = (
+  id: string,
+  enabledOnHover: boolean,
+  defaultRender: DefaultRenders,
+) => {
   clearAnnotatedTextCache();
 
   createAnnotatedText(id, {
@@ -13,7 +18,7 @@ export const RenderTag = (id: string, enabledOnHover?: boolean) => {
     annotation: {
       edit: true,
       create: true,
-      defaultRender: "underline",
+      defaultRender,
       tagConfig: {
         enabled: true,
         enabledOnHover,
