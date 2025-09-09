@@ -84,6 +84,14 @@ export class SvgModel {
     drawAllTags(this);
   }
 
+  removeTag(annotationUuid: AnnotationId) {
+    this.findRelatedAnnotations(
+      annotationUuid,
+      `[${SVG_ID.ANNOTATION_ROLE}="${SVG_ROLE.TAG}"]`,
+    )?.remove();
+    return this;
+  }
+
   removeAnnotations(annotationUuid: AnnotationId, selector = "") {
     this.findRelatedAnnotations(annotationUuid, selector)?.remove();
     return this;

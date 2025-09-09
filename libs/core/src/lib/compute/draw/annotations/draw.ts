@@ -16,7 +16,7 @@ export const removeDummyAnnotation = (svgModel: SvgModel) => {
 export const drawDummyAnnotation = (
   svgModel: SvgModel,
   dummyAnnotation: TextAnnotation,
-  color?: AnnotationDrawColor,
+  color: AnnotationDrawColor,
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
   const { model, textElement } = svgModel;
@@ -34,6 +34,7 @@ export const drawDummyAnnotation = (
       { ...a, annotationUuid: DUMMY_UID },
       svgModel,
       svgModel.annotationAdapter.config!,
+      color,
     );
   });
 

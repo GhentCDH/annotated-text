@@ -45,6 +45,7 @@ const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
 };
 
 export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
+  svgModel.removeTag(annotation.id);
   const tagConfig = svgModel.annotationAdapter.tagConfig;
   if (!tagConfig.enabled) return;
 

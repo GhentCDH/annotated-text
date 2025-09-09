@@ -56,6 +56,7 @@ export const editAnnotations = (
   eventType: AnnotationEventType,
 ) => {
   const { model } = svgModel;
+  svgModel.removeTag(annotation.annotationUuid);
 
   model.blockEvents = true;
 

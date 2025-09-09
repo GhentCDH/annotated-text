@@ -1,9 +1,4 @@
-import {
-  AnnotationRect,
-  SVG_ID,
-  SVG_ROLE,
-  SvgModel,
-} from "../../model/svg.types";
+import { AnnotationRect, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 import { drawTag } from "../tag";
 
@@ -42,8 +37,5 @@ export const leaveAnnotation =
     svgModel.resetAnnotationColor(annotation.annotationUuid);
 
     if (svgModel.annotationAdapter.tagConfig.enabledOnHover)
-      svgModel.removeAnnotations(
-        annotation.annotationUuid,
-        `[${SVG_ID.ANNOTATION_ROLE}="${SVG_ROLE.TAG}"]`,
-      );
+      svgModel.removeTag(annotation.annotationUuid);
   };

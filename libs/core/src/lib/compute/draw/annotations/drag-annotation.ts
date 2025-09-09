@@ -5,6 +5,7 @@ import { TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw, Dimensions } from "../../annotation.model";
 import { getCharacterFromTextNodesAtPoint } from "../../position";
+import { drawTag } from "../tag";
 
 export const addDraggableAnnotation = (
   svgModel: SvgModel,
@@ -47,6 +48,7 @@ export const addDraggableAnnotation = (
       annotationUuid: annotation?.annotationUuid.toString() || "",
     });
     svgModel.setClass(annotation.annotationUuid, "move");
+    svgModel.removeTag(annotation.annotationUuid);
   };
 
   const onDragMove = () => (event: any) => {
@@ -94,6 +96,7 @@ export const addDraggableAnnotation = (
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dummyAnnotation);
+    drawTag(svgModel, dummyAnnotation);
   };
 
   return drag()

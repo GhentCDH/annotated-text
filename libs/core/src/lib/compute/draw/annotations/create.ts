@@ -8,6 +8,7 @@ import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
 import { type TextAnnotation } from "../../../model";
 import { getCharacterFromTextNodesAtPoint } from "../../position";
+import { drawTag } from "../tag";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
@@ -126,6 +127,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
       },
       { annotation: dummyAnnotation },
     );
+    drawTag(svgModel, dummyAnnotation);
     dummyAnnotation = null;
   });
 };
