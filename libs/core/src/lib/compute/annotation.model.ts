@@ -171,7 +171,12 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   getAnnotationColor(annotationUuid: AnnotationId): AnnotationDrawColors {
-    return this.drawAnnotationsMap.get(annotationUuid)!.color;
+    const annotation = this.drawAnnotationsMap.get(annotationUuid);
+
+    if (!annotation) {
+      console.warn("No draw annotation found for id", annotationUuid);
+    }
+    return annotation?.color as AnnotationDrawColors;
   }
 
   getAnnotationDimensions(annotationUuid: AnnotationId) {

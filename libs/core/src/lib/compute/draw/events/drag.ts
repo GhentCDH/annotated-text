@@ -9,6 +9,7 @@ import { TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
+import { drawTag } from "../tag";
 
 export const drawAnnotationHandles = (
   annotation: AnnotationDraw,
@@ -60,6 +61,7 @@ export const drawHandle = (
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dragResult);
+    drawTag(svgModel, dragResult);
   };
 
   const onEditDrag = (eventType: AnnotationEventType) => (event: any) => {

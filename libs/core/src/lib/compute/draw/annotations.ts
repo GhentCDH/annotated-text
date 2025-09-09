@@ -3,19 +3,19 @@ import { clickAnnotation, doubleClickAnnotation } from "./events/click";
 import { drawAnnotationHandles } from "./events/drag";
 import { addDraggableAnnotation } from "./annotations/drag-annotation";
 import { SVG_ID, SVG_ROLE, SvgModel } from "../model/svg.types";
-import { AnnotationDraw } from "../annotation.model";
+import { AnnotationDraw, AnnotationDrawColor } from "../annotation.model";
 import { AnnotationConfig } from "../../adapter/annotation";
 
 export const drawAnnotationContent = (
   annotation: AnnotationDraw,
   svgModel: SvgModel,
   config: AnnotationConfig,
+  color: AnnotationDrawColor,
 ) => {
   let border = null;
   const annotationGroup = svgModel.annotations
     .append("g")
     .attr("data-annotation-uid", annotation.annotationUuid);
-  const color = svgModel.model.getAnnotationColor(annotation.annotationUuid);
 
   let rect;
   if (annotation.path.fill) {
@@ -26,7 +26,7 @@ export const drawAnnotationContent = (
       .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.FILL)
       .attr("d", annotation.path.fill!)
       .attr("border", "none")
-      .attr("fill", color.default.fill!)
+      .attr("fill", color.fill!)
       .call(addDraggableAnnotation(svgModel, annotation));
   }
   if (annotation.path.border) {
@@ -37,7 +37,7 @@ export const drawAnnotationContent = (
       .attr("stroke-width", config.text.border)
       .attr("d", annotation.path.border)
       .attr("fill", "none")
-      .attr("stroke", color.default.border!)
+      .attr("stroke", color.border!)
       .call(addDraggableAnnotation(svgModel, annotation));
   }
 
@@ -51,7 +51,13 @@ export const drawAnnotation = (
   // return a promise that resloves to a function that draws the annotation
 
   const config = svgModel.annotationAdapter.config!;
-  const { rect } = drawAnnotationContent(annotation, svgModel, config);
+  const color = svgModel.model.getAnnotationColor(annotation.annotationUuid);
+  const { rect } = drawAnnotationContent(
+    annotation,
+    svgModel,
+    config,
+    color.default,
+  );
 
   drawAnnotationHandles(annotation, svgModel);
 
