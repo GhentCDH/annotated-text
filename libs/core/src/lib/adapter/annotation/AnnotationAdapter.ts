@@ -103,12 +103,25 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * If not provided it will render a color.
    * @param annotation
    */
-  color(annotation: TextAnnotation) {
+  color(annotation: Pick<TextAnnotation, "id">) {
     return this.colorFn(this.getAnnotation(annotation.id));
   }
 
-  isGutter(annotation: TextAnnotation) {
+  /**
+   * Get if the annotation is a gutter annotation, it uses the gutter function to determine if it is a gutter annotation.
+   * By default it uses the DefaultAnnotationGutter function, which returns the isGutter field of on the annotation.
+   * @param annotation
+   */
+  isGutter(annotation: Pick<TextAnnotation, "id">) {
     return this.gutterFn(this.getAnnotation(annotation.id));
+  }
+
+  /**
+   * Get the tag label of the annotation, it uses the tag function to determine the tag label.
+   * @param annotation
+   */
+  tagLabel(annotation: Pick<TextAnnotation, "id">) {
+    return this.tagConfig.tagFn(this.getAnnotation(annotation.id));
   }
 
   /**
