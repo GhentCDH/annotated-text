@@ -34,6 +34,11 @@ export const getColorsUnderline: GetColorsFn = (
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
     } as AnnotationDrawColor,
+    tag: {
+      fill: color.tagBackground,
+      border: borders ? color.border : undefined,
+      text: color.tagColor,
+    },
   };
 };
 
@@ -57,7 +62,7 @@ export const UnderLineAnnotationRender: AnnotationRender = (
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const { draws, startPosition } = createTextAnnotationRender(
+  const { draws, startPosition, color } = createTextAnnotationRender(
     lines,
     parentDimensions,
     model,
@@ -68,5 +73,5 @@ export const UnderLineAnnotationRender: AnnotationRender = (
     getColorsUnderline,
   );
 
-  return { draws, isGutter: false, startPosition };
+  return { draws, isGutter: false, startPosition, color };
 };

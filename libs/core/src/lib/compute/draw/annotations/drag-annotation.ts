@@ -22,7 +22,7 @@ export const addDraggableAnnotation = (
     if (!svgModel.annotationAdapter.edit) return;
     if (svgModel.model.blockEvents) return;
 
-    const draws = svgModel.model.getAnnotationDraw(annotation.annotationUuid);
+    const draws = svgModel.model.getDrawAnnotations(annotation.annotationUuid);
     startDimensions = draws.find((d) => d.draggable.start)!.draggable
       ?.start as Dimensions;
     endDimensions = draws.find((d) => d.draggable.end)!.draggable

@@ -23,6 +23,7 @@ export type AnnotationDrawColor = {
 
 export type AnnotationDrawColors = {
   default: AnnotationDrawColor;
+  tag: AnnotationDrawColor & { text: string };
   active: AnnotationDrawColor;
   hover: AnnotationDrawColor;
   edit: AnnotationDrawColor;
@@ -41,7 +42,7 @@ export type AnnotationDraw = {
   };
   height: Dimensions;
   weight: number;
-  color: AnnotationDrawColors;
+  // color: AnnotationDrawColors;
 };
 
 export type AnnotationDimension = {
@@ -72,9 +73,12 @@ export interface TextAnnotationModel {
     annotationUuid: AnnotationId,
     annotations: AnnotationDraw[],
     dimensions: AnnotationDimension,
+    color: AnnotationDrawColors,
   ): void;
 
   getDrawAnnotations(annotationUuid: AnnotationId): AnnotationDraw[];
+
+  getAnnotationColor(annotationUuid: AnnotationId): AnnotationDrawColors;
 
   resetAnnotations(): void;
 
@@ -122,7 +126,11 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   public textLength = 0;
   readonly drawAnnotationsMap = new Map<
     AnnotationId,
-    { draws: AnnotationDraw[]; dimensions: AnnotationDimension }
+    {
+      draws: AnnotationDraw[];
+      dimensions: AnnotationDimension;
+      color: AnnotationDrawColors;
+    }
   >();
   private readonly lineAnnotationMap = new Map<number, TextAnnotation[]>();
   private readonly lineGutterMap = new Map<number, TextAnnotation[]>();
@@ -159,13 +167,11 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   getDraws(): AnnotationDraw[] {
-    const draws = new Array(
-      this.drawAnnotationsMap.values().map((a) => a.draws),
-    ).flat();
-    console.log(draws);
-    return this.annotations
-      .map((a) => this.drawAnnotationsMap.get(a.id).draws)
-      .flat();
+    return this.annotations.map((a) => this.getDrawAnnotations(a.id)).flat();
+  }
+
+  getAnnotationColor(annotationUuid: AnnotationId): AnnotationDrawColors {
+    return this.drawAnnotationsMap.get(annotationUuid)!.color;
   }
 
   getAnnotationDimensions(annotationUuid: AnnotationId) {
@@ -188,10 +194,12 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     annotationUuid: AnnotationId,
     annotations: AnnotationDraw[],
     dimensions: AnnotationDimension,
+    color: AnnotationDrawColors,
   ) {
     this.drawAnnotationsMap.set(annotationUuid, {
       dimensions,
       draws: annotations,
+      color,
     });
   }
 

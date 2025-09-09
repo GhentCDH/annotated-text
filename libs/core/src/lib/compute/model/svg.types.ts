@@ -50,7 +50,7 @@ export class SvgModel {
   constructor(
     public readonly textElement: HTMLElement,
     public readonly model: TextAnnotationModel,
-    private readonly eventListener: EventListener,
+    public readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
     public readonly textAdapter: TextAdapter,
     public readonly annotationColors: AnnotationColors,
@@ -122,7 +122,10 @@ export class SvgModel {
       return;
     }
 
-    const color = this.annotationColors.getAnnotationColor(annotation);
+    const color = this.annotationColors.getAnnotationColor(
+      annotation,
+      this.model.getAnnotationColor(annotationUuid),
+    );
 
     if (!color) {
       Debugger.warn("No default color found for annotation", annotationUuid);

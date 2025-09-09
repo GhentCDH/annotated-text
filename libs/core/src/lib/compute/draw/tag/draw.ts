@@ -53,6 +53,8 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
   );
   if (!annotationDimensions) return;
 
+  const color = svgModel.model.getAnnotationColor(annotation.id);
+
   const startAnnotation = {
     x: annotationDimensions.x,
     y: annotationDimensions.y2,
@@ -80,7 +82,7 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
     padding,
   );
 
-  // Add background rectangle with border
+  // Add dummy background with white fill to avoid averlapping of the tags
   tagGroup
     .append("rect")
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
@@ -90,8 +92,22 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
     .attr("width", rectDimensions.width)
     .attr("height", rectDimensions.height)
     .attr("fill", "white")
-    .attr("stroke", "black")
+    .attr("pointer-events", "none")
+    .attr("rx", 3); // rounded corners
+
+  // Add tag background
+  tagGroup
+    .append("rect")
+    .attr(SVG_ID.ANNOTATION_UID, annotation.id)
+    .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG)
+    .attr("x", rectDimensions.x)
+    .attr("y", rectDimensions.y)
+    .attr("width", rectDimensions.width)
+    .attr("height", rectDimensions.height)
+    .attr("fill", color.tag.fill)
+    .attr("stroke", color.tag.border)
     .attr("stroke-width", 1)
+    .attr("pointer-events", "none")
     .attr("rx", 3); // rounded corners
 
   // Add text
@@ -101,6 +117,7 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
     .attr("y", textDimensions.y)
     .attr("dominant-baseline", "central")
     .attr("font-size", fontSize)
-    .attr("fill", "black")
+    .attr("pointer-events", "none")
+    .attr("fill", color.tag.text)
     .text(text);
 };

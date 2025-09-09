@@ -118,42 +118,50 @@ describe("AnnotationColors", () => {
   describe("getAnnotationColor", () => {
     it("returns active color when in activeIds", () => {
       colors.selectAnnotations(["id1"], svgModel);
-      const anno = makeAnnotation("id1", {
-        default: "gray",
-        hover: "blue",
-        active: "red",
-      });
-      expect(colors.getAnnotationColor(anno)).toBe("red");
+      const anno = makeAnnotation("id1");
+      expect(
+        colors.getAnnotationColor(anno, {
+          default: "gray",
+          hover: "blue",
+          active: "red",
+        } as any),
+      ).toBe("red");
     });
 
     it("returns hover color when in highlightedIds but not activeIds", () => {
       colors.highlightAnnotations(["id2"], svgModel);
-      const anno = makeAnnotation("id2", {
-        default: "gray",
-        hover: "blue",
-        active: "red",
-      });
-      expect(colors.getAnnotationColor(anno)).toBe("blue");
+      const anno = makeAnnotation("id2");
+      expect(
+        colors.getAnnotationColor(anno, {
+          default: "gray",
+          hover: "blue",
+          active: "red",
+        } as any),
+      ).toBe("blue");
     });
 
     it("returns default color when in neither set", () => {
-      const anno = makeAnnotation("id3", {
-        default: "gray",
-        hover: "blue",
-        active: "red",
-      });
-      expect(colors.getAnnotationColor(anno)).toBe("gray");
+      const anno = makeAnnotation("id3");
+      expect(
+        colors.getAnnotationColor(anno, {
+          default: "gray",
+          hover: "blue",
+          active: "red",
+        } as any),
+      ).toBe("gray");
     });
 
     it("active takes priority over highlighted", () => {
       colors.highlightAnnotations(["id4"], svgModel);
       colors.selectAnnotations(["id4"], svgModel); // same id now active
-      const anno = makeAnnotation("id4", {
-        default: "gray",
-        hover: "blue",
-        active: "red",
-      });
-      expect(colors.getAnnotationColor(anno)).toBe("red");
+      const anno = makeAnnotation("id4");
+      expect(
+        colors.getAnnotationColor(anno, {
+          default: "gray",
+          hover: "blue",
+          active: "red",
+        } as any),
+      ).toBe("red");
     });
   });
 });

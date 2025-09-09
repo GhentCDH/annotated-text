@@ -38,7 +38,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private svgNode: SVGElement | null = null;
   private resizeObserver: ResizeObserver;
   private text: string;
-  private eventListener = new EventListener();
+  private readonly eventListener = new EventListener();
   private readonly annotationColors = new AnnotationColors();
 
   constructor(
@@ -100,6 +100,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.annotationAdapter,
       this.textAdapter,
       annotations,
+      this.eventListener,
     );
     this.textAnnotationModel = computeAnnotationsOnLines(
       this.textAnnotationModel,

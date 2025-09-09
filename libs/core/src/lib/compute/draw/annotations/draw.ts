@@ -49,7 +49,7 @@ export const recreateAnnotation = (
   const { model } = svgModel;
   svgModel.removeAnnotations(annotation.id);
 
-  reAssignAnnotationToLine(model, annotation, true);
+  reAssignAnnotationToLine(model, svgModel.eventListener, annotation, true);
   createAndAssignDrawAnnotation(
     model,
     svgModel.textElement,

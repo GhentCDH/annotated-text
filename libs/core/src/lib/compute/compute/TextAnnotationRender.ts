@@ -32,6 +32,7 @@ export const createTextAnnotationRender = (
   const padding = config.text.padding * annotation.weight!;
   const height = config.text.lineHeight + padding * 2;
   let startPosition: AnnotationDimension;
+  const color = getColorsFn(annotationAdapter, annotation, true);
 
   lines.forEach((line, index: number) => {
     const rects = textAdapter.getRanges(annotation, line);
@@ -81,12 +82,11 @@ export const createTextAnnotationRender = (
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
         height: { x, y, height },
-        color: getColorsFn(annotationAdapter, annotation, true),
       });
     });
   });
 
-  return { draws, startPosition: startPosition! };
+  return { draws, startPosition: startPosition!, color };
 };
 
 export const TextAnnotationRender: AnnotationRender = (
@@ -97,7 +97,7 @@ export const TextAnnotationRender: AnnotationRender = (
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const { draws, startPosition } = createTextAnnotationRender(
+  const { draws, startPosition, color } = createTextAnnotationRender(
     lines,
     parentDimensions,
     model,
@@ -108,5 +108,5 @@ export const TextAnnotationRender: AnnotationRender = (
     getColors,
   );
 
-  return { draws, isGutter: false, startPosition };
+  return { draws, isGutter: false, startPosition, color };
 };

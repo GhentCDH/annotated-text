@@ -17,6 +17,7 @@ type Config = {
     background?: number;
     border?: number;
     backgroundActive?: number;
+    tagBackground?: number;
     borderActive?: number;
     gutter?: number;
   };
@@ -29,6 +30,7 @@ const defaultConfig: Config = {
     backgroundActive: 0.8,
     borderActive: 0.9,
     gutter: 0.3,
+    tagBackground: 0.1,
   },
 };
 
@@ -70,6 +72,8 @@ export const createAnnotationColor = (
     //   opacity.backgroundActive * 100
     // })`,
     gutterColor: `rgba(${rgbColor},${opacity.gutter})`,
+    tagColor: "black",
+    tagBackground: `rgba(${rgbColor},${opacity.tagBackground})`,
     color: color,
   };
 };

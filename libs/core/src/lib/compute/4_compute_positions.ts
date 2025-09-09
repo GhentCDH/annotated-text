@@ -61,6 +61,7 @@ export const createAndAssignDrawAnnotation = (
     annotation.id,
     rendered.draws,
     rendered.startPosition,
+    rendered.color,
   );
 
   return model;

@@ -15,6 +15,7 @@ export const drawAnnotationContent = (
   const annotationGroup = svgModel.annotations
     .append("g")
     .attr("data-annotation-uid", annotation.annotationUuid);
+  const color = svgModel.model.getAnnotationColor(annotation.annotationUuid);
 
   let rect;
   if (annotation.path.fill) {
@@ -25,7 +26,7 @@ export const drawAnnotationContent = (
       .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.FILL)
       .attr("d", annotation.path.fill!)
       .attr("border", "none")
-      .attr("fill", annotation.color.default.fill!)
+      .attr("fill", color.default.fill!)
       .call(addDraggableAnnotation(svgModel, annotation));
   }
   if (annotation.path.border) {
@@ -36,7 +37,7 @@ export const drawAnnotationContent = (
       .attr("stroke-width", config.text.border)
       .attr("d", annotation.path.border)
       .attr("fill", "none")
-      .attr("stroke", annotation.color.default.border!)
+      .attr("stroke", color.default.border!)
       .call(addDraggableAnnotation(svgModel, annotation));
   }
 

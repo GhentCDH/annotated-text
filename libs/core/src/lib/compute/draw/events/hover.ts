@@ -19,10 +19,10 @@ export const hoverAnnotation =
     });
 
     if (svgModel.annotationAdapter.hover(fullAnnotation)) {
-      svgModel.colorAnnotation(
+      const color = svgModel.model.getAnnotationColor(
         annotation.annotationUuid,
-        annotation.color.hover,
       );
+      svgModel.colorAnnotation(annotation.annotationUuid, color.hover);
     }
     if (svgModel.annotationAdapter.tagConfig.enabledOnHover)
       drawTag(svgModel, fullAnnotation);

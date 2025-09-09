@@ -44,6 +44,7 @@ export const GutterAnnotationRender: AnnotationRender = (
   const weight = model.maxGutterWeight - annotation.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
+  const color = getColors(annotationAdapter, annotation, false);
 
   const draws: AnnotationDraw[] = [
     {
@@ -52,11 +53,10 @@ export const GutterAnnotationRender: AnnotationRender = (
       annotationUuid: annotation.id,
       lineNumber: firstLine.lineNumber,
       path: createGutterPath(x, y, gutterWidth, height),
-      color: getColors(annotationAdapter, annotation, false),
       draggable: {},
       height: { x, y, height },
     },
   ];
 
-  return { draws, isGutter: true, startPosition };
+  return { draws, isGutter: true, startPosition, color };
 };

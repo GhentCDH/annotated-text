@@ -32,5 +32,10 @@ export const getColors: GetColorsFn = (
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
     },
+    tag: {
+      fill: color.tagBackground,
+      border: borders ? color.border : undefined,
+      text: color.tagColor,
+    },
   };
 };
