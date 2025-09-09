@@ -67,7 +67,9 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
     .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG);
 
   const { fontSize, padding } = defaultParams(tagConfig);
-  const text = tagConfig.tagFn(annotation);
+  const text = svgModel.annotationAdapter.tagLabel(annotation);
+
+  if (!text) return;
 
   const { textWidth, textHeight } = calculateTextWidth(
     text,

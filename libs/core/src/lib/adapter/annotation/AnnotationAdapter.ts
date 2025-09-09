@@ -111,6 +111,10 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     return this.gutterFn(this.getAnnotation(annotation.id));
   }
 
+  tagLabel(annotation: TextAnnotation) {
+    return this.tagConfig.tagFn(this.getAnnotation(annotation.id));
+  }
+
   /**
    *  If return true, then on hover it becomes the active color
    */
