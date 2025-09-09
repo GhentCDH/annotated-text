@@ -22,6 +22,7 @@ const id_line = `create-edit-example--line`;
 
 onMounted(()=> {
     RenderUnderline(id_default,id_line);
+
 });
 </script>
 

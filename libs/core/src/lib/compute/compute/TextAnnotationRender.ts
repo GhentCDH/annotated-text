@@ -4,7 +4,11 @@ import { TextAdapter } from "../../adapter/text";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { getColors, GetColorsFn } from "./colors";
 import { getX, getY } from "./helpers";
-import { AnnotationDraw, TextAnnotationModel } from "../annotation.model";
+import {
+  AnnotationDimension,
+  AnnotationDraw,
+  TextAnnotationModel,
+} from "../annotation.model";
 import {
   createAnnotationPath,
   createAnnotationPathFn,
@@ -20,13 +24,15 @@ export const createTextAnnotationRender = (
   annotationAdapter: AnnotationAdapter<any>,
   pathFn: createAnnotationPathFn,
   getColorsFn: GetColorsFn,
-): AnnotationDraw[] => {
+) => {
   const config = annotationAdapter.config!;
   const radius = config.text.borderRadius;
 
   const draws: AnnotationDraw[] = [];
   const padding = config.text.padding * annotation.weight!;
   const height = config.text.lineHeight + padding * 2;
+  let startPosition: AnnotationDimension;
+  const color = getColorsFn(annotationAdapter, annotation, true);
 
   lines.forEach((line, index: number) => {
     const rects = textAdapter.getRanges(annotation, line);
@@ -49,6 +55,14 @@ export const createTextAnnotationRender = (
         leftBorder = r;
       }
 
+      if (!startPosition) {
+        startPosition = {
+          x,
+          y1: y,
+          y2: y + height,
+        };
+      }
+
       draws.push({
         weight: annotation.weight!,
         uuid: uuidv4(),
@@ -68,12 +82,11 @@ export const createTextAnnotationRender = (
           end: rightBorder ? { x: x + rect.width, y, height } : undefined,
         },
         height: { x, y, height },
-        color: getColorsFn(annotationAdapter, annotation, true),
       });
     });
   });
 
-  return draws;
+  return { draws, startPosition: startPosition!, color };
 };
 
 export const TextAnnotationRender: AnnotationRender = (
@@ -84,7 +97,7 @@ export const TextAnnotationRender: AnnotationRender = (
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  const draws = createTextAnnotationRender(
+  const { draws, startPosition, color } = createTextAnnotationRender(
     lines,
     parentDimensions,
     model,
@@ -95,5 +108,5 @@ export const TextAnnotationRender: AnnotationRender = (
     getColors,
   );
 
-  return { draws, isGutter: false };
+  return { draws, isGutter: false, startPosition, color };
 };

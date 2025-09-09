@@ -29,6 +29,8 @@ export const sendDummyAnnotationEvent = (
     action,
     dummyAnnotation,
   );
+  const color = svgModel.model.getAnnotationColor(annotation.annotationUuid);
+
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
 
@@ -40,7 +42,7 @@ export const sendDummyAnnotationEvent = (
     { annotation: dummyAnnotation },
   );
 
-  drawDummyAnnotation(svgModel, dummyAnnotation, annotation.color.edit);
+  drawDummyAnnotation(svgModel, dummyAnnotation, color.edit);
 
   return dummyAnnotation;
 };

@@ -6,6 +6,7 @@ import type { Annotation, TextAnnotation, TextLine } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
 
 import { Debugger } from "../utils/debugger";
+import { EventListener } from "../events/event.listener";
 
 const isStartLine = memoize(
   (lineStart: number, lineEnd: number, start: number) => {
@@ -57,20 +58,21 @@ export const getLinesForAnnotation = (
 
 export const assignAnnotationToLines = (
   model: TextAnnotationModel,
+  eventListener: EventListener,
   _annotation: Annotation,
   calculateWeights = true,
 ) => {
   const annotation = _annotation as TextAnnotation;
 
   if (annotation.start >= annotation.end) {
-    model.eventListener.sendError(
+    eventListener.sendError(
       "INVALID_ANNOTATION",
       `start (${annotation.start}) must be less than end (${annotation.end})`,
       annotation,
     );
   }
   if (model.textLength < annotation.start) {
-    model.eventListener.sendError(
+    eventListener.sendError(
       "INVALID_ANNOTATION",
       `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
       annotation,
@@ -78,7 +80,7 @@ export const assignAnnotationToLines = (
     return model;
   }
   if (model.textLength < annotation.end) {
-    model.eventListener.sendError(
+    eventListener.sendError(
       "INVALID_ANNOTATION",
       `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
       annotation,
@@ -104,12 +106,18 @@ export const assignAnnotationToLines = (
 
 export const reAssignAnnotationToLine = (
   model: TextAnnotationModel,
+  eventListener: EventListener,
   annotation: TextAnnotation,
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.removeAnnotation(annotation, calculateWeights);
 
-  return assignAnnotationToLines(model, annotation);
+  return assignAnnotationToLines(
+    model,
+    eventListener,
+    annotation,
+    calculateWeights,
+  );
 };
 
 export const assignAnnotationsToLines = <ANNOTATION>(
@@ -117,6 +125,7 @@ export const assignAnnotationsToLines = <ANNOTATION>(
   annotationAdapter: AnnotationAdapter<ANNOTATION>,
   textAdapter: TextAdapter,
   annotations: ANNOTATION[],
+  eventListener: EventListener,
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
@@ -132,7 +141,12 @@ export const assignAnnotationsToLines = <ANNOTATION>(
       return;
     }
 
-    assignAnnotationToLines(model, clonedAnnotation, calculateWeights);
+    assignAnnotationToLines(
+      model,
+      eventListener,
+      clonedAnnotation,
+      calculateWeights,
+    );
   });
 
   return model;

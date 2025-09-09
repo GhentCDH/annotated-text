@@ -13,6 +13,7 @@ import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
+import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 
 const config = {
   gutter: {
@@ -60,6 +61,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public colorFn = DefaultAnnotationColor;
   public gutterFn = DefaultAnnotationGutter;
   public renderFn = DefaultAnnotationRender;
+  public tagConfig: TagConfig<ANNOTATION>;
   public defaultRender: DefaultRenders;
 
   protected text: string = "";
@@ -181,6 +183,7 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   gutterFn?: GutterFn<ANNOTATION>;
   renderFn?: AnnotationRenderFn<ANNOTATION>;
   defaultRender?: DefaultRenders;
+  tagConfig?: Partial<TagConfig<ANNOTATION>>;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -199,6 +202,10 @@ export const createAnnotationAdapter = <ANNOTATION>(
   adapter.gutterFn = params.gutterFn ?? (DefaultAnnotationGutter as any);
   adapter.defaultRender = params.defaultRender ?? "highlight";
   adapter.renderFn = params.renderFn ?? (DefaultAnnotationRender as any);
+  adapter.tagConfig = merge(
+    cloneDeep(DefaultTagConfig),
+    params.tagConfig ?? {},
+  );
 
   return adapter;
 };

@@ -7,6 +7,8 @@ export const annotationColorSchema = z.object({
   backgroundActive: z.string().optional(),
   gutterColor: z.string().optional(),
   color: z.string().optional(),
+  tagBackground: z.string().optional(),
+  tagColor: z.string().optional(),
 });
 
 /**

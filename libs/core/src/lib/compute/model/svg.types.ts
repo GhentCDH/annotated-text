@@ -18,6 +18,7 @@ import { type AnnotationId } from "../../model";
 import { AnnotationColors } from "./annotation.colors";
 import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
 import RBush from "rbush";
+import { drawAllTags } from "../draw/tag";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -36,18 +37,20 @@ export const SVG_ROLE = {
   FILL: "fill",
   HANDLE: "handle",
   ANNOTATIONS: "annotations",
+  TAG: "tag",
 };
 
 export class SvgModel {
   readonly annotations: AnnotationSvg;
   readonly handles: AnnotationSvg;
   readonly svg: AnnotationSvg;
+  readonly tagSvg: AnnotationSvg;
   readonly textTree: RBush<TextRasterItem>;
 
   constructor(
     public readonly textElement: HTMLElement,
     public readonly model: TextAnnotationModel,
-    private readonly eventListener: EventListener,
+    public readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
     public readonly textAdapter: TextAdapter,
     public readonly annotationColors: AnnotationColors,
@@ -67,6 +70,9 @@ export class SvgModel {
         SVG_ID.ANNOTATION_ROLE,
         SVG_ROLE.ANNOTATIONS,
       ) as unknown as AnnotationSvg;
+    this.tagSvg = this.svg
+      .append("g")
+      .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG) as unknown as AnnotationSvg;
     this.handles = this.svg
       .append("g")
       .attr(
@@ -75,6 +81,7 @@ export class SvgModel {
       ) as unknown as AnnotationSvg;
     this.textTree = drawTextRaster(this);
     createNewBlock(this);
+    drawAllTags(this);
   }
 
   removeAnnotations(annotationUuid: AnnotationId, selector = "") {
@@ -115,7 +122,10 @@ export class SvgModel {
       return;
     }
 
-    const color = this.annotationColors.getAnnotationColor(annotation);
+    const color = this.annotationColors.getAnnotationColor(
+      annotation,
+      this.model.getAnnotationColor(annotationUuid),
+    );
 
     if (!color) {
       Debugger.warn("No default color found for annotation", annotationUuid);
@@ -151,7 +161,8 @@ export class SvgModel {
   drawAnnotations() {
     const now = Date.now();
 
-    this.model.drawAnnotations
+    this.model
+      .getDraws()
       .sort((a1, a2) => (a1.weight > a2.weight ? -1 : 1))
       .forEach((annotation) => drawAnnotation(this, annotation));
     Debugger.time(now, "--- drawComputedAnnotations ");

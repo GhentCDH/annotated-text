@@ -57,7 +57,12 @@ export const createAndAssignDrawAnnotation = (
     annotationAdapter,
   );
 
-  rendered.draws.forEach((a) => model.addDrawAnnotation(a));
+  model.addDrawAnnotations(
+    annotation.id,
+    rendered.draws,
+    rendered.startPosition,
+    rendered.color,
+  );
 
   return model;
 };
