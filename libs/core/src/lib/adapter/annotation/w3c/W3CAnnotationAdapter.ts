@@ -1,9 +1,9 @@
 import {
   createTextSelectionAnnotation,
+  findTextPositionSelector,
   updateTextSelectionAnnotation,
-} from "./utils/text-selection-annotation";
+} from "./utils";
 import { W3CAnnotation } from "./model";
-import { findTextPositionSelector } from "./utils";
 import {
   AnnotationAdapter,
   createAnnotationAdapter,
@@ -47,7 +47,7 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   ): W3CAnnotation | null {
     if (!annotation) return null;
 
-    if (!hasChanged) return this.getAnnotation(annotation.id);
+    if (!isNew && !hasChanged) return this.getAnnotation(annotation.id);
 
     const w3CAnnotation = isNew
       ? createTextSelectionAnnotation(

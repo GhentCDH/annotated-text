@@ -7,6 +7,7 @@ import {
   W3CAnnotationSchema,
 } from "../model";
 import { AnnotationId, type TextAnnotation } from "../../../../model/";
+import { cloneDeep, merge } from "lodash-es";
 
 type AnnotationUpdate = Pick<TextAnnotation, "start" | "end"> & {
   id?: AnnotationId;
@@ -47,14 +48,23 @@ export const createTextSelectionAnnotation = (
   language: string,
   selectedText: string,
   annotation: AnnotationUpdate,
+  originalAnnotation: Partial<W3CAnnotation> = {},
 ): W3CAnnotation => {
-  const parsedAnnotation = W3CAnnotationSchema.safeParse({
-    // The W3C Annotation model
-    id: annotation.id,
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    body: [createTextualBody(selectedText, sourceUri, language)],
-    target: [createTextPositionSelector(sourceUri, language, annotation)],
-  });
+  const parsedAnnotation = W3CAnnotationSchema.safeParse(
+    merge(cloneDeep(originalAnnotation), {
+      // The W3C Annotation model
+      id: annotation.id,
+      "@context": "http://www.w3.org/ns/anno.jsonld",
+      body: [
+        originalAnnotation.body ?? [],
+        createTextualBody(selectedText, sourceUri, language),
+      ].flat(),
+      target: [
+        originalAnnotation.target ?? [],
+        createTextPositionSelector(sourceUri, language, annotation),
+      ].flat(),
+    }),
+  );
   if (parsedAnnotation.error) {
     console.error(parsedAnnotation.error);
     throw new Error("Invalid W3C Annotation format");
@@ -76,16 +86,17 @@ export const updateTextSelectionAnnotation = (
     annotation,
   );
 
-  const parsedAnnotation = W3CAnnotationSchema.safeParse({
+  const parsedAnnotation = W3CAnnotationSchema.safeParse(
     // The W3C Annotation model
-    ...originalAnnotation,
-    body: getBody(originalAnnotation).map((b) =>
-      b.type === textualBody.type ? textualBody : b,
-    ),
-    target: getTarget(originalAnnotation).map((t) =>
-      t.type === textPositionSelector.type ? textPositionSelector : t,
-    ),
-  });
+    merge(cloneDeep(originalAnnotation), {
+      body: getBody(originalAnnotation).map((b) =>
+        b.type === textualBody.type ? textualBody : b,
+      ),
+      target: getTarget(originalAnnotation).map((t) =>
+        t.type === textPositionSelector.type ? textPositionSelector : t,
+      ),
+    }),
+  );
 
   if (parsedAnnotation.error) {
     console.error(parsedAnnotation.error);
