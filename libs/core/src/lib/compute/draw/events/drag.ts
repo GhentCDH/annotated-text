@@ -1,4 +1,5 @@
 import { drag } from "d3";
+import { pick } from "lodash-es";
 import { SVG_ID, SvgModel } from "../../model/svg.types";
 import {
   AnnotationDraw,
@@ -38,8 +39,10 @@ export const drawHandle = (
   const config = svgModel.annotationAdapter.config!;
   const handleRadius = config.text.handleRadius;
   let dragResult: TextAnnotation | null = null;
-
   const onEditDragEnd = (event: MouseEvent) => {
+    if (!dragResult) {
+      return;
+    }
     model.blockEvents = false;
     removeDummyAnnotation(svgModel);
 
@@ -69,10 +72,16 @@ export const drawHandle = (
 
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
-
     dragResult =
-      editAnnotations(svgModel, x, y, annotation, target, eventType) ??
-      dragResult;
+      editAnnotations(
+        svgModel,
+        x,
+        y,
+        annotation,
+        target,
+        eventType,
+        dragResult && pick(dragResult ?? prevPosition, ["start", "end"]),
+      ) ?? dragResult;
   };
 
   const onEditDragStart = (event: any) => {
