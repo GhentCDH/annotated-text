@@ -225,12 +225,14 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   getMinStartPosition(): number {
-    // TODO cache this value
+    // TODO: Consider caching this value if profiling shows getMinStartPosition() is a performance bottleneck.
+    //       Ensure the cache is invalidated whenever the 'lines' array is modified (added, removed, or reordered).
     return this.lines.length > 0 ? this.lines[0].start : 0;
   }
 
   getMaxStartPosition(): number {
-    // TODO cache this value
+    // TODO: Consider caching this value if profiling shows getMaxStartPosition() is a performance bottleneck.
+    //       Ensure the cache is invalidated whenever the 'lines' array is modified (added, removed, or reordered).
     return this.lines.length > 0 ? this.lines[this.lines.length - 1].end : 0;
   }
 
