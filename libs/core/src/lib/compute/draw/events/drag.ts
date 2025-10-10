@@ -80,7 +80,7 @@ export const drawHandle = (
         annotation,
         target,
         eventType,
-        dragResult && pick(dragResult ?? prevPosition, ["start", "end"]),
+        dragResult && pick(dragResult, ["start", "end"]),
       ) ?? dragResult;
   };
 
