@@ -12,6 +12,7 @@ export const sendDummyAnnotationEvent = (
   svgModel: SvgModel,
   action: SnapperAction,
   eventType: AnnotationEventType,
+  prevPosition?: { start: number; end: number },
 ) => {
   const originalAnnotation = svgModel.model.getAnnotation(
     annotation.annotationUuid,
@@ -40,6 +41,16 @@ export const sendDummyAnnotationEvent = (
   }
 
   if (snapper.end < snapper.start) {
+    // Still invalid, abort
+    return;
+  }
+
+  if (
+    prevPosition &&
+    snapper.start === prevPosition.start &&
+    snapper.end === prevPosition.end
+  ) {
+    // No change, nothing to do
     return;
   }
 
@@ -68,6 +79,7 @@ export const editAnnotations = (
   annotation: AnnotationDraw,
   target: "start" | "end",
   eventType: AnnotationEventType,
+  prevPosition?: { start: number; end: number },
 ) => {
   const { model } = svgModel;
   svgModel.removeTag(annotation.annotationUuid);
@@ -95,5 +107,6 @@ export const editAnnotations = (
     svgModel,
     target === "start" ? "move-start" : "move-end",
     eventType,
+    prevPosition,
   );
 };
