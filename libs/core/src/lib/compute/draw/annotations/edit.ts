@@ -25,10 +25,24 @@ export const sendDummyAnnotationEvent = (
     weight: originalAnnotation.weight! + 1,
   } as unknown as TextAnnotation;
 
-  const snapper = svgModel.annotationAdapter.snapper.fixOffset(
+  let snapper = svgModel.annotationAdapter.snapper.fixOffset(
     action,
     dummyAnnotation,
   );
+
+  if (snapper.end < snapper.start) {
+    // Try snapping the other side if the end is before the start
+    dummyAnnotation.start = snapper.start;
+    snapper = svgModel.annotationAdapter.snapper.fixOffset(
+      action,
+      dummyAnnotation,
+    );
+  }
+
+  if (snapper.end < snapper.start) {
+    return;
+  }
+
   const color = svgModel.model.getAnnotationColor(annotation.annotationUuid);
 
   dummyAnnotation.start = snapper.start;

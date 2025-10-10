@@ -18,6 +18,7 @@ export const addDraggableAnnotation = (
   let endDimensions: Dimensions;
   let originalAnnotation: TextAnnotation;
   let pickupIndex = 0;
+  let textStart = 0;
 
   const onDragStart = () => (event: any) => {
     if (!svgModel.annotationAdapter.edit) return;
@@ -39,6 +40,7 @@ export const addDraggableAnnotation = (
     const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
     if (!result) return;
     pickupIndex = result.newIndex;
+    textStart = svgModel.model.getMinStartPosition();
 
     svgModel.model.blockEvents = true;
     dragBusy = true;
@@ -62,17 +64,27 @@ export const addDraggableAnnotation = (
 
     const delta = result.newIndex - pickupIndex;
     const startIndex = originalAnnotation.start + delta;
+
+    if (startIndex < textStart) {
+      return;
+    }
+
     const endIndex = originalAnnotation.end + delta;
-    dummyAnnotation = sendDummyAnnotationEvent(
-      annotation,
-      {
-        start: startIndex,
-        end: endIndex,
-      },
-      svgModel,
-      "drag",
-      "annotation-edit--move",
-    );
+    if (endIndex < startIndex) {
+      return;
+    }
+
+    dummyAnnotation =
+      sendDummyAnnotationEvent(
+        annotation,
+        {
+          start: startIndex,
+          end: endIndex,
+        },
+        svgModel,
+        "drag",
+        "annotation-edit--move",
+      ) ?? dummyAnnotation;
     svgModel.setClass(DUMMY_UID, "move");
   };
 
