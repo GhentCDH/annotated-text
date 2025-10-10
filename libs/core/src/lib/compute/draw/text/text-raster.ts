@@ -1,6 +1,6 @@
+import RBush from "rbush";
 import { SvgModel } from "../../model/svg.types";
 import { calculateOffset, findLineElement } from "../utils/bounding-rect";
-import RBush from "rbush";
 
 export type TextRasterItem = {
   minX: number;

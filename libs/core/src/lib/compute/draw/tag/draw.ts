@@ -1,6 +1,6 @@
-import { SVG_ID, SVG_ROLE, SvgModel } from "../../model/svg.types";
 import { Annotation } from "@ghentcdh/annotated-text";
 import memoize from "memoizee";
+import { SVG_ID, SVG_ROLE, SvgModel } from "../../model/svg.types";
 import { TagConfig } from "../../../adapter/annotation/DefaultTag";
 
 const defaultParams = memoize((tagConfig: TagConfig<any>) => {

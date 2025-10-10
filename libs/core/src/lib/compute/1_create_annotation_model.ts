@@ -1,10 +1,10 @@
+import { AnnotationAdapter } from "@ghentcdh/annotated-text";
 import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
 } from "./annotation.model";
 import { TextAdapter } from "../adapter/text";
 import { Debugger } from "../utils/debugger";
-import { AnnotationAdapter } from "@ghentcdh/annotated-text";
 
 export const createAnnotationModel = (
   text: string,

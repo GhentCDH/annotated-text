@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
+import { getColors, GetColorsFn } from "./colors";
+import { getX, getY } from "./helpers";
 import { TextAnnotation, TextLine } from "../../model";
 import { TextAdapter } from "../../adapter/text";
 import { AnnotationAdapter } from "../../adapter/annotation";
-import { getColors, GetColorsFn } from "./colors";
-import { getX, getY } from "./helpers";
 import {
   AnnotationDimension,
   AnnotationDraw,

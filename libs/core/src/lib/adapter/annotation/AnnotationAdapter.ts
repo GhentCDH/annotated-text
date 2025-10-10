@@ -7,13 +7,13 @@ import {
   DefaultAnnotationRender,
   DefaultRenders,
 } from "./DefaultAnnotationRender";
+import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
-import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 
 const config = {
   gutter: {
