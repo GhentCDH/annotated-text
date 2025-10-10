@@ -1,22 +1,29 @@
-// libs/core/vite.config.ts
+/// <reference types='vitest' />
 import { defineConfig } from "vite";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
-import * as path from "path";
-import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
 import dts from "vite-plugin-dts";
-import { checker } from "vite-plugin-checker";
+import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
+import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
+import * as path from "path";
 
-export default defineConfig({
-  // lets Vitest resolve your TS path aliases from tsconfig.base.json
+export default defineConfig(() => ({
+  root: __dirname,
+  cacheDir: "../../node_modules/.vite/libs/core",
   plugins: [
     nxViteTsPaths(),
     nxCopyAssetsPlugin(["*.md"]),
-    checker({ typescript: true }),
+    // checker({ typescript: true }),
     dts({
       entryRoot: "src",
       tsconfigPath: path.join(__dirname, "tsconfig.lib.json"),
+      pathsToAliases: false,
     }),
   ],
+  // Uncomment this if you are using workers.
+  // worker: {
+  //  plugins: [ nxViteTsPaths() ],
+  // },
+  // Configuration for building your library.
+  // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
     outDir: "../../dist/libs/core",
     emptyOutDir: true,
@@ -25,27 +32,30 @@ export default defineConfig({
       transformMixedEsModules: true,
     },
     lib: {
+      // Could also be a dictionary or array of multiple entry points.
       entry: "src/index.ts",
       name: "AnnotatedText",
       fileName: "index",
-      formats: ["es", "cjs"],
+      // Change this to the formats you want to support.
+      // Don't forget to update your package.json as well.
+      // formats: ["es" as const],
+      format: ["cjs", "esm", "es"],
     },
     rollupOptions: {
+      // External packages that should not be bundled into your library.
       external: [],
-      output: {},
     },
   },
   test: {
+    name: "core",
+    watch: false,
     globals: true,
-    // For a pure TS utility lib, Node env is usually right.
-    // If you need DOM APIs, change to 'jsdom'.
     environment: "node",
-    include: ["src/**/*.{spec,test}.ts"],
+    include: ["{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    reporters: ["default"],
     coverage: {
-      reporter: ["text", "lcov"],
-      all: true,
-      include: ["src/**/*.ts"],
-      exclude: ["src/**/*.{spec,test}.ts"],
-    } as any,
+      reportsDirectory: "../../coverage/libs/core",
+      provider: "v8" as const,
+    },
   },
-});
+}));

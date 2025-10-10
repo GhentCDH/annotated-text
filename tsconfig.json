@@ -6,5 +6,6 @@
     "outDir": "dist",
     "allowSyntheticDefaultImports": true
   },
-  "extends": "./tsconfig.base.json"
+  "extends": "./tsconfig.base.json",
+  "references": []
 }

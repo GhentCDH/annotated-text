@@ -1,3 +1,4 @@
+import { cloneDeep, merge } from "lodash-es";
 import { getTarget } from "./target.utils";
 import { getBody } from "./body.utils";
 import type { W3CAnnotation } from "../model";
@@ -7,7 +8,6 @@ import {
   W3CAnnotationSchema,
 } from "../model";
 import { AnnotationId, type TextAnnotation } from "../../../../model/";
-import { cloneDeep, merge } from "lodash-es";
 
 type AnnotationUpdate = Pick<TextAnnotation, "start" | "end"> & {
   id?: AnnotationId;

@@ -10,5 +10,3 @@ npm i @ghentcdh/annotated-text
 ```bash
 pnpm i @ghentcdh/annotated-text
 ```
-
-For more information related to the vue component visit the [Vue documentation](../vue/index).

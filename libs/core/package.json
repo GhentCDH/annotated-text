@@ -13,10 +13,10 @@
   "types": "./index.d.ts",
   "exports": {
     ".": {
-      "require": "./index.cjs.js",
-      "import": "./index.esm.js"
+      "require": "./index.js",
+      "import": "./index.js"
     },
-    "./annotated-text.css": "./index.esm.css",
+    "./annotated-text.css": "./index.css",
     "./package.json": "./package.json"
   },
   "files": [

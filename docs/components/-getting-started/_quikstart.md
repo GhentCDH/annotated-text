@@ -31,6 +31,12 @@ Don't forget to replace do destroy the component when it is no longer needed to 
   textAnnotation.destroy();
 ```
 
+Add the styling to your css
+
+```css
+@import '@ghentcdh/annotated-text/annotated-text.css';
+```
+
 ## Example
 
 <div id="annotated-text-greek"></div>
