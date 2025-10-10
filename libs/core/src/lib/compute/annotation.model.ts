@@ -67,6 +67,10 @@ export interface TextAnnotationModel {
 
   textLength: number;
 
+  getMinStartPosition(): number;
+
+  getMaxStartPosition(): number;
+
   clearDrawAnnotation(): void;
 
   addDrawAnnotations(
@@ -218,6 +222,18 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
 
   getLinesForAnnotation(annotationId: string): TextLine[] {
     return this.annotationLineMap.get(annotationId) ?? [];
+  }
+
+  getMinStartPosition(): number {
+    // TODO: Consider caching this value if profiling shows getMinStartPosition() is a performance bottleneck.
+    //       Ensure the cache is invalidated whenever the 'lines' array is modified (added, removed, or reordered).
+    return this.lines.length > 0 ? this.lines[0].start : 0;
+  }
+
+  getMaxStartPosition(): number {
+    // TODO: Consider caching this value if profiling shows getMaxStartPosition() is a performance bottleneck.
+    //       Ensure the cache is invalidated whenever the 'lines' array is modified (added, removed, or reordered).
+    return this.lines.length > 0 ? this.lines[this.lines.length - 1].end : 0;
   }
 
   setAnnotation(

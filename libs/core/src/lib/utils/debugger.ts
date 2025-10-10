@@ -39,7 +39,7 @@ export class Debugger {
     if (tookTime > 1000) {
       console.warn(logMessage);
     } else {
-      console.debug(logMessage);
+      Debugger.debug(logMessage);
     }
   }
 
