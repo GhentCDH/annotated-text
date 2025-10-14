@@ -14,6 +14,7 @@ import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
+import { DeepPartial } from "../../deep-partial.type";
 
 const config = {
   gutter: {
@@ -190,7 +191,7 @@ export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
 export type createAnnotationAdapterParams<ANNOTATION> = {
   create?: boolean;
   edit?: boolean;
-  config?: Partial<AnnotationConfig>;
+  config?: DeepPartial<AnnotationConfig>;
   snapper?: Snapper;
   colorFn?: ColorFn<ANNOTATION>;
   gutterFn?: GutterFn<ANNOTATION>;
