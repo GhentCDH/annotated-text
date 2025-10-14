@@ -25,7 +25,8 @@
     "*.d.ts",
     "*.css",
     "*.md",
-    "assets/**"
+    "assets/**",
+    "lib/**"
   ],
   "sideEffects": false,
   "dependencies": {
