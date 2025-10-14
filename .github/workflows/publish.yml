@@ -28,7 +28,7 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: npx nx run-many -t build --parallel --max-parallel=6
+        run: npx nx run-many -t build -c production --parallel --max-parallel=6
 
       - name: Publish package on NPM
         run: npx nx release publish --access public
