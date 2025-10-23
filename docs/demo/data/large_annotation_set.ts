@@ -1,3 +1,5 @@
+import { Annotation } from "@ghentcdh/annotated-text";
+
 export const largeAnnotations = [
   {
     id: 653998,
@@ -23170,4 +23172,4 @@ export const largeAnnotations = [
       gutterColor: "rgba(158,42,43,0.8)",
     },
   },
-];
+] as any as Annotation[];

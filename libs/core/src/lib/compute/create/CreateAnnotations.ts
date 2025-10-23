@@ -21,11 +21,11 @@ import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
 import { ErrorEventCallback, EventCallback } from "../../events";
 import { drawText } from "../draw/text/text";
 import { recreateAnnotation } from "../draw/annotations/draw";
-import { AnnotationId } from "../../model";
+import { Annotation, AnnotationId } from "../../model";
 import { AnnotationColors } from "../model/annotation.colors";
 
 const document = globalThis.document || null;
-export type BaseAnnotation = { id: AnnotationId };
+export type BaseAnnotation = Pick<Annotation, "id">;
 
 export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   implements AnnotatedText<ANNOTATION>

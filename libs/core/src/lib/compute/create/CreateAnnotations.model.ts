@@ -1,3 +1,4 @@
+import { BaseAnnotation } from "./CreateAnnotations";
 import { TEXT_CONFIG_KEYS, TEXT_CONFIG_VALUES } from "../../adapter/text";
 import { ErrorEventCallback, EventCallback } from "../../events";
 import { ANNOTATION_CONFIG_KEYS, ANNOTATION_CONFIG_VALUES } from "../../adapter/annotation";
@@ -8,7 +9,7 @@ import { AnnotationId } from "../../model";
  * Create annotation is a factory function that creates an annotation model.
  * Use this model to manage annotations and text, every change related to the visualization should be done through this function.
  */
-export interface AnnotatedText<ANNOTATION> {
+export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
   /**
    * Set the text for the model. The adapter will parse the text to the internal model.
    * @param text

@@ -69,7 +69,9 @@ export const createAnnotatedText = <
   return annotatedImpl;
 };
 
-export const getAnnotatedText = <ANNOTATION = Annotation>(id: string) => {
+export const getAnnotatedText = <ANNOTATION extends BaseAnnotation>(
+  id: string,
+) => {
   const annotatedText = annotatedTextCache.get(id);
   if (!annotatedText) {
     throw new Error("AnnotatedText with this ID does not exist");
