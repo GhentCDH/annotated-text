@@ -96,7 +96,7 @@ export const editAnnotations = (
   const _start = target === "start" ? newIndex : originalAnnotation?.start;
   const _end = target === "end" ? newIndex : originalAnnotation?.end;
   const start = Math.min(_start, _end);
-  let end = Math.max(_start, _end);
+  const end = Math.max(_start, _end);
 
   return handleAnnotationEditAndSendEvent(
     annotation,
