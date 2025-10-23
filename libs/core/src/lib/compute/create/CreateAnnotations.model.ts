@@ -4,7 +4,6 @@ import { ErrorEventCallback, EventCallback } from "../../events";
 import { ANNOTATION_CONFIG_KEYS, ANNOTATION_CONFIG_VALUES } from "../../adapter/annotation";
 import { EventListenerType } from "../../events/event.listener";
 import { AnnotationId } from "../../model";
-import { BaseAnnotation } from "./CreateAnnotations";
 
 /**
  * Create annotation is a factory function that creates an annotation model.
