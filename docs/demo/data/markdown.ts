@@ -17,37 +17,37 @@ Lorem ipsum *dolor* sit amet, **consectetur** adipiscing elit. Nullam aliquam bl
 const annotations = [
   {
     start: 0,
-    end: 7,
+    end: 8,
     color: annotationColors["5"],
     id: "md-1",
   },
   {
     start: 64,
-    end: 87,
+    end: 88,
     color: annotationColors["5"],
     id: "md-2",
   },
   {
     start: 57,
-    end: 62,
+    end: 63,
     color: annotationColors["2"],
     id: "md-3",
   },
   {
     start: 101,
-    end: 105,
+    end: 106,
     color: annotationColors["2"],
     id: "md-4",
   },
   {
     start: 117,
-    end: 127,
+    end: 128,
     color: annotationColors["5"],
     id: "md-5",
   },
   {
     start: 89,
-    end: 577,
+    end: 578,
     color: annotationColors["3"],
     id: "md-6",
   },
