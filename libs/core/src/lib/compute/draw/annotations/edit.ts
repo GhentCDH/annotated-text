@@ -40,7 +40,7 @@ export const sendDummyAnnotationEvent = (
     );
   }
 
-  if (snapper.end < snapper.start) {
+  if (snapper.end <= snapper.start) {
     // Still invalid, abort
     return;
   }
