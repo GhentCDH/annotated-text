@@ -6,7 +6,7 @@ import { type TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
 import { getCharacterFromTextNodesAtPoint } from "../../position";
 
-export const sendDummyAnnotationEvent = (
+export const handleAnnotationEditAndSendEvent = (
   annotation: AnnotationDraw,
   { start, end }: { start: number; end: number },
   svgModel: SvgModel,
@@ -96,9 +96,9 @@ export const editAnnotations = (
   const _start = target === "start" ? newIndex : originalAnnotation?.start;
   const _end = target === "end" ? newIndex : originalAnnotation?.end;
   const start = Math.min(_start, _end);
-  const end = Math.max(_start, _end);
+  let end = Math.max(_start, _end);
 
-  return sendDummyAnnotationEvent(
+  return handleAnnotationEditAndSendEvent(
     annotation,
     {
       start,

@@ -1,6 +1,6 @@
 import { drag } from "d3";
 import { pick } from "lodash-es";
-import { sendDummyAnnotationEvent } from "./edit";
+import { handleAnnotationEditAndSendEvent } from "./edit";
 import { recreateAnnotation, removeDummyAnnotation } from "./draw";
 import { TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
@@ -76,7 +76,7 @@ export const addDraggableAnnotation = (
     }
 
     dummyAnnotation =
-      sendDummyAnnotationEvent(
+      handleAnnotationEditAndSendEvent(
         annotation,
         {
           start: startIndex,
