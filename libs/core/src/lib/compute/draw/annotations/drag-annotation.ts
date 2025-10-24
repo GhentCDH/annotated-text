@@ -40,7 +40,7 @@ export const addDraggableAnnotation = (
     const y = event.sourceEvent.clientY;
     const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
     if (!result) return;
-    pickupIndex = result.newIndex;
+    pickupIndex = result.characterPos;
     textStart = svgModel.model.getMinStartPosition();
 
     svgModel.model.blockEvents = true;
@@ -63,7 +63,7 @@ export const addDraggableAnnotation = (
     const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
     if (!result) return;
 
-    const delta = result.newIndex - pickupIndex;
+    const delta = result.characterPos - pickupIndex;
     const startIndex = originalAnnotation.start + delta;
 
     if (startIndex < textStart) {
