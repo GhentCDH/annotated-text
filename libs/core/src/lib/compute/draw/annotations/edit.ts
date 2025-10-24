@@ -4,7 +4,10 @@ import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import { AnnotationDraw } from "../../annotation.model";
 import { type TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
-import { getCharacterFromTextNodesAtPoint } from "../../position";
+import {
+  getCharacterFromTextNodesAtPoint,
+  getCharacterStartEndPosition,
+} from "../../position";
 
 export const handleAnnotationEditAndSendEvent = (
   annotation: AnnotationDraw,
@@ -90,13 +93,13 @@ export const editAnnotations = (
 
   if (!result) return null;
 
-  const { newIndex } = result;
-
   const originalAnnotation = model.getAnnotation(annotation.annotationUuid);
-  const _start = target === "start" ? newIndex : originalAnnotation?.start;
-  const _end = target === "end" ? newIndex : originalAnnotation?.end;
-  const start = Math.min(_start, _end);
-  const end = Math.max(_start, _end);
+
+  const { start, end } = getCharacterStartEndPosition(
+    result,
+    originalAnnotation,
+    target,
+  );
 
   return handleAnnotationEditAndSendEvent(
     annotation,

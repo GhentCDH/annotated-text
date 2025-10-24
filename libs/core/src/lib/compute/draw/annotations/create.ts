@@ -7,7 +7,10 @@ import {
 import { Debugger } from "../../../utils/debugger";
 import { SvgModel } from "../../model/svg.types";
 import { type TextAnnotation } from "../../../model";
-import { getCharacterFromTextNodesAtPoint } from "../../position";
+import {
+  getCharacterFromTextNodesAtPoint,
+  getCharacterStartEndPosition,
+} from "../../position";
 import { drawTag } from "../tag";
 
 export const createNewBlock = (svgModel: SvgModel) => {
@@ -20,6 +23,20 @@ export const createNewBlock = (svgModel: SvgModel) => {
   let drawing = false;
   let drawingAndMove = false;
   let dummyAnnotation: TextAnnotation | null = null;
+  let prevEndIndex: number | null = null;
+
+  const createInitialDummyAnnotation = (characterPos: number) => {
+    dummyAnnotation = {
+      ...adapter.createAnnotation(),
+      weight: 0,
+      start: characterPos,
+      end: characterPos + 1,
+    } as unknown as TextAnnotation;
+    startIndex = characterPos;
+    prevEndIndex = characterPos + 1;
+
+    return dummyAnnotation;
+  };
 
   const createDummyAnnotation = (event: any, draw = false) => {
     const [clientX, clientY] = pointer(event);
@@ -27,27 +44,25 @@ export const createNewBlock = (svgModel: SvgModel) => {
     const x = clientX + container.getBoundingClientRect().x;
     const y = clientY + container.getBoundingClientRect().y;
     const character = getCharacterFromTextNodesAtPoint(x, y, svgModel);
+
     if (!character) return;
-    const newIndex = character.newIndex;
     if (!dummyAnnotation) {
-      dummyAnnotation = {
-        ...adapter.createAnnotation(),
-        weight: 0,
-        start: newIndex,
-        end: newIndex + 5,
-      } as unknown as TextAnnotation;
-      startIndex = newIndex;
+      dummyAnnotation = createInitialDummyAnnotation(character.characterPos);
     }
 
-    const isStart = newIndex > startIndex;
-    const _start = isStart ? newIndex : startIndex;
-    const _end = !isStart ? newIndex : startIndex;
+    const { start, end } = getCharacterStartEndPosition(
+      character,
+      { start: startIndex, end: prevEndIndex! },
+      "end",
+    );
 
-    dummyAnnotation.start = Math.min(_start, _end);
-    dummyAnnotation.end = Math.max(_start, _end);
+    if (start === end) return;
+
+    dummyAnnotation.start = start;
+    dummyAnnotation.end = end;
 
     const snapper = svgModel.annotationAdapter.snapper.fixOffset(
-      _start < _end ? "move-start" : "move-end",
+      start < end ? "move-start" : "move-end",
       dummyAnnotation,
     );
     dummyAnnotation.start = snapper.start;
@@ -58,7 +73,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
         border: dummyAnnotation.color!.border,
         fill: dummyAnnotation.color!.background,
       });
-
+    prevEndIndex = character.characterPos;
     return { x, y };
   };
 
@@ -104,6 +119,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
   });
 
   svg.on("mouseup", (mouseEvent) => {
+    prevEndIndex = null;
     drawing = false;
 
     if (!drawingAndMove) return;
