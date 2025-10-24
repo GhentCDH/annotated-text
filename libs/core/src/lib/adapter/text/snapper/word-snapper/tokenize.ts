@@ -1,4 +1,4 @@
-import Tokenizr from "tokenizr";
+import { Tokenizr } from "tokenizr";
 
 //returns an array of tokens for a text, uses a defined word boundry
 export function tokenize(text: string) {
@@ -23,7 +23,7 @@ export function tokenize(text: string) {
   });
 
   //token
-   
+
   lexer.rule(/[^\s,\.]+/, (ctx: { accept: (arg0: string) => void }) => {
     ctx.accept("token");
   });
