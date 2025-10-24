@@ -19,7 +19,6 @@ const createRightBorder = memoize(
       `A${r},${r} 0 0 1 ${right},${y + r}`, // top-right corner
       `V${bottom - r}`, // right edge
       `A${r},${r} 0 0 1 ${right - r},${bottom}`, // bottom-right corner
-      `H${x}`,
     ];
   },
 );
@@ -49,12 +48,15 @@ const createAnnotationBorder = ({
 
   const path: Array<string | string[]> = [`M${x + (leftBorder ? r : 0)},${y}`];
 
+  const leftOffset = leftBorder ? x + r : x;
+
   // Right border
   if (rightBorder) {
     path.push(createRightBorder(x, y, right, bottom, r));
+    path.push(`H${leftOffset}`); // move to bottom-left
   } else {
     path.push([
-      `M${x},${y}`, // move to top-left
+      `M${leftOffset},${y}`, // move to top-left
       `H${right}`, // top edge
       `M${right},${bottom}`, //  move to bottom-right
     ]);
