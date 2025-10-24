@@ -10,7 +10,7 @@ export class WordSnapper implements Snapper {
     //console.log(text);
     tokenize(text).forEach((token: any) => {
       const start = token.pos;
-      const end = token.pos + token.value.length - 1;
+      const end = token.pos + token.value.length;
 
       this.mapStartCharIndexToToken[start] = start;
       this.mapStopCharIndexToToken[end] = end;

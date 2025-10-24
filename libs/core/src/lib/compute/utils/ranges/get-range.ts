@@ -3,7 +3,7 @@ import { Debugger } from "../../../utils/debugger";
 
 export const getTextRange = (annotation: Annotation, line: TextLine) => {
   let start = annotation.start - line.start;
-  const end = annotation.end - line.start + 1;
+  const end = annotation.end - line.start;
 
   if (start < 0) {
     start = 0;
