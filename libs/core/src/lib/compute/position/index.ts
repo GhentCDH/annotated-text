@@ -1,1 +1,1 @@
-export * from "./default-character-from-text-nodes";
+export * from "./character-position";
