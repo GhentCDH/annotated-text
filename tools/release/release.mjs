@@ -3,7 +3,7 @@ import { simpleGit } from "simple-git";
 import fsExtra from "fs-extra";
 import semver from "semver";
 import yargs from "yargs";
-import conventionalChangelog from "conventional-changelog";
+import { ConventionalChangelog } from "conventional-changelog";
 import { hideBin } from "yargs/helpers";
 import path from "path";
 import fs from "fs";
@@ -14,15 +14,14 @@ async function generateChangelog() {
   const changelogStream = fs.createWriteStream(
     path.resolve(process.cwd(), "RELEASE_NOTES.md"),
   );
-
-  const stream = conventionalChangelog({
-    preset: "angular", // or 'angular', 'eslint', etc.
-    releaseCount: 1, // Only the latest release
-  });
-
-  stream.pipe(changelogStream).on("finish", () => {
-    console.log("📄 Release notes generated in RELEASE_NOTES.md");
-  });
+  new ConventionalChangelog()
+    .readPackage()
+    .loadPreset("angular")
+    .writeStream()
+    .pipe(changelogStream)
+    .on("finish", () => {
+      console.log("📄 Release notes generated in RELEASE_NOTES.md");
+    });
 }
 
 async function bumpVersion(type) {
