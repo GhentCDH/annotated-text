@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
-      - run: npx nx run-many -t test --parallel --max-parallel=6
+      - run: npx nx run-many -t test --parallel --max-parallel=6 --coverage
   lint:
     runs-on: ubuntu-latest
     needs: install-deps
