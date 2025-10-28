@@ -4,6 +4,7 @@ export type SnapperResult = {
   start: number;
   end: number;
   modified: boolean;
+  valid?: boolean;
 };
 
 export type SnapperAction = "move-start" | "move-end" | "drag";

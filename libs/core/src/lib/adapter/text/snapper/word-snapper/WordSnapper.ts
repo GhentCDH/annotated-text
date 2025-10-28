@@ -30,7 +30,9 @@ export class WordSnapper implements Snapper {
     }
   }
 
-  private fixStart(annotation: TextAnnotation): SnapperResult {
+  private fixStart(
+    annotation: Pick<TextAnnotation, "end" | "start">,
+  ): SnapperResult {
     const { start: newStart, end: newEnd } = annotation;
 
     const closestStart =
@@ -41,10 +43,13 @@ export class WordSnapper implements Snapper {
       start: closestStart,
       modified: closestStart !== newStart,
       end: newEnd,
+      valid: newStart < newEnd,
     };
   }
 
-  private fixEnd(annotation: TextAnnotation): SnapperResult {
+  private fixEnd(
+    annotation: Pick<TextAnnotation, "end" | "start">,
+  ): SnapperResult {
     const { start: newStart, end: newEnd } = annotation;
 
     const closestEnd =
@@ -55,21 +60,42 @@ export class WordSnapper implements Snapper {
       start: newStart,
       modified: closestEnd !== newEnd,
       end: closestEnd,
+      valid: newStart < closestEnd,
     };
   }
 
+  private fixUntilValid(
+    annotation: TextAnnotation,
+  ): SnapperResult & { valid: boolean } {
+    // Asume that start is always right in this case,
+    const modified = this.fixEnd({
+      start: annotation.start,
+      end: annotation.end + 1,
+    });
+
+    return { ...modified, valid: modified.start < modified.end };
+  }
+
   fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
-    switch (action) {
-      case "move-start":
-        return this.fixStart(annotation);
-      case "move-end":
-        return this.fixEnd(annotation);
-      case "drag":
-        const { start, modified: modifiedStart } = this.fixStart(annotation);
-        const { end, modified: modifiedEnd } = this.fixEnd(annotation);
-        return { start, end, modified: modifiedStart || modifiedEnd };
-      default:
-        throw new Error("Unknown snapper action");
+    const modifiedStart = this.fixStart(annotation);
+    let modifiedEnd = this.fixEnd(annotation);
+
+    let end = annotation.end;
+    while (!modifiedEnd.valid) {
+      end =
+        Math.max(end, annotation.end, modifiedStart.end, modifiedEnd.end) + 1;
+
+      modifiedEnd = this.fixEnd({
+        start: modifiedStart.start,
+        end: end,
+      });
     }
+
+    return {
+      start: modifiedStart.start,
+      end: modifiedEnd.end,
+      modified: modifiedStart.modified || modifiedEnd.modified,
+      valid: true,
+    };
   }
 }
