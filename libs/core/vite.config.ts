@@ -54,8 +54,9 @@ export default defineConfig(() => ({
     include: ["{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     reporters: ["default"],
     coverage: {
-      reportsDirectory: "../../coverage/libs/core",
-      provider: "v8" as const,
+      provider: "v8", // or 'istanbul'
+      reporter: ["text", "json", "json-summary", "lcov"],
+      reportsDirectory: "./coverage",
     },
   },
 }));
