@@ -40,6 +40,22 @@ When an annotation is created or modified, `fixOffset()`:
 - Ensures the resulting range is valid (start < end)
 - Returns the adjusted boundaries
 
+## Custom tokenization
+
+A custom tokenization function can be provided to the `WordSnapper` to handle specific text structures or languages.
+
+```typescript
+new WordSnapper((text: string): Token[] => {
+  const lexer = new Tokenizr();
+
+  //ignore word boundries
+  lexer.rule(/†/, (ctx: { accept: (arg0: string) => void }) => {
+    //ctx.accept("start char")
+    ctx.accept("start");
+  })
+})
+```
+
 # Example
 
 <div>

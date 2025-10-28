@@ -1,4 +1,4 @@
-import { tokenize } from "./tokenize";
+import { tokenize, Tokenizer } from "./tokenize";
 import { type Snapper, SnapperAction, SnapperResult } from "../snapper";
 import { TextAnnotation } from "../../../../model";
 
@@ -27,7 +27,7 @@ export class WordSnapper implements Snapper {
    *
    * @example For "Hello world": { 0→0, 1→0, 2→0, 3→0, 4→0, 5→0, 6→6, 7→6... }
    */
-  private mapStartCharIndexToToken: { [index: number]: number } = {};
+  protected mapStartCharIndexToToken: { [index: number]: number } = {};
 
   /**
    * Maps character indices to the end position of their containing token.
@@ -35,9 +35,21 @@ export class WordSnapper implements Snapper {
    *
    * @example For "Hello world": { 0→5, 1→5, 2→5, 3→5, 4→5, 5→5, 6→11, 7→11... }
    */
-  private mapStopCharIndexToToken: { [index: number]: number } = {};
+  protected mapStopCharIndexToToken: { [index: number]: number } = {};
 
-  private textLength = 0;
+  protected textLength = 0;
+
+  protected tokenizerFn: Tokenizer = tokenize;
+  private text = "";
+
+  constructor(tokenizer?: Tokenizer) {
+    this.tokenizerFn = tokenizer ?? tokenize;
+  }
+
+  setTokenizer(tokenizerFn: Tokenizer) {
+    this.tokenizerFn = tokenizerFn;
+    this.setText(this.text);
+  }
 
   /**
    * Initializes the snapper with text content and builds token boundary maps.
@@ -55,10 +67,11 @@ export class WordSnapper implements Snapper {
    * even for whitespace or punctuation between words.
    */
   setText(text: string) {
+    this.text = text;
     this.textLength = text.length;
 
     // Build initial maps with exact token boundaries
-    tokenize(text).forEach((token: any) => {
+    this.tokenizerFn(text).forEach((token: any) => {
       const start = token.pos;
       const end = token.pos + token.value.length;
 
@@ -88,7 +101,7 @@ export class WordSnapper implements Snapper {
    * @param annotation - Annotation with start and end positions
    * @returns Result with adjusted start position
    */
-  private fixStart(
+  protected fixStart(
     annotation: Pick<TextAnnotation, "end" | "start">,
   ): SnapperResult {
     const { start: newStart, end: newEnd } = annotation;
@@ -112,7 +125,7 @@ export class WordSnapper implements Snapper {
    * @param annotation - Annotation with start and end positions
    * @returns Result with adjusted end position
    */
-  private fixEnd(
+  protected fixEnd(
     annotation: Pick<TextAnnotation, "end" | "start">,
   ): SnapperResult {
     const { start: newStart, end: newEnd } = annotation;

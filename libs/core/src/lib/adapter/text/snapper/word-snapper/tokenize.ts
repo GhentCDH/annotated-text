@@ -1,7 +1,9 @@
-import { Tokenizr } from "tokenizr";
+import { Token, Tokenizr } from "tokenizr";
+
+export type Tokenizer = (token: string) => Token[];
 
 //returns an array of tokens for a text, uses a defined word boundry
-export function tokenize(text: string) {
+export const tokenize: Tokenizer = (text: string): Token[] => {
   const lexer = new Tokenizr();
 
   //ignore word boundries
@@ -31,4 +33,4 @@ export function tokenize(text: string) {
   //parse the text
   lexer.input(text);
   return lexer.tokens();
-}
+};
