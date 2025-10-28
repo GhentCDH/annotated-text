@@ -52,10 +52,11 @@
   ],
   "release": {
     "projects": [
-      "*",
+      "libs/core",
       "!@ghentcdh/annotated-text"
     ],
     "version": {
+      "conventionalCommits": true,
       "preVersionCommand": "npx nx run-many -t build"
     },
     "changelog": {
