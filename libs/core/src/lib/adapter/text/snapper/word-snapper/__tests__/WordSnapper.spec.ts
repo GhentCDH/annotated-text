@@ -50,7 +50,7 @@ describe("WordSnapper", () => {
       // ${"CamelCaseWord snake_case_word kebab-case-word"}            | ${0}  | ${40} | ${0}          | ${44}       | ${"different naming conventions"}
 
       //// ${"Unicode: café, naïve, 北京"}                               | ${9}  | ${20} | ${9}          | ${23}       | ${"unicode characters"}
-      // ${"Emoji 😀 test 🎉 content"}                                 | ${6}  | ${20} | ${6}          | ${20}       | ${"emoji in text"}
+      // ${"Emoji 😀 test 🎉 content"}                                 | ${6}  | ${20} | ${6}          | ${21}       | ${"emoji in text"}
       "should handle $scenario",
       ({ text, start, end, expectedStart, expectedEnd }) => {
         snapper.setText(text);
