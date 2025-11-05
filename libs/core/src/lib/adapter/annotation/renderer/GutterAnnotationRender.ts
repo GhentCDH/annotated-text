@@ -1,17 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
-import { getColors } from "./colors";
-import { getY } from "./helpers";
-import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
+import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
+import { AnnotationRender } from "./DefaultAnnotationRender";
+import {
+  AnnotationAdapter,
+  TextAdapter,
+  TextAnnotation,
+  TextLine,
+} from "@ghentcdh/annotated-text";
 import {
   AnnotationDimension,
   AnnotationDraw,
   TextAnnotationModel,
-} from "../annotation.model";
-import { getMinMaxBy } from "../draw/utils/min-max.by";
-import { createGutterPath } from "../utils/create-path";
-import { TextAnnotation, TextLine } from "../../model";
-import { TextAdapter } from "../../adapter/text";
-import { AnnotationAdapter } from "../../adapter/annotation";
+} from "../../../compute/annotation.model";
+import { getY } from "../../../compute/compute/helpers";
+import { getColors } from "../../../compute/compute/colors";
+import { createGutterPath } from "../../../compute/utils/create-path";
 
 export const GutterAnnotationRender: AnnotationRender = (
   lines: TextLine[],

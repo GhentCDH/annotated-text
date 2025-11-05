@@ -1,19 +1,19 @@
-import { GetColorsFn } from "./colors";
 import { createTextAnnotationRender } from "./TextAnnotationRender";
-import { TextAnnotation, TextLine } from "../../model";
+import { TextAnnotation, TextLine } from "../../../model";
+import { AnnotationRender } from "./DefaultAnnotationRender";
+import { TextAdapter } from "../../../adapter/text";
+import { AnnotationAdapter } from "../../../adapter";
 import {
   AnnotationDrawColor,
   AnnotationDrawColors,
   TextAnnotationModel,
-} from "../annotation.model";
-import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
+} from "../../../compute/annotation.model";
+import { GetColorsFn } from "../../../compute/compute/colors";
 import {
   createAnnotationFill,
   createAnnotationPathFn,
   PathParams,
-} from "../utils/create-path";
-import { TextAdapter } from "../../adapter/text";
-import { AnnotationAdapter } from "../../adapter/annotation";
+} from "../../../compute/utils/create-path";
 
 export const getColorsUnderline: GetColorsFn = (
   adapter: AnnotationAdapter<any>,

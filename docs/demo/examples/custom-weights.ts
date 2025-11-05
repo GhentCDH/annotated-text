@@ -1,6 +1,7 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
+  TextAnnotation,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
 
@@ -8,7 +9,6 @@ const annotations = [
   {
     start: 90,
     end: 98,
-    color: "red",
     target: "text",
     label: "weight 2",
     color: annotationColors["1"],
@@ -18,7 +18,6 @@ const annotations = [
   {
     start: 49,
     end: 60,
-    color: "blue",
     target: "text",
     color: annotationColors["2"],
     id: "cw2",
@@ -27,7 +26,6 @@ const annotations = [
   {
     start: 87,
     end: 97,
-    color: "green",
     target: "text",
     color: annotationColors["3"],
     id: "cw3",
@@ -36,13 +34,12 @@ const annotations = [
   {
     start: 95,
     end: 100,
-    color: "green",
     target: "text",
     color: annotationColors["4"],
     id: "cw4",
     weight: null,
   },
-];
+] as any as TextAnnotation[];
 
 const text = `This is a text with custom weights
 This line has annotations with no weights

@@ -1,19 +1,22 @@
 import { v4 as uuidv4 } from "uuid";
-import { getColors, GetColorsFn } from "./colors";
-import { getX, getY } from "./helpers";
-import { TextAnnotation, TextLine } from "../../model";
-import { TextAdapter } from "../../adapter/text";
-import { AnnotationAdapter } from "../../adapter/annotation";
+import {
+  AnnotationAdapter,
+  TextAdapter,
+  TextAnnotation,
+  TextLine,
+} from "@ghentcdh/annotated-text";
+import { AnnotationRender } from "./DefaultAnnotationRender";
 import {
   AnnotationDimension,
   AnnotationDraw,
   TextAnnotationModel,
-} from "../annotation.model";
+} from "../../../compute/annotation.model";
 import {
   createAnnotationPath,
   createAnnotationPathFn,
-} from "../utils/create-path";
-import { AnnotationRender } from "../../adapter/annotation/DefaultAnnotationRender";
+} from "../../../compute/utils/create-path";
+import { getColors, GetColorsFn } from "../../../compute/compute/colors";
+import { getX, getY } from "../../../compute/compute/helpers";
 
 export const createTextAnnotationRender = (
   lines: TextLine[],

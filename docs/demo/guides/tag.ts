@@ -1,10 +1,10 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
+  DefaultRenders,
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
-import { DefaultRenders } from "../../../libs/core/src/lib/adapter/annotation/DefaultAnnotationRender";
 
 export const RenderTag = (
   id: string,

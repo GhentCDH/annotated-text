@@ -1,15 +1,15 @@
+import { TextAnnotationRender } from "./TextAnnotationRender";
+import { GutterAnnotationRender } from "./GutterAnnotationRender";
+import { UnderLineAnnotationRender } from "./UnderLineAnnotationRender";
 import {
   AnnotationDimension,
   AnnotationDraw,
   AnnotationDrawColors,
   TextAnnotationModel,
-} from "../../compute/annotation.model";
-import { TextAnnotationRender } from "../../compute/compute/TextAnnotationRender";
-import { GutterAnnotationRender } from "../../compute/compute/GutterAnnotationRender";
-import { UnderLineAnnotationRender } from "../../compute/compute/UnderLineAnnotationRender";
-import { TextAnnotation, TextLine } from "../../model";
-import { TextAdapter } from "../text/TextAdapter";
-import { AnnotationAdapter } from "../annotation";
+} from "../../../compute/annotation.model";
+import { TextAnnotation, TextLine } from "../../../model";
+import { TextAdapter } from "../../text/TextAdapter";
+import { AnnotationAdapter } from "../../annotation";
 
 export type DefaultRenders = "highlight" | "underline";
 

@@ -1,13 +1,13 @@
 import {
   Annotation,
+  AnnotationRenderFn,
   clearAnnotatedTextCache,
   createAnnotatedText,
+  GutterAnnotationRender,
+  TextAnnotationRender,
+  UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
-import { UnderLineAnnotationRender } from "../../../libs/core/src/lib/compute/compute/UnderLineAnnotationRender";
-import { TextAnnotationRender } from "../../../libs/core/src/lib/compute/compute/TextAnnotationRender";
-import { GutterAnnotationRender } from "../../../libs/core/src/lib/compute/compute/GutterAnnotationRender";
-import { AnnotationRenderFn } from "../../../libs/core/src/lib/adapter/annotation/DefaultAnnotationRender";
 
 const annotations = [
   {
@@ -44,7 +44,7 @@ export const customAnnotationRender = (id_default: string) => {
   clearAnnotatedTextCache();
   const activeAnnotations = [];
 
-  const customRenderFn: AnnotationRenderFn = (annotation: Annotation) => {
+  const customRenderFn: AnnotationRenderFn<Annotation> = (annotation) => {
     switch (annotation.id) {
       case "1":
         return UnderLineAnnotationRender;
