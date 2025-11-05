@@ -3,5 +3,5 @@ export * from "./chunks";
 export * from "./gutters";
 export * from "./markdown";
 export * from "./lines";
-export * from "./different-selections";
+export * from "./different-annotation-render";
 export * from "./custom-annotation-renderer";

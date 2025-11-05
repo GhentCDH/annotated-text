@@ -4,47 +4,49 @@ import {
   createAnnotatedText,
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
 import { annotationColors } from "../data/const";
 
 const annotations = [
   {
-    start: 5,
-    end: 10,
+    start: 2,
+    end: 3,
     color: annotationColors["2"],
     target: "text",
     label: "gts",
     id: "1",
   },
   {
-    start: 40,
-    end: 41,
+    start: 24,
+    end: 27,
     color: annotationColors["3"],
     target: "text",
     label: "gts",
     id: "2",
   },
   {
-    start: 105,
-    end: 106,
-    color: annotationColors["7"],
+    start: 55,
+    end: 64,
+    color: annotationColors["4"],
     target: "text",
     label: "gts",
     id: "3",
   },
 ] as Annotation[];
 
-export const createDifferentSelections = (
+const text = `1 character selection
+3 character selection with
+Emoji 😀 test 🎉 content
+`;
+
+export const createDifferentAnnotationRenders = (
   id_default: string,
   id_underline: string,
 ) => {
   clearAnnotatedTextCache();
-  const text = greekText.text.substring(0, 250);
   const activeAnnotations = [];
   const selectedAnnotations = [];
 
   createAnnotatedText(id_default, {
-    text: TextLineAdapter(),
     annotation: {
       edit: true,
       create: true,
