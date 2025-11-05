@@ -2,7 +2,6 @@ import {
   Annotation,
   clearAnnotatedTextCache,
   createAnnotatedText,
-  TextLineAdapter,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
 
@@ -57,7 +56,6 @@ export const createDifferentAnnotationRenders = (
     .highlightAnnotations(activeAnnotations);
 
   createAnnotatedText(id_underline, {
-    text: TextLineAdapter(),
     annotation: {
       defaultRender: "underline",
       edit: true,

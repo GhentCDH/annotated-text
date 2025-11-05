@@ -4,6 +4,14 @@ This example demonstrates how to use different annotation renderers for active a
 The
 default renderer highlights the selected text, while the underline renderer adds an underline to the selected text.
 
+```typescript
+createAnnotatedText(id, {
+  annotation: {
+    defaultRender: "underline", // or highlight
+  },
+})
+```
+
 Examples used:
 
 - 1 character selection with default highlight renderer
