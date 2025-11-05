@@ -1,6 +1,6 @@
 import { createTextAnnotationRender } from "./TextAnnotationRender";
-import { TextAnnotation, TextLine } from "../../../model";
 import { AnnotationRender } from "./DefaultAnnotationRender";
+import { TextAnnotation, TextLine } from "../../../model";
 import { TextAdapter } from "../../../adapter/text";
 import { AnnotationAdapter } from "../../../adapter";
 import {
