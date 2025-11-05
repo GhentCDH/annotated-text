@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
-import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
-import { AnnotationRender } from "./DefaultAnnotationRender";
 import {
   AnnotationAdapter,
   TextAdapter,
   TextAnnotation,
   TextLine,
 } from "@ghentcdh/annotated-text";
+import { AnnotationRender } from "./DefaultAnnotationRender";
+import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
 import {
   AnnotationDimension,
   AnnotationDraw,
