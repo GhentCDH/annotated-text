@@ -5,3 +5,4 @@ export * from "./markdown";
 export * from "./lines";
 export * from "./different-annotation-render";
 export * from "./custom-annotation-renderer";
+export * from "./custom-weights";
