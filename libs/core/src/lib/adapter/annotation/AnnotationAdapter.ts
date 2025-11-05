@@ -6,7 +6,7 @@ import {
   AnnotationRenderFn,
   DefaultAnnotationRender,
   DefaultRenders,
-} from "./DefaultAnnotationRender";
+} from "./renderer";
 import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";

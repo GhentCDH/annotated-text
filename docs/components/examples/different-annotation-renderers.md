@@ -1,7 +1,16 @@
-# Different Selection Renderers
+# Different Annotation Renderers
 
-This example demonstrates how to use different selection renderers for active annotations in a text annotation tool. The
+This example demonstrates how to use different annotation renderers for active annotations in a text annotation tool.
+The
 default renderer highlights the selected text, while the underline renderer adds an underline to the selected text.
+
+```typescript
+createAnnotatedText(id, {
+  annotation: {
+    defaultRender: "underline", // or highlight
+  },
+})
+```
 
 Examples used:
 
@@ -9,6 +18,8 @@ Examples used:
 - 1 character selection with underline renderer
 - 3 character selection with default highlight renderer
 - 3 character selection with underline renderer
+- Emoiji selection with default highlight renderer
+- Emoiji selection with underline renderer
 
 To play with the example, all edit and create functionalities are enabled. You can create new annotations by selecting
 text and dragging to adjust the selection.
@@ -25,12 +36,12 @@ text and dragging to adjust the selection.
 <script setup>
 //
 import { onMounted } from "vue";
-import { createDifferentSelections } from "@demo";
+import { createDifferentAnnotationRenders } from "@demo";
 const id_default = `selection-renderer-annotation--default`;
 const id_line = `selection-renderer-annotation--line`;
 
 onMounted(()=> {
-    createDifferentSelections(id_default, id_line);
+    createDifferentAnnotationRenders(id_default, id_line);
 
 });
 </script>

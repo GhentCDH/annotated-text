@@ -7,7 +7,7 @@ import {
 } from "../../2_assign_annotation_to_line";
 import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
-import { TextAnnotationRender } from "../../compute/TextAnnotationRender";
+import { TextAnnotationRender } from "../../../adapter/annotation/renderer";
 
 export const removeDummyAnnotation = (svgModel: SvgModel) => {
   svgModel.removeAnnotations(DUMMY_UID);

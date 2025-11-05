@@ -5,7 +5,10 @@ import {
   getAnnotatedText,
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
-import { SuperLargeText } from "../examples/super-large-text";
+import { greekText } from "../data";
+
+const text = greekText.text;
+const annotations = greekText.annotations;
 
 const getDivId = (id: AnnotationId) => {
   return `annotated-interaction-${id}`;
@@ -31,14 +34,14 @@ export const createAnnotatedTextWithLines = (
     }),
     annotation: { edit: true },
   })
-    .setText(SuperLargeText.text)
+    .setText(text)
     .setAnnotations(annotations);
 };
 
 export const interActionBetweenComponents = (id: string) => {
   if (!document) return;
   const element = document.getElementById(id);
-  const annotations = SuperLargeText.annotations.filter(
+  const _annotations = annotations.filter(
     (a) => a.target === "text",
   ) as Annotation[];
   // .slice(0, 40);
@@ -74,7 +77,7 @@ export const interActionBetweenComponents = (id: string) => {
       ]);
     });
 
-  annotations.forEach((annotation) => {
+  _annotations.forEach((annotation) => {
     createAnnotatedTextWithLines(annotation, [annotation], annotationsContainer)
       .on("annotation-edit--move", (event) => {
         const annotation = event.data.annotation as Annotation;

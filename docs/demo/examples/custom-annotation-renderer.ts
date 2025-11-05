@@ -1,32 +1,34 @@
 import {
   Annotation,
+  AnnotationRenderFn,
   clearAnnotatedTextCache,
   createAnnotatedText,
-  TextLineAdapter,
+  GutterAnnotationRender,
+  TextAnnotationRender,
+  UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
 import { annotationColors } from "../data/const";
 
 const annotations = [
   {
-    start: 5,
-    end: 10,
+    start: 11,
+    end: 20,
     color: annotationColors["2"],
     target: "text",
     label: "gts",
     id: "1",
   },
   {
-    start: 40,
-    end: 41,
+    start: 42,
+    end: 51,
     color: annotationColors["3"],
     target: "text",
     label: "gts",
     id: "2",
   },
   {
-    start: 105,
-    end: 106,
+    start: 63,
+    end: 90,
     color: annotationColors["7"],
     target: "text",
     label: "gts",
@@ -34,36 +36,31 @@ const annotations = [
   },
 ] as Annotation[];
 
-export const createDifferentSelections = (
-  id_default: string,
-  id_underline: string,
-) => {
+const text = `This is an underline annotation
+this is a highlight annotation
+this is a gutter annotation`;
+
+export const customAnnotationRender = (id_default: string) => {
   clearAnnotatedTextCache();
-  const text = greekText.text.substring(0, 250);
   const activeAnnotations = [];
-  const selectedAnnotations = [];
+
+  const customRenderFn: AnnotationRenderFn<Annotation> = (annotation) => {
+    switch (annotation.id) {
+      case "1":
+        return UnderLineAnnotationRender;
+      case "3":
+        return GutterAnnotationRender;
+      default:
+        return TextAnnotationRender;
+    }
+  };
 
   createAnnotatedText(id_default, {
-    text: TextLineAdapter(),
     annotation: {
-      edit: true,
-      create: true,
+      renderFn: customRenderFn,
     },
   })
     .setText(text)
     .setAnnotations(annotations)
     .highlightAnnotations(activeAnnotations);
-
-  createAnnotatedText(id_underline, {
-    text: TextLineAdapter(),
-    annotation: {
-      defaultRender: "underline",
-      edit: true,
-      create: true,
-    },
-  })
-    .setText(text)
-    .setAnnotations(annotations)
-    .highlightAnnotations(activeAnnotations)
-    .selectAnnotations(selectedAnnotations);
 };
