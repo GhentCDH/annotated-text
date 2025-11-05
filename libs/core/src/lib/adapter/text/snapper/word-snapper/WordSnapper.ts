@@ -46,16 +46,12 @@ export class WordSnapper implements Snapper {
     this.tokenizerFn = tokenizer ?? tokenize;
   }
 
-  setTokenizer(tokenizerFn: Tokenizer) {
-    this.tokenizerFn = tokenizerFn;
-    this.setText(this.text);
-  }
-
   /**
    * Initializes the snapper with text content and builds token boundary maps.
    * Must be called before using fixOffset().
    *
    * @param text - The text content to tokenize and build boundary maps from
+   * @param offsetStart - The starting character index offset for mapping
    *
    * @remarks
    * This method:
@@ -66,14 +62,14 @@ export class WordSnapper implements Snapper {
    * The gap-filling ensures every character index maps to valid token boundaries,
    * even for whitespace or punctuation between words.
    */
-  setText(text: string) {
+  setText(text: string, offsetStart: number) {
     this.text = text;
     this.textLength = text.length;
 
     // Build initial maps with exact token boundaries
     this.tokenizerFn(text).forEach((token: any) => {
-      const start = token.pos;
-      const end = token.pos + token.value.length;
+      const start = token.pos + offsetStart;
+      const end = token.pos + token.value.length + offsetStart;
 
       this.mapStartCharIndexToToken[start] = start;
       this.mapStopCharIndexToToken[end] = end;

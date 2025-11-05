@@ -10,6 +10,7 @@ import {
   createAnnotationAdapterParams,
 } from "../AnnotationAdapter";
 import { type TextAnnotation, textAnnotationSchema } from "../../../model";
+import { selectText } from "../../text/utils/select-text";
 
 export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   name = "W3CAnnotationAdapter";
@@ -49,18 +50,25 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
 
     if (!isNew && !hasChanged) return this.getAnnotation(annotation.id);
 
+    const selectedText = selectText(
+      this.text,
+      annotation.start,
+      annotation.end,
+      this.offsetStart,
+    );
+
     const w3CAnnotation = isNew
       ? createTextSelectionAnnotation(
           this.sourceUri!,
           this.language!,
-          this.text.substring(annotation.start, annotation.end + 1),
+          selectedText,
           annotation,
         )
       : updateTextSelectionAnnotation(
           this.getAnnotation(annotation.id),
           this.sourceUri!,
           this.language!,
-          this.text.substring(annotation.start, annotation.end + 1),
+          selectedText,
           annotation,
         );
 

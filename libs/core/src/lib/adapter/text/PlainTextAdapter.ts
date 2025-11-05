@@ -8,9 +8,9 @@ import {
 import { mapLinesToLimit, UpdateLineFn } from "./utils/mapLineToLimit";
 import { type TextLine, textLineSchema } from "../../model";
 
-const _textToLines = memoize((text: string): TextLine[] => {
+const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
   const lines = text?.split(`\n`) ?? [""];
-  let start = 0;
+  let start = textOffset;
 
   return lines.map((textLine, index) => {
     // Add additional 1 because the \n symbol consist of 2 characters
@@ -48,9 +48,13 @@ const updateLine: UpdateLineFn = (
   });
 };
 
-const textToLines = (text: string, limit: Limit): TextLine[] => {
+const textToLines = (
+  text: string,
+  limit: Limit,
+  textOffset: number,
+): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
-  const lines = _textToLines(text);
+  const lines = _textToLines(text, textOffset);
   return mapLinesToLimit(lines, limit, updateLine);
 };
 
@@ -62,7 +66,7 @@ export class PlainTextAdapterImpl extends TextAdapter {
   name = "PlainTextAdapter";
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit!);
+    return textToLines(text, this.limit!, this.textOffset);
   }
 }
 

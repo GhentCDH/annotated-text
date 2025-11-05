@@ -22,7 +22,7 @@ describe("WordSnapper", () => {
     `(
       "should make valid from $description",
       ({ text, start, end, expectedStart, expectedEnd }) => {
-        snapper.setText(text);
+        snapper.setText(text, 0);
 
         const result = snapper.fixOffset("drag", {
           start,
@@ -53,7 +53,7 @@ describe("WordSnapper", () => {
       // ${"Emoji 😀 test 🎉 content"}                                 | ${6}  | ${20} | ${6}          | ${21}       | ${"emoji in text"}
       "should handle $scenario",
       ({ text, start, end, expectedStart, expectedEnd }) => {
-        snapper.setText(text);
+        snapper.setText(text, 0);
         const result = snapper.fixOffset("drag", {
           start,
           end,

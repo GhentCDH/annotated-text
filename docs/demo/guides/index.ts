@@ -5,3 +5,4 @@ export * from "./interaction-between-component";
 export * from "./renderers";
 export * from "./active-annotations";
 export * from "./tag";
+export * from "./diffirent-text-offset";

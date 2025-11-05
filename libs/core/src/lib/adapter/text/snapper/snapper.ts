@@ -10,7 +10,7 @@ export type SnapperResult = {
 export type SnapperAction = "move-start" | "move-end" | "drag";
 
 export abstract class Snapper {
-  setText(text: string) {}
+  abstract setText(text: string, offsetStart: number): void;
 
   abstract fixOffset(
     action: SnapperAction,
@@ -19,7 +19,13 @@ export abstract class Snapper {
 }
 
 export class DefaultSnapper extends Snapper {
+  override setText(text: string, offsetStart: number) {}
+
   fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
-    return { start: annotation.start, end: annotation.end, modified: false };
+    return {
+      start: annotation.start,
+      end: annotation.end,
+      modified: false,
+    };
   }
 }

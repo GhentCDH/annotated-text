@@ -13,10 +13,10 @@ import {
 import { type TextLine, textLineSchema } from "../../../model";
 import { mapLinesToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
 
-const _textToLines = memoize((text: string): TextLine[] => {
+const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
   // Split into paragraphs we do it ourself
   const lines = text?.split(`\n\n`) ?? [""];
-  let start = 0;
+  let start = textOffset;
   return lines.map((textLine, index) => {
     const html = replaceMarkdownToHtml(textLine);
     const flatText = stripHtmlFromText(html);
@@ -59,9 +59,13 @@ const updateLine: UpdateLineFn = (
   });
 };
 
-const textToLines = (text: string, limit: Limit): TextLine[] => {
+const textToLines = (
+  text: string,
+  limit: Limit,
+  textOffset: number,
+): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
-  const lines = _textToLines(text);
+  const lines = _textToLines(text, textOffset);
   return mapLinesToLimit(lines, limit, updateLine);
 };
 
@@ -73,7 +77,7 @@ export class MarkdownTextAdapterImpl extends TextAdapter {
   name = "MarkdownLineAdapter";
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit!);
+    return textToLines(text, this.limit!, this.textOffset);
   }
 }
 

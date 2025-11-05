@@ -66,7 +66,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public defaultRender: DefaultRenders;
 
   protected text: string = "";
-
+  protected offsetStart = 0;
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.
    * @param action
@@ -74,9 +74,10 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    */
   public snapper: Snapper = new DefaultSnapper();
 
-  public setText(text: string) {
+  public setText(text: string, offsetStart: number) {
     this.text = text;
-    this.snapper.setText(text);
+    this.offsetStart = offsetStart;
+    this.snapper.setText(text, offsetStart);
   }
 
   /**
@@ -166,7 +167,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
         break;
       case "snapper":
         this.snapper = value as Snapper;
-        this.snapper.setText(this.text);
+        this.snapper.setText(this.text, this.offsetStart);
         break;
       default:
         console.warn("Unsupported config key:", value);

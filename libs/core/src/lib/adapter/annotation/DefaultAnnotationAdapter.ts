@@ -9,6 +9,7 @@ import {
   type TextAnnotation,
   textAnnotationSchema,
 } from "../../model";
+import { selectText } from "../text/utils/select-text";
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
   name = "DefaultAnnotationAdapter";
@@ -37,9 +38,16 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
 
     if (!hasChanged) return this.getAnnotation(annotation.id);
 
+    const textSelection = selectText(
+      this.text,
+      annotation.start,
+      annotation.end,
+      this.offsetStart,
+    );
+
     const data = annotationSchema.safeParse({
       ...annotation,
-      textSelection: this.text.substring(annotation.start, annotation.end + 1),
+      textSelection,
     });
 
     let formattedAnnotation: Annotation;
