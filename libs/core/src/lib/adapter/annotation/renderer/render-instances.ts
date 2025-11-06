@@ -1,5 +1,5 @@
 import { merge } from "lodash-es";
-import { Debugger } from "@ghentcdh/annotated-text";
+import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationStyle,
@@ -54,7 +54,10 @@ export class RenderInstances<ANNOTATION> {
     if (annotationRender) return annotationRender;
 
     if (render !== this.defaultRenderer) {
-      Debugger.warn("Render not found, fallback to default renderer.", render);
+      Debugger.warn(
+        `Renderer "${render}" not found for annotation. fallback to default renderer: [${this.defaultRenderer}]`,
+      );
+
       annotationRender = this.renderMap.get(this.defaultRenderer);
     }
 
@@ -63,8 +66,12 @@ export class RenderInstances<ANNOTATION> {
     throw new Error("Default renderer not found: " + this.defaultRenderer);
   }
 
-  render(annotation: ANNOTATION) {
-    const renderer = this.getRenderer(annotation);
+  render(annotation: TextAnnotation) {
+    const renderer = this.renderMap.get(annotation._render.render);
+    if (!renderer) {
+      throw new Error("Renderer not found: " + annotation._render.render);
+    }
+
     return renderer.render;
   }
 }

@@ -2,9 +2,9 @@ import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 import { ColorFn, DefaultAnnotationColor } from "./DefaultAnnotationColor";
 import {
-  _GutterAnnotationRender,
-  _UnderLineAnnotationRender,
+  GutterAnnotationRender,
   HighlightAnnotationRender,
+  UnderLineAnnotationRender,
 } from "./renderer";
 import { RenderParams } from "./renderer/annotation-render";
 import { DefaultTagConfig, TagConfig } from "./DefaultTag";
@@ -105,7 +105,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     const renderInstance = this.renderInstance.getRenderer(annotation);
 
     const renderParams = renderSchema.parse({
-      weight: 0,
+      weight: undefined,
       isGutter: renderInstance.isGutter,
       render: renderInstance.name,
     });
@@ -243,8 +243,8 @@ export const createAnnotationAdapter = <ANNOTATION>(
 
   // by default the default renderers are registered
   renderInstance.registerRender(new HighlightAnnotationRender());
-  renderInstance.registerRender(new _GutterAnnotationRender());
-  renderInstance.registerRender(new _UnderLineAnnotationRender());
+  renderInstance.registerRender(new GutterAnnotationRender());
+  renderInstance.registerRender(new UnderLineAnnotationRender());
 
   adapter.renderInstance = renderInstance;
 

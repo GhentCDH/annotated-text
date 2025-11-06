@@ -16,9 +16,8 @@ export const ActiveAnnotations = (id_default: string, id_underline: string) => {
     text: TextLineAdapter(),
     annotation: {
       render: {
-        defaultRender: "highlight",
-        renderFn: (annotation) =>
-          annotation.target === "gutter" ? "gutter" : "highlight",
+        defaultRenderer: "highlight",
+        renderFn: (annotation: any) => annotation.target,
       },
     },
   })
@@ -31,9 +30,10 @@ export const ActiveAnnotations = (id_default: string, id_underline: string) => {
     text: TextLineAdapter(),
     annotation: {
       render: {
-        defaultRender: "underline",
-        renderFn: (annotation) =>
-          annotation.target === "gutter" ? "gutter" : "underline",
+        defaultRenderer: "underline",
+        renderFn: (annotation: any) => {
+          return annotation.target;
+        },
       },
     },
   })

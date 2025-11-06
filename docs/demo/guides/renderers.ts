@@ -20,7 +20,7 @@ export const RenderUnderline = (id_default: string, id_underline: string) => {
     annotation: {
       edit: true,
       create: true,
-      defaultRender: "underline",
+      render: { defaultRenderer: "underline" },
     },
   })
     .setText(greekText.text)

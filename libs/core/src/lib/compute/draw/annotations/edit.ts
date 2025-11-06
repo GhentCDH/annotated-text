@@ -26,7 +26,7 @@ export const handleAnnotationEditAndSendEvent = (
     start,
     end,
     annotationUuid: DUMMY_UID,
-    weight: originalAnnotation.weight! + 1,
+    weight: originalAnnotation._render.weight! + 1,
   } as unknown as TextAnnotation;
 
   let snapper = svgModel.annotationAdapter.snapper.fixOffset(

@@ -60,7 +60,7 @@ export const drawHandle = (
     const originalAnnotation = svgModel.model.getAnnotation(
       annotation.annotationUuid,
     );
-    dragResult.weight = originalAnnotation.weight;
+    dragResult._render.weight = originalAnnotation._render.weight;
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dragResult);

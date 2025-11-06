@@ -13,34 +13,51 @@ export const annotationSchema = z.object({
   end: z.number(),
   // TODO should be implemented in v2 if needed
   label: z.string().optional(),
-  // @Deprecated
-  weight: z.number().optional(),
-  target: annotationTargetSchema.optional(),
   color: annotationColorSchema.nullish(),
   textSelection: z.string().optional(),
 });
 export type AnnotationId = z.infer<typeof annotationIdSchema>;
+
 /**
  * Represents an annotation with various properties.
  * @property {string} id - The unique identifier for the annotation.
  * @property {number} start - The start position of the annotation.
  * @property {number} end - The end position of the annotation.
- * @property {string} [label] - An optional label for the annotation.
- * @property {AnnotationTarget} target - The target of the annotation.
- * @property {number} [weight] - An optional weight for the annotation.
+ * @property {string} [label] - An optional label for the annotation
  * @property {AnnotationColor} [color] - An optional color for the annotation.
  */
 export type Annotation = z.infer<typeof annotationSchema>;
 
 export const renderSchema = z.object({
-  weight: z.number(),
+  weight: z.number().optional(),
   isGutter: z.boolean(),
   render: z.string(), // Name of the renderer
   // TODO add more render options if needed
 });
 
-// TODO move the draws to here
-export const annotationDrawSchema = z.object({});
+export const annotationDrawPath = z.object({
+  border: z.string().optional(),
+  fill: z.string().optional(),
+});
+
+export const dimensionsSchema = z.object({
+  height: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+
+export const annotationDrawSchema = z.object({
+  uuid: z.string(),
+  annotationUuid: annotationIdSchema,
+  lineNumber: z.number(),
+  path: annotationDrawPath,
+  draggable: z.object({
+    start: dimensionsSchema.optional(),
+    end: dimensionsSchema.optional(),
+  }),
+  height: dimensionsSchema,
+  weight: z.number(),
+});
 
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,

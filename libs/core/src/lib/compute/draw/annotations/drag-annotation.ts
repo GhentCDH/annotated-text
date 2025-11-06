@@ -106,7 +106,7 @@ export const addDraggableAnnotation = (
       { annotation: dummyAnnotation },
     );
 
-    dummyAnnotation.weight = originalAnnotation.weight;
+    dummyAnnotation._render.weight = originalAnnotation._render.weight;
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dummyAnnotation);

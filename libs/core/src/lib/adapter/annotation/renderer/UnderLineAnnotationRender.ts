@@ -59,7 +59,7 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const UnderLineAnnotationRender: _AnnotationRender = (
+export const _UnderLineAnnotationRender: _AnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -84,14 +84,16 @@ export const UnderLineAnnotationRender: _AnnotationRender = (
 export type UnderlineAnnotationStyle = AnnotationStyle & {};
 export const DefaultUnderlineAnnotationStyle: UnderlineAnnotationStyle = {};
 
-export class _UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationStyle> {
+export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationStyle> {
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
-  readonly name = "underline";
+
+  static instance = "underline";
+  readonly name = UnderLineAnnotationRender.instance;
 
   constructor() {
     super(DefaultUnderlineAnnotationStyle);
   }
 
-  render = UnderLineAnnotationRender;
+  render = _UnderLineAnnotationRender;
 }

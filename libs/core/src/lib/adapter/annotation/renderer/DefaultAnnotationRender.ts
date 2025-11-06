@@ -1,33 +1,12 @@
-import { TextAnnotationRender } from "./TextAnnotationRender";
-import { GutterAnnotationRender } from "./GutterAnnotationRender";
-import { UnderLineAnnotationRender } from "./UnderLineAnnotationRender";
 import {
   AnnotationDimension,
   AnnotationDraw,
   AnnotationDrawColors,
-  TextAnnotationModel,
+  TextAnnotationModel
 } from "../../../compute/annotation.model";
 import { TextAnnotation, TextLine } from "../../../model";
 import { TextAdapter } from "../../text/TextAdapter";
 import { AnnotationAdapter } from "../../annotation";
-
-export type DefaultRenders = "highlight" | "underline";
-
-export type AnnotationRenderFn<ANNOTATION> = (
-  annotation: ANNOTATION,
-) => AnnotationRender;
-
-export const DefaultAnnotationRender = <ANNOTATION>(
-  annotation: ANNOTATION,
-  isGutter: boolean,
-  rendererName: DefaultRenders,
-): AnnotationRender => {
-  return isGutter
-    ? GutterAnnotationRender
-    : rendererName === "highlight"
-      ? TextAnnotationRender
-      : UnderLineAnnotationRender;
-};
 
 /**
  * Function type for rendering annotations in the annotated text viewer.

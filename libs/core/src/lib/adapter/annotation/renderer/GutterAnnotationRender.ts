@@ -16,7 +16,7 @@ import { getY } from "../../../compute/compute/helpers";
 import { getColors } from "../../../compute/compute/colors";
 import { createGutterPath } from "../../../compute/utils/create-path";
 
-export const GutterAnnotationRender = (
+const _GutterAnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -44,14 +44,14 @@ export const GutterAnnotationRender = (
 
   // Add the gutterwidth as padding
   // We want to have the most gutters closest to the text
-  const weight = model.maxGutterWeight - annotation.weight!;
+  const weight = model.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
   const color = getColors(annotationAdapter, annotation, false);
 
   const draws: AnnotationDraw[] = [
     {
-      weight: annotation.weight!,
+      weight: annotation._render.weight!,
       uuid: uuidv4(),
       annotationUuid: annotation.id,
       lineNumber: firstLine.lineNumber,
@@ -67,14 +67,15 @@ export const GutterAnnotationRender = (
 export type GutterAnnotationStyle = AnnotationStyle & {};
 export const DefaultGutterAnnotationStyle: GutterAnnotationStyle = {};
 
-export class _GutterAnnotationRender extends AnnotationRender<GutterAnnotationStyle> {
+export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = true;
-  readonly name = "gutter";
+  static instance = "gutter";
+  readonly name = GutterAnnotationRender.instance;
 
   constructor() {
     super(DefaultGutterAnnotationStyle);
   }
 
-  render = GutterAnnotationRender;
+  render = _GutterAnnotationRender;
 }

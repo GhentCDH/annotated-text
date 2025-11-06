@@ -33,7 +33,7 @@ export const createTextAnnotationRender = (
   const radius = config.text.borderRadius;
 
   const draws: AnnotationDraw[] = [];
-  const padding = config.text.padding * annotation.weight!;
+  const padding = config.text.padding * annotation._render.weight!;
   const height = config.text.lineHeight + padding * 2;
   let startPosition: AnnotationDimension;
   const color = getColorsFn(annotationAdapter, annotation, true);
@@ -68,7 +68,7 @@ export const createTextAnnotationRender = (
       }
 
       draws.push({
-        weight: annotation.weight!,
+        weight: annotation._render.weight!,
         uuid: uuidv4(),
         annotationUuid: annotation.id,
         lineNumber: line.lineNumber,
@@ -121,7 +121,8 @@ export const DefaultTextAnnotationStyle: TextAnnotationStyle = {};
 export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
-  readonly name = "highlight";
+  static instance = "highlight";
+  readonly name = HighlightAnnotationRender.instance;
 
   constructor() {
     super(DefaultTextAnnotationStyle);
