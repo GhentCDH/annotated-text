@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
+import { TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationRenderParams,
@@ -22,7 +22,6 @@ import { cloneDeep } from "lodash-es";
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,
   style: AnnotationStyle,
-  lines: TextLine[],
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
   pathFn: createAnnotationPathFn,
@@ -36,6 +35,7 @@ export const createTextAnnotationRender = (
   let startPosition: AnnotationDimension;
   const color = getColorsFn(style, annotation, true);
 
+  const lines = annotation._render.lines ?? [];
   lines.forEach((line, index: number) => {
     const rects = getRanges(annotation, line);
 
@@ -108,14 +108,12 @@ export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationSt
 
   render(
     params: AnnotationRenderParams,
-    lines: TextLine[],
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     const { draws, startPosition, color } = createTextAnnotationRender(
       params,
       this.style,
-      lines,
       parentDimensions,
       annotation,
       createAnnotationPath,

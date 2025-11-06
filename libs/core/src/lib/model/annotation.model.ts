@@ -3,6 +3,7 @@ import {
   type AnnotationColor,
   annotationColorSchema,
 } from "./annotation.color";
+import { textLineSchema } from "./line.model";
 
 export const annotationTargetSchema = z.union([
   z.literal("gutter"),
@@ -36,6 +37,7 @@ export const renderSchema = z.object({
   isGutter: z.boolean(),
   render: z.string(), // Name of the renderer
   style: annotationColorSchema,
+  lines: z.array(textLineSchema).default([]),
 });
 
 export const annotationDrawPath = z.object({
@@ -62,8 +64,13 @@ export const annotationDrawSchema = z.object({
   weight: z.number(),
 });
 
+export const annotationDrawMetadataSchema = z.object({
+  draws: z.array(annotationDrawSchema).default([]),
+});
+
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,
+  _drawMetadata: annotationDrawMetadataSchema,
   // TODO add me _annotationDraws: z.array(annotationDrawSchema).optional(),
 });
 

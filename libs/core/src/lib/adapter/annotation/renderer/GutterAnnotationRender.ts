@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
+import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationRenderParams,
@@ -18,7 +18,6 @@ import { cloneDeep } from "lodash-es";
 
 const _GutterAnnotationRender = (
   params: AnnotationRenderParams,
-  lines: TextLine[],
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
   style: GutterAnnotationStyle,
@@ -26,8 +25,13 @@ const _GutterAnnotationRender = (
   const gutterWidth = style.width;
   const gutterGap = style.gap;
 
+  if (!annotation._render.lines || annotation._render.lines.length === 0) {
+    Debugger.warn("no lines to render for annotation", annotation);
+    return { draws: [], isGutter: true, startPosition: undefined, color: null };
+  }
+
   const { min: firstLine, max: lastLine } = getMinMaxBy(
-    lines,
+    annotation._render.lines,
     (line) => line.lineNumber,
   );
 
@@ -82,13 +86,11 @@ export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationSty
 
   render(
     params: AnnotationRenderParams,
-    lines: TextLine[],
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return _GutterAnnotationRender(
       params,
-      lines,
       parentDimensions,
       annotation,
       this.style,

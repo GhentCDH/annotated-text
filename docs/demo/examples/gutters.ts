@@ -4,6 +4,11 @@ import { greekText } from "../data";
 export const gutters = (id: string) => {
   createAnnotatedText(id, {
     text: TextLineAdapter(),
+    annotation: {
+      render: {
+        defaultRenderer: "gutter",
+      },
+    },
   })
     .setText(greekText.text)
     .setAnnotations(greekText.annotationsWithGutters);

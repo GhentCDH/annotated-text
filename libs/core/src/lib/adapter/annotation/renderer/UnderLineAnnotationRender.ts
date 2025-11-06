@@ -5,7 +5,7 @@ import {
   AnnotationStyle,
   DefaultAnnotationStyle,
 } from "./annotation-render";
-import { TextAnnotation, TextLine } from "../../../model";
+import { TextAnnotation } from "../../../model";
 import {
   AnnotationDrawColor,
   AnnotationDrawColors,
@@ -79,14 +79,12 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
 
   render(
     params: AnnotationRenderParams,
-    lines: TextLine[],
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     const { draws, startPosition, color } = createTextAnnotationRender(
       params,
       this.style,
-      lines,
       parentDimensions,
       annotation,
       createUnderline,

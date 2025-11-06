@@ -44,8 +44,7 @@ export const createAndAssignDrawAnnotation = (
     "y",
   );
   const rendered = annotationAdapter.renderInstance.render(
-    model,
-    model.getLinesForAnnotation(annotation.id),
+    model.renderParams,
     parentDimensions,
     annotation,
   );

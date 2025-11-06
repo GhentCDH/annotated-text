@@ -1,5 +1,5 @@
 import { merge } from "lodash-es";
-import { Debugger, TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
+import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationRenderParams,
@@ -73,7 +73,6 @@ export class RenderInstances<ANNOTATION> {
 
   renderHighlight(
     params: AnnotationRenderParams,
-    lines: TextLine[],
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
@@ -82,12 +81,11 @@ export class RenderInstances<ANNOTATION> {
       throw new Error("Renderer not found: highlight");
     }
 
-    return renderer.render(params, lines, parentDimensions, annotation);
+    return renderer.render(params, parentDimensions, annotation);
   }
 
   render(
     params: AnnotationRenderParams,
-    lines: TextLine[],
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
@@ -96,6 +94,6 @@ export class RenderInstances<ANNOTATION> {
       throw new Error("Renderer not found: " + annotation._render.render);
     }
 
-    return renderer.render(params, lines, parentDimensions, annotation);
+    return renderer.render(params, parentDimensions, annotation);
   }
 }

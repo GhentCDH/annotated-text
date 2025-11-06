@@ -3,12 +3,11 @@
 //character indexes.
 import { maxBy, sortBy } from "lodash-es";
 import { isIntersection } from "./intersect";
-import { TextAnnotationModel } from "../annotation.model";
 import { sortAnnotations } from "../draw/utils/sort";
 import { type TextAnnotation, type TextLine } from "../../model";
 
 export const calculateGutterAnnotationWeightsAndEnrich = (
-  model: TextAnnotationModel,
+  lines: TextLine[],
   annotations: TextAnnotation[],
 ) => {
   // decide for eacht line how many annotations can be in the gutter
@@ -18,7 +17,7 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
   >();
 
   annotations.forEach((annotation) => {
-    const lines = model.getLinesForAnnotation(annotation.id);
+    const lines = annotation._render.lines ?? [];
     const height = lines.length;
     lines.forEach((line, index) => {
       const value = annotationsInGutter.get(line.uuid) ?? [];
@@ -30,7 +29,7 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
   let maxWeight = 0;
 
   // Assign the weights to the annotations, from top to bottom
-  model.lines.forEach((line) => {
+  lines.forEach((line) => {
     if (!annotationsInGutter.has(line.uuid)) {
       // no annotations on this line so no weights are set
       return;

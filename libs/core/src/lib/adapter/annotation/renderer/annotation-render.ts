@@ -1,5 +1,5 @@
 import { cloneDeep, merge } from "lodash-es";
-import { TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
+import { TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationDimension,
   AnnotationDraw,
@@ -45,7 +45,6 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
 
   abstract render(
     params: AnnotationRenderParams,
-    lines: TextLine[],
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ): {

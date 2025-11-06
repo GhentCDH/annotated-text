@@ -19,12 +19,15 @@ export const drawDummyAnnotation = (
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
   const { model, textElement } = svgModel;
-  const lines = getLinesForAnnotation(model.lines, dummyAnnotation);
+
+  dummyAnnotation._render.lines = getLinesForAnnotation(
+    model.lines,
+    dummyAnnotation,
+  );
 
   svgModel.annotationAdapter.renderInstance
     .renderHighlight(
-      model,
-      lines,
+      model.renderParams,
       textElement.getBoundingClientRect(),
       dummyAnnotation,
     )

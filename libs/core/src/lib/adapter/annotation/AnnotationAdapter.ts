@@ -7,7 +7,14 @@ import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 import { RenderInstances } from "./renderer/render-instances";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
-import { Annotation, AnnotationId, renderSchema, type TextAnnotation, textAnnotationSchema } from "../../model";
+import {
+  Annotation,
+  annotationDrawMetadataSchema,
+  AnnotationId,
+  renderSchema,
+  type TextAnnotation,
+  textAnnotationSchema
+} from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
@@ -100,10 +107,12 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
       style: this.colorFn(annotation),
     });
 
+    const _drawMetadata = annotationDrawMetadataSchema.parse({});
+
     return textAnnotationSchema.parse({
       ...parsedAnnotation,
       _render: renderParams,
-      _annotationDraws: [],
+      _drawMetadata,
     });
   }
 
