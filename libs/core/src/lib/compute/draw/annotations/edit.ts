@@ -1,8 +1,12 @@
+import { cloneDeep } from "lodash-es";
 import { drawDummyAnnotation } from "./draw";
 import { SnapperAction } from "../../../adapter/text/snapper";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
-import { AnnotationDraw } from "../../annotation.model";
-import { type TextAnnotation } from "../../../model";
+import {
+  AnnotationDrawColors,
+  type TextAnnotation,
+  textAnnotationSchema,
+} from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
 import {
   getCharacterFromTextNodesAtPoint,
@@ -10,24 +14,22 @@ import {
 } from "../../position";
 
 export const handleAnnotationEditAndSendEvent = (
-  annotation: AnnotationDraw,
+  annotation: TextAnnotation,
   { start, end }: { start: number; end: number },
   svgModel: SvgModel,
   action: SnapperAction,
   eventType: AnnotationEventType,
   prevPosition?: { start: number; end: number },
 ) => {
-  const originalAnnotation = svgModel.model.getAnnotation(
-    annotation.annotationUuid,
-  );
   // create dummy annotation
-  const dummyAnnotation = {
-    ...originalAnnotation,
+  const dummyAnnotation = textAnnotationSchema.parse({
+    ...cloneDeep(annotation),
     start,
     end,
-    annotationUuid: DUMMY_UID,
-    weight: originalAnnotation._render.weight! + 1,
-  } as unknown as TextAnnotation;
+    id: DUMMY_UID,
+  });
+
+  dummyAnnotation._render.weight = annotation._render.weight! + 1;
 
   let snapper = svgModel.annotationAdapter.snapper.fixOffset(
     action,
@@ -57,7 +59,7 @@ export const handleAnnotationEditAndSendEvent = (
     return;
   }
 
-  const color = svgModel.model.getAnnotationColor(annotation.annotationUuid);
+  const color = annotation._drawMetadata.color as AnnotationDrawColors;
 
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
@@ -79,13 +81,13 @@ export const editAnnotations = (
   svgModel: SvgModel,
   x: number,
   y: number,
-  annotation: AnnotationDraw,
+  annotation: TextAnnotation,
   target: "start" | "end",
   eventType: AnnotationEventType,
   prevPosition?: { start: number; end: number },
 ) => {
   const { model } = svgModel;
-  svgModel.removeTag(annotation.annotationUuid);
+  svgModel.removeTag(annotation.id);
 
   model.blockEvents = true;
 
@@ -93,11 +95,9 @@ export const editAnnotations = (
 
   if (!result) return null;
 
-  const originalAnnotation = model.getAnnotation(annotation.annotationUuid);
-
   const { start, end } = getCharacterStartEndPosition(
     result,
-    originalAnnotation,
+    annotation,
     target,
   );
 

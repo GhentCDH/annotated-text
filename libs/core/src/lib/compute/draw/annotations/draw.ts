@@ -1,5 +1,4 @@
-import { AnnotationDrawColor } from "../../annotation.model";
-import { type TextAnnotation } from "../../../model";
+import { AnnotationDrawColor, type TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import {
   getLinesForAnnotation,
@@ -25,8 +24,11 @@ export const drawDummyAnnotation = (
     dummyAnnotation,
   );
 
-  svgModel.annotationAdapter.renderInstance
-    .renderHighlight(
+  const renderInstance =
+    svgModel.annotationAdapter.renderInstance.highlightInstance;
+
+  renderInstance
+    .render(
       model.renderParams,
       textElement.getBoundingClientRect(),
       dummyAnnotation,
@@ -35,7 +37,7 @@ export const drawDummyAnnotation = (
       drawAnnotationContent(
         { ...a, annotationUuid: DUMMY_UID },
         svgModel,
-        svgModel.annotationAdapter.config!,
+        renderInstance.style,
         color,
       );
     });
@@ -58,9 +60,7 @@ export const recreateAnnotation = (
     svgModel.textElement,
     annotation,
     svgModel.annotationAdapter,
-  )
-    .getDrawAnnotations(annotation.id)
-    .forEach((a) => {
-      drawAnnotation(svgModel, a);
-    });
+  );
+
+  drawAnnotation(svgModel, svgModel.model.getAnnotation(annotation.id)!);
 };

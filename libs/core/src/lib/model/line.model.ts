@@ -16,6 +16,7 @@ export const textLineSchema = lineSchema.extend({
   maxLineWeight: z.number().default(0),
   flatText: z.string(),
   html: z.string(),
+  element: z.any().optional(),
 });
 
 export type TextLine = z.infer<typeof textLineSchema> & {

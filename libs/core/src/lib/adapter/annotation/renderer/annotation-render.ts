@@ -1,10 +1,10 @@
 import { cloneDeep, merge } from "lodash-es";
-import { TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationDimension,
   AnnotationDraw,
   AnnotationDrawColors,
-} from "../../../compute/annotation.model";
+  TextAnnotation,
+} from "@ghentcdh/annotated-text";
 
 export type AnnotationRenderParams = {
   textDirection: "ltr" | "rtl";
@@ -71,10 +71,12 @@ export const DefaultAnnotationStyle = {
       border: "rgba(255,0,0,0.9)",
     },
   },
+  borderWidth: 2,
+  borderRadius: 6,
+
   // TODO some of them will be equal everywhere, decide which ones to keep, and which ones to move to the params
   padding: 6,
   lineHeight: 22,
-  borderRadius: 6,
   border: 2,
   handleRadius: 6,
 };

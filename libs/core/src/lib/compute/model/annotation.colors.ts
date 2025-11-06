@@ -1,6 +1,6 @@
-import { AnnotationId } from "@ghentcdh/annotated-text";
+import { AnnotationId, TextAnnotation } from "@ghentcdh/annotated-text";
 import { SvgModel } from "./svg.types";
-import { AnnotationDraw, AnnotationDrawColors } from "../annotation.model";
+import { AnnotationDrawColors } from "../../model";
 
 export class AnnotationColors {
   private readonly activeIds = new Set<AnnotationId>();
@@ -47,11 +47,11 @@ export class AnnotationColors {
   }
 
   public getAnnotationColor(
-    annotation: AnnotationDraw,
+    annotation: TextAnnotation,
     color: AnnotationDrawColors,
   ) {
-    if (this.activeIds.has(annotation.annotationUuid)) return color.active;
-    if (this.highlightedIds.has(annotation.annotationUuid)) return color.hover;
+    if (this.activeIds.has(annotation.id)) return color.active;
+    if (this.highlightedIds.has(annotation.id)) return color.hover;
 
     return color.default;
   }

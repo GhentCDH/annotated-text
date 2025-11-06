@@ -1,5 +1,4 @@
-import { TextAnnotation } from "../../model";
-import { AnnotationDrawColors } from "../annotation.model";
+import { AnnotationDrawColors, TextAnnotation } from "../../model";
 import { AnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
 
 export type GetColorsFn = (
@@ -15,7 +14,7 @@ export const getColors: GetColorsFn = (
 ) => {
   const hoverColor = style.hover.color;
   const editColor = style.edit.color;
-  const color = annotation._render.style;
+  const color = annotation._render.style.color;
 
   return {
     default: {

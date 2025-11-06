@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash-es";
 import { createTextAnnotationRender } from "./TextAnnotationRender";
 import {
   AnnotationRender,
@@ -5,18 +6,17 @@ import {
   AnnotationStyle,
   DefaultAnnotationStyle,
 } from "./annotation-render";
-import { TextAnnotation } from "../../../model";
 import {
   AnnotationDrawColor,
   AnnotationDrawColors,
-} from "../../../compute/annotation.model";
+  TextAnnotation,
+} from "../../../model";
 import { GetColorsFn } from "../../../compute/compute/colors";
 import {
   createAnnotationFill,
   createAnnotationPathFn,
   PathParams,
 } from "../../../compute/utils/create-path";
-import { cloneDeep } from "lodash-es";
 
 export const getColorsUnderline: GetColorsFn = (
   style: AnnotationStyle,
@@ -25,7 +25,7 @@ export const getColorsUnderline: GetColorsFn = (
 ) => {
   const hoverColor = style.hover.color;
   const editColor = style.edit.color;
-  const color = annotation._render.style;
+  const color = annotation._render.style.color;
 
   return {
     default: {

@@ -9,14 +9,18 @@ import {
   NEW_EVENTS,
 } from "../../events";
 import { Debugger } from "../../utils/debugger";
-import { AnnotationDrawColor, TextAnnotationModel } from "../annotation.model";
+import {
+  AnnotationDrawColor,
+  AnnotationDrawColors,
+  type AnnotationId,
+} from "../../model";
+import { TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
 import { drawAnnotation } from "../draw/annotations";
 import { createNewBlock } from "../draw/annotations/create";
 import { EventListener } from "../../events/event.listener";
 import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAdapter } from "../../adapter/text";
-import { type AnnotationId } from "../../model";
 import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
 import { drawAllTags } from "../draw/tag";
 
@@ -124,7 +128,7 @@ export class SvgModel {
   }
 
   resetAnnotationColor(annotationUuid: AnnotationId) {
-    const annotation = this.model.getDrawAnnotations(annotationUuid)[0];
+    const annotation = this.model.getAnnotation(annotationUuid);
     if (!annotation) {
       Debugger.warn("No annotation found for uuid", annotationUuid);
       return;
@@ -132,7 +136,7 @@ export class SvgModel {
 
     const color = this.annotationColors.getAnnotationColor(
       annotation,
-      this.model.getAnnotationColor(annotationUuid),
+      annotation._drawMetadata.color as AnnotationDrawColors,
     );
 
     if (!color) {
@@ -169,10 +173,10 @@ export class SvgModel {
   drawAnnotations() {
     const now = Date.now();
 
-    this.model
-      .getDraws()
-      .sort((a1, a2) => (a1.weight > a2.weight ? -1 : 1))
+    this.model.annotations
+      .sort((a1, a2) => (a1._render.weight! > a2._render.weight! ? -1 : 1))
       .forEach((annotation) => drawAnnotation(this, annotation));
+
     Debugger.time(now, "--- drawComputedAnnotations ");
   }
 

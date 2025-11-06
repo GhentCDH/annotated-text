@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
+import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
@@ -7,14 +8,10 @@ import {
   DefaultAnnotationStyle,
 } from "./annotation-render";
 import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
-import {
-  AnnotationDimension,
-  AnnotationDraw,
-} from "../../../compute/annotation.model";
+import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import { getY } from "../../../compute/compute/helpers";
 import { getColors } from "../../../compute/compute/colors";
 import { createGutterPath } from "../../../compute/utils/create-path";
-import { cloneDeep } from "lodash-es";
 
 const _GutterAnnotationRender = (
   params: AnnotationRenderParams,

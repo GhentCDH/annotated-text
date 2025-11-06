@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { AnnotationId } from "@ghentcdh/annotated-text";
+import type { AnnotationId, TextAnnotation } from "../../../model";
 import type { SvgModel } from "../svg.types";
-import { AnnotationDraw } from "../../annotation.model";
 import { AnnotationColors } from "../annotation.colors";
 
 describe("AnnotationColors", () => {
@@ -11,11 +10,11 @@ describe("AnnotationColors", () => {
   const makeAnnotation = (
     id: AnnotationId,
     palette = { default: "gray", hover: "blue", active: "red" },
-  ): AnnotationDraw =>
+  ): TextAnnotation =>
     ({
-      annotationUuid: id,
-      color: palette,
-    }) as unknown as AnnotationDraw;
+      id,
+      _drawMetadata: { color: palette },
+    }) as unknown as TextAnnotation;
 
   beforeEach(() => {
     colors = new AnnotationColors();

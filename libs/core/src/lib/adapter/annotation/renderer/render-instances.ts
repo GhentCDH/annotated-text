@@ -71,6 +71,14 @@ export class RenderInstances<ANNOTATION> {
     throw new Error("Default renderer not found: " + this.defaultRenderer);
   }
 
+  get highlightInstance() {
+    const renderer = this.renderMap.get("highlight");
+    if (!renderer) {
+      throw new Error("Renderer not found: highlight");
+    }
+    return renderer;
+  }
+
   renderHighlight(
     params: AnnotationRenderParams,
     parentDimensions: { x: number; y: number },

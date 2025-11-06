@@ -1,15 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { TextAnnotation } from "@ghentcdh/annotated-text";
+import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
   AnnotationStyle,
   DefaultAnnotationStyle,
 } from "./annotation-render";
-import {
-  AnnotationDimension,
-  AnnotationDraw,
-} from "../../../compute/annotation.model";
+import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import {
   createAnnotationPath,
   createAnnotationPathFn,
@@ -17,7 +15,6 @@ import {
 import { getColors, GetColorsFn } from "../../../compute/compute/colors";
 import { getX, getY } from "../../../compute/compute/helpers";
 import { getRanges } from "../../../compute/utils/ranges/get-range";
-import { cloneDeep } from "lodash-es";
 
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,

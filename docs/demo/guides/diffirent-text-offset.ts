@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { createAnnotatedText, TextAnnotation, TextLineAdapter, WordSnapper } from "@ghentcdh/annotated-text";
+import { createAnnotatedText, TextLineAdapter, WordSnapper } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
 
 const annotations = [
@@ -17,7 +17,7 @@ const annotations = [
     color: annotationColors["3"],
     id: "anno2",
   },
-] as TextAnnotation[];
+];
 
 const text = `The quick brown fox jumps over the lazy dog near the riverbank at dawn.`;
 

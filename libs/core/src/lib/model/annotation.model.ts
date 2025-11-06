@@ -1,9 +1,7 @@
 import { z } from "zod/v4";
-import {
-  type AnnotationColor,
-  annotationColorSchema,
-} from "./annotation.color";
+import { annotationColorSchema } from "./annotation.color";
 import { textLineSchema } from "./line.model";
+import { annotationDrawMetadataSchema } from "./draw.model";
 
 export const annotationTargetSchema = z.union([
   z.literal("gutter"),
@@ -17,7 +15,6 @@ export const annotationSchema = z.object({
   end: z.number(),
   // TODO should be implemented in v2 if needed
   label: z.string().optional(),
-  color: annotationColorSchema.nullish(),
   textSelection: z.string().optional(),
 });
 export type AnnotationId = z.infer<typeof annotationIdSchema>;
@@ -32,46 +29,24 @@ export type AnnotationId = z.infer<typeof annotationIdSchema>;
  */
 export type Annotation = z.infer<typeof annotationSchema>;
 
+export const renderStyleSchema = z.object({
+  color: annotationColorSchema,
+  renderStyle: z.any(),
+});
+
+export type RenderStyle = z.infer<typeof renderStyleSchema>;
+
 export const renderSchema = z.object({
   weight: z.number().optional(),
   isGutter: z.boolean(),
   render: z.string(), // Name of the renderer
-  style: annotationColorSchema,
+  style: renderStyleSchema,
   lines: z.array(textLineSchema).default([]),
-});
-
-export const annotationDrawPath = z.object({
-  border: z.string().optional(),
-  fill: z.string().optional(),
-});
-
-export const dimensionsSchema = z.object({
-  height: z.number(),
-  x: z.number(),
-  y: z.number(),
-});
-
-export const annotationDrawSchema = z.object({
-  uuid: z.string(),
-  annotationUuid: annotationIdSchema,
-  lineNumber: z.number(),
-  path: annotationDrawPath,
-  draggable: z.object({
-    start: dimensionsSchema.optional(),
-    end: dimensionsSchema.optional(),
-  }),
-  height: dimensionsSchema,
-  weight: z.number(),
-});
-
-export const annotationDrawMetadataSchema = z.object({
-  draws: z.array(annotationDrawSchema).default([]),
 });
 
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,
   _drawMetadata: annotationDrawMetadataSchema,
-  // TODO add me _annotationDraws: z.array(annotationDrawSchema).optional(),
 });
 
 export type TextAnnotation = z.infer<typeof textAnnotationSchema>;

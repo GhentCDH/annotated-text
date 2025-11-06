@@ -85,7 +85,7 @@ export const computePositions = (
   textAdapter: TextAdapter,
 ) => {
   model.clearDrawAnnotation();
-  computeAnnotations(model, textElement, annotationAdapter, textAdapter);
+  computeAnnotations(model, textElement, annotationAdapter);
 
   return model;
 };

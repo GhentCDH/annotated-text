@@ -12,6 +12,7 @@ import {
   annotationDrawMetadataSchema,
   AnnotationId,
   renderSchema,
+  renderStyleSchema,
   type TextAnnotation,
   textAnnotationSchema
 } from "../../model";
@@ -100,11 +101,17 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
 
     const renderInstance = this.renderInstance.getRenderer(annotation);
 
+    // TODO fix it when implementing different styles
+    const style = renderStyleSchema.parse({
+      color: this.colorFn(annotation),
+      renderStyle: renderInstance.style,
+    });
+
     const renderParams = renderSchema.parse({
       weight: undefined,
       isGutter: renderInstance.isGutter,
       render: renderInstance.name,
-      style: this.colorFn(annotation),
+      style: style,
     });
 
     const _drawMetadata = annotationDrawMetadataSchema.parse({});
@@ -157,16 +164,29 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   /**
    * Create a new annotation object with default values.
    */
-  createAnnotation() {
-    return {
-      id: uuidv4(),
+  createAnnotation(characterPos: number): TextAnnotation {
+    const renderInstance = this.renderInstance.highlightInstance;
+
+    const style = renderStyleSchema.parse({
       color: createAnnotationColor("#f51720"),
-      _render: {
-        render: "DEFAULT",
-        isGutter: false,
-        weight: 0,
-      },
-    } as TextAnnotation;
+      renderStyle: renderInstance.style,
+    });
+
+    const renderParams = renderSchema.parse({
+      weight: 0,
+      isGutter: renderInstance.isGutter,
+      render: renderInstance.name,
+      style: style,
+    });
+    const _drawMetadata = annotationDrawMetadataSchema.parse({});
+
+    return textAnnotationSchema.parse({
+      _render: renderParams,
+      _drawMetadata,
+      id: uuidv4(),
+      start: characterPos,
+      end: characterPos + 1,
+    });
   }
 
   /**

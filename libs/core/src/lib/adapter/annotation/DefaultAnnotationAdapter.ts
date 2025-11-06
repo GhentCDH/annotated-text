@@ -9,6 +9,7 @@ import {
   type TextAnnotation,
 } from "../../model";
 import { selectText } from "../text/utils/select-text";
+import { Debugger } from "../../utils/debugger";
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
   name = "DefaultAnnotationAdapter";
@@ -17,7 +18,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     const data = annotationSchema.safeParse(annotation);
 
     if (!data.success) {
-      console.warn(annotation, data.error);
+      Debugger.warn(annotation, data.error);
       return annotation as Annotation;
     }
     return data.data as Annotation;
@@ -46,7 +47,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
 
     let formattedAnnotation: Annotation;
     if (!data.success) {
-      console.warn(annotation, data.error);
+      Debugger.warn(annotation, data.error);
       formattedAnnotation = annotation as Annotation;
     } else formattedAnnotation = data.data;
 

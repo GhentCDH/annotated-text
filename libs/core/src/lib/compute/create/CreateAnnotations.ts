@@ -268,7 +268,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   scrollToAnnotation(id: AnnotationId): this {
-    const lines = this.textAnnotationModel?.getLinesForAnnotation(id);
+    const lines = this.textAnnotationModel?.getAnnotation(id)?._render.lines;
     if (!lines) {
       console.warn("No lines found for annotation", id);
       return this;

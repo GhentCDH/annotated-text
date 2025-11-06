@@ -36,13 +36,16 @@ import { onMounted } from "vue";
 import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
 import { greekText } from "@demo";
 const id = `create-edit-example`;
+const renderFn = (annotation) => annotation.target === "gutter" ? "gutter" : null;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
     createAnnotatedText(id,
         {  
             text: TextLineAdapter(),
-            annotation: {edit: true, create: true},
+            annotation: {edit: true, create: true, 
+                render: { renderFn }
+            },
         })
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
