@@ -9,6 +9,8 @@ import {
 import { greekText } from "../data";
 
 class CustomSnapper extends Snapper {
+  setText(text: string, offsetStart: number) {}
+
   fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
     const { start, end } = annotation;
     switch (action) {

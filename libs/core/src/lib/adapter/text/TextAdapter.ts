@@ -27,6 +27,7 @@ export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
   flatText: boolean = false;
   private _limit: Limit | null = null;
+  textOffset: number = 0;
 
   /**
    * Parses the given text into an array of TextLine objects.
@@ -99,6 +100,28 @@ export type createTextAdapterParams = {
    * Each lines that intersects with this range will be included in the output.
    */
   limit?: Limit | null;
+  /**
+   * Custom offset for text character indexing.
+   *
+   * By default, text uses zero-based indexing (starting at 0), which is standard in programming.
+   * However, many scholarly and editorial workflows reference text positions starting from 1.
+   * This option allows you to configure the starting index to match your workflow.
+   *
+   * @default 0
+   *
+   * @example
+   * // Zero-based indexing (default, programming standard)
+   * textOffset: 0  // First character is at position 0
+   *
+   * @example
+   * // One-based indexing (scholarly/editorial standard)
+   * textOffset: 1  // First character is at position 1
+   *
+   * @example
+   * // Custom offset (e.g., continuing from a previous section)
+   * textOffset: 100  // First character is at position 100
+   */
+  textOffset?: number;
 };
 
 export const createTextAdapter = (
@@ -110,6 +133,7 @@ export const createTextAdapter = (
   }
   adapter.flatText = !!params.flatText;
   adapter.limit = params.limit;
+  adapter.textOffset = params.textOffset ?? 0;
 
   return adapter;
 };

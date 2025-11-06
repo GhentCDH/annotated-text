@@ -25,8 +25,12 @@ const updateLine: UpdateLineFn = (
   });
 };
 
-const textToLines = (text: string, limit: Limit): TextLine[] => {
-  const lines = _textToLines(text);
+const textToLines = (
+  text: string,
+  limit: Limit,
+  textOffset: number,
+): TextLine[] => {
+  const lines = _textToLines(text, textOffset);
   const limitedLines = mapLinesToLimit(lines, limit, updateLine);
 
   return limitedLines;
@@ -42,7 +46,7 @@ export class TextLineAdapterImpl extends TextAdapter {
   name = "TextLineAdapter";
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit!);
+    return textToLines(text, this.limit!, this.textOffset);
   }
 }
 

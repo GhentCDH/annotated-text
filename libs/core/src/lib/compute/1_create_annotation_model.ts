@@ -15,7 +15,7 @@ export const createAnnotationModel = (
   const lines = textAdapter.parse(text);
   const annotationModel = new TextAnnotationModelImpl(lines);
   annotationModel.textDirection = textAdapter.textDirection;
-  annotationAdapter.setText(text);
+  annotationAdapter.setText(text, textAdapter.textOffset);
 
   return annotationModel;
 };
