@@ -246,10 +246,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
  * @property edit.color.border - Border color in edit mode
  * @property borderWidth - Width of annotation borders in pixels
  * @property borderRadius - Border radius for rounded corners in pixels
- * @property padding - Internal padding in pixels
- * @property lineHeight - Line height for text in pixels
  * @property border - Alternative border width (consider consolidating with borderWidth)
- * @property handleRadius - Radius of resize/drag handles in pixels
  */
 export const DefaultAnnotationStyle = {
   hover: {
@@ -266,9 +263,6 @@ export const DefaultAnnotationStyle = {
   borderWidth: 2,
   borderRadius: 6,
   padding: 6,
-  lineHeight: 22,
-  border: 2,
-  handleRadius: 6,
 };
 
 /**
