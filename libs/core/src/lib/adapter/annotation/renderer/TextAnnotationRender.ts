@@ -5,7 +5,8 @@ import {
   TextAnnotation,
   TextLine,
 } from "@ghentcdh/annotated-text";
-import { AnnotationRender } from "./DefaultAnnotationRender";
+import { AnnotationRender as _AnnotationRender } from "./DefaultAnnotationRender";
+import { AnnotationRender, AnnotationStyle } from "./annotation-render";
 import {
   AnnotationDimension,
   AnnotationDraw,
@@ -92,7 +93,7 @@ export const createTextAnnotationRender = (
   return { draws, startPosition: startPosition!, color };
 };
 
-export const TextAnnotationRender: AnnotationRender = (
+export const TextAnnotationRender: _AnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -113,3 +114,18 @@ export const TextAnnotationRender: AnnotationRender = (
 
   return { draws, isGutter: false, startPosition, color };
 };
+
+export type TextAnnotationStyle = AnnotationStyle & {};
+export const DefaultTextAnnotationStyle: TextAnnotationStyle = {};
+
+export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationStyle> {
+  readonly weightOrder: number = 1;
+  readonly isGutter: boolean = false;
+  readonly name = "highlight";
+
+  constructor() {
+    super(DefaultTextAnnotationStyle);
+  }
+
+  render = TextAnnotationRender;
+}

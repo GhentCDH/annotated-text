@@ -243,19 +243,19 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   ): void {
     this.annotationLineMap.set(annotation.id, lines);
 
-    if (annotation.isGutter) {
+    if (annotation._render.isGutter) {
       this.setGutterAnnotation(annotation, lines);
     } else {
       this.annotationsMap.set(annotation.id, annotation);
     }
 
-    const lineMap = annotation.isGutter
+    const lineMap = annotation._render.isGutter
       ? this.lineGutterMap
       : this.lineAnnotationMap;
     lines.forEach((line) => lineMap.get(line.lineNumber)!.push(annotation));
 
     if (calculateWeights) {
-      if (annotation.isGutter) this.calculateMaxGutterWeight();
+      if (annotation._render.isGutter) this.calculateMaxGutterWeight();
       else this.calculateLinesWeights();
     }
   }
@@ -268,7 +268,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   removeAnnotation(annotation: TextAnnotation, calculateWeights = true): void {
     const originalLines = this.annotationLineMap.get(annotation.id) ?? [];
     this.annotationsMap.delete(annotation.id);
-    if (annotation.isGutter) {
+    if (annotation._render.isGutter) {
       this.gutterAnnotationIds.delete(annotation.id);
       this.removeAnnotationGutter(originalLines, annotation);
     } else {
@@ -278,7 +278,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     this.annotationLineMap.delete(annotation.id);
 
     if (calculateWeights) {
-      if (annotation.isGutter) this.calculateMaxGutterWeight();
+      if (annotation._render.isGutter) this.calculateMaxGutterWeight();
       else this.calculateLinesWeights();
     }
 

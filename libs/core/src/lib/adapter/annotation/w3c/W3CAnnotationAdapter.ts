@@ -9,7 +9,11 @@ import {
   createAnnotationAdapter,
   createAnnotationAdapterParams,
 } from "../AnnotationAdapter";
-import { type TextAnnotation, textAnnotationSchema } from "../../../model";
+import {
+  Annotation,
+  annotationSchema,
+  type TextAnnotation,
+} from "../../../model";
 import { selectText } from "../../text/utils/select-text";
 
 export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
@@ -22,21 +26,18 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
     super();
   }
 
-  parse(annotation: W3CAnnotation): TextAnnotation | null {
+  _parse(annotation: W3CAnnotation): Annotation | null {
     const selector = findTextPositionSelector(this.sourceUri)(
       annotation,
     )?.selector;
 
     if (!selector) return null;
 
-    const parsedAnnotation = textAnnotationSchema.parse({
+    const parsedAnnotation = annotationSchema.parse({
       id: annotation.id,
       start: selector.start,
       end: selector.end,
     });
-
-    parsedAnnotation.isGutter = this.gutterFn(annotation);
-    super.addAnnotation(parsedAnnotation.id, annotation);
 
     return parsedAnnotation;
   }

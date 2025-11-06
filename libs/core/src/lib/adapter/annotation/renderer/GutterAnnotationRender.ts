@@ -5,7 +5,7 @@ import {
   TextAnnotation,
   TextLine,
 } from "@ghentcdh/annotated-text";
-import { AnnotationRender } from "./DefaultAnnotationRender";
+import { AnnotationRender, AnnotationStyle } from "./annotation-render";
 import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
 import {
   AnnotationDimension,
@@ -16,7 +16,7 @@ import { getY } from "../../../compute/compute/helpers";
 import { getColors } from "../../../compute/compute/colors";
 import { createGutterPath } from "../../../compute/utils/create-path";
 
-export const GutterAnnotationRender: AnnotationRender = (
+export const GutterAnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -63,3 +63,18 @@ export const GutterAnnotationRender: AnnotationRender = (
 
   return { draws, isGutter: true, startPosition, color };
 };
+
+export type GutterAnnotationStyle = AnnotationStyle & {};
+export const DefaultGutterAnnotationStyle: GutterAnnotationStyle = {};
+
+export class _GutterAnnotationRender extends AnnotationRender<GutterAnnotationStyle> {
+  readonly weightOrder: number = 1;
+  readonly isGutter: boolean = true;
+  readonly name = "gutter";
+
+  constructor() {
+    super(DefaultGutterAnnotationStyle);
+  }
+
+  render = GutterAnnotationRender;
+}

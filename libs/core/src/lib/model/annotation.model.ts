@@ -32,9 +32,19 @@ export type AnnotationId = z.infer<typeof annotationIdSchema>;
  */
 export type Annotation = z.infer<typeof annotationSchema>;
 
+export const renderSchema = z.object({
+  weight: z.number(),
+  isGutter: z.boolean(),
+  render: z.string(), // Name of the renderer
+  // TODO add more render options if needed
+});
+
+// TODO move the draws to here
+export const annotationDrawSchema = z.object({});
+
 export const textAnnotationSchema = annotationSchema.extend({
-  weight: z.number().optional(),
-  isGutter: z.boolean().default(false),
+  _render: renderSchema,
+  _annotationDraws: z.array(annotationDrawSchema).optional(),
 });
 
 export type TextAnnotation = z.infer<typeof textAnnotationSchema>;

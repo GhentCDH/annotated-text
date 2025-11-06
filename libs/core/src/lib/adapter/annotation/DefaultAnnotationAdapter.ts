@@ -7,26 +7,20 @@ import {
   type Annotation,
   annotationSchema,
   type TextAnnotation,
-  textAnnotationSchema,
 } from "../../model";
 import { selectText } from "../text/utils/select-text";
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
   name = "DefaultAnnotationAdapter";
 
-  parse(annotation: Annotation): TextAnnotation {
-    const data = textAnnotationSchema.safeParse(annotation);
+  _parse(annotation: Annotation): Annotation {
+    const data = annotationSchema.safeParse(annotation);
 
-    let parsedAnnotation: TextAnnotation;
     if (!data.success) {
       console.warn(annotation, data.error);
-      parsedAnnotation = annotation as TextAnnotation;
-    } else parsedAnnotation = data.data;
-
-    parsedAnnotation.isGutter = this.gutterFn(parsedAnnotation);
-    super.addAnnotation(parsedAnnotation.id, annotation);
-
-    return parsedAnnotation;
+      return annotation as Annotation;
+    }
+    return data.data as Annotation;
   }
 
   format(

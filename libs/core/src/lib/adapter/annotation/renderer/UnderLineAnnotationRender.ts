@@ -1,5 +1,6 @@
 import { createTextAnnotationRender } from "./TextAnnotationRender";
-import { AnnotationRender } from "./DefaultAnnotationRender";
+import { AnnotationRender as _AnnotationRender } from "./DefaultAnnotationRender";
+import { AnnotationRender, AnnotationStyle } from "./annotation-render";
 import { TextAnnotation, TextLine } from "../../../model";
 import { TextAdapter } from "../../../adapter/text";
 import { AnnotationAdapter } from "../../../adapter";
@@ -58,7 +59,7 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const UnderLineAnnotationRender: AnnotationRender = (
+export const UnderLineAnnotationRender: _AnnotationRender = (
   lines: TextLine[],
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
@@ -79,3 +80,18 @@ export const UnderLineAnnotationRender: AnnotationRender = (
 
   return { draws, isGutter: false, startPosition, color };
 };
+
+export type UnderlineAnnotationStyle = AnnotationStyle & {};
+export const DefaultUnderlineAnnotationStyle: UnderlineAnnotationStyle = {};
+
+export class _UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationStyle> {
+  readonly weightOrder: number = 2;
+  readonly isGutter: boolean = false;
+  readonly name = "underline";
+
+  constructor() {
+    super(DefaultUnderlineAnnotationStyle);
+  }
+
+  render = UnderLineAnnotationRender;
+}
