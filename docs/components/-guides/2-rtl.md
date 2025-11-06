@@ -31,6 +31,7 @@ import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@g
 import { plainText, greekText } from "@demo";
 const id = `plain-text-example`;
 const greek_id = `greek-text-example`;
+const renderFn = (annotation) => annotation.target === "gutter" ? "gutter" : null;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
@@ -45,7 +46,7 @@ onMounted(()=> {
     createAnnotatedText(greek_id,
         {  
             text: TextLineAdapter({ textDirection: 'rtl' }),
-            annotation: {edit: true, create: true},
+            annotation: {edit: true, create: true, render: { renderFn }},
         })
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);

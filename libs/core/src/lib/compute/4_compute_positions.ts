@@ -43,7 +43,7 @@ export const createAndAssignDrawAnnotation = (
     "x",
     "y",
   );
-  const rendered = annotationAdapter.renderInstance.render(
+  const rendered = annotationAdapter.renderInstance.createDraws(
     model.renderParams,
     parentDimensions,
     annotation,
@@ -52,7 +52,7 @@ export const createAndAssignDrawAnnotation = (
   model.addDrawAnnotations(
     annotation.id,
     rendered.draws,
-    rendered.startPosition,
+    rendered.dimensions,
     rendered.color,
   );
 

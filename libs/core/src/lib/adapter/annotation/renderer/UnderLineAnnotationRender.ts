@@ -77,12 +77,12 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
     super(DefaultUnderlineAnnotationStyle);
   }
 
-  render(
+  createDraws(
     params: AnnotationRenderParams,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
-    const { draws, startPosition, color } = createTextAnnotationRender(
+    return createTextAnnotationRender(
       params,
       this.style,
       parentDimensions,
@@ -90,7 +90,5 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
       createUnderline,
       getColorsUnderline,
     );
-
-    return { draws, isGutter: false, startPosition, color };
   }
 }

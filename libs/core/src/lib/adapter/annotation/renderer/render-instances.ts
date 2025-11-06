@@ -47,7 +47,7 @@ export class RenderInstances<ANNOTATION> {
   getRenderer(annotation: ANNOTATION) {
     let render = this.renderParams.renderFn?.(annotation);
     if (!render) {
-      Debugger.warn(
+      Debugger.verbose(
         "Fallback to default renderer as no render was specified for annotation.",
         annotation,
       );
@@ -79,20 +79,7 @@ export class RenderInstances<ANNOTATION> {
     return renderer;
   }
 
-  renderHighlight(
-    params: AnnotationRenderParams,
-    parentDimensions: { x: number; y: number },
-    annotation: TextAnnotation,
-  ) {
-    const renderer = this.renderMap.get("highlight");
-    if (!renderer) {
-      throw new Error("Renderer not found: highlight");
-    }
-
-    return renderer.render(params, parentDimensions, annotation);
-  }
-
-  render(
+  createDraws(
     params: AnnotationRenderParams,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
@@ -102,6 +89,6 @@ export class RenderInstances<ANNOTATION> {
       throw new Error("Renderer not found: " + annotation._render.render);
     }
 
-    return renderer.render(params, parentDimensions, annotation);
+    return renderer.createDraws(params, parentDimensions, annotation);
   }
 }

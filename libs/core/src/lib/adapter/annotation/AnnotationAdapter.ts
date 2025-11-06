@@ -26,22 +26,12 @@ import { DeepPartial } from "../../deep-partial.type";
  */
 const config = {
   text: {
+    // Padding between annotations and text in pixels
     padding: 6,
+    // Height of a line in pixels
     lineHeight: 22,
-    borderRadius: 6,
-    border: 2,
+    // Width of the handle used to resize annotations
     handleRadius: 6,
-  },
-  edit: {
-    color: {
-      border: "rgba(255,0,0,0.9)",
-    },
-  },
-  hover: {
-    color: {
-      border: "rgba(100, 100, 100, 0.5)",
-      fill: "rgba(1, 1, 1, 0.1)",
-    },
   },
 };
 export type AnnotationConfig = typeof config;

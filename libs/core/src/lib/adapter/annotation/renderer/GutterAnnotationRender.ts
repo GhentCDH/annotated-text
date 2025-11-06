@@ -1,5 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
-import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
+import {
+  AnnotationDrawColors,
+  Debugger,
+  TextAnnotation,
+} from "@ghentcdh/annotated-text";
 import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
@@ -13,7 +17,7 @@ import { getY } from "../../../compute/compute/helpers";
 import { getColors } from "../../../compute/compute/colors";
 import { createGutterPath } from "../../../compute/utils/create-path";
 
-const _GutterAnnotationRender = (
+const createGutterAnnotations = (
   params: AnnotationRenderParams,
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
@@ -24,7 +28,7 @@ const _GutterAnnotationRender = (
 
   if (!annotation._render.lines || annotation._render.lines.length === 0) {
     Debugger.warn("no lines to render for annotation", annotation);
-    return { draws: [], isGutter: true, startPosition: undefined, color: null };
+    return { draws: [], dimensions: undefined, color: null };
   }
 
   const { min: firstLine, max: lastLine } = getMinMaxBy(
@@ -46,7 +50,7 @@ const _GutterAnnotationRender = (
   const weight = params.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
-  const color = getColors(style, annotation, false);
+  const color: AnnotationDrawColors = getColors(style, annotation, false);
 
   const draws: AnnotationDraw[] = [
     {
@@ -60,7 +64,7 @@ const _GutterAnnotationRender = (
     },
   ];
 
-  return { draws, isGutter: true, startPosition, color };
+  return { draws, dimensions: startPosition!, color };
 };
 
 export const DefaultGutterAnnotationStyle = {
@@ -81,16 +85,20 @@ export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationSty
     super(DefaultGutterAnnotationStyle);
   }
 
-  render(
+  createDraws(
     params: AnnotationRenderParams,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
-    return _GutterAnnotationRender(
+    return createGutterAnnotations(
       params,
       parentDimensions,
       annotation,
       this.style,
-    );
+    ) as {
+      draws: AnnotationDraw[];
+      dimensions: AnnotationDimension;
+      color: AnnotationDrawColors;
+    };
   }
 }

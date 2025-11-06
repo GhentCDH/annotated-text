@@ -28,7 +28,7 @@ export const drawDummyAnnotation = (
     svgModel.annotationAdapter.renderInstance.highlightInstance;
 
   renderInstance
-    .render(
+    .createDraws(
       model.renderParams,
       textElement.getBoundingClientRect(),
       dummyAnnotation,

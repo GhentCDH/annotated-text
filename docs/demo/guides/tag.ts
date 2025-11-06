@@ -17,7 +17,7 @@ export const RenderTag = (
     annotation: {
       edit: true,
       create: true,
-      render: { defaultRenderer },
+      render: { defaultRenderer, renderFn: greekText.render.renderFn },
       tagConfig: {
         enabled: true,
         enabledOnHover,

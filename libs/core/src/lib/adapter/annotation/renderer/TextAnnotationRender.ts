@@ -85,7 +85,7 @@ export const createTextAnnotationRender = (
     });
   });
 
-  return { draws, startPosition: startPosition!, color };
+  return { draws, dimensions: startPosition!, color };
 };
 
 export const DefaultTextAnnotationStyle = {
@@ -103,12 +103,12 @@ export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationSt
     super(DefaultTextAnnotationStyle);
   }
 
-  render(
+  createDraws(
     params: AnnotationRenderParams,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
-    const { draws, startPosition, color } = createTextAnnotationRender(
+    return createTextAnnotationRender(
       params,
       this.style,
       parentDimensions,
@@ -116,7 +116,5 @@ export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationSt
       createAnnotationPath,
       getColors,
     );
-
-    return { draws, isGutter: false, startPosition, color };
   }
 }
