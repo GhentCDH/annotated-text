@@ -1,16 +1,15 @@
 import { cloneDeep, merge } from "lodash-es";
-import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextAnnotation,
-  TextLine,
-} from "@ghentcdh/annotated-text";
+import { TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
 import {
   AnnotationDimension,
   AnnotationDraw,
   AnnotationDrawColors,
-  TextAnnotationModel,
 } from "../../../compute/annotation.model";
+
+export type AnnotationRenderParams = {
+  textDirection: "ltr" | "rtl";
+  maxGutterWeight: number;
+};
 
 export type RenderParams<ANNOTATION> = {
   defaultRenderer: "gutter" | "highlight" | "underline" | string;
@@ -30,7 +29,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
 
   abstract name: string;
 
-  constructor(private defaultStyle: STYLE) {
+  protected constructor(private defaultStyle: STYLE) {
     this.style = cloneDeep(defaultStyle);
   }
 
@@ -45,12 +44,10 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
   abstract isGutter: boolean;
 
   abstract render(
+    params: AnnotationRenderParams,
     lines: TextLine[],
     parentDimensions: { x: number; y: number },
-    model: TextAnnotationModel,
     annotation: TextAnnotation,
-    textAdapter: TextAdapter,
-    annotationAdapter: AnnotationAdapter<any>,
   ): {
     draws: AnnotationDraw[];
     isGutter: boolean;
@@ -63,4 +60,23 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
   }
 }
 
-export type AnnotationStyle = unknown;
+export const DefaultAnnotationStyle = {
+  hover: {
+    color: {
+      border: "rgba(100, 100, 100, 0.5)",
+      fill: "rgba(1, 1, 1, 0.1)",
+    },
+  },
+  edit: {
+    color: {
+      border: "rgba(255,0,0,0.9)",
+    },
+  },
+  // TODO some of them will be equal everywhere, decide which ones to keep, and which ones to move to the params
+  padding: 6,
+  lineHeight: 22,
+  borderRadius: 6,
+  border: 2,
+  handleRadius: 6,
+};
+export type AnnotationStyle = typeof DefaultAnnotationStyle;

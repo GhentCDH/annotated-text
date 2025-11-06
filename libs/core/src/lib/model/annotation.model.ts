@@ -1,5 +1,8 @@
 import { z } from "zod/v4";
-import { annotationColorSchema } from "./annotation.color";
+import {
+  type AnnotationColor,
+  annotationColorSchema,
+} from "./annotation.color";
 
 export const annotationTargetSchema = z.union([
   z.literal("gutter"),
@@ -32,7 +35,7 @@ export const renderSchema = z.object({
   weight: z.number().optional(),
   isGutter: z.boolean(),
   render: z.string(), // Name of the renderer
-  // TODO add more render options if needed
+  style: annotationColorSchema,
 });
 
 export const annotationDrawPath = z.object({
@@ -61,7 +64,7 @@ export const annotationDrawSchema = z.object({
 
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,
-  _annotationDraws: z.array(annotationDrawSchema).optional(),
+  // TODO add me _annotationDraws: z.array(annotationDrawSchema).optional(),
 });
 
 export type TextAnnotation = z.infer<typeof textAnnotationSchema>;

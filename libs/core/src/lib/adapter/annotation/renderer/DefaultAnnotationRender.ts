@@ -5,7 +5,6 @@ import {
   TextAnnotationModel
 } from "../../../compute/annotation.model";
 import { TextAnnotation, TextLine } from "../../../model";
-import { TextAdapter } from "../../text/TextAdapter";
 import { AnnotationAdapter } from "../../annotation";
 
 /**
@@ -52,7 +51,6 @@ export type AnnotationRender = (
   parentDimensions: { x: number; y: number },
   model: TextAnnotationModel,
   annotation: TextAnnotation,
-  textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   draws: AnnotationDraw[];

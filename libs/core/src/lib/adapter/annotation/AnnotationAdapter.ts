@@ -1,33 +1,22 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 import { ColorFn, DefaultAnnotationColor } from "./DefaultAnnotationColor";
-import {
-  GutterAnnotationRender,
-  HighlightAnnotationRender,
-  UnderLineAnnotationRender,
-} from "./renderer";
+import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from "./renderer";
 import { RenderParams } from "./renderer/annotation-render";
 import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 import { RenderInstances } from "./renderer/render-instances";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
-import {
-  Annotation,
-  AnnotationId,
-  renderSchema,
-  type TextAnnotation,
-  textAnnotationSchema,
-} from "../../model";
+import { Annotation, AnnotationId, renderSchema, type TextAnnotation, textAnnotationSchema } from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
 import { DeepPartial } from "../../deep-partial.type";
 
+/**
+ * @deprecated
+ */
 const config = {
-  gutter: {
-    width: 3,
-    gap: 6,
-  },
   text: {
     padding: 6,
     lineHeight: 22,
@@ -108,6 +97,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
       weight: undefined,
       isGutter: renderInstance.isGutter,
       render: renderInstance.name,
+      style: this.colorFn(annotation),
     });
 
     return textAnnotationSchema.parse({

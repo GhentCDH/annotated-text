@@ -1,7 +1,8 @@
 import { merge } from "lodash-es";
-import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
+import { Debugger, TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
+  AnnotationRenderParams,
   AnnotationStyle,
   RenderParams,
 } from "./annotation-render";
@@ -39,6 +40,10 @@ export class RenderInstances<ANNOTATION> {
     render?.updateStyle(style);
   }
 
+  getGutterRenders() {
+    return Array.from(this.renderMap.values()).filter((r) => r.isGutter);
+  }
+
   getRenderer(annotation: ANNOTATION) {
     let render = this.renderParams.renderFn?.(annotation);
     if (!render) {
@@ -66,12 +71,31 @@ export class RenderInstances<ANNOTATION> {
     throw new Error("Default renderer not found: " + this.defaultRenderer);
   }
 
-  render(annotation: TextAnnotation) {
+  renderHighlight(
+    params: AnnotationRenderParams,
+    lines: TextLine[],
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
+    const renderer = this.renderMap.get("highlight");
+    if (!renderer) {
+      throw new Error("Renderer not found: highlight");
+    }
+
+    return renderer.render(params, lines, parentDimensions, annotation);
+  }
+
+  render(
+    params: AnnotationRenderParams,
+    lines: TextLine[],
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
     const renderer = this.renderMap.get(annotation._render.render);
     if (!renderer) {
       throw new Error("Renderer not found: " + annotation._render.render);
     }
 
-    return renderer.render;
+    return renderer.render(params, lines, parentDimensions, annotation);
   }
 }

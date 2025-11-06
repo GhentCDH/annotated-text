@@ -7,7 +7,6 @@ import {
 } from "../../2_assign_annotation_to_line";
 import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
-import { TextAnnotationRender } from "../../../adapter/annotation/renderer";
 
 export const removeDummyAnnotation = (svgModel: SvgModel) => {
   svgModel.removeAnnotations(DUMMY_UID);
@@ -22,21 +21,21 @@ export const drawDummyAnnotation = (
   const { model, textElement } = svgModel;
   const lines = getLinesForAnnotation(model.lines, dummyAnnotation);
 
-  TextAnnotationRender(
-    lines,
-    textElement.getBoundingClientRect(),
-    model,
-    dummyAnnotation,
-    svgModel.textAdapter,
-    svgModel.annotationAdapter,
-  ).draws.forEach((a) => {
-    drawAnnotationContent(
-      { ...a, annotationUuid: DUMMY_UID },
-      svgModel,
-      svgModel.annotationAdapter.config!,
-      color,
-    );
-  });
+  svgModel.annotationAdapter.renderInstance
+    .renderHighlight(
+      model,
+      lines,
+      textElement.getBoundingClientRect(),
+      dummyAnnotation,
+    )
+    .draws.forEach((a) => {
+      drawAnnotationContent(
+        { ...a, annotationUuid: DUMMY_UID },
+        svgModel,
+        svgModel.annotationAdapter.config!,
+        color,
+      );
+    });
 
   svgModel.colorAnnotation(DUMMY_UID, color!);
 };
@@ -56,7 +55,6 @@ export const recreateAnnotation = (
     svgModel.textElement,
     annotation,
     svgModel.annotationAdapter,
-    svgModel.textAdapter,
   )
     .getDrawAnnotations(annotation.id)
     .forEach((a) => {

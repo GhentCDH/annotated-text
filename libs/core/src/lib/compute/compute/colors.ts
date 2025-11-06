@@ -1,22 +1,21 @@
-import { AnnotationAdapter } from "../../adapter";
 import { TextAnnotation } from "../../model";
 import { AnnotationDrawColors } from "../annotation.model";
+import { AnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
 
 export type GetColorsFn = (
-  adapter: AnnotationAdapter<any>,
+  style: AnnotationStyle,
   annotation: TextAnnotation,
   borders: boolean,
 ) => AnnotationDrawColors;
 
 export const getColors: GetColorsFn = (
-  adapter: AnnotationAdapter<any>,
+  style: AnnotationStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const config = adapter.config!;
-  const hoverColor = config.hover.color;
-  const editColor = config.edit.color;
-  const color = adapter.color(annotation);
+  const hoverColor = style.hover.color;
+  const editColor = style.edit.color;
+  const color = annotation._render.style;
 
   return {
     default: {

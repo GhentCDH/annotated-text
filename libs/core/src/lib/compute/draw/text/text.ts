@@ -68,9 +68,10 @@ export const drawText = (
     Debugger.debug("no document available, cannot draw text");
     return;
   }
-  const gutter = annotationAdapter.config!.gutter;
-  const gutterWidth = gutter.width + gutter.gap;
-  const gutterPaddingLeft = gutterWidth * textAnnotationModel.maxGutterWeight;
+
+  const gutterPaddingLeft = textAnnotationModel.gutterModel.gutterPaddingLeft(
+    annotationAdapter.renderInstance,
+  );
 
   const textDiv = document?.createElement("div");
   textDiv.className = `${styles.text} `;

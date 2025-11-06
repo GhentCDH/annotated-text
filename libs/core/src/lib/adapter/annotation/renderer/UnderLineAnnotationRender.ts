@@ -1,13 +1,14 @@
 import { createTextAnnotationRender } from "./TextAnnotationRender";
-import { AnnotationRender as _AnnotationRender } from "./DefaultAnnotationRender";
-import { AnnotationRender, AnnotationStyle } from "./annotation-render";
+import {
+  AnnotationRender,
+  AnnotationRenderParams,
+  AnnotationStyle,
+  DefaultAnnotationStyle,
+} from "./annotation-render";
 import { TextAnnotation, TextLine } from "../../../model";
-import { TextAdapter } from "../../../adapter/text";
-import { AnnotationAdapter } from "../../../adapter";
 import {
   AnnotationDrawColor,
   AnnotationDrawColors,
-  TextAnnotationModel,
 } from "../../../compute/annotation.model";
 import { GetColorsFn } from "../../../compute/compute/colors";
 import {
@@ -15,16 +16,17 @@ import {
   createAnnotationPathFn,
   PathParams,
 } from "../../../compute/utils/create-path";
+import { cloneDeep } from "lodash-es";
 
 export const getColorsUnderline: GetColorsFn = (
-  adapter: AnnotationAdapter<any>,
+  style: AnnotationStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const config = adapter.config!;
-  const hoverColor = config.hover.color;
-  const editColor = config.edit.color;
-  const color = adapter.color(annotation);
+  const hoverColor = style.hover.color;
+  const editColor = style.edit.color;
+  const color = annotation._render.style;
+
   return {
     default: {
       fill: "rgba(0,0,0,0)",
@@ -59,30 +61,10 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const _UnderLineAnnotationRender: _AnnotationRender = (
-  lines: TextLine[],
-  parentDimensions: { x: number; y: number },
-  model: TextAnnotationModel,
-  annotation: TextAnnotation,
-  textAdapter: TextAdapter,
-  annotationAdapter: AnnotationAdapter<any>,
-) => {
-  const { draws, startPosition, color } = createTextAnnotationRender(
-    lines,
-    parentDimensions,
-    model,
-    annotation,
-    textAdapter,
-    annotationAdapter,
-    createUnderline,
-    getColorsUnderline,
-  );
-
-  return { draws, isGutter: false, startPosition, color };
-};
-
 export type UnderlineAnnotationStyle = AnnotationStyle & {};
-export const DefaultUnderlineAnnotationStyle: UnderlineAnnotationStyle = {};
+export const DefaultUnderlineAnnotationStyle: UnderlineAnnotationStyle = {
+  ...cloneDeep(DefaultAnnotationStyle),
+};
 
 export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationStyle> {
   readonly weightOrder: number = 2;
@@ -95,5 +77,22 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
     super(DefaultUnderlineAnnotationStyle);
   }
 
-  render = _UnderLineAnnotationRender;
+  render(
+    params: AnnotationRenderParams,
+    lines: TextLine[],
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
+    const { draws, startPosition, color } = createTextAnnotationRender(
+      params,
+      this.style,
+      lines,
+      parentDimensions,
+      annotation,
+      createUnderline,
+      getColorsUnderline,
+    );
+
+    return { draws, isGutter: false, startPosition, color };
+  }
 }
