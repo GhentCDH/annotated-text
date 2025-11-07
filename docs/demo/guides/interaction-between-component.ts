@@ -32,7 +32,10 @@ export const createAnnotatedTextWithLines = (
         end: annotation.end,
       },
     }),
-    annotation: { edit: true },
+    annotation: {
+      edit: true,
+      render: greekText.render,
+    },
   })
     .setText(text)
     .setAnnotations(annotations);

@@ -30,6 +30,7 @@ export const snapper = (id: string) => {
       edit: true,
       create: true,
       snapper: new CustomSnapper(),
+      render: greekText.render,
     },
   })
     .setText(greekText.text)

@@ -31,7 +31,7 @@ export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
 export const limitLinesLineText = (id: string, ignoreLines?: boolean) => {
   createAnnotatedText(id, {
     text: TextLineAdapter({ limit: { start: 200, end: 400, ignoreLines } }),
-    annotation: { edit: true },
+    annotation: { edit: true, render: greekText.render },
   })
     .setText(greekText.text)
     .setAnnotations(greekText.annotations)

@@ -18,8 +18,14 @@ const createChunk = (element: HTMLElement, annotation: Annotation) => {
   element.appendChild(div);
 
   return createAnnotatedText(id, {
+    annotation: {
+      render: greekText.render,
+    },
     text: TextLineAdapter({
-      limit: { start: annotation.start, end: annotation.end },
+      limit: {
+        start: annotation.start,
+        end: annotation.end,
+      },
     }),
   })
     .setText(greekText.text)
@@ -34,7 +40,7 @@ export const textWithChunks = (id: string, chunksId: string) => {
   const element = document.getElementById(id);
   createAnnotatedText(id, {
     text: TextLineAdapter(),
-    annotation: { create: true, edit: true },
+    annotation: { create: true, edit: true, render: greekText.render },
   })
     .setText(greekText.text)
     .setAnnotations(annotations)

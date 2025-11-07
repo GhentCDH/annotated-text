@@ -26,12 +26,8 @@ export const createNewBlock = (svgModel: SvgModel) => {
   let prevEndIndex: number | null = null;
 
   const createInitialDummyAnnotation = (characterPos: number) => {
-    dummyAnnotation = {
-      ...adapter.createAnnotation(),
-      weight: 0,
-      start: characterPos,
-      end: characterPos + 1,
-    } as unknown as TextAnnotation;
+    dummyAnnotation = adapter.createAnnotation(characterPos);
+
     startIndex = characterPos;
     prevEndIndex = characterPos + 1;
 
@@ -68,11 +64,13 @@ export const createNewBlock = (svgModel: SvgModel) => {
     dummyAnnotation.start = snapper.start;
     dummyAnnotation.end = snapper.end;
 
-    if (draw)
+    if (draw) {
+      const color = dummyAnnotation._render.style.color;
       drawDummyAnnotation(svgModel, dummyAnnotation, {
-        border: dummyAnnotation.color!.border,
-        fill: dummyAnnotation.color!.background,
+        border: color!.border,
+        fill: color!.background,
       });
+    }
     prevEndIndex = character.characterPos;
     return { x, y };
   };

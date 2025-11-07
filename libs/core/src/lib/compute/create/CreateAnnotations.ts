@@ -23,6 +23,10 @@ import { drawText } from "../draw/text/text";
 import { recreateAnnotation } from "../draw/annotations/draw";
 import { Annotation, AnnotationId } from "../../model";
 import { AnnotationColors } from "../model/annotation.colors";
+import {
+  AnnotationRender,
+  AnnotationStyle,
+} from "../../adapter/annotation/renderer/annotation-render";
 
 const document = globalThis.document || null;
 export type BaseAnnotation = Pick<Annotation, "id">;
@@ -264,7 +268,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   scrollToAnnotation(id: AnnotationId): this {
-    const lines = this.textAnnotationModel?.getLinesForAnnotation(id);
+    const lines = this.textAnnotationModel?.getAnnotation(id)?._render.lines;
     if (!lines) {
       console.warn("No lines found for annotation", id);
       return this;
@@ -315,6 +319,21 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     this.svgModel.removeAnnotations(annotation.id);
     this.annotationsMap.delete(annotation.id);
 
+    return this;
+  }
+
+  registerRender<STYLE extends AnnotationStyle>(
+    render: AnnotationRender<STYLE>,
+  ) {
+    this.annotationAdapter.renderInstance.registerRender(render);
+    return this;
+  }
+
+  updateRenderStyle<STYLE extends AnnotationStyle>(
+    name: string,
+    style: Partial<STYLE>,
+  ) {
+    this.annotationAdapter.renderInstance.updateRenderStyle(name, style);
     return this;
   }
 }

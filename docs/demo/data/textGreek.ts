@@ -13,6 +13,11 @@ export const greekText = {
   annotations: annotations,
   annotationsWithGutters: annotationsWithGutters,
   lines: lines,
+  render: {
+    renderFn: (annotation: any) => {
+      return annotation.target === "gutter" ? "gutter" : null;
+    },
+  },
 };
 
 export const largeGreekText = {
