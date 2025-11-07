@@ -243,11 +243,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
  * @property hover.color.border - Border color on hover
  * @property hover.color.fill - Fill color on hover
  * @property edit - Style applied when annotation is being edited
- * @property edit.color.border - Border color in edit mode
- * @property borderWidth - Width of annotation borders in pixels
- * @property borderRadius - Border radius for rounded corners in pixels
- * @property border - Alternative border width (consider consolidating with borderWidth)
- */
+ * @property edit.color.border - Border color in edit mode */
 export const DefaultAnnotationStyle = {
   hover: {
     color: {
@@ -260,11 +256,6 @@ export const DefaultAnnotationStyle = {
       border: "rgba(255,0,0,0.9)",
     },
   },
-  borderWidth: 2,
-  borderRadius: 6,
-  //TODO  These are defined somewhere else too, check how it is done with the gutters
-  padding: 6,
-  lineHeight: 22,
 };
 
 /**
@@ -287,3 +278,19 @@ export const DefaultAnnotationStyle = {
  * ```
  */
 export type AnnotationStyle = typeof DefaultAnnotationStyle;
+
+export const DefaultTextAnnotationStyle = {
+  ...cloneDeep(DefaultAnnotationStyle),
+  borderWidth: 2,
+  borderRadius: 6,
+  //TODO  These are defined somewhere else too, check how it is done with the gutters
+  padding: 6,
+  lineHeight: 22,
+};
+export type TextAnnotationStyle = typeof DefaultTextAnnotationStyle;
+export const DefaultGutterAnnotationStyle = {
+  ...cloneDeep(DefaultTextAnnotationStyle),
+  width: 3,
+  gap: 6,
+};
+export type GutterAnnotationStyle = typeof DefaultGutterAnnotationStyle;

@@ -4,7 +4,7 @@ import {
   AnnotationRender,
   AnnotationRenderParams,
   AnnotationStyle,
-  DefaultAnnotationStyle,
+  DefaultTextAnnotationStyle,
 } from "./annotation-render";
 import {
   AnnotationDrawColor,
@@ -61,10 +61,10 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export type UnderlineAnnotationStyle = AnnotationStyle & {};
-export const DefaultUnderlineAnnotationStyle: UnderlineAnnotationStyle = {
-  ...cloneDeep(DefaultAnnotationStyle),
+export const DefaultUnderlineAnnotationStyle = {
+  ...cloneDeep(DefaultTextAnnotationStyle),
 };
+export type UnderlineAnnotationStyle = typeof DefaultUnderlineAnnotationStyle;
 
 export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationStyle> {
   readonly weightOrder: number = 2;

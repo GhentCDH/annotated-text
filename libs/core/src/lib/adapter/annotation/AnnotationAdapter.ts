@@ -26,10 +26,6 @@ import { DeepPartial } from "../../deep-partial.type";
  */
 const config = {
   text: {
-    // Padding between annotations and text in pixels
-    padding: 6,
-    // Height of a line in pixels
-    lineHeight: 22,
     // Width of the handle used to resize annotations
     handleRadius: 6,
   },

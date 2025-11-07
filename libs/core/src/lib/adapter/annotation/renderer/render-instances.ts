@@ -44,6 +44,10 @@ export class RenderInstances<ANNOTATION> {
     return Array.from(this.renderMap.values()).filter((r) => r.isGutter);
   }
 
+  getRendererByName(name: string) {
+    return this.renderMap.get(name);
+  }
+
   getRenderer(annotation: ANNOTATION) {
     let render = this.renderParams.renderFn?.(annotation);
     if (!render) {

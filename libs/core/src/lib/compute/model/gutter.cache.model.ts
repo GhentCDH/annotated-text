@@ -2,6 +2,10 @@ import { TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
 import { maxBy } from "lodash-es";
 import { calculateGutterAnnotationWeightsAndEnrich } from "../utils/weights";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
+import {
+  AnnotationRender,
+  GutterAnnotationStyle,
+} from "../../adapter/annotation/renderer/annotation-render";
 
 export class GutterCacheModel {
   public maxGutterWeight = 0;
@@ -26,9 +30,15 @@ export class GutterCacheModel {
     // It should be tested against multiple if different instances are available
 
     const maxGutterWidth =
-      maxBy(gutterInstances, (r) => r.style?.width ?? 0)?.style?.width ?? 0;
+      maxBy(
+        gutterInstances,
+        (r: AnnotationRender<GutterAnnotationStyle>) => r.style?.width ?? 0,
+      )?.style?.width ?? 0;
     const maxGutterGap =
-      maxBy(gutterInstances, (r) => r.style?.gap ?? 0)?.style?.gap ?? 0;
+      maxBy(
+        gutterInstances,
+        (r: AnnotationRender<GutterAnnotationStyle>) => r.style?.gap ?? 0,
+      )?.style?.gap ?? 0;
 
     const gutterWidth = maxGutterWidth + maxGutterGap;
 

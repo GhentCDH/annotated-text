@@ -8,6 +8,7 @@ import {
 import { TextAnnotationModel } from "../../annotation.model";
 import { type TextLine } from "../../../model";
 import { styles } from "../../styles.const";
+import { TextSettings } from "../../model/text.cache.model";
 
 const document = globalThis.document || null;
 
@@ -37,11 +38,10 @@ const createText = (
   textLine: TextLine,
   textDirection: TextDirection,
   textAdapter: TextAdapter,
-  annotationAdapter: AnnotationAdapter<any>,
+  text: TextSettings,
 ) => {
   const textDiv = document.createElement("div");
 
-  const text = annotationAdapter.config!.text;
   const { linePadding, lineHeight } = calculateLinePadding(
     text.padding,
     textLine.maxLineWeight,
@@ -79,6 +79,9 @@ export const drawText = (
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 
   Debugger.debug("Draw the lines", textAnnotationModel.lines.length);
+  const textSettings = textAnnotationModel.annotationTextModel.getTextSettings(
+    annotationAdapter.renderInstance,
+  );
   textAnnotationModel.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line));
     textDiv.appendChild(
@@ -86,7 +89,7 @@ export const drawText = (
         line,
         textAnnotationModel.textDirection,
         textAdapter,
-        annotationAdapter,
+        textSettings,
       ),
     );
   });

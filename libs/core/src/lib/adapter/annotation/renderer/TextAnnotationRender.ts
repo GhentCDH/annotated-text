@@ -4,8 +4,8 @@ import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  AnnotationStyle,
-  DefaultAnnotationStyle,
+  DefaultTextAnnotationStyle,
+  TextAnnotationStyle,
 } from "./annotation-render";
 import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import {
@@ -18,7 +18,7 @@ import { getRanges } from "../../../compute/utils/ranges/get-range";
 
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,
-  style: AnnotationStyle,
+  style: TextAnnotationStyle,
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
   pathFn: createAnnotationPathFn,
@@ -88,19 +88,19 @@ export const createTextAnnotationRender = (
   return { draws, dimensions: startPosition!, color };
 };
 
-export const DefaultTextAnnotationStyle = {
-  ...cloneDeep(DefaultAnnotationStyle),
+export const DefaultTextAnnotationRenderStyle = {
+  ...cloneDeep(DefaultTextAnnotationStyle),
 };
-export type TextAnnotationStyle = typeof DefaultTextAnnotationStyle;
+export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 
-export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationStyle> {
+export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
   static instance = "highlight";
   readonly name = HighlightAnnotationRender.instance;
 
   constructor() {
-    super(DefaultTextAnnotationStyle);
+    super(DefaultTextAnnotationRenderStyle);
   }
 
   createDraws(

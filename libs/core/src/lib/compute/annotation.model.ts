@@ -1,4 +1,4 @@
-import { GutterCacheModel } from "./gutter/gutter.cache.model";
+import { GutterCacheModel } from "./model/gutter.cache.model";
 import { TextAnnotationCacheModel } from "./model/text.cache.model";
 import {
   AnnotationDimension,
@@ -56,6 +56,7 @@ export interface TextAnnotationModel {
   getLine(lineUid: string): TextLine | undefined;
 
   gutterModel: GutterCacheModel;
+  annotationTextModel: TextAnnotationCacheModel;
 }
 
 export class TextAnnotationModelImpl implements TextAnnotationModel {
