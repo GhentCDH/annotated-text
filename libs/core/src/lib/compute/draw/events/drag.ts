@@ -55,6 +55,7 @@ export const drawHandle = (
     if (!dragResult) return;
 
     dragResult._render.weight = annotation._render.weight;
+    dragResult.id = annotation.id;
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dragResult);

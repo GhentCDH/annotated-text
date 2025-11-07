@@ -62,5 +62,5 @@ export const recreateAnnotation = (
     svgModel.annotationAdapter,
   );
 
-  drawAnnotation(svgModel, svgModel.model.getAnnotation(annotation.id)!);
+  drawAnnotation(svgModel, annotation);
 };
