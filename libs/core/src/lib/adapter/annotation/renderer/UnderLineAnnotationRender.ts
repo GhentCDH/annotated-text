@@ -31,20 +31,27 @@ export const getColorsUnderline: GetColorsFn = (
     default: {
       fill: "rgba(0,0,0,0)",
       border: borders ? color.border : undefined,
+      borderWidth: style.borderWidth,
     } as AnnotationDrawColor,
-    hover: hoverColor,
+    hover: {
+      ...hoverColor,
+      borderWidth: style.borderWidth,
+    },
     edit: {
       fill: color.background,
       border: borders ? editColor.border : undefined,
+      borderWidth: style.borderWidth,
     },
     active: {
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
+      borderWidth: style.borderWidth,
     } as AnnotationDrawColor,
     tag: {
       fill: color.tagBackground,
       border: color.border,
       text: color.tagColor,
+      borderWidth: style.borderWidth,
     },
   } as AnnotationDrawColors;
 };

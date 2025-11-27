@@ -33,12 +33,14 @@ export const annotationDrawSchema = z.object({
 export const annotationDrawColorSchema = z.object({
   fill: z.string().optional(),
   border: z.string().optional(),
+  borderWidth: z.number().default(1),
 });
 
 export const tagColorSchema = z.object({
   text: z.string().optional(),
   fill: z.string().optional(),
   border: z.string().optional(),
+  borderWidth: z.number().default(1),
 });
 
 export const annotationDrawColorsSchema = z.object({

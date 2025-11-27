@@ -1,6 +1,6 @@
+import { maxBy } from "lodash-es";
 import { calculateAnnotationWeights } from "../utils/weights";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
-import { maxBy } from "lodash-es";
 import { TextAnnotation, TextLine } from "../../model";
 import {
   AnnotationRender,

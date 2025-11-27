@@ -9,6 +9,7 @@ import {
   AnnotationRender,
   AnnotationRenderParams,
   DefaultGutterAnnotationStyle,
+  GutterAnnotationStyle,
 } from "./annotation-render";
 import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
 import { AnnotationDimension, AnnotationDraw } from "../../../model";

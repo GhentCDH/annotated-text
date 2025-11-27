@@ -38,7 +38,7 @@ export const drawAnnotationContent = (
       .append("path")
       .attr(SVG_ID.ANNOTATION_UID, draw.annotationUuid)
       .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.BORDER)
-      .attr("stroke-width", style.borderWidth)
+      .attr("stroke-width", color.borderWidth)
       .attr("d", draw.path.border)
       .attr("fill", "none")
       .attr("stroke", color.border!);

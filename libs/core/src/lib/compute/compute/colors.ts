@@ -1,14 +1,14 @@
 import { AnnotationDrawColors, TextAnnotation } from "../../model";
-import { AnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
+import { TextAnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
 
 export type GetColorsFn = (
-  style: AnnotationStyle,
+  style: TextAnnotationStyle,
   annotation: TextAnnotation,
   borders: boolean,
 ) => AnnotationDrawColors;
 
 export const getColors: GetColorsFn = (
-  style: AnnotationStyle,
+  style: TextAnnotationStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
@@ -20,19 +20,26 @@ export const getColors: GetColorsFn = (
     default: {
       fill: color.background,
       border: borders ? color.border : undefined,
+      borderWidth: style.borderWidth,
     },
-    hover: hoverColor,
+    hover: {
+      ...hoverColor,
+      borderWidth: style.borderWidth,
+    },
     edit: {
       fill: color.background,
       border: borders ? editColor.border : undefined,
+      borderWidth: style.borderWidth,
     },
     active: {
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
+      borderWidth: style.borderWidth,
     },
     tag: {
       fill: color.tagBackground,
       border: color.border,
+      borderWidth: style.borderWidth,
       text: color.tagColor,
     },
   } as AnnotationDrawColors;
