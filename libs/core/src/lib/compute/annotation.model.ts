@@ -10,6 +10,7 @@ import {
 } from "../model";
 import { TextDirection } from "../adapter/text";
 import { AnnotationRenderParams } from "../adapter/annotation/renderer/annotation-render";
+import { RenderInstances } from "../adapter/annotation/renderer/render-instances";
 
 export interface TextAnnotationModel {
   renderParams: AnnotationRenderParams;
@@ -72,7 +73,10 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
 
   public textLength = 0;
 
-  constructor(public readonly lines: TextLine[]) {
+  constructor(
+    public readonly lines: TextLine[],
+    public readonly renderInstances: RenderInstances<any>,
+  ) {
     this.resetAnnotations();
   }
 
@@ -182,13 +186,18 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   calculateMaxGutterWeight() {
-    this.gutterModel.updateGutters(this.lines, this.annotations);
+    this.gutterModel.updateGutters(
+      this.lines,
+      this.annotations,
+      this.renderInstances,
+    );
   }
 
   calculateLinesWeights() {
     this.annotationTextModel.updateTextAnnotations(
       this.lines,
       this.annotations,
+      this.renderInstances,
     );
   }
 

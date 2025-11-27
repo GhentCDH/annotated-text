@@ -1,11 +1,11 @@
 import { maxBy } from "lodash-es";
-import { calculateAnnotationWeights } from "../utils/weights";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
 import { TextAnnotation, TextLine } from "../../model";
 import {
   AnnotationRender,
   TextAnnotationStyle,
 } from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationWeight } from "../utils/annotation.weight";
 
 export type TextSettings = {
   padding: number;
@@ -19,7 +19,11 @@ export class TextAnnotationCacheModel {
 
   constructor() {}
 
-  updateTextAnnotations(lines: TextLine[], annotations: TextAnnotation[]) {
+  updateTextAnnotations(
+    lines: TextLine[],
+    annotations: TextAnnotation[],
+    renderInstances: RenderInstances<any>,
+  ) {
     this.textAnnotations = annotations.filter((a) => !a._render.isGutter);
     this.usedRenders.clear();
     lines.forEach((line) => {
@@ -33,7 +37,10 @@ export class TextAnnotationCacheModel {
       );
     });
 
-    calculateAnnotationWeights(lines, this.lineAnnotationMap);
+    AnnotationWeight.calculate(
+      this.textAnnotations,
+      renderInstances.getTextRenders(),
+    );
   }
 
   removeAnnotationFromLine(

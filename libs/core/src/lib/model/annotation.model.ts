@@ -37,12 +37,13 @@ export const renderStyleSchema = z.object({
 export type RenderStyle = z.infer<typeof renderStyleSchema>;
 
 export const renderSchema = z.object({
-  weight: z.number().optional(),
+  weight: z.number().optional().nullish(),
   isGutter: z.boolean(),
   render: z.string(), // Name of the renderer
   style: renderStyleSchema,
   lines: z.array(textLineSchema).default([]),
 });
+export type TextRender = z.infer<typeof renderSchema>;
 
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,

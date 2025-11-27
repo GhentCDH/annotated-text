@@ -9,35 +9,44 @@ const annotations = [
   {
     start: 90,
     end: 98,
-    target: "text",
-    label: "weight 2",
+    target: "underline",
     color: annotationColors["1"],
     id: "cw1",
-    weight: 2,
+  },
+  {
+    start: 20,
+    end: 60,
+    target: "underline",
+    color: annotationColors["5"],
+    id: "cw5",
   },
   {
     start: 49,
     end: 60,
-    target: "text",
+    target: "highlight",
     color: annotationColors["2"],
     id: "cw2",
-    weight: null,
   },
   {
     start: 87,
     end: 97,
-    target: "text",
+    target: "underline",
     color: annotationColors["3"],
     id: "cw3",
-    weight: null,
   },
   {
     start: 95,
     end: 100,
-    target: "text",
+    target: "highlight",
     color: annotationColors["4"],
     id: "cw4",
-    weight: null,
+  },
+  {
+    start: 101,
+    end: 104,
+    target: "highlight",
+    color: annotationColors["4"],
+    id: "cw6",
   },
 ] as any as TextAnnotation[];
 
@@ -49,9 +58,12 @@ export const customWeights = (id: string) => {
   clearAnnotatedTextCache();
   createAnnotatedText(id, {
     annotation: {
+      render: {
+        renderFn: (annotation: any) => annotation.target,
+      },
       tagConfig: {
         enabled: true,
-        tagFn: (annotation) => annotation.label ?? "",
+        tagFn: (a) => a.id,
       },
     },
   })
