@@ -63,7 +63,6 @@ export class AnnotationWeight {
   }
 
   calculateAnnotationArray(annotations: TextAnnotation[], startWeight: number) {
-    // TODO implement based on th
     const sortedAnnotations = annotations.sort(sortAnnotations);
 
     sortedAnnotations.forEach((annotation) => {

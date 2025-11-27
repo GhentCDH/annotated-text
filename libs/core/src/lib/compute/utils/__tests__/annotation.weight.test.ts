@@ -36,7 +36,7 @@ function createRender(
 }
 
 describe("AnnotationWeight", () => {
-  describe.only("basic weight calculation", () => {
+  describe("basic weight calculation", () => {
     it("should assign weight 0 to non-overlapping annotations", () => {
       const annotations: TextAnnotation[] = [
         createAnnotation("a1", 0, 10, "highlight"),

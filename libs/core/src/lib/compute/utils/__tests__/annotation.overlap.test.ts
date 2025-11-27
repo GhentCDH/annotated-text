@@ -173,7 +173,7 @@ describe("AnnotationOverlap", () => {
       ${"query"} | ${15} | ${25} | ${true}  | ${"overlap exists at end"}
       ${"query"} | ${30} | ${40} | ${false} | ${"no overlap between annotations"}
       ${"query"} | ${60} | ${70} | ${false} | ${"no overlap after all annotations"}
-      ${"query"} | ${10} | ${20} | ${false} | ${"no adjent annotations"}
+      ${"query"} | ${10} | ${20} | ${false} | ${"no adjacent annotations"}
       ${"a1"}    | ${0}  | ${10} | ${false} | ${"exclude itself from overlap check"}
       ${"a1"}    | ${0}  | ${30} | ${true}  | ${"exclude itself from overlap check"}
     `(`should $description - $id start: $start end: $end -`, testHasOverlap);
