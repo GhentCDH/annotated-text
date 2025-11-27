@@ -7,6 +7,30 @@ import { annotationColors } from "../data/const";
 
 const annotations = [
   {
+    start: 0,
+    end: 10,
+    target: "highlight",
+    color: annotationColors["1"],
+    id: "cw1",
+  },
+  {
+    start: 0,
+    end: 20,
+    target: "highlight",
+    color: annotationColors["1"],
+    id: "cw2",
+  },
+  {
+    start: 0,
+    end: 5,
+    target: "highlight",
+    color: annotationColors["1"],
+    id: "cw3",
+  },
+];
+
+const _annotations = [
+  {
     start: 90,
     end: 98,
     target: "underline",

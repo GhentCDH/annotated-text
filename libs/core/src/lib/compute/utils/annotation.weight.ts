@@ -32,6 +32,7 @@ export class AnnotationWeight {
   private assignWeights() {
     const renderWeights = new Map<number, TextAnnotation[]>();
     const renderWeightOrders: Record<string, number> = {};
+    renderWeights.set(0, []);
 
     this.annotationRenders.forEach((r) => {
       renderWeightOrders[r.name] = r.weightOrder;

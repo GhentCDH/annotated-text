@@ -334,7 +334,7 @@ describe("AnnotationWeight", () => {
       const annotations: TextAnnotation[] = [
         createAnnotation("a1", 0, 10, "highlight"),
       ];
-      const renders = [];
+      const renders = [] as AnnotationRender<any>[];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -398,9 +398,9 @@ describe("AnnotationWeight", () => {
       const a2 = annotations.find((a) => a.id === "a2")!;
       const a3 = annotations.find((a) => a.id === "a3")!;
 
-      expect(a3._render.weight).toBe(0);
+      expect(a3._render.weight).toBe(2);
       expect(a1._render.weight).toBe(1);
-      expect(a2._render.weight).toBe(2);
+      expect(a2._render.weight).toBe(0);
     });
   });
 
@@ -449,8 +449,8 @@ describe("AnnotationWeight", () => {
       const loc = annotations.find((a) => a.id === "loc")!;
       const place = annotations.find((a) => a.id === "place")!;
 
-      expect(city._render.weight).toBe(0);
-      expect(loc._render.weight).toBe(1);
+      expect(city._render.weight).toBe(1);
+      expect(loc._render.weight).toBe(0);
       expect(place._render.weight).toBe(2);
 
       expect(line1.maxLineWeight).toBe(2);
