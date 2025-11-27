@@ -111,8 +111,8 @@ export const drawTag = (svgModel: SvgModel, annotation: TextAnnotation) => {
     .attr("y", rectDimensions.y)
     .attr("width", rectDimensions.width)
     .attr("height", rectDimensions.height)
-    .attr("fill", color.tag.fill)
-    .attr("stroke", color.tag.border)
+    .attr("fill", color.tag.fill!)
+    .attr("stroke", color.tag.border!)
     .attr("stroke-width", 1)
     .attr("pointer-events", "none")
     .attr("rx", 3); // rounded corners
@@ -125,6 +125,6 @@ export const drawTag = (svgModel: SvgModel, annotation: TextAnnotation) => {
     .attr("dominant-baseline", "central")
     .attr("font-size", fontSize)
     .attr("pointer-events", "none")
-    .attr("fill", color.tag.text)
+    .attr("fill", color.tag.text!)
     .text(text);
 };

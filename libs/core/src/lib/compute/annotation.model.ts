@@ -186,11 +186,7 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   calculateMaxGutterWeight() {
-    this.gutterModel.updateGutters(
-      this.lines,
-      this.annotations,
-      this.renderInstances,
-    );
+    this.gutterModel.updateGutters(this.lines, this.annotations);
   }
 
   calculateLinesWeights() {

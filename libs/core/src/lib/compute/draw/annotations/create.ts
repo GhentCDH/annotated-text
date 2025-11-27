@@ -69,6 +69,7 @@ export const createNewBlock = (svgModel: SvgModel) => {
       drawDummyAnnotation(svgModel, dummyAnnotation, {
         border: color!.border,
         fill: color!.background,
+        borderWidth: 2,
       });
     }
     prevEndIndex = character.characterPos;

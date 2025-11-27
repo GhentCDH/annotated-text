@@ -6,31 +6,35 @@ import {
 
 export type TextAnnotation = Pick<_TextAnnotation, "id" | "start" | "end">;
 
-interface RBushItem {
+interface RBushItem<TEXT_ANNOTATION> {
   minX: number;
   maxX: number;
   minY: number;
   maxY: number;
-  annotation: TextAnnotation;
+  annotation: TEXT_ANNOTATION;
 }
 
-export class AnnotationOverlap {
-  private readonly tree: RBush<RBushItem>;
+export class AnnotationOverlap<TEXT_ANNOTATION extends TextAnnotation> {
+  private readonly tree: RBush<RBushItem<TEXT_ANNOTATION>>;
   private readonly annotationById: Map<AnnotationId, TextAnnotation>;
 
-  static init(annotations: TextAnnotation[]): AnnotationOverlap {
+  static init<TEXT_ANNOTATION extends TextAnnotation = TextAnnotation>(
+    annotations: TEXT_ANNOTATION[],
+  ): AnnotationOverlap<TEXT_ANNOTATION> {
     return new AnnotationOverlap(annotations);
   }
 
-  private constructor(annotations: TextAnnotation[]) {
-    this.tree = new RBush<RBushItem>();
+  private constructor(annotations: TEXT_ANNOTATION[]) {
+    this.tree = new RBush<RBushItem<TEXT_ANNOTATION>>();
     this.annotationById = new Map();
 
     // Bulk load for better performance
-    const items: RBushItem[] = annotations.map((annotation) => {
-      this.annotationById.set(annotation.id, annotation);
-      return this.toRBushItem(annotation);
-    });
+    const items: RBushItem<TEXT_ANNOTATION>[] = annotations.map(
+      (annotation) => {
+        this.annotationById.set(annotation.id, annotation);
+        return this.toRBushItem(annotation);
+      },
+    );
 
     this.tree.load(items);
   }
@@ -44,7 +48,7 @@ export class AnnotationOverlap {
    *
    * To handle this, we shrink the search box slightly to exclude exact boundary matches.
    */
-  private toRBushItem(annotation: TextAnnotation): RBushItem {
+  private toRBushItem(annotation: TEXT_ANNOTATION): RBushItem<TEXT_ANNOTATION> {
     return {
       minX: annotation.start,
       maxX: annotation.end,
@@ -58,11 +62,11 @@ export class AnnotationOverlap {
    * Check if two annotations truly overlap (exclusive boundaries).
    * a.start < b.end && b.start < a.end
    */
-  private overlaps(a: TextAnnotation, b: TextAnnotation): boolean {
+  private overlaps(a: TextAnnotation, b: TEXT_ANNOTATION): boolean {
     return a.start < b.end && b.start < a.end;
   }
 
-  private findCandidates(query: TextAnnotation): RBushItem[] {
+  private findCandidates(query: TEXT_ANNOTATION): RBushItem<TEXT_ANNOTATION>[] {
     if (query.start === query.end) {
       return [];
     }
@@ -76,7 +80,10 @@ export class AnnotationOverlap {
     });
   }
 
-  private isMatchingCandidate(item: RBushItem, query: TextAnnotation): boolean {
+  private isMatchingCandidate(
+    item: RBushItem<TEXT_ANNOTATION>,
+    query: TEXT_ANNOTATION,
+  ): boolean {
     return (
       item.annotation.id !== query.id && this.overlaps(query, item.annotation)
     );
@@ -87,7 +94,7 @@ export class AnnotationOverlap {
    * Excludes the annotation itself (by id).
    * Time complexity: O(log n + k) where k is the number of results
    */
-  getOverlaps(query: TextAnnotation): TextAnnotation[] {
+  getOverlaps(query: TEXT_ANNOTATION): TEXT_ANNOTATION[] {
     // Filter: exclude self and verify true overlap (RBush uses inclusive bounds)
     return this.findCandidates(query)
       .filter((item) => this.isMatchingCandidate(item, query))
@@ -98,7 +105,7 @@ export class AnnotationOverlap {
    * Check if a query annotation overlaps with any stored annotation.
    * Excludes the annotation itself (by id).
    */
-  hasOverlap(query: TextAnnotation): boolean {
+  hasOverlap(query: TEXT_ANNOTATION): boolean {
     return this.findCandidates(query).some((item) =>
       this.isMatchingCandidate(item, query),
     );

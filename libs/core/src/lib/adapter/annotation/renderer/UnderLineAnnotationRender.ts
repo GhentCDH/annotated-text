@@ -3,8 +3,8 @@ import { createTextAnnotationRender } from "./TextAnnotationRender";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  AnnotationStyle,
   DefaultTextAnnotationStyle,
+  TextAnnotationStyle,
 } from "./annotation-render";
 import {
   AnnotationDrawColor,
@@ -19,7 +19,7 @@ import {
 } from "../../../compute/utils/create-path";
 
 export const getColorsUnderline: GetColorsFn = (
-  style: AnnotationStyle,
+  style: TextAnnotationStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
