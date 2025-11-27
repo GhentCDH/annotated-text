@@ -8,7 +8,7 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
   lines: TextLine[],
   annotations: TextAnnotation[],
 ) => {
-  // decide for eacht line how many annotations can be in the gutter
+  // decide for each line how many annotations can be in the gutter
   const annotationsInGutter = new Map<
     string,
     { annotation: TextAnnotation; height: number; index: number }[]
