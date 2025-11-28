@@ -7,6 +7,7 @@ import { AnnotationEventType } from "../../../events/events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
 import { drawTag } from "../tag";
+import { hoverAnnotation, leaveAnnotation } from "./hover";
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
@@ -102,8 +103,11 @@ export const drawHandle = (
         .on("start", onEditDragStart)
         .on("end", onEditDragEnd) as any,
     );
-  handle.on("mouseenter", () => {
-    handle.attr("class", svgModel.annotationAdapter.edit ? "handle" : "");
-  });
+  handle
+    .on("mouseover", hoverAnnotation(annotation, svgModel))
+    .on("mouseleave", leaveAnnotation(annotation, svgModel))
+    .on("mouseenter", () => {
+      handle.attr("class", svgModel.annotationAdapter.edit ? "handle" : "");
+    });
   return handle;
 };

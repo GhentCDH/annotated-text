@@ -1,10 +1,10 @@
-import { AnnotationRect, SvgModel } from "../../model/svg.types";
+import { SvgModel } from "../../model/svg.types";
 import { drawTag } from "../tag";
 
 import { AnnotationDrawColors, TextAnnotation } from "../../../model";
 
 export const hoverAnnotation =
-  (rect: AnnotationRect, annotation: TextAnnotation, svgModel: SvgModel) =>
+  (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
     const model = svgModel.model;
     if (model.blockEvents) return;
@@ -24,7 +24,7 @@ export const hoverAnnotation =
   };
 
 export const leaveAnnotation =
-  (rect: AnnotationRect, annotation: TextAnnotation, svgModel: SvgModel) =>
+  (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
     if (svgModel.model.blockEvents) return;
 
