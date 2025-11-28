@@ -65,8 +65,8 @@ export const drawAnnotation = (
     drawAnnotationHandles(annotation, draw, svgModel);
 
     rect
-      ?.on("mouseover", hoverAnnotation(rect, annotation, svgModel))
-      .on("mouseleave", leaveAnnotation(rect, annotation, svgModel))
+      ?.on("mouseover", hoverAnnotation(annotation, svgModel))
+      .on("mouseleave", leaveAnnotation(annotation, svgModel))
       // TODO check double click also fires click event
       .on("dblclick", doubleClickAnnotation(rect, annotation, svgModel))
       .on("click", clickAnnotation(rect, annotation, svgModel))
