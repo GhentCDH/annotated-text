@@ -332,6 +332,17 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     return this;
   }
 
+  registerRenders<STYLE extends AnnotationRenderStyle>(
+    ...renders: AnnotationRender<STYLE>[]
+  ) {
+    renders.forEach((render) =>
+      this.annotationAdapter.renderInstance.registerRender(render),
+    );
+
+    // TODO check if added later the new render is used in the existing annotations
+    return this;
+  }
+
   updateRenderStyle<STYLE extends AnnotationRenderStyle>(
     name: string,
     style: Partial<STYLE>,

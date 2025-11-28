@@ -1,12 +1,12 @@
 import { merge } from "lodash-es";
-import { Debugger } from "../../../utils/debugger";
-import type { TextAnnotation } from "../../../model";
 import {
   AnnotationRender,
   AnnotationRenderParams,
   AnnotationRenderStyle,
   RenderParams,
 } from "./annotation-render";
+import { Debugger } from "../../../utils/debugger";
+import type { TextAnnotation } from "../../../model";
 
 export class RenderInstances<ANNOTATION> {
   private renderParams = {

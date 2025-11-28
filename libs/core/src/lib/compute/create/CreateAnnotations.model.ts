@@ -102,6 +102,9 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
   registerRender: <STYLE extends AnnotationRenderStyle>(
     render: AnnotationRender<STYLE>,
   ) => this;
+  registerRenders: <STYLE extends AnnotationRenderStyle>(
+    ...renders: AnnotationRender<STYLE>[]
+  ) => this;
 
   updateRenderStyle: <STYLE extends AnnotationRenderStyle>(
     name: string,

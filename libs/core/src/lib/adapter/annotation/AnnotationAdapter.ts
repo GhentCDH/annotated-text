@@ -4,6 +4,8 @@ import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationR
 import { RenderParams } from "./renderer/annotation-render";
 import { DefaultTagConfig, TagConfig } from "./DefaultTag";
 import { RenderInstances } from "./renderer/render-instances";
+import { StyleInstances } from "./style/style-instances";
+import { AnnotationStyleParams } from "./style";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
 import {
@@ -19,8 +21,6 @@ import {
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
 import { DeepPartial } from "../../deep-partial.type";
-import { StyleInstances } from "./style/style-instances";
-import { AnnotationStyleParams } from "./style";
 
 /**
  * @deprecated

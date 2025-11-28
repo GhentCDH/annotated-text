@@ -1,6 +1,9 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
+  GutterAnnotationRender,
+  HighlightAnnotationRender,
+  UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
 import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
@@ -40,9 +43,26 @@ export const customAnnotationRender = (id_default: string) => {
   clearAnnotatedTextCache();
   const activeAnnotations = [];
 
-  createAnnotatedText(id_default, {
-    annotation: DemoAnnotationConfig,
+  // TODO add example
+};
+
+export const annotationRender = (id_default: string) => {
+  clearAnnotatedTextCache();
+  const activeAnnotations = [];
+
+  createAnnotatedText<DemoAnnotation>(id_default, {
+    annotation: {
+      ...DemoAnnotationConfig,
+      render: {
+        renderFn: (a) => a.target,
+      },
+    },
   })
+    .registerRender(new HighlightAnnotationRender())
+    .registerRenders(
+      new GutterAnnotationRender(),
+      new UnderLineAnnotationRender(),
+    )
     .setText(text)
     .setAnnotations(annotations)
     .highlightAnnotations(activeAnnotations);
