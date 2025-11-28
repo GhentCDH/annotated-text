@@ -1,6 +1,5 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
-import { ColorFn, DefaultAnnotationColor } from "./DefaultAnnotationColor";
 import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from "./renderer";
 import { RenderParams } from "./renderer/annotation-render";
 import { DefaultTagConfig, TagConfig } from "./DefaultTag";
@@ -20,6 +19,8 @@ import {
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
 import { DeepPartial } from "../../deep-partial.type";
+import { StyleInstances } from "./style/style-instances";
+import { AnnotationStyleParams } from "./style";
 
 /**
  * @deprecated
@@ -49,9 +50,9 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * Configuration for styling the annotations, can be used to override default styles.
    */
   public config?: AnnotationConfig;
-  public colorFn = DefaultAnnotationColor;
   public tagConfig: TagConfig<ANNOTATION>;
   public renderInstance: RenderInstances<ANNOTATION>;
+  public styleInstance: StyleInstances<ANNOTATION>;
 
   protected text: string = "";
   protected offsetStart = 0;
@@ -87,10 +88,10 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
 
     const renderInstance = this.renderInstance.getRenderer(annotation);
 
-    // TODO fix it when implementing different styles
     const style = renderStyleSchema.parse({
-      color: this.colorFn(annotation),
       renderStyle: renderInstance.style,
+      ...renderInstance.style,
+      ...this.styleInstance.getStyle(annotation),
     });
 
     const renderParams = renderSchema.parse({
@@ -121,16 +122,6 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     isNew: boolean,
     hasChanged: boolean,
   ): ANNOTATION | null;
-
-  /**
-   * Get the color of the annotation, it uses the color function to determine the color.
-   * By default it uses the DefaultAnnotationColor function, which returns the color field of on the annotation.
-   * If not provided it will render a color.
-   * @param annotation
-   */
-  color(annotation: Pick<TextAnnotation, "id">) {
-    return this.colorFn(this.getAnnotation(annotation.id));
-  }
 
   /**
    * Get the tag label of the annotation, it uses the tag function to determine the tag label.
@@ -221,9 +212,9 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
   snapper?: Snapper;
-  colorFn?: ColorFn<ANNOTATION>;
   tagConfig?: Partial<TagConfig<ANNOTATION>>;
   render?: Partial<RenderParams<ANNOTATION>>;
+  style?: Partial<AnnotationStyleParams<ANNOTATION>>;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -238,7 +229,6 @@ export const createAnnotationAdapter = <ANNOTATION>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.snapper = params.snapper ?? new DefaultSnapper();
-  adapter.colorFn = params.colorFn ?? (DefaultAnnotationColor as any);
   adapter.tagConfig = merge(
     cloneDeep(DefaultTagConfig),
     params.tagConfig ?? {},
@@ -252,6 +242,8 @@ export const createAnnotationAdapter = <ANNOTATION>(
   renderInstance.registerRender(new UnderLineAnnotationRender());
 
   adapter.renderInstance = renderInstance;
+
+  adapter.styleInstance = new StyleInstances<ANNOTATION>(params.style);
 
   return adapter;
 };

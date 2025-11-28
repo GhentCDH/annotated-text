@@ -4,7 +4,7 @@ import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  TextAnnotationRenderStyle,
+  DefaultAnnotationRenderStyle,
 } from "./annotation-render";
 import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import {
@@ -21,7 +21,7 @@ export const createTextAnnotationRender = (
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
   pathFn: createAnnotationPathFn,
-  getColorsFn: GetColorsFn,
+  getColorsFn: GetColorsFn<TextAnnotationRenderStyle>,
 ) => {
   const radius = style.borderRadius;
 
@@ -88,7 +88,12 @@ export const createTextAnnotationRender = (
 };
 
 export const DefaultTextAnnotationRenderStyle = {
-  ...cloneDeep(DefaultTextAnnotationRenderStyle),
+  ...cloneDeep(DefaultAnnotationRenderStyle),
+  borderWidth: 2,
+  borderRadius: 6,
+  //TODO  These are defined somewhere else too, check how it is done with the gutters
+  padding: 6,
+  lineHeight: 22,
 };
 export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 

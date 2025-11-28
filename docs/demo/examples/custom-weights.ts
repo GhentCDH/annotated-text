@@ -1,9 +1,10 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  TextAnnotation,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotation } from "../data";
+import { DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
@@ -48,7 +49,7 @@ const annotations = [
     color: annotationColors["4"],
     id: "cw6",
   },
-] as any as TextAnnotation[];
+] as DemoAnnotation[];
 
 const text = `Lorem ipsum dolor sit amet, 
 consectetuer adipiscing elit. 
@@ -60,9 +61,7 @@ export const customWeights = (id: string) => {
   clearAnnotatedTextCache();
   createAnnotatedText(id, {
     annotation: {
-      render: {
-        renderFn: (annotation: any) => annotation.target,
-      },
+      ...DemoAnnotationConfig,
       tagConfig: {
         enabled: true,
         tagFn: (a) => a.id,

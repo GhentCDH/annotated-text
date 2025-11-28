@@ -1,11 +1,9 @@
 import { cloneDeep } from "lodash-es";
-import { createTextAnnotationRender } from "./TextAnnotationRender";
 import {
-  AnnotationRender,
-  AnnotationRenderParams,
+  createTextAnnotationRender,
   DefaultTextAnnotationRenderStyle,
-  TextAnnotationRenderStyle,
-} from "./annotation-render";
+} from "./TextAnnotationRender";
+import { AnnotationRender, AnnotationRenderParams } from "./annotation-render";
 import {
   AnnotationDrawColor,
   AnnotationDrawColors,
@@ -18,8 +16,8 @@ import {
   PathParams,
 } from "../../../compute/utils/create-path";
 
-export const getColorsUnderline: GetColorsFn = (
-  style: TextAnnotationRenderStyle,
+export const getColorsUnderline: GetColorsFn<UnderlineAnnotationRenderStyle> = (
+  style: UnderlineAnnotationRenderStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {

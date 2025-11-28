@@ -36,7 +36,7 @@ The original text, rendered as flat text:
 //
 import { onMounted } from "vue";
 import { createAnnotatedText, MarkdownTextAdapter, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
-import {  markdownText } from "@demo";
+import { markdownText } from "@demo";
 const id = `markdown-text-example`;
 
 const id_   = `plain-text-example`;
@@ -46,8 +46,9 @@ onMounted(()=> {
         {
             text: MarkdownTextAdapter({flatText: true}),
             annotation: {
+                ...greekText.annotationConfig,
                 create: true,
-                edit: true
+                edit: true,
             },
         })
     .setText(markdownText.text)
@@ -57,8 +58,9 @@ onMounted(()=> {
         {
             text: MarkdownTextAdapter(),
             annotation: {
+                ...greekText.annotationConfig,
                 create: true,
-                edit: true
+                edit: true,
             },
         })
      .setText(markdownText.text)

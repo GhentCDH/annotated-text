@@ -34,17 +34,18 @@ textAnnotation.annotationAdapter.enableCreate(true);
 //
 import { onMounted } from "vue";
 import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
-import { greekText } from "@demo";
+import { greekText} from "@demo";
 const id = `create-edit-example`;
-const renderFn = (annotation) => annotation.target === "gutter" ? "gutter" : null;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
     createAnnotatedText(id,
         {  
             text: TextLineAdapter(),
-            annotation: {edit: true, create: true, 
-                render: { renderFn }
+            annotation: {
+                ...greekText.annotationConfig,
+                edit: true, 
+                create: true
             },
         })
     .setText(greekText.text)

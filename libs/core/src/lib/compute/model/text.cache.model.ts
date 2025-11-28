@@ -1,11 +1,9 @@
 import { maxBy } from "lodash-es";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
 import { TextAnnotation, TextLine } from "../../model";
-import {
-  AnnotationRender,
-  TextAnnotationRenderStyle,
-} from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationRender } from "../../adapter/annotation/renderer/annotation-render";
 import { AnnotationWeight } from "../utils/annotation.weight";
+import { TextAnnotationRenderStyle } from "../../adapter/annotation/renderer";
 
 export type TextSettings = {
   padding: number;

@@ -27,6 +27,7 @@ import {
   AnnotationRender,
   AnnotationRenderStyle,
 } from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationStyle } from "../../adapter/annotation/style/annotation.style";
 
 const document = globalThis.document || null;
 export type BaseAnnotation = Pick<Annotation, "id">;
@@ -336,6 +337,21 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     style: Partial<STYLE>,
   ) {
     this.annotationAdapter.renderInstance.updateRenderStyle(name, style);
+    // TODO check if updated later the new render is used in the existing annotations
+    return this;
+  }
+
+  registerStyle(name: string, style: AnnotationStyle) {
+    this.annotationAdapter.styleInstance.registerStyle(name, style);
+    // TODO check if updated later the new render is used in the existing annotations
+
+    return this;
+  }
+
+  registerStyles(styles: Record<string, AnnotationStyle>) {
+    Object.keys(styles).forEach((key) => {
+      this.annotationAdapter.styleInstance.registerStyle(key, styles[key]);
+    });
     // TODO check if updated later the new render is used in the existing annotations
     return this;
   }

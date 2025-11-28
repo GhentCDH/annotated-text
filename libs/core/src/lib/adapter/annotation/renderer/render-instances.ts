@@ -1,5 +1,6 @@
 import { merge } from "lodash-es";
-import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
+import { Debugger } from "../../../utils/debugger";
+import type { TextAnnotation } from "../../../model";
 import {
   AnnotationRender,
   AnnotationRenderParams,

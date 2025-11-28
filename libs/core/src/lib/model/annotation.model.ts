@@ -17,6 +17,7 @@ export const annotationSchema = z.object({
   label: z.string().optional(),
   textSelection: z.string().optional(),
 });
+
 export type AnnotationId = z.infer<typeof annotationIdSchema>;
 
 /**

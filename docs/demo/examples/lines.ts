@@ -1,12 +1,8 @@
-import {
-  Annotation,
-  createAnnotatedText,
-  TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated-text";
+import { DemoAnnotation, greekText } from "../data";
 
 const createAnnotatedTextWithLines = (
-  annotation: Annotation,
+  annotation: DemoAnnotation,
   textContainer: HTMLElement,
   ignoreLines: boolean,
 ) => {
@@ -17,6 +13,7 @@ const createAnnotatedTextWithLines = (
   textContainer.appendChild(ann);
 
   createAnnotatedText(ann.id, {
+    annotation: greekText.annotationConfig,
     text: TextLineAdapter({
       limit: {
         start: annotation.start,

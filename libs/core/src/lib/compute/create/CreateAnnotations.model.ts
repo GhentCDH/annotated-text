@@ -5,6 +5,7 @@ import { ANNOTATION_CONFIG_KEYS, ANNOTATION_CONFIG_VALUES } from "../../adapter/
 import { EventListenerType } from "../../events/event.listener";
 import { AnnotationId } from "../../model";
 import { AnnotationRender, AnnotationRenderStyle } from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationStyle } from "../../adapter/annotation/style/annotation.style";
 
 /**
  * Create annotation is a factory function that creates an annotation model.
@@ -106,4 +107,8 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
     name: string,
     style: Partial<STYLE>,
   ) => this;
+
+  registerStyle: (name: string, style: AnnotationStyle) => this;
+
+  registerStyles: (styles: Record<string, AnnotationStyle>) => this;
 }

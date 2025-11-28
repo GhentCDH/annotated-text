@@ -3,6 +3,7 @@ import {
   createAnnotatedText,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
@@ -29,7 +30,7 @@ const annotations = [
     label: "gts",
     id: "3",
   },
-];
+] as DemoAnnotation[];
 
 const text = `This is an underline annotation
 this is a highlight annotation
@@ -40,11 +41,7 @@ export const customAnnotationRender = (id_default: string) => {
   const activeAnnotations = [];
 
   createAnnotatedText(id_default, {
-    annotation: {
-      render: {
-        renderFn: (annotation: any) => annotation.target,
-      },
-    },
+    annotation: DemoAnnotationConfig,
   })
     .setText(text)
     .setAnnotations(annotations)

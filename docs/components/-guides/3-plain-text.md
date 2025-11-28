@@ -35,6 +35,7 @@ onMounted(()=> {
         {
             text: PlainTextAdapter(),
             annotation: {
+                ...plainText.annotationConfig,
                 create: true,
                 edit: true
             },

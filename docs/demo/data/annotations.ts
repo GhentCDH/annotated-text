@@ -1,4 +1,5 @@
 import { annotationColors } from "./const";
+import { DemoAnnotation } from "./data.types";
 
 export const annotations = [
   {
@@ -185,4 +186,4 @@ export const annotations = [
     label: "typography",
     id: "576755",
   },
-];
+] as DemoAnnotation[];

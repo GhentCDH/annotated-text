@@ -4,6 +4,7 @@ import {
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
+import { DemoAnnotationConfig } from "../data/data.types";
 
 export const ActiveAnnotations = (id_default: string, id_underline: string) => {
   clearAnnotatedTextCache();
@@ -18,6 +19,7 @@ export const ActiveAnnotations = (id_default: string, id_underline: string) => {
   createAnnotatedText(id_default, {
     text: TextLineAdapter(),
     annotation: {
+      style: DemoAnnotationConfig.style,
       render: {
         defaultRenderer: "highlight",
         renderFn,
@@ -32,6 +34,7 @@ export const ActiveAnnotations = (id_default: string, id_underline: string) => {
   createAnnotatedText(id_underline, {
     text: TextLineAdapter(),
     annotation: {
+      style: DemoAnnotationConfig.style,
       render: {
         defaultRenderer: "underline",
         renderFn,

@@ -35,7 +35,7 @@ export const scrollToAnnotation = (id: string) => {
   element.appendChild(annotationDiv);
   annotatedText = createAnnotatedText(annotationId, {
     text: TextLineAdapter(),
-    annotation: { render: greekText.render },
+    annotation: greekText.annotationConfig,
   })
     .setText(greekText.text)
     .setAnnotations(annotations);

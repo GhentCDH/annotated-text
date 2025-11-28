@@ -5,7 +5,7 @@ import { RenderInstances } from "../../adapter/annotation/renderer/render-instan
 import {
   AnnotationRender,
   GutterAnnotationRenderStyle,
-} from "../../adapter/annotation/renderer/annotation-render";
+} from "../../adapter/annotation/renderer";
 
 export class GutterCacheModel {
   public maxGutterWeight = 0;

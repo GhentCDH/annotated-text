@@ -3,6 +3,7 @@ import {
   createAnnotatedText,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
@@ -46,6 +47,7 @@ export const createDifferentAnnotationRenders = (
 
   createAnnotatedText(id_default, {
     annotation: {
+      style: DemoAnnotationConfig.style,
       edit: true,
       create: true,
     },
@@ -56,6 +58,7 @@ export const createDifferentAnnotationRenders = (
 
   createAnnotatedText(id_underline, {
     annotation: {
+      style: DemoAnnotationConfig.style,
       render: { defaultRenderer: "underline" },
       edit: true,
       create: true,

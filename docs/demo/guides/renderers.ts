@@ -11,9 +11,9 @@ export const RenderUnderline = (id_default: string, id_underline: string) => {
   createAnnotatedText(id_default, {
     text: TextLineAdapter(),
     annotation: {
+      ...greekText.annotationConfig,
       edit: true,
       create: true,
-      render: greekText.render,
     },
   })
     .setText(greekText.text)
@@ -24,9 +24,10 @@ export const RenderUnderline = (id_default: string, id_underline: string) => {
     annotation: {
       edit: true,
       create: true,
+      style: greekText.annotationConfig.style,
       render: {
         defaultRenderer: "underline",
-        renderFn: greekText.render.renderFn,
+        renderFn: greekText.annotationConfig.render.renderFn,
       },
     },
   })

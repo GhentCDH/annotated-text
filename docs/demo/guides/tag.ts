@@ -15,9 +15,13 @@ export const RenderTag = (
   createAnnotatedText(id, {
     text: TextLineAdapter(),
     annotation: {
+      ...greekText.annotationConfig,
       edit: true,
       create: true,
-      render: { defaultRenderer, renderFn: greekText.render.renderFn },
+      render: {
+        defaultRenderer,
+        renderFn: greekText.annotationConfig.render.renderFn,
+      },
       tagConfig: {
         enabled: true,
         enabledOnHover,

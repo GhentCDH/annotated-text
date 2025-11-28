@@ -10,7 +10,7 @@ const printPosition = (event: any) => {
 export const limitLinesPlainText = (id: string, ignoreLines?: boolean) => {
   createAnnotatedText(id, {
     text: { limit: { start: 200, end: 400, ignoreLines } },
-    annotation: { edit: true, create: true },
+    annotation: { ...plainText.annotationConfig, edit: true, create: true },
   })
     .setText(plainText.text)
     .setAnnotations(plainText.annotations)
@@ -22,7 +22,10 @@ export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
     text: MarkdownTextAdapter({
       limit: { start: 57, end: 400, ignoreLines },
     }),
-    annotation: { edit: true },
+    annotation: {
+      ...markdownText.annotationConfig,
+      edit: true,
+    },
   })
     .setText(markdownText.text)
     .setAnnotations(markdownText.annotations)
@@ -30,8 +33,13 @@ export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
 };
 export const limitLinesLineText = (id: string, ignoreLines?: boolean) => {
   createAnnotatedText(id, {
-    text: TextLineAdapter({ limit: { start: 200, end: 400, ignoreLines } }),
-    annotation: { edit: true, render: greekText.render },
+    text: TextLineAdapter({
+      limit: { start: 200, end: 400, ignoreLines },
+    }),
+    annotation: {
+      ...greekText.annotationConfig,
+      edit: true,
+    },
   })
     .setText(greekText.text)
     .setAnnotations(greekText.annotations)
