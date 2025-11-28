@@ -8,8 +8,7 @@ import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  DefaultGutterAnnotationStyle,
-  GutterAnnotationStyle,
+  GutterAnnotationRenderStyle,
 } from "./annotation-render";
 import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
 import { AnnotationDimension, AnnotationDraw } from "../../../model";
@@ -21,7 +20,7 @@ const createGutterAnnotations = (
   params: AnnotationRenderParams,
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
-  style: GutterAnnotationStyle,
+  style: GutterAnnotationRenderStyle,
 ) => {
   const gutterWidth = style.width;
   const gutterGap = style.gap;
@@ -68,7 +67,7 @@ const createGutterAnnotations = (
 };
 
 export const DefaultGutterAnnotationRenderStyle = {
-  ...cloneDeep(DefaultGutterAnnotationStyle),
+  ...cloneDeep(DefaultGutterAnnotationRenderStyle),
 };
 export type GutterAnnotationRenderStyle =
   typeof DefaultGutterAnnotationRenderStyle;

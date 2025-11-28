@@ -3,8 +3,8 @@ import { createTextAnnotationRender } from "./TextAnnotationRender";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  DefaultTextAnnotationStyle,
-  TextAnnotationStyle,
+  DefaultTextAnnotationRenderStyle,
+  TextAnnotationRenderStyle,
 } from "./annotation-render";
 import {
   AnnotationDrawColor,
@@ -19,7 +19,7 @@ import {
 } from "../../../compute/utils/create-path";
 
 export const getColorsUnderline: GetColorsFn = (
-  style: TextAnnotationStyle,
+  style: TextAnnotationRenderStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
@@ -68,12 +68,13 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const DefaultUnderlineAnnotationStyle = {
-  ...cloneDeep(DefaultTextAnnotationStyle),
+export const DefaultUnderlineAnnotationRenderStyle = {
+  ...cloneDeep(DefaultTextAnnotationRenderStyle),
 };
-export type UnderlineAnnotationStyle = typeof DefaultUnderlineAnnotationStyle;
+export type UnderlineAnnotationRenderStyle =
+  typeof DefaultUnderlineAnnotationRenderStyle;
 
-export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationStyle> {
+export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationRenderStyle> {
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
 
@@ -81,7 +82,7 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
   readonly name = UnderLineAnnotationRender.instance;
 
   constructor() {
-    super(DefaultUnderlineAnnotationStyle);
+    super(DefaultUnderlineAnnotationRenderStyle);
   }
 
   createDraws(

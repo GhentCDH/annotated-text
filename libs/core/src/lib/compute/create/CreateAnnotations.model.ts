@@ -4,7 +4,7 @@ import { ErrorEventCallback, EventCallback } from "../../events";
 import { ANNOTATION_CONFIG_KEYS, ANNOTATION_CONFIG_VALUES } from "../../adapter/annotation";
 import { EventListenerType } from "../../events/event.listener";
 import { AnnotationId } from "../../model";
-import { AnnotationRender, AnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationRender, AnnotationRenderStyle } from "../../adapter/annotation/renderer/annotation-render";
 
 /**
  * Create annotation is a factory function that creates an annotation model.
@@ -98,11 +98,11 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    */
   scrollToAnnotation: (id: AnnotationId) => this;
 
-  registerRender: <STYLE extends AnnotationStyle>(
+  registerRender: <STYLE extends AnnotationRenderStyle>(
     render: AnnotationRender<STYLE>,
   ) => this;
 
-  updateRenderStyle: <STYLE extends AnnotationStyle>(
+  updateRenderStyle: <STYLE extends AnnotationRenderStyle>(
     name: string,
     style: Partial<STYLE>,
   ) => this;

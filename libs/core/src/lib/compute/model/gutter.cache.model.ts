@@ -4,7 +4,7 @@ import { calculateGutterAnnotationWeightsAndEnrich } from "../utils/weights";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
 import {
   AnnotationRender,
-  GutterAnnotationStyle,
+  GutterAnnotationRenderStyle,
 } from "../../adapter/annotation/renderer/annotation-render";
 
 export class GutterCacheModel {
@@ -32,12 +32,13 @@ export class GutterCacheModel {
     const maxGutterWidth =
       maxBy(
         gutterInstances,
-        (r: AnnotationRender<GutterAnnotationStyle>) => r.style?.width ?? 0,
+        (r: AnnotationRender<GutterAnnotationRenderStyle>) =>
+          r.style?.width ?? 0,
       )?.style?.width ?? 0;
     const maxGutterGap =
       maxBy(
         gutterInstances,
-        (r: AnnotationRender<GutterAnnotationStyle>) => r.style?.gap ?? 0,
+        (r: AnnotationRender<GutterAnnotationRenderStyle>) => r.style?.gap ?? 0,
       )?.style?.gap ?? 0;
 
     const gutterWidth = maxGutterWidth + maxGutterGap;

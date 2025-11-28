@@ -3,7 +3,7 @@ import { RenderInstances } from "../../adapter/annotation/renderer/render-instan
 import { TextAnnotation, TextLine } from "../../model";
 import {
   AnnotationRender,
-  TextAnnotationStyle,
+  TextAnnotationRenderStyle,
 } from "../../adapter/annotation/renderer/annotation-render";
 import { AnnotationWeight } from "../utils/annotation.weight";
 
@@ -58,7 +58,7 @@ export class TextAnnotationCacheModel {
   getTextSettings(renderInstances: RenderInstances<any>): TextSettings {
     const renders = Array.from(this.usedRenders).map((r) =>
       renderInstances.getRendererByName(r),
-    ) as AnnotationRender<TextAnnotationStyle>[];
+    ) as AnnotationRender<TextAnnotationRenderStyle>[];
 
     const padding =
       maxBy(renders, (r) => r?.style?.padding ?? 0)?.style?.padding ?? 0;

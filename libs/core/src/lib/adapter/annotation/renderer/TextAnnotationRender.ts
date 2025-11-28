@@ -4,8 +4,7 @@ import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  DefaultTextAnnotationStyle,
-  TextAnnotationStyle,
+  TextAnnotationRenderStyle,
 } from "./annotation-render";
 import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import {
@@ -18,7 +17,7 @@ import { getRanges } from "../../../compute/utils/ranges/get-range";
 
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,
-  style: TextAnnotationStyle,
+  style: TextAnnotationRenderStyle,
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
   pathFn: createAnnotationPathFn,
@@ -89,7 +88,7 @@ export const createTextAnnotationRender = (
 };
 
 export const DefaultTextAnnotationRenderStyle = {
-  ...cloneDeep(DefaultTextAnnotationStyle),
+  ...cloneDeep(DefaultTextAnnotationRenderStyle),
 };
 export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 

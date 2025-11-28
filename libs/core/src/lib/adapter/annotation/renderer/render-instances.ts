@@ -3,7 +3,7 @@ import { Debugger, TextAnnotation } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationRenderParams,
-  AnnotationStyle,
+  AnnotationRenderStyle,
   RenderParams,
 } from "./annotation-render";
 
@@ -24,7 +24,7 @@ export class RenderInstances<ANNOTATION> {
     return this.renderParams.defaultRenderer;
   }
 
-  registerRender<STYLE extends AnnotationStyle>(
+  registerRender<STYLE extends AnnotationRenderStyle>(
     render: AnnotationRender<STYLE>,
   ) {
     this.renderMap.set(render.name, render);
@@ -32,7 +32,7 @@ export class RenderInstances<ANNOTATION> {
     if (!this.defaultRenderer) this.renderParams.defaultRenderer = render.name;
   }
 
-  updateRenderStyle<STYLE extends AnnotationStyle>(
+  updateRenderStyle<STYLE extends AnnotationRenderStyle>(
     name: string,
     style: Partial<STYLE>,
   ) {

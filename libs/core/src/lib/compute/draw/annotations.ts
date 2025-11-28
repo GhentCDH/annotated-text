@@ -9,12 +9,12 @@ import {
   AnnotationDrawColors,
   TextAnnotation,
 } from "../../model";
-import { AnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationRenderStyle } from "../../adapter/annotation/renderer/annotation-render";
 
 export const drawAnnotationContent = (
   draw: AnnotationDraw,
   svgModel: SvgModel,
-  style: AnnotationStyle,
+  style: AnnotationRenderStyle,
   color: AnnotationDrawColor,
 ) => {
   let border = null;
@@ -52,7 +52,7 @@ export const drawAnnotation = (
   annotation: TextAnnotation,
 ) => {
   const color = annotation._drawMetadata.color as AnnotationDrawColors;
-  const style = annotation._render.style.renderStyle as AnnotationStyle;
+  const style = annotation._render.style.renderStyle as AnnotationRenderStyle;
 
   annotation._drawMetadata.draws.forEach((draw) => {
     const { rect, border } = drawAnnotationContent(

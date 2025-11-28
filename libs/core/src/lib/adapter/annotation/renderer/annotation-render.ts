@@ -72,17 +72,17 @@ export type RenderParams<ANNOTATION> = {
  * Custom renderers must extend this class and implement all abstract members.
  * The class handles style management and provides a contract for rendering annotations.
  *
- * @template STYLE - The style configuration type, must extend AnnotationStyle
+ * @template STYLE - The style configuration type, must extend AnnotationRenderStyle
  *
  * @example
  * ```typescript
- * class HighlightRenderer extends AnnotationRender<AnnotationStyle> {
+ * class HighlightRenderer extends AnnotationRender<AnnotationRenderStyle> {
  *   weightOrder = 1;
  *   name = 'highlight';
  *   isGutter = false;
  *
  *   constructor() {
- *     super(DefaultAnnotationStyle);
+ *     super(DefaultAnnotationRenderStyle);
  *   }
  *
  *   render(params, parentDimensions, annotation) {
@@ -92,7 +92,7 @@ export type RenderParams<ANNOTATION> = {
  * }
  * ```
  */
-export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
+export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
   /**
    * Determines the rendering priority when multiple renderers apply to overlapping annotations.
    *
@@ -244,7 +244,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationStyle> {
  * @property hover.color.fill - Fill color on hover
  * @property edit - Style applied when annotation is being edited
  * @property edit.color.border - Border color in edit mode */
-export const DefaultAnnotationStyle = {
+export const DefaultAnnotationRenderStyle = {
   hover: {
     color: {
       border: "rgba(100, 100, 100, 0.5)",
@@ -267,7 +267,7 @@ export const DefaultAnnotationStyle = {
  * @example
  * ```typescript
  * // Extend with custom properties
- * type CustomStyle = AnnotationStyle & {
+ * type CustomStyle = AnnotationRenderStyle & {
  *   shadowBlur: number;
  *   shadowColor: string;
  * };
@@ -277,20 +277,21 @@ export const DefaultAnnotationStyle = {
  * }
  * ```
  */
-export type AnnotationStyle = typeof DefaultAnnotationStyle;
+export type AnnotationRenderStyle = typeof DefaultAnnotationRenderStyle;
 
-export const DefaultTextAnnotationStyle = {
-  ...cloneDeep(DefaultAnnotationStyle),
+export const DefaultTextAnnotationRenderStyle = {
+  ...cloneDeep(DefaultAnnotationRenderStyle),
   borderWidth: 2,
   borderRadius: 6,
   //TODO  These are defined somewhere else too, check how it is done with the gutters
   padding: 6,
   lineHeight: 22,
 };
-export type TextAnnotationStyle = typeof DefaultTextAnnotationStyle;
-export const DefaultGutterAnnotationStyle = {
-  ...cloneDeep(DefaultTextAnnotationStyle),
+export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
+export const DefaultGutterAnnotationRenderStyle = {
+  ...cloneDeep(DefaultTextAnnotationRenderStyle),
   width: 3,
   gap: 6,
 };
-export type GutterAnnotationStyle = typeof DefaultGutterAnnotationStyle;
+export type GutterAnnotationRenderStyle =
+  typeof DefaultGutterAnnotationRenderStyle;

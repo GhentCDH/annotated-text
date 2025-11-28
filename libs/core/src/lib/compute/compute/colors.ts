@@ -1,14 +1,14 @@
 import { AnnotationDrawColors, TextAnnotation } from "../../model";
-import { TextAnnotationStyle } from "../../adapter/annotation/renderer/annotation-render";
+import { TextAnnotationRenderStyle } from "../../adapter/annotation/renderer/annotation-render";
 
 export type GetColorsFn = (
-  style: TextAnnotationStyle,
+  style: TextAnnotationRenderStyle,
   annotation: TextAnnotation,
   borders: boolean,
 ) => AnnotationDrawColors;
 
 export const getColors: GetColorsFn = (
-  style: TextAnnotationStyle,
+  style: TextAnnotationRenderStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
