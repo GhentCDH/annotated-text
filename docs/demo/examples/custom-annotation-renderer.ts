@@ -158,22 +158,81 @@ export class WavesAnnotationRenderer extends AnnotationRender<any> {
   }
 }
 
-export const customAnnotationRender = (id_default: string, waves?: boolean) => {
+// Create the custom renderer class
+export class SketchyRender extends AnnotationRender<any> {
+  readonly weightOrder: number = 1;
+  readonly isGutter: boolean = false;
+
+  static instance = "my-sketchy-renderer";
+  readonly name = SketchyRender.instance;
+
+  constructor() {
+    super(DefaultUnderlineAnnotationRenderStyle);
+  }
+
+  createDraws(
+    params: AnnotationRenderParams,
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
+    return createTextAnnotationRender(
+      params,
+      this.style,
+      parentDimensions,
+      annotation,
+      createSketchyPath,
+      getColorsUnderline,
+    );
+  }
+}
+
+const createSketchyPath: createAnnotationPathFn = (params: PathParams) => {
+  const { x, y: baseY, width, height } = params;
+  const segmentCount = 6;
+  const amplitude = 4;
+  const y = baseY + height;
+  const segmentWidth = width / segmentCount;
+  const path: string[] = [`M ${x} ${y}`];
+
+  for (let i = 0; i < segmentCount; i++) {
+    const startX = x + i * segmentWidth;
+    const endX = startX + segmentWidth;
+
+    // Random vertical offsets for control points
+    const y1 = y + (Math.random() - 0.5) * amplitude * 2;
+    const y2 = y + (Math.random() - 0.5) * amplitude * 2;
+
+    // Slightly randomize horizontal positions too
+    const x1 = startX + segmentWidth * (0.2 + Math.random() * 0.1);
+    const x2 = startX + segmentWidth * (0.7 + Math.random() * 0.1);
+
+    path.push(`C ${x1} ${y1}, ${x2} ${y2}, ${endX} ${y}`);
+  }
+
+  return {
+    border: path.join(" "),
+    fill: null,
+  };
+};
+
+export const customAnnotationRender = (
+  id_default: string,
+  defaultRenderer = MyUnderLineAnnotationRenderer.instance,
+) => {
   clearAnnotatedTextCache();
 
   createAnnotatedText<DemoAnnotation>(id_default, {
     annotation: {
       ...DemoAnnotationConfig,
       render: {
-        defaultRenderer: waves
-          ? WavesAnnotationRenderer.instance
-          : MyUnderLineAnnotationRenderer.instance,
+        defaultRenderer,
       },
     },
   })
     .registerRenders(
       new MyUnderLineAnnotationRenderer(),
       new WavesAnnotationRenderer(),
+      new SketchyRender(),
     )
     .setText(text)
     .setAnnotations(

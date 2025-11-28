@@ -144,11 +144,13 @@ createAnnotatedText("container", {
 
 <div :id="id_default"></div>
 
-### Example: waves
+### Other examples
 
-another example
-
+Waves renderer:
 <div :id="id_waves"></div>
+
+Sketchy renderer:
+<div :id="id_sketchy"></div>
 
 <script setup>
 //
@@ -156,9 +158,11 @@ import { onMounted } from "vue";
 import { customAnnotationRender } from "@demo";
 const id_default = `selection-custom-annotation--default`;
 const id_waves = `selection-custom-annotation--waves`;
+const id_sketchy = `selection-custom-annotation--sketchy`;
 
 onMounted(()=> {
     customAnnotationRender(id_default);
     customAnnotationRender(id_waves, 'my-waves-renderer');
+    customAnnotationRender(id_sketchy, 'my-sketchy-renderer');
 });
 </script>
