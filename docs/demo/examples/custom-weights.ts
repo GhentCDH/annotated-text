@@ -7,30 +7,6 @@ import { annotationColors } from "../data/const";
 
 const annotations = [
   {
-    start: 0,
-    end: 10,
-    target: "highlight",
-    color: annotationColors["1"],
-    id: "cw1",
-  },
-  {
-    start: 0,
-    end: 20,
-    target: "highlight",
-    color: annotationColors["1"],
-    id: "cw2",
-  },
-  {
-    start: 0,
-    end: 5,
-    target: "highlight",
-    color: annotationColors["1"],
-    id: "cw3",
-  },
-];
-
-const _annotations = [
-  {
     start: 90,
     end: 98,
     target: "underline",
@@ -74,9 +50,11 @@ const _annotations = [
   },
 ] as any as TextAnnotation[];
 
-const text = `This is a text with custom weights
-This line has annotations with no weights
-The red annotation has a weight of 2 the other have a null weight`;
+const text = `Lorem ipsum dolor sit amet, 
+consectetuer adipiscing elit. 
+Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et 
+magnis dis parturient montes, nascetur ridiculus mus.`;
 
 export const customWeights = (id: string) => {
   clearAnnotatedTextCache();

@@ -24,7 +24,7 @@ const createAnnotation = (
 
 // Helper to create lines
 function createLine(lineNumber: number): TextLine {
-  return { lineNumber };
+  return { lineNumber } as TextLine;
 }
 
 // Helper to create render config

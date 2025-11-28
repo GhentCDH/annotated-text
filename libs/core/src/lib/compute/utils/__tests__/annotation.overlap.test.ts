@@ -18,7 +18,9 @@ describe("AnnotationOverlap", () => {
   describe("constructor", () => {
     it("should handle empty annotations array", () => {
       const overlap = AnnotationOverlap.init([]);
-      expect(overlap.getOverlaps({ id: "q1", start: 0, end: 10 })).toEqual([]);
+      expect(
+        overlap.getOverlaps({ id: "q1", start: 0, end: 10 } as TextAnnotation),
+      ).toEqual([]);
     });
 
     it("should handle single annotation", () => {
@@ -51,7 +53,7 @@ describe("AnnotationOverlap", () => {
         expectedCount: number;
       }) => {
         const overlap = AnnotationOverlap.init(annotations);
-        const result = overlap.getOverlaps(annotation);
+        const result = overlap.getOverlaps(annotation as any);
         expect(result).toHaveLength(expectedCount);
       },
     );
