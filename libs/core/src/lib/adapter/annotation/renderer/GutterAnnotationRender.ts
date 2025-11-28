@@ -1,35 +1,37 @@
 import { v4 as uuidv4 } from "uuid";
 import {
-  AnnotationAdapter,
-  TextAdapter,
+  AnnotationDrawColors,
+  Debugger,
   TextAnnotation,
-  TextLine,
 } from "@ghentcdh/annotated-text";
-import { AnnotationRender } from "./DefaultAnnotationRender";
-import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
+import { cloneDeep } from "lodash-es";
 import {
-  AnnotationDimension,
-  AnnotationDraw,
-  TextAnnotationModel,
-} from "../../../compute/annotation.model";
+  AnnotationRender,
+  AnnotationRenderParams,
+  DefaultAnnotationRenderStyle,
+} from "./annotation-render";
+import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
+import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import { getY } from "../../../compute/compute/helpers";
 import { getColors } from "../../../compute/compute/colors";
 import { createGutterPath } from "../../../compute/utils/create-path";
 
-export const GutterAnnotationRender: AnnotationRender = (
-  lines: TextLine[],
+const createGutterAnnotations = (
+  params: AnnotationRenderParams,
   parentDimensions: { x: number; y: number },
-  model: TextAnnotationModel,
   annotation: TextAnnotation,
-  textAdapter: TextAdapter,
-  annotationAdapter: AnnotationAdapter<any>,
+  style: GutterAnnotationRenderStyle,
 ) => {
-  const config = annotationAdapter.config!;
-  const gutterWidth = config.gutter.width;
-  const gutterGap = config.gutter.gap;
+  const gutterWidth = style.width;
+  const gutterGap = style.gap;
+
+  if (!annotation._render.lines || annotation._render.lines.length === 0) {
+    Debugger.warn("no lines to render for annotation", annotation);
+    return { draws: [], dimensions: undefined, color: null };
+  }
 
   const { min: firstLine, max: lastLine } = getMinMaxBy(
-    lines,
+    annotation._render.lines,
     (line) => line.lineNumber,
   );
 
@@ -44,14 +46,14 @@ export const GutterAnnotationRender: AnnotationRender = (
 
   // Add the gutterwidth as padding
   // We want to have the most gutters closest to the text
-  const weight = model.maxGutterWeight - annotation.weight!;
+  const weight = params.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
-  const color = getColors(annotationAdapter, annotation, false);
+  const color: AnnotationDrawColors = getColors(style, annotation, false);
 
   const draws: AnnotationDraw[] = [
     {
-      weight: annotation.weight!,
+      weight: annotation._render.weight!,
       uuid: uuidv4(),
       annotationUuid: annotation.id,
       lineNumber: firstLine.lineNumber,
@@ -61,5 +63,41 @@ export const GutterAnnotationRender: AnnotationRender = (
     },
   ];
 
-  return { draws, isGutter: true, startPosition, color };
+  return { draws, dimensions: startPosition!, color };
 };
+
+export const DefaultGutterAnnotationRenderStyle = {
+  ...cloneDeep(DefaultAnnotationRenderStyle),
+  width: 3,
+  gap: 6,
+};
+export type GutterAnnotationRenderStyle =
+  typeof DefaultGutterAnnotationRenderStyle;
+
+export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRenderStyle> {
+  readonly weightOrder: number = 1;
+  readonly isGutter: boolean = true;
+  static instance = "gutter";
+  readonly name = GutterAnnotationRender.instance;
+
+  constructor() {
+    super(DefaultGutterAnnotationRenderStyle);
+  }
+
+  createDraws(
+    params: AnnotationRenderParams,
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
+    return createGutterAnnotations(
+      params,
+      parentDimensions,
+      annotation,
+      this.style,
+    ) as {
+      draws: AnnotationDraw[];
+      dimensions: AnnotationDimension;
+      color: AnnotationDrawColors;
+    };
+  }
+}

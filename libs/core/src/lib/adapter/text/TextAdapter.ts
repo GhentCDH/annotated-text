@@ -1,6 +1,5 @@
 import { BaseAdapter } from "../BaseAdapter";
 import { type TextLine } from "../../model";
-import { getRanges } from "../../compute/utils/ranges/get-range";
 
 export type TextDirection = "ltr" | "rtl";
 
@@ -35,10 +34,6 @@ export abstract class TextAdapter extends BaseAdapter {
    * @param text
    */
   abstract parse(text: string): TextLine[];
-
-  getRanges(annotation: any, line: TextLine): DOMRect[] | null {
-    return getRanges(annotation, line);
-  }
 
   set limit(limit: Limit | null | undefined) {
     this._limit = limit ?? null;

@@ -4,6 +4,8 @@ import { ErrorEventCallback, EventCallback } from "../../events";
 import { ANNOTATION_CONFIG_KEYS, ANNOTATION_CONFIG_VALUES } from "../../adapter/annotation";
 import { EventListenerType } from "../../events/event.listener";
 import { AnnotationId } from "../../model";
+import { AnnotationRender, AnnotationRenderStyle } from "../../adapter/annotation/renderer/annotation-render";
+import { AnnotationStyle } from "../../adapter/annotation/style/annotation.style";
 
 /**
  * Create annotation is a factory function that creates an annotation model.
@@ -96,4 +98,78 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @param id
    */
   scrollToAnnotation: (id: AnnotationId) => this;
+  /**
+   * Registers a single annotation renderer.
+   *
+   * @template STYLE - The render style type extending AnnotationRenderStyle
+   * @param render - The renderer instance to register
+   * @returns The annotated text instance for method chaining
+   *
+   * @example
+   * createAnnotatedText(containerId, config)
+   *   .registerRender(new HighlightAnnotationRender());
+   */
+  registerRender: <STYLE extends AnnotationRenderStyle>(
+    render: AnnotationRender<STYLE>,
+  ) => this;
+  /**
+   * Registers multiple annotation renderers at once.
+   *
+   * @param renders - The renderer instances to register
+   * @returns The annotated text instance for method chaining
+   *
+   * @example
+   * createAnnotatedText(containerId, config)
+   *   .registerRenders(
+   *     new GutterAnnotationRender(),
+   *     new UnderLineAnnotationRender()
+   *   );
+   */
+  registerRenders: (...render: AnnotationRender<any>[]) => this;
+  /**
+   * Updates the style of a registered renderer.
+   *
+   * @template STYLE - The render style type extending AnnotationRenderStyle
+   * @param name - The name/key of the registered renderer to update
+   * @param style - Partial style object with properties to update
+   * @returns The annotated text instance for method chaining
+   *
+   * @example
+   * createAnnotatedText(containerId, config)
+   *   .registerRender(new UnderLineAnnotationRender())
+   *   .updateRenderStyle("underline", { strokeWidth: 2 });
+   */
+  updateRenderStyle: <STYLE extends AnnotationRenderStyle>(
+    name: string,
+    style: Partial<STYLE>,
+  ) => this;
+  /**
+   * Registers a single named annotation style.
+   *
+   * @param name - The unique name/key for the style
+   * @param style - The annotation style configuration
+   * @returns The annotated text instance for method chaining
+   *
+   * @example
+   * createAnnotatedText(containerId, config)
+   *   .registerStyle("style-error", {
+   *     color: createAnnotationColor("#ff3b3b")
+   *   });
+   */
+  registerStyle: (name: string, style: AnnotationStyle) => this;
+  /**
+   * Registers multiple named annotation styles at once.
+   *
+   * @param styles - An object mapping style names to their configurations
+   * @returns The annotated text instance for method chaining
+   *
+   * @example
+   * createAnnotatedText(containerId, config)
+   *   .registerStyles({
+   *     "style-error": { color: createAnnotationColor("#ff3b3b") },
+   *     "style-warning": { color: createAnnotationColor("#ff9800") },
+   *     "style-info": { color: createAnnotationColor("#2196f3") }
+   *   });
+   */
+  registerStyles: (styles: Record<string, AnnotationStyle>) => this;
 }

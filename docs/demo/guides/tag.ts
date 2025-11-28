@@ -1,7 +1,6 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  DefaultRenders,
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
 import { greekText } from "../data";
@@ -9,16 +8,20 @@ import { greekText } from "../data";
 export const RenderTag = (
   id: string,
   enabledOnHover: boolean,
-  defaultRender: DefaultRenders,
+  defaultRenderer: string,
 ) => {
   clearAnnotatedTextCache();
 
   createAnnotatedText(id, {
     text: TextLineAdapter(),
     annotation: {
+      ...greekText.annotationConfig,
       edit: true,
       create: true,
-      defaultRender,
+      render: {
+        defaultRenderer,
+        renderFn: greekText.annotationConfig.render.renderFn,
+      },
       tagConfig: {
         enabled: true,
         enabledOnHover,

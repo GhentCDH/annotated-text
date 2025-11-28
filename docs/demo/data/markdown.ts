@@ -1,5 +1,5 @@
-import { Annotation } from "@ghentcdh/annotated-text";
 import { annotationColors } from "./const";
+import { DemoAnnotation, DemoAnnotationConfig } from "./data.types";
 
 export const text = `**Markdown** 
 
@@ -51,9 +51,10 @@ const annotations = [
     color: annotationColors["3"],
     id: "md-6",
   },
-] as Annotation[];
+] as DemoAnnotation[];
 
 export const markdownText = {
   text,
   annotations: annotations,
+  annotationConfig: DemoAnnotationConfig,
 };

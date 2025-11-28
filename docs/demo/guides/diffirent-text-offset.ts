@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import { createAnnotatedText, TextAnnotation, TextLineAdapter, WordSnapper } from "@ghentcdh/annotated-text";
+import { createAnnotatedText, TextLineAdapter, WordSnapper } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
@@ -17,7 +18,7 @@ const annotations = [
     color: annotationColors["3"],
     id: "anno2",
   },
-] as TextAnnotation[];
+] as DemoAnnotation[];
 
 const text = `The quick brown fox jumps over the lazy dog near the riverbank at dawn.`;
 
@@ -25,6 +26,7 @@ export const createDifferentTextOffset = (id: string, textOffset: number) => {
   createAnnotatedText(id, {
     text: { textOffset },
     annotation: {
+      ...DemoAnnotationConfig,
       edit: true,
       tagConfig: {
         enabled: true,
@@ -45,6 +47,7 @@ export const createDifferentTextOffsetWordsnapper = (
   createAnnotatedText(id, {
     text: { textOffset },
     annotation: {
+      ...DemoAnnotationConfig,
       edit: true,
       tagConfig: {
         enabled: true,
@@ -66,6 +69,7 @@ export const createDifferentTextOffsetLines = (
   createAnnotatedText(id, {
     text: TextLineAdapter({ textOffset }),
     annotation: {
+      ...DemoAnnotationConfig,
       tagConfig: {
         enabled: true,
         tagFn: (annotation) => annotation.label,

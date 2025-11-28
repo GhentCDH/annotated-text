@@ -1,4 +1,8 @@
-import { Annotation } from "@ghentcdh/annotated-text";
+import {
+  AnnotationDimension,
+  AnnotationDrawColors,
+  TextAnnotation,
+} from "@ghentcdh/annotated-text";
 import memoize from "memoizee";
 import { SVG_ID, SVG_ROLE, SvgModel } from "../../model/svg.types";
 import { TagConfig } from "../../../adapter/annotation/DefaultTag";
@@ -44,17 +48,17 @@ const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
   return { textWidth, textHeight };
 };
 
-export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
+export const drawTag = (svgModel: SvgModel, annotation: TextAnnotation) => {
   svgModel.removeTag(annotation.id);
   const tagConfig = svgModel.annotationAdapter.tagConfig;
   if (!tagConfig.enabled) return;
 
-  const annotationDimensions = svgModel.model.getAnnotationDimensions(
-    annotation.id,
-  );
+  const annotationDimensions = annotation._drawMetadata
+    .dimensions as AnnotationDimension;
+
   if (!annotationDimensions) return;
 
-  const color = svgModel.model.getAnnotationColor(annotation.id);
+  const color = annotation._drawMetadata.color as AnnotationDrawColors;
 
   const startAnnotation = {
     x: annotationDimensions.x,
@@ -107,8 +111,8 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
     .attr("y", rectDimensions.y)
     .attr("width", rectDimensions.width)
     .attr("height", rectDimensions.height)
-    .attr("fill", color.tag.fill)
-    .attr("stroke", color.tag.border)
+    .attr("fill", color.tag.fill!)
+    .attr("stroke", color.tag.border!)
     .attr("stroke-width", 1)
     .attr("pointer-events", "none")
     .attr("rx", 3); // rounded corners
@@ -121,6 +125,6 @@ export const drawTag = (svgModel: SvgModel, annotation: Annotation) => {
     .attr("dominant-baseline", "central")
     .attr("font-size", fontSize)
     .attr("pointer-events", "none")
-    .attr("fill", color.tag.text)
+    .attr("fill", color.tag.text!)
     .text(text);
 };

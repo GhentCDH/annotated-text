@@ -2,4 +2,4 @@ export * from "./UnderLineAnnotationRender";
 export * from "./TextAnnotationRender";
 
 export * from "./GutterAnnotationRender";
-export * from "./DefaultAnnotationRender";
+export * from "./annotation-render";

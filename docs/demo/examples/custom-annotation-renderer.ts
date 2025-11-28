@@ -1,20 +1,19 @@
 import {
-  Annotation,
-  AnnotationRenderFn,
   clearAnnotatedTextCache,
   createAnnotatedText,
   GutterAnnotationRender,
-  TextAnnotationRender,
+  HighlightAnnotationRender,
   UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
     start: 11,
     end: 20,
     color: annotationColors["2"],
-    target: "text",
+    target: "underline",
     label: "gts",
     id: "1",
   },
@@ -22,7 +21,7 @@ const annotations = [
     start: 42,
     end: 51,
     color: annotationColors["3"],
-    target: "text",
+    target: "highlight",
     label: "gts",
     id: "2",
   },
@@ -30,11 +29,11 @@ const annotations = [
     start: 63,
     end: 90,
     color: annotationColors["7"],
-    target: "text",
+    target: "gutter",
     label: "gts",
     id: "3",
   },
-] as Annotation[];
+] as DemoAnnotation[];
 
 const text = `This is an underline annotation
 this is a highlight annotation
@@ -44,22 +43,26 @@ export const customAnnotationRender = (id_default: string) => {
   clearAnnotatedTextCache();
   const activeAnnotations = [];
 
-  const customRenderFn: AnnotationRenderFn<Annotation> = (annotation) => {
-    switch (annotation.id) {
-      case "1":
-        return UnderLineAnnotationRender;
-      case "3":
-        return GutterAnnotationRender;
-      default:
-        return TextAnnotationRender;
-    }
-  };
+  // TODO add example
+};
 
-  createAnnotatedText(id_default, {
+export const annotationRender = (id_default: string) => {
+  clearAnnotatedTextCache();
+  const activeAnnotations = [];
+
+  createAnnotatedText<DemoAnnotation>(id_default, {
     annotation: {
-      renderFn: customRenderFn,
+      ...DemoAnnotationConfig,
+      render: {
+        renderFn: (a) => a.target,
+      },
     },
   })
+    .registerRender(new HighlightAnnotationRender())
+    .registerRenders(
+      new GutterAnnotationRender(),
+      new UnderLineAnnotationRender(),
+    )
     .setText(text)
     .setAnnotations(annotations)
     .highlightAnnotations(activeAnnotations);

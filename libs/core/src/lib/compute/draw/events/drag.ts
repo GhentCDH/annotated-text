@@ -1,37 +1,34 @@
 import { drag } from "d3";
 import { pick } from "lodash-es";
 import { SVG_ID, SvgModel } from "../../model/svg.types";
-import {
-  AnnotationDraw,
-  Dimensions,
-  TextAnnotationModel,
-} from "../../annotation.model";
-import { TextAnnotation } from "../../../model";
+import { TextAnnotationModel } from "../../annotation.model";
+import { AnnotationDraw, Dimensions, TextAnnotation } from "../../../model";
 import { AnnotationEventType } from "../../../events/events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
 import { drawTag } from "../tag";
 
 export const drawAnnotationHandles = (
-  annotation: AnnotationDraw,
+  annotation: TextAnnotation,
+  draw: AnnotationDraw,
   svgModel: SvgModel,
 ) => {
-  if (annotation.path.border) {
+  if (draw.path.border) {
     // TODO add condition to check if annotation is draggable
 
-    if (annotation.draggable.start) {
-      drawHandle(svgModel, annotation, annotation.draggable.start, "start");
+    if (draw.draggable.start) {
+      drawHandle(svgModel, annotation, draw.draggable.start, "start");
     }
 
-    if (annotation.draggable.end) {
-      drawHandle(svgModel, annotation, annotation.draggable.end, "end");
+    if (draw.draggable.end) {
+      drawHandle(svgModel, annotation, draw.draggable.end, "end");
     }
   }
 };
 
 export const drawHandle = (
   svgModel: SvgModel,
-  annotation: AnnotationDraw,
+  annotation: TextAnnotation,
   dimensions: Dimensions,
   target: "start" | "end",
 ) => {
@@ -50,17 +47,15 @@ export const drawHandle = (
       {
         event: "annotation-edit--end",
         mouseEvent: event,
-        annotationUuid: annotation?.uuid || "",
+        annotationUuid: annotation?.id || "",
       },
       { annotation: dragResult },
     );
 
     if (!dragResult) return;
 
-    const originalAnnotation = svgModel.model.getAnnotation(
-      annotation.annotationUuid,
-    );
-    dragResult.weight = originalAnnotation.weight;
+    dragResult._render.weight = annotation._render.weight;
+    dragResult.id = annotation.id;
     // On annotation end the dummy annotation is removed,
     // and the existing annotation replaced by the new one
     recreateAnnotation(svgModel, dragResult);
@@ -93,7 +88,7 @@ export const drawHandle = (
   const width = handleRadius;
   const handle = svgModel.handles
     .append("rect")
-    .attr(SVG_ID.ANNOTATION_UID, annotation.annotationUuid)
+    .attr(SVG_ID.ANNOTATION_UID, annotation.id)
     .attr(SVG_ID.ANNOTATION_ROLE, "handle")
     .attr("width", width)
     .attr("height", dimensions.height)

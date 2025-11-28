@@ -1,23 +1,14 @@
-# Custom Annotation Weights
+# Annotation render weight orders
 
-The annotated-text library supports custom weights for annotations to control their visual layering and rendering
-priority. Annotations with higher weights are rendered on top of annotations with lower or null weights.
+If you use different annotation renderers, you might want to control the order in which they are rendered.
 
-## How Weights Work
+The default render weight orders are:
 
-- **Higher weight values** render on top of lower weight values
-- **`null` or undefined weights** are treated as the lowest priority (bottom layer)
-- When annotations overlap, the weight determines which annotation appears visually dominant
-- Weights can be any numeric value only positive
+- highlight: 1
+- underline: 2
 
-## Use Cases
-
-Custom weights are particularly useful when:
-
-- Multiple annotations overlap the same text range
-- You need to prioritize certain annotation types (e.g., errors over suggestions)
-- Creating hierarchical annotation layers (e.g., sentence-level above word-level)
-- Ensuring important annotations remain visible when stacked
+If you create a custom renderer, you can customize the weight order by setting the `weightOrder` property in the
+renderer definition.
 
 ## Example
 

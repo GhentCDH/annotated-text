@@ -1,9 +1,9 @@
 import {
-  Annotation,
   clearAnnotatedTextCache,
   createAnnotatedText,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
@@ -30,7 +30,7 @@ const annotations = [
     label: "gts",
     id: "3",
   },
-] as Annotation[];
+];
 
 const text = `1 character selection
 3 character selection with
@@ -47,6 +47,7 @@ export const createDifferentAnnotationRenders = (
 
   createAnnotatedText(id_default, {
     annotation: {
+      style: DemoAnnotationConfig.style,
       edit: true,
       create: true,
     },
@@ -57,7 +58,8 @@ export const createDifferentAnnotationRenders = (
 
   createAnnotatedText(id_underline, {
     annotation: {
-      defaultRender: "underline",
+      style: DemoAnnotationConfig.style,
+      render: { defaultRenderer: "underline" },
       edit: true,
       create: true,
     },

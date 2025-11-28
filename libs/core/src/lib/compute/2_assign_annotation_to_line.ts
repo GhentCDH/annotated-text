@@ -99,7 +99,9 @@ export const assignAnnotationToLines = (
     return model;
   }
 
-  model.setAnnotation(annotation, lines, calculateWeights);
+  annotation._render.lines = lines;
+
+  model.setAnnotation(annotation, calculateWeights);
 
   return model;
 };

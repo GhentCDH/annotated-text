@@ -1,40 +1,45 @@
-import { AnnotationAdapter } from "../../adapter";
-import { TextAnnotation } from "../../model";
-import { AnnotationDrawColors } from "../annotation.model";
+import { AnnotationDrawColors, TextAnnotation } from "../../model";
+import { AnnotationRenderStyle } from "../../adapter/annotation/renderer";
 
-export type GetColorsFn = (
-  adapter: AnnotationAdapter<any>,
+export type GetColorsFn<STYLE extends AnnotationRenderStyle> = (
+  style: STYLE,
   annotation: TextAnnotation,
   borders: boolean,
 ) => AnnotationDrawColors;
 
-export const getColors: GetColorsFn = (
-  adapter: AnnotationAdapter<any>,
+export const getColors: GetColorsFn<any> = (
+  style: any,
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const config = adapter.config!;
-  const hoverColor = config.hover.color;
-  const editColor = config.edit.color;
-  const color = adapter.color(annotation);
+  const hoverColor = style.hover.color;
+  const editColor = style.edit.color;
+  const color = annotation._render.style.color;
 
   return {
     default: {
       fill: color.background,
       border: borders ? color.border : undefined,
+      borderWidth: style.borderWidth,
     },
-    hover: hoverColor,
+    hover: {
+      ...hoverColor,
+      borderWidth: style.borderWidth,
+    },
     edit: {
       fill: color.background,
       border: borders ? editColor.border : undefined,
+      borderWidth: style.borderWidth,
     },
     active: {
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
+      borderWidth: style.borderWidth,
     },
     tag: {
       fill: color.tagBackground,
       border: color.border,
+      borderWidth: style.borderWidth,
       text: color.tagColor,
     },
   } as AnnotationDrawColors;

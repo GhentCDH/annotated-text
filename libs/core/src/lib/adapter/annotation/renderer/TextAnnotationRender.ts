@@ -1,44 +1,39 @@
 import { v4 as uuidv4 } from "uuid";
+import { TextAnnotation } from "@ghentcdh/annotated-text";
+import { cloneDeep } from "lodash-es";
 import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextAnnotation,
-  TextLine,
-} from "@ghentcdh/annotated-text";
-import { AnnotationRender } from "./DefaultAnnotationRender";
-import {
-  AnnotationDimension,
-  AnnotationDraw,
-  TextAnnotationModel,
-} from "../../../compute/annotation.model";
+  AnnotationRender,
+  AnnotationRenderParams,
+  DefaultAnnotationRenderStyle,
+} from "./annotation-render";
+import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import {
   createAnnotationPath,
   createAnnotationPathFn,
 } from "../../../compute/utils/create-path";
 import { getColors, GetColorsFn } from "../../../compute/compute/colors";
 import { getX, getY } from "../../../compute/compute/helpers";
+import { getRanges } from "../../../compute/utils/ranges/get-range";
 
 export const createTextAnnotationRender = (
-  lines: TextLine[],
+  params: AnnotationRenderParams,
+  style: TextAnnotationRenderStyle,
   parentDimensions: { x: number; y: number },
-  model: TextAnnotationModel,
   annotation: TextAnnotation,
-  textAdapter: TextAdapter,
-  annotationAdapter: AnnotationAdapter<any>,
   pathFn: createAnnotationPathFn,
-  getColorsFn: GetColorsFn,
+  getColorsFn: GetColorsFn<TextAnnotationRenderStyle>,
 ) => {
-  const config = annotationAdapter.config!;
-  const radius = config.text.borderRadius;
+  const radius = style.borderRadius;
 
   const draws: AnnotationDraw[] = [];
-  const padding = config.text.padding * annotation.weight!;
-  const height = config.text.lineHeight + padding * 2;
+  const padding = style.padding * annotation._render.weight!;
+  const height = style.lineHeight + padding * 2;
   let startPosition: AnnotationDimension;
-  const color = getColorsFn(annotationAdapter, annotation, true);
+  const color = getColorsFn(style, annotation, true);
 
+  const lines = annotation._render.lines ?? [];
   lines.forEach((line, index: number) => {
-    const rects = textAdapter.getRanges(annotation, line);
+    const rects = getRanges(annotation, line);
 
     const prevEnd = lines[index - 1]?.end;
     const isFirstLine = !prevEnd || prevEnd <= annotation.start;
@@ -52,7 +47,7 @@ export const createTextAnnotationRender = (
       let leftBorder = isFirstLine && rectIdx === 0;
       const lastRect = rectIdx === rects.length - 1;
       let rightBorder = lastRect && isLastLine;
-      if (model.textDirection === "rtl") {
+      if (params.textDirection === "rtl") {
         const r = rightBorder;
         rightBorder = leftBorder;
         leftBorder = r;
@@ -67,7 +62,7 @@ export const createTextAnnotationRender = (
       }
 
       draws.push({
-        weight: annotation.weight!,
+        weight: annotation._render.weight!,
         uuid: uuidv4(),
         annotationUuid: annotation.id,
         lineNumber: line.lineNumber,
@@ -89,27 +84,41 @@ export const createTextAnnotationRender = (
     });
   });
 
-  return { draws, startPosition: startPosition!, color };
+  return { draws, dimensions: startPosition!, color };
 };
 
-export const TextAnnotationRender: AnnotationRender = (
-  lines: TextLine[],
-  parentDimensions: { x: number; y: number },
-  model: TextAnnotationModel,
-  annotation: TextAnnotation,
-  textAdapter: TextAdapter,
-  annotationAdapter: AnnotationAdapter<any>,
-) => {
-  const { draws, startPosition, color } = createTextAnnotationRender(
-    lines,
-    parentDimensions,
-    model,
-    annotation,
-    textAdapter,
-    annotationAdapter,
-    createAnnotationPath,
-    getColors,
-  );
-
-  return { draws, isGutter: false, startPosition, color };
+export const DefaultTextAnnotationRenderStyle = {
+  ...cloneDeep(DefaultAnnotationRenderStyle),
+  borderWidth: 2,
+  borderRadius: 6,
+  //TODO  These are defined somewhere else too, check how it is done with the gutters
+  padding: 6,
+  lineHeight: 22,
 };
+export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
+
+export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationRenderStyle> {
+  readonly weightOrder: number = 1;
+  readonly isGutter: boolean = false;
+  static instance = "highlight";
+  readonly name = HighlightAnnotationRender.instance;
+
+  constructor() {
+    super(DefaultTextAnnotationRenderStyle);
+  }
+
+  createDraws(
+    params: AnnotationRenderParams,
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
+    return createTextAnnotationRender(
+      params,
+      this.style,
+      parentDimensions,
+      annotation,
+      createAnnotationPath,
+      getColors,
+    );
+  }
+}

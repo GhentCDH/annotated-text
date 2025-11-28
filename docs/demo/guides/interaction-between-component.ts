@@ -5,7 +5,7 @@ import {
   getAnnotatedText,
   TextLineAdapter,
 } from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+import { DemoAnnotation, greekText } from "../data";
 
 const text = greekText.text;
 const annotations = greekText.annotations;
@@ -16,7 +16,7 @@ const getDivId = (id: AnnotationId) => {
 
 export const createAnnotatedTextWithLines = (
   annotation: Annotation,
-  annotations: Annotation[],
+  annotations: DemoAnnotation[],
   textContainer: HTMLElement,
 ) => {
   const ann = document.createElement("div");
@@ -32,7 +32,10 @@ export const createAnnotatedTextWithLines = (
         end: annotation.end,
       },
     }),
-    annotation: { edit: true },
+    annotation: {
+      ...greekText.annotationConfig,
+      edit: true,
+    },
   })
     .setText(text)
     .setAnnotations(annotations);
@@ -41,9 +44,7 @@ export const createAnnotatedTextWithLines = (
 export const interActionBetweenComponents = (id: string) => {
   if (!document) return;
   const element = document.getElementById(id);
-  const _annotations = annotations.filter(
-    (a) => a.target === "text",
-  ) as Annotation[];
+  const _annotations = annotations.filter((a) => a.target === "text");
   // .slice(0, 40);
 
   const textContainer = document.createElement("div");

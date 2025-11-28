@@ -1,13 +1,14 @@
-import { createTextAnnotationRender } from "./TextAnnotationRender";
-import { AnnotationRender } from "./DefaultAnnotationRender";
-import { TextAnnotation, TextLine } from "../../../model";
-import { TextAdapter } from "../../../adapter/text";
-import { AnnotationAdapter } from "../../../adapter";
+import { cloneDeep } from "lodash-es";
+import {
+  createTextAnnotationRender,
+  DefaultTextAnnotationRenderStyle,
+} from "./TextAnnotationRender";
+import { AnnotationRender, AnnotationRenderParams } from "./annotation-render";
 import {
   AnnotationDrawColor,
   AnnotationDrawColors,
-  TextAnnotationModel,
-} from "../../../compute/annotation.model";
+  TextAnnotation,
+} from "../../../model";
 import { GetColorsFn } from "../../../compute/compute/colors";
 import {
   createAnnotationFill,
@@ -15,33 +16,40 @@ import {
   PathParams,
 } from "../../../compute/utils/create-path";
 
-export const getColorsUnderline: GetColorsFn = (
-  adapter: AnnotationAdapter<any>,
+export const getColorsUnderline: GetColorsFn<UnderlineAnnotationRenderStyle> = (
+  style: UnderlineAnnotationRenderStyle,
   annotation: TextAnnotation,
   borders = true,
 ) => {
-  const config = adapter.config!;
-  const hoverColor = config.hover.color;
-  const editColor = config.edit.color;
-  const color = adapter.color(annotation);
+  const hoverColor = style.hover.color;
+  const editColor = style.edit.color;
+  const color = annotation._render.style.color;
+
   return {
     default: {
       fill: "rgba(0,0,0,0)",
       border: borders ? color.border : undefined,
+      borderWidth: style.borderWidth,
     } as AnnotationDrawColor,
-    hover: hoverColor,
+    hover: {
+      ...hoverColor,
+      borderWidth: style.borderWidth,
+    },
     edit: {
       fill: color.background,
       border: borders ? editColor.border : undefined,
+      borderWidth: style.borderWidth,
     },
     active: {
       fill: color.backgroundActive,
       border: borders ? color.borderActive : undefined,
+      borderWidth: style.borderWidth,
     } as AnnotationDrawColor,
     tag: {
       fill: color.tagBackground,
       border: color.border,
       text: color.tagColor,
+      borderWidth: style.borderWidth,
     },
   } as AnnotationDrawColors;
 };
@@ -58,24 +66,35 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const UnderLineAnnotationRender: AnnotationRender = (
-  lines: TextLine[],
-  parentDimensions: { x: number; y: number },
-  model: TextAnnotationModel,
-  annotation: TextAnnotation,
-  textAdapter: TextAdapter,
-  annotationAdapter: AnnotationAdapter<any>,
-) => {
-  const { draws, startPosition, color } = createTextAnnotationRender(
-    lines,
-    parentDimensions,
-    model,
-    annotation,
-    textAdapter,
-    annotationAdapter,
-    createUnderline,
-    getColorsUnderline,
-  );
-
-  return { draws, isGutter: false, startPosition, color };
+export const DefaultUnderlineAnnotationRenderStyle = {
+  ...cloneDeep(DefaultTextAnnotationRenderStyle),
 };
+export type UnderlineAnnotationRenderStyle =
+  typeof DefaultUnderlineAnnotationRenderStyle;
+
+export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotationRenderStyle> {
+  readonly weightOrder: number = 2;
+  readonly isGutter: boolean = false;
+
+  static instance = "underline";
+  readonly name = UnderLineAnnotationRender.instance;
+
+  constructor() {
+    super(DefaultUnderlineAnnotationRenderStyle);
+  }
+
+  createDraws(
+    params: AnnotationRenderParams,
+    parentDimensions: { x: number; y: number },
+    annotation: TextAnnotation,
+  ) {
+    return createTextAnnotationRender(
+      params,
+      this.style,
+      parentDimensions,
+      annotation,
+      createUnderline,
+      getColorsUnderline,
+    );
+  }
+}

@@ -1,14 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  Annotation,
-  createAnnotatedText,
-  TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated-text";
+import { DemoAnnotation, greekText } from "../data";
 
 const document = globalThis.document;
 
-const createChunk = (element: HTMLElement, annotation: Annotation) => {
+const createChunk = (element: HTMLElement, annotation: DemoAnnotation) => {
   const id = uuidv4();
   const div = document?.createElement(`div`);
   if (!div) return;
@@ -18,8 +14,12 @@ const createChunk = (element: HTMLElement, annotation: Annotation) => {
   element.appendChild(div);
 
   return createAnnotatedText(id, {
+    annotation: greekText.annotationConfig,
     text: TextLineAdapter({
-      limit: { start: annotation.start, end: annotation.end },
+      limit: {
+        start: annotation.start,
+        end: annotation.end,
+      },
     }),
   })
     .setText(greekText.text)
@@ -34,7 +34,11 @@ export const textWithChunks = (id: string, chunksId: string) => {
   const element = document.getElementById(id);
   createAnnotatedText(id, {
     text: TextLineAdapter(),
-    annotation: { create: true, edit: true },
+    annotation: {
+      ...greekText.annotationConfig,
+      create: true,
+      edit: true,
+    },
   })
     .setText(greekText.text)
     .setAnnotations(annotations)

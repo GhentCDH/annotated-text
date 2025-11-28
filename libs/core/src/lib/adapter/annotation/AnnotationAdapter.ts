@@ -1,43 +1,34 @@
 import { cloneDeep, merge } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
-import { ColorFn, DefaultAnnotationColor } from "./DefaultAnnotationColor";
-import { DefaultAnnotationGutter, GutterFn } from "./DefaultAnnotationGutter";
-import {
-  AnnotationRenderFn,
-  DefaultAnnotationRender,
-  DefaultRenders,
-} from "./renderer";
+import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from "./renderer";
+import { RenderParams } from "./renderer/annotation-render";
 import { DefaultTagConfig, TagConfig } from "./DefaultTag";
+import { RenderInstances } from "./renderer/render-instances";
+import { StyleInstances } from "./style/style-instances";
+import { AnnotationStyleParams } from "./style";
 import { BaseAdapter } from "../BaseAdapter";
 import { createAnnotationColor } from "../../utils/createAnnotationColor";
-import { Annotation, AnnotationId, type TextAnnotation } from "../../model";
+import {
+  Annotation,
+  annotationDrawMetadataSchema,
+  AnnotationId,
+  renderSchema,
+  renderStyleSchema,
+  type TextAnnotation,
+  textAnnotationSchema
+} from "../../model";
 
 import type { Snapper } from "../text";
 import { DefaultSnapper } from "../text";
 import { DeepPartial } from "../../deep-partial.type";
 
+/**
+ * @deprecated
+ */
 const config = {
-  gutter: {
-    width: 3,
-    gap: 6,
-  },
   text: {
-    padding: 6,
-    lineHeight: 22,
-    borderRadius: 6,
-    border: 2,
+    // Width of the handle used to resize annotations
     handleRadius: 6,
-  },
-  edit: {
-    color: {
-      border: "rgba(255,0,0,0.9)",
-    },
-  },
-  hover: {
-    color: {
-      border: "rgba(100, 100, 100, 0.5)",
-      fill: "rgba(1, 1, 1, 0.1)",
-    },
   },
 };
 export type AnnotationConfig = typeof config;
@@ -59,11 +50,9 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * Configuration for styling the annotations, can be used to override default styles.
    */
   public config?: AnnotationConfig;
-  public colorFn = DefaultAnnotationColor;
-  public gutterFn = DefaultAnnotationGutter;
-  public renderFn = DefaultAnnotationRender;
   public tagConfig: TagConfig<ANNOTATION>;
-  public defaultRender: DefaultRenders;
+  public renderInstance: RenderInstances<ANNOTATION>;
+  public styleInstance: StyleInstances<ANNOTATION>;
 
   protected text: string = "";
   protected offsetStart = 0;
@@ -84,7 +73,42 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * Parse an annotation object into a TextAnnotation.
    * @param annotation
    */
-  abstract parse(annotation: ANNOTATION): TextAnnotation | null;
+  abstract _parse(annotation: ANNOTATION): Annotation | null;
+
+  addAnnotation(annotationId: AnnotationId, originalAnnotation: ANNOTATION) {
+    this.originalAnnotations.set(annotationId, originalAnnotation);
+  }
+
+  public parse(annotation: ANNOTATION): TextAnnotation | null {
+    const parsedAnnotation = this._parse(annotation);
+
+    if (!parsedAnnotation) return null;
+
+    this.addAnnotation(parsedAnnotation.id, annotation);
+
+    const renderInstance = this.renderInstance.getRenderer(annotation);
+
+    const style = renderStyleSchema.parse({
+      renderStyle: renderInstance.style,
+      ...renderInstance.style,
+      ...this.styleInstance.getStyle(annotation),
+    });
+
+    const renderParams = renderSchema.parse({
+      weight: undefined,
+      isGutter: renderInstance.isGutter,
+      render: renderInstance.name,
+      style: style,
+    });
+
+    const _drawMetadata = annotationDrawMetadataSchema.parse({});
+
+    return textAnnotationSchema.parse({
+      ...parsedAnnotation,
+      _render: renderParams,
+      _drawMetadata,
+    });
+  }
 
   /**
    * Format a TextAnnotation into an annotation object.
@@ -98,25 +122,6 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     isNew: boolean,
     hasChanged: boolean,
   ): ANNOTATION | null;
-
-  /**
-   * Get the color of the annotation, it uses the color function to determine the color.
-   * By default it uses the DefaultAnnotationColor function, which returns the color field of on the annotation.
-   * If not provided it will render a color.
-   * @param annotation
-   */
-  color(annotation: Pick<TextAnnotation, "id">) {
-    return this.colorFn(this.getAnnotation(annotation.id));
-  }
-
-  /**
-   * Get if the annotation is a gutter annotation, it uses the gutter function to determine if it is a gutter annotation.
-   * By default it uses the DefaultAnnotationGutter function, which returns the isGutter field of on the annotation.
-   * @param annotation
-   */
-  isGutter(annotation: Pick<TextAnnotation, "id">) {
-    return this.gutterFn(this.getAnnotation(annotation.id));
-  }
 
   /**
    * Get the tag label of the annotation, it uses the tag function to determine the tag label.
@@ -136,12 +141,29 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   /**
    * Create a new annotation object with default values.
    */
-  createAnnotation() {
-    return {
-      id: uuidv4(),
-      isGutter: false,
+  createAnnotation(characterPos: number): TextAnnotation {
+    const renderInstance = this.renderInstance.highlightInstance;
+
+    const style = renderStyleSchema.parse({
       color: createAnnotationColor("#f51720"),
-    } as TextAnnotation;
+      renderStyle: renderInstance.style,
+    });
+
+    const renderParams = renderSchema.parse({
+      weight: 0,
+      isGutter: renderInstance.isGutter,
+      render: renderInstance.name,
+      style: style,
+    });
+    const _drawMetadata = annotationDrawMetadataSchema.parse({});
+
+    return textAnnotationSchema.parse({
+      _render: renderParams,
+      _drawMetadata,
+      id: uuidv4(),
+      start: characterPos,
+      end: characterPos + 1,
+    });
   }
 
   /**
@@ -175,10 +197,6 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     }
   }
 
-  addAnnotation(annotationId: AnnotationId, originalAnnotation: ANNOTATION) {
-    this.originalAnnotations.set(annotationId, originalAnnotation);
-  }
-
   getAnnotation(annotationId: AnnotationId): ANNOTATION {
     return this.originalAnnotations.get(annotationId) as ANNOTATION;
   }
@@ -194,11 +212,9 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
   snapper?: Snapper;
-  colorFn?: ColorFn<ANNOTATION>;
-  gutterFn?: GutterFn<ANNOTATION>;
-  renderFn?: AnnotationRenderFn<ANNOTATION>;
-  defaultRender?: DefaultRenders;
   tagConfig?: Partial<TagConfig<ANNOTATION>>;
+  render?: Partial<RenderParams<ANNOTATION>>;
+  style?: Partial<AnnotationStyleParams<ANNOTATION>>;
 };
 
 export const createAnnotationAdapter = <ANNOTATION>(
@@ -213,14 +229,21 @@ export const createAnnotationAdapter = <ANNOTATION>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.snapper = params.snapper ?? new DefaultSnapper();
-  adapter.colorFn = params.colorFn ?? (DefaultAnnotationColor as any);
-  adapter.gutterFn = params.gutterFn ?? (DefaultAnnotationGutter as any);
-  adapter.defaultRender = params.defaultRender ?? "highlight";
-  adapter.renderFn = params.renderFn ?? (DefaultAnnotationRender as any);
   adapter.tagConfig = merge(
     cloneDeep(DefaultTagConfig),
     params.tagConfig ?? {},
   );
+
+  const renderInstance = new RenderInstances(params.render);
+
+  // by default the default renderers are registered
+  renderInstance.registerRender(new HighlightAnnotationRender());
+  renderInstance.registerRender(new GutterAnnotationRender());
+  renderInstance.registerRender(new UnderLineAnnotationRender());
+
+  adapter.renderInstance = renderInstance;
+
+  adapter.styleInstance = new StyleInstances<ANNOTATION>(params.style);
 
   return adapter;
 };

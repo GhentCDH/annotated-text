@@ -1,57 +1,70 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  TextAnnotation,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
+import { DemoAnnotation } from "../data";
+import { DemoAnnotationConfig } from "../data/data.types";
 
 const annotations = [
   {
     start: 90,
     end: 98,
-    target: "text",
-    label: "weight 2",
+    target: "underline",
     color: annotationColors["1"],
     id: "cw1",
-    weight: 2,
+  },
+  {
+    start: 20,
+    end: 60,
+    target: "underline",
+    color: annotationColors["5"],
+    id: "cw5",
   },
   {
     start: 49,
     end: 60,
-    target: "text",
+    target: "highlight",
     color: annotationColors["2"],
     id: "cw2",
-    weight: null,
   },
   {
     start: 87,
     end: 97,
-    target: "text",
+    target: "underline",
     color: annotationColors["3"],
     id: "cw3",
-    weight: null,
   },
   {
     start: 95,
     end: 100,
-    target: "text",
+    target: "highlight",
     color: annotationColors["4"],
     id: "cw4",
-    weight: null,
   },
-] as any as TextAnnotation[];
+  {
+    start: 101,
+    end: 104,
+    target: "highlight",
+    color: annotationColors["4"],
+    id: "cw6",
+  },
+] as DemoAnnotation[];
 
-const text = `This is a text with custom weights
-This line has annotations with no weights
-The red annotation has a weight of 2 the other have a null weight`;
+const text = `Lorem ipsum dolor sit amet, 
+consectetuer adipiscing elit. 
+Aenean commodo ligula eget dolor. Aenean massa. 
+Cum sociis natoque penatibus et 
+magnis dis parturient montes, nascetur ridiculus mus.`;
 
 export const customWeights = (id: string) => {
   clearAnnotatedTextCache();
   createAnnotatedText(id, {
     annotation: {
+      ...DemoAnnotationConfig,
       tagConfig: {
         enabled: true,
-        tagFn: (annotation) => annotation.label ?? "",
+        tagFn: (a) => a.id,
       },
     },
   })

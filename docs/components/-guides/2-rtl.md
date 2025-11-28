@@ -28,7 +28,7 @@ createAnnotatedText(id,
 //
 import { onMounted } from "vue";
 import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
-import { plainText, greekText } from "@demo";
+import { plainText, greekText} from "@demo";
 const id = `plain-text-example`;
 const greek_id = `greek-text-example`;
 
@@ -37,7 +37,12 @@ onMounted(()=> {
     createAnnotatedText(id,
         {  
             text: { textDirection: 'rtl' },
-            annotation: {edit: true, create: true},
+            annotation: {
+                edit: true, 
+                create: true,
+                render: DefaultRender,
+                style: DefaultStyle
+            },
         })
     .setText(plainText.text)
     .setAnnotations(plainText.annotations);
@@ -45,7 +50,11 @@ onMounted(()=> {
     createAnnotatedText(greek_id,
         {  
             text: TextLineAdapter({ textDirection: 'rtl' }),
-            annotation: {edit: true, create: true},
+            annotation: {
+                ...greekText.annotationConfig,
+                edit: true, 
+                create: true,
+            },
         })
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);

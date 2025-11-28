@@ -1,5 +1,4 @@
-import { AnnotationDrawColor } from "../../annotation.model";
-import { type TextAnnotation } from "../../../model";
+import { AnnotationDrawColor, type TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
 import {
   getLinesForAnnotation,
@@ -7,7 +6,6 @@ import {
 } from "../../2_assign_annotation_to_line";
 import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
 import { drawAnnotation, drawAnnotationContent } from "../annotations";
-import { TextAnnotationRender } from "../../../adapter/annotation/renderer";
 
 export const removeDummyAnnotation = (svgModel: SvgModel) => {
   svgModel.removeAnnotations(DUMMY_UID);
@@ -20,23 +18,29 @@ export const drawDummyAnnotation = (
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
   const { model, textElement } = svgModel;
-  const lines = getLinesForAnnotation(model.lines, dummyAnnotation);
 
-  TextAnnotationRender(
-    lines,
-    textElement.getBoundingClientRect(),
-    model,
+  dummyAnnotation._render.lines = getLinesForAnnotation(
+    model.lines,
     dummyAnnotation,
-    svgModel.textAdapter,
-    svgModel.annotationAdapter,
-  ).draws.forEach((a) => {
-    drawAnnotationContent(
-      { ...a, annotationUuid: DUMMY_UID },
-      svgModel,
-      svgModel.annotationAdapter.config!,
-      color,
-    );
-  });
+  );
+
+  const renderInstance =
+    svgModel.annotationAdapter.renderInstance.highlightInstance;
+
+  renderInstance
+    .createDraws(
+      model.renderParams,
+      textElement.getBoundingClientRect(),
+      dummyAnnotation,
+    )
+    .draws.forEach((a) => {
+      drawAnnotationContent(
+        { ...a, annotationUuid: DUMMY_UID },
+        svgModel,
+        renderInstance.style,
+        color,
+      );
+    });
 
   svgModel.colorAnnotation(DUMMY_UID, color!);
 };
@@ -56,10 +60,7 @@ export const recreateAnnotation = (
     svgModel.textElement,
     annotation,
     svgModel.annotationAdapter,
-    svgModel.textAdapter,
-  )
-    .getDrawAnnotations(annotation.id)
-    .forEach((a) => {
-      drawAnnotation(svgModel, a);
-    });
+  );
+
+  drawAnnotation(svgModel, annotation);
 };

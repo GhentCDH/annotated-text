@@ -13,7 +13,10 @@ export const createAnnotationModel = (
 ): TextAnnotationModel => {
   Debugger.debug(`Use lineadapter`, textAdapter.name);
   const lines = textAdapter.parse(text);
-  const annotationModel = new TextAnnotationModelImpl(lines);
+  const annotationModel = new TextAnnotationModelImpl(
+    lines,
+    annotationAdapter.renderInstance,
+  );
   annotationModel.textDirection = textAdapter.textDirection;
   annotationAdapter.setText(text, textAdapter.textOffset);
 
