@@ -1,5 +1,6 @@
 import { drag } from "d3";
 import { pick } from "lodash-es";
+import { hoverAnnotation, leaveAnnotation } from "./hover";
 import { SVG_ID, SvgModel } from "../../model/svg.types";
 import { TextAnnotationModel } from "../../annotation.model";
 import { AnnotationDraw, Dimensions, TextAnnotation } from "../../../model";
@@ -7,7 +8,6 @@ import { AnnotationEventType } from "../../../events/events";
 import { editAnnotations } from "../annotations/edit";
 import { recreateAnnotation, removeDummyAnnotation } from "../annotations/draw";
 import { drawTag } from "../tag";
-import { hoverAnnotation, leaveAnnotation } from "./hover";
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
