@@ -332,9 +332,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     return this;
   }
 
-  registerRenders<STYLE extends AnnotationRenderStyle>(
-    ...renders: AnnotationRender<STYLE>[]
-  ) {
+  registerRenders(...renders: AnnotationRender<any>[]) {
     renders.forEach((render) =>
       this.annotationAdapter.renderInstance.registerRender(render),
     );
