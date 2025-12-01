@@ -3,22 +3,20 @@ import {
   AnnotationRenderParams,
   clearAnnotatedTextCache,
   createAnnotatedText,
+  createAnnotationFill,
+  createAnnotationPathFn,
   createTextAnnotationRender,
   DefaultUnderlineAnnotationRenderStyle,
   getColorsUnderline,
   GutterAnnotationRender,
   HighlightAnnotationRender,
+  PathParams,
   TextAdapterStyle,
   TextAnnotation,
   UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
 import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
-import {
-  createAnnotationFill,
-  createAnnotationPathFn,
-  PathParams,
-} from "../../../libs/core/src/lib/compute/utils/create-path";
 
 const annotations = [
   {
