@@ -115,12 +115,14 @@ export class MyUnderLineAnnotationRenderer extends AnnotationRender {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createUnderlineWithCaps,

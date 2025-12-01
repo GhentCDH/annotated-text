@@ -22,9 +22,12 @@ export type Limit = {
   ignoreLines?: boolean;
 } | null;
 
-export const DefaultTextAdapterStyle = {};
+export const DefaultTextAdapterStyle = {
+  padding: 6,
+  lineHeight: 22,
+};
 
-type TextAdapterStyle = typeof DefaultTextAdapterStyle;
+export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
@@ -46,6 +49,13 @@ export abstract class TextAdapter extends BaseAdapter {
 
   get limit() {
     return this._limit;
+  }
+
+  public setLineHeight(height: number) {
+    this.style = {
+      ...this.style,
+      lineHeight: height,
+    };
   }
 
   /**

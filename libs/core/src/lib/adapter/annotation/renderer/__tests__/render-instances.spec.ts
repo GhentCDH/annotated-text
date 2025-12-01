@@ -449,7 +449,7 @@ describe("RenderInstances", () => {
         _render: { render: "highlight" },
       } as unknown as TextAnnotation;
 
-      renders.createDraws(params, parentDimensions, annotation);
+      renders.createDraws(params, {} as any, parentDimensions, annotation);
 
       expect(renderer.createDraws).toHaveBeenCalledWith(
         params,
@@ -470,6 +470,7 @@ describe("RenderInstances", () => {
 
       const result = renders.createDraws(
         {} as AnnotationRenderParams,
+        {} as any,
         { x: 0, y: 0 },
         { _render: { render: "highlight" } } as unknown as TextAnnotation,
       );
@@ -490,6 +491,7 @@ describe("RenderInstances", () => {
       expect(() => {
         renders.createDraws(
           {} as AnnotationRenderParams,
+          {} as any,
           { x: 0, y: 0 },
           annotation,
         );
@@ -513,11 +515,13 @@ describe("RenderInstances", () => {
 
       renders.createDraws(
         {} as AnnotationRenderParams,
+        {} as any,
         { x: 0, y: 0 },
         highlightAnnotation,
       );
       renders.createDraws(
         {} as AnnotationRenderParams,
+        {} as any,
         { x: 0, y: 0 },
         underlineAnnotation,
       );

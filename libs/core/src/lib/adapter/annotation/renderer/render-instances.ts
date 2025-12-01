@@ -7,6 +7,7 @@ import {
 } from "./annotation-render";
 import { Debugger } from "../../../utils/debugger";
 import type { TextAnnotation } from "../../../model";
+import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 
 export class RenderInstances<ANNOTATION> {
   private renderParams = {
@@ -90,6 +91,7 @@ export class RenderInstances<ANNOTATION> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
@@ -98,6 +100,11 @@ export class RenderInstances<ANNOTATION> {
       throw new Error("Renderer not found: " + annotation._render.render);
     }
 
-    return renderer.createDraws(params, parentDimensions, annotation);
+    return renderer.createDraws(
+      params,
+      textStyle,
+      parentDimensions,
+      annotation,
+    );
   }
 }

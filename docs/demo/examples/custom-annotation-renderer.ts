@@ -8,6 +8,7 @@ import {
   getColorsUnderline,
   GutterAnnotationRender,
   HighlightAnnotationRender,
+  TextAdapterStyle,
   TextAnnotation,
   UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
@@ -90,12 +91,14 @@ export class MyUnderLineAnnotationRenderer extends AnnotationRender<any> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createUnderlineWithCaps,
@@ -144,12 +147,14 @@ export class WavesAnnotationRenderer extends AnnotationRender<any> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createWavesPath,
@@ -172,12 +177,14 @@ export class SketchyRender extends AnnotationRender<any> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createSketchyPath,

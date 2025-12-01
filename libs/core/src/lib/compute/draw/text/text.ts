@@ -8,19 +8,18 @@ import {
 import { TextAnnotationModel } from "../../annotation.model";
 import { type TextLine } from "../../../model";
 import { styles } from "../../styles.const";
-import { TextSettings } from "../../model/text.cache.model";
 
 const document = globalThis.document || null;
 
-const createGutter = (textLine: TextLine, text: TextSettings) => {
+const createGutter = (textLine: TextLine, text: TextAdapter) => {
   const gutterDiv = document?.createElement("div");
   // gutterDiv.style.padding = `0 0 0 ${gutterPaddingLeft} px`;
 
   // pass gutter-weight css variable
   const { lineHeight } = calculateLinePadding(
-    text.padding,
+    text.style.padding,
     textLine.maxLineWeight,
-    text.lineHeight,
+    text.style.lineHeight,
   );
 
   gutterDiv.style.setProperty("--gutter--line-height", `${lineHeight}px`);
@@ -45,14 +44,13 @@ const createText = (
   textLine: TextLine,
   textDirection: TextDirection,
   textAdapter: TextAdapter,
-  text: TextSettings,
 ) => {
   const textDiv = document.createElement("div");
 
   const { linePadding, lineHeight } = calculateLinePadding(
-    text.padding,
+    textAdapter.style.padding,
     textLine.maxLineWeight,
-    text.lineHeight,
+    textAdapter.style.lineHeight,
   );
 
   textDiv.style.setProperty("--line-padding", `${linePadding}px`);
@@ -86,18 +84,10 @@ export const drawText = (
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 
   Debugger.debug("Draw the lines", textAnnotationModel.lines.length);
-  const textSettings = textAnnotationModel.annotationTextModel.getTextSettings(
-    annotationAdapter.renderInstance,
-  );
   textAnnotationModel.lines.forEach((line) => {
-    textDiv.appendChild(createGutter(line, textSettings));
+    textDiv.appendChild(createGutter(line, textAdapter));
     textDiv.appendChild(
-      createText(
-        line,
-        textAnnotationModel.textDirection,
-        textAdapter,
-        textSettings,
-      ),
+      createText(line, textAnnotationModel.textDirection, textAdapter),
     );
   });
 

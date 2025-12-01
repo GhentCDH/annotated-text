@@ -35,6 +35,7 @@ export const createAndAssignDrawAnnotation = (
   textElement: HTMLElement,
   annotation: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
+  textAdapter: TextAdapter,
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
@@ -45,6 +46,7 @@ export const createAndAssignDrawAnnotation = (
   );
   const rendered = annotationAdapter.renderInstance.createDraws(
     model.renderParams,
+    textAdapter.style,
     parentDimensions,
     annotation,
   );
@@ -63,6 +65,7 @@ export const computeAnnotations = (
   model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
+  textAdapter: TextAdapter,
 ) => {
   // Compute positions of gutters
 
@@ -72,6 +75,7 @@ export const computeAnnotations = (
       textElement,
       annotation,
       annotationAdapter,
+      textAdapter,
     );
   });
 
@@ -85,7 +89,7 @@ export const computePositions = (
   textAdapter: TextAdapter,
 ) => {
   model.clearDrawAnnotation();
-  computeAnnotations(model, textElement, annotationAdapter);
+  computeAnnotations(model, textElement, annotationAdapter, textAdapter);
 
   return model;
 };

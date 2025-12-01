@@ -15,6 +15,7 @@ import {
   createAnnotationPathFn,
   PathParams,
 } from "../../../compute/utils/create-path";
+import { TextAdapterStyle } from "../../text";
 
 export const getColorsUnderline: GetColorsFn<UnderlineAnnotationRenderStyle> = (
   style: UnderlineAnnotationRenderStyle,
@@ -85,12 +86,14 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createUnderline,
