@@ -12,11 +12,18 @@ import { TextSettings } from "../../model/text.cache.model";
 
 const document = globalThis.document || null;
 
-const createGutter = (textLine: TextLine) => {
+const createGutter = (textLine: TextLine, text: TextSettings) => {
   const gutterDiv = document?.createElement("div");
   // gutterDiv.style.padding = `0 0 0 ${gutterPaddingLeft} px`;
 
   // pass gutter-weight css variable
+  const { lineHeight } = calculateLinePadding(
+    text.padding,
+    textLine.maxLineWeight,
+    text.lineHeight,
+  );
+
+  gutterDiv.style.setProperty("--gutter--line-height", `${lineHeight}px`);
 
   gutterDiv.className = styles.line.gutter.wrapper;
   // TODO define width on max annotations
@@ -83,7 +90,7 @@ export const drawText = (
     annotationAdapter.renderInstance,
   );
   textAnnotationModel.lines.forEach((line) => {
-    textDiv.appendChild(createGutter(line));
+    textDiv.appendChild(createGutter(line, textSettings));
     textDiv.appendChild(
       createText(
         line,
