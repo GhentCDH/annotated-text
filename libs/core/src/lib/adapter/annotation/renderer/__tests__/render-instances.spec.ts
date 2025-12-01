@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 import { RenderInstances } from "../render-instances";
 import type {
   AnnotationRender,
@@ -6,7 +7,6 @@ import type {
   AnnotationRenderStyle,
 } from "../annotation-render";
 import type { TextAnnotation } from "../../../../model";
-import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 
 // Mock the Debugger module
 vi.mock("../../../utils/debugger", () => ({

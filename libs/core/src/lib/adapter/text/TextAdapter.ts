@@ -35,7 +35,7 @@ export abstract class TextAdapter extends BaseAdapter {
   flatText: boolean = false;
   private _limit: Limit | null = null;
   textOffset: number = 0;
-  style = DefaultTextAdapterStyle;
+  style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
 
   /**
    * Parses the given text into an array of TextLine objects.
