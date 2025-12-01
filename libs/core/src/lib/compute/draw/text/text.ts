@@ -23,7 +23,9 @@ const createGutter = (textLine: TextLine, text: TextSettings) => {
     text.lineHeight,
   );
 
-  gutterDiv.style.setProperty("--gutter--line-height", `${lineHeight}px`);
+  if (lineHeight > 0) {
+    gutterDiv.style.setProperty("--gutter--line-height", `${lineHeight}px`);
+  }
 
   gutterDiv.className = styles.line.gutter.wrapper;
   // TODO define width on max annotations
@@ -55,8 +57,12 @@ const createText = (
     text.lineHeight,
   );
 
-  textDiv.style.setProperty("--line-padding", `${linePadding}px`);
-  textDiv.style.setProperty("--line-height", `${lineHeight}px`);
+  if (lineHeight > 0) {
+    textDiv.style.setProperty("--line-height", `${lineHeight}px`);
+  }
+  if (linePadding > 0) {
+    textDiv.style.setProperty("--line-padding", `${linePadding}px`);
+  }
 
   textDiv.className = `${styles.line.text.wrapper} ${textDirection}`;
   textDiv.innerHTML = textAdapter?.flatText ? textLine.flatText : textLine.html;
