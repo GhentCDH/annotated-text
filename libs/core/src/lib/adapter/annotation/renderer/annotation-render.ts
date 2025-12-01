@@ -1,5 +1,11 @@
 import { cloneDeep, merge } from "lodash-es";
-import { AnnotationDimension, AnnotationDraw, AnnotationDrawColors, TextAnnotation } from "@ghentcdh/annotated-text";
+import {
+  AnnotationDimension,
+  AnnotationDraw,
+  AnnotationDrawColors,
+  TextAdapterStyle,
+  TextAnnotation
+} from "@ghentcdh/annotated-text";
 
 /**
  * Parameters passed to the render method of annotation renderers.
@@ -160,6 +166,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
    * It should return all information needed to visually represent the annotation.
    *
    * @param params - Rendering parameters including text direction and gutter weight
+   * @param textStyle - The text style from the TextAdapter for proper alignment
    * @param parentDimensions - The x and y coordinates of the parent container
    * @param annotation - The annotation being rendered
    *
@@ -192,6 +199,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
    */
   abstract createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ): {

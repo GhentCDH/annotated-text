@@ -38,10 +38,9 @@ onMounted(()=> {
         {  
             text: { textDirection: 'rtl' },
             annotation: {
+                ...plainText.annotationConfig,
                 edit: true, 
                 create: true,
-                render: DefaultRender,
-                style: DefaultStyle
             },
         })
     .setText(plainText.text)

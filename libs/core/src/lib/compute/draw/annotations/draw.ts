@@ -30,6 +30,7 @@ export const drawDummyAnnotation = (
   renderInstance
     .createDraws(
       model.renderParams,
+      svgModel.textAdapter.style,
       textElement.getBoundingClientRect(),
       dummyAnnotation,
     )
@@ -60,6 +61,7 @@ export const recreateAnnotation = (
     svgModel.textElement,
     annotation,
     svgModel.annotationAdapter,
+    svgModel.textAdapter,
   );
 
   drawAnnotation(svgModel, annotation);

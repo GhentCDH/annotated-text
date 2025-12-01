@@ -3,21 +3,20 @@ import {
   AnnotationRenderParams,
   clearAnnotatedTextCache,
   createAnnotatedText,
+  createAnnotationFill,
+  createAnnotationPathFn,
   createTextAnnotationRender,
   DefaultUnderlineAnnotationRenderStyle,
   getColorsUnderline,
   GutterAnnotationRender,
   HighlightAnnotationRender,
+  PathParams,
+  TextAdapterStyle,
   TextAnnotation,
   UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
 import { annotationColors } from "../data/const";
 import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
-import {
-  createAnnotationFill,
-  createAnnotationPathFn,
-  PathParams,
-} from "../../../libs/core/src/lib/compute/utils/create-path";
 
 const annotations = [
   {
@@ -90,12 +89,14 @@ export class MyUnderLineAnnotationRenderer extends AnnotationRender<any> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createUnderlineWithCaps,
@@ -144,12 +145,14 @@ export class WavesAnnotationRenderer extends AnnotationRender<any> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createWavesPath,
@@ -172,12 +175,14 @@ export class SketchyRender extends AnnotationRender<any> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createSketchyPath,

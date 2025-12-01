@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { TextAnnotation } from "@ghentcdh/annotated-text";
+import { TextAdapterStyle, TextAnnotation } from "@ghentcdh/annotated-text";
 import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
@@ -18,6 +18,7 @@ import { getRanges } from "../../../compute/utils/ranges/get-range";
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,
   style: TextAnnotationRenderStyle,
+  textStyle: TextAdapterStyle,
   parentDimensions: { x: number; y: number },
   annotation: TextAnnotation,
   pathFn: createAnnotationPathFn,
@@ -26,8 +27,8 @@ export const createTextAnnotationRender = (
   const radius = style.borderRadius;
 
   const draws: AnnotationDraw[] = [];
-  const padding = style.padding * annotation._render.weight!;
-  const height = style.lineHeight + padding * 2;
+  const padding = textStyle.padding * annotation._render.weight!;
+  const height = textStyle.lineHeight + padding * 2;
   let startPosition: AnnotationDimension;
   const color = getColorsFn(style, annotation, true);
 
@@ -91,9 +92,6 @@ export const DefaultTextAnnotationRenderStyle = {
   ...cloneDeep(DefaultAnnotationRenderStyle),
   borderWidth: 2,
   borderRadius: 6,
-  //TODO  These are defined somewhere else too, check how it is done with the gutters
-  padding: 6,
-  lineHeight: 22,
 };
 export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 
@@ -109,12 +107,14 @@ export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationRe
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
     return createTextAnnotationRender(
       params,
       this.style,
+      textStyle,
       parentDimensions,
       annotation,
       createAnnotationPath,

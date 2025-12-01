@@ -1,14 +1,6 @@
-import { maxBy } from "lodash-es";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
 import { TextAnnotation, TextLine } from "../../model";
-import { AnnotationRender } from "../../adapter/annotation/renderer/annotation-render";
 import { AnnotationWeight } from "../utils/annotation.weight";
-import { TextAnnotationRenderStyle } from "../../adapter/annotation/renderer";
-
-export type TextSettings = {
-  padding: number;
-  lineHeight: number;
-};
 
 export class TextAnnotationCacheModel {
   public textAnnotations: TextAnnotation[] = [];
@@ -51,18 +43,6 @@ export class TextAnnotationCacheModel {
         .filter((a) => a.id !== annotation.id);
       this.lineAnnotationMap.set(line.lineNumber, lineAnnotationMap);
     });
-  }
-
-  getTextSettings(renderInstances: RenderInstances<any>): TextSettings {
-    const renders = Array.from(this.usedRenders).map((r) =>
-      renderInstances.getRendererByName(r),
-    ) as AnnotationRender<TextAnnotationRenderStyle>[];
-
-    const padding =
-      maxBy(renders, (r) => r?.style?.padding ?? 0)?.style?.padding ?? 0;
-    const lineHeight =
-      maxBy(renders, (r) => r?.style?.lineHeight ?? 0)?.style?.lineHeight ?? 0;
-    return { padding, lineHeight };
   }
 
   clear() {}

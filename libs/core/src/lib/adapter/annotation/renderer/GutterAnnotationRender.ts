@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   AnnotationDrawColors,
   Debugger,
+  TextAdapterStyle,
   TextAnnotation,
 } from "@ghentcdh/annotated-text";
 import { cloneDeep } from "lodash-es";
@@ -86,6 +87,7 @@ export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRen
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {

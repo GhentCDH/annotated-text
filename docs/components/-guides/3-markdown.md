@@ -46,7 +46,7 @@ onMounted(()=> {
         {
             text: MarkdownTextAdapter({flatText: true}),
             annotation: {
-                ...greekText.annotationConfig,
+                ...markdownText.annotationConfig,
                 create: true,
                 edit: true,
             },
@@ -58,7 +58,7 @@ onMounted(()=> {
         {
             text: MarkdownTextAdapter(),
             annotation: {
-                ...greekText.annotationConfig,
+                ...markdownText.annotationConfig,
                 create: true,
                 edit: true,
             },

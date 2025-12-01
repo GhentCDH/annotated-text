@@ -1,4 +1,5 @@
 import { merge } from "lodash-es";
+import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationRenderParams,
@@ -90,6 +91,7 @@ export class RenderInstances<ANNOTATION> {
 
   createDraws(
     params: AnnotationRenderParams,
+    textStyle: TextAdapterStyle,
     parentDimensions: { x: number; y: number },
     annotation: TextAnnotation,
   ) {
@@ -98,6 +100,11 @@ export class RenderInstances<ANNOTATION> {
       throw new Error("Renderer not found: " + annotation._render.render);
     }
 
-    return renderer.createDraws(params, parentDimensions, annotation);
+    return renderer.createDraws(
+      params,
+      textStyle,
+      parentDimensions,
+      annotation,
+    );
   }
 }

@@ -3,6 +3,7 @@ import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
 } from "./annotation.model";
+import { getLineHeight } from "./draw/utils/line-height";
 import { TextAdapter } from "../adapter/text";
 import { Debugger } from "../utils/debugger";
 
@@ -19,6 +20,7 @@ export const createAnnotationModel = (
   );
   annotationModel.textDirection = textAdapter.textDirection;
   annotationAdapter.setText(text, textAdapter.textOffset);
+  textAdapter.setLineHeight(getLineHeight(text, textAdapter.style.lineOffset));
 
   return annotationModel;
 };

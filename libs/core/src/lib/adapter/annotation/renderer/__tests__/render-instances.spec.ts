@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 import { RenderInstances } from "../render-instances";
 import type {
   AnnotationRender,
@@ -443,16 +444,18 @@ describe("RenderInstances", () => {
 
       renders.registerRender(renderer);
 
+      const textStyle = {} as TextAdapterStyle;
       const params = {} as AnnotationRenderParams;
       const parentDimensions = { x: 10, y: 20 };
       const annotation = {
         _render: { render: "highlight" },
       } as unknown as TextAnnotation;
 
-      renders.createDraws(params, parentDimensions, annotation);
+      renders.createDraws(params, textStyle, parentDimensions, annotation);
 
       expect(renderer.createDraws).toHaveBeenCalledWith(
         params,
+        textStyle,
         parentDimensions,
         annotation,
       );
@@ -470,6 +473,7 @@ describe("RenderInstances", () => {
 
       const result = renders.createDraws(
         {} as AnnotationRenderParams,
+        {} as any,
         { x: 0, y: 0 },
         { _render: { render: "highlight" } } as unknown as TextAnnotation,
       );
@@ -490,6 +494,7 @@ describe("RenderInstances", () => {
       expect(() => {
         renders.createDraws(
           {} as AnnotationRenderParams,
+          {} as any,
           { x: 0, y: 0 },
           annotation,
         );
@@ -513,11 +518,13 @@ describe("RenderInstances", () => {
 
       renders.createDraws(
         {} as AnnotationRenderParams,
+        {} as any,
         { x: 0, y: 0 },
         highlightAnnotation,
       );
       renders.createDraws(
         {} as AnnotationRenderParams,
+        {} as any,
         { x: 0, y: 0 },
         underlineAnnotation,
       );

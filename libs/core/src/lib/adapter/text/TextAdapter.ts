@@ -22,11 +22,20 @@ export type Limit = {
   ignoreLines?: boolean;
 } | null;
 
+export const DefaultTextAdapterStyle = {
+  padding: 6,
+  lineOffset: 2,
+  lineHeight: 22,
+};
+
+export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
+
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
   flatText: boolean = false;
   private _limit: Limit | null = null;
   textOffset: number = 0;
+  style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
 
   /**
    * Parses the given text into an array of TextLine objects.
@@ -41,6 +50,13 @@ export abstract class TextAdapter extends BaseAdapter {
 
   get limit() {
     return this._limit;
+  }
+
+  public setLineHeight(height: number) {
+    this.style = {
+      ...this.style,
+      lineHeight: height,
+    };
   }
 
   /**
@@ -117,6 +133,8 @@ export type createTextAdapterParams = {
    * textOffset: 100  // First character is at position 100
    */
   textOffset?: number;
+
+  style?: Partial<Omit<TextAdapterStyle, "lineHeight">>;
 };
 
 export const createTextAdapter = (
@@ -129,6 +147,8 @@ export const createTextAdapter = (
   adapter.flatText = !!params.flatText;
   adapter.limit = params.limit;
   adapter.textOffset = params.textOffset ?? 0;
+
+  adapter.style = Object.assign(DefaultTextAdapterStyle, params.style ?? {});
 
   return adapter;
 };
