@@ -65,9 +65,7 @@ export class SvgModel {
       .append("svg")
       .attr("class", styles.svg)
       .attr("width", width)
-      .attr("height", height)
-      .style("font-family", "sans-serif")
-      .style("font-size", "16px") as any;
+      .attr("height", height);
     this.annotations = this.svg
       .append("g")
       .attr(
