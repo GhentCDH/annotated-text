@@ -1,4 +1,4 @@
-export const getLineHeight = (text: string, offset: 2) => {
+export const getLineHeight = (text: string, offset = 2) => {
   const tempElement = document.createElement("span");
   tempElement.style.visibility = "hidden";
   tempElement.style.position = "absolute";
@@ -9,7 +9,7 @@ export const getLineHeight = (text: string, offset: 2) => {
   const lineHeight = getLineHeightOnElement(tempElement);
   document.body.removeChild(tempElement);
 
-  return lineHeight + 2;
+  return lineHeight + offset;
 };
 
 export const getLineHeightOnElement = (element: HTMLElement): number => {

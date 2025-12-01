@@ -24,6 +24,7 @@ export type Limit = {
 
 export const DefaultTextAdapterStyle = {
   padding: 6,
+  lineOffset: 2,
   lineHeight: 22,
 };
 
@@ -133,7 +134,7 @@ export type createTextAdapterParams = {
    */
   textOffset?: number;
 
-  style?: Partial<TextAdapterStyle>;
+  style?: Partial<Omit<TextAdapterStyle, "lineHeight">>;
 };
 
 export const createTextAdapter = (

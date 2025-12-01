@@ -1,4 +1,5 @@
 import { merge } from "lodash-es";
+import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 import {
   AnnotationRender,
   AnnotationRenderParams,
@@ -7,7 +8,6 @@ import {
 } from "./annotation-render";
 import { Debugger } from "../../../utils/debugger";
 import type { TextAnnotation } from "../../../model";
-import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 
 export class RenderInstances<ANNOTATION> {
   private renderParams = {
