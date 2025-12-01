@@ -9,11 +9,14 @@
       padding-left: 8px;
       border-right: var(--gutter--border-right);
 
+      line-height: var(--gutter--line-height);
+      height: 100%; // fixes gaps in border-right
+
       &.text {
         padding-right: 0.5em;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: start;
       }
     }
   }
