@@ -6,6 +6,7 @@ import type {
   AnnotationRenderStyle,
 } from "../annotation-render";
 import type { TextAnnotation } from "../../../../model";
+import { TextAdapterStyle } from "@ghentcdh/annotated-text";
 
 // Mock the Debugger module
 vi.mock("../../../utils/debugger", () => ({
@@ -443,16 +444,18 @@ describe("RenderInstances", () => {
 
       renders.registerRender(renderer);
 
+      const textStyle = {} as TextAdapterStyle;
       const params = {} as AnnotationRenderParams;
       const parentDimensions = { x: 10, y: 20 };
       const annotation = {
         _render: { render: "highlight" },
       } as unknown as TextAnnotation;
 
-      renders.createDraws(params, {} as any, parentDimensions, annotation);
+      renders.createDraws(params, textStyle, parentDimensions, annotation);
 
       expect(renderer.createDraws).toHaveBeenCalledWith(
         params,
+        textStyle,
         parentDimensions,
         annotation,
       );
