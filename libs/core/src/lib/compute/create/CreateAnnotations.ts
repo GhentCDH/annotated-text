@@ -164,11 +164,17 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private init() {
     if (!document) return;
     const id = this.id;
+    const mainElement = document?.getElementById(id) as HTMLDivElement;
     if (this.textElement) {
+      mainElement.removeChild(this.textElement);
       console.warn("element already initialized, clear and reinitialize");
     }
 
-    this.element = document?.getElementById(id) as HTMLDivElement;
+    const divElement = document.createElement("div");
+
+    mainElement.appendChild(divElement);
+
+    this.element = divElement;
     if (!this.element) {
       console.error("element not found", id);
       return;
