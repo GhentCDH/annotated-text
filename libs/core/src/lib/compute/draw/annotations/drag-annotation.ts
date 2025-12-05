@@ -1,113 +1,37 @@
 import { drag } from "d3";
-import { pick } from "lodash-es";
-import { handleAnnotationEditAndSendEvent } from "./edit";
-import { recreateAnnotation, removeDummyAnnotation } from "./draw";
-import { Dimensions, TextAnnotation } from "../../../model";
-import { DUMMY_UID, SvgModel } from "../../model/svg.types";
+import { DragAnnotation } from "./drag.annotations";
+import { TextAnnotation } from "../../../model";
+import { SvgModel } from "../../model/svg.types";
 import { getCharacterFromTextNodesAtPoint } from "../../position";
-import { drawTag } from "../tag";
+import { Position } from "../types";
 
 export const addDraggableAnnotation = (
   svgModel: SvgModel,
   annotation: TextAnnotation,
 ) => {
-  let dragBusy = false;
-  let dummyAnnotation: TextAnnotation;
-
-  let startDimensions: Dimensions;
-  let endDimensions: Dimensions;
-  let pickupIndex = 0;
-  let textStart = 0;
+  const dragAnnotation = new DragAnnotation(
+    svgModel.model.getMinStartPosition(),
+    annotation,
+    svgModel.internalEventListener,
+    svgModel.annotationAdapter,
+    ({ x, y }: Position) => getCharacterFromTextNodesAtPoint(x, y, svgModel),
+  );
 
   const onDragStart = () => (event: any) => {
-    if (!svgModel.annotationAdapter.edit) return;
-    if (svgModel.model.blockEvents) return;
-
-    const draws = annotation._drawMetadata.draws;
-
-    startDimensions = draws.find((d) => d.draggable.start)!.draggable
-      ?.start as Dimensions;
-    endDimensions = draws.find((d) => d.draggable.end)!.draggable
-      ?.end as Dimensions;
-
-    // if (!startDimensions || !endDimensions) return;
-
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
-    const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
-    if (!result) return;
-    pickupIndex = result.characterPos;
-    textStart = svgModel.model.getMinStartPosition();
 
-    svgModel.model.blockEvents = true;
-    dragBusy = true;
-
-    svgModel.sendEvent({
-      event: "annotation-edit--start",
-      annotationUuid: annotation?.id.toString() || "",
-    });
-    svgModel.setClass(annotation.id, "move");
-    svgModel.removeTag(annotation.id);
+    dragAnnotation.startDrag({ x, y }, event);
   };
 
   const onDragMove = () => (event: any) => {
-    if (!startDimensions || !endDimensions) return;
-    if (!dragBusy) return;
-
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
-    const result = getCharacterFromTextNodesAtPoint(x, y, svgModel);
-    if (!result) return;
-
-    const delta = result.characterPos - pickupIndex;
-    const startIndex = annotation.start + delta;
-
-    if (startIndex < textStart) {
-      return;
-    }
-
-    const endIndex = annotation.end + delta;
-    if (endIndex < startIndex) {
-      return;
-    }
-
-    dummyAnnotation =
-      handleAnnotationEditAndSendEvent(
-        annotation,
-        {
-          start: startIndex,
-          end: endIndex,
-        },
-        svgModel,
-        "drag",
-        "annotation-edit--move",
-        dummyAnnotation && pick(dummyAnnotation, ["start", "end"]),
-      ) ?? dummyAnnotation;
-    svgModel.setClass(DUMMY_UID, "move");
+    dragAnnotation.moveDrag({ x, y }, event);
   };
 
   const onDragEnd = () => (event: any) => {
-    svgModel.setClass(annotation.id, "");
-    if (!dragBusy) return;
-    dragBusy = false;
-    svgModel.model.blockEvents = false;
-
-    removeDummyAnnotation(svgModel);
-    if (!dummyAnnotation) return;
-    svgModel.sendEvent(
-      {
-        event: "annotation-edit--end",
-        annotationUuid: dummyAnnotation?.id.toString() || "",
-      },
-      { annotation: dummyAnnotation },
-    );
-
-    dummyAnnotation._render.weight = annotation._render.weight;
-    dummyAnnotation.id = annotation.id;
-    // On annotation end the dummy annotation is removed,
-    // and the existing annotation replaced by the new one
-    recreateAnnotation(svgModel, dummyAnnotation);
-    drawTag(svgModel, dummyAnnotation);
+    dragAnnotation.endDrag(event);
   };
 
   return drag()

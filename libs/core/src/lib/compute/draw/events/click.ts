@@ -1,10 +1,10 @@
-import { AnnotationRect, SvgModel } from "../../model/svg.types";
+import { SvgModel } from "../../model/svg.types";
 import { TextAnnotation } from "../../../model";
 
 export const clickAnnotation =
-  (rect: AnnotationRect, annotation: TextAnnotation, svgModel: SvgModel) =>
+  (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
-    if (svgModel.model.blockEvents) return;
+    if (svgModel.internalEventListener.isBlocking) return;
     svgModel.sendEvent({
       event: "click",
       mouseEvent,
@@ -13,9 +13,9 @@ export const clickAnnotation =
   };
 
 export const doubleClickAnnotation =
-  (rect: AnnotationRect, annotation: TextAnnotation, svgModel: SvgModel) =>
+  (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
-    if (svgModel.model.blockEvents) return;
+    if (svgModel.internalEventListener.isBlocking) return;
 
     mouseEvent.preventDefault();
 

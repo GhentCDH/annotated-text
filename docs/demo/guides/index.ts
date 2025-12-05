@@ -6,3 +6,4 @@ export * from "./renderers";
 export * from "./active-annotations";
 export * from "./tag";
 export * from "./diffirent-text-offset";
+export * from "./edit-and-create";

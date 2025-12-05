@@ -1,15 +1,7 @@
 import { AnnotationDrawColor, type TextAnnotation } from "../../../model";
 import { DUMMY_UID, SvgModel } from "../../model/svg.types";
-import {
-  getLinesForAnnotation,
-  reAssignAnnotationToLine,
-} from "../../2_assign_annotation_to_line";
-import { createAndAssignDrawAnnotation } from "../../4_compute_positions";
-import { drawAnnotation, drawAnnotationContent } from "../annotations";
-
-export const removeDummyAnnotation = (svgModel: SvgModel) => {
-  svgModel.removeAnnotations(DUMMY_UID);
-};
+import { getLinesForAnnotation } from "../../2_assign_annotation_to_line";
+import { drawAnnotationContent } from "../annotations";
 
 export const drawDummyAnnotation = (
   svgModel: SvgModel,
@@ -44,25 +36,4 @@ export const drawDummyAnnotation = (
     });
 
   svgModel.colorAnnotation(DUMMY_UID, color!);
-};
-
-export const recreateAnnotation = (
-  svgModel: SvgModel,
-  annotation: TextAnnotation | null | undefined,
-) => {
-  if (!annotation) return;
-
-  const { model } = svgModel;
-  svgModel.removeAnnotations(annotation.id);
-
-  reAssignAnnotationToLine(model, svgModel.eventListener, annotation, true);
-  createAndAssignDrawAnnotation(
-    model,
-    svgModel.textElement,
-    annotation,
-    svgModel.annotationAdapter,
-    svgModel.textAdapter,
-  );
-
-  drawAnnotation(svgModel, annotation);
 };

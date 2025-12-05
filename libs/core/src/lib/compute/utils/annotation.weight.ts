@@ -22,6 +22,9 @@ export class AnnotationWeight {
     private readonly annotationRenders: AnnotationRender<any>[],
   ) {
     this.annotationOverlap = AnnotationOverlap.init(annotations);
+    annotations.forEach((a) => {
+      a._render.weight = null;
+    });
     const assigned = this.assignWeights();
     this.renderWeights = assigned.renderWeights;
     this.renderOrder = assigned.renderOrders;
@@ -63,7 +66,10 @@ export class AnnotationWeight {
     });
   }
 
-  calculateAnnotationArray(annotations: TextAnnotation[], startWeight: number) {
+  private calculateAnnotationArray(
+    annotations: TextAnnotation[],
+    startWeight: number,
+  ) {
     const sortedAnnotations = annotations.sort(sortAnnotations);
 
     sortedAnnotations.forEach((annotation) => {

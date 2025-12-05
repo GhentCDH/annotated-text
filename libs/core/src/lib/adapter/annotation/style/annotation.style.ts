@@ -15,7 +15,7 @@ export const DefaultAnnotationStyle = {
 export type AnnotationStyle = typeof DefaultAnnotationStyle;
 
 export const DefaultAnnotationStyleParams = {
-  styleFn: (annotation: any) => null,
+  styleFn: (annotation: any): string | AnnotationStyle | null => null,
   defaultStyle: DefaultAnnotationStyle,
 };
 

@@ -33,6 +33,8 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
 
     if (!hasChanged) return this.getAnnotation(annotation.id);
 
+    const originalAnnotation = isNew ? {} : this.getAnnotation(annotation.id);
+
     const textSelection = selectText(
       this.text,
       annotation.start,
@@ -48,9 +50,10 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     let formattedAnnotation: Annotation;
     if (!data.success) {
       Debugger.warn(annotation, data.error);
-      formattedAnnotation = annotation as Annotation;
+      formattedAnnotation = annotation;
     } else formattedAnnotation = data.data;
 
+    formattedAnnotation = { ...originalAnnotation, ...formattedAnnotation };
     super.addAnnotation(annotation.id, formattedAnnotation);
 
     return formattedAnnotation;

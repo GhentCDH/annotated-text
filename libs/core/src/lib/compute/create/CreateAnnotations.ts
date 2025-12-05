@@ -20,7 +20,6 @@ import { computeAnnotationsOnLines } from "../3_compute_annotations_on_line";
 import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
 import { ErrorEventCallback, EventCallback } from "../../events";
 import { drawText } from "../draw/text/text";
-import { recreateAnnotation } from "../draw/annotations/draw";
 import { Annotation, AnnotationId } from "../../model";
 import { AnnotationColors } from "../model/annotation.colors";
 import {
@@ -28,6 +27,7 @@ import {
   AnnotationRenderStyle,
 } from "../../adapter/annotation/renderer/annotation-render";
 import { AnnotationStyle } from "../../adapter/annotation/style/annotation.style";
+import { InternalEventListener } from "../../events/internal/internal.event.listener";
 
 const document = globalThis.document || null;
 export type BaseAnnotation = Pick<Annotation, "id">;
@@ -44,6 +44,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private resizeObserver: ResizeObserver;
   private text: string;
   private readonly eventListener = new EventListener();
+  private readonly internalEventListener = new InternalEventListener();
   private readonly annotationColors = new AnnotationColors();
 
   constructor(
@@ -54,6 +55,24 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     this.init();
     this.annotationAdapter.setConfigListener(this.configListener());
     this.textAdapter.setConfigListener(this.configListener());
+    this.internalEventListener.on("annotation--add", ({ data }) => {
+      const fullAnnotation = this.annotationAdapter.format(
+        data.annotation,
+        true,
+        true,
+      );
+
+      this.addAnnotation(fullAnnotation!);
+    });
+
+    this.internalEventListener.on("annotation--update", ({ data }) => {
+      const fullAnnotation = this.annotationAdapter.format(
+        data.annotation,
+        false,
+        true,
+      );
+      this.addAnnotation(fullAnnotation!);
+    });
   }
 
   private configListener() {
@@ -211,6 +230,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.annotationAdapter,
       this.textAdapter,
       this.annotationColors,
+      this.internalEventListener,
     );
 
     this.svgNode = this.svgModel.node();
@@ -294,10 +314,9 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     if (this.annotationsMap.has(annotation.id)) {
       return this.updateAnnotation(annotation.id, annotation);
     }
-    recreateAnnotation(
-      this.svgModel,
-      this.annotationAdapter.parse(annotation) as any,
-    );
+
+    this.annotationsMap.set(annotation.id, annotation);
+    this.setAnnotations(this.annotations());
     return this;
   }
 
@@ -306,11 +325,8 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     if (!this.annotationsMap.has(annotation.id)) {
       return this.addAnnotation(annotation);
     }
-    recreateAnnotation(
-      this.svgModel,
-      this.annotationAdapter.parse(annotation) as any,
-    );
-
+    this.annotationsMap.set(annotation.id, annotation);
+    this.setAnnotations(this.annotations());
     return this;
   }
 

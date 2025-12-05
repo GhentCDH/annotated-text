@@ -33,23 +33,11 @@ textAnnotation.annotationAdapter.enableCreate(true);
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, TextLineAdapter, clearAnnotatedTextCache} from "@ghentcdh/annotated-text";
-import { greekText} from "@demo";
+import{editAndCreateDemo}from '@demo';
 const id = `create-edit-example`;
 
 onMounted(()=> {
-    clearAnnotatedTextCache()
-    createAnnotatedText(id,
-        {  
-            text: TextLineAdapter(),
-            annotation: {
-                ...greekText.annotationConfig,
-                edit: true, 
-                create: true
-            },
-        })
-    .setText(greekText.text)
-    .setAnnotations(greekText.annotations);
+    editAndCreateDemo(id);
 });
 </script>
 
