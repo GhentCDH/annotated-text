@@ -29,7 +29,7 @@ export class EditAnnotation {
 
   start(position: Position, target: "start" | "end", event: any) {
     if (!this.annotationAdapter.edit) return;
-    if (!this.internalEventListener.isBlocking) return;
+    if (this.internalEventListener.isBlocking) return;
 
     return this.onDrag("annotation-edit--start", position, target, event);
   }

@@ -1,7 +1,7 @@
 import { Debugger } from "@ghentcdh/annotated-text";
 import { InternalEvent, InternalEventData } from "./internal.events";
 
-export type InternalEventListenerType = InternalEvent | "all";
+export type InternalEventListenerType = InternalEvent;
 
 export type EventData<DATA> = {
   event: InternalEvent;
@@ -11,19 +11,13 @@ export type EventData<DATA> = {
 
 export type EventCallback<DATA> = (event: EventData<DATA>) => void;
 
-export type AnyEventData = {
-  [K in InternalEvent]: EventData<K>;
-}[InternalEvent];
-
 export class InternalEventListener {
   private readonly eventMap = new Map<
     InternalEventListenerType,
     EventCallback<any>[]
   >();
 
-  constructor() {
-    this.eventMap.set("all", []);
-  }
+  constructor() {}
 
   public on<EVENT extends InternalEvent>(
     event: EVENT,
@@ -36,6 +30,7 @@ export class InternalEventListener {
     this.eventMap.get(event)?.push(callback);
   }
 
+  // Block state is not for internal events, but just a state f.e. preventing creating annotations during certain operations
   private block = false;
 
   public get isBlocking() {
@@ -57,10 +52,7 @@ export class InternalEventListener {
     data: InternalEventData[EVENT],
     mouseEvent?: MouseEvent | undefined | null,
   ): void {
-    const callbacks = [
-      this.eventMap.get(event),
-      this.eventMap.get("all"),
-    ].flat();
+    const callbacks = this.eventMap.get(event) ?? [];
 
     for (const callback of callbacks) {
       if (!callback) continue;
