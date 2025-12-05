@@ -2,7 +2,6 @@ import { merge } from "lodash-es";
 import { type AnnotationStyle, type AnnotationStyleParams, DefaultAnnotationStyleParams } from "./annotation.style";
 import { Debugger } from "../../../utils/debugger";
 
-
 /**
  * Manages annotation styles through a combination of a style function and a named style registry.
  *

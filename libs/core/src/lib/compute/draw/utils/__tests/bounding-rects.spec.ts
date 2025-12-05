@@ -56,9 +56,9 @@ describe("calculateOffset", () => {
     lineHeight | height | expected
     ${20}      | ${10}  | ${5}
     ${10}      | ${10}  | ${0}
-    ${15}      | ${10}  | ${3}
+    ${15}      | ${10}  | ${2.5}
     ${10}      | ${20}  | ${-5}
-    ${25}      | ${12}  | ${7}
+    ${25}      | ${12}  | ${6.5}
   `(
     "returns $expected for lineHeight=$lineHeight and height=$height",
     ({ lineHeight, height, expected }) => {

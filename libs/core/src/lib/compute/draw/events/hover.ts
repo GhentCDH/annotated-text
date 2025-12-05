@@ -6,8 +6,7 @@ import { AnnotationDrawColors, TextAnnotation } from "../../../model";
 export const hoverAnnotation =
   (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
-    const model = svgModel.model;
-    if (model.blockEvents) return;
+    if (svgModel.internalEventListener.isBlocking) return;
     const fullAnnotation = svgModel.sendEvent({
       event: "mouse-enter",
       mouseEvent,
@@ -26,7 +25,7 @@ export const hoverAnnotation =
 export const leaveAnnotation =
   (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
-    if (svgModel.model.blockEvents) return;
+    if (svgModel.internalEventListener.isBlocking) return;
 
     svgModel.sendEvent({
       event: "mouse-leave",

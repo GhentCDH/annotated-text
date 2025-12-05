@@ -23,6 +23,8 @@ import { AnnotationAdapter } from "../../adapter/annotation";
 import { TextAdapter } from "../../adapter/text";
 import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
 import { drawAllTags } from "../draw/tag";
+import { InternalEventListener } from "../../events/internal/internal.event.listener";
+import { drawDummyAnnotation } from "../draw/annotations/draw";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -58,6 +60,7 @@ export class SvgModel {
     public readonly annotationAdapter: AnnotationAdapter<any>,
     public readonly textAdapter: TextAdapter,
     public readonly annotationColors: AnnotationColors,
+    public readonly internalEventListener: InternalEventListener,
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
@@ -86,6 +89,22 @@ export class SvgModel {
     this.textTree = drawTextRaster(this);
     createNewBlock(this);
     drawAllTags(this);
+    this.internalEventListener.on("send-event--annotation", ({ data }) =>
+      this.sendEvent(data, data.additionalData),
+    );
+
+    this.internalEventListener.on("annotation--set-class", ({ data }) => {
+      this.setClass(data.annotationUuid, data.cssClass);
+    });
+    this.internalEventListener.on("annotation--remove-tag", ({ data }) => {
+      this.removeTag(data.annotationUuid);
+    });
+    this.internalEventListener.on("annotation--remove", ({ data }) => {
+      this.removeAnnotations(data.annotationUuid, data.selector);
+    });
+    this.internalEventListener.on("annotation--draw-dummy", ({ data }) => {
+      drawDummyAnnotation(this, data.dummyAnnotation, data.color);
+    });
   }
 
   removeTag(annotationUuid: AnnotationId) {

@@ -51,7 +51,7 @@ export const findLineElement = (node: Node) => {
   }
   if (!lineElement)
     return { lineElement: null, lineUid: null, offset: 0, lineHeight: 0 };
-  
+
   const _lineHeight = window.getComputedStyle?.(lineElement).lineHeight;
   const lineHeight = parseFloat(_lineHeight);
 
@@ -61,5 +61,5 @@ export const findLineElement = (node: Node) => {
 
 export const calculateOffset = memoize((lineHeight: number, height: number) => {
   // Offset should be an integer value
-  return Math.round((lineHeight - height) / 2);
+  return (lineHeight - height) / 2; //Math.round((lineHeight - height) / 2);
 });

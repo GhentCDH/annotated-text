@@ -1,17 +1,8 @@
 import { pointer } from "d3";
-import {
-  drawDummyAnnotation,
-  recreateAnnotation,
-  removeDummyAnnotation,
-} from "./draw";
-import { Debugger } from "../../../utils/debugger";
+import { CreateAnnotation } from "./create.annotation";
 import { SvgModel } from "../../model/svg.types";
-import { type TextAnnotation } from "../../../model";
-import {
-  getCharacterFromTextNodesAtPoint,
-  getCharacterStartEndPosition,
-} from "../../position";
-import { drawTag } from "../tag";
+import { Position } from "../types";
+import { getCharacterFromTextNodesAtPoint } from "../../position";
 
 export const createNewBlock = (svgModel: SvgModel) => {
   const container = svgModel.textElement;
@@ -19,130 +10,29 @@ export const createNewBlock = (svgModel: SvgModel) => {
   const svg = svgModel.svg;
   const adapter = svgModel.annotationAdapter;
 
-  let startIndex: number;
-  let drawing = false;
-  let drawingAndMove = false;
-  let dummyAnnotation: TextAnnotation | null = null;
-  let prevEndIndex: number | null = null;
-
-  const createInitialDummyAnnotation = (characterPos: number) => {
-    dummyAnnotation = adapter.createAnnotation(characterPos);
-
-    startIndex = characterPos;
-    prevEndIndex = characterPos + 1;
-
-    return dummyAnnotation;
-  };
-
-  const createDummyAnnotation = (event: any, draw = false) => {
+  const getPosition = (event: any) => {
     const [clientX, clientY] = pointer(event);
     // const [x, y] = pointer(event);
     const x = clientX + container.getBoundingClientRect().x;
     const y = clientY + container.getBoundingClientRect().y;
-    const character = getCharacterFromTextNodesAtPoint(x, y, svgModel);
-
-    if (!character) return;
-    if (!dummyAnnotation) {
-      dummyAnnotation = createInitialDummyAnnotation(character.characterPos);
-    }
-
-    const { start, end } = getCharacterStartEndPosition(
-      character,
-      { start: startIndex, end: prevEndIndex! },
-      "end",
-    );
-
-    if (start === end) return;
-
-    dummyAnnotation.start = start;
-    dummyAnnotation.end = end;
-
-    const snapper = svgModel.annotationAdapter.snapper.fixOffset(
-      start < end ? "move-start" : "move-end",
-      dummyAnnotation,
-    );
-    dummyAnnotation.start = snapper.start;
-    dummyAnnotation.end = snapper.end;
-
-    if (draw) {
-      const color = dummyAnnotation._render.style.color;
-      drawDummyAnnotation(svgModel, dummyAnnotation, {
-        border: color!.border,
-        fill: color!.background,
-        borderWidth: 2,
-      });
-    }
-    prevEndIndex = character.characterPos;
     return { x, y };
   };
 
-  const startCreateAnnotation = (event: any) => {
-    if (!svgModel.annotationAdapter.create) return;
-    if (svgModel.model.blockEvents || drawing) return;
-    dummyAnnotation = null;
-    drawing = true;
-    createDummyAnnotation(event);
+  const createAnnotation: CreateAnnotation = new CreateAnnotation(
+    svgModel.internalEventListener,
+    adapter,
+    ({ x, y }: Position) => getCharacterFromTextNodesAtPoint(x, y, svgModel),
+  );
 
-    if (!dummyAnnotation) {
-      console.warn("no character found");
-      return;
-    }
-
-    svgModel.sendEvent(
-      {
-        event: "annotation-create--start",
-        mouseEvent: event,
-        annotationUuid: (dummyAnnotation as TextAnnotation).id || "",
-      },
-      { annotation: dummyAnnotation },
-    );
-  };
-
-  svg.on("mousedown", startCreateAnnotation);
-
-  svg.on("mousemove", (event) => {
-    if (!drawing) return;
-
-    svgModel.model.blockEvents = true;
-    drawingAndMove = true;
-    createDummyAnnotation(event, true);
-
-    svgModel.sendEvent(
-      {
-        event: "annotation-create--move",
-        mouseEvent: event,
-        annotationUuid: dummyAnnotation?.id || "",
-      },
-      { annotation: dummyAnnotation },
-    );
+  svg.on("mousedown", (event) => {
+    createAnnotation.startCreate(getPosition(event), event);
   });
 
-  svg.on("mouseup", (mouseEvent) => {
-    prevEndIndex = null;
-    drawing = false;
+  svg.on("mousemove", (event) => {
+    createAnnotation.moveCreate(getPosition(event), event);
+  });
 
-    if (!drawingAndMove) return;
-
-    drawingAndMove = false;
-    svgModel.model.blockEvents = false;
-    removeDummyAnnotation(svgModel);
-
-    if (!dummyAnnotation) {
-      Debugger.warn("no dummy annotation found, canceling");
-      return;
-    }
-
-    recreateAnnotation(svgModel, dummyAnnotation);
-
-    svgModel.sendEvent(
-      {
-        event: "annotation-create--end",
-        mouseEvent,
-        annotationUuid: dummyAnnotation?.id || "",
-      },
-      { annotation: dummyAnnotation },
-    );
-    drawTag(svgModel, dummyAnnotation);
-    dummyAnnotation = null;
+  svg.on("mouseup", (event) => {
+    createAnnotation.endCreate(getPosition(event), event);
   });
 };

@@ -38,31 +38,12 @@ By default the events will be logged to the console with debug statements.
 <script setup>
 //
 import { onMounted } from "vue";
-import { createAnnotatedText, PlainTextAdapter, clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
-import { plainText } from "@demo";
+import { createEventHandlerDemo } from "@demo";
 
 const id = "annotation-log";
 
 onMounted(()=> {
-    clearAnnotatedTextCache()
-    createAnnotatedText(id,
-        {
-            text: PlainTextAdapter(),
-            annotation: {
-                create: true,
-                edit: true
-            },
-        })
-    .setText(plainText.text)
-    .setAnnotations(plainText.annotations)
-    .on('all', ({ mouseEvent, event, data }) => {
-        console.log(mouseEvent, event, data);
-        const logger = document.getElementById("annotation-logger");
-        if (logger) {
-            logger.innerHTML = `<p><b>${event}</b>: ${data.annotation.id}</p>`;
-        }
-    })
-
+    createEventHandlerDemo(id);
 });
 
 

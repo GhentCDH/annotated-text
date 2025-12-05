@@ -6,6 +6,8 @@ export class TextAnnotationCacheModel {
   public textAnnotations: TextAnnotation[] = [];
   private readonly lineAnnotationMap = new Map<number, TextAnnotation[]>();
   private readonly usedRenders = new Set<string>();
+  public minStartPosition = 0;
+  public maxStartPosition = 0;
 
   constructor() {}
 
@@ -14,6 +16,8 @@ export class TextAnnotationCacheModel {
     annotations: TextAnnotation[],
     renderInstances: RenderInstances<any>,
   ) {
+    this.minStartPosition = lines.length > 0 ? lines[0].start : 0;
+    this.maxStartPosition = lines.length > 0 ? lines[lines.length - 1].end : 0;
     this.textAnnotations = annotations.filter((a) => !a._render.isGutter);
     this.usedRenders.clear();
     lines.forEach((line) => {

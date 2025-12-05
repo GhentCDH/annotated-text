@@ -18,10 +18,6 @@ export interface TextAnnotationModel {
   // Configuration for the annotation model
   textDirection: TextDirection;
 
-  /**
-   * If blockevents is true some events are blocked like editing or creating
-   */
-  blockEvents: boolean;
   lines: TextLine[];
 
   annotations: TextAnnotation[];
@@ -136,15 +132,11 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   // }
 
   getMinStartPosition(): number {
-    // TODO: Consider caching this value if profiling shows getMinStartPosition() is a performance bottleneck.
-    //       Ensure the cache is invalidated whenever the 'lines' array is modified (added, removed, or reordered).
-    return this.lines.length > 0 ? this.lines[0].start : 0;
+    return this.annotationTextModel.minStartPosition;
   }
 
   getMaxStartPosition(): number {
-    // TODO: Consider caching this value if profiling shows getMaxStartPosition() is a performance bottleneck.
-    //       Ensure the cache is invalidated whenever the 'lines' array is modified (added, removed, or reordered).
-    return this.lines.length > 0 ? this.lines[this.lines.length - 1].end : 0;
+    return this.annotationTextModel.maxStartPosition;
   }
 
   setAnnotation(annotation: TextAnnotation, calculateWeights = true): void {
