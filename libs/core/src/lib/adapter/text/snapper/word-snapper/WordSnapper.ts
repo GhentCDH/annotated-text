@@ -1,195 +1,284 @@
-import { tokenize, Tokenizer } from "./tokenize";
-import { type Snapper, SnapperAction, SnapperResult } from "../snapper";
-import { TextAnnotation } from "../../../../model";
+import RBush from "rbush";
+import { defaultTokenizr, type Tokenizer } from "./tokenizer";
+import { DefaultSnapper, type SnapperResult } from "../snapper";
+import { type TextAnnotation } from "../../../../model";
 
-/**
- * WordSnapper ensures text annotations align to word boundaries.
- *
- * When users create annotations (highlights, comments, etc.) in text,
- * they might select partial words or whitespace. WordSnapper "snaps"
- * these selections to the nearest complete word boundaries for consistency.
- *
- * @example
- * ```typescript
- * const snapper = new WordSnapper();
- * snapper.setText("Hello world, how are you?");
- *
- * // User selects "llo wor" (partial words)
- * const result = snapper.fixOffset('drag', { start: 2, end: 9 });
- * // result: { start: 0, end: 11, modified: true, valid: true }
- * // Snaps to "Hello world"
- * ```
- */
-export class WordSnapper implements Snapper {
-  /**
-   * Maps character indices to the start position of their containing token.
-   * All characters within a token map to the token's start position.
-   *
-   * @example For "Hello world": { 0→0, 1→0, 2→0, 3→0, 4→0, 5→0, 6→6, 7→6... }
-   */
-  protected mapStartCharIndexToToken: { [index: number]: number } = {};
+export interface WordPosition {
+  start: number; // inclusive
+  end: number; // inclusive
+  word: string;
+}
 
-  /**
-   * Maps character indices to the end position of their containing token.
-   * All characters within a token map to the token's end position.
-   *
-   * @example For "Hello world": { 0→5, 1→5, 2→5, 3→5, 4→5, 5→5, 6→11, 7→11... }
-   */
-  protected mapStopCharIndexToToken: { [index: number]: number } = {};
+// RBush item interface for spatial indexing
+interface WordBBox {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+  word: WordPosition;
+}
 
-  protected textLength = 0;
+export class WordSnapper extends DefaultSnapper {
+  private tokenizer: Tokenizer;
+  private words: WordPosition[] = [];
+  private tree: RBush<WordBBox>;
 
-  protected tokenizerFn: Tokenizer = tokenize;
-  private text = "";
+  constructor(tokenizer: Tokenizer = defaultTokenizr) {
+    super();
+    this.tokenizer = tokenizer;
+    this.tree = new RBush<WordBBox>();
+  }
 
-  constructor(tokenizer?: Tokenizer) {
-    this.tokenizerFn = tokenizer ?? tokenize;
+  override setText(text: string, offsetStart: number): void {
+    super.setText(text, offsetStart);
+    this.words = this.parseWords();
+    this.buildTree();
   }
 
   /**
-   * Initializes the snapper with text content and builds token boundary maps.
-   * Must be called before using fixOffset().
-   *
-   * @param text - The text content to tokenize and build boundary maps from
-   * @param offsetStart - The starting character index offset for mapping
-   *
-   * @remarks
-   * This method:
-   * 1. Tokenizes the input text into words
-   * 2. Records each token's start and end positions
-   * 3. Fills gaps between tokens by propagating the nearest token boundaries
-   *
-   * The gap-filling ensures every character index maps to valid token boundaries,
-   * even for whitespace or punctuation between words.
+   * Parse the text into words using the tokenizer.
+   * Each word has a start (inclusive) and end (inclusive) position.
    */
-  setText(text: string, offsetStart: number) {
-    this.text = text;
-    this.textLength = text.length;
+  private parseWords(): WordPosition[] {
+    const tokens = this.tokenizer(this.text);
+    const words: WordPosition[] = [];
 
-    // Build initial maps with exact token boundaries
-    this.tokenizerFn(text).forEach((token: any) => {
-      const start = token.pos + offsetStart;
-      const end = token.pos + token.value.length + offsetStart;
+    for (const token of tokens) {
+      if (token.type === "token" || token.type === "start") {
+        const start = token.pos + this.offsetStart;
+        const end = token.pos + token.text.length + this.offsetStart; // inclusive end
+        words.push({ start, end, word: token.text });
+      }
+    }
 
-      this.mapStartCharIndexToToken[start] = start;
-      this.mapStopCharIndexToToken[end] = end;
+    return words;
+  }
+
+  /**
+   * Build the R-tree spatial index from words.
+   */
+  private buildTree(): void {
+    this.tree.clear();
+
+    const items: WordBBox[] = this.words.map((word) => ({
+      minX: word.start,
+      maxX: word.end,
+      minY: 0,
+      maxY: 0,
+      word,
+    }));
+
+    this.tree.load(items);
+  }
+
+  override fixOffset(annotation: TextAnnotation): SnapperResult {
+    if (this.words.length === 0) {
+      return {
+        start: annotation.start,
+        end: annotation.end,
+        modified: false,
+      };
+    }
+
+    const snappedStart = this.snapStart(annotation.start);
+    const snappedEnd = this.snapEnd(annotation.end);
+
+    // Ensure at least one word is covered
+    let finalStart = snappedStart;
+    let finalEnd = snappedEnd;
+
+    if (finalStart > finalEnd || !this.hasWordInRange(finalStart, finalEnd)) {
+      // No word covered - expand to include the word at the original midpoint
+      const midpoint = Math.floor((annotation.start + annotation.end) / 2);
+      const wordAtMidpoint =
+        this.findWordContaining(midpoint) || this.findClosestWord(midpoint);
+
+      if (wordAtMidpoint) {
+        finalStart = wordAtMidpoint.start;
+        finalEnd = wordAtMidpoint.end;
+      }
+    }
+
+    return {
+      start: finalStart,
+      end: finalEnd,
+      modified: finalStart !== annotation.start || finalEnd !== annotation.end,
+    };
+  }
+
+  /**
+   * Snap start position using halfway rule.
+   * - If in first half of word: snap to word start (include word)
+   * - If in second half of word: snap to next word start (exclude word)
+   * - If not in a word: snap to closest word start
+   */
+  private snapStart(position: number): number {
+    const word = this.findWordContaining(position);
+
+    if (word) {
+      const halfway = word.start + (word.end - word.start) / 2;
+
+      if (position < halfway) {
+        // First half - include this word
+        return word.start;
+      } else {
+        // Second half - exclude this word, snap to next word
+        const nextWord = this.findNextWord(word);
+        return nextWord ? nextWord.start : word.end + 1;
+      }
+    }
+
+    // Not in a word - find closest word start
+    return this.findClosestWordStart(position);
+  }
+
+  /**
+   * Snap end position using halfway rule.
+   * - If in first half of word: snap to previous word end (exclude word)
+   * - If in second half of word: snap to word end (include word)
+   * - If not in a word (whitespace): keep position as-is
+   */
+  private snapEnd(position: number): number {
+    const word = this.findWordContaining(position);
+
+    if (word) {
+      const halfway = word.start + (word.end - word.start) / 2;
+
+      if (position < halfway) {
+        // First half - exclude this word, snap to previous word
+        const prevWord = this.findPreviousWord(word);
+        return prevWord ? prevWord.end : word.start - 1;
+      } else {
+        // Second half - include this word
+        return word.end;
+      }
+    }
+
+    if (position > this.textLength) {
+      return this.textLength;
+    }
+
+    // Not in a word (whitespace) - keep position as-is
+    return position;
+  }
+
+  /**
+   * Find the word containing the given position (inclusive bounds).
+   */
+  private findWordContaining(position: number): WordPosition | null {
+    const results = this.tree.search({
+      minX: position,
+      maxX: position,
+      minY: 0,
+      maxY: 0,
     });
 
-    // Fill in all character positions with nearest token boundaries
-    for (let i = 0; i < text.length; i++) {
-      if (!this.mapStartCharIndexToToken[i]) {
-        // Propagate the previous token's start position
-        this.mapStartCharIndexToToken[i] =
-          i > 0 ? this.mapStartCharIndexToToken[i - 1] : 0;
-      }
-      if (!this.mapStopCharIndexToToken[i]) {
-        // Propagate the previous token's end position
-        this.mapStopCharIndexToToken[i] =
-          i > 0 ? this.mapStopCharIndexToToken[i - 1] : 0;
+    for (const item of results) {
+      if (position >= item.word.start && position <= item.word.end) {
+        return item.word;
       }
     }
+
+    return null;
   }
 
   /**
-   * Snaps the start position to the nearest token boundary.
-   * Falls back to end position's token if start position has no mapping.
-   *
-   * @param annotation - Annotation with start and end positions
-   * @returns Result with adjusted start position
+   * Find the word after the given word.
    */
-  protected fixStart(
-    annotation: Pick<TextAnnotation, "end" | "start">,
-  ): SnapperResult {
-    const { start: newStart, end: newEnd } = annotation;
-
-    const closestStart =
-      this.mapStartCharIndexToToken[newStart] ??
-      this.mapStartCharIndexToToken[newEnd];
-
-    return {
-      start: closestStart,
-      modified: closestStart !== newStart,
-      end: newEnd,
-      valid: closestStart < newEnd,
-    };
+  private findNextWord(currentWord: WordPosition): WordPosition | null {
+    const index = this.words.indexOf(currentWord);
+    return index >= 0 && index < this.words.length - 1
+      ? this.words[index + 1]
+      : null;
   }
 
   /**
-   * Snaps the end position to the nearest token boundary.
-   * Falls back to start position's token if end position has no mapping.
-   *
-   * @param annotation - Annotation with start and end positions
-   * @returns Result with adjusted end position
+   * Find the word before the given word.
    */
-  protected fixEnd(
-    annotation: Pick<TextAnnotation, "end" | "start">,
-  ): SnapperResult {
-    const { start: newStart, end: newEnd } = annotation;
-
-    const closestEnd =
-      this.mapStopCharIndexToToken[newEnd] ??
-      this.mapStopCharIndexToToken[newStart];
-
-    return {
-      start: newStart,
-      modified: closestEnd !== newEnd,
-      end: closestEnd,
-      valid: newStart < closestEnd,
-    };
+  private findPreviousWord(currentWord: WordPosition): WordPosition | null {
+    const index = this.words.indexOf(currentWord);
+    return index > 0 ? this.words[index - 1] : null;
   }
 
   /**
-   * Adjusts annotation boundaries to align with complete word boundaries.
-   *
-   * @param action - The user action that triggered the snap (e.g., 'drag', 'click')
-   * @param annotation - The annotation to adjust
-   * @returns The adjusted annotation with word-aligned boundaries
-   *
-   * @remarks
-   * The algorithm:
-   * 1. Snaps start position to the beginning of its containing word
-   * 2. Snaps end position to the end of its containing word
-   * 3. If snapping produces an invalid range (start >= end), incrementally
-   *    extends the end position until a valid range is found
-   * 4. Returns the final boundaries with validity and modification flags
-   *
-   * This ensures annotations always encompass complete words, improving
-   * consistency and readability of highlights and selections.
+   * Find the closest word start to the given position.
    */
-  fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
-    let modifiedStart = this.fixStart(annotation);
+  private findClosestWordStart(position: number): number {
+    let closest = this.words[0];
+    let minDistance = Math.abs(position - closest.start);
 
-    let start = modifiedStart.start;
-    if (!modifiedStart.valid && start > -1) {
-      start = Math.min(start, modifiedStart.start, annotation.start);
-      modifiedStart = this.fixStart({
-        start: start - 1,
-        end: modifiedStart.end,
-      });
-      modifiedStart.valid = true;
+    for (const word of this.words) {
+      const distance = Math.abs(position - word.start);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closest = word;
+      }
     }
 
-    let modifiedEnd = this.fixEnd(annotation);
+    return closest.start;
+  }
 
-    // Keep extending end position until we have a valid range
-    let end = annotation.end;
-    while (!modifiedEnd.valid && end <= this.textLength) {
-      end =
-        Math.max(end, annotation.end, modifiedStart.end, modifiedEnd.end) + 1;
-      modifiedEnd = this.fixEnd({
-        start: modifiedStart.start,
-        end: end,
-      });
+  /**
+   * Find the closest word end to the given position.
+   */
+  private findClosestWordEnd(position: number): number {
+    let closest = this.words[this.words.length - 1];
+    let minDistance = Math.abs(position - closest.end);
+
+    for (const word of this.words) {
+      const distance = Math.abs(position - word.end);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closest = word;
+      }
     }
 
-    start = modifiedStart.start;
-    end = modifiedEnd.valid ? modifiedEnd.end : this.textLength;
+    return closest.end;
+  }
 
-    return {
-      start,
-      end,
-      modified: annotation.start !== start || annotation.end !== end,
-      valid: true,
-    };
+  /**
+   * Find the closest word to the given position.
+   */
+  private findClosestWord(position: number): WordPosition | null {
+    if (this.words.length === 0) return null;
+
+    let closest = this.words[0];
+    let minDistance = Math.min(
+      Math.abs(position - closest.start),
+      Math.abs(position - closest.end),
+    );
+
+    for (const word of this.words) {
+      const distance = Math.min(
+        Math.abs(position - word.start),
+        Math.abs(position - word.end),
+      );
+      if (distance < minDistance) {
+        minDistance = distance;
+        closest = word;
+      }
+    }
+
+    return closest;
+  }
+
+  /**
+   * Check if there's at least one word in the given range.
+   */
+  private hasWordInRange(start: number, end: number): boolean {
+    for (const word of this.words) {
+      // Word overlaps with range if word.start <= end AND word.end >= start
+      if (word.start <= end && word.end >= start) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Get the parsed words (useful for debugging/testing)
+   */
+  getWords(): ReadonlyArray<WordPosition> {
+    return this.words;
   }
 }

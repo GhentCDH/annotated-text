@@ -1,7 +1,6 @@
 import {
   createAnnotatedText,
   Snapper,
-  SnapperAction,
   SnapperResult,
   TextAnnotation,
   TextLineAdapter,
@@ -11,15 +10,10 @@ import { greekText } from "../data";
 class CustomSnapper extends Snapper {
   setText(text: string, offsetStart: number) {}
 
-  fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
+  fixOffset(annotation: TextAnnotation): SnapperResult {
     const { start, end } = annotation;
-    switch (action) {
-      case "move-end":
-        return { start, end: end - 2, modified: true };
-      case "move-start":
-        return { start: start + 2, end, modified: true };
-    }
-    return { start, end, modified: false };
+
+    return { start, end: end - 2, modified: true };
   }
 }
 

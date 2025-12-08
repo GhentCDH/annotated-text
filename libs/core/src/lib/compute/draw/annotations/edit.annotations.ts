@@ -142,12 +142,12 @@ export const handleAnnotationEditAndSendEvent = (
 
   dummyAnnotation._render.weight = annotation._render.weight! + 1;
 
-  let snapper = annotationAdapter.snapper.fixOffset(action, dummyAnnotation);
+  let snapper = annotationAdapter.snapper.fixOffset(dummyAnnotation);
 
   if (snapper.end < snapper.start) {
     // Try snapping the other side if the end is before the start
     dummyAnnotation.start = snapper.start;
-    snapper = annotationAdapter.snapper.fixOffset(action, dummyAnnotation);
+    snapper = annotationAdapter.snapper.fixOffset(dummyAnnotation);
   }
 
   if (snapper.end <= snapper.start) {

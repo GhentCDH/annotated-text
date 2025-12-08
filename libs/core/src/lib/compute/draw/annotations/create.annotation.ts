@@ -123,10 +123,7 @@ export class CreateAnnotation {
     dummyAnnotation.start = start;
     dummyAnnotation.end = end;
 
-    const snapper = this.annotationAdapter.snapper.fixOffset(
-      start < end ? "move-start" : "move-end",
-      dummyAnnotation,
-    );
+    const snapper = this.annotationAdapter.snapper.fixOffset(dummyAnnotation);
     dummyAnnotation.start = snapper.start;
     dummyAnnotation.end = snapper.end;
 
