@@ -7,3 +7,4 @@ export * from "./different-annotation-render";
 export * from "./custom-annotation-renderer";
 export * from "./custom-weights";
 export * from "./custom-styles";
+export * from "./playground";
