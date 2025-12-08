@@ -1,28 +1,7 @@
 import RBush from "rbush";
-import { defaultTokenizr, Tokenizer } from "./tokenizer";
-import { DefaultSnapper } from "../snapper";
-
-export type SnapperAction = "create" | "resize" | "move";
-
-export interface TextAnnotation {
-  start: number;
-  end: number;
-}
-
-export interface SnapperResult {
-  start: number;
-  end: number;
-  modified: boolean;
-}
-
-export abstract class Snapper {
-  abstract setText(text: string, offsetStart: number): void;
-
-  abstract fixOffset(
-    action: SnapperAction,
-    annotation: TextAnnotation,
-  ): SnapperResult;
-}
+import { defaultTokenizr, type Tokenizer } from "./tokenizer";
+import { DefaultSnapper, type SnapperResult } from "../snapper";
+import { type TextAnnotation } from "../../../../model";
 
 export interface WordPosition {
   start: number; // inclusive
@@ -92,10 +71,7 @@ export class WordSnapper extends DefaultSnapper {
     this.tree.load(items);
   }
 
-  override fixOffset(
-    action: SnapperAction,
-    annotation: TextAnnotation,
-  ): SnapperResult {
+  override fixOffset(annotation: TextAnnotation): SnapperResult {
     if (this.words.length === 0) {
       return {
         start: annotation.start,

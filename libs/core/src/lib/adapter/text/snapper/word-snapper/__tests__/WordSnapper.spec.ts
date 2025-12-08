@@ -24,7 +24,7 @@ describe("WordSnapper", () => {
       ({ text, start, end, expectedStart, expectedEnd }) => {
         snapper.setText(text, 0);
 
-        const result = snapper.fixOffset("drag", {
+        const result = snapper.fixOffset({
           start,
           end,
         } as TextAnnotation);
@@ -57,7 +57,7 @@ describe("WordSnapper", () => {
       "should handle $scenario",
       ({ text, start, end, expectedStart, expectedEnd }) => {
         snapper.setText(text, 0);
-        const result = snapper.fixOffset("drag", {
+        const result = snapper.fixOffset({
           start,
           end,
         } as TextAnnotation);
@@ -87,7 +87,7 @@ describe("WordSnapper", () => {
         ({ start, end, expectedStart, expectedEnd, expectedSelection }) => {
           snapper.setText(helloWorld, 0);
 
-          const result = snapper.fixOffset("drag", {
+          const result = snapper.fixOffset({
             start,
             end,
           } as TextAnnotation);

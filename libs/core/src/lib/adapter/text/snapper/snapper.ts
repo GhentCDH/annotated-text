@@ -1,4 +1,4 @@
-import { TextAnnotation } from "../../../model";
+import { type TextAnnotation } from "../../../model";
 
 export type SnapperResult = {
   start: number;
@@ -11,10 +11,7 @@ export type SnapperAction = "move-start" | "move-end" | "drag";
 export abstract class Snapper {
   abstract setText(text: string, offsetStart: number): void;
 
-  abstract fixOffset(
-    action: SnapperAction,
-    annotation: TextAnnotation,
-  ): SnapperResult;
+  abstract fixOffset(annotation: TextAnnotation): SnapperResult;
 }
 
 export class DefaultSnapper extends Snapper {
@@ -28,7 +25,7 @@ export class DefaultSnapper extends Snapper {
     this.textLength = text.length + offsetStart;
   }
 
-  fixOffset(action: SnapperAction, annotation: TextAnnotation): SnapperResult {
+  fixOffset(annotation: TextAnnotation): SnapperResult {
     return {
       start: annotation.start,
       end: annotation.end,
