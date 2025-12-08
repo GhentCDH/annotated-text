@@ -1,4 +1,4 @@
-## [0.12.6](https://github.com/GhentCDH/annotated-text/compare/v0.12.5...v0.12.6) (2025-12-08)
+## [0.12.7](https://github.com/GhentCDH/annotated-text/compare/v0.12.5...v0.12.7) (2025-12-08)
 
 
 ### Bug Fixes
