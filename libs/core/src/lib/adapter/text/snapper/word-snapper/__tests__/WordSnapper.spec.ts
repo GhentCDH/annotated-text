@@ -31,7 +31,6 @@ describe("WordSnapper", () => {
 
         expect(result.start).toBe(expectedStart);
         expect(result.end).toBe(expectedEnd);
-        expect(result.valid).toBe(true);
         expect(result.start).toBeLessThan(result.end);
         expect(result.modified).toBe(
           start === expectedStart && end === expectedEnd ? false : true,
@@ -44,6 +43,10 @@ describe("WordSnapper", () => {
     it.each`
       text                                                          | start | end   | expectedStart | expectedEnd | scenario
       ${"The quick brown fox jumps over the lazy dog."}             | ${10} | ${25} | ${10}         | ${25}       | ${"multi-word selection"}
+      ${"The quick brown fox jumps over the lazy dog."}             | ${20} | ${24} | ${20}         | ${25}       | ${"jumps"}
+      ${"The quick brown fox jumps over the lazy dog."}             | ${21} | ${30} | ${20}         | ${30}       | ${"jumps over"}
+      ${"The quick brown fox jumps over the lazy dog."}             | ${23} | ${30} | ${26}         | ${30}       | ${"over"}
+      ${"The quick brown fox jumps over the lazy dog."}             | ${21} | ${22} | ${20}         | ${25}       | ${"jumps"}
       ${"Lorem ipsum dolor sit amet, consectetur adipiscing elit."} | ${0}  | ${60} | ${0}          | ${56}       | ${"long sentence"}
       ${"Word1, Word2; Word3: Word4! Word5?"}                       | ${7}  | ${20} | ${7}          | ${20}       | ${"multiple punctuation"}
     `(
@@ -61,9 +64,45 @@ describe("WordSnapper", () => {
 
         expect(result.start).toBe(expectedStart);
         expect(result.end).toBe(expectedEnd);
-        expect(result.valid).toBe(true);
         expect(result.start).toBeLessThan(result.end);
       },
     );
+  });
+
+  describe("getWords", () => {
+    const helloWorld = "Hello world";
+    describe("Hello world", () => {
+      it.each`
+        start | end   | expectedStart | expectedEnd | expectedSelection | description
+        ${0}  | ${5}  | ${0}          | ${5}        | ${"Hello"}        | ${"select 'Hello'"}
+        ${0}  | ${4}  | ${0}          | ${5}        | ${"Hello"}        | ${"select 'Hello'"}
+        ${0}  | ${2}  | ${0}          | ${5}        | ${"Hello"}        | ${"select 'Hello'"}
+        ${3}  | ${5}  | ${0}          | ${5}        | ${"Hello"}        | ${"select 'Hello'"}
+        ${3}  | ${7}  | ${0}          | ${5}        | ${"Hello"}        | ${"select 'Hello'"}
+        ${6}  | ${10} | ${6}          | ${11}       | ${"world"}        | ${"select 'World'"}
+        ${6}  | ${7}  | ${6}          | ${11}       | ${"world"}        | ${"select 'World'"}
+        ${2}  | ${9}  | ${0}          | ${11}       | ${"Hello world"}  | ${"select 'Hello World'"}
+      `(
+        "should make valid from $description",
+        ({ start, end, expectedStart, expectedEnd, expectedSelection }) => {
+          snapper.setText(helloWorld, 0);
+
+          const result = snapper.fixOffset("drag", {
+            start,
+            end,
+          } as TextAnnotation);
+
+          expect(expectedSelection).toBe(
+            helloWorld.substring(result.start, result.end),
+          );
+          expect(result.start).toBe(expectedStart);
+          expect(result.end).toBe(expectedEnd);
+          expect(result.start).toBeLessThan(result.end);
+          expect(result.modified).toBe(
+            start === expectedStart && end === expectedEnd ? false : true,
+          );
+        },
+      );
+    });
   });
 });
