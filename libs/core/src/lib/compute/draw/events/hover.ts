@@ -1,7 +1,7 @@
-import { SvgModel } from '../../model/svg.types';
+import { type SvgModel } from '../../model/svg.types';
 import { drawTag } from '../tag';
 
-import { AnnotationDrawColors, TextAnnotation } from '../../../model';
+import { type AnnotationDrawColors, type TextAnnotation } from '../../../model';
 
 export const hoverAnnotation =
   (annotation: TextAnnotation, svgModel: SvgModel) =>

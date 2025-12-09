@@ -1,12 +1,12 @@
 import memoize from 'memoizee';
-import { TextAnnotationModel } from './annotation.model';
+import { type TextAnnotationModel } from './annotation.model';
 import { isIntersection } from './utils/intersect';
-import { TextAdapter } from '../adapter/text';
+import { type TextAdapter } from '../adapter/text';
 import type { Annotation, TextAnnotation, TextLine } from '../model';
-import { AnnotationAdapter } from '../adapter/annotation';
+import { type AnnotationAdapter } from '../adapter/annotation';
 
 import { Debugger } from '../utils/debugger';
-import { EventListener } from '../events/event.listener';
+import { type EventListener } from '../events/event.listener';
 
 export const assignAnnotationToLines = (
   model: TextAnnotationModel,

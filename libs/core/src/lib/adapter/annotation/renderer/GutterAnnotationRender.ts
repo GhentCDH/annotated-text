@@ -2,15 +2,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from 'lodash-es';
 import {
   AnnotationRender,
-  AnnotationRenderParams,
+  type AnnotationRenderParams,
   DefaultAnnotationRenderStyle,
 } from './annotation-render';
 import { Debugger } from '../../../utils/debugger';
 import { getMinMaxBy } from '../../../compute/draw/utils/min-max.by';
-import { AnnotationDimension, AnnotationDraw } from '../../../model';
+import {
+  type AnnotationDimension,
+  type AnnotationDraw,
+  type AnnotationDrawColors,
+  type TextAnnotation,
+} from '../../../model';
 import { getY } from '../../../compute/compute/helpers';
 import { getColors } from '../../../compute/compute/colors';
 import { createGutterPath } from '../../../compute/utils/create-path';
+import { type TextAdapterStyle } from '../../text';
 
 const createGutterAnnotations = (
   params: AnnotationRenderParams,

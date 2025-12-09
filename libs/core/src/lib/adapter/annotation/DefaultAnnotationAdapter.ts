@@ -1,7 +1,7 @@
 import {
   AnnotationAdapter,
   createAnnotationAdapter,
-  createAnnotationAdapterParams,
+  type createAnnotationAdapterParams,
 } from './AnnotationAdapter';
 import {
   type Annotation,

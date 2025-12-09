@@ -1,10 +1,10 @@
 import {
-  AnnotationEventData,
-  AnnotationEventType,
-  ErrorEventCallback,
-  EventCallback,
+  type AnnotationEventData,
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
 } from './events';
-import { ErrorCode, Errors } from './errors';
+import { type ErrorCode, Errors } from './errors';
 import { Debugger } from '../utils/debugger';
 
 export type EventListenerType = AnnotationEventType | 'all';

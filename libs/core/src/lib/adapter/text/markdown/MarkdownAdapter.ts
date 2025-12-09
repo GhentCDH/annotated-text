@@ -6,12 +6,12 @@ import {
 } from './parser';
 import {
   createTextAdapter,
-  createTextAdapterParams,
+  type createTextAdapterParams,
   type Limit,
   TextAdapter,
 } from '../TextAdapter';
 import { type TextLine, textLineSchema } from '../../../model';
-import { mapLinesToLimit, UpdateLineFn } from '../utils/mapLineToLimit';
+import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
 const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
   // Split into paragraphs we do it ourself

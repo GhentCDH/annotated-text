@@ -1,4 +1,4 @@
-import { Annotation, TextLine } from '../../../model';
+import { type Annotation, type TextLine } from '../../../model';
 import { Debugger } from '../../../utils/debugger';
 
 export const getTextRange = (annotation: Annotation, line: TextLine) => {

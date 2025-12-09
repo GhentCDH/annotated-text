@@ -3,19 +3,19 @@ import {
   createTextAnnotationRender,
   DefaultTextAnnotationRenderStyle,
 } from './TextAnnotationRender';
-import { AnnotationRender, AnnotationRenderParams } from './annotation-render';
+import { AnnotationRender, type AnnotationRenderParams } from './annotation-render';
 import {
-  AnnotationDrawColor,
-  AnnotationDrawColors,
-  TextAnnotation,
+  type AnnotationDrawColor,
+  type AnnotationDrawColors,
+  type TextAnnotation,
 } from '../../../model';
-import { GetColorsFn } from '../../../compute/compute/colors';
+import { type GetColorsFn } from '../../../compute/compute/colors';
 import {
   createAnnotationFill,
-  createAnnotationPathFn,
-  PathParams,
+  type createAnnotationPathFn,
+  type PathParams,
 } from '../../../compute/utils/create-path';
-import { TextAdapterStyle } from '../../text';
+import { type TextAdapterStyle } from '../../text';
 
 export const getColorsUnderline: GetColorsFn<UnderlineAnnotationRenderStyle> = (
   style: UnderlineAnnotationRenderStyle,

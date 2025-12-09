@@ -6,7 +6,7 @@ import type {
   AnnotationRenderStyle,
 } from '../annotation-render';
 import type { TextAnnotation } from '../../../../model';
-import { TextAdapterStyle } from '../../../text';
+import { type TextAdapterStyle } from '../../../text';
 
 // Mock the Debugger module
 vi.mock('../../../utils/debugger', () => ({

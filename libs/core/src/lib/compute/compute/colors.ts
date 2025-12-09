@@ -1,5 +1,5 @@
-import { AnnotationDrawColors, TextAnnotation } from '../../model';
-import { AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import { type AnnotationDrawColors, type TextAnnotation } from '../../model';
+import { type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
 
 export type GetColorsFn<STYLE extends AnnotationRenderStyle> = (
   style: STYLE,

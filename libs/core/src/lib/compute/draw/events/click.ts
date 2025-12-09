@@ -1,5 +1,5 @@
-import { SvgModel } from '../../model/svg.types';
-import { TextAnnotation } from '../../../model';
+import { type SvgModel } from '../../model/svg.types';
+import { type TextAnnotation } from '../../../model';
 
 export const clickAnnotation =
   (annotation: TextAnnotation, svgModel: SvgModel) =>

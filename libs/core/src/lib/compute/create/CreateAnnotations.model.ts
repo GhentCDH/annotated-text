@@ -1,11 +1,11 @@
-import { BaseAnnotation } from './CreateAnnotations';
-import { TEXT_CONFIG_KEYS, TEXT_CONFIG_VALUES } from '../../adapter/text';
-import { ErrorEventCallback, EventCallback } from '../../events';
-import { ANNOTATION_CONFIG_KEYS, ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
-import { EventListenerType } from '../../events/event.listener';
-import { AnnotationId } from '../../model';
-import { AnnotationRender, AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
-import { AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
+import { type BaseAnnotation } from './CreateAnnotations';
+import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
+import { type ErrorEventCallback, type EventCallback } from '../../events';
+import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
+import { type EventListenerType } from '../../events/event.listener';
+import { type AnnotationId } from '../../model';
+import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
+import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
 
 /**
  * Create annotation is a factory function that creates an annotation model.

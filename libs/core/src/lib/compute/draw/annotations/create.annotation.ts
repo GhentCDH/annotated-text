@@ -1,11 +1,11 @@
-import { TextAnnotation } from '../../../model';
-import { AnnotationAdapter } from '../../../adapter';
-import { Position } from '../types';
+import { type TextAnnotation } from '../../../model';
+import { type AnnotationAdapter } from '../../../adapter';
+import { type Position } from '../types';
 import {
-  CharacterPositionResult,
+  type CharacterPositionResult,
   getCharacterStartEndPosition,
 } from '../../position';
-import { InternalEventListener } from '../../../events/internal/internal.event.listener';
+import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
 
 export class CreateAnnotation {
   private startIndex: number;

@@ -1,6 +1,6 @@
 import { maxBy } from 'lodash-es';
 import { AnnotationOverlap } from './annotation.overlap';
-import { type TextAnnotation, TextLine } from '../../model';
+import { type TextAnnotation, type TextLine } from '../../model';
 import { sortAnnotations } from '../draw/utils/sort';
 import { type AnnotationRender } from '../../adapter/annotation/renderer/annotation-render';
 

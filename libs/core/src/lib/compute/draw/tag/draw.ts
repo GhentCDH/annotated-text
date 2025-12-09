@@ -1,11 +1,11 @@
 import memoize from 'memoizee';
 import {
-  AnnotationDimension,
-  AnnotationDrawColors,
-  TextAnnotation,
+  type AnnotationDimension,
+  type AnnotationDrawColors,
+  type TextAnnotation,
 } from '../../../model';
-import { SVG_ID, SVG_ROLE, SvgModel } from '../../model/svg.types';
-import { TagConfig } from '../../../adapter/annotation/DefaultTag';
+import { SVG_ID, SVG_ROLE, type SvgModel } from '../../model/svg.types';
+import { type TagConfig } from '../../../adapter/annotation/DefaultTag';
 
 const defaultParams = memoize((tagConfig: TagConfig<any>) => {
   const fontSize = `${tagConfig.fontSize || 12}px`;

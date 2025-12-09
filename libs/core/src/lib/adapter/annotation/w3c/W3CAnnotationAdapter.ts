@@ -3,14 +3,14 @@ import {
   findTextPositionSelector,
   updateTextSelectionAnnotation,
 } from './utils';
-import { W3CAnnotation } from './model';
+import { type W3CAnnotation } from './model';
 import {
   AnnotationAdapter,
   createAnnotationAdapter,
-  createAnnotationAdapterParams,
+  type createAnnotationAdapterParams,
 } from '../AnnotationAdapter';
 import {
-  Annotation,
+  type Annotation,
   annotationSchema,
   type TextAnnotation,
 } from '../../../model';

@@ -44,13 +44,13 @@ export default [
     },
     rules: {
       quotes: ['error', 'single'],
-      // "@typescript-eslint/consistent-type-imports": [
-      //   "error",
-      //   {
-      //     prefer: "type-imports",
-      //     fixStyle: "inline-type-imports",
-      //   },
-      // ],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'inline-type-imports',
+        },
+      ],
       'no-console': ['error', { allow: ['warn', 'error'] }],
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',

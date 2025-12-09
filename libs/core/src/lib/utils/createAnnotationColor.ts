@@ -1,4 +1,4 @@
-import { AnnotationColor } from '../model';
+import { type AnnotationColor } from '../model';
 
 /**
  * Creates an annotation color configuration.

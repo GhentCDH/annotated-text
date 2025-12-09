@@ -1,8 +1,8 @@
-import { SvgModel } from './svg.types';
+import { type SvgModel } from './svg.types';
 import {
-  AnnotationDrawColors,
-  AnnotationId,
-  TextAnnotation,
+  type AnnotationDrawColors,
+  type AnnotationId,
+  type TextAnnotation,
 } from '../../model';
 
 export class AnnotationColors {

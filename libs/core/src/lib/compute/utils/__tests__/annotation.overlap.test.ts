@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { AnnotationOverlap, TextAnnotation } from '../annotation.overlap';
+import { AnnotationOverlap, type OverlapTextAnnotation } from '../annotation.overlap';
 
-const a1 = { id: 'a1', start: 0, end: 10 } as TextAnnotation;
-const a2 = { id: 'a2', start: 5, end: 15 } as TextAnnotation;
-const a3 = { id: 'a3', start: 20, end: 30 } as TextAnnotation;
-const a4 = { id: 'a4', start: 25, end: 35 } as TextAnnotation;
-const a5 = { id: 'a5', start: 100, end: 110 } as TextAnnotation;
-const annotations: TextAnnotation[] = [a1, a2, a3, a4, a5];
+const a1 = { id: 'a1', start: 0, end: 10 } as OverlapTextAnnotation;
+const a2 = { id: 'a2', start: 5, end: 15 } as OverlapTextAnnotation;
+const a3 = { id: 'a3', start: 20, end: 30 } as OverlapTextAnnotation;
+const a4 = { id: 'a4', start: 25, end: 35 } as OverlapTextAnnotation;
+const a5 = { id: 'a5', start: 100, end: 110 } as OverlapTextAnnotation;
+const annotations: OverlapTextAnnotation[] = [a1, a2, a3, a4, a5];
 type TestParams = {
   id: string;
   start: number;
   end: number;
-  result: TextAnnotation[];
+  result: OverlapTextAnnotation[];
 };
 
 describe('AnnotationOverlap', () => {
@@ -19,7 +19,11 @@ describe('AnnotationOverlap', () => {
     it('should handle empty annotations array', () => {
       const overlap = AnnotationOverlap.init([]);
       expect(
-        overlap.getOverlaps({ id: 'q1', start: 0, end: 10 } as TextAnnotation),
+        overlap.getOverlaps({
+          id: 'q1',
+          start: 0,
+          end: 10,
+        } as OverlapTextAnnotation),
       ).toEqual([]);
     });
 
@@ -49,7 +53,7 @@ describe('AnnotationOverlap', () => {
         annotation,
         expectedCount,
       }: {
-        annotation: TextAnnotation;
+        annotation: OverlapTextAnnotation;
         expectedCount: number;
       }) => {
         const overlap = AnnotationOverlap.init(annotations);
@@ -87,7 +91,7 @@ describe('AnnotationOverlap', () => {
       const overlapWithGap = AnnotationOverlap.init([
         { id: 'a1', start: 100, end: 110 },
         { id: 'a2', start: 120, end: 130 },
-      ] as TextAnnotation[]);
+      ] as OverlapTextAnnotation[]);
 
       const result = overlapWithGap.getOverlaps({
         id: 'query',
@@ -200,7 +204,7 @@ describe('AnnotationOverlap', () => {
 });
 describe('performance with large datasets', () => {
   it('should handle large number of annotations', () => {
-    const largeAnnotations: TextAnnotation[] = [];
+    const largeAnnotations: OverlapTextAnnotation[] = [];
     for (let i = 0; i < 10000; i++) {
       largeAnnotations.push({ id: `a${i}`, start: i * 10, end: i * 10 + 15 });
     }
@@ -220,7 +224,7 @@ describe('performance with large datasets', () => {
   });
 
   it('should handle many overlapping annotations efficiently', () => {
-    const overlappingAnnotations: TextAnnotation[] = [];
+    const overlappingAnnotations: OverlapTextAnnotation[] = [];
     for (let i = 0; i < 1000; i++) {
       overlappingAnnotations.push({
         id: `a${i}`,

@@ -2,19 +2,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from 'lodash-es';
 import {
   AnnotationRender,
-  AnnotationRenderParams,
+  type AnnotationRenderParams,
   DefaultAnnotationRenderStyle,
 } from './annotation-render';
 import {
-  AnnotationDimension,
-  AnnotationDraw,
-  TextAnnotation,
+  type AnnotationDimension,
+  type AnnotationDraw,
+  type TextAnnotation,
 } from '../../../model';
-import { createAnnotationPath, createAnnotationPathFn } from '../../../compute';
-import { getColors, GetColorsFn } from '../../../compute/compute/colors';
+import { createAnnotationPath, type createAnnotationPathFn } from '../../../compute';
+import { getColors, type GetColorsFn } from '../../../compute/compute/colors';
 import { getX, getY } from '../../../compute/compute/helpers';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
-import { TextAdapterStyle } from '../../text';
+import { type TextAdapterStyle } from '../../text';
 
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,

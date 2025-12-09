@@ -1,6 +1,6 @@
 import { maxBy } from 'lodash-es';
 import { calculateGutterAnnotationWeightsAndEnrich } from '../utils/weights';
-import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { type RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import type {
   AnnotationRender,
   GutterAnnotationRenderStyle,

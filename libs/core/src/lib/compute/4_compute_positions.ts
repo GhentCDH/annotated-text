@@ -1,8 +1,8 @@
 import { pick } from 'lodash-es';
-import { TextAnnotationModel } from './annotation.model';
+import { type TextAnnotationModel } from './annotation.model';
 import type { TextAnnotation, TextLine } from '../model';
-import { AnnotationAdapter } from '../adapter/annotation';
-import { TextAdapter } from '../adapter/text';
+import { type AnnotationAdapter } from '../adapter/annotation';
+import { type TextAdapter } from '../adapter/text';
 
 import { Debugger } from '../utils/debugger';
 

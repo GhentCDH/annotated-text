@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  AnnotationStyle,
-  AnnotationStyleParams,
+  type AnnotationStyle,
+  type AnnotationStyleParams,
   DefaultAnnotationStyle,
 } from '../annotation.style';
 import { StyleInstances } from '../style-instances';

@@ -1,9 +1,9 @@
-import { AnnotatedText } from './CreateAnnotations.model';
-import { BaseAnnotation, CreateAnnotationsImpl } from './CreateAnnotations';
+import { type AnnotatedText } from './CreateAnnotations.model';
+import { type BaseAnnotation, CreateAnnotationsImpl } from './CreateAnnotations';
 import {
   AnnotationAdapter,
-  createAnnotationAdapterParams,
-  createTextAdapterParams,
+  type createAnnotationAdapterParams,
+  type createTextAdapterParams,
   DefaultAnnotationAdapter,
   PlainTextAdapter,
   TextAdapter,

@@ -2,14 +2,14 @@ import { hoverAnnotation, leaveAnnotation } from './events/hover';
 import { clickAnnotation, doubleClickAnnotation } from './events/click';
 import { addDraggableAnnotation } from './annotations/drag-annotation';
 import { drawAnnotationHandles } from './annotations/edit';
-import { SVG_ID, SVG_ROLE, SvgModel } from '../model/svg.types';
+import { SVG_ID, SVG_ROLE, type SvgModel } from '../model/svg.types';
 import {
-  AnnotationDraw,
-  AnnotationDrawColor,
-  AnnotationDrawColors,
-  TextAnnotation,
+  type AnnotationDraw,
+  type AnnotationDrawColor,
+  type AnnotationDrawColors,
+  type TextAnnotation,
 } from '../../model';
-import { AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import { type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
 
 export const drawAnnotationContent = (
   draw: AnnotationDraw,

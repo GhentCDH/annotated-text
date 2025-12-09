@@ -1,17 +1,17 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
 import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from './renderer';
-import { RenderParams } from './renderer/annotation-render';
-import { DefaultTagConfig, TagConfig } from './DefaultTag';
+import { type RenderParams } from './renderer/annotation-render';
+import { DefaultTagConfig, type TagConfig } from './DefaultTag';
 import { RenderInstances } from './renderer/render-instances';
 import { StyleInstances } from './style/style-instances';
-import { AnnotationStyleParams } from './style';
+import { type AnnotationStyleParams } from './style';
 import { BaseAdapter } from '../BaseAdapter';
 import { createAnnotationColor } from '../../utils/createAnnotationColor';
 import {
-  Annotation,
+  type Annotation,
   annotationDrawMetadataSchema,
-  AnnotationId,
+  type AnnotationId,
   renderSchema,
   renderStyleSchema,
   type TextAnnotation,
@@ -20,7 +20,7 @@ import {
 
 import type { Snapper } from '../text';
 import { DefaultSnapper } from '../text';
-import { DeepPartial } from '../../deep-partial.type';
+import { type DeepPartial } from '../../deep-partial.type';
 
 /**
  * @deprecated

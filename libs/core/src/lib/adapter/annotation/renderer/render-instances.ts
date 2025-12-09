@@ -1,6 +1,6 @@
 import { merge } from 'lodash-es';
-import { AnnotationRender, AnnotationRenderParams, AnnotationRenderStyle, RenderParams } from './annotation-render';
-import { TextAdapterStyle } from '../../text';
+import { type AnnotationRender, type AnnotationRenderParams, type AnnotationRenderStyle, type RenderParams } from './annotation-render';
+import { type TextAdapterStyle } from '../../text';
 import { Debugger } from '../../../utils/debugger';
 import type { TextAnnotation } from '../../../model';
 

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RBush from 'rbush';
 import { drawTextRaster } from '../text-raster';
 import { calculateOffset, findLineElement } from '../../utils/bounding-rect';
-import { SvgModel } from '../../../model/svg.types';
+import { type SvgModel } from '../../../model/svg.types';
 
 // Mock dependencies
 vi.mock('rbush');

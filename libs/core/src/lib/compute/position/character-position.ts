@@ -1,6 +1,6 @@
-import RBush from 'rbush';
-import { SvgModel } from '../model/svg.types';
-import { TextRasterItem } from '../draw/text/text-raster';
+import type RBush from 'rbush';
+import { type SvgModel } from '../model/svg.types';
+import { type TextRasterItem } from '../draw/text/text-raster';
 import { insideRange } from '../draw/utils/bounding-rect';
 
 /**

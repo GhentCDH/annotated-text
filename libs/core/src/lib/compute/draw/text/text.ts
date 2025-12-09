@@ -1,11 +1,11 @@
 import memoize from 'memoizee';
 import { Debugger } from '../../../utils/debugger';
 import {
-  AnnotationAdapter,
-  TextAdapter,
-  TextDirection,
+  type AnnotationAdapter,
+  type TextAdapter,
+  type TextDirection,
 } from '../../../adapter';
-import { TextAnnotationModel } from '../../annotation.model';
+import { type TextAnnotationModel } from '../../annotation.model';
 import { type TextLine } from '../../../model';
 import { styles } from '../../styles.const';
 

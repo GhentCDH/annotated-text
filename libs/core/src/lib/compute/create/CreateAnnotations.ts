@@ -1,15 +1,15 @@
-import { AnnotatedText } from './CreateAnnotations.model';
-import { TextAnnotationModel } from '../annotation.model';
-import { EventListener, EventListenerType } from '../../events/event.listener';
+import { type AnnotatedText } from './CreateAnnotations.model';
+import { type TextAnnotationModel } from '../annotation.model';
+import { EventListener, type EventListenerType } from '../../events/event.listener';
 import {
-  TEXT_CONFIG_KEYS,
-  TEXT_CONFIG_VALUES,
-  TextAdapter,
+  type TEXT_CONFIG_KEYS,
+  type TEXT_CONFIG_VALUES,
+  type TextAdapter,
 } from '../../adapter/text';
 import {
-  ANNOTATION_CONFIG_KEYS,
-  ANNOTATION_CONFIG_VALUES,
-  AnnotationAdapter,
+  type ANNOTATION_CONFIG_KEYS,
+  type ANNOTATION_CONFIG_VALUES,
+  type AnnotationAdapter,
 } from '../../adapter/annotation';
 import { createAnnotationModel } from '../1_create_annotation_model';
 import { SvgModel } from '../model/svg.types';
@@ -18,15 +18,15 @@ import { computeLinePositions, computePositions } from '../4_compute_positions';
 import { styles } from '../styles.const';
 import { computeAnnotationsOnLines } from '../3_compute_annotations_on_line';
 import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
-import { ErrorEventCallback, EventCallback } from '../../events';
+import { type ErrorEventCallback, type EventCallback } from '../../events';
 import { drawText } from '../draw/text/text';
-import { Annotation, AnnotationId } from '../../model';
+import { type Annotation, type AnnotationId } from '../../model';
 import { AnnotationColors } from '../model/annotation.colors';
 import {
-  AnnotationRender,
-  AnnotationRenderStyle,
+  type AnnotationRender,
+  type AnnotationRenderStyle,
 } from '../../adapter/annotation/renderer/annotation-render';
-import { AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
+import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 
 const document = globalThis.document || null;

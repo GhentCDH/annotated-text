@@ -1,9 +1,9 @@
 import { drag } from 'd3';
 import { DragAnnotation } from './drag.annotations';
-import { TextAnnotation } from '../../../model';
-import { SvgModel } from '../../model/svg.types';
+import { type TextAnnotation } from '../../../model';
+import { type SvgModel } from '../../model/svg.types';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
-import { Position } from '../types';
+import { type Position } from '../types';
 
 export const addDraggableAnnotation = (
   svgModel: SvgModel,

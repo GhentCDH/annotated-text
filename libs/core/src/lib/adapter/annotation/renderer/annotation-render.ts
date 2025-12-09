@@ -1,6 +1,6 @@
 import { cloneDeep, merge } from 'lodash-es';
-import { AnnotationDimension, AnnotationDraw, AnnotationDrawColors, TextAnnotation } from '../../../model';
-import { TextAdapterStyle } from '../../text';
+import { type AnnotationDimension, type AnnotationDraw, type AnnotationDrawColors, type TextAnnotation } from '../../../model';
+import { type TextAdapterStyle } from '../../text';
 
 /**
  * Parameters passed to the render method of annotation renderers.

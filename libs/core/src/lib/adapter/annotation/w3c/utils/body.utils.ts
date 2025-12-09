@@ -1,11 +1,11 @@
 import { hasSameFields } from './target.utils';
 import {
-  TextualBody,
-  TextualBodyClassifying,
-  TextualBodyClassifyingPurpose,
-  W3CAnnotation,
-  W3CAnnotationBody,
-  W3CAnnotationBodyType,
+  type TextualBody,
+  type TextualBodyClassifying,
+  type TextualBodyClassifyingPurpose,
+  type W3CAnnotation,
+  type W3CAnnotationBody,
+  type W3CAnnotationBodyType,
 } from '../model';
 
 export const getBody = (

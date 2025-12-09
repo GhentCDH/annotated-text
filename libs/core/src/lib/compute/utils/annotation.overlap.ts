@@ -1,10 +1,13 @@
 import RBush from 'rbush';
 import {
-  AnnotationId,
+  type AnnotationId,
   type TextAnnotation as _TextAnnotation,
 } from '../../model';
 
-export type TextAnnotation = Pick<_TextAnnotation, 'id' | 'start' | 'end'>;
+export type OverlapTextAnnotation = Pick<
+  _TextAnnotation,
+  'id' | 'start' | 'end'
+>;
 
 interface RBushItem<TEXT_ANNOTATION> {
   minX: number;
@@ -14,13 +17,13 @@ interface RBushItem<TEXT_ANNOTATION> {
   annotation: TEXT_ANNOTATION;
 }
 
-export class AnnotationOverlap<TEXT_ANNOTATION extends TextAnnotation> {
+export class AnnotationOverlap<TEXT_ANNOTATION extends OverlapTextAnnotation> {
   private readonly tree: RBush<RBushItem<TEXT_ANNOTATION>>;
-  private readonly annotationById: Map<AnnotationId, TextAnnotation>;
+  private readonly annotationById: Map<AnnotationId, OverlapTextAnnotation>;
 
-  static init<TEXT_ANNOTATION extends TextAnnotation = TextAnnotation>(
-    annotations: TEXT_ANNOTATION[],
-  ): AnnotationOverlap<TEXT_ANNOTATION> {
+  static init<
+    TEXT_ANNOTATION extends OverlapTextAnnotation = OverlapTextAnnotation,
+  >(annotations: TEXT_ANNOTATION[]): AnnotationOverlap<TEXT_ANNOTATION> {
     return new AnnotationOverlap(annotations);
   }
 
@@ -62,7 +65,7 @@ export class AnnotationOverlap<TEXT_ANNOTATION extends TextAnnotation> {
    * Check if two annotations truly overlap (exclusive boundaries).
    * a.start < b.end && b.start < a.end
    */
-  private overlaps(a: TextAnnotation, b: TEXT_ANNOTATION): boolean {
+  private overlaps(a: OverlapTextAnnotation, b: TEXT_ANNOTATION): boolean {
     return a.start < b.end && b.start < a.end;
   }
 

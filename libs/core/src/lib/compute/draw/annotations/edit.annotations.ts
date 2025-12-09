@@ -1,13 +1,11 @@
 import { cloneDeep, pick } from 'lodash-es';
-import { InternalEventListener } from '../../../events/internal/internal.event.listener';
-import { Position } from '../types';
-import {
-  CharacterPositionResult,
-  getCharacterStartEndPosition,
-} from '../../position';
+import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
+import { type Position } from '../types';
+import { type CharacterPositionResult, getCharacterStartEndPosition } from '../../position';
 import { DUMMY_UID } from '../../model/svg.types';
-import { TextAnnotation } from '../../utils/annotation.overlap';
-import { AnnotationAdapter } from '../../../adapter';
+import { type AnnotationAdapter, type SnapperAction } from '../../../adapter';
+import { AnnotationDrawColors, type TextAnnotation, textAnnotationSchema } from '../../../model';
+import { type AnnotationEventType } from '../../../events/events';
 
 export class EditAnnotation {
   private dragResult: TextAnnotation | null = null;

@@ -1,7 +1,7 @@
 import { pointer } from 'd3';
 import { CreateAnnotation } from './create.annotation';
-import { SvgModel } from '../../model/svg.types';
-import { Position } from '../types';
+import { type SvgModel } from '../../model/svg.types';
+import { type Position } from '../types';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
 
 export const createNewBlock = (svgModel: SvgModel) => {

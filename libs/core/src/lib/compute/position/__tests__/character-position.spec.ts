@@ -1,12 +1,12 @@
 import RBush from 'rbush';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  CharacterPositionResult,
+  type CharacterPositionResult,
   getCharacterFromTextNodesAtPoint,
   getCharacterStartEndPosition,
 } from '../character-position';
-import { SvgModel } from '../../model/svg.types';
-import { TextRasterItem } from '../../draw/text/text-raster';
+import { type SvgModel } from '../../model/svg.types';
+import { type TextRasterItem } from '../../draw/text/text-raster';
 
 describe('getCharacterFromTextNodesAtPoint', () => {
   let mockSvgModel: SvgModel;
