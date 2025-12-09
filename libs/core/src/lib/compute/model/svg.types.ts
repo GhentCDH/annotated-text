@@ -1,49 +1,49 @@
-import { Selection } from "d3-selection";
-import { select } from "d3";
-import RBush from "rbush";
-import { AnnotationColors } from "./annotation.colors";
+import { type Selection } from 'd3-selection';
+import { select } from 'd3';
+import type RBush from 'rbush';
+import { type AnnotationColors } from './annotation.colors';
 import {
-  AnnotationEventData,
-  AnnotationEventType,
+  type AnnotationEventData,
+  type AnnotationEventType,
   CHANGED_EVENTS,
   NEW_EVENTS,
-} from "../../events";
-import { Debugger } from "../../utils/debugger";
+} from '../../events';
+import { Debugger } from '../../utils/debugger';
 import {
-  AnnotationDrawColor,
-  AnnotationDrawColors,
+  type AnnotationDrawColor,
+  type AnnotationDrawColors,
   type AnnotationId,
-} from "../../model";
-import { TextAnnotationModel } from "../annotation.model";
-import { styles } from "../styles.const";
-import { drawAnnotation } from "../draw/annotations";
-import { createNewBlock } from "../draw/annotations/create";
-import { EventListener } from "../../events/event.listener";
-import { AnnotationAdapter } from "../../adapter/annotation";
-import { TextAdapter } from "../../adapter/text";
-import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
-import { drawAllTags } from "../draw/tag";
-import { InternalEventListener } from "../../events/internal/internal.event.listener";
-import { drawDummyAnnotation } from "../draw/annotations/draw-dummy";
+} from '../../model';
+import { type TextAnnotationModel } from '../annotation.model';
+import { styles } from '../styles.const';
+import { drawAnnotation } from '../draw/annotations';
+import { createNewBlock } from '../draw/annotations/create';
+import { type EventListener } from '../../events/event.listener';
+import { type AnnotationAdapter } from '../../adapter/annotation';
+import { type TextAdapter } from '../../adapter/text';
+import { drawTextRaster, type TextRasterItem } from '../draw/text/text-raster';
+import { drawAllTags } from '../draw/tag';
+import { type InternalEventListener } from '../../events/internal/internal.event.listener';
+import { drawDummyAnnotation } from '../draw/annotations/draw-dummy';
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
 export type AnnotationRect = any;
 
-export const DUMMY_UID = "dummy-uid";
+export const DUMMY_UID = 'dummy-uid';
 
 export const SVG_ID = {
-  ANNOTATION_UID: "data-annotation-uid",
-  ANNOTATION_ROLE: "data-annotation-role",
-  LINE_UID: "data-line-uid",
+  ANNOTATION_UID: 'data-annotation-uid',
+  ANNOTATION_ROLE: 'data-annotation-role',
+  LINE_UID: 'data-line-uid',
 };
 
 export const SVG_ROLE = {
-  BORDER: "border",
-  FILL: "fill",
-  HANDLE: "handle",
-  ANNOTATIONS: "annotations",
-  TAG: "tag",
+  BORDER: 'border',
+  FILL: 'fill',
+  HANDLE: 'handle',
+  ANNOTATIONS: 'annotations',
+  TAG: 'tag',
 };
 
 export class SvgModel {
@@ -64,24 +64,24 @@ export class SvgModel {
   ) {
     const width = textElement.getBoundingClientRect().width;
     const height = textElement.getBoundingClientRect().height;
-    this.svg = select("body")
-      .append("svg")
-      .attr("class", styles.svg)
-      .attr("width", width)
-      .attr("height", height) as any;
+    this.svg = select('body')
+      .append('svg')
+      .attr('class', styles.svg)
+      .attr('width', width)
+      .attr('height', height) as any;
     // .style("font-family", textAdapter.style.fontFamily)
     // .style("font-size", textAdapter.style.fontSize) as any;
     this.annotations = this.svg
-      .append("g")
+      .append('g')
       .attr(
         SVG_ID.ANNOTATION_ROLE,
         SVG_ROLE.ANNOTATIONS,
       ) as unknown as AnnotationSvg;
     this.tagSvg = this.svg
-      .append("g")
+      .append('g')
       .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG) as unknown as AnnotationSvg;
     this.handles = this.svg
-      .append("g")
+      .append('g')
       .attr(
         SVG_ID.ANNOTATION_ROLE,
         SVG_ROLE.HANDLE,
@@ -89,20 +89,20 @@ export class SvgModel {
     this.textTree = drawTextRaster(this);
     createNewBlock(this);
     drawAllTags(this);
-    this.internalEventListener.on("send-event--annotation", ({ data }) =>
+    this.internalEventListener.on('send-event--annotation', ({ data }) =>
       this.sendEvent(data, data.additionalData),
     );
 
-    this.internalEventListener.on("annotation--set-class", ({ data }) => {
+    this.internalEventListener.on('annotation--set-class', ({ data }) => {
       this.setClass(data.annotationUuid, data.cssClass);
     });
-    this.internalEventListener.on("annotation--remove-tag", ({ data }) => {
+    this.internalEventListener.on('annotation--remove-tag', ({ data }) => {
       this.removeTag(data.annotationUuid);
     });
-    this.internalEventListener.on("annotation--remove", ({ data }) => {
+    this.internalEventListener.on('annotation--remove', ({ data }) => {
       this.removeAnnotations(data.annotationUuid, data.selector);
     });
-    this.internalEventListener.on("annotation--draw-dummy", ({ data }) => {
+    this.internalEventListener.on('annotation--draw-dummy', ({ data }) => {
       drawDummyAnnotation(this, data.dummyAnnotation, data.color);
     });
   }
@@ -115,12 +115,12 @@ export class SvgModel {
     return this;
   }
 
-  removeAnnotations(annotationUuid: AnnotationId, selector = "") {
+  removeAnnotations(annotationUuid: AnnotationId, selector = '') {
     this.findRelatedAnnotations(annotationUuid, selector)?.remove();
     return this;
   }
 
-  findRelatedAnnotations(annotationUuid: AnnotationId, selector = "") {
+  findRelatedAnnotations(annotationUuid: AnnotationId, selector = '') {
     const annotations = this.svg.selectAll(
       `[data-annotation-uid="${annotationUuid}"]${selector}`,
     );
@@ -149,7 +149,7 @@ export class SvgModel {
   resetAnnotationColor(annotationUuid: AnnotationId) {
     const annotation = this.model.getAnnotation(annotationUuid);
     if (!annotation) {
-      Debugger.warn("No annotation found for uuid", annotationUuid);
+      Debugger.warn('No annotation found for uuid', annotationUuid);
       return;
     }
 
@@ -159,7 +159,7 @@ export class SvgModel {
     );
 
     if (!color) {
-      Debugger.warn("No default color found for annotation", annotationUuid);
+      Debugger.warn('No default color found for annotation', annotationUuid);
       return;
     }
 
@@ -168,21 +168,21 @@ export class SvgModel {
 
   colorAnnotation(annotationUuid: AnnotationId, color: AnnotationDrawColor) {
     if (!color) {
-      Debugger.warn("No color provided for annotation", annotationUuid);
+      Debugger.warn('No color provided for annotation', annotationUuid);
       return;
     }
     this.findFills(annotationUuid)
-      ?.attr("fill", color.fill!)
-      .attr("stroke", "none");
+      ?.attr('fill', color.fill!)
+      .attr('stroke', 'none');
     if (color.border)
       this.findBorders(annotationUuid)
-        ?.attr("fill", "none")
-        .attr("stroke", color.border);
+        ?.attr('fill', 'none')
+        .attr('stroke', color.border);
   }
 
   setClass(annotationUuid: AnnotationId, cssClass: string) {
-    this.findFills(annotationUuid)?.attr("class", cssClass);
-    this.findBorders(annotationUuid)?.attr("class", cssClass);
+    this.findFills(annotationUuid)?.attr('class', cssClass);
+    this.findBorders(annotationUuid)?.attr('class', cssClass);
   }
 
   node() {
@@ -196,7 +196,7 @@ export class SvgModel {
       .sort((a1, a2) => (a1._render.weight! > a2._render.weight! ? -1 : 1))
       .forEach((annotation) => drawAnnotation(this, annotation));
 
-    Debugger.time(now, "--- drawComputedAnnotations ");
+    Debugger.time(now, '--- drawComputedAnnotations ');
   }
 
   sendEvent(

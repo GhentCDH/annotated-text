@@ -1,14 +1,14 @@
-import { maxBy } from "lodash-es";
-import { AnnotationOverlap } from "./annotation.overlap";
-import { type TextAnnotation, TextLine } from "../../model";
-import { sortAnnotations } from "../draw/utils/sort";
-import { type AnnotationRender } from "../../adapter/annotation/renderer/annotation-render";
+import { maxBy } from 'lodash-es';
+import { AnnotationOverlap } from './annotation.overlap';
+import { type TextAnnotation, type TextLine } from '../../model';
+import { sortAnnotations } from '../draw/utils/sort';
+import { type AnnotationRender } from '../../adapter/annotation/renderer/annotation-render';
 
 export class AnnotationWeight {
   private readonly annotationOverlap: AnnotationOverlap<TextAnnotation>;
   private readonly renderWeights: Map<number, TextAnnotation[]>;
   private readonly renderOrder: number[];
-  private totalMaxWeight: number = 0;
+  private totalMaxWeight = 0;
 
   static calculate(
     annotations: TextAnnotation[],

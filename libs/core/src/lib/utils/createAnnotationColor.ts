@@ -1,4 +1,4 @@
-import { AnnotationColor } from "../model";
+import { type AnnotationColor } from '../model';
 
 /**
  * Creates an annotation color configuration.
@@ -72,7 +72,7 @@ export const createAnnotationColor = (
     //   opacity.backgroundActive * 100
     // })`,
     gutterColor: `rgba(${rgbColor},${opacity.gutter})`,
-    tagColor: "black",
+    tagColor: 'black',
     tagBackground: `rgba(${rgbColor},${opacity.tagBackground})`,
     color: color,
   };

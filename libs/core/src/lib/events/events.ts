@@ -1,17 +1,17 @@
-import type { Annotation } from "../model";
+import type { Annotation } from '../model';
 
 export type AnnotationEventType =
-  | "mouse-enter"
-  | "mouse-leave"
-  | "click"
-  | "double-click"
-  | "annotation-edit--start"
-  | "annotation-edit--end"
-  | "annotation-edit--move"
-  | "annotation-create--start"
-  | "annotation-create--end"
-  | "annotation-create--move"
-  | "destroy";
+  | 'mouse-enter'
+  | 'mouse-leave'
+  | 'click'
+  | 'double-click'
+  | 'annotation-edit--start'
+  | 'annotation-edit--end'
+  | 'annotation-edit--move'
+  | 'annotation-create--start'
+  | 'annotation-create--end'
+  | 'annotation-create--move'
+  | 'destroy';
 
 export type AnnotationEventData = {
   annotation: Annotation;
@@ -37,14 +37,14 @@ export type EventCallback<
 export type ErrorEventCallback = (data: AnnotationErrorEvent) => void;
 
 export const NEW_EVENTS: AnnotationEventType[] = [
-  "annotation-create--move",
-  "annotation-create--start",
-  "annotation-create--end",
+  'annotation-create--move',
+  'annotation-create--start',
+  'annotation-create--end',
 ] as const;
 
 export const CHANGED_EVENTS: AnnotationEventType[] = [
   ...NEW_EVENTS,
-  "annotation-edit--move",
-  "annotation-edit--start",
-  "annotation-edit--end",
+  'annotation-edit--move',
+  'annotation-edit--start',
+  'annotation-edit--end',
 ] as const;

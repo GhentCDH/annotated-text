@@ -1,20 +1,20 @@
 import {
-  AnnotationEventData,
-  AnnotationEventType,
-  ErrorEventCallback,
-  EventCallback,
-} from "./events";
-import { ErrorCode, Errors } from "./errors";
-import { Debugger } from "../utils/debugger";
+  type AnnotationEventData,
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from './events';
+import { type ErrorCode, Errors } from './errors';
+import { Debugger } from '../utils/debugger';
 
-export type EventListenerType = AnnotationEventType | "all";
+export type EventListenerType = AnnotationEventType | 'all';
 
 export class EventListener {
   private readonly eventMap = new Map<EventListenerType, EventCallback[]>();
   private readonly errorSet: ErrorEventCallback[] = [];
 
   constructor() {
-    this.eventMap.set("all", []);
+    this.eventMap.set('all', []);
   }
 
   public register(event: EventListenerType, callback: EventCallback) {
@@ -43,7 +43,7 @@ export class EventListener {
   ) {
     const callbacks = [
       this.eventMap.get(event),
-      this.eventMap.get("all"),
+      this.eventMap.get('all'),
     ].flat();
     for (const callback of callbacks) {
       if (!callback) continue;

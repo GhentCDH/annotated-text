@@ -1,1 +1,1 @@
-export * from "./character-position";
+export * from './character-position';

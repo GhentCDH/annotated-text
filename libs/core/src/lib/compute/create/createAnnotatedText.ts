@@ -1,15 +1,15 @@
-import { AnnotatedText } from "./CreateAnnotations.model";
-import { BaseAnnotation, CreateAnnotationsImpl } from "./CreateAnnotations";
+import { type AnnotatedText } from './CreateAnnotations.model';
+import { type BaseAnnotation, CreateAnnotationsImpl } from './CreateAnnotations';
 import {
   AnnotationAdapter,
-  createAnnotationAdapterParams,
-  createTextAdapterParams,
+  type createAnnotationAdapterParams,
+  type createTextAdapterParams,
   DefaultAnnotationAdapter,
   PlainTextAdapter,
   TextAdapter,
-} from "../../adapter";
-import type { Annotation } from "../../model/";
-import { Debugger } from "../../utils/debugger";
+} from '../../adapter';
+import type { Annotation } from '../../model/';
+import { Debugger } from '../../utils/debugger';
 
 type createAnnotatedTextParams<ANNOTATION> = {
   text?: TextAdapter | createTextAdapterParams;
@@ -28,9 +28,9 @@ export const createAnnotatedText = <
 ): AnnotatedText<ANNOTATION> => {
   if (annotatedTextCache.has(id)) {
     console.warn(
-      "AnnotatedText with this ID already exists:",
+      'AnnotatedText with this ID already exists:',
       id,
-      "the original will be returned, params are ignored. ",
+      'the original will be returned, params are ignored. ',
     );
 
     return annotatedTextCache.get(id) as AnnotatedText<ANNOTATION>;
@@ -58,12 +58,12 @@ export const createAnnotatedText = <
   ) as AnnotatedText<ANNOTATION>;
 
   annotatedTextCache.set(id, annotatedImpl);
-  annotatedImpl.on("destroy", () => {
+  annotatedImpl.on('destroy', () => {
     annotatedTextCache.delete(id);
     Debugger.verbose(
-      "AnnotatedText with ID",
+      'AnnotatedText with ID',
       id,
-      "has been destroyed and removed from cache.",
+      'has been destroyed and removed from cache.',
     );
   });
   return annotatedImpl;
@@ -76,7 +76,7 @@ export const getAnnotatedText = <
 ) => {
   const annotatedText = annotatedTextCache.get(id);
   if (!annotatedText) {
-    throw new Error("AnnotatedText with this ID does not exist");
+    throw new Error('AnnotatedText with this ID does not exist');
   }
 
   return annotatedText as AnnotatedText<ANNOTATION>;

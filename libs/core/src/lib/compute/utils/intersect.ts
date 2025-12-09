@@ -1,4 +1,4 @@
-import memoize from "memoizee";
+import memoize from 'memoizee';
 
 const intersect = memoize(
   (a_start: number, a_end: number, b_start: number, b_end: number) => {

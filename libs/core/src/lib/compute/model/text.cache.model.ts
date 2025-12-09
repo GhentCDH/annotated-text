@@ -1,6 +1,6 @@
-import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
-import { TextAnnotation, TextLine } from "../../model";
-import { AnnotationWeight } from "../utils/annotation.weight";
+import { type RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { type TextAnnotation, type TextLine } from '../../model';
+import { AnnotationWeight } from '../utils/annotation.weight';
 
 export class TextAnnotationCacheModel {
   public textAnnotations: TextAnnotation[] = [];
@@ -8,8 +8,6 @@ export class TextAnnotationCacheModel {
   private readonly usedRenders = new Set<string>();
   public minStartPosition = 0;
   public maxStartPosition = 0;
-
-  constructor() {}
 
   updateTextAnnotations(
     lines: TextLine[],
@@ -48,6 +46,4 @@ export class TextAnnotationCacheModel {
       this.lineAnnotationMap.set(line.lineNumber, lineAnnotationMap);
     });
   }
-
-  clear() {}
 }

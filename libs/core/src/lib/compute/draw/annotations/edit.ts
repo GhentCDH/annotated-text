@@ -1,11 +1,11 @@
-import { drag } from "d3";
-import { SVG_ID, SvgModel } from "../../model/svg.types";
-import { AnnotationDraw, Dimensions, TextAnnotation } from "../../../model";
-import { AnnotationEventType } from "../../../events/events";
-import { EditAnnotation } from "../annotations/edit.annotations";
-import { getCharacterFromTextNodesAtPoint } from "../../position";
-import { Position } from "../types";
-import { hoverAnnotation, leaveAnnotation } from "../events/hover";
+import { drag } from 'd3';
+import { EditAnnotation } from './edit.annotations';
+import { SVG_ID, type SvgModel } from '../../model/svg.types';
+import { type AnnotationDraw, type Dimensions, type TextAnnotation } from '../../../model';
+import { type AnnotationEventType } from '../../../events/events';
+import { getCharacterFromTextNodesAtPoint } from '../../position';
+import { type Position } from '../types';
+import { hoverAnnotation, leaveAnnotation } from '../events/hover';
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
@@ -16,11 +16,11 @@ export const drawAnnotationHandles = (
     // TODO add condition to check if annotation is draggable
 
     if (draw.draggable.start) {
-      drawHandle(svgModel, annotation, draw.draggable.start, "start");
+      drawHandle(svgModel, annotation, draw.draggable.start, 'start');
     }
 
     if (draw.draggable.end) {
-      drawHandle(svgModel, annotation, draw.draggable.end, "end");
+      drawHandle(svgModel, annotation, draw.draggable.end, 'end');
     }
   }
 };
@@ -29,7 +29,7 @@ export const drawHandle = (
   svgModel: SvgModel,
   annotation: TextAnnotation,
   dimensions: Dimensions,
-  target: "start" | "end",
+  target: 'start' | 'end',
 ) => {
   const config = svgModel.annotationAdapter.config!;
   const handleRadius = config.text.handleRadius;
@@ -59,26 +59,26 @@ export const drawHandle = (
 
   const width = handleRadius;
   const handle = svgModel.handles
-    .append("rect")
+    .append('rect')
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
-    .attr(SVG_ID.ANNOTATION_ROLE, "handle")
-    .attr("width", width)
-    .attr("height", dimensions.height)
-    .attr("fill", "gray")
-    .attr("opacity", 0)
-    .attr("x", dimensions.x - width / 2)
-    .attr("y", dimensions.y)
+    .attr(SVG_ID.ANNOTATION_ROLE, 'handle')
+    .attr('width', width)
+    .attr('height', dimensions.height)
+    .attr('fill', 'gray')
+    .attr('opacity', 0)
+    .attr('x', dimensions.x - width / 2)
+    .attr('y', dimensions.y)
     .call(
       drag()
-        .on("drag", onEditDrag("annotation-edit--move"))
-        .on("start", onEditDragStart)
-        .on("end", onEditDragEnd) as any,
+        .on('drag', onEditDrag('annotation-edit--move'))
+        .on('start', onEditDragStart)
+        .on('end', onEditDragEnd) as any,
     );
   handle
-    .on("mouseover", hoverAnnotation(annotation, svgModel))
-    .on("mouseleave", leaveAnnotation(annotation, svgModel))
-    .on("mouseenter", () => {
-      handle.attr("class", svgModel.annotationAdapter.edit ? "handle" : "");
+    .on('mouseover', hoverAnnotation(annotation, svgModel))
+    .on('mouseleave', leaveAnnotation(annotation, svgModel))
+    .on('mouseenter', () => {
+      handle.attr('class', svgModel.annotationAdapter.edit ? 'handle' : '');
     });
   return handle;
 };

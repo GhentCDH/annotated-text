@@ -1,5 +1,5 @@
-import { Annotation, TextLine } from "../../../model";
-import { Debugger } from "../../../utils/debugger";
+import { type Annotation, type TextLine } from '../../../model';
+import { Debugger } from '../../../utils/debugger';
 
 export const getTextRange = (annotation: Annotation, line: TextLine) => {
   let start = annotation.start - line.start;
@@ -21,7 +21,7 @@ export const getRanges = (annotation: Annotation, line: TextLine) => {
   const lineElement = line.element;
   if (!lineElement) {
     Debugger.debug(
-      "getRange",
+      'getRange',
       `No textElement for line ${line.lineNumber} found for annotation ${annotation.id}`,
     );
 

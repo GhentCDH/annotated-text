@@ -1,5 +1,5 @@
-import memoize from "memoizee";
-import { AnnotationDrawPath } from "@ghentcdh/annotated-text";
+import memoize from 'memoizee';
+import type { AnnotationDrawPath } from '../../model';
 
 export type PathParams = {
   x: number;
@@ -69,7 +69,7 @@ const createAnnotationBorder = ({
     path.push(`H${x}`);
   }
 
-  return path.flat().join(" ");
+  return path.flat().join(' ');
 };
 
 export const createAnnotationFill = ({
@@ -99,7 +99,7 @@ export const createAnnotationFill = ({
     path.push(createLeftBorder(x, y, bottom, 0));
   }
 
-  return path.flat().join(" ");
+  return path.flat().join(' ');
 };
 
 export type createAnnotationPathFn = (params: PathParams) => AnnotationDrawPath;

@@ -1,19 +1,11 @@
-import {
-  AnnotationAdapter,
-  AnnotationDrawColors,
-  AnnotationEventType,
-  SnapperAction,
-  TextAnnotation,
-  textAnnotationSchema,
-} from "@ghentcdh/annotated-text";
-import { cloneDeep, pick } from "lodash-es";
-import { InternalEventListener } from "../../../events/internal/internal.event.listener";
-import { Position } from "../types";
-import {
-  CharacterPositionResult,
-  getCharacterStartEndPosition,
-} from "../../position";
-import { DUMMY_UID } from "../../model/svg.types";
+import { cloneDeep, pick } from 'lodash-es';
+import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
+import { type Position } from '../types';
+import { type CharacterPositionResult, getCharacterStartEndPosition } from '../../position';
+import { DUMMY_UID } from '../../model/svg.types';
+import { type AnnotationAdapter, type SnapperAction } from '../../../adapter';
+import { type AnnotationDrawColors, type TextAnnotation, textAnnotationSchema } from '../../../model';
+import { type AnnotationEventType } from '../../../events/events';
 
 export class EditAnnotation {
   private dragResult: TextAnnotation | null = null;
@@ -27,24 +19,24 @@ export class EditAnnotation {
     ) => CharacterPositionResult | null,
   ) {}
 
-  start(position: Position, target: "start" | "end", event: any) {
+  start(position: Position, target: 'start' | 'end', event: any) {
     if (!this.annotationAdapter.edit) return;
     if (this.internalEventListener.isBlocking) return;
 
-    return this.onDrag("annotation-edit--start", position, target, event);
+    return this.onDrag('annotation-edit--start', position, target, event);
   }
 
   onEnd(event: any) {
     if (!this.dragResult) return;
-    this.internalEventListener.unBlockEvents("ending annotation edit");
-    this.internalEventListener.sendEvent("annotation--remove", {
+    this.internalEventListener.unBlockEvents('ending annotation edit');
+    this.internalEventListener.sendEvent('annotation--remove', {
       annotationUuid: DUMMY_UID,
     });
 
-    this.internalEventListener.sendEvent("send-event--annotation", {
-      event: "annotation-edit--end",
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event: 'annotation-edit--end',
       mouseEvent: event,
-      annotationUuid: this.annotation?.id || "",
+      annotationUuid: this.annotation?.id || '',
       additionalData: { annotation: this.dragResult },
     });
 
@@ -53,7 +45,7 @@ export class EditAnnotation {
     this.dragResult._render.weight = this.annotation._render.weight;
     this.dragResult.id = this.annotation.id;
 
-    this.internalEventListener.sendEvent("annotation--update", {
+    this.internalEventListener.sendEvent('annotation--update', {
       annotation: this.dragResult,
     });
   }
@@ -61,7 +53,7 @@ export class EditAnnotation {
   onDrag(
     eventType: AnnotationEventType,
     position: Position,
-    target: "start" | "end",
+    target: 'start' | 'end',
     event: any,
   ) {
     if (!this.annotationAdapter.edit) return;
@@ -75,7 +67,7 @@ export class EditAnnotation {
         eventType,
         position,
         target,
-        (this.dragResult && pick(this.dragResult, ["start", "end"])) ??
+        (this.dragResult && pick(this.dragResult, ['start', 'end'])) ??
           undefined,
       ) ?? this.dragResult;
   }
@@ -90,10 +82,10 @@ export const editAnnotations = (
   ) => CharacterPositionResult | null,
   eventType: AnnotationEventType,
   position: Position,
-  target: "start" | "end",
+  target: 'start' | 'end',
   prevPosition?: { start: number; end: number },
 ) => {
-  internalEventListener.sendEvent("annotation--remove-tag", {
+  internalEventListener.sendEvent('annotation--remove-tag', {
     annotationUuid: annotation.id,
   });
 
@@ -118,7 +110,7 @@ export const editAnnotations = (
       start,
       end,
     },
-    target === "start" ? "move-start" : "move-end",
+    target === 'start' ? 'move-start' : 'move-end',
     prevPosition,
   );
 };
@@ -169,13 +161,13 @@ export const handleAnnotationEditAndSendEvent = (
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
 
-  internalEventListener.sendEvent("send-event--annotation", {
+  internalEventListener.sendEvent('send-event--annotation', {
     event: eventType,
-    annotationUuid: dummyAnnotation?.id.toString() || "",
+    annotationUuid: dummyAnnotation?.id.toString() || '',
     additionalData: { annotation: dummyAnnotation },
   });
 
-  internalEventListener.sendEvent("annotation--draw-dummy", {
+  internalEventListener.sendEvent('annotation--draw-dummy', {
     dummyAnnotation: dummyAnnotation,
     color: color.edit,
   });

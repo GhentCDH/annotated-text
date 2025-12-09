@@ -1,21 +1,21 @@
-import { cloneDeep } from "lodash-es";
+import { cloneDeep } from 'lodash-es';
 import {
   createTextAnnotationRender,
   DefaultTextAnnotationRenderStyle,
-} from "./TextAnnotationRender";
-import { AnnotationRender, AnnotationRenderParams } from "./annotation-render";
+} from './TextAnnotationRender';
+import { AnnotationRender, type AnnotationRenderParams } from './annotation-render';
 import {
-  AnnotationDrawColor,
-  AnnotationDrawColors,
-  TextAnnotation,
-} from "../../../model";
-import { GetColorsFn } from "../../../compute/compute/colors";
+  type AnnotationDrawColor,
+  type AnnotationDrawColors,
+  type TextAnnotation,
+} from '../../../model';
+import { type GetColorsFn } from '../../../compute/compute/colors';
 import {
   createAnnotationFill,
-  createAnnotationPathFn,
-  PathParams,
-} from "../../../compute/utils/create-path";
-import { TextAdapterStyle } from "../../text";
+  type createAnnotationPathFn,
+  type PathParams,
+} from '../../../compute/utils/create-path';
+import { type TextAdapterStyle } from '../../text';
 
 export const getColorsUnderline: GetColorsFn<UnderlineAnnotationRenderStyle> = (
   style: UnderlineAnnotationRenderStyle,
@@ -28,7 +28,7 @@ export const getColorsUnderline: GetColorsFn<UnderlineAnnotationRenderStyle> = (
 
   return {
     default: {
-      fill: "rgba(0,0,0,0)",
+      fill: 'rgba(0,0,0,0)',
       border: borders ? color.border : undefined,
       borderWidth: style.borderWidth,
     } as AnnotationDrawColor,
@@ -77,7 +77,7 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
 
-  static instance = "underline";
+  static instance = 'underline';
   readonly name = UnderLineAnnotationRender.instance;
 
   constructor() {

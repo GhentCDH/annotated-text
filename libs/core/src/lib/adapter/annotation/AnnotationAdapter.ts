@@ -1,26 +1,26 @@
-import { cloneDeep, merge } from "lodash-es";
-import { v4 as uuidv4 } from "uuid";
-import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from "./renderer";
-import { RenderParams } from "./renderer/annotation-render";
-import { DefaultTagConfig, TagConfig } from "./DefaultTag";
-import { RenderInstances } from "./renderer/render-instances";
-import { StyleInstances } from "./style/style-instances";
-import { AnnotationStyleParams } from "./style";
-import { BaseAdapter } from "../BaseAdapter";
-import { createAnnotationColor } from "../../utils/createAnnotationColor";
+import { cloneDeep, merge } from 'lodash-es';
+import { v4 as uuidv4 } from 'uuid';
+import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from './renderer';
+import { type RenderParams } from './renderer/annotation-render';
+import { DefaultTagConfig, type TagConfig } from './DefaultTag';
+import { RenderInstances } from './renderer/render-instances';
+import { StyleInstances } from './style/style-instances';
+import { type AnnotationStyleParams } from './style';
+import { BaseAdapter } from '../BaseAdapter';
+import { createAnnotationColor } from '../../utils/createAnnotationColor';
 import {
-  Annotation,
+  type Annotation,
   annotationDrawMetadataSchema,
-  AnnotationId,
+  type AnnotationId,
   renderSchema,
   renderStyleSchema,
   type TextAnnotation,
   textAnnotationSchema
-} from "../../model";
+} from '../../model';
 
-import type { Snapper } from "../text";
-import { DefaultSnapper } from "../text";
-import { DeepPartial } from "../../deep-partial.type";
+import type { Snapper } from '../text';
+import { DefaultSnapper } from '../text';
+import { type DeepPartial } from '../../deep-partial.type';
 
 /**
  * @deprecated
@@ -40,12 +40,12 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * If true, creation of annotations is enabled.
    * @param params
    */
-  public create: boolean = false;
+  public create = false;
   /**
    * If true, edit of annotations is enabled.
    * @param params
    */
-  public edit: boolean = false;
+  public edit = false;
   /**
    * Configuration for styling the annotations, can be used to override default styles.
    */
@@ -54,7 +54,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public renderInstance: RenderInstances<ANNOTATION>;
   public styleInstance: StyleInstances<ANNOTATION>;
 
-  protected text: string = "";
+  protected text = '';
   protected offsetStart = 0;
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.
@@ -127,7 +127,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * Get the tag label of the annotation, it uses the tag function to determine the tag label.
    * @param annotation
    */
-  tagLabel(annotation: Pick<TextAnnotation, "id">) {
+  tagLabel(annotation: Pick<TextAnnotation, 'id'>) {
     return this.tagConfig.tagFn(this.getAnnotation(annotation.id));
   }
 
@@ -145,7 +145,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     const renderInstance = this.renderInstance.highlightInstance;
 
     const style = renderStyleSchema.parse({
-      color: createAnnotationColor("#f51720"),
+      color: createAnnotationColor('#f51720'),
       renderStyle: renderInstance.style,
     });
 
@@ -177,22 +177,22 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     value: ANNOTATION_CONFIG_VALUES<KEY>,
   ) {
     switch (key) {
-      case "edit":
+      case 'edit':
         this.edit = value as boolean;
         break;
-      case "create":
+      case 'create':
         this.create = value as boolean;
         break;
-      case "config":
+      case 'config':
         this.config = merge(cloneDeep(config), value);
         this.changeConfig();
         break;
-      case "snapper":
+      case 'snapper':
         this.snapper = value as Snapper;
         this.snapper.setText(this.text, this.offsetStart);
         break;
       default:
-        console.warn("Unsupported config key:", value);
+        console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
     }
   }

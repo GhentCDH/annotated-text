@@ -1,21 +1,22 @@
-import { v4 as uuidv4 } from "uuid";
-import {
-  AnnotationDrawColors,
-  Debugger,
-  TextAdapterStyle,
-  TextAnnotation,
-} from "@ghentcdh/annotated-text";
-import { cloneDeep } from "lodash-es";
+import { v4 as uuidv4 } from 'uuid';
+import { cloneDeep } from 'lodash-es';
 import {
   AnnotationRender,
-  AnnotationRenderParams,
+  type AnnotationRenderParams,
   DefaultAnnotationRenderStyle,
-} from "./annotation-render";
-import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
-import { AnnotationDimension, AnnotationDraw } from "../../../model";
-import { getY } from "../../../compute/compute/helpers";
-import { getColors } from "../../../compute/compute/colors";
-import { createGutterPath } from "../../../compute/utils/create-path";
+} from './annotation-render';
+import { Debugger } from '../../../utils/debugger';
+import { getMinMaxBy } from '../../../compute/draw/utils/min-max.by';
+import {
+  type AnnotationDimension,
+  type AnnotationDraw,
+  type AnnotationDrawColors,
+  type TextAnnotation,
+} from '../../../model';
+import { getY } from '../../../compute/compute/helpers';
+import { getColors } from '../../../compute/compute/colors';
+import { createGutterPath } from '../../../compute/utils/create-path';
+import { type TextAdapterStyle } from '../../text';
 
 const createGutterAnnotations = (
   params: AnnotationRenderParams,
@@ -27,7 +28,7 @@ const createGutterAnnotations = (
   const gutterGap = style.gap;
 
   if (!annotation._render.lines || annotation._render.lines.length === 0) {
-    Debugger.warn("no lines to render for annotation", annotation);
+    Debugger.warn('no lines to render for annotation', annotation);
     return { draws: [], dimensions: undefined, color: null };
   }
 
@@ -78,7 +79,7 @@ export type GutterAnnotationRenderStyle =
 export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = true;
-  static instance = "gutter";
+  static instance = 'gutter';
   readonly name = GutterAnnotationRender.instance;
 
   constructor() {

@@ -1,6 +1,6 @@
-import RBush from "rbush";
-import { SvgModel } from "../../model/svg.types";
-import { calculateOffset, findLineElement } from "../utils/bounding-rect";
+import RBush from 'rbush';
+import { type SvgModel } from '../../model/svg.types';
+import { calculateOffset, findLineElement } from '../utils/bounding-rect';
 
 /**
  * Represents a character in the spatial index tree with its bounding box

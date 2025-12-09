@@ -1,9 +1,9 @@
-import { drag } from "d3";
-import { DragAnnotation } from "./drag.annotations";
-import { TextAnnotation } from "../../../model";
-import { SvgModel } from "../../model/svg.types";
-import { getCharacterFromTextNodesAtPoint } from "../../position";
-import { Position } from "../types";
+import { drag } from 'd3';
+import { DragAnnotation } from './drag.annotations';
+import { type TextAnnotation } from '../../../model';
+import { type SvgModel } from '../../model/svg.types';
+import { getCharacterFromTextNodesAtPoint } from '../../position';
+import { type Position } from '../types';
 
 export const addDraggableAnnotation = (
   svgModel: SvgModel,
@@ -35,7 +35,7 @@ export const addDraggableAnnotation = (
   };
 
   return drag()
-    .on("drag", onDragMove())
-    .on("start", onDragStart())
-    .on("end", onDragEnd()) as any;
+    .on('drag', onDragMove())
+    .on('start', onDragStart())
+    .on('end', onDragEnd()) as any;
 };

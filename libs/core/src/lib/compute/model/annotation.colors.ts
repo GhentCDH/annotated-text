@@ -1,12 +1,13 @@
-import { AnnotationId, TextAnnotation } from "@ghentcdh/annotated-text";
-import { SvgModel } from "./svg.types";
-import { AnnotationDrawColors } from "../../model";
+import { type SvgModel } from './svg.types';
+import {
+  type AnnotationDrawColors,
+  type AnnotationId,
+  type TextAnnotation,
+} from '../../model';
 
 export class AnnotationColors {
   private readonly activeIds = new Set<AnnotationId>();
   private readonly highlightedIds = new Set<AnnotationId>();
-
-  constructor() {}
 
   public highlightAnnotations(ids: AnnotationId[], svgModel: SvgModel) {
     const oldIds = new Set(this.highlightedIds);

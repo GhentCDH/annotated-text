@@ -1,8 +1,8 @@
 //this function is similar to the weights for span annotations but there is one difference
 //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
 //character indexes.
-import { sortBy } from "lodash-es";
-import { type TextAnnotation, type TextLine } from "../../model";
+import { sortBy } from 'lodash-es';
+import { type TextAnnotation, type TextLine } from '../../model';
 
 export const calculateGutterAnnotationWeightsAndEnrich = (
   lines: TextLine[],
@@ -43,15 +43,16 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
     // if (line.lineNumber > 5) return;
     sortAnnotations.forEach((lineAnnotation) => {
       if (lineAnnotation.index > 0) {
+        // eslint-disable-next-line no-constant-binary-expression
         if (!lineAnnotation.annotation._render.weight === undefined) {
-          console.warn("no weight for annotation", lineAnnotation.annotation);
+          console.warn('no weight for annotation', lineAnnotation.annotation);
         }
         return;
       }
 
       if (lineAnnotation.annotation._render.weight !== undefined) {
         console.warn(
-          "!!! weight for annotation already set?",
+          '!!! weight for annotation already set?',
           lineAnnotation.annotation,
         );
         return;

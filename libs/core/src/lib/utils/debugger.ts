@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 export class Debugger {
-  private _verboseEnabled: boolean = false;
-  private _debugEnabled: boolean = false;
+  private _verboseEnabled = false;
+  private _debugEnabled = false;
   private static _instance: Debugger;
 
-  private constructor() {}
+  private constructor() {
+    /* empty */
+  }
 
   private static get instance() {
     if (!Debugger._instance) Debugger._instance = new Debugger();
@@ -37,9 +39,9 @@ export class Debugger {
     const tookTime = endTime - startTime;
     const logMessage = `${message} took ${tookTime} ms , ${tookTime / 1000} s`;
     if (tookTime > 1000) {
-      console.warn("TIMER", logMessage);
+      console.warn('TIMER', logMessage);
     } else {
-      Debugger.debug("TIMER", logMessage);
+      Debugger.debug('TIMER', logMessage);
     }
   }
 

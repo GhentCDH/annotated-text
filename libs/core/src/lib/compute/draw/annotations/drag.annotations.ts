@@ -1,14 +1,11 @@
-import {
-  AnnotationAdapter,
-  Dimensions,
-  TextAnnotation,
-} from "@ghentcdh/annotated-text";
-import { pick } from "lodash-es";
-import { handleAnnotationEditAndSendEvent } from "./edit.annotations";
-import { InternalEventListener } from "../../../events/internal/internal.event.listener";
-import { Position } from "../types";
-import { CharacterPositionResult } from "../../position";
-import { DUMMY_UID } from "../../model/svg.types";
+import { pick } from 'lodash-es';
+import { handleAnnotationEditAndSendEvent } from './edit.annotations';
+import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
+import { type Position } from '../types';
+import { type CharacterPositionResult } from '../../position';
+import { DUMMY_UID } from '../../model/svg.types';
+import { type AnnotationAdapter } from '../../../adapter';
+import { type Dimensions, type TextAnnotation } from '../../../model';
 
 export class DragAnnotation {
   private dragBusy = false;
@@ -47,19 +44,19 @@ export class DragAnnotation {
     this.pickupIndex = result.characterPos;
     this.textStart = this.minStartPosition;
 
-    this.internalEventListener.blockEvents("starting annotation drag");
+    this.internalEventListener.blockEvents('starting annotation drag');
     this.dragBusy = true;
 
-    this.internalEventListener.sendEvent("send-event--annotation", {
-      event: "annotation-edit--start",
-      annotationUuid: this.annotation?.id.toString() || "",
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event: 'annotation-edit--start',
+      annotationUuid: this.annotation?.id.toString() || '',
     });
 
-    this.internalEventListener.sendEvent("annotation--set-class", {
+    this.internalEventListener.sendEvent('annotation--set-class', {
       annotationUuid: this.annotation.id,
-      cssClass: "move",
+      cssClass: 'move',
     });
-    this.internalEventListener.sendEvent("annotation--remove-tag", {
+    this.internalEventListener.sendEvent('annotation--remove-tag', {
       annotationUuid: this.annotation.id,
     });
   }
@@ -88,35 +85,35 @@ export class DragAnnotation {
         this.annotation,
         this.annotationAdapter,
         this.internalEventListener,
-        "annotation-edit--move",
+        'annotation-edit--move',
         {
           start: startIndex,
           end: endIndex,
         },
-        "drag",
-        this.dummyAnnotation && pick(this.dummyAnnotation, ["start", "end"]),
+        'drag',
+        this.dummyAnnotation && pick(this.dummyAnnotation, ['start', 'end']),
       ) ?? this.dummyAnnotation;
 
-    this.internalEventListener.sendEvent("annotation--set-class", {
+    this.internalEventListener.sendEvent('annotation--set-class', {
       annotationUuid: DUMMY_UID,
-      cssClass: "move",
+      cssClass: 'move',
     });
   }
 
   endDrag(event: any) {
-    this.internalEventListener.sendEvent("annotation--set-class", {
+    this.internalEventListener.sendEvent('annotation--set-class', {
       annotationUuid: this.annotation.id,
-      cssClass: "",
+      cssClass: '',
     });
     if (!this.dragBusy) return;
     this.dragBusy = false;
 
-    this.internalEventListener.unBlockEvents("ending annotation drag");
+    this.internalEventListener.unBlockEvents('ending annotation drag');
 
     if (!this.dummyAnnotation) return;
-    this.internalEventListener.sendEvent("send-event--annotation", {
-      event: "annotation-edit--end",
-      annotationUuid: this.dummyAnnotation?.id.toString() || "",
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event: 'annotation-edit--end',
+      annotationUuid: this.dummyAnnotation?.id.toString() || '',
       mouseEvent: event,
       additionalData: { annotation: this.dummyAnnotation },
     });
@@ -124,7 +121,7 @@ export class DragAnnotation {
     this.dummyAnnotation._render.weight = this.annotation._render.weight;
     this.dummyAnnotation.id = this.annotation.id;
 
-    this.internalEventListener.sendEvent("annotation--update", {
+    this.internalEventListener.sendEvent('annotation--update', {
       annotation: this.dummyAnnotation,
     });
   }

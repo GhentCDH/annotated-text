@@ -1,19 +1,19 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import RBush from "rbush";
-import { drawTextRaster } from "../text-raster";
-import { calculateOffset, findLineElement } from "../../utils/bounding-rect";
-import { SvgModel } from "../../../model/svg.types";
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import RBush from 'rbush';
+import { drawTextRaster } from '../text-raster';
+import { calculateOffset, findLineElement } from '../../utils/bounding-rect';
+import { type SvgModel } from '../../../model/svg.types';
 
 // Mock dependencies
-vi.mock("rbush");
-vi.mock("../../utils/bounding-rect");
+vi.mock('rbush');
+vi.mock('../../utils/bounding-rect');
 
 // Mock NodeFilter for browser API
 global.NodeFilter = {
   SHOW_TEXT: 4,
 } as any;
 
-describe("drawTextRaster", () => {
+describe('drawTextRaster', () => {
   let mockSvgModel: SvgModel;
   let mockInsert: ReturnType<typeof vi.fn>;
   let mockContainer: HTMLElement;
@@ -47,7 +47,7 @@ describe("drawTextRaster", () => {
 
     // Mock text node
     mockTextNode = {
-      textContent: "Hello",
+      textContent: 'Hello',
       parentElement: {} as any,
     } as any;
 
@@ -71,7 +71,7 @@ describe("drawTextRaster", () => {
 
     // Mock utility functions
     vi.mocked(findLineElement).mockReturnValue({
-      lineUid: "line-1",
+      lineUid: 'line-1',
       lineHeight: 20,
     } as any);
     vi.mocked(calculateOffset).mockReturnValue(2);
@@ -88,7 +88,7 @@ describe("drawTextRaster", () => {
     } as any;
   });
 
-  it("should create and return an RBush tree", () => {
+  it('should create and return an RBush tree', () => {
     // Setup walker with no nodes
     const mockWalker = {
       nextNode: vi.fn().mockReturnValue(null),
@@ -102,7 +102,7 @@ describe("drawTextRaster", () => {
     expect(result.insert).toBeDefined();
   });
 
-  it("should create tree walker with correct parameters", () => {
+  it('should create tree walker with correct parameters', () => {
     const mockWalker = {
       nextNode: vi.fn().mockReturnValue(null),
     };
@@ -117,8 +117,8 @@ describe("drawTextRaster", () => {
     );
   });
 
-  it("should skip text nodes with no content", () => {
-    const emptyTextNode = { textContent: "" } as Text;
+  it('should skip text nodes with no content', () => {
+    const emptyTextNode = { textContent: '' } as Text;
     const mockWalker = {
       nextNode: vi
         .fn()
@@ -132,7 +132,7 @@ describe("drawTextRaster", () => {
     expect(mockInsert).not.toHaveBeenCalled();
   });
 
-  it("should skip nodes without lineUid", () => {
+  it('should skip nodes without lineUid', () => {
     const mockWalker = {
       nextNode: vi
         .fn()
@@ -150,7 +150,7 @@ describe("drawTextRaster", () => {
     expect(mockInsert).not.toHaveBeenCalled();
   });
 
-  it("should skip nodes when line is not found in model", () => {
+  it('should skip nodes when line is not found in model', () => {
     const mockWalker = {
       nextNode: vi
         .fn()
@@ -165,8 +165,8 @@ describe("drawTextRaster", () => {
     expect(mockInsert).not.toHaveBeenCalled();
   });
 
-  it("should insert each character into the tree with correct bounds", () => {
-    const textNode = { textContent: "Hi" } as Text;
+  it('should insert each character into the tree with correct bounds', () => {
+    const textNode = { textContent: 'Hi' } as Text;
     const mockWalker = {
       nextNode: vi.fn().mockReturnValueOnce(textNode).mockReturnValueOnce(null),
     };
@@ -185,7 +185,7 @@ describe("drawTextRaster", () => {
       maxY: 68, // 48 + 16 (height) + 4 (offset * 2)
       textPosition: 0,
       centerX: 55, // 50 (minX) + 10 (width) / 2
-      text: "H",
+      text: 'H',
     });
 
     // Check second character "i"
@@ -196,12 +196,12 @@ describe("drawTextRaster", () => {
       maxY: 68,
       textPosition: 1,
       centerX: 55, // 50 (minX) + 10 (width) / 2
-      text: "i",
+      text: 'i',
     });
   });
 
-  it("should create range for each character correctly", () => {
-    const textNode = { textContent: "AB" } as Text;
+  it('should create range for each character correctly', () => {
+    const textNode = { textContent: 'AB' } as Text;
     const mockWalker = {
       nextNode: vi.fn().mockReturnValueOnce(textNode).mockReturnValueOnce(null),
     };
@@ -216,9 +216,9 @@ describe("drawTextRaster", () => {
     expect(mockRange.setEnd).toHaveBeenCalledWith(textNode, 2);
   });
 
-  it("should reset prevEnd when switching to a new line", () => {
-    const textNode1 = { textContent: "ABC" } as Text;
-    const textNode2 = { textContent: "DEF" } as Text;
+  it('should reset prevEnd when switching to a new line', () => {
+    const textNode1 = { textContent: 'ABC' } as Text;
+    const textNode2 = { textContent: 'DEF' } as Text;
 
     const mockWalker = {
       nextNode: vi
@@ -233,8 +233,8 @@ describe("drawTextRaster", () => {
     const mockFindLineElement = vi.mocked(findLineElement);
     mockFindLineElement.mockReset();
     mockFindLineElement
-      .mockReturnValueOnce({ lineUid: "line-1", lineHeight: 20 } as any) // For textNode1
-      .mockReturnValueOnce({ lineUid: "line-2", lineHeight: 20 } as any); // For textNode2
+      .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // For textNode1
+      .mockReturnValueOnce({ lineUid: 'line-2', lineHeight: 20 } as any); // For textNode2
 
     // getLine is called ONCE per text node (not per character)
     const mockGetLine = vi.mocked(mockSvgModel.model.getLine);
@@ -257,9 +257,9 @@ describe("drawTextRaster", () => {
     expect(calls[5][0].textPosition).toBe(12); // F
   });
 
-  it("should accumulate prevEnd within the same line", () => {
-    const textNode1 = { textContent: "AB" } as Text;
-    const textNode2 = { textContent: "CD" } as Text;
+  it('should accumulate prevEnd within the same line', () => {
+    const textNode1 = { textContent: 'AB' } as Text;
+    const textNode2 = { textContent: 'CD' } as Text;
 
     const mockWalker = {
       nextNode: vi
@@ -274,8 +274,8 @@ describe("drawTextRaster", () => {
     const mockFindLineElement = vi.mocked(findLineElement);
     mockFindLineElement.mockReset();
     mockFindLineElement
-      .mockReturnValueOnce({ lineUid: "line-1", lineHeight: 20 } as any) // For textNode1
-      .mockReturnValueOnce({ lineUid: "line-1", lineHeight: 20 } as any); // For textNode2
+      .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // For textNode1
+      .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any); // For textNode2
 
     const mockGetLine = vi.mocked(mockSvgModel.model.getLine);
     mockGetLine.mockReset();
@@ -293,8 +293,8 @@ describe("drawTextRaster", () => {
     expect(calls[3][0].textPosition).toBe(3); // D
   });
 
-  it("should call calculateOffset with lineHeight and rect height", () => {
-    const textNode = { textContent: "X" } as Text;
+  it('should call calculateOffset with lineHeight and rect height', () => {
+    const textNode = { textContent: 'X' } as Text;
     const mockWalker = {
       nextNode: vi.fn().mockReturnValueOnce(textNode).mockReturnValueOnce(null),
     };
@@ -305,10 +305,10 @@ describe("drawTextRaster", () => {
     expect(calculateOffset).toHaveBeenCalledWith(20, 16);
   });
 
-  it("should handle multiple lines correctly", () => {
-    const textNode1 = { textContent: "A" } as Text;
-    const textNode2 = { textContent: "B" } as Text;
-    const textNode3 = { textContent: "C" } as Text;
+  it('should handle multiple lines correctly', () => {
+    const textNode1 = { textContent: 'A' } as Text;
+    const textNode2 = { textContent: 'B' } as Text;
+    const textNode3 = { textContent: 'C' } as Text;
 
     const mockWalker = {
       nextNode: vi
@@ -324,9 +324,9 @@ describe("drawTextRaster", () => {
     const mockFindLineElement = vi.mocked(findLineElement);
     mockFindLineElement.mockReset();
     mockFindLineElement
-      .mockReturnValueOnce({ lineUid: "line-1", lineHeight: 20 } as any) // textNode1
-      .mockReturnValueOnce({ lineUid: "line-1", lineHeight: 20 } as any) // textNode2
-      .mockReturnValueOnce({ lineUid: "line-2", lineHeight: 20 } as any); // textNode3
+      .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // textNode1
+      .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // textNode2
+      .mockReturnValueOnce({ lineUid: 'line-2', lineHeight: 20 } as any); // textNode3
 
     const mockGetLine = vi.mocked(mockSvgModel.model.getLine);
     mockGetLine.mockReset();

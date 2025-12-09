@@ -1,12 +1,12 @@
-import { _textToLines } from "./text_utilities";
+import { _textToLines } from './text_utilities';
 import {
   createTextAdapter,
-  createTextAdapterParams,
-  Limit,
+  type createTextAdapterParams,
+  type Limit,
   TextAdapter,
-} from "../TextAdapter";
-import { type TextLine, textLineSchema } from "../../../model";
-import { mapLinesToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
+} from '../TextAdapter';
+import { type TextLine, textLineSchema } from '../../../model';
+import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
 const updateLine: UpdateLineFn = (
   line: TextLine,
@@ -43,7 +43,7 @@ const textToLines = (
  * will be parsed into an array of TextLine objects of 2 lines, in the gutter the line number will appear.
  */
 export class TextLineAdapterImpl extends TextAdapter {
-  name = "TextLineAdapter";
+  name = 'TextLineAdapter';
 
   parse(text: string): TextLine[] {
     return textToLines(text, this.limit!, this.textOffset);

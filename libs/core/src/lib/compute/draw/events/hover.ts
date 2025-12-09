@@ -1,16 +1,16 @@
-import { SvgModel } from "../../model/svg.types";
-import { drawTag } from "../tag";
+import { type SvgModel } from '../../model/svg.types';
+import { drawTag } from '../tag';
 
-import { AnnotationDrawColors, TextAnnotation } from "../../../model";
+import { type AnnotationDrawColors, type TextAnnotation } from '../../../model';
 
 export const hoverAnnotation =
   (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
     if (svgModel.internalEventListener.isBlocking) return;
     const fullAnnotation = svgModel.sendEvent({
-      event: "mouse-enter",
+      event: 'mouse-enter',
       mouseEvent,
-      annotationUuid: annotation?.id || "",
+      annotationUuid: annotation?.id || '',
     });
 
     if (svgModel.annotationAdapter.hover(fullAnnotation)) {
@@ -28,9 +28,9 @@ export const leaveAnnotation =
     if (svgModel.internalEventListener.isBlocking) return;
 
     svgModel.sendEvent({
-      event: "mouse-leave",
+      event: 'mouse-leave',
       mouseEvent,
-      annotationUuid: annotation?.id || "",
+      annotationUuid: annotation?.id || '',
     });
 
     svgModel.resetAnnotationColor(annotation.id);

@@ -1,2 +1,2 @@
-export * from "./text";
-export * from "./annotation";
+export * from './text';
+export * from './annotation';

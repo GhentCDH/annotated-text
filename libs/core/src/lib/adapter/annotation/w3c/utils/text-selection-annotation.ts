@@ -1,15 +1,15 @@
-import { cloneDeep, merge } from "lodash-es";
-import { getTarget } from "./target.utils";
-import { getBody } from "./body.utils";
-import type { W3CAnnotation } from "../model";
+import { cloneDeep, merge } from 'lodash-es';
+import { getTarget } from './target.utils';
+import { getBody } from './body.utils';
+import type { W3CAnnotation } from '../model';
 import {
   TextTargetSchema,
   TextualBodySchema,
   W3CAnnotationSchema,
-} from "../model";
-import { AnnotationId, type TextAnnotation } from "../../../../model/";
+} from '../model';
+import { type AnnotationId, type TextAnnotation } from '../../../../model/';
 
-type AnnotationUpdate = Pick<TextAnnotation, "start" | "end"> & {
+type AnnotationUpdate = Pick<TextAnnotation, 'start' | 'end'> & {
   id?: AnnotationId;
 };
 
@@ -32,11 +32,11 @@ export const createTextPositionSelector = (
 ) => {
   return TextTargetSchema.parse({
     source: sourceUri,
-    textDirection: "ltr",
-    type: "Text",
+    textDirection: 'ltr',
+    type: 'Text',
     processingLanguage: language,
     selector: {
-      type: "TextPositionSelector",
+      type: 'TextPositionSelector',
       start: annotation.start,
       end: annotation.end,
     },
@@ -54,7 +54,7 @@ export const createTextSelectionAnnotation = (
     merge(cloneDeep(originalAnnotation), {
       // The W3C Annotation model
       id: annotation.id,
-      "@context": "http://www.w3.org/ns/anno.jsonld",
+      '@context': 'http://www.w3.org/ns/anno.jsonld',
       body: [
         originalAnnotation.body ?? [],
         createTextualBody(selectedText, sourceUri, language),
@@ -67,7 +67,7 @@ export const createTextSelectionAnnotation = (
   );
   if (parsedAnnotation.error) {
     console.error(parsedAnnotation.error);
-    throw new Error("Invalid W3C Annotation format");
+    throw new Error('Invalid W3C Annotation format');
   }
   return parsedAnnotation.data;
 };
@@ -100,7 +100,7 @@ export const updateTextSelectionAnnotation = (
 
   if (parsedAnnotation.error) {
     console.error(parsedAnnotation.error);
-    throw new Error("Invalid W3C Annotation format");
+    throw new Error('Invalid W3C Annotation format');
   }
   return parsedAnnotation.data;
 };

@@ -3,7 +3,7 @@ export const getMinMaxBy = <T>(
   by: (element: T) => number,
 ): { min: T; max: T } => {
   if (elements.length === 0) {
-    throw new Error("Array must not be empty");
+    throw new Error('Array must not be empty');
   }
 
   let min = elements[0];

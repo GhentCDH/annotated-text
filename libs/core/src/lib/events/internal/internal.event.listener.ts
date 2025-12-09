@@ -1,5 +1,5 @@
-import { Debugger } from "@ghentcdh/annotated-text";
-import { InternalEvent, InternalEventData } from "./internal.events";
+import { type InternalEvent, type InternalEventData } from './internal.events';
+import { Debugger } from '../../utils/debugger';
 
 export type InternalEventListenerType = InternalEvent;
 
@@ -17,7 +17,9 @@ export class InternalEventListener {
     EventCallback<any>[]
   >();
 
-  constructor() {}
+  constructor() {
+    /* empty */
+  }
 
   public on<EVENT extends InternalEvent>(
     event: EVENT,
@@ -38,12 +40,12 @@ export class InternalEventListener {
   }
 
   public blockEvents(reason: string): void {
-    Debugger.debug("InternalEventListener", `Events  "blocked": ${reason}`);
+    Debugger.debug('InternalEventListener', `Events  "blocked": ${reason}`);
     this.block = true;
   }
 
   public unBlockEvents(reason: string): void {
-    Debugger.debug("InternalEventListener", `Events "unblocked": ${reason}`);
+    Debugger.debug('InternalEventListener', `Events "unblocked": ${reason}`);
     this.block = false;
   }
 

@@ -1,14 +1,14 @@
-import RBush from "rbush";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import RBush from 'rbush';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-  CharacterPositionResult,
+  type CharacterPositionResult,
   getCharacterFromTextNodesAtPoint,
   getCharacterStartEndPosition,
-} from "../character-position";
-import { SvgModel } from "../../model/svg.types";
-import { TextRasterItem } from "../../draw/text/text-raster";
+} from '../character-position';
+import { type SvgModel } from '../../model/svg.types';
+import { type TextRasterItem } from '../../draw/text/text-raster';
 
-describe("getCharacterFromTextNodesAtPoint", () => {
+describe('getCharacterFromTextNodesAtPoint', () => {
   let mockSvgModel: SvgModel;
   let mockTextTree: RBush<TextRasterItem>;
 
@@ -31,12 +31,12 @@ describe("getCharacterFromTextNodesAtPoint", () => {
     } as any as SvgModel;
   });
 
-  it("should return null when no text is found at the point", () => {
+  it('should return null when no text is found at the point', () => {
     const result = getCharacterFromTextNodesAtPoint(150, 75, mockSvgModel);
     expect(result).toBeNull();
   });
 
-  it("should return character on left side when point is left of center", () => {
+  it('should return character on left side when point is left of center', () => {
     const textItem: TextRasterItem = {
       minX: 10,
       minY: 10,
@@ -53,11 +53,11 @@ describe("getCharacterFromTextNodesAtPoint", () => {
 
     expect(result).not.toBeNull();
     expect(result!.characterPos).toBe(5);
-    expect(result!.side).toBe("left");
+    expect(result!.side).toBe('left');
     expect(result!.newIndex).toBe(5);
   });
 
-  it("should return character on right side when point is right of center", () => {
+  it('should return character on right side when point is right of center', () => {
     const textItem: TextRasterItem = {
       minX: 10,
       minY: 10,
@@ -74,10 +74,10 @@ describe("getCharacterFromTextNodesAtPoint", () => {
 
     expect(result).not.toBeNull();
     expect(result!.characterPos).toBe(5);
-    expect(result!.side).toBe("right");
+    expect(result!.side).toBe('right');
   });
 
-  it("should correctly calculate relative coordinates", () => {
+  it('should correctly calculate relative coordinates', () => {
     const textItem: TextRasterItem = {
       minX: 0,
       minY: 0,
@@ -95,7 +95,7 @@ describe("getCharacterFromTextNodesAtPoint", () => {
     expect(result).not.toBeNull();
   });
 
-  it("should return null when point is outside all rectangles", () => {
+  it('should return null when point is outside all rectangles', () => {
     const textItem: TextRasterItem = {
       minX: 10,
       minY: 10,
@@ -113,7 +113,7 @@ describe("getCharacterFromTextNodesAtPoint", () => {
     expect(result).toBeNull();
   });
 
-  it("should handle multiple rectangles and return the correct one", () => {
+  it('should handle multiple rectangles and return the correct one', () => {
     const textItem1: TextRasterItem = {
       minX: 0,
       minY: 0,
@@ -142,7 +142,7 @@ describe("getCharacterFromTextNodesAtPoint", () => {
     expect(result!.characterPos).toBe(1);
   });
 
-  it("should handle point exactly on boundary", () => {
+  it('should handle point exactly on boundary', () => {
     const textItem: TextRasterItem = {
       minX: 10,
       minY: 10,
@@ -162,11 +162,11 @@ describe("getCharacterFromTextNodesAtPoint", () => {
   });
 });
 
-describe("getCharacterStartEndPosition", () => {
-  describe("when target is 'start'", () => {
-    it("should update start position when clicking left side", () => {
+describe('getCharacterStartEndPosition', () => {
+  describe('when target is \'start\'', () => {
+    it('should update start position when clicking left side', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 5,
         newIndex: 5,
       };
@@ -175,15 +175,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 5, end: 15 });
     });
 
-    it("should move to next character when clicking right side at start", () => {
+    it('should move to next character when clicking right side at start', () => {
       const charResult: CharacterPositionResult = {
-        side: "right",
+        side: 'right',
         characterPos: 5,
         newIndex: 5,
       };
@@ -192,15 +192,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 6, end: 15 });
     });
 
-    it("should maintain proper order when new start is after end", () => {
+    it('should maintain proper order when new start is after end', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 20,
         newIndex: 20,
       };
@@ -209,7 +209,7 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       // Should swap to ensure start <= end
@@ -217,10 +217,10 @@ describe("getCharacterStartEndPosition", () => {
     });
   });
 
-  describe("when target is 'end'", () => {
-    it("should update end position when clicking left side", () => {
+  describe('when target is \'end\'', () => {
+    it('should update end position when clicking left side', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 15,
         newIndex: 15,
       };
@@ -229,15 +229,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "end",
+        'end',
       );
 
       expect(result).toEqual({ start: 5, end: 15 });
     });
 
-    it("should move to next character when clicking right side at end", () => {
+    it('should move to next character when clicking right side at end', () => {
       const charResult: CharacterPositionResult = {
-        side: "right",
+        side: 'right',
         characterPos: 15,
         newIndex: 15,
       };
@@ -246,15 +246,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "end",
+        'end',
       );
 
       expect(result).toEqual({ start: 5, end: 16 });
     });
 
-    it("should maintain proper order when new end is before start", () => {
+    it('should maintain proper order when new end is before start', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 3,
         newIndex: 3,
       };
@@ -263,7 +263,7 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "end",
+        'end',
       );
 
       // Should swap to ensure start <= end
@@ -271,10 +271,10 @@ describe("getCharacterStartEndPosition", () => {
     });
   });
 
-  describe("edge cases", () => {
-    it("should handle same start and end positions", () => {
+  describe('edge cases', () => {
+    it('should handle same start and end positions', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 5,
         newIndex: 5,
       };
@@ -283,15 +283,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 5, end: 5 });
     });
 
-    it("should handle position at 0", () => {
+    it('should handle position at 0', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 0,
         newIndex: 0,
       };
@@ -300,15 +300,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 0, end: 10 });
     });
 
-    it("should handle right side click at position 0", () => {
+    it('should handle right side click at position 0', () => {
       const charResult: CharacterPositionResult = {
-        side: "right",
+        side: 'right',
         characterPos: 0,
         newIndex: 0,
       };
@@ -317,15 +317,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 1, end: 10 });
     });
 
-    it("should handle backward selection (dragging right to left)", () => {
+    it('should handle backward selection (dragging right to left)', () => {
       const charResult: CharacterPositionResult = {
-        side: "left",
+        side: 'left',
         characterPos: 3,
         newIndex: 3,
       };
@@ -334,17 +334,17 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 3, end: 15 });
     });
   });
 
-  describe("complex selection scenarios", () => {
-    it("should handle extending selection to the right with right side click", () => {
+  describe('complex selection scenarios', () => {
+    it('should handle extending selection to the right with right side click', () => {
       const charResult: CharacterPositionResult = {
-        side: "right",
+        side: 'right',
         characterPos: 20,
         newIndex: 20,
       };
@@ -353,15 +353,15 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "end",
+        'end',
       );
 
       expect(result).toEqual({ start: 5, end: 21 });
     });
 
-    it("should handle shrinking selection from the left", () => {
+    it('should handle shrinking selection from the left', () => {
       const charResult: CharacterPositionResult = {
-        side: "right",
+        side: 'right',
         characterPos: 7,
         newIndex: 7,
       };
@@ -370,7 +370,7 @@ describe("getCharacterStartEndPosition", () => {
       const result = getCharacterStartEndPosition(
         charResult,
         originalPos,
-        "start",
+        'start',
       );
 
       expect(result).toEqual({ start: 8, end: 15 });

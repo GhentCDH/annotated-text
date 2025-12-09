@@ -1,15 +1,15 @@
-import memoize from "memoizee";
+import memoize from 'memoizee';
 import {
   createTextAdapter,
-  createTextAdapterParams,
-  Limit,
+  type createTextAdapterParams,
+  type Limit,
   TextAdapter,
-} from "./TextAdapter";
-import { mapLinesToLimit, UpdateLineFn } from "./utils/mapLineToLimit";
-import { type TextLine, textLineSchema } from "../../model";
+} from './TextAdapter';
+import { mapLinesToLimit, type UpdateLineFn } from './utils/mapLineToLimit';
+import { type TextLine, textLineSchema } from '../../model';
 
 const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
-  const lines = text?.split(`\n`) ?? [""];
+  const lines = text?.split('\n') ?? [''];
   let start = textOffset;
 
   return lines.map((textLine, index) => {
@@ -63,7 +63,7 @@ const textToLines = (
  * It does not handle any special formatting or annotations, just plain text lines.
  */
 export class PlainTextAdapterImpl extends TextAdapter {
-  name = "PlainTextAdapter";
+  name = 'PlainTextAdapter';
 
   parse(text: string): TextLine[] {
     return textToLines(text, this.limit!, this.textOffset);

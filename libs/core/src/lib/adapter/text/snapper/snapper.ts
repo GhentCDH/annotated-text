@@ -1,4 +1,4 @@
-import { type TextAnnotation } from "../../../model";
+import { type TextAnnotation } from '../../../model';
 
 export type SnapperResult = {
   start: number;
@@ -6,7 +6,7 @@ export type SnapperResult = {
   modified: boolean;
 };
 
-export type SnapperAction = "move-start" | "move-end" | "drag";
+export type SnapperAction = 'move-start' | 'move-end' | 'drag';
 
 export abstract class Snapper {
   abstract setText(text: string, offsetStart: number): void;
@@ -15,9 +15,9 @@ export abstract class Snapper {
 }
 
 export class DefaultSnapper extends Snapper {
-  protected text: string = "";
-  protected offsetStart: number = 0;
-  protected textLength: number = 0;
+  protected text = '';
+  protected offsetStart = 0;
+  protected textLength = 0;
 
   override setText(text: string, offsetStart: number) {
     this.text = text;

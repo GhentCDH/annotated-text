@@ -1,1 +1,1 @@
-export * from "./w3c-annotation.model";
+export * from './w3c-annotation.model';

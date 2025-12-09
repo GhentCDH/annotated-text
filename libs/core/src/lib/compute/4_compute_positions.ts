@@ -1,10 +1,10 @@
-import { pick } from "lodash-es";
-import { TextAnnotationModel } from "./annotation.model";
-import type { TextAnnotation, TextLine } from "../model";
-import { AnnotationAdapter } from "../adapter/annotation";
-import { TextAdapter } from "../adapter/text";
+import { pick } from 'lodash-es';
+import { type TextAnnotationModel } from './annotation.model';
+import type { TextAnnotation, TextLine } from '../model';
+import { type AnnotationAdapter } from '../adapter/annotation';
+import { type TextAdapter } from '../adapter/text';
 
-import { Debugger } from "../utils/debugger";
+import { Debugger } from '../utils/debugger';
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(
@@ -20,7 +20,7 @@ export const computeLinePositions = (
     const textLine = findTextLine(textElement, line);
     if (!textLine) {
       Debugger.debug(
-        "computeLinePositions",
+        'computeLinePositions',
         `Text line with UUID ${line.uuid} not found in the text element.`,
       );
       return;
@@ -40,10 +40,10 @@ export const createAndAssignDrawAnnotation = (
 ) => {
   const parentDimensions = pick(
     textElement.getBoundingClientRect(),
-    "width",
-    "height",
-    "x",
-    "y",
+    'width',
+    'height',
+    'x',
+    'y',
   );
   const rendered = annotationAdapter.renderInstance.createDraws(
     model.renderParams,

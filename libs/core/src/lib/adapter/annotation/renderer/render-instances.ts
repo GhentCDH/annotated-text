@@ -1,13 +1,8 @@
-import { merge } from "lodash-es";
-import { TextAdapterStyle } from "@ghentcdh/annotated-text";
-import {
-  AnnotationRender,
-  AnnotationRenderParams,
-  AnnotationRenderStyle,
-  RenderParams,
-} from "./annotation-render";
-import { Debugger } from "../../../utils/debugger";
-import type { TextAnnotation } from "../../../model";
+import { merge } from 'lodash-es';
+import { type AnnotationRender, type AnnotationRenderParams, type AnnotationRenderStyle, type RenderParams } from './annotation-render';
+import { type TextAdapterStyle } from '../../text';
+import { Debugger } from '../../../utils/debugger';
+import type { TextAnnotation } from '../../../model';
 
 export class RenderInstances<ANNOTATION> {
   private renderParams = {
@@ -58,8 +53,8 @@ export class RenderInstances<ANNOTATION> {
     let render = this.renderParams.renderFn?.(annotation);
     if (!render) {
       Debugger.verbose(
-        "RenderInstances",
-        "Fallback to default renderer as no render was specified for annotation.",
+        'RenderInstances',
+        'Fallback to default renderer as no render was specified for annotation.',
         annotation,
       );
       render = this.defaultRenderer;
@@ -71,7 +66,7 @@ export class RenderInstances<ANNOTATION> {
 
     if (render !== this.defaultRenderer) {
       Debugger.warn(
-        "RenderInstances",
+        'RenderInstances',
         `Renderer "${render}" not found for annotation. fallback to default renderer: [${this.defaultRenderer}]`,
       );
 
@@ -80,13 +75,13 @@ export class RenderInstances<ANNOTATION> {
 
     if (annotationRender) return annotationRender;
 
-    throw new Error("Default renderer not found: " + this.defaultRenderer);
+    throw new Error('Default renderer not found: ' + this.defaultRenderer);
   }
 
   get highlightInstance() {
-    const renderer = this.renderMap.get("highlight");
+    const renderer = this.renderMap.get('highlight');
     if (!renderer) {
-      throw new Error("Renderer not found: highlight");
+      throw new Error('Renderer not found: highlight');
     }
     return renderer;
   }
@@ -99,7 +94,7 @@ export class RenderInstances<ANNOTATION> {
   ) {
     const renderer = this.renderMap.get(annotation._render.render);
     if (!renderer) {
-      throw new Error("Renderer not found: " + annotation._render.render);
+      throw new Error('Renderer not found: ' + annotation._render.render);
     }
 
     return renderer.createDraws(
