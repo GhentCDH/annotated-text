@@ -29,7 +29,7 @@
     "docs:preview": "vuepress dev docs",
     "docs:dev": "pnpm run docs:build:typedoc && pnpm run docs:build:menu && vuepress dev docs",
     "prepare": "husky install",
-    "release": "node tools/release/release.mjs"
+    "release": "git checkout main && git pull && node tools/release/release.mjs"
   },
   "dependencies": {
     "d3": "7.9.0",
