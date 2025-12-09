@@ -70,7 +70,7 @@ export const drawText = (
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   if (!document) {
-    Debugger.debug("no document available, cannot draw text");
+    Debugger.debug("drawText", "no document available, cannot draw text");
     return;
   }
 
@@ -83,7 +83,11 @@ export const drawText = (
 
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 
-  Debugger.verbose("Draw the lines", textAnnotationModel.lines.length);
+  Debugger.verbose(
+    "DrawText",
+    "Draw the lines",
+    textAnnotationModel.lines.length,
+  );
   textAnnotationModel.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line, textAdapter));
     textDiv.appendChild(

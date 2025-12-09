@@ -21,10 +21,8 @@ export const getRanges = (annotation: Annotation, line: TextLine) => {
   const lineElement = line.element;
   if (!lineElement) {
     Debugger.debug(
-      "No textelement for line",
-      line.lineNumber,
-      "found for annotation",
-      annotation.id,
+      "getRange",
+      `No textElement for line ${line.lineNumber} found for annotation ${annotation.id}`,
     );
 
     return null;

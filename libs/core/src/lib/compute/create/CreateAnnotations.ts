@@ -123,12 +123,18 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     });
 
     if (!this.textAnnotationModel) {
-      Debugger.debug("Annotations set before lines, cannot set annotations");
+      Debugger.debug(
+        "setAnnotations",
+        "Annotations set before lines, cannot set annotations",
+      );
       return this;
     }
 
     if (!this.text) {
-      Debugger.debug("------ no lines set, cannot set annotations");
+      Debugger.debug(
+        "setAnnotations",
+        "------ no lines set, cannot set annotations",
+      );
       return this;
     }
 

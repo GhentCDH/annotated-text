@@ -58,6 +58,7 @@ export class RenderInstances<ANNOTATION> {
     let render = this.renderParams.renderFn?.(annotation);
     if (!render) {
       Debugger.verbose(
+        "RenderInstances",
         "Fallback to default renderer as no render was specified for annotation.",
         annotation,
       );
@@ -70,6 +71,7 @@ export class RenderInstances<ANNOTATION> {
 
     if (render !== this.defaultRenderer) {
       Debugger.warn(
+        "RenderInstances",
         `Renderer "${render}" not found for annotation. fallback to default renderer: [${this.defaultRenderer}]`,
       );
 

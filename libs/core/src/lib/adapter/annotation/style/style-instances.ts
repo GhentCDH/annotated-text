@@ -118,6 +118,7 @@ export class StyleInstances<ANNOTATION> {
     const style = this.styleParams.styleFn(annotation);
     if (style === null) {
       Debugger.verbose(
+        "StyleInstances",
         "No style specified for annotation, returning default style.",
       );
 
