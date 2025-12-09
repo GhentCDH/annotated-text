@@ -1,7 +1,7 @@
-import { AnnotationDrawColor, type TextAnnotation } from "../../../model";
-import { DUMMY_UID, SvgModel } from "../../model/svg.types";
-import { drawAnnotationContent } from "../annotations";
-import { getLinesForAnnotation } from "../../utils/line.utils";
+import { type AnnotationDrawColor, type TextAnnotation } from '../../../model';
+import { DUMMY_UID, type SvgModel } from '../../model/svg.types';
+import { drawAnnotationContent } from '../annotations';
+import { getLinesForAnnotation } from '../../utils/line.utils';
 
 export const drawDummyAnnotation = (
   svgModel: SvgModel,

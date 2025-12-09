@@ -1,5 +1,5 @@
-import { isIntersection } from "./intersect";
-import type { Annotation, TextLine } from "../../model";
+import { isIntersection } from './intersect';
+import type { Annotation, TextLine } from '../../model';
 
 /**
  * Get all lines that intersect with the given annotation.
@@ -10,7 +10,7 @@ import type { Annotation, TextLine } from "../../model";
  */
 export const getLinesForAnnotation = (
   allLines: TextLine[],
-  annotation: Pick<Annotation, "start" | "end">,
+  annotation: Pick<Annotation, 'start' | 'end'>,
 ): TextLine[] => {
   const lines: TextLine[] = [];
 
