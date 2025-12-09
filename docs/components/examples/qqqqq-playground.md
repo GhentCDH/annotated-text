@@ -12,7 +12,7 @@ import { setupPlayground,} from "@demo";
 import { onMounted } from "vue";
 
 
-const playgroundId = 'playground';
+const playgroundId = 'playground-div';
 onMounted(()=> {
     setupPlayground(playgroundId);
 });
