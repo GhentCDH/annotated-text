@@ -83,7 +83,7 @@ export const drawText = (
 
   textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
 
-  Debugger.debug("Draw the lines", textAnnotationModel.lines.length);
+  Debugger.verbose("Draw the lines", textAnnotationModel.lines.length);
   textAnnotationModel.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line, textAdapter));
     textDiv.appendChild(
