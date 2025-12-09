@@ -20,6 +20,7 @@ export const computeLinePositions = (
     const textLine = findTextLine(textElement, line);
     if (!textLine) {
       Debugger.debug(
+        "computeLinePositions",
         `Text line with UUID ${line.uuid} not found in the text element.`,
       );
       return;

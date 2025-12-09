@@ -42,7 +42,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private textElement: HTMLDivElement | null | undefined = null;
   private svgModel: SvgModel;
   private svgNode: SVGElement | null = null;
-  private resizeObserver: ResizeObserver;
+  private resizeObserver: ResizeObserver | null;
   private text: string;
   private readonly eventListener = new EventListener();
   private readonly internalEventListener = new InternalEventListener();
@@ -123,12 +123,18 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     });
 
     if (!this.textAnnotationModel) {
-      Debugger.debug("Annotations set before lines, cannot set annotations");
+      Debugger.debug(
+        "setAnnotations",
+        "Annotations set before lines, cannot set annotations",
+      );
       return this;
     }
 
     if (!this.text) {
-      Debugger.debug("------ no lines set, cannot set annotations");
+      Debugger.debug(
+        "setAnnotations",
+        "------ no lines set, cannot set annotations",
+      );
       return this;
     }
 
@@ -189,17 +195,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     this.element.classList.add(styles.wrapper);
 
-    let initialized = false;
-    this.resizeObserver = new ResizeObserver((entries) => {
-      Debugger.debug("resize detected", initialized);
-      if (initialized) this.redrawSvg();
-      initialized = true;
-    });
-    if (this.element) {
-      Debugger.debug("start observing", this.mainElement);
-
-      this.resizeObserver.observe(this.mainElement);
-    }
+    this.startObserving();
 
     if (!this.textAnnotationModel) {
       return;
@@ -252,19 +248,56 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   public destroy() {
-    Debugger.debug("destroy CreateAnnotations instance", this.id);
+    Debugger.debug("CreateAnnotations", "destroy", this.id);
     this.eventListener.sendEvent("destroy", null, null);
-    Debugger.debug("Stop observing element on destroy", this.element);
-    if (this.element) {
-      this.resizeObserver?.unobserve(this.element);
-      this.element.innerHTML = "";
-    }
-    this.resizeObserver?.disconnect();
+
     this.textElement = null;
     this.svgNode = null;
     this.textAnnotationModel = null;
 
+    this.stopObserving();
+
     return this;
+  }
+
+  private startObserving() {
+    Debugger.debug(
+      "CreateAnnotations",
+      "Start observing element",
+      this.mainElement,
+    );
+    if (this.resizeObserver) {
+      return;
+    }
+    let initialized = false;
+    this.resizeObserver = new ResizeObserver((entries) => {
+      Debugger.verbose("CreateAnnotations", "resize detected", initialized);
+      if (initialized) this.redrawSvg();
+      initialized = true;
+    });
+    if (this.element) {
+      Debugger.debug("CreateAnnotations", "start observing", this.mainElement);
+
+      this.resizeObserver.observe(this.mainElement);
+    }
+  }
+
+  private stopObserving() {
+    if (!this.resizeObserver) {
+      return;
+    }
+
+    Debugger.debug(
+      "CreateAnnotations",
+      "Stop observing element",
+      this.mainElement,
+    );
+    if (this.mainElement) {
+      this.resizeObserver?.unobserve(this.mainElement);
+      this.mainElement.innerHTML = "";
+    }
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
   }
 
   public highlightAnnotations(ids: AnnotationId[]) {
@@ -278,7 +311,6 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   private recreateAnnotationModel() {
-    this.destroy();
     this.createAnnotationModel();
     this.annotationsMap.clear();
     this.annotations().forEach((annotation) => {

@@ -35,23 +35,27 @@ export class Debugger {
   public static time(startTime: number, message: string) {
     const endTime = Date.now();
     const tookTime = endTime - startTime;
-    const logMessage = `TIMER: ${message} took ${tookTime} ms , ${tookTime / 1000} s`;
+    const logMessage = `${message} took ${tookTime} ms , ${tookTime / 1000} s`;
     if (tookTime > 1000) {
-      console.warn(logMessage);
+      console.warn("TIMER", logMessage);
     } else {
-      Debugger.debug(logMessage);
+      Debugger.debug("TIMER", logMessage);
     }
   }
 
-  public static debug(...message: any) {
+  public static debug(subject: string, mainMessage: string, ...message: any) {
     if (!this.debugEnabled) return;
 
-    console.log(message);
+    console.log(Debugger.formatMessage(subject, mainMessage), message);
   }
 
-  public static verbose(...message: any) {
+  public static verbose(subject: string, mainMessage: string, ...message: any) {
     if (!this.verboseEnabled) return;
 
-    console.debug(message);
+    console.debug(Debugger.formatMessage(subject, mainMessage), message);
+  }
+
+  private static formatMessage(subject: string, mainMessage: string) {
+    return `${subject}: ${mainMessage}`;
   }
 }
