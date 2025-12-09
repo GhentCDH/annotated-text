@@ -8,7 +8,7 @@ export class AnnotationWeight {
   private readonly annotationOverlap: AnnotationOverlap<TextAnnotation>;
   private readonly renderWeights: Map<number, TextAnnotation[]>;
   private readonly renderOrder: number[];
-  private totalMaxWeight: number = 0;
+  private totalMaxWeight = 0;
 
   static calculate(
     annotations: TextAnnotation[],

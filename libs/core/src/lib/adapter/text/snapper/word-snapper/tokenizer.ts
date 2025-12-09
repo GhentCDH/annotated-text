@@ -25,8 +25,7 @@ export const defaultTokenizr: Tokenizer = (text: string): Token[] => {
   });
 
   //token
-
-  lexer.rule(/[^\s,\.]+/, (ctx: { accept: (arg0: string) => void }) => {
+  lexer.rule(/[^\s,.]+/, (ctx: { accept: (arg0: string) => void }) => {
     ctx.accept("token");
   });
 

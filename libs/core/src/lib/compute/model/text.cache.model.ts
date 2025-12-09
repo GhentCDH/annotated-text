@@ -9,8 +9,6 @@ export class TextAnnotationCacheModel {
   public minStartPosition = 0;
   public maxStartPosition = 0;
 
-  constructor() {}
-
   updateTextAnnotations(
     lines: TextLine[],
     annotations: TextAnnotation[],
@@ -48,6 +46,4 @@ export class TextAnnotationCacheModel {
       this.lineAnnotationMap.set(line.lineNumber, lineAnnotationMap);
     });
   }
-
-  clear() {}
 }

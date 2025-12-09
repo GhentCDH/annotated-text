@@ -43,6 +43,7 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
     // if (line.lineNumber > 5) return;
     sortAnnotations.forEach((lineAnnotation) => {
       if (lineAnnotation.index > 0) {
+        // eslint-disable-next-line no-constant-binary-expression
         if (!lineAnnotation.annotation._render.weight === undefined) {
           console.warn("no weight for annotation", lineAnnotation.annotation);
         }

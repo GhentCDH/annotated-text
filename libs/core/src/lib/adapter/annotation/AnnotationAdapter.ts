@@ -40,12 +40,12 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * If true, creation of annotations is enabled.
    * @param params
    */
-  public create: boolean = false;
+  public create = false;
   /**
    * If true, edit of annotations is enabled.
    * @param params
    */
-  public edit: boolean = false;
+  public edit = false;
   /**
    * Configuration for styling the annotations, can be used to override default styles.
    */
@@ -54,7 +54,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
   public renderInstance: RenderInstances<ANNOTATION>;
   public styleInstance: StyleInstances<ANNOTATION>;
 
-  protected text: string = "";
+  protected text = "";
   protected offsetStart = 0;
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.

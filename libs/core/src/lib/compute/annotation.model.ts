@@ -58,7 +58,7 @@ export interface TextAnnotationModel {
 
 export class TextAnnotationModelImpl implements TextAnnotationModel {
   textDirection: TextDirection;
-  blockEvents: boolean = false;
+  blockEvents = false;
 
   public readonly gutterModel: GutterCacheModel = new GutterCacheModel();
   public readonly annotationTextModel: TextAnnotationCacheModel =

@@ -3,6 +3,7 @@ import { type TextLine, textLineSchema } from "../../../model";
 
 export const _textToLines = memoize(
   (text: string, textOffset: number): TextLine[] => {
+    // eslint-disable-next-line no-control-regex
     text = text.replace(/\r\n/g, "\n").replace(/\u000b/g, "\n");
     const regLineNumber = /^([0-9/]+[a-z]?)\./g;
     let lineStart = textOffset;

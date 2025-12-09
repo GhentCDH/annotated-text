@@ -1,21 +1,40 @@
-import pluginVue from "eslint-plugin-vue";
-import vueTsEslintConfig from "@vue/eslint-config-typescript";
-import prettierConfig from "@vue/eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
-import pluginVitest from "@vitest/eslint-plugin";
-import skipFormatting from "@vue/eslint-config-prettier/skip-formatting";
+import nx from "@nx/eslint-plugin";
 
 export default [
+  ...nx.configs["flat/base"],
+  ...nx.configs["flat/typescript"],
+  ...nx.configs["flat/javascript"],
   {
-    name: "app/files-to-lint",
-    files: ["**/*.{ts,mts,tsx,vue}"],
+    ignores: [
+      "**/dist/**",
+      "**/dist-ssr/**",
+      "**/coverage/**",
+      "**/docs/components/**",
+      "**/docs/api/**",
+      "**/dist",
+      "**/out-tsc",
+      "**/vite.config.*.timestamp*",
+    ],
   },
   {
-    name: "app/files-to-ignore",
-    ignores: ["**/dist/**", "**/dist-ssr/**", "**/coverage/**"],
+    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.vue"],
+    rules: {
+      "@nx/enforce-module-boundaries": [
+        "error",
+        {
+          enforceBuildableLibDependency: true,
+          allow: ["^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$"],
+          depConstraints: [
+            {
+              sourceTag: "*",
+              onlyDependOnLibsWithTags: ["*"],
+            },
+          ],
+        },
+      ],
+    },
   },
-  ...pluginVue.configs["flat/essential"],
-  ...vueTsEslintConfig(),
   importPlugin.flatConfigs.recommended,
   {
     files: ["**/*.{js,vue,ts,mjs,cjs}"],
@@ -24,6 +43,13 @@ export default [
       sourceType: "module",
     },
     rules: {
+      // "@typescript-eslint/consistent-type-imports": [
+      //   "error",
+      //   {
+      //     prefer: "type-imports",
+      //     fixStyle: "inline-type-imports",
+      //   },
+      // ],
       "no-console": ["error", { allow: ["warn", "error"] }],
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/no-explicit-any": "warn",
@@ -43,14 +69,5 @@ export default [
         },
       ],
     },
-  },
-  prettierConfig,
-  {
-    ...pluginVitest.configs.recommended,
-    files: ["src/**/__tests__/*"],
-  },
-  skipFormatting,
-  {
-    ignores: ["**/vite.config.*.timestamp*", "**/vitest.config.*.timestamp*"],
   },
 ];

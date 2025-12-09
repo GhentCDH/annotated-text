@@ -15,9 +15,9 @@ export abstract class Snapper {
 }
 
 export class DefaultSnapper extends Snapper {
-  protected text: string = "";
-  protected offsetStart: number = 0;
-  protected textLength: number = 0;
+  protected text = "";
+  protected offsetStart = 0;
+  protected textLength = 0;
 
   override setText(text: string, offsetStart: number) {
     this.text = text;

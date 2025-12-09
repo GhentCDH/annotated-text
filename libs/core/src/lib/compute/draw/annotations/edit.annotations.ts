@@ -1,11 +1,3 @@
-import {
-  AnnotationAdapter,
-  AnnotationDrawColors,
-  AnnotationEventType,
-  SnapperAction,
-  TextAnnotation,
-  textAnnotationSchema,
-} from "@ghentcdh/annotated-text";
 import { cloneDeep, pick } from "lodash-es";
 import { InternalEventListener } from "../../../events/internal/internal.event.listener";
 import { Position } from "../types";
@@ -14,6 +6,8 @@ import {
   getCharacterStartEndPosition,
 } from "../../position";
 import { DUMMY_UID } from "../../model/svg.types";
+import { TextAnnotation } from "../../utils/annotation.overlap";
+import { AnnotationAdapter } from "../../../adapter";
 
 export class EditAnnotation {
   private dragResult: TextAnnotation | null = null;

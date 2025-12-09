@@ -1,5 +1,5 @@
 import memoize from "memoizee";
-import { AnnotationDrawPath } from "@ghentcdh/annotated-text";
+import type { AnnotationDrawPath } from "../../model";
 
 export type PathParams = {
   x: number;

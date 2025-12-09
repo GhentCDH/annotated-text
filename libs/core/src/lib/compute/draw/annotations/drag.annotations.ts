@@ -1,14 +1,11 @@
-import {
-  AnnotationAdapter,
-  Dimensions,
-  TextAnnotation,
-} from "@ghentcdh/annotated-text";
 import { pick } from "lodash-es";
 import { handleAnnotationEditAndSendEvent } from "./edit.annotations";
 import { InternalEventListener } from "../../../events/internal/internal.event.listener";
 import { Position } from "../types";
 import { CharacterPositionResult } from "../../position";
 import { DUMMY_UID } from "../../model/svg.types";
+import { AnnotationAdapter } from "../../../adapter";
+import { Dimensions, TextAnnotation } from "../../../model";
 
 export class DragAnnotation {
   private dragBusy = false;

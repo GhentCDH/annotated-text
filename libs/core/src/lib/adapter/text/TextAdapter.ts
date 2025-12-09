@@ -32,9 +32,9 @@ export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = "ltr";
-  flatText: boolean = false;
+  flatText = false;
   private _limit: Limit | null = null;
-  textOffset: number = 0;
+  textOffset = 0;
   style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
 
   /**

@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 export class Debugger {
-  private _verboseEnabled: boolean = false;
-  private _debugEnabled: boolean = false;
+  private _verboseEnabled = false;
+  private _debugEnabled = false;
   private static _instance: Debugger;
 
-  private constructor() {}
+  private constructor() {
+    /* empty */
+  }
 
   private static get instance() {
     if (!Debugger._instance) Debugger._instance = new Debugger();

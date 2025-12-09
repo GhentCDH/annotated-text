@@ -1,4 +1,5 @@
-import { AnnotationAdapter, TextAnnotation } from "@ghentcdh/annotated-text";
+import { TextAnnotation } from "../../../model";
+import { AnnotationAdapter } from "../../../adapter";
 import { Position } from "../types";
 import {
   CharacterPositionResult,

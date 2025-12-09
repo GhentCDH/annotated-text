@@ -1,16 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  AnnotationDrawColors,
-  Debugger,
-  TextAdapterStyle,
-  TextAnnotation,
-} from "@ghentcdh/annotated-text";
 import { cloneDeep } from "lodash-es";
 import {
   AnnotationRender,
   AnnotationRenderParams,
   DefaultAnnotationRenderStyle,
 } from "./annotation-render";
+import { Debugger } from '../../../utils/debugger';
 import { getMinMaxBy } from "../../../compute/draw/utils/min-max.by";
 import { AnnotationDimension, AnnotationDraw } from "../../../model";
 import { getY } from "../../../compute/compute/helpers";

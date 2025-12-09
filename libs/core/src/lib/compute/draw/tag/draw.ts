@@ -1,9 +1,9 @@
+import memoize from "memoizee";
 import {
   AnnotationDimension,
   AnnotationDrawColors,
   TextAnnotation,
-} from "@ghentcdh/annotated-text";
-import memoize from "memoizee";
+} from "../../../model";
 import { SVG_ID, SVG_ROLE, SvgModel } from "../../model/svg.types";
 import { TagConfig } from "../../../adapter/annotation/DefaultTag";
 

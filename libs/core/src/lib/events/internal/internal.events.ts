@@ -1,9 +1,9 @@
-import {
+import type {
   AnnotationDrawColor,
-  AnnotationEventType,
-  type AnnotationId,
-} from "@ghentcdh/annotated-text";
-import { TextAnnotation } from "../../model";
+  AnnotationId,
+  TextAnnotation,
+} from "../../model";
+import type { AnnotationEventType } from "../events";
 
 export type InternalEventData = {
   "annotation--draw-dummy": {

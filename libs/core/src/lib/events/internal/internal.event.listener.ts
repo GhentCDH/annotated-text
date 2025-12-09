@@ -1,5 +1,5 @@
-import { Debugger } from "@ghentcdh/annotated-text";
 import { InternalEvent, InternalEventData } from "./internal.events";
+import { Debugger } from "../../utils/debugger";
 
 export type InternalEventListenerType = InternalEvent;
 
@@ -17,7 +17,9 @@ export class InternalEventListener {
     EventCallback<any>[]
   >();
 
-  constructor() {}
+  constructor() {
+    /* empty */
+  }
 
   public on<EVENT extends InternalEvent>(
     event: EVENT,

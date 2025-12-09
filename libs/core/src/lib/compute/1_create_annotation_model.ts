@@ -1,9 +1,9 @@
-import { AnnotationAdapter } from "@ghentcdh/annotated-text";
 import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
 } from "./annotation.model";
 import { getLineHeight } from "./draw/utils/line-height";
+import { AnnotationAdapter } from "../adapter";
 import { TextAdapter } from "../adapter/text";
 import { Debugger } from "../utils/debugger";
 

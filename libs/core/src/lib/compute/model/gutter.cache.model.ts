@@ -1,17 +1,15 @@
-import { TextAnnotation, TextLine } from "@ghentcdh/annotated-text";
 import { maxBy } from "lodash-es";
 import { calculateGutterAnnotationWeightsAndEnrich } from "../utils/weights";
 import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
-import {
+import type {
   AnnotationRender,
   GutterAnnotationRenderStyle,
 } from "../../adapter/annotation/renderer";
+import type { TextAnnotation, TextLine } from "../../model";
 
 export class GutterCacheModel {
   public maxGutterWeight = 0;
   private gutterAnnotations: TextAnnotation[] = [];
-
-  constructor() {}
 
   updateGutters(lines: TextLine[], annotations: TextAnnotation[]) {
     this.gutterAnnotations = annotations.filter((a) => a._render.isGutter);

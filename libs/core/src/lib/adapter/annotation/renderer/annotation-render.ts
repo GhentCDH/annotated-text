@@ -1,11 +1,6 @@
 import { cloneDeep, merge } from "lodash-es";
-import {
-  AnnotationDimension,
-  AnnotationDraw,
-  AnnotationDrawColors,
-  TextAdapterStyle,
-  TextAnnotation
-} from "@ghentcdh/annotated-text";
+import { AnnotationDimension, AnnotationDraw, AnnotationDrawColors, TextAnnotation } from "../../../model";
+import { TextAdapterStyle } from "../../text";
 
 /**
  * Parameters passed to the render method of annotation renderers.
