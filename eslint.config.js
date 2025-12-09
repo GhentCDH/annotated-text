@@ -43,6 +43,7 @@ export default [
       sourceType: "module",
     },
     rules: {
+      quotes: ["error", "single"],
       // "@typescript-eslint/consistent-type-imports": [
       //   "error",
       //   {

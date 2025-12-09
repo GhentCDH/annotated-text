@@ -1,17 +1,17 @@
-import memoize from "memoizee";
-import { type TextLine, textLineSchema } from "../../../model";
+import memoize from 'memoizee';
+import { type TextLine, textLineSchema } from '../../../model';
 
 export const _textToLines = memoize(
   (text: string, textOffset: number): TextLine[] => {
     // eslint-disable-next-line no-control-regex
-    text = text.replace(/\r\n/g, "\n").replace(/\u000b/g, "\n");
+    text = text.replace(/\r\n/g, '\n').replace(/\u000b/g, '\n');
     const regLineNumber = /^([0-9/]+[a-z]?)\./g;
     let lineStart = textOffset;
     let lineEnd = lineStart;
-    let gutter = "";
+    let gutter = '';
 
     // split text into lines
-    const lines = text.split("\n");
+    const lines = text.split('\n');
     const lineObjects = [] as TextLine[];
 
     // split lines into line number, text, start and end
@@ -22,7 +22,7 @@ export const _textToLines = memoize(
       if (matchArray) {
         gutter = matchArray[0];
       } else {
-        gutter = "";
+        gutter = '';
       }
 
       const start = lineStart + gutter.length;
@@ -30,7 +30,7 @@ export const _textToLines = memoize(
 
       //empty lines:
       const end = Math.max(_end, start);
-      const text = lines[i].replace(regLineNumber, "");
+      const text = lines[i].replace(regLineNumber, '');
 
       const lineObject = textLineSchema.parse({
         gutter: gutter,

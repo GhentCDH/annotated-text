@@ -1,8 +1,8 @@
 export const getLineHeight = (text: string, offset = 2) => {
-  const tempElement = document.createElement("span");
-  tempElement.style.visibility = "hidden";
-  tempElement.style.position = "absolute";
-  tempElement.style.whiteSpace = "pre";
+  const tempElement = document.createElement('span');
+  tempElement.style.visibility = 'hidden';
+  tempElement.style.position = 'absolute';
+  tempElement.style.whiteSpace = 'pre';
   tempElement.textContent = text;
 
   document.body.appendChild(tempElement);
@@ -15,14 +15,14 @@ export const getLineHeight = (text: string, offset = 2) => {
 export const getLineHeightOnElement = (element: HTMLElement): number => {
   const computed = window.getComputedStyle(element);
 
-  if (computed.lineHeight !== "normal") {
+  if (computed.lineHeight !== 'normal') {
     return parseFloat(computed.lineHeight);
   }
 
   // Measure actual line height for 'normal'
-  const temp = document.createElement("span");
-  temp.style.visibility = "hidden";
-  temp.textContent = "Mg";
+  const temp = document.createElement('span');
+  temp.style.visibility = 'hidden';
+  temp.textContent = 'Mg';
   element.appendChild(temp);
   const height = temp.offsetHeight;
   element.removeChild(temp);

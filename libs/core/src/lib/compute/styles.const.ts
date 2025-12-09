@@ -1,16 +1,16 @@
-const prefix = "ghent-cdh-annotation";
+const prefix = 'ghent-cdh-annotation';
 
 export const styles = {
   text: `annotated-text ${prefix}-text`,
   svg: `${prefix}-svg`,
   wrapper: `${prefix}-wrapper`,
   line: {
-    wrapper: "",
+    wrapper: '',
     text: {
-      wrapper: "content",
+      wrapper: 'content',
     },
     gutter: {
-      wrapper: "gutter text",
+      wrapper: 'gutter text',
     },
   },
 };

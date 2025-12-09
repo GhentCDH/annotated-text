@@ -1,5 +1,5 @@
-import { drawTag } from "./draw";
-import { SvgModel } from "../../model/svg.types";
+import { drawTag } from './draw';
+import { SvgModel } from '../../model/svg.types';
 
 export const drawAllTags = (svgModel: SvgModel) => {
   if (!svgModel.annotationAdapter.tagConfig.enabled) return;

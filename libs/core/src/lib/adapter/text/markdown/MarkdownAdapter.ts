@@ -1,21 +1,21 @@
-import memoize from "memoizee";
+import memoize from 'memoizee';
 import {
   getPartialMarkdown,
   replaceMarkdownToHtml,
   stripHtmlFromText,
-} from "./parser";
+} from './parser';
 import {
   createTextAdapter,
   createTextAdapterParams,
   type Limit,
   TextAdapter,
-} from "../TextAdapter";
-import { type TextLine, textLineSchema } from "../../../model";
-import { mapLinesToLimit, UpdateLineFn } from "../utils/mapLineToLimit";
+} from '../TextAdapter';
+import { type TextLine, textLineSchema } from '../../../model';
+import { mapLinesToLimit, UpdateLineFn } from '../utils/mapLineToLimit';
 
 const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
   // Split into paragraphs we do it ourself
-  const lines = text?.split(`\n\n`) ?? [""];
+  const lines = text?.split('\n\n') ?? [''];
   let start = textOffset;
   return lines.map((textLine, index) => {
     const html = replaceMarkdownToHtml(textLine);
@@ -74,7 +74,7 @@ const textToLines = (
  * It converts markdown to HTML and also provides the flat text representation.
  */
 export class MarkdownTextAdapterImpl extends TextAdapter {
-  name = "MarkdownLineAdapter";
+  name = 'MarkdownLineAdapter';
 
   parse(text: string): TextLine[] {
     return textToLines(text, this.limit!, this.textOffset);

@@ -1,6 +1,6 @@
-import { merge } from "lodash-es";
-import { type AnnotationStyle, type AnnotationStyleParams, DefaultAnnotationStyleParams } from "./annotation.style";
-import { Debugger } from "../../../utils/debugger";
+import { merge } from 'lodash-es';
+import { type AnnotationStyle, type AnnotationStyleParams, DefaultAnnotationStyleParams } from './annotation.style';
+import { Debugger } from '../../../utils/debugger';
 
 /**
  * Manages annotation styles through a combination of a style function and a named style registry.
@@ -118,18 +118,18 @@ export class StyleInstances<ANNOTATION> {
     const style = this.styleParams.styleFn(annotation);
     if (style === null) {
       Debugger.verbose(
-        "StyleInstances",
-        "No style specified for annotation, returning default style.",
+        'StyleInstances',
+        'No style specified for annotation, returning default style.',
       );
 
       return this.styleParams.defaultStyle;
     }
 
-    if (typeof style === "string") {
+    if (typeof style === 'string') {
       const namedStyle = this.styleMap.get(style);
       if (!namedStyle) {
         Debugger.warn(
-          "Style not found: " + style + ". Returning default style.",
+          'Style not found: ' + style + '. Returning default style.',
         );
         return this.styleParams.defaultStyle;
       }

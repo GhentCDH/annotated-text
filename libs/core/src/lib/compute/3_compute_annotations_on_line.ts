@@ -1,7 +1,7 @@
 import {
   TextAnnotationModel,
   TextAnnotationModelImpl,
-} from "./annotation.model";
+} from './annotation.model';
 
 export const computeAnnotationsOnLine = (
   model: TextAnnotationModelImpl,

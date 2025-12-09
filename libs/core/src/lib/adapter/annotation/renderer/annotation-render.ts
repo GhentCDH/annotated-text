@@ -1,6 +1,6 @@
-import { cloneDeep, merge } from "lodash-es";
-import { AnnotationDimension, AnnotationDraw, AnnotationDrawColors, TextAnnotation } from "../../../model";
-import { TextAdapterStyle } from "../../text";
+import { cloneDeep, merge } from 'lodash-es';
+import { AnnotationDimension, AnnotationDraw, AnnotationDrawColors, TextAnnotation } from '../../../model';
+import { TextAdapterStyle } from '../../text';
 
 /**
  * Parameters passed to the render method of annotation renderers.
@@ -11,7 +11,7 @@ export type AnnotationRenderParams = {
    * Use 'ltr' for left-to-right languages (English, Spanish, etc.)
    * Use 'rtl' for right-to-left languages (Arabic, Hebrew, etc.)
    */
-  textDirection: "ltr" | "rtl";
+  textDirection: 'ltr' | 'rtl';
 
   /**
    * The maximum weight value among all gutter annotations.
@@ -34,7 +34,7 @@ export type RenderParams<ANNOTATION> = {
    * @example
    * defaultRenderer: 'highlight'
    */
-  defaultRenderer: "gutter" | "highlight" | "underline" | string;
+  defaultRenderer: 'gutter' | 'highlight' | 'underline' | string;
 
   /**
    * Function that returns the style identifier for a given annotation.
@@ -64,7 +64,7 @@ export type RenderParams<ANNOTATION> = {
    */
   renderFn: (
     annotation: ANNOTATION,
-  ) => "gutter" | "highlight" | "underline" | string | null;
+  ) => 'gutter' | 'highlight' | 'underline' | string | null;
 };
 
 /**
@@ -250,13 +250,13 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
 export const DefaultAnnotationRenderStyle = {
   hover: {
     color: {
-      border: "rgba(100, 100, 100, 0.5)",
-      fill: "rgba(1, 1, 1, 0.1)",
+      border: 'rgba(100, 100, 100, 0.5)',
+      fill: 'rgba(1, 1, 1, 0.1)',
     },
   },
   edit: {
     color: {
-      border: "rgba(255,0,0,0.9)",
+      border: 'rgba(255,0,0,0.9)',
     },
   },
 };

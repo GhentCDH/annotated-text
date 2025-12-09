@@ -1,11 +1,11 @@
-import memoize from "memoizee";
+import memoize from 'memoizee';
 import {
   AnnotationDimension,
   AnnotationDrawColors,
   TextAnnotation,
-} from "../../../model";
-import { SVG_ID, SVG_ROLE, SvgModel } from "../../model/svg.types";
-import { TagConfig } from "../../../adapter/annotation/DefaultTag";
+} from '../../../model';
+import { SVG_ID, SVG_ROLE, SvgModel } from '../../model/svg.types';
+import { TagConfig } from '../../../adapter/annotation/DefaultTag';
 
 const defaultParams = memoize((tagConfig: TagConfig<any>) => {
   const fontSize = `${tagConfig.fontSize || 12}px`;
@@ -33,8 +33,8 @@ const calculateTextDimensions = memoize(
 const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
   // Add temporary text to measure width
   const tempText = tagGroup
-    .append("text")
-    .attr("font-size", fontSize)
+    .append('text')
+    .attr('font-size', fontSize)
     .text(text);
 
   // Get text width
@@ -67,7 +67,7 @@ export const drawTag = (svgModel: SvgModel, annotation: TextAnnotation) => {
 
   // Create a group for the tag
   const tagGroup = svgModel.tagSvg
-    .append("g")
+    .append('g')
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
     .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG);
 
@@ -91,40 +91,40 @@ export const drawTag = (svgModel: SvgModel, annotation: TextAnnotation) => {
 
   // Add dummy background with white fill to avoid averlapping of the tags
   tagGroup
-    .append("rect")
+    .append('rect')
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
     .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG)
-    .attr("x", rectDimensions.x)
-    .attr("y", rectDimensions.y)
-    .attr("width", rectDimensions.width)
-    .attr("height", rectDimensions.height)
-    .attr("fill", "white")
-    .attr("pointer-events", "none")
-    .attr("rx", 3); // rounded corners
+    .attr('x', rectDimensions.x)
+    .attr('y', rectDimensions.y)
+    .attr('width', rectDimensions.width)
+    .attr('height', rectDimensions.height)
+    .attr('fill', 'white')
+    .attr('pointer-events', 'none')
+    .attr('rx', 3); // rounded corners
 
   // Add tag background
   tagGroup
-    .append("rect")
+    .append('rect')
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
     .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG)
-    .attr("x", rectDimensions.x)
-    .attr("y", rectDimensions.y)
-    .attr("width", rectDimensions.width)
-    .attr("height", rectDimensions.height)
-    .attr("fill", color.tag.fill!)
-    .attr("stroke", color.tag.border!)
-    .attr("stroke-width", 1)
-    .attr("pointer-events", "none")
-    .attr("rx", 3); // rounded corners
+    .attr('x', rectDimensions.x)
+    .attr('y', rectDimensions.y)
+    .attr('width', rectDimensions.width)
+    .attr('height', rectDimensions.height)
+    .attr('fill', color.tag.fill!)
+    .attr('stroke', color.tag.border!)
+    .attr('stroke-width', 1)
+    .attr('pointer-events', 'none')
+    .attr('rx', 3); // rounded corners
 
   // Add text
   tagGroup
-    .append("text")
-    .attr("x", textDimensions.x)
-    .attr("y", textDimensions.y)
-    .attr("dominant-baseline", "central")
-    .attr("font-size", fontSize)
-    .attr("pointer-events", "none")
-    .attr("fill", color.tag.text!)
+    .append('text')
+    .attr('x', textDimensions.x)
+    .attr('y', textDimensions.y)
+    .attr('dominant-baseline', 'central')
+    .attr('font-size', fontSize)
+    .attr('pointer-events', 'none')
+    .attr('fill', color.tag.text!)
     .text(text);
 };

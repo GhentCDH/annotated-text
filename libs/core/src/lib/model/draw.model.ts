@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from 'zod/v4';
 
 export const annotationDrawPath = z.object({
   border: z.string().optional(),

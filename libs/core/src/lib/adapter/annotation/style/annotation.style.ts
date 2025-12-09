@@ -1,7 +1,7 @@
-import { createAnnotationColor } from "../../../utils/createAnnotationColor";
+import { createAnnotationColor } from '../../../utils/createAnnotationColor';
 
 export const DefaultAnnotationStyle = {
-  color: createAnnotationColor("#ff3b3b"),
+  color: createAnnotationColor('#ff3b3b'),
 };
 
 /**

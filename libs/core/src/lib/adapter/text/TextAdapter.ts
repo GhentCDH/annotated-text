@@ -1,7 +1,7 @@
-import { BaseAdapter } from "../BaseAdapter";
-import { type TextLine } from "../../model";
+import { BaseAdapter } from '../BaseAdapter';
+import { type TextLine } from '../../model';
 
-export type TextDirection = "ltr" | "rtl";
+export type TextDirection = 'ltr' | 'rtl';
 
 export type Limit = {
   /**
@@ -31,7 +31,7 @@ export const DefaultTextAdapterStyle = {
 export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 
 export abstract class TextAdapter extends BaseAdapter {
-  textDirection: TextDirection = "ltr";
+  textDirection: TextDirection = 'ltr';
   flatText = false;
   private _limit: Limit | null = null;
   textOffset = 0;
@@ -70,20 +70,20 @@ export abstract class TextAdapter extends BaseAdapter {
     value: TEXT_CONFIG_VALUES<KEY>,
   ) {
     switch (key) {
-      case "textDirection":
+      case 'textDirection':
         this.textDirection = value as TextDirection;
         this.changeConfig();
         break;
-      case "flatText":
+      case 'flatText':
         this.flatText = !!value;
         this.changeConfig();
         break;
-      case "limit":
+      case 'limit':
         this.limit = value as Limit | null;
         this.changeConfig();
         break;
       default:
-        console.warn("Unsupported config key:", value);
+        console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
     }
   }
@@ -134,7 +134,7 @@ export type createTextAdapterParams = {
    */
   textOffset?: number;
 
-  style?: Partial<Omit<TextAdapterStyle, "lineHeight">>;
+  style?: Partial<Omit<TextAdapterStyle, 'lineHeight'>>;
 };
 
 export const createTextAdapter = (

@@ -1,10 +1,10 @@
-import RBush from "rbush";
+import RBush from 'rbush';
 import {
   AnnotationId,
   type TextAnnotation as _TextAnnotation,
-} from "../../model";
+} from '../../model';
 
-export type TextAnnotation = Pick<_TextAnnotation, "id" | "start" | "end">;
+export type TextAnnotation = Pick<_TextAnnotation, 'id' | 'start' | 'end'>;
 
 interface RBushItem<TEXT_ANNOTATION> {
   minX: number;

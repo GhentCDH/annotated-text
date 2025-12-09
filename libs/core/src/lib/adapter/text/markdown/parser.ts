@@ -1,8 +1,8 @@
-import markdownit, { type Token } from "markdown-it";
+import markdownit, { type Token } from 'markdown-it';
 
 const md = markdownit({
   html: false,
-}).disable("list");
+}).disable('list');
 
 const markdownEnv = {};
 
@@ -12,9 +12,9 @@ export const replaceMarkdownToHtml = (text: string): string => {
 
 const document = globalThis.document;
 export const stripHtmlFromText = (text: string) => {
-  const div = document?.createElement("div") ?? ({} as HTMLElement);
+  const div = document?.createElement('div') ?? ({} as HTMLElement);
   div.innerHTML = text;
-  return div.textContent || div.innerText || "";
+  return div.textContent || div.innerText || '';
 };
 
 type TokenInfo = {
@@ -39,8 +39,8 @@ const findTokenInRange = (token: Token, offset: number): TokenInfo[] => {
       content,
       markup,
       length: content.length,
-      openTag: token.type?.indexOf("_open") >= 0,
-      closeTag: token.type?.indexOf("_close") >= 0,
+      openTag: token.type?.indexOf('_open') >= 0,
+      closeTag: token.type?.indexOf('_close') >= 0,
     } as TokenInfo,
   ];
 };
@@ -78,12 +78,12 @@ export const getPartialMarkdown = (
       }
       break;
     } else {
-      markdownText.push([token.content, token.markup].join(""));
+      markdownText.push([token.content, token.markup].join(''));
     }
     nextStart = nextStart + token.length;
     index++;
   }
   // find the first and last tokens in the absolute range
-  const newText = markdownText.flat().join("");
+  const newText = markdownText.flat().join('');
   return { html: replaceMarkdownToHtml(newText), text: newText };
 };

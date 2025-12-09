@@ -1,2 +1,2 @@
-export * from "./CreateAnnotations.model";
-export * from "./createAnnotatedText";
+export * from './CreateAnnotations.model';
+export * from './createAnnotatedText';

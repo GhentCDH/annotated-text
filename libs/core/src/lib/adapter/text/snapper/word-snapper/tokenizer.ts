@@ -1,4 +1,4 @@
-import { Token, Tokenizr } from "tokenizr";
+import { Token, Tokenizr } from 'tokenizr';
 
 export type Tokenizer = (token: string) => Token[];
 
@@ -9,7 +9,7 @@ export const defaultTokenizr: Tokenizer = (text: string): Token[] => {
   //ignore word boundries
   lexer.rule(/†/, (ctx: { accept: (arg0: string) => void }) => {
     //ctx.accept("start char")
-    ctx.accept("start");
+    ctx.accept('start');
   });
 
   //ignore line numbers
@@ -26,7 +26,7 @@ export const defaultTokenizr: Tokenizer = (text: string): Token[] => {
 
   //token
   lexer.rule(/[^\s,.]+/, (ctx: { accept: (arg0: string) => void }) => {
-    ctx.accept("token");
+    ctx.accept('token');
   });
 
   //parse the text

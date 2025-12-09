@@ -2,35 +2,35 @@ import type {
   AnnotationDrawColor,
   AnnotationId,
   TextAnnotation,
-} from "../../model";
-import type { AnnotationEventType } from "../events";
+} from '../../model';
+import type { AnnotationEventType } from '../events';
 
 export type InternalEventData = {
-  "annotation--draw-dummy": {
+  'annotation--draw-dummy': {
     dummyAnnotation: TextAnnotation;
     color: AnnotationDrawColor;
   };
-  "send-event--annotation": {
+  'send-event--annotation': {
     event: AnnotationEventType;
     mouseEvent?: MouseEvent;
     annotationUuid: AnnotationId;
     additionalData?: any;
   };
-  "annotation--set-class": {
+  'annotation--set-class': {
     annotationUuid: AnnotationId;
     cssClass: string;
   };
-  "annotation--remove-tag": {
+  'annotation--remove-tag': {
     annotationUuid: AnnotationId;
   };
-  "annotation--remove": {
+  'annotation--remove': {
     annotationUuid: AnnotationId;
     selector?: string;
   };
-  "annotation--add": {
+  'annotation--add': {
     annotation: TextAnnotation;
   };
-  "annotation--update": {
+  'annotation--update': {
     annotation: TextAnnotation;
   };
 };

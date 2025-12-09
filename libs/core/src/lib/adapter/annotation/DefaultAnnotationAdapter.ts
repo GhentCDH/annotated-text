@@ -2,17 +2,17 @@ import {
   AnnotationAdapter,
   createAnnotationAdapter,
   createAnnotationAdapterParams,
-} from "./AnnotationAdapter";
+} from './AnnotationAdapter';
 import {
   type Annotation,
   annotationSchema,
   type TextAnnotation,
-} from "../../model";
-import { selectText } from "../text/utils/select-text";
-import { Debugger } from "../../utils/debugger";
+} from '../../model';
+import { selectText } from '../text/utils/select-text';
+import { Debugger } from '../../utils/debugger';
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
-  name = "DefaultAnnotationAdapter";
+  name = 'DefaultAnnotationAdapter';
 
   _parse(annotation: Annotation): Annotation {
     const data = annotationSchema.safeParse(annotation);

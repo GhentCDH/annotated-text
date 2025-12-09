@@ -1,5 +1,5 @@
-import { GutterCacheModel } from "./model/gutter.cache.model";
-import { TextAnnotationCacheModel } from "./model/text.cache.model";
+import { GutterCacheModel } from './model/gutter.cache.model';
+import { TextAnnotationCacheModel } from './model/text.cache.model';
 import {
   AnnotationDimension,
   AnnotationDraw,
@@ -7,10 +7,10 @@ import {
   type AnnotationId,
   type TextAnnotation,
   type TextLine,
-} from "../model";
-import { TextDirection } from "../adapter/text";
-import { AnnotationRenderParams } from "../adapter/annotation/renderer/annotation-render";
-import { RenderInstances } from "../adapter/annotation/renderer/render-instances";
+} from '../model';
+import { TextDirection } from '../adapter/text';
+import { AnnotationRenderParams } from '../adapter/annotation/renderer/annotation-render';
+import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
 
 export interface TextAnnotationModel {
   renderParams: AnnotationRenderParams;

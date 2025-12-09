@@ -1,7 +1,7 @@
-import RBush from "rbush";
-import { defaultTokenizr, type Tokenizer } from "./tokenizer";
-import { DefaultSnapper, type SnapperResult } from "../snapper";
-import { type TextAnnotation } from "../../../../model";
+import RBush from 'rbush';
+import { defaultTokenizr, type Tokenizer } from './tokenizer';
+import { DefaultSnapper, type SnapperResult } from '../snapper';
+import { type TextAnnotation } from '../../../../model';
 
 export interface WordPosition {
   start: number; // inclusive
@@ -44,7 +44,7 @@ export class WordSnapper extends DefaultSnapper {
     const words: WordPosition[] = [];
 
     for (const token of tokens) {
-      if (token.type === "token" || token.type === "start") {
+      if (token.type === 'token' || token.type === 'start') {
         const start = token.pos + this.offsetStart;
         const end = token.pos + token.text.length + this.offsetStart; // inclusive end
         words.push({ start, end, word: token.text });

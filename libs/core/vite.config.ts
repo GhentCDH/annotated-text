@@ -1,20 +1,20 @@
 /// <reference types='vitest' />
-import { defineConfig } from "vite";
-import dts from "vite-plugin-dts";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
-import { nxCopyAssetsPlugin } from "@nx/vite/plugins/nx-copy-assets.plugin";
-import * as path from "path";
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import * as path from 'path';
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: "../../node_modules/.vite/libs/core",
+  cacheDir: '../../node_modules/.vite/libs/core',
   plugins: [
     nxViteTsPaths(),
-    nxCopyAssetsPlugin(["*.md"]),
+    nxCopyAssetsPlugin(['*.md']),
     // checker({ typescript: true }),
     dts({
-      entryRoot: "src",
-      tsconfigPath: path.join(__dirname, "tsconfig.lib.json"),
+      entryRoot: 'src',
+      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
       pathsToAliases: false,
     }),
   ],
@@ -25,7 +25,7 @@ export default defineConfig(() => ({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: "../../dist/libs/core",
+    outDir: '../../dist/libs/core',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -33,13 +33,13 @@ export default defineConfig(() => ({
     },
     lib: {
       // Could also be a dictionary or array of multiple entry points.
-      entry: "src/index.ts",
-      name: "AnnotatedText",
-      fileName: "index",
+      entry: 'src/index.ts',
+      name: 'AnnotatedText',
+      fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.
       // formats: ["es" as const],
-      format: ["cjs", "esm", "es"],
+      format: ['cjs', 'esm', 'es'],
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
@@ -47,16 +47,16 @@ export default defineConfig(() => ({
     },
   },
   test: {
-    name: "core",
+    name: 'core',
     watch: false,
     globals: true,
-    environment: "node",
-    include: ["{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    reporters: ["default"],
+    environment: 'node',
+    include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    reporters: ['default'],
     coverage: {
-      provider: "v8", // or 'istanbul'
-      reporter: ["text", "json", "json-summary", "lcov"],
-      reportsDirectory: "./coverage",
+      provider: 'v8', // or 'istanbul'
+      reporter: ['text', 'json', 'json-summary', 'lcov'],
+      reportsDirectory: './coverage',
     },
   },
 }));

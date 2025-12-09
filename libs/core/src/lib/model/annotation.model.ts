@@ -1,11 +1,11 @@
-import { z } from "zod/v4";
-import { annotationColorSchema } from "./annotation.color";
-import { textLineSchema } from "./line.model";
-import { annotationDrawMetadataSchema } from "./draw.model";
+import { z } from 'zod/v4';
+import { annotationColorSchema } from './annotation.color';
+import { textLineSchema } from './line.model';
+import { annotationDrawMetadataSchema } from './draw.model';
 
 export const annotationTargetSchema = z.union([
-  z.literal("gutter"),
-  z.literal("text"),
+  z.literal('gutter'),
+  z.literal('text'),
 ]);
 export type AnnotationTarget = z.infer<typeof annotationTargetSchema>;
 export const annotationIdSchema = z.union([z.string(), z.number()]);

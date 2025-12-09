@@ -1,11 +1,11 @@
-import { maxBy } from "lodash-es";
-import { calculateGutterAnnotationWeightsAndEnrich } from "../utils/weights";
-import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
+import { maxBy } from 'lodash-es';
+import { calculateGutterAnnotationWeightsAndEnrich } from '../utils/weights';
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import type {
   AnnotationRender,
   GutterAnnotationRenderStyle,
-} from "../../adapter/annotation/renderer";
-import type { TextAnnotation, TextLine } from "../../model";
+} from '../../adapter/annotation/renderer';
+import type { TextAnnotation, TextLine } from '../../model';
 
 export class GutterCacheModel {
   public maxGutterWeight = 0;

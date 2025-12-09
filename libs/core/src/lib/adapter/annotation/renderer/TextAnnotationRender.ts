@@ -1,20 +1,20 @@
-import { v4 as uuidv4 } from "uuid";
-import { cloneDeep } from "lodash-es";
+import { v4 as uuidv4 } from 'uuid';
+import { cloneDeep } from 'lodash-es';
 import {
   AnnotationRender,
   AnnotationRenderParams,
   DefaultAnnotationRenderStyle,
-} from "./annotation-render";
+} from './annotation-render';
 import {
   AnnotationDimension,
   AnnotationDraw,
   TextAnnotation,
-} from "../../../model";
-import { createAnnotationPath, createAnnotationPathFn } from "../../../compute";
-import { getColors, GetColorsFn } from "../../../compute/compute/colors";
-import { getX, getY } from "../../../compute/compute/helpers";
-import { getRanges } from "../../../compute/utils/ranges/get-range";
-import { TextAdapterStyle } from "../../text";
+} from '../../../model';
+import { createAnnotationPath, createAnnotationPathFn } from '../../../compute';
+import { getColors, GetColorsFn } from '../../../compute/compute/colors';
+import { getX, getY } from '../../../compute/compute/helpers';
+import { getRanges } from '../../../compute/utils/ranges/get-range';
+import { TextAdapterStyle } from '../../text';
 
 export const createTextAnnotationRender = (
   params: AnnotationRenderParams,
@@ -49,7 +49,7 @@ export const createTextAnnotationRender = (
       let leftBorder = isFirstLine && rectIdx === 0;
       const lastRect = rectIdx === rects.length - 1;
       let rightBorder = lastRect && isLastLine;
-      if (params.textDirection === "rtl") {
+      if (params.textDirection === 'rtl') {
         const r = rightBorder;
         rightBorder = leftBorder;
         leftBorder = r;
@@ -99,7 +99,7 @@ export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
-  static instance = "highlight";
+  static instance = 'highlight';
   readonly name = HighlightAnnotationRender.instance;
 
   constructor() {

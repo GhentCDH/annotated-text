@@ -1,7 +1,7 @@
-import RBush from "rbush";
-import { SvgModel } from "../model/svg.types";
-import { TextRasterItem } from "../draw/text/text-raster";
-import { insideRange } from "../draw/utils/bounding-rect";
+import RBush from 'rbush';
+import { SvgModel } from '../model/svg.types';
+import { TextRasterItem } from '../draw/text/text-raster';
+import { insideRange } from '../draw/utils/bounding-rect';
 
 /**
  * Searches for a TextRasterItem at a specific point in the R-tree.
@@ -37,7 +37,7 @@ const rectAtPointRTree = (
  */
 export type CharacterPositionResult = {
   /** Which side of the character's center the click occurred */
-  side: "left" | "right";
+  side: 'left' | 'right';
   /** The position of the character in the text (0-indexed) */
   characterPos: number;
   /** @deprecated use characterPos instead */
@@ -77,7 +77,7 @@ export function getCharacterFromTextNodesAtPoint(
 
   // Determine if click was on left or right side of character's center
   // This is useful for cursor placement and selection behavior
-  const side = relativeX < rect.centerX ? "left" : "right";
+  const side = relativeX < rect.centerX ? 'left' : 'right';
 
   // Deprecated field for backward compatibility
   const newIndex = rect.textPosition;
@@ -114,11 +114,11 @@ export function getCharacterFromTextNodesAtPoint(
 export const getCharacterStartEndPosition = (
   { characterPos, side }: CharacterPositionResult,
   originalPos: { start: number; end: number },
-  target: "start" | "end",
+  target: 'start' | 'end',
 ) => {
   // Determine which boundary we're modifying
-  const _start = target === "start" ? characterPos : originalPos?.start;
-  const _end = target === "end" ? characterPos : originalPos?.end;
+  const _start = target === 'start' ? characterPos : originalPos?.start;
+  const _end = target === 'end' ? characterPos : originalPos?.end;
 
   // Normalize the range so start is always <= end
   // This handles backward selections (dragging right-to-left)
@@ -129,13 +129,13 @@ export const getCharacterStartEndPosition = (
   // The cursor should be positioned AFTER the character, not on it
   if (start === characterPos) {
     // We're modifying the start position
-    if (side === "right") {
+    if (side === 'right') {
       // Move to the next character (between this char and the next)
       return { start: start + 1, end };
     }
   } else {
     // We're modifying the end position
-    if (side === "right") {
+    if (side === 'right') {
       // Move to the next character (between this char and the next)
       return { start, end: end + 1 };
     }

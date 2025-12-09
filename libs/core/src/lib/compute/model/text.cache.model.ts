@@ -1,6 +1,6 @@
-import { RenderInstances } from "../../adapter/annotation/renderer/render-instances";
-import { TextAnnotation, TextLine } from "../../model";
-import { AnnotationWeight } from "../utils/annotation.weight";
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { TextAnnotation, TextLine } from '../../model';
+import { AnnotationWeight } from '../utils/annotation.weight';
 
 export class TextAnnotationCacheModel {
   public textAnnotations: TextAnnotation[] = [];

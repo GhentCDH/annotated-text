@@ -2,22 +2,22 @@ import {
   createTextSelectionAnnotation,
   findTextPositionSelector,
   updateTextSelectionAnnotation,
-} from "./utils";
-import { W3CAnnotation } from "./model";
+} from './utils';
+import { W3CAnnotation } from './model';
 import {
   AnnotationAdapter,
   createAnnotationAdapter,
   createAnnotationAdapterParams,
-} from "../AnnotationAdapter";
+} from '../AnnotationAdapter';
 import {
   Annotation,
   annotationSchema,
   type TextAnnotation,
-} from "../../../model";
-import { selectText } from "../../text/utils/select-text";
+} from '../../../model';
+import { selectText } from '../../text/utils/select-text';
 
 export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
-  name = "W3CAnnotationAdapter";
+  name = 'W3CAnnotationAdapter';
 
   constructor(
     private readonly sourceUri?: string,

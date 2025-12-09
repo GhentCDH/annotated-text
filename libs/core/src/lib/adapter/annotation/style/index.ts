@@ -1,1 +1,1 @@
-export * from "./annotation.style";
+export * from './annotation.style';

@@ -1,14 +1,14 @@
-import { SvgModel } from "../../model/svg.types";
-import { TextAnnotation } from "../../../model";
+import { SvgModel } from '../../model/svg.types';
+import { TextAnnotation } from '../../../model';
 
 export const clickAnnotation =
   (annotation: TextAnnotation, svgModel: SvgModel) =>
   (mouseEvent: MouseEvent) => {
     if (svgModel.internalEventListener.isBlocking) return;
     svgModel.sendEvent({
-      event: "click",
+      event: 'click',
       mouseEvent,
-      annotationUuid: annotation?.id || "",
+      annotationUuid: annotation?.id || '',
     });
   };
 
@@ -20,8 +20,8 @@ export const doubleClickAnnotation =
     mouseEvent.preventDefault();
 
     svgModel.sendEvent({
-      event: "double-click",
+      event: 'double-click',
       mouseEvent,
-      annotationUuid: annotation?.id || "",
+      annotationUuid: annotation?.id || '',
     });
   };

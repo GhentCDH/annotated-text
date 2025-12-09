@@ -2,7 +2,7 @@ import type {
   W3CAnnotation,
   W3CAnnotationTarget,
   W3CAnnotationTargetType,
-} from "../model";
+} from '../model';
 
 export const getTarget = (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
   if (!annotation.target) return [];
@@ -39,10 +39,10 @@ export const findTargetType = <B extends W3CAnnotationTarget>(
 };
 
 export const findTextPositionSelector = (sourceUri?: string) => {
-  return findTargetType<W3CAnnotationTarget>("Text", (body) => {
+  return findTargetType<W3CAnnotationTarget>('Text', (body) => {
     return (
       (!sourceUri || body.source === sourceUri) &&
-      body.selector?.type === "TextPositionSelector"
+      body.selector?.type === 'TextPositionSelector'
     );
   });
 };
@@ -59,9 +59,9 @@ export const isSameTarget = (
   body1: W3CAnnotationTarget,
   body2: W3CAnnotationTarget,
 ) => {
-  if (!hasSameFields(body1, body2, ["source"])) return false;
+  if (!hasSameFields(body1, body2, ['source'])) return false;
 
-  return hasSameFields(body1.selector, body2.selector, ["type"] as any);
+  return hasSameFields(body1.selector, body2.selector, ['type'] as any);
 };
 
 export const updateSelector = (

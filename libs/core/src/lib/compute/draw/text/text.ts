@@ -1,18 +1,18 @@
-import memoize from "memoizee";
-import { Debugger } from "../../../utils/debugger";
+import memoize from 'memoizee';
+import { Debugger } from '../../../utils/debugger';
 import {
   AnnotationAdapter,
   TextAdapter,
   TextDirection,
-} from "../../../adapter";
-import { TextAnnotationModel } from "../../annotation.model";
-import { type TextLine } from "../../../model";
-import { styles } from "../../styles.const";
+} from '../../../adapter';
+import { TextAnnotationModel } from '../../annotation.model';
+import { type TextLine } from '../../../model';
+import { styles } from '../../styles.const';
 
 const document = globalThis.document || null;
 
 const createGutter = (textLine: TextLine, text: TextAdapter) => {
-  const gutterDiv = document?.createElement("div");
+  const gutterDiv = document?.createElement('div');
   // gutterDiv.style.padding = `0 0 0 ${gutterPaddingLeft} px`;
 
   // pass gutter-weight css variable
@@ -22,12 +22,12 @@ const createGutter = (textLine: TextLine, text: TextAdapter) => {
     text.style.lineHeight,
   );
 
-  gutterDiv.style.setProperty("--gutter--line-height", `${lineHeight}px`);
+  gutterDiv.style.setProperty('--gutter--line-height', `${lineHeight}px`);
 
   gutterDiv.className = styles.line.gutter.wrapper;
   // TODO define width on max annotations
-  gutterDiv.innerHTML = textLine.gutter ?? "";
-  gutterDiv.setAttribute("data-gutter-uid", textLine.uuid);
+  gutterDiv.innerHTML = textLine.gutter ?? '';
+  gutterDiv.setAttribute('data-gutter-uid', textLine.uuid);
 
   return gutterDiv;
 };
@@ -45,7 +45,7 @@ const createText = (
   textDirection: TextDirection,
   textAdapter: TextAdapter,
 ) => {
-  const textDiv = document.createElement("div");
+  const textDiv = document.createElement('div');
 
   const { linePadding, lineHeight } = calculateLinePadding(
     textAdapter.style.padding,
@@ -53,13 +53,13 @@ const createText = (
     textAdapter.style.lineHeight,
   );
 
-  textDiv.style.setProperty("--line-padding", `${linePadding}px`);
-  textDiv.style.setProperty("--line-height", `${lineHeight}px`);
+  textDiv.style.setProperty('--line-padding', `${linePadding}px`);
+  textDiv.style.setProperty('--line-height', `${lineHeight}px`);
 
   textDiv.className = `${styles.line.text.wrapper} ${textDirection}`;
   textDiv.innerHTML = textAdapter?.flatText ? textLine.flatText : textLine.html;
-  textDiv.setAttribute("data-line-uid", textLine.uuid);
-  textDiv.setAttribute("data-annotation-role", "line");
+  textDiv.setAttribute('data-line-uid', textLine.uuid);
+  textDiv.setAttribute('data-annotation-role', 'line');
 
   return textDiv;
 };
@@ -70,7 +70,7 @@ export const drawText = (
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
   if (!document) {
-    Debugger.debug("drawText", "no document available, cannot draw text");
+    Debugger.debug('drawText', 'no document available, cannot draw text');
     return;
   }
 
@@ -78,14 +78,14 @@ export const drawText = (
     annotationAdapter.renderInstance,
   );
 
-  const textDiv = document?.createElement("div");
+  const textDiv = document?.createElement('div');
   textDiv.className = `${styles.text} `;
 
-  textDiv.style.setProperty("--gutter-left", `${gutterPaddingLeft}px`);
+  textDiv.style.setProperty('--gutter-left', `${gutterPaddingLeft}px`);
 
   Debugger.verbose(
-    "DrawText",
-    "Draw the lines",
+    'DrawText',
+    'Draw the lines',
     textAnnotationModel.lines.length,
   );
   textAnnotationModel.lines.forEach((line) => {

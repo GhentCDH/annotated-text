@@ -1,4 +1,4 @@
-import memoizee from "memoizee";
+import memoizee from 'memoizee';
 
 export const selectText = memoizee(
   (text: string, start: number, end: number, offset: number) => {

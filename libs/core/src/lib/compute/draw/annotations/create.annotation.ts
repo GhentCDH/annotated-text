@@ -1,11 +1,11 @@
-import { TextAnnotation } from "../../../model";
-import { AnnotationAdapter } from "../../../adapter";
-import { Position } from "../types";
+import { TextAnnotation } from '../../../model';
+import { AnnotationAdapter } from '../../../adapter';
+import { Position } from '../types';
 import {
   CharacterPositionResult,
   getCharacterStartEndPosition,
-} from "../../position";
-import { InternalEventListener } from "../../../events/internal/internal.event.listener";
+} from '../../position';
+import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 
 export class CreateAnnotation {
   private startIndex: number;
@@ -31,14 +31,14 @@ export class CreateAnnotation {
     this.createDummyAnnotation(position, event);
 
     if (!this.dummyAnnotation) {
-      console.warn("no character found");
+      console.warn('no character found');
       return;
     }
 
-    this.internalEventListener.sendEvent("send-event--annotation", {
-      event: "annotation-create--start",
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event: 'annotation-create--start',
       mouseEvent: event,
-      annotationUuid: (this.dummyAnnotation as TextAnnotation).id || "",
+      annotationUuid: (this.dummyAnnotation as TextAnnotation).id || '',
       additionalData: { annotation: this.dummyAnnotation },
     });
   }
@@ -46,19 +46,19 @@ export class CreateAnnotation {
   moveCreate(position: Position, event: any) {
     if (!this.drawing) return;
 
-    this.internalEventListener.blockEvents("starting annotation creation");
+    this.internalEventListener.blockEvents('starting annotation creation');
 
     this.drawingAndMove = true;
     this.createDummyAnnotation(position, event, true);
     const dummyAnnotation = this.dummyAnnotation!;
 
     this.internalEventListener.sendEvent(
-      "send-event--annotation",
+      'send-event--annotation',
 
       {
-        event: "annotation-create--move",
+        event: 'annotation-create--move',
         mouseEvent: event,
-        annotationUuid: dummyAnnotation?.id || "",
+        annotationUuid: dummyAnnotation?.id || '',
         additionalData: { annotation: dummyAnnotation },
       },
     );
@@ -72,19 +72,19 @@ export class CreateAnnotation {
 
     this.drawingAndMove = false;
 
-    this.internalEventListener.unBlockEvents("ending annotation creation");
+    this.internalEventListener.unBlockEvents('ending annotation creation');
 
     const dummyAnnotation = this.dummyAnnotation!;
     this.dummyAnnotation = null;
 
-    this.internalEventListener.sendEvent("send-event--annotation", {
-      event: "annotation-create--end",
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event: 'annotation-create--end',
       mouseEvent: event,
-      annotationUuid: dummyAnnotation?.id || "",
+      annotationUuid: dummyAnnotation?.id || '',
       additionalData: { annotation: dummyAnnotation },
     });
 
-    this.internalEventListener.sendEvent("annotation--add", {
+    this.internalEventListener.sendEvent('annotation--add', {
       annotation: dummyAnnotation,
     });
 
@@ -116,7 +116,7 @@ export class CreateAnnotation {
     const { start, end } = getCharacterStartEndPosition(
       character,
       { start: this.startIndex, end: this.prevEndIndex! },
-      "end",
+      'end',
     );
 
     if (start === end) return;
@@ -131,7 +131,7 @@ export class CreateAnnotation {
     if (draw) {
       const color = dummyAnnotation._render.style.color;
 
-      this.internalEventListener.sendEvent("annotation--draw-dummy", {
+      this.internalEventListener.sendEvent('annotation--draw-dummy', {
         dummyAnnotation: dummyAnnotation,
         color: {
           border: color!.border,

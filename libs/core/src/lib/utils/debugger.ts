@@ -39,9 +39,9 @@ export class Debugger {
     const tookTime = endTime - startTime;
     const logMessage = `${message} took ${tookTime} ms , ${tookTime / 1000} s`;
     if (tookTime > 1000) {
-      console.warn("TIMER", logMessage);
+      console.warn('TIMER', logMessage);
     } else {
-      Debugger.debug("TIMER", logMessage);
+      Debugger.debug('TIMER', logMessage);
     }
   }
 

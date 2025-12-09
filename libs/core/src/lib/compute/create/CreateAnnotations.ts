@@ -1,36 +1,36 @@
-import { AnnotatedText } from "./CreateAnnotations.model";
-import { TextAnnotationModel } from "../annotation.model";
-import { EventListener, EventListenerType } from "../../events/event.listener";
+import { AnnotatedText } from './CreateAnnotations.model';
+import { TextAnnotationModel } from '../annotation.model';
+import { EventListener, EventListenerType } from '../../events/event.listener';
 import {
   TEXT_CONFIG_KEYS,
   TEXT_CONFIG_VALUES,
   TextAdapter,
-} from "../../adapter/text";
+} from '../../adapter/text';
 import {
   ANNOTATION_CONFIG_KEYS,
   ANNOTATION_CONFIG_VALUES,
   AnnotationAdapter,
-} from "../../adapter/annotation";
-import { createAnnotationModel } from "../1_create_annotation_model";
-import { SvgModel } from "../model/svg.types";
-import { Debugger } from "../../utils/debugger";
-import { computeLinePositions, computePositions } from "../4_compute_positions";
-import { styles } from "../styles.const";
-import { computeAnnotationsOnLines } from "../3_compute_annotations_on_line";
-import { assignAnnotationsToLines } from "../2_assign_annotation_to_line";
-import { ErrorEventCallback, EventCallback } from "../../events";
-import { drawText } from "../draw/text/text";
-import { Annotation, AnnotationId } from "../../model";
-import { AnnotationColors } from "../model/annotation.colors";
+} from '../../adapter/annotation';
+import { createAnnotationModel } from '../1_create_annotation_model';
+import { SvgModel } from '../model/svg.types';
+import { Debugger } from '../../utils/debugger';
+import { computeLinePositions, computePositions } from '../4_compute_positions';
+import { styles } from '../styles.const';
+import { computeAnnotationsOnLines } from '../3_compute_annotations_on_line';
+import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
+import { ErrorEventCallback, EventCallback } from '../../events';
+import { drawText } from '../draw/text/text';
+import { Annotation, AnnotationId } from '../../model';
+import { AnnotationColors } from '../model/annotation.colors';
 import {
   AnnotationRender,
   AnnotationRenderStyle,
-} from "../../adapter/annotation/renderer/annotation-render";
-import { AnnotationStyle } from "../../adapter/annotation/style/annotation.style";
-import { InternalEventListener } from "../../events/internal/internal.event.listener";
+} from '../../adapter/annotation/renderer/annotation-render';
+import { AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
+import { InternalEventListener } from '../../events/internal/internal.event.listener';
 
 const document = globalThis.document || null;
-export type BaseAnnotation = Pick<Annotation, "id">;
+export type BaseAnnotation = Pick<Annotation, 'id'>;
 
 export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   implements AnnotatedText<ANNOTATION>
@@ -56,7 +56,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     this.init();
     this.annotationAdapter.setConfigListener(this.configListener());
     this.textAdapter.setConfigListener(this.configListener());
-    this.internalEventListener.on("annotation--add", ({ data }) => {
+    this.internalEventListener.on('annotation--add', ({ data }) => {
       const fullAnnotation = this.annotationAdapter.format(
         data.annotation,
         true,
@@ -66,7 +66,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.addAnnotation(fullAnnotation!);
     });
 
-    this.internalEventListener.on("annotation--update", ({ data }) => {
+    this.internalEventListener.on('annotation--update', ({ data }) => {
       const fullAnnotation = this.annotationAdapter.format(
         data.annotation,
         false,
@@ -108,7 +108,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   public setText(text: string, redraw = true) {
-    this.text = text || "";
+    this.text = text || '';
 
     this.createAnnotationModel();
     this.setAnnotations(this.annotations(), redraw);
@@ -124,16 +124,16 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     if (!this.textAnnotationModel) {
       Debugger.debug(
-        "setAnnotations",
-        "Annotations set before lines, cannot set annotations",
+        'setAnnotations',
+        'Annotations set before lines, cannot set annotations',
       );
       return this;
     }
 
     if (!this.text) {
       Debugger.debug(
-        "setAnnotations",
-        "------ no lines set, cannot set annotations",
+        'setAnnotations',
+        '------ no lines set, cannot set annotations',
       );
       return this;
     }
@@ -177,21 +177,21 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     if (this.textElement) {
       this.mainElement.removeChild(this.textElement);
-      console.warn("element already initialized, clear and reinitialize");
+      console.warn('element already initialized, clear and reinitialize');
     }
 
-    const divElement = document.createElement("div");
+    const divElement = document.createElement('div');
 
-    this.mainElement.innerHTML = "";
+    this.mainElement.innerHTML = '';
     this.mainElement.appendChild(divElement);
 
     this.element = divElement;
     if (!this.element) {
-      console.error("element not found", id);
+      console.error('element not found', id);
       return;
     }
 
-    this.element.innerHTML = "";
+    this.element.innerHTML = '';
 
     this.element.classList.add(styles.wrapper);
 
@@ -248,8 +248,8 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   public destroy() {
-    Debugger.debug("CreateAnnotations", "destroy", this.id);
-    this.eventListener.sendEvent("destroy", null, null);
+    Debugger.debug('CreateAnnotations', 'destroy', this.id);
+    this.eventListener.sendEvent('destroy', null, null);
 
     this.textElement = null;
     this.svgNode = null;
@@ -262,8 +262,8 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   private startObserving() {
     Debugger.debug(
-      "CreateAnnotations",
-      "Start observing element",
+      'CreateAnnotations',
+      'Start observing element',
       this.mainElement,
     );
     if (this.resizeObserver) {
@@ -271,12 +271,12 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     }
     let initialized = false;
     this.resizeObserver = new ResizeObserver((entries) => {
-      Debugger.verbose("CreateAnnotations", "resize detected", initialized);
+      Debugger.verbose('CreateAnnotations', 'resize detected', initialized);
       if (initialized) this.redrawSvg();
       initialized = true;
     });
     if (this.element) {
-      Debugger.debug("CreateAnnotations", "start observing", this.mainElement);
+      Debugger.debug('CreateAnnotations', 'start observing', this.mainElement);
 
       this.resizeObserver.observe(this.mainElement);
     }
@@ -288,13 +288,13 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     }
 
     Debugger.debug(
-      "CreateAnnotations",
-      "Stop observing element",
+      'CreateAnnotations',
+      'Stop observing element',
       this.mainElement,
     );
     if (this.mainElement) {
       this.resizeObserver?.unobserve(this.mainElement);
-      this.mainElement.innerHTML = "";
+      this.mainElement.innerHTML = '';
     }
     this.resizeObserver?.disconnect();
     this.resizeObserver = null;
@@ -339,19 +339,19 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   scrollToAnnotation(id: AnnotationId): this {
     const lines = this.textAnnotationModel?.getAnnotation(id)?._render.lines;
     if (!lines) {
-      console.warn("No lines found for annotation", id);
+      console.warn('No lines found for annotation', id);
       return this;
     }
 
     const lineElement = lines[0].element;
     if (!lineElement) {
-      console.warn("No line element found for annotation", id);
+      console.warn('No line element found for annotation', id);
       return this;
     }
     lineElement.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest",
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'nearest',
     });
     return this;
   }

@@ -1,6 +1,6 @@
-import { type TextAnnotation as _TextAnnotation } from "../../../model";
+import { type TextAnnotation as _TextAnnotation } from '../../../model';
 
-type TextAnnotation = Pick<_TextAnnotation, "start" | "end">;
+type TextAnnotation = Pick<_TextAnnotation, 'start' | 'end'>;
 
 export const sortAnnotations = (
   a: TextAnnotation,

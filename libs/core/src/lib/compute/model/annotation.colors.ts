@@ -1,9 +1,9 @@
-import { SvgModel } from "./svg.types";
+import { SvgModel } from './svg.types';
 import {
   AnnotationDrawColors,
   AnnotationId,
   TextAnnotation,
-} from "../../model";
+} from '../../model';
 
 export class AnnotationColors {
   private readonly activeIds = new Set<AnnotationId>();

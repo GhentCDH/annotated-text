@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
-import { AnnotationWeight } from "../annotation.weight";
-import { TextAnnotation, TextLine, TextRender } from "../../../model";
-import { AnnotationRender } from "../../../adapter/annotation/renderer/annotation-render";
+import { describe, expect, it } from 'vitest';
+import { AnnotationWeight } from '../annotation.weight';
+import { TextAnnotation, TextLine, TextRender } from '../../../model';
+import { AnnotationRender } from '../../../adapter/annotation/renderer/annotation-render';
 
 // Helper to create annotations
 const createAnnotation = (
@@ -35,15 +35,15 @@ function createRender(
   return { name, weightOrder } as AnnotationRender<any>;
 }
 
-describe("AnnotationWeight", () => {
-  describe("basic weight calculation", () => {
-    it("should assign weight 0 to non-overlapping annotations", () => {
+describe('AnnotationWeight', () => {
+  describe('basic weight calculation', () => {
+    it('should assign weight 0 to non-overlapping annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 20, 30, "highlight"),
-        createAnnotation("a3", 40, 50, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 20, 30, 'highlight'),
+        createAnnotation('a3', 40, 50, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -52,12 +52,12 @@ describe("AnnotationWeight", () => {
       expect(annotations[2]._render.weight).toBe(0);
     });
 
-    it("should increment weight for overlapping annotations", () => {
+    it('should increment weight for overlapping annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 5, 15, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 5, 15, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -65,13 +65,13 @@ describe("AnnotationWeight", () => {
       expect(annotations[1]._render.weight).toBe(1);
     });
 
-    it("should handle chain of overlapping annotations", () => {
+    it('should handle chain of overlapping annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 5, 15, "highlight"),
-        createAnnotation("a3", 10, 20, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 5, 15, 'highlight'),
+        createAnnotation('a3', 10, 20, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -83,13 +83,13 @@ describe("AnnotationWeight", () => {
       expect(annotations[2]._render.weight).toBe(2);
     });
 
-    it("should handle multiple annotations overlapping the same region", () => {
+    it('should handle multiple annotations overlapping the same region', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 20, "highlight"),
-        createAnnotation("a2", 5, 15, "highlight"),
-        createAnnotation("a3", 8, 12, "highlight"),
+        createAnnotation('a1', 0, 20, 'highlight'),
+        createAnnotation('a2', 5, 15, 'highlight'),
+        createAnnotation('a3', 8, 12, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -101,13 +101,13 @@ describe("AnnotationWeight", () => {
       expect(annotations[2]._render.weight).toBe(2);
     });
 
-    it("should handle nested annotations", () => {
+    it('should handle nested annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 100, "highlight"),
-        createAnnotation("a2", 10, 20, "highlight"),
-        createAnnotation("a3", 30, 40, "highlight"),
+        createAnnotation('a1', 0, 100, 'highlight'),
+        createAnnotation('a2', 10, 20, 'highlight'),
+        createAnnotation('a3', 30, 40, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -120,15 +120,15 @@ describe("AnnotationWeight", () => {
     });
   });
 
-  describe("multiple render types", () => {
-    it("should group annotations by render type", () => {
+  describe('multiple render types', () => {
+    it('should group annotations by render type', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 0, 10, "underline"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 0, 10, 'underline'),
       ];
       const renders = [
-        createRender("highlight", 0),
-        createRender("underline", 1),
+        createRender('highlight', 0),
+        createRender('underline', 1),
       ];
 
       AnnotationWeight.calculate(annotations, renders);
@@ -139,14 +139,14 @@ describe("AnnotationWeight", () => {
       expect(annotations[1]._render.weight).toBe(1);
     });
 
-    it("should process render types in weightOrder sequence", () => {
+    it('should process render types in weightOrder sequence', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "underline"), // weightOrder 1, processed second
-        createAnnotation("a2", 0, 10, "highlight"), // weightOrder 0, processed first
+        createAnnotation('a1', 0, 10, 'underline'), // weightOrder 1, processed second
+        createAnnotation('a2', 0, 10, 'highlight'), // weightOrder 0, processed first
       ];
       const renders = [
-        createRender("highlight", 0),
-        createRender("underline", 1),
+        createRender('highlight', 0),
+        createRender('underline', 1),
       ];
 
       AnnotationWeight.calculate(annotations, renders);
@@ -157,15 +157,15 @@ describe("AnnotationWeight", () => {
       expect(annotations[0]._render.weight).toBe(1); // underline
     });
 
-    it("should affect weights across different render groups when overlapping", () => {
+    it('should affect weights across different render groups when overlapping', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 5, 15, "underline"),
-        createAnnotation("a3", 8, 20, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 5, 15, 'underline'),
+        createAnnotation('a3', 8, 20, 'highlight'),
       ];
       const renders = [
-        createRender("highlight", 0),
-        createRender("underline", 1),
+        createRender('highlight', 0),
+        createRender('underline', 1),
       ];
 
       AnnotationWeight.calculate(annotations, renders);
@@ -183,35 +183,35 @@ describe("AnnotationWeight", () => {
     });
   });
 
-  describe("maxWeight", () => {
-    it("should return 0 for non-overlapping annotations", () => {
+  describe('maxWeight', () => {
+    it('should return 0 for non-overlapping annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 20, 30, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 20, 30, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       const result = AnnotationWeight.calculate(annotations, renders);
 
       expect(result.maxWeight).toBe(0);
     });
 
-    it("should return correct max weight for overlapping annotations", () => {
+    it('should return correct max weight for overlapping annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 5, 15, "highlight"),
-        createAnnotation("a3", 8, 12, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 5, 15, 'highlight'),
+        createAnnotation('a3', 8, 12, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       const result = AnnotationWeight.calculate(annotations, renders);
 
       expect(result.maxWeight).toBe(2);
     });
 
-    it("should return 0 for empty annotations", () => {
+    it('should return 0 for empty annotations', () => {
       const annotations: TextAnnotation[] = [];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       const result = AnnotationWeight.calculate(annotations, renders);
 
@@ -219,16 +219,16 @@ describe("AnnotationWeight", () => {
     });
   });
 
-  describe("line maxLineWeight", () => {
-    it("should set maxLineWeight on lines", () => {
+  describe('line maxLineWeight', () => {
+    it('should set maxLineWeight on lines', () => {
       const line1 = createLine(1);
       const line2 = createLine(2);
 
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight", [line1]),
-        createAnnotation("a2", 5, 15, "highlight", [line1, line2]),
+        createAnnotation('a1', 0, 10, 'highlight', [line1]),
+        createAnnotation('a2', 5, 15, 'highlight', [line1, line2]),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -238,17 +238,17 @@ describe("AnnotationWeight", () => {
       expect(line2.maxLineWeight).toBe(1);
     });
 
-    it("should track maxLineWeight per line independently", () => {
+    it('should track maxLineWeight per line independently', () => {
       const line1 = createLine(1);
       const line2 = createLine(2);
       const line3 = createLine(3);
 
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight", [line1]),
-        createAnnotation("a2", 20, 30, "highlight", [line2]),
-        createAnnotation("a3", 0, 10, "highlight", [line1, line3]),
+        createAnnotation('a1', 0, 10, 'highlight', [line1]),
+        createAnnotation('a2', 20, 30, 'highlight', [line2]),
+        createAnnotation('a3', 0, 10, 'highlight', [line1, line3]),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -260,29 +260,29 @@ describe("AnnotationWeight", () => {
       expect(line3.maxLineWeight).toBe(1);
     });
 
-    it("should initialize maxLineWeight to 0 if undefined", () => {
+    it('should initialize maxLineWeight to 0 if undefined', () => {
       const line1 = createLine(1);
       expect(line1.maxLineWeight).toBeUndefined();
 
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight", [line1]),
+        createAnnotation('a1', 0, 10, 'highlight', [line1]),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
       expect(line1.maxLineWeight).toBe(0);
     });
 
-    it("should handle shared lines across annotations", () => {
+    it('should handle shared lines across annotations', () => {
       const sharedLine = createLine(1);
 
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 20, "highlight", [sharedLine]),
-        createAnnotation("a2", 5, 15, "highlight", [sharedLine]),
-        createAnnotation("a3", 8, 12, "highlight", [sharedLine]),
+        createAnnotation('a1', 0, 20, 'highlight', [sharedLine]),
+        createAnnotation('a2', 5, 15, 'highlight', [sharedLine]),
+        createAnnotation('a3', 8, 12, 'highlight', [sharedLine]),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -291,12 +291,12 @@ describe("AnnotationWeight", () => {
     });
   });
 
-  describe("edge cases", () => {
-    it("should handle single annotation", () => {
+  describe('edge cases', () => {
+    it('should handle single annotation', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       const result = AnnotationWeight.calculate(annotations, renders);
 
@@ -304,12 +304,12 @@ describe("AnnotationWeight", () => {
       expect(result.maxWeight).toBe(0);
     });
 
-    it("should handle adjacent (non-overlapping) annotations", () => {
+    it('should handle adjacent (non-overlapping) annotations', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 10, 20, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 10, 20, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -318,11 +318,11 @@ describe("AnnotationWeight", () => {
       expect(annotations[1]._render.weight).toBe(0);
     });
 
-    it("should handle annotation with unknown render type", () => {
+    it('should handle annotation with unknown render type', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "unknown-render"),
+        createAnnotation('a1', 0, 10, 'unknown-render'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       // Should default to weightOrder 0
       AnnotationWeight.calculate(annotations, renders);
@@ -330,9 +330,9 @@ describe("AnnotationWeight", () => {
       expect(annotations[0]._render.weight).toBe(0);
     });
 
-    it("should handle empty renders array", () => {
+    it('should handle empty renders array', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
       ];
       const renders = [] as AnnotationRender<any>[];
 
@@ -341,13 +341,13 @@ describe("AnnotationWeight", () => {
       expect(annotations[0]._render.weight).toBe(0);
     });
 
-    it("should handle identical annotations with different ids", () => {
+    it('should handle identical annotations with different ids', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 0, 10, "highlight"),
-        createAnnotation("a3", 0, 10, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 0, 10, 'highlight'),
+        createAnnotation('a3', 0, 10, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -357,15 +357,15 @@ describe("AnnotationWeight", () => {
     });
   });
 
-  describe("sorting behavior", () => {
-    it("should process annotations sorted by start then end position", () => {
+  describe('sorting behavior', () => {
+    it('should process annotations sorted by start then end position', () => {
       // Deliberately unsorted input
       const annotations: TextAnnotation[] = [
-        createAnnotation("a3", 10, 20, "highlight"),
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 5, 15, "highlight"),
+        createAnnotation('a3', 10, 20, 'highlight'),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 5, 15, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
@@ -373,30 +373,30 @@ describe("AnnotationWeight", () => {
       // a1: weight 0
       // a2: overlaps a1, weight 1
       // a3: overlaps a2 (not a1), weight 2
-      const a1 = annotations.find((a) => a.id === "a1")!;
-      const a2 = annotations.find((a) => a.id === "a2")!;
-      const a3 = annotations.find((a) => a.id === "a3")!;
+      const a1 = annotations.find((a) => a.id === 'a1')!;
+      const a2 = annotations.find((a) => a.id === 'a2')!;
+      const a3 = annotations.find((a) => a.id === 'a3')!;
 
       expect(a1._render.weight).toBe(0);
       expect(a2._render.weight).toBe(1);
       expect(a3._render.weight).toBe(2);
     });
 
-    it("should handle same start position, different end positions", () => {
+    it('should handle same start position, different end positions', () => {
       const annotations: TextAnnotation[] = [
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 0, 20, "highlight"),
-        createAnnotation("a3", 0, 5, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 0, 20, 'highlight'),
+        createAnnotation('a3', 0, 5, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       AnnotationWeight.calculate(annotations, renders);
 
       // After sorting by start then end: a3 (0-5), a1 (0-10), a2 (0-20)
       // All overlap each other
-      const a1 = annotations.find((a) => a.id === "a1")!;
-      const a2 = annotations.find((a) => a.id === "a2")!;
-      const a3 = annotations.find((a) => a.id === "a3")!;
+      const a1 = annotations.find((a) => a.id === 'a1')!;
+      const a2 = annotations.find((a) => a.id === 'a2')!;
+      const a3 = annotations.find((a) => a.id === 'a3')!;
 
       expect(a3._render.weight).toBe(2);
       expect(a1._render.weight).toBe(1);
@@ -404,18 +404,18 @@ describe("AnnotationWeight", () => {
     });
   });
 
-  describe("complex scenarios", () => {
-    it("should handle multiple non-overlapping groups", () => {
+  describe('complex scenarios', () => {
+    it('should handle multiple non-overlapping groups', () => {
       const annotations: TextAnnotation[] = [
         // Group 1: 0-30
-        createAnnotation("a1", 0, 10, "highlight"),
-        createAnnotation("a2", 5, 15, "highlight"),
-        createAnnotation("a3", 10, 20, "highlight"),
+        createAnnotation('a1', 0, 10, 'highlight'),
+        createAnnotation('a2', 5, 15, 'highlight'),
+        createAnnotation('a3', 10, 20, 'highlight'),
         // Group 2: 50-80 (separate, no overlap with group 1)
-        createAnnotation("a4", 50, 60, "highlight"),
-        createAnnotation("a5", 55, 65, "highlight"),
+        createAnnotation('a4', 50, 60, 'highlight'),
+        createAnnotation('a5', 55, 65, 'highlight'),
       ];
-      const renders = [createRender("highlight", 0)];
+      const renders = [createRender('highlight', 0)];
 
       const result = AnnotationWeight.calculate(annotations, renders);
 
@@ -431,23 +431,23 @@ describe("AnnotationWeight", () => {
       expect(result.maxWeight).toBe(2);
     });
 
-    it("should handle real-world entity annotation scenario", () => {
+    it('should handle real-world entity annotation scenario', () => {
       const line1 = createLine(1);
 
       // "New York City is a great place"
       const annotations: TextAnnotation[] = [
-        createAnnotation("loc", 0, 13, "entity", [line1]), // "New York City"
-        createAnnotation("city", 0, 8, "entity", [line1]), // "New York"
-        createAnnotation("place", 4, 13, "entity", [line1]), // "York City"
+        createAnnotation('loc', 0, 13, 'entity', [line1]), // "New York City"
+        createAnnotation('city', 0, 8, 'entity', [line1]), // "New York"
+        createAnnotation('place', 4, 13, 'entity', [line1]), // "York City"
       ];
-      const renders = [createRender("entity", 0)];
+      const renders = [createRender('entity', 0)];
 
       const result = AnnotationWeight.calculate(annotations, renders);
 
       // Sorted: city (0-8), loc (0-13), place (4-13)
-      const city = annotations.find((a) => a.id === "city")!;
-      const loc = annotations.find((a) => a.id === "loc")!;
-      const place = annotations.find((a) => a.id === "place")!;
+      const city = annotations.find((a) => a.id === 'city')!;
+      const loc = annotations.find((a) => a.id === 'loc')!;
+      const place = annotations.find((a) => a.id === 'place')!;
 
       expect(city._render.weight).toBe(1);
       expect(loc._render.weight).toBe(0);
@@ -457,18 +457,18 @@ describe("AnnotationWeight", () => {
       expect(result.maxWeight).toBe(2);
     });
 
-    it("should handle mixed render types with complex overlaps", () => {
+    it('should handle mixed render types with complex overlaps', () => {
       const line1 = createLine(1);
 
       const annotations: TextAnnotation[] = [
-        createAnnotation("h1", 0, 20, "highlight", [line1]),
-        createAnnotation("h2", 10, 30, "highlight", [line1]),
-        createAnnotation("u1", 5, 25, "underline", [line1]),
-        createAnnotation("u2", 15, 35, "underline", [line1]),
+        createAnnotation('h1', 0, 20, 'highlight', [line1]),
+        createAnnotation('h2', 10, 30, 'highlight', [line1]),
+        createAnnotation('u1', 5, 25, 'underline', [line1]),
+        createAnnotation('u2', 15, 35, 'underline', [line1]),
       ];
       const renders = [
-        createRender("highlight", 0),
-        createRender("underline", 1),
+        createRender('highlight', 0),
+        createRender('underline', 1),
       ];
 
       const result = AnnotationWeight.calculate(annotations, renders);
@@ -481,10 +481,10 @@ describe("AnnotationWeight", () => {
       // u1: overlaps h1(0), h2(1) -> weight 2
       // u2: overlaps h1(0), h2(1), u1(2) -> weight 3
 
-      const h1 = annotations.find((a) => a.id === "h1")!;
-      const h2 = annotations.find((a) => a.id === "h2")!;
-      const u1 = annotations.find((a) => a.id === "u1")!;
-      const u2 = annotations.find((a) => a.id === "u2")!;
+      const h1 = annotations.find((a) => a.id === 'h1')!;
+      const h2 = annotations.find((a) => a.id === 'h2')!;
+      const u1 = annotations.find((a) => a.id === 'u1')!;
+      const u2 = annotations.find((a) => a.id === 'u2')!;
 
       expect(h1._render.weight).toBe(0);
       expect(h2._render.weight).toBe(1);
