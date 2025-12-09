@@ -37,6 +37,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 {
   private textAnnotationModel: TextAnnotationModel | null = null;
   private annotationsMap = new Map<AnnotationId, ANNOTATION>();
+  private mainElement: HTMLElement;
   private element: HTMLElement;
   private textElement: HTMLDivElement | null | undefined = null;
   private svgModel: SvgModel;
@@ -88,6 +89,17 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.annotationAdapter,
     );
 
+    this.textAnnotationModel = assignAnnotationsToLines(
+      this.textAnnotationModel,
+      this.annotationAdapter,
+      this.textAdapter,
+      this.annotations(),
+      this.eventListener,
+    );
+    this.textAnnotationModel = computeAnnotationsOnLines(
+      this.textAnnotationModel,
+    );
+
     return this;
   }
 
@@ -120,16 +132,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       return this;
     }
 
-    this.textAnnotationModel = assignAnnotationsToLines(
-      this.textAnnotationModel,
-      this.annotationAdapter,
-      this.textAdapter,
-      annotations,
-      this.eventListener,
-    );
-    this.textAnnotationModel = computeAnnotationsOnLines(
-      this.textAnnotationModel,
-    );
+    this.createAnnotationModel();
 
     if (redraw) this.redrawSvg();
 
@@ -164,15 +167,17 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private init() {
     if (!document) return;
     const id = this.id;
-    const mainElement = document?.getElementById(id) as HTMLDivElement;
+    this.mainElement = document?.getElementById(id) as HTMLDivElement;
+
     if (this.textElement) {
-      mainElement.removeChild(this.textElement);
+      this.mainElement.removeChild(this.textElement);
       console.warn("element already initialized, clear and reinitialize");
     }
 
     const divElement = document.createElement("div");
 
-    mainElement.appendChild(divElement);
+    this.mainElement.innerHTML = "";
+    this.mainElement.appendChild(divElement);
 
     this.element = divElement;
     if (!this.element) {
@@ -191,7 +196,9 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       initialized = true;
     });
     if (this.element) {
-      this.resizeObserver.observe(this.element);
+      Debugger.debug("start observing", this.mainElement);
+
+      this.resizeObserver.observe(this.mainElement);
     }
 
     if (!this.textAnnotationModel) {
@@ -245,7 +252,9 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   public destroy() {
+    Debugger.debug("destroy CreateAnnotations instance", this.id);
     this.eventListener.sendEvent("destroy", null, null);
+    Debugger.debug("Stop observing element on destroy", this.element);
     if (this.element) {
       this.resizeObserver?.unobserve(this.element);
       this.element.innerHTML = "";

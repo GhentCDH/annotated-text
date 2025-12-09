@@ -112,7 +112,7 @@ export class WordSnapper extends DefaultSnapper {
    * - If in second half of word: snap to next word start (exclude word)
    * - If not in a word: snap to closest word start
    */
-  private snapStart(position: number): number {
+  protected snapStart(position: number): number {
     const word = this.findWordContaining(position);
 
     if (word) {
@@ -138,7 +138,7 @@ export class WordSnapper extends DefaultSnapper {
    * - If in second half of word: snap to word end (include word)
    * - If not in a word (whitespace): keep position as-is
    */
-  private snapEnd(position: number): number {
+  protected snapEnd(position: number): number {
     const word = this.findWordContaining(position);
 
     if (word) {
@@ -165,7 +165,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Find the word containing the given position (inclusive bounds).
    */
-  private findWordContaining(position: number): WordPosition | null {
+  protected findWordContaining(position: number): WordPosition | null {
     const results = this.tree.search({
       minX: position,
       maxX: position,
@@ -185,7 +185,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Find the word after the given word.
    */
-  private findNextWord(currentWord: WordPosition): WordPosition | null {
+  protected findNextWord(currentWord: WordPosition): WordPosition | null {
     const index = this.words.indexOf(currentWord);
     return index >= 0 && index < this.words.length - 1
       ? this.words[index + 1]
@@ -195,7 +195,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Find the word before the given word.
    */
-  private findPreviousWord(currentWord: WordPosition): WordPosition | null {
+  protected findPreviousWord(currentWord: WordPosition): WordPosition | null {
     const index = this.words.indexOf(currentWord);
     return index > 0 ? this.words[index - 1] : null;
   }
@@ -203,7 +203,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Find the closest word start to the given position.
    */
-  private findClosestWordStart(position: number): number {
+  protected findClosestWordStart(position: number): number {
     let closest = this.words[0];
     let minDistance = Math.abs(position - closest.start);
 
@@ -221,7 +221,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Find the closest word end to the given position.
    */
-  private findClosestWordEnd(position: number): number {
+  protected findClosestWordEnd(position: number): number {
     let closest = this.words[this.words.length - 1];
     let minDistance = Math.abs(position - closest.end);
 
@@ -239,7 +239,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Find the closest word to the given position.
    */
-  private findClosestWord(position: number): WordPosition | null {
+  protected findClosestWord(position: number): WordPosition | null {
     if (this.words.length === 0) return null;
 
     let closest = this.words[0];
@@ -265,7 +265,7 @@ export class WordSnapper extends DefaultSnapper {
   /**
    * Check if there's at least one word in the given range.
    */
-  private hasWordInRange(start: number, end: number): boolean {
+  protected hasWordInRange(start: number, end: number): boolean {
     for (const word of this.words) {
       // Word overlaps with range if word.start <= end AND word.end >= start
       if (word.start <= end && word.end >= start) {
