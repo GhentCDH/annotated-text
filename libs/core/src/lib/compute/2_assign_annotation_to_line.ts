@@ -1,12 +1,12 @@
 import { type TextAnnotationModel } from './annotation.model';
 import { isIntersection } from './utils/intersect';
+import { getLinesForAnnotation } from './utils/line.utils';
 import { type TextAdapter } from '../adapter/text';
 import type { Annotation, TextAnnotation } from '../model';
 import { type AnnotationAdapter } from '../adapter/annotation';
 
 import { Debugger } from '../utils/debugger';
 import { type EventListener } from '../events/event.listener';
-import { getLinesForAnnotation } from './utils/line.utils';
 
 export const assignAnnotationToLines = (
   model: TextAnnotationModel,
