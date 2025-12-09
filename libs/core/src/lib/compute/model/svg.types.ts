@@ -24,7 +24,7 @@ import { TextAdapter } from "../../adapter/text";
 import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
 import { drawAllTags } from "../draw/tag";
 import { InternalEventListener } from "../../events/internal/internal.event.listener";
-import { drawDummyAnnotation } from "../draw/annotations/draw";
+import { drawDummyAnnotation } from "../draw/annotations/draw-dummy";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
