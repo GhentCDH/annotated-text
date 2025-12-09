@@ -1,14 +1,9 @@
-## [0.12.7](https://github.com/GhentCDH/annotated-text/compare/v0.12.5...v0.12.7) (2025-12-08)
-
-
-### Bug Fixes
-
-* word wrapping ([#149](https://github.com/GhentCDH/annotated-text/issues/149)) ([a723979](https://github.com/GhentCDH/annotated-text/commit/a7239791343560402735f1069069d1634db532fa))
+## [0.12.8](https://github.com/GhentCDH/annotated-text/compare/v0.12.7...v0.12.8) (2025-12-09)
 
 
 ### Features
 
-* [#128](https://github.com/GhentCDH/annotated-text/issues/128) wordsnapper logic implementation ([#150](https://github.com/GhentCDH/annotated-text/issues/150)) ([df3fcaf](https://github.com/GhentCDH/annotated-text/commit/df3fcaf8619fe9ccbeb0c19d0434cf8df3133f34))
+* add more debugging to observe resize of the window ([#151](https://github.com/GhentCDH/annotated-text/issues/151)) ([0bcc5a9](https://github.com/GhentCDH/annotated-text/commit/0bcc5a91afecd81c6b1a0a16edb034c9792aec03))
 
 
 
