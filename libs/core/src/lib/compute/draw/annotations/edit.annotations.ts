@@ -4,7 +4,7 @@ import { type Position } from '../types';
 import { type CharacterPositionResult, getCharacterStartEndPosition } from '../../position';
 import { DUMMY_UID } from '../../model/svg.types';
 import { type AnnotationAdapter, type SnapperAction } from '../../../adapter';
-import { AnnotationDrawColors, type TextAnnotation, textAnnotationSchema } from '../../../model';
+import { type AnnotationDrawColors, type TextAnnotation, textAnnotationSchema } from '../../../model';
 import { type AnnotationEventType } from '../../../events/events';
 
 export class EditAnnotation {
