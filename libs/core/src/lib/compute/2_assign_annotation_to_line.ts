@@ -1,60 +1,12 @@
-import memoize from "memoizee";
 import { TextAnnotationModel } from "./annotation.model";
 import { isIntersection } from "./utils/intersect";
 import { TextAdapter } from "../adapter/text";
-import type { Annotation, TextAnnotation, TextLine } from "../model";
+import type { Annotation, TextAnnotation } from "../model";
 import { AnnotationAdapter } from "../adapter/annotation";
 
 import { Debugger } from "../utils/debugger";
 import { EventListener } from "../events/event.listener";
-
-const isStartLine = memoize(
-  (lineStart: number, lineEnd: number, start: number) => {
-    return start >= lineStart && start < lineEnd;
-  },
-);
-
-export const getLinesForAnnotation = (
-  allLines: TextLine[],
-  annotation: Annotation,
-): TextLine[] => {
-  const lines: TextLine[] = [];
-
-  const startLineIndex = allLines.findIndex((line, idx) => {
-    const start = isStartLine(line.start, line.end, annotation.start);
-    if (start) return true;
-    const nextLine = allLines[idx + 1];
-
-    return nextLine && annotation.start < nextLine.start;
-  });
-
-  if (startLineIndex < 0) {
-    return [];
-  }
-  for (let i = startLineIndex; i < allLines.length; i++) {
-    const line = allLines[i];
-
-    if (annotation.end < line.start) {
-      // console.log("----");
-      // console.log(annotation.start, annotation.end, line.start);
-      // console.warn("eat the annotation", annotation, "on line", line);
-      // console.log(lines);
-      // i = allLines.length;
-      // break;
-    }
-
-    if (isIntersection(line, annotation)) {
-      lines.push(line);
-    }
-
-    if (annotation.end <= line.end) {
-      i = allLines.length;
-      break;
-    }
-  }
-
-  return lines;
-};
+import { getLinesForAnnotation } from "./utils/line.utils";
 
 export const assignAnnotationToLines = (
   model: TextAnnotationModel,
@@ -104,22 +56,6 @@ export const assignAnnotationToLines = (
   model.setAnnotation(annotation, calculateWeights);
 
   return model;
-};
-
-export const reAssignAnnotationToLine = (
-  model: TextAnnotationModel,
-  eventListener: EventListener,
-  annotation: TextAnnotation,
-  calculateWeights = false,
-): TextAnnotationModel => {
-  model.removeAnnotation(annotation, calculateWeights);
-
-  return assignAnnotationToLines(
-    model,
-    eventListener,
-    annotation,
-    calculateWeights,
-  );
 };
 
 export const assignAnnotationsToLines = <ANNOTATION>(

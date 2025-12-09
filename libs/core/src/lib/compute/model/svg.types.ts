@@ -2,18 +2,9 @@ import { Selection } from "d3-selection";
 import { select } from "d3";
 import RBush from "rbush";
 import { AnnotationColors } from "./annotation.colors";
-import {
-  AnnotationEventData,
-  AnnotationEventType,
-  CHANGED_EVENTS,
-  NEW_EVENTS,
-} from "../../events";
+import { AnnotationEventData, AnnotationEventType, CHANGED_EVENTS, NEW_EVENTS } from "../../events";
 import { Debugger } from "../../utils/debugger";
-import {
-  AnnotationDrawColor,
-  AnnotationDrawColors,
-  type AnnotationId,
-} from "../../model";
+import { AnnotationDrawColor, AnnotationDrawColors, type AnnotationId } from "../../model";
 import { TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
 import { drawAnnotation } from "../draw/annotations";
@@ -24,7 +15,7 @@ import { TextAdapter } from "../../adapter/text";
 import { drawTextRaster, TextRasterItem } from "../draw/text/text-raster";
 import { drawAllTags } from "../draw/tag";
 import { InternalEventListener } from "../../events/internal/internal.event.listener";
-import { drawDummyAnnotation } from "../draw/annotations/draw";
+import { drawDummyAnnotation } from "../draw/annotations/draw-dummy";
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
