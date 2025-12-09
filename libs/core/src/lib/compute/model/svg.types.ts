@@ -2,9 +2,18 @@ import { Selection } from "d3-selection";
 import { select } from "d3";
 import RBush from "rbush";
 import { AnnotationColors } from "./annotation.colors";
-import { AnnotationEventData, AnnotationEventType, CHANGED_EVENTS, NEW_EVENTS } from "../../events";
+import {
+  AnnotationEventData,
+  AnnotationEventType,
+  CHANGED_EVENTS,
+  NEW_EVENTS,
+} from "../../events";
 import { Debugger } from "../../utils/debugger";
-import { AnnotationDrawColor, AnnotationDrawColors, type AnnotationId } from "../../model";
+import {
+  AnnotationDrawColor,
+  AnnotationDrawColors,
+  type AnnotationId,
+} from "../../model";
 import { TextAnnotationModel } from "../annotation.model";
 import { styles } from "../styles.const";
 import { drawAnnotation } from "../draw/annotations";
