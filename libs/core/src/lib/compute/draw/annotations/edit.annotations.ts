@@ -37,7 +37,13 @@ export class EditAnnotation {
       event: 'annotation-edit--end',
       mouseEvent: event,
       annotationUuid: this.annotation?.id || '',
-      additionalData: { annotation: this.dragResult },
+      additionalData: {
+        annotation: {
+          ...this.annotation,
+          start: this.dragResult.start,
+          end: this.dragResult.end,
+        },
+      },
     });
 
     if (!this.dragResult) return;

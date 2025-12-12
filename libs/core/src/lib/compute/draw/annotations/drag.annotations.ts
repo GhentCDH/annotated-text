@@ -113,9 +113,15 @@ export class DragAnnotation {
     if (!this.dummyAnnotation) return;
     this.internalEventListener.sendEvent('send-event--annotation', {
       event: 'annotation-edit--end',
-      annotationUuid: this.dummyAnnotation?.id.toString() || '',
+      annotationUuid: this.annotation.id,
       mouseEvent: event,
-      additionalData: { annotation: this.dummyAnnotation },
+      additionalData: {
+        annotation: {
+          ...this.annotation,
+          start: this.dummyAnnotation.start,
+          end: this.dummyAnnotation.end,
+        },
+      },
     });
 
     this.dummyAnnotation._render.weight = this.annotation._render.weight;
