@@ -2,7 +2,7 @@ import {
   type AnnotationEventType,
   type ErrorEventCallback,
   type EventCallback,
-  EventData,
+  type EventData,
 } from './events';
 import { type ErrorCode, Errors } from './errors';
 import { Debugger } from '../utils/debugger';

@@ -1,6 +1,6 @@
 import { type BaseAnnotation } from './CreateAnnotations';
 import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
-import { AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
 import { type AnnotationId } from '../../model';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';

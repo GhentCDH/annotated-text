@@ -19,7 +19,7 @@ import { styles } from '../styles.const';
 import { computeAnnotationsOnLines } from '../3_compute_annotations_on_line';
 import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
 import {
-  AnnotationEventType,
+  type AnnotationEventType,
   type ErrorEventCallback,
   type EventCallback,
 } from '../../events';

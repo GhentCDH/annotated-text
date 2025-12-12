@@ -5,7 +5,7 @@ import { type AnnotationColors } from './annotation.colors';
 import {
   type AnnotationEventType,
   CHANGED_EVENTS,
-  EventData,
+  type EventData,
   NEW_EVENTS,
 } from '../../events';
 import { Debugger } from '../../utils/debugger';
