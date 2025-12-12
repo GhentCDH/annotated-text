@@ -1,23 +1,27 @@
 import {
-  type AnnotationEventData,
   type AnnotationEventType,
   type ErrorEventCallback,
   type EventCallback,
+  EventData,
 } from './events';
 import { type ErrorCode, Errors } from './errors';
 import { Debugger } from '../utils/debugger';
 
-export type EventListenerType = AnnotationEventType | 'all';
-
 export class EventListener {
-  private readonly eventMap = new Map<EventListenerType, EventCallback[]>();
+  private readonly eventMap = new Map<
+    AnnotationEventType,
+    EventCallback<any>[]
+  >();
   private readonly errorSet: ErrorEventCallback[] = [];
 
   constructor() {
     this.eventMap.set('all', []);
   }
 
-  public register(event: EventListenerType, callback: EventCallback) {
+  public register<EVENT extends AnnotationEventType>(
+    event: AnnotationEventType,
+    callback: EventCallback<EVENT>,
+  ) {
     if (!this.eventMap.has(event)) {
       this.eventMap.set(event, []);
     }
@@ -36,18 +40,18 @@ export class EventListener {
     );
   }
 
-  public sendEvent<DATA extends AnnotationEventData = AnnotationEventData>(
-    event: AnnotationEventType,
-    mouseEvent: MouseEvent | undefined | null,
-    data: DATA | null,
-  ) {
+  public sendEvent<EVENT extends AnnotationEventType>(
+    event: EVENT,
+    data: EventData[EVENT],
+    mouseEvent?: MouseEvent | undefined | null,
+  ): void {
     const callbacks = [
       this.eventMap.get(event),
       this.eventMap.get('all'),
     ].flat();
     for (const callback of callbacks) {
       if (!callback) continue;
-      callback({ event, mouseEvent, data });
+      callback({ event, mouseEvent, data } as any);
     }
   }
 }

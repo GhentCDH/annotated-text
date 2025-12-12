@@ -1,6 +1,6 @@
 import type { Annotation } from '../model';
 
-export type AnnotationEventType =
+export type _AnnotationEventType =
   | 'mouse-enter'
   | 'mouse-leave'
   | 'click'
@@ -13,14 +13,37 @@ export type AnnotationEventType =
   | 'annotation-create--move'
   | 'destroy';
 
-export type AnnotationEventData = {
+type EditAnnotationEventData = {
+  annotation: Annotation;
+  annotationUuid: number;
+};
+type MouseEvent = {
+  annotation: Annotation;
+};
+export type ErrorAnnotationEventData = {
   annotation: Annotation;
 };
 
-export type AnnotationEvent<DATA extends AnnotationEventData> = {
-  event: AnnotationEventType;
+export type EventData = {
+  'mouse-enter': MouseEvent;
+  'mouse-leave': MouseEvent;
+  click: MouseEvent;
+  'double-click': MouseEvent;
+  'annotation-edit--start': EditAnnotationEventData;
+  'annotation-edit--end': EditAnnotationEventData;
+  'annotation-edit--move': EditAnnotationEventData;
+  'annotation-create--start': EditAnnotationEventData;
+  'annotation-create--end': EditAnnotationEventData;
+  'annotation-create--move': EditAnnotationEventData;
+  destroy: null;
+  all: unknown;
+};
+export type AnnotationEventType = keyof EventData;
+
+export type AnnotationEventData<EVENT extends AnnotationEventType> = {
+  event: EVENT;
   mouseEvent?: MouseEvent | undefined | null;
-  data: DATA | null;
+  data: EventData[EVENT];
 };
 
 export type AnnotationErrorEvent = {
@@ -30,11 +53,11 @@ export type AnnotationErrorEvent = {
   params?: any[];
 };
 
-export type EventCallback<
-  DATA extends AnnotationEventData = AnnotationEventData,
-> = (data: AnnotationEvent<DATA>) => void;
+export type EventCallback<EVENT extends AnnotationEventType> = (
+  event: AnnotationEventData<EVENT>,
+) => void;
 
-export type ErrorEventCallback = (data: AnnotationErrorEvent) => void;
+export type ErrorEventCallback = (event: AnnotationErrorEvent) => void;
 
 export const NEW_EVENTS: AnnotationEventType[] = [
   'annotation-create--move',

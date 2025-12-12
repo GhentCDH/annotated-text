@@ -1,8 +1,7 @@
 import { type BaseAnnotation } from './CreateAnnotations';
 import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
-import { type ErrorEventCallback, type EventCallback } from '../../events';
+import { AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
-import { type EventListenerType } from '../../events/event.listener';
 import { type AnnotationId } from '../../model';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
 import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
@@ -61,7 +60,10 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @param event
    * @param callback
    */
-  on: (event: EventListenerType, callback: EventCallback) => this;
+  on: <EVENT extends AnnotationEventType>(
+    event: EVENT,
+    callback: EventCallback<EVENT>,
+  ) => this;
   /**
    * Register an error callback that will be called when an error occurs in the annotation model.
    * @param callback

@@ -3,9 +3,9 @@ import { select } from 'd3';
 import type RBush from 'rbush';
 import { type AnnotationColors } from './annotation.colors';
 import {
-  type AnnotationEventData,
   type AnnotationEventType,
   CHANGED_EVENTS,
+  EventData,
   NEW_EVENTS,
 } from '../../events';
 import { Debugger } from '../../utils/debugger';
@@ -27,8 +27,6 @@ import { type InternalEventListener } from '../../events/internal/internal.event
 import { drawDummyAnnotation } from '../draw/annotations/draw-dummy';
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
-
-export type AnnotationRect = any;
 
 export const DUMMY_UID = 'dummy-uid';
 
@@ -199,20 +197,21 @@ export class SvgModel {
     Debugger.time(now, '--- drawComputedAnnotations ');
   }
 
-  sendEvent(
+  sendEvent<EVENT extends AnnotationEventType>(
     {
       event,
       mouseEvent,
       annotationUuid,
     }: {
-      event: AnnotationEventType;
+      event: EVENT;
       mouseEvent?: MouseEvent;
       annotationUuid: AnnotationId;
     },
-    additionalData = {},
+    additionalData: Partial<EventData[EVENT]> = {},
   ) {
     const fullAnnotation = this.model.getAnnotation(annotationUuid);
     const annotationData = {
+      annotationUuid,
       annotation: fullAnnotation,
       ...additionalData,
     };
@@ -227,8 +226,8 @@ export class SvgModel {
 
     this.eventListener.sendEvent(
       event,
+      annotationData as unknown as any,
       mouseEvent,
-      annotationData as AnnotationEventData,
     );
 
     return fullAnnotation;

@@ -1,7 +1,7 @@
 import type {
-  AnnotationEventData,
   AnnotationEventType,
-} from "@ghentcdh/annotated-text";
+  ErrorAnnotationEventData,
+} from '@ghentcdh/annotated-text';
 
 export type AnnotatedTextV2Emits = {
   /**
@@ -10,7 +10,7 @@ export type AnnotatedTextV2Emits = {
   event: [
     mouseEvent: MouseEvent,
     type: AnnotationEventType,
-    data: AnnotationEventData,
+    data: ErrorAnnotationEventData,
   ];
   /**
    * Emitted when an error occurs during rendering

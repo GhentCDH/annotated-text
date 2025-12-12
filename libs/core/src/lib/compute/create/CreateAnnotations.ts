@@ -1,6 +1,6 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { type TextAnnotationModel } from '../annotation.model';
-import { EventListener, type EventListenerType } from '../../events/event.listener';
+import { EventListener } from '../../events/event.listener';
 import {
   type TEXT_CONFIG_KEYS,
   type TEXT_CONFIG_VALUES,
@@ -18,7 +18,11 @@ import { computeLinePositions, computePositions } from '../4_compute_positions';
 import { styles } from '../styles.const';
 import { computeAnnotationsOnLines } from '../3_compute_annotations_on_line';
 import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
-import { type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import { drawText } from '../draw/text/text';
 import { type Annotation, type AnnotationId } from '../../model';
 import { AnnotationColors } from '../model/annotation.colors';
@@ -145,7 +149,10 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     return this;
   }
 
-  public on(event: EventListenerType, callback: EventCallback) {
+  public on<EVENT extends AnnotationEventType>(
+    event: EVENT,
+    callback: EventCallback<EVENT>,
+  ) {
     this.eventListener.register(event, callback);
     return this;
   }
