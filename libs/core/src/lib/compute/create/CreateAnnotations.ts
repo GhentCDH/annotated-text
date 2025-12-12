@@ -32,6 +32,7 @@ import {
 } from '../../adapter/annotation/renderer/annotation-render';
 import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
+import { drawDummyAnnotation } from '../draw/annotations/draw-dummy';
 
 const document = globalThis.document || null;
 export type BaseAnnotation = Pick<Annotation, 'id'>;
@@ -70,14 +71,30 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       this.addAnnotation(fullAnnotation!);
     });
 
-    this.internalEventListener.on('annotation--update', ({ data }) => {
-      const fullAnnotation = this.annotationAdapter.format(
-        data.annotation,
-        false,
-        true,
-      );
-      this.addAnnotation(fullAnnotation!);
-    });
+    this.internalEventListener
+      .on('annotation--update', ({ data }) => {
+        const fullAnnotation = this.annotationAdapter.format(
+          data.annotation,
+          false,
+          true,
+        );
+        this.addAnnotation(fullAnnotation!);
+      })
+      .on('send-event--annotation', ({ data }) => {
+        this.svgModel?.sendEvent(data, data.additionalData);
+      })
+      .on('annotation--set-class', ({ data }) => {
+        this.svgModel?.setClass(data.annotationUuid, data.cssClass);
+      })
+      .on('annotation--remove-tag', ({ data }) => {
+        this.svgModel?.removeTag(data.annotationUuid);
+      })
+      .on('annotation--remove', ({ data }) => {
+        this.svgModel?.removeAnnotations(data.annotationUuid, data.selector);
+      })
+      .on('annotation--draw-dummy', ({ data }) => {
+        drawDummyAnnotation(this.svgModel, data.dummyAnnotation, data.color);
+      });
   }
 
   private configListener() {

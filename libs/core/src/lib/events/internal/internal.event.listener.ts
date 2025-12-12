@@ -24,12 +24,14 @@ export class InternalEventListener {
   public on<EVENT extends InternalEvent>(
     event: EVENT,
     callback: EventCallback<InternalEventData[EVENT]>,
-  ): void {
+  ) {
     if (!this.eventMap.has(event)) {
       this.eventMap.set(event, []);
     }
 
     this.eventMap.get(event)?.push(callback);
+
+    return this;
   }
 
   // Block state is not for internal events, but just a state f.e. preventing creating annotations during certain operations

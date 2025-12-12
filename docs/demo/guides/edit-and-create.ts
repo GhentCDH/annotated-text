@@ -2,8 +2,8 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+} from '@ghentcdh/annotated-text';
+import { greekText } from '../data';
 
 export const editAndCreateDemo = (id: string) => {
   clearAnnotatedTextCache();
