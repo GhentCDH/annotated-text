@@ -1,9 +1,10 @@
-## [0.12.11](https://github.com/GhentCDH/annotated-text/compare/v0.12.10...v0.12.11) (2025-12-12)
+## [0.12.12](https://github.com/GhentCDH/annotated-text/compare/v0.12.11...v0.12.12) (2025-12-12)
 
 
-### Bug Fixes
+### Features
 
-* send end annotation even with real annotation id ([85e7070](https://github.com/GhentCDH/annotated-text/commit/85e70705586a6c600d0fb40bf44e8e910153ab70))
+* improve typings ([f627014](https://github.com/GhentCDH/annotated-text/commit/f62701456be41c2992f5908464926d2e42bc80bb))
+* improve typings ([c6743fc](https://github.com/GhentCDH/annotated-text/commit/c6743fc3ea15484a59d89f5112836e8205faea47))
 
 
 
