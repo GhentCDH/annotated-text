@@ -5,7 +5,11 @@ import { type Position } from '../types';
 import { type CharacterPositionResult } from '../../position';
 import { DUMMY_UID } from '../../model/svg.types';
 import { type AnnotationAdapter } from '../../../adapter';
-import { type Dimensions, type TextAnnotation } from '../../../model';
+import {
+  type AnnotationId,
+  type Dimensions,
+  type TextAnnotation,
+} from '../../../model';
 
 export class DragAnnotation {
   private dragBusy = false;
@@ -47,10 +51,7 @@ export class DragAnnotation {
     this.internalEventListener.blockEvents('starting annotation drag');
     this.dragBusy = true;
 
-    this.internalEventListener.sendEvent('send-event--annotation', {
-      event: 'annotation-edit--start',
-      annotationUuid: this.annotation?.id.toString() || '',
-    });
+    this.sendInternalEvent('annotation-edit--start');
 
     this.internalEventListener.sendEvent('annotation--set-class', {
       annotationUuid: this.annotation.id,
@@ -92,15 +93,7 @@ export class DragAnnotation {
         this.dummyAnnotation && pick(this.dummyAnnotation, ['start', 'end']),
       ) ?? this.dummyAnnotation;
 
-    this.internalEventListener.sendEvent('send-event--annotation', {
-      event: 'annotation-edit--move',
-      annotationUuid: this.dummyAnnotation?.id.toString() || '',
-      additionalData: {
-        annotation: this.dummyAnnotation,
-        annotationUuid: this.annotation.id,
-        moveId: DUMMY_UID,
-      },
-    });
+    this.sendInternalEvent('annotation-edit--move', DUMMY_UID);
 
     this.internalEventListener.sendEvent('annotation--set-class', {
       annotationUuid: DUMMY_UID,
@@ -119,24 +112,36 @@ export class DragAnnotation {
     this.internalEventListener.unBlockEvents('ending annotation drag');
 
     if (!this.dummyAnnotation) return;
-    this.internalEventListener.sendEvent('send-event--annotation', {
-      event: 'annotation-edit--end',
-      annotationUuid: this.annotation.id,
-      mouseEvent: event,
-      additionalData: {
-        annotation: {
-          ...this.annotation,
-          start: this.dummyAnnotation.start,
-          end: this.dummyAnnotation.end,
-        },
-      },
-    });
+
+    this.sendInternalEvent('annotation-edit--end');
 
     this.dummyAnnotation._render.weight = this.annotation._render.weight;
     this.dummyAnnotation.id = this.annotation.id;
 
     this.internalEventListener.sendEvent('annotation--update', {
       annotation: this.dummyAnnotation,
+    });
+  }
+
+  private sendInternalEvent(
+    event:
+      | 'annotation-edit--move'
+      | 'annotation-edit--start'
+      | 'annotation-edit--end',
+    moveId?: AnnotationId,
+  ) {
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event,
+      annotationUuid: this.annotation.id.toString() || '',
+      additionalData: {
+        annotation: {
+          ...this.annotation,
+          start: this.dummyAnnotation.start,
+          end: this.dummyAnnotation.end,
+        },
+        annotationUuid: this.dummyAnnotation?.id,
+        moveId,
+      },
     });
   }
 }

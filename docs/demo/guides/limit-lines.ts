@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-import { Annotation, createAnnotatedText, MarkdownTextAdapter, TextLineAdapter } from "@ghentcdh/annotated-text";
-import { greekText, markdownText, plainText } from "../data";
+import { Annotation, createAnnotatedText, MarkdownTextAdapter, TextLineAdapter } from '@ghentcdh/annotated-text';
+import { greekText, markdownText, plainText } from '../data';
 
 const printPosition = (event: any) => {
   const annotation = event.data.annotation as Annotation;
-  console.log("Annotation start:", annotation.start, " end:", annotation.end);
+  console.log('Annotation start:', annotation.start, ' end:', annotation.end);
 };
 
 export const limitLinesPlainText = (id: string, ignoreLines?: boolean) => {
@@ -14,7 +14,7 @@ export const limitLinesPlainText = (id: string, ignoreLines?: boolean) => {
   })
     .setText(plainText.text)
     .setAnnotations(plainText.annotations)
-    .on("annotation-edit--end", printPosition);
+    .on('annotation-edit--end', printPosition);
 };
 
 export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
@@ -29,7 +29,7 @@ export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
   })
     .setText(markdownText.text)
     .setAnnotations(markdownText.annotations)
-    .on("annotation-edit--end", printPosition);
+    .on('annotation-edit--end', printPosition);
 };
 export const limitLinesLineText = (id: string, ignoreLines?: boolean) => {
   createAnnotatedText(id, {
@@ -43,5 +43,5 @@ export const limitLinesLineText = (id: string, ignoreLines?: boolean) => {
   })
     .setText(greekText.text)
     .setAnnotations(greekText.annotations)
-    .on("annotation-edit--end", printPosition);
+    .on('annotation-edit--end', printPosition);
 };
