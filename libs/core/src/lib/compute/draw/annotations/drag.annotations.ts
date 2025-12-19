@@ -85,14 +85,22 @@ export class DragAnnotation {
         this.annotation,
         this.annotationAdapter,
         this.internalEventListener,
-        'annotation-edit--move',
         {
           start: startIndex,
           end: endIndex,
         },
-        'drag',
         this.dummyAnnotation && pick(this.dummyAnnotation, ['start', 'end']),
       ) ?? this.dummyAnnotation;
+
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event: 'annotation-edit--move',
+      annotationUuid: this.dummyAnnotation?.id.toString() || '',
+      additionalData: {
+        annotation: this.dummyAnnotation,
+        annotationUuid: this.annotation.id,
+        moveId: DUMMY_UID,
+      },
+    });
 
     this.internalEventListener.sendEvent('annotation--set-class', {
       annotationUuid: DUMMY_UID,

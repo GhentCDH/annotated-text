@@ -6,13 +6,13 @@ import {
   getCharacterStartEndPosition,
 } from '../../position';
 import { DUMMY_UID } from '../../model/svg.types';
-import { type AnnotationAdapter, type SnapperAction } from '../../../adapter';
+import { type AnnotationAdapter } from '../../../adapter';
 import {
   type AnnotationDrawColors,
+  type AnnotationId,
   type TextAnnotation,
   textAnnotationSchema,
 } from '../../../model';
-import { type AnnotationEventType } from '../../../events/events';
 
 export class EditAnnotation {
   private dragResult: TextAnnotation | null = null;
@@ -30,28 +30,30 @@ export class EditAnnotation {
     if (!this.annotationAdapter.edit) return;
     if (this.internalEventListener.isBlocking) return;
 
-    return this.onDrag('annotation-edit--start', position, target, event);
+    this.internalEventListener.blockEvents('annotation-edit--start');
+    this.dragResult =
+      editAnnotations(
+        this.annotation,
+        this.annotationAdapter,
+        this.internalEventListener,
+        this.getCharacterFromTextNodesAtPoint,
+        position,
+        target,
+        (this.dragResult && pick(this.dragResult, ['start', 'end'])) ??
+          undefined,
+      ) ?? this.dragResult;
+
+    this.sendInternalEvent('annotation-edit--start', DUMMY_UID);
   }
 
-  onEnd(event: any) {
+  onEnd() {
     if (!this.dragResult) return;
     this.internalEventListener.unBlockEvents('ending annotation edit');
     this.internalEventListener.sendEvent('annotation--remove', {
       annotationUuid: DUMMY_UID,
     });
 
-    this.internalEventListener.sendEvent('send-event--annotation', {
-      event: 'annotation-edit--end',
-      mouseEvent: event,
-      annotationUuid: this.annotation?.id || '',
-      additionalData: {
-        annotation: {
-          ...this.annotation,
-          start: this.dragResult.start,
-          end: this.dragResult.end,
-        },
-      },
-    });
+    this.sendInternalEvent('annotation-edit--end');
 
     if (!this.dragResult) return;
 
@@ -63,12 +65,7 @@ export class EditAnnotation {
     });
   }
 
-  onDrag(
-    eventType: AnnotationEventType,
-    position: Position,
-    target: 'start' | 'end',
-    event: any,
-  ) {
+  onDrag(position: Position, target: 'start' | 'end') {
     if (!this.annotationAdapter.edit) return;
 
     this.dragResult =
@@ -77,12 +74,31 @@ export class EditAnnotation {
         this.annotationAdapter,
         this.internalEventListener,
         this.getCharacterFromTextNodesAtPoint,
-        eventType,
         position,
         target,
         (this.dragResult && pick(this.dragResult, ['start', 'end'])) ??
           undefined,
       ) ?? this.dragResult;
+
+    this.sendInternalEvent('annotation-edit--move', DUMMY_UID);
+  }
+
+  private sendInternalEvent(
+    event:
+      | 'annotation-edit--move'
+      | 'annotation-edit--start'
+      | 'annotation-edit--end',
+    moveId?: AnnotationId,
+  ) {
+    this.internalEventListener.sendEvent('send-event--annotation', {
+      event,
+      annotationUuid: this.annotation.id.toString() || '',
+      additionalData: {
+        annotation: this.dragResult,
+        annotationUuid: this.dragResult?.id,
+        moveId,
+      },
+    });
   }
 }
 
@@ -93,7 +109,6 @@ export const editAnnotations = (
   getCharacterFromTextNodesAtPoint: (
     position: Position,
   ) => CharacterPositionResult | null,
-  eventType: AnnotationEventType,
   position: Position,
   target: 'start' | 'end',
   prevPosition?: { start: number; end: number },
@@ -101,8 +116,6 @@ export const editAnnotations = (
   internalEventListener.sendEvent('annotation--remove-tag', {
     annotationUuid: annotation.id,
   });
-
-  internalEventListener.blockEvents(eventType);
 
   const result = getCharacterFromTextNodesAtPoint(position);
 
@@ -114,27 +127,25 @@ export const editAnnotations = (
     target,
   );
 
-  return handleAnnotationEditAndSendEvent(
+  const dummyAnnotation = handleAnnotationEditAndSendEvent(
     annotation,
     annotationAdapter,
     internalEventListener,
-    eventType,
     {
       start,
       end,
     },
-    target === 'start' ? 'move-start' : 'move-end',
     prevPosition,
   );
+
+  return dummyAnnotation;
 };
 
 export const handleAnnotationEditAndSendEvent = (
   annotation: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
   internalEventListener: InternalEventListener,
-  eventType: AnnotationEventType,
   { start, end }: { start: number; end: number },
-  action: SnapperAction,
   prevPosition?: { start: number; end: number },
 ) => {
   // create dummy annotation
@@ -173,15 +184,6 @@ export const handleAnnotationEditAndSendEvent = (
 
   dummyAnnotation.start = snapper.start;
   dummyAnnotation.end = snapper.end;
-
-  internalEventListener.sendEvent('send-event--annotation', {
-    event: eventType,
-    annotationUuid: dummyAnnotation?.id.toString() || '',
-    additionalData: {
-      annotation: dummyAnnotation,
-      annotationUuid: annotation.id,
-    },
-  });
 
   internalEventListener.sendEvent('annotation--draw-dummy', {
     dummyAnnotation: dummyAnnotation,

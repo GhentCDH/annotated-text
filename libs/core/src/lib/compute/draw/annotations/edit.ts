@@ -1,8 +1,11 @@
 import { drag } from 'd3';
 import { EditAnnotation } from './edit.annotations';
 import { SVG_ID, type SvgModel } from '../../model/svg.types';
-import { type AnnotationDraw, type Dimensions, type TextAnnotation } from '../../../model';
-import { type AnnotationEventType } from '../../../events/events';
+import {
+  type AnnotationDraw,
+  type Dimensions,
+  type TextAnnotation,
+} from '../../../model';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
 import { type Position } from '../types';
 import { hoverAnnotation, leaveAnnotation } from '../events/hover';
@@ -41,7 +44,7 @@ export const drawHandle = (
     ({ x, y }: Position) => getCharacterFromTextNodesAtPoint(x, y, svgModel),
   );
   const onEditDragEnd = (event: MouseEvent) => {
-    editAnnotation.onEnd(event);
+    editAnnotation.onEnd();
   };
   const getPosition = (event: any) => {
     const x = event.sourceEvent.clientX;
@@ -49,8 +52,8 @@ export const drawHandle = (
     return { x, y };
   };
 
-  const onEditDrag = (eventType: AnnotationEventType) => (event: any) => {
-    editAnnotation.onDrag(eventType, getPosition(event), target, event);
+  const onEditDrag = (event: any) => {
+    editAnnotation.onDrag(getPosition(event), target);
   };
 
   const onEditDragStart = (event: any) => {
@@ -70,7 +73,7 @@ export const drawHandle = (
     .attr('y', dimensions.y)
     .call(
       drag()
-        .on('drag', onEditDrag('annotation-edit--move'))
+        .on('drag', onEditDrag)
         .on('start', onEditDragStart)
         .on('end', onEditDragEnd) as any,
     );

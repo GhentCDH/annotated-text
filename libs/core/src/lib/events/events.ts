@@ -17,6 +17,9 @@ type EditAnnotationEventData = {
   annotation: Annotation;
   annotationUuid: number;
 };
+type EditAnnotationEventMoveData = {
+  moveId: number;
+} & EditAnnotationEventData;
 type MouseEvent = {
   annotation: Annotation;
 };
@@ -31,10 +34,10 @@ export type EventData = {
   'double-click': MouseEvent;
   'annotation-edit--start': EditAnnotationEventData;
   'annotation-edit--end': EditAnnotationEventData;
-  'annotation-edit--move': EditAnnotationEventData;
+  'annotation-edit--move': EditAnnotationEventMoveData;
   'annotation-create--start': EditAnnotationEventData;
   'annotation-create--end': EditAnnotationEventData;
-  'annotation-create--move': EditAnnotationEventData;
+  'annotation-create--move': EditAnnotationEventMoveData;
   destroy: null;
   all: unknown;
 };
