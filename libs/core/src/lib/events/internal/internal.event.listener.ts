@@ -17,10 +17,6 @@ export class InternalEventListener {
     EventCallback<any>[]
   >();
 
-  constructor() {
-    /* empty */
-  }
-
   public on<EVENT extends InternalEvent>(
     event: EVENT,
     callback: EventCallback<InternalEventData[EVENT]>,
