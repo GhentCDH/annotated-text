@@ -9,7 +9,7 @@ import { DUMMY_UID } from '../../model/svg.types';
 import { type AnnotationAdapter } from '../../../adapter';
 import {
   type AnnotationDrawColors,
-  AnnotationId,
+  type AnnotationId,
   type TextAnnotation,
   textAnnotationSchema,
 } from '../../../model';
