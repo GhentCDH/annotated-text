@@ -1,9 +1,9 @@
-## [0.12.14](https://github.com/GhentCDH/annotated-text/compare/v0.12.13...v0.12.14) (2025-12-12)
+## [0.12.15](https://github.com/GhentCDH/annotated-text/compare/v0.12.14...v0.12.15) (2025-12-19)
 
 
 ### Bug Fixes
 
-* remove to many internal event listeners ([94f52de](https://github.com/GhentCDH/annotated-text/commit/94f52de31a198ebc930f036de2808f0897d19b85))
+* event listeners ([#155](https://github.com/GhentCDH/annotated-text/issues/155)) ([79f8269](https://github.com/GhentCDH/annotated-text/commit/79f82691a4aa5b3b20729e45641f53c001e5f99c))
 
 
 
