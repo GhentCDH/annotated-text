@@ -5,11 +5,7 @@ import { type Position } from '../types';
 import { type CharacterPositionResult } from '../../position';
 import { DUMMY_UID } from '../../model/svg.types';
 import { type AnnotationAdapter } from '../../../adapter';
-import {
-  type AnnotationId,
-  type Dimensions,
-  type TextAnnotation,
-} from '../../../model';
+import { type AnnotationId, type Dimensions, type TextAnnotation } from '../../../model';
 
 export class DragAnnotation {
   private dragBusy = false;
@@ -132,12 +128,12 @@ export class DragAnnotation {
   ) {
     this.internalEventListener.sendEvent('send-event--annotation', {
       event,
-      annotationUuid: this.annotation.id.toString() || '',
+      annotationUuid: this.annotation.id || '',
       additionalData: {
         annotation: {
-          ...this.annotation,
-          start: this.dummyAnnotation.start,
-          end: this.dummyAnnotation.end,
+          // ...this.annotation,
+          start: this.dummyAnnotation?.start ?? this.annotation.start,
+          end: this.dummyAnnotation?.end ?? this.annotation.end,
         },
         annotationUuid: this.dummyAnnotation?.id,
         moveId,

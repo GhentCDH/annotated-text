@@ -1,19 +1,11 @@
 import { type Selection } from 'd3-selection';
 import { select } from 'd3';
 import type RBush from 'rbush';
+import { merge } from 'lodash-es';
 import { type AnnotationColors } from './annotation.colors';
-import {
-  type AnnotationEventType,
-  CHANGED_EVENTS,
-  type EventData,
-  NEW_EVENTS,
-} from '../../events';
+import { type AnnotationEventType, CHANGED_EVENTS, type EventData, NEW_EVENTS } from '../../events';
 import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationDrawColor,
-  type AnnotationDrawColors,
-  type AnnotationId,
-} from '../../model';
+import { type AnnotationDrawColor, type AnnotationDrawColors, type AnnotationId } from '../../model';
 import { type TextAnnotationModel } from '../annotation.model';
 import { styles } from '../styles.const';
 import { drawAnnotation } from '../draw/annotations';
@@ -194,10 +186,10 @@ export class SvgModel {
   ) {
     const fullAnnotation = this.model.getAnnotation(annotationUuid);
     const annotationData = {
+      ...merge({ annotation: fullAnnotation }, additionalData),
       annotationUuid,
-      annotation: fullAnnotation,
-      ...additionalData,
     };
+
     const isNew = NEW_EVENTS.includes(event);
     const hasChanged = CHANGED_EVENTS.includes(event);
 

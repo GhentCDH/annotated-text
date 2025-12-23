@@ -95,9 +95,9 @@ export class EditAnnotation {
       annotationUuid: this.annotation.id.toString() || '',
       additionalData: {
         annotation: {
-          ...this.annotation,
-          start: this.dragResult?.start,
-          end: this.dragResult?.end,
+          // ...this.annotation,
+          start: this.dragResult?.start ?? this.annotation.start,
+          end: this.dragResult?.end ?? this.annotation.end,
         },
         annotationUuid: this.dragResult?.id,
         moveId,
