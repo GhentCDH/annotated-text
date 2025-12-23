@@ -54,3 +54,4 @@ coverage
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 /tmp
+playwright-report
