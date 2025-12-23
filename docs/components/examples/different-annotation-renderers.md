@@ -68,8 +68,8 @@ import { onMounted } from "vue";
 import { createDifferentAnnotationRenders } from "@demo";
 const id_default = `selection-renderer-annotation--default`;
 const id_line = `selection-renderer-annotation--line`;
-const id_underline_thick = `selection-renderer-annotation--line-thin`;
-const id_underline_thin = `selection-renderer-annotation--line-thick`;
+const id_underline_thick = `selection-renderer-annotation--line-thick`;
+const id_underline_thin = `selection-renderer-annotation--line-thin`;
 
 onMounted(()=> {
     createDifferentAnnotationRenders(id_default, id_line,id_underline_thick,id_underline_thin);
