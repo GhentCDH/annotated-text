@@ -9,7 +9,7 @@ import {
   type AnnotationDimension,
   type AnnotationDraw,
   type AnnotationDrawColors,
-  AnnotationDrawPath,
+  type AnnotationDrawPath,
   type TextAnnotation,
 } from '../../../model';
 

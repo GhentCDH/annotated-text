@@ -30,13 +30,11 @@ Create variants of the built-in renderers with different visual styles:
 
 ```typescript
 const thinUnderline = new UnderlineRender('underline-thin', {
-  weightOrder: 5,
-  style: { strokeWidth: 1 },
+  borderWidth: 1
 });
 
 const thickUnderline = new UnderlineRender('underline-thick', {
-  weightOrder: 1,
-  style: { strokeWidth: 3 },
+  borderWidth: 5
 });
 
 manager.registerRender(thinUnderline);
