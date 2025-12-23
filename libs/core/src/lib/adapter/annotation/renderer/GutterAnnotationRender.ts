@@ -51,7 +51,7 @@ const createGutterAnnotations = (
   const weight = params.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
-  const color: AnnotationDrawColors = getColors(style, annotation, false);
+  const color: AnnotationDrawColors = getColors(style, annotation, false, true);
 
   const draws: AnnotationDraw[] = [
     {

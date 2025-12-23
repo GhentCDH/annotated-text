@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import {
   AnnotationRender,
   type AnnotationRenderParams,
@@ -16,7 +17,6 @@ import {
 import { type TextAdapterStyle } from '../../text';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
 import { getX, getY } from '../../../compute/compute/helpers';
-import { v4 as uuidv4 } from 'uuid';
 
 export abstract class SvgAnnotationRender<
   STYLE extends TextAnnotationRenderStyle,
