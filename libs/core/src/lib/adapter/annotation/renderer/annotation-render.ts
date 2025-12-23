@@ -1,5 +1,10 @@
 import { cloneDeep, merge } from 'lodash-es';
-import { type AnnotationDimension, type AnnotationDraw, type AnnotationDrawColors, type TextAnnotation } from '../../../model';
+import {
+  type AnnotationDimension,
+  type AnnotationDraw,
+  type AnnotationDrawColors,
+  type TextAnnotation
+} from '../../../model';
 import { type TextAdapterStyle } from '../../text';
 
 /**
@@ -111,18 +116,6 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
   abstract weightOrder: number;
 
   /**
-   * Unique identifier for this renderer type.
-   *
-   * Must be unique across all registered renderers.
-   * Used to register and reference the renderer in configuration.
-   *
-   * @example
-   * name = 'highlight';
-   * name = 'custom-underline';
-   */
-  abstract name: string;
-
-  /**
    * Current style configuration for this renderer instance.
    *
    * Can be updated using the updateStyle() method.
@@ -146,12 +139,19 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
    *
    * The defaultStyle is deep cloned to ensure isolation between instances.
    *
+   * @param name - name of the renderer, used for identifying it in the style configuration
+   * @param style - Partial style object containing properties to override
    * @param defaultStyle - The default style configuration for this renderer
    *
    * @protected
    */
-  protected constructor(private defaultStyle: STYLE) {
+  protected constructor(
+    public readonly name: string,
+    style: Partial<STYLE>,
+    private defaultStyle: STYLE,
+  ) {
     this.style = cloneDeep(defaultStyle);
+    this.updateStyle(style);
   }
 
   /**

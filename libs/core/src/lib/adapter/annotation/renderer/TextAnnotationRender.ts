@@ -10,7 +10,10 @@ import {
   type AnnotationDraw,
   type TextAnnotation,
 } from '../../../model';
-import { createAnnotationPath, type createAnnotationPathFn } from '../../../compute';
+import {
+  createAnnotationPath,
+  type createAnnotationPathFn,
+} from '../../../compute';
 import { getColors, type GetColorsFn } from '../../../compute/compute/colors';
 import { getX, getY } from '../../../compute/compute/helpers';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
@@ -99,11 +102,9 @@ export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 export class HighlightAnnotationRender extends AnnotationRender<TextAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
-  static instance = 'highlight';
-  readonly name = HighlightAnnotationRender.instance;
 
-  constructor() {
-    super(DefaultTextAnnotationRenderStyle);
+  constructor(name: string, style: Partial<TextAnnotationRenderStyle> = {}) {
+    super(name, style, DefaultTextAnnotationRenderStyle);
   }
 
   createDraws(

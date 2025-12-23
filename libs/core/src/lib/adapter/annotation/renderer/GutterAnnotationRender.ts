@@ -79,11 +79,9 @@ export type GutterAnnotationRenderStyle =
 export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = true;
-  static instance = 'gutter';
-  readonly name = GutterAnnotationRender.instance;
 
-  constructor() {
-    super(DefaultGutterAnnotationRenderStyle);
+  constructor(name: string, style: Partial<GutterAnnotationRenderStyle> = {}) {
+    super(name, style, DefaultGutterAnnotationRenderStyle);
   }
 
   createDraws(

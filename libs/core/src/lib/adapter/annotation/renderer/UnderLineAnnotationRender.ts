@@ -3,7 +3,10 @@ import {
   createTextAnnotationRender,
   DefaultTextAnnotationRenderStyle,
 } from './TextAnnotationRender';
-import { AnnotationRender, type AnnotationRenderParams } from './annotation-render';
+import {
+  AnnotationRender,
+  type AnnotationRenderParams,
+} from './annotation-render';
 import {
   type AnnotationDrawColor,
   type AnnotationDrawColors,
@@ -77,11 +80,11 @@ export class UnderLineAnnotationRender extends AnnotationRender<UnderlineAnnotat
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
 
-  static instance = 'underline';
-  readonly name = UnderLineAnnotationRender.instance;
-
-  constructor() {
-    super(DefaultUnderlineAnnotationRenderStyle);
+  constructor(
+    name: string,
+    style: Partial<UnderlineAnnotationRenderStyle> = {},
+  ) {
+    super(name, style, DefaultUnderlineAnnotationRenderStyle);
   }
 
   createDraws(

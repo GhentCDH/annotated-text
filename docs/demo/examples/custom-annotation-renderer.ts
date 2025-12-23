@@ -1,47 +1,48 @@
 import {
   AnnotationRender,
-  AnnotationRenderParams,
+  type AnnotationRenderParams,
   clearAnnotatedTextCache,
   createAnnotatedText,
   createAnnotationFill,
-  createAnnotationPathFn,
+  type createAnnotationPathFn,
   createTextAnnotationRender,
+  DefaultRenders,
   DefaultUnderlineAnnotationRenderStyle,
   getColorsUnderline,
   GutterAnnotationRender,
   HighlightAnnotationRender,
-  PathParams,
-  TextAdapterStyle,
-  TextAnnotation,
+  type PathParams,
+  type TextAdapterStyle,
+  type TextAnnotation,
   UnderLineAnnotationRender,
-} from "@ghentcdh/annotated-text";
-import { annotationColors } from "../data/const";
-import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
+} from '@ghentcdh/annotated-text';
+import { annotationColors } from '../data/const';
+import { type DemoAnnotation, DemoAnnotationConfig } from '../data/data.types';
 
 const annotations = [
   {
     start: 11,
     end: 20,
-    color: annotationColors["2"],
-    target: "underline",
-    label: "gts",
-    id: "1",
+    color: annotationColors['2'],
+    target: 'underline',
+    label: 'gts',
+    id: '1',
   },
   {
     start: 42,
     end: 51,
-    color: annotationColors["3"],
-    target: "highlight",
-    label: "gts",
-    id: "2",
+    color: annotationColors['3'],
+    target: 'highlight',
+    label: 'gts',
+    id: '2',
   },
   {
     start: 63,
     end: 90,
-    color: annotationColors["7"],
-    target: "gutter",
-    label: "gts",
-    id: "3",
+    color: annotationColors['7'],
+    target: 'gutter',
+    label: 'gts',
+    id: '3',
   },
 ] as DemoAnnotation[];
 
@@ -70,7 +71,7 @@ const createUnderlineWithCaps: createAnnotationPathFn = (
   }
 
   return {
-    border: path.join(" "),
+    border: path.join(' '),
     fill,
   };
 };
@@ -80,11 +81,10 @@ export class MyUnderLineAnnotationRenderer extends AnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
 
-  static instance = "my-underline-renderer";
-  readonly name = MyUnderLineAnnotationRenderer.instance;
+  static instance = 'my-underline-renderer';
 
-  constructor() {
-    super(DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string, style: Partial<any> = {}) {
+    super(name, style, DefaultUnderlineAnnotationRenderStyle);
   }
 
   createDraws(
@@ -126,7 +126,7 @@ const createWavesPath: createAnnotationPathFn = (params: PathParams) => {
   }
 
   return {
-    border: path.join(" "),
+    border: path.join(' '),
     fill: null,
   };
 };
@@ -136,11 +136,10 @@ export class WavesAnnotationRenderer extends AnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
 
-  static instance = "my-waves-renderer";
-  readonly name = WavesAnnotationRenderer.instance;
+  static instance = 'my-waves-renderer';
 
-  constructor() {
-    super(DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string) {
+    super(name, {}, DefaultUnderlineAnnotationRenderStyle);
   }
 
   createDraws(
@@ -166,11 +165,10 @@ export class SketchyRender extends AnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
 
-  static instance = "my-sketchy-renderer";
-  readonly name = SketchyRender.instance;
+  static instance = 'my-sketchy-renderer';
 
-  constructor() {
-    super(DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string) {
+    super(name, {}, DefaultUnderlineAnnotationRenderStyle);
   }
 
   createDraws(
@@ -215,7 +213,7 @@ const createSketchyPath: createAnnotationPathFn = (params: PathParams) => {
   }
 
   return {
-    border: path.join(" "),
+    border: path.join(' '),
     fill: null,
   };
 };
@@ -234,21 +232,23 @@ export const customAnnotationRender = (
       },
     },
   })
-    .registerRenders(
-      new MyUnderLineAnnotationRenderer(),
-      new WavesAnnotationRenderer(),
-      new SketchyRender(),
+    .registerRender(
+      new MyUnderLineAnnotationRenderer(MyUnderLineAnnotationRenderer.instance),
     )
+    .registerRender(
+      new WavesAnnotationRenderer(WavesAnnotationRenderer.instance),
+    )
+    .registerRender(new SketchyRender(SketchyRender.instance))
     .setText(text)
     .setAnnotations(
       [
         annotations,
         {
-          id: "multi line",
+          id: 'multi line',
           start: 21,
           end: 40,
         } as DemoAnnotation,
-        { id: "next to last", start: 51, end: 55 } as DemoAnnotation,
+        { id: 'next to last', start: 51, end: 55 } as DemoAnnotation,
       ].flat(),
     );
 };
@@ -264,11 +264,9 @@ export const annotationRender = (id_default: string) => {
       },
     },
   })
-    .registerRender(new HighlightAnnotationRender())
-    .registerRenders(
-      new GutterAnnotationRender(),
-      new UnderLineAnnotationRender(),
-    )
+    .registerRender(new HighlightAnnotationRender(DefaultRenders.highlight))
+    .registerRender(new GutterAnnotationRender(DefaultRenders.gutter))
+    .registerRender(new UnderLineAnnotationRender(DefaultRenders.underline))
     .setText(text)
     .setAnnotations(annotations);
 };
