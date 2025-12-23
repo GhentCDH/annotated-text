@@ -44,7 +44,7 @@ export const drawHandle = (
     ({ x, y }: Position) => getCharacterFromTextNodesAtPoint(x, y, svgModel),
   );
   const onEditDragEnd = (event: MouseEvent) => {
-    editAnnotation.onEnd();
+    editAnnotation.end(event);
   };
   const getPosition = (event: any) => {
     const x = event.sourceEvent.clientX;
@@ -53,7 +53,7 @@ export const drawHandle = (
   };
 
   const onEditDrag = (event: any) => {
-    editAnnotation.onDrag(getPosition(event), target);
+    editAnnotation.move(getPosition(event), target, event);
   };
 
   const onEditDragStart = (event: any) => {
