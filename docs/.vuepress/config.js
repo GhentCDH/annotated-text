@@ -1,14 +1,14 @@
-import { viteBundler } from "@vuepress/bundler-vite";
-import { defineUserConfig } from "vuepress";
+import { viteBundler } from '@vuepress/bundler-vite';
+import { defineUserConfig } from 'vuepress';
 
-import { hopeTheme } from "vuepress-theme-hope";
-import { fileURLToPath } from "node:url";
-import componentsSideBar from "../components/typedoc_sidebar.json";
-import apiSideBar from "../api/typedoc_sidebar.json";
+import { hopeTheme } from 'vuepress-theme-hope';
+import { fileURLToPath } from 'node:url';
+import componentsSideBar from '../components/typedoc_sidebar.json';
+import apiSideBar from '../api/typedoc-sidebar.json';
 
 export default defineUserConfig({
-  base: "annotated-text",
-  title: "Annotated text component",
+  base: 'annotated-text',
+  title: 'Annotated text component',
   lastUpdated: true,
   cleanUrls: true,
   metaChunk: true,
@@ -17,10 +17,10 @@ export default defineUserConfig({
       plugins: [],
       resolve: {
         alias: {
-          "@ghentcdh/annotated-text": fileURLToPath(
-            new URL("../../libs/core/src/index.ts", import.meta.url),
+          '@ghentcdh/annotated-text': fileURLToPath(
+            new URL('../../libs/core/src/index.ts', import.meta.url),
           ),
-          "@demo": fileURLToPath(new URL("../demo/index.ts", import.meta.url)),
+          '@demo': fileURLToPath(new URL('../demo/index.ts', import.meta.url)),
         },
       },
     },
@@ -30,33 +30,33 @@ export default defineUserConfig({
   //   plugins: [require('@tailwindcss/postcss'), require('autoprefixer')],
   // },
   theme: hopeTheme({
-    darkmode: "disable",
-    docsRepo: "https://github.com/GhentCDH/annotated-text",
-    docsBranch: "main",
-    docsDir: "docs",
+    darkmode: 'disable',
+    docsRepo: 'https://github.com/GhentCDH/annotated-text',
+    docsBranch: 'main',
+    docsDir: 'docs',
     // editLinkPattern: ':repo/tree/:branch/:path',
     lastUpdated: true,
-    colorMode: "light",
+    colorMode: 'light',
     socialLinks: [
       {
-        icon: "github",
-        link: "https://github.com/GhentCDH/annotated-text",
+        icon: 'github',
+        link: 'https://github.com/GhentCDH/annotated-text',
       },
     ],
     // colorModeSwitch: false,
     navbar: [
       {
-        text: "Home",
-        link: "/",
+        text: 'Home',
+        link: '/',
       },
     ],
     sidebar: [
       componentsSideBar,
 
       {
-        text: "api",
+        text: 'api',
         children: apiSideBar,
-        link: "/api/globals.md",
+        link: '/api/globals.md',
         extended: false,
         collapsible: true,
       },

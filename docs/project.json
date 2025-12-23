@@ -1,0 +1,56 @@
+{
+  "name": "docs",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "docs",
+  "targets": {
+    "build:typedoc": {
+      "executor": "nx:run-commands",
+      "inputs": ["{projectRoot}/**/*.ts", "!{projectRoot}/**/*.spec.ts"],
+      "outputs": ["{projectRoot}/.vuepress/api"],
+      "options": {
+        "command": "typedoc"
+      },
+      "cache": true
+    },
+    "build:menu": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs"
+      }
+    },
+    "build:vuepress": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vuepress build docs"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build:typedoc", "build:menu"],
+      "options": {
+        "command": "vuepress build docs"
+      }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vuepress dev docs"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build:typedoc", "build:menu"],
+      "options": {
+        "command": "vuepress dev docs"
+      }
+    }
+  },
+  "e2e": {
+    "executor": "@nx/playwright:playwright",
+    "outputs": ["{workspaceRoot}/docs/playwright-report"],
+    "options": {
+      "config": "docs/playwright.config.ts"
+    }
+  }
+}

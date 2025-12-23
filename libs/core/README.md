@@ -31,7 +31,7 @@ Following annotation formats are supported:
 
 ## Documentation
 
-To build the docs run `pnpm run docs:build` or access [Github Docs](https://ghentcdh.github.io/annotated-text)
+To build the docs run `npx nx run docs:build` or access [Github Docs](https://ghentcdh.github.io/annotated-text)
 
 ## Creating a new release
 
