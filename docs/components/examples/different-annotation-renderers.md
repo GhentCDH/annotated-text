@@ -1,28 +1,51 @@
-# Different Annotation Renderers
+# Annotation Renderers
 
-This example demonstrates how to use different annotation renderers for active annotations in a text annotation tool.
-The
-default renderer highlights the selected text, while the underline renderer adds an underline to the selected text.
+Renderers control how annotations are visually displayed on text. The library includes three built-in renderers:
+**highlight** (background color), **underline** (decorative line beneath text) and **gutter** (a box in the gutter).
+
+## Setting the Default Renderer
+
+Configure the default renderer when creating the annotated text instance:
 
 ```typescript
 createAnnotatedText(id, {
   annotation: {
-    defaultRender: "underline", // or highlight
+    defaultRender: 'underline', // or 'highlight'
   },
-})
+});
 ```
 
-Examples used:
+## Assigning a Renderer to an Annotation
 
-- 1 character selection with default highlight renderer
-- 1 character selection with underline renderer
-- 3 character selection with default highlight renderer
-- 3 character selection with underline renderer
-- Emoiji selection with default highlight renderer
-- Emoiji selection with underline renderer
+Each annotation can specify its own renderer:
 
-To play with the example, all edit and create functionalities are enabled. You can create new annotations by selecting
-text and dragging to adjust the selection.
+```typescript
+annotation.render = DefaultRenders.highlight;
+annotation.render = DefaultRenders.underline;
+```
+
+## Custom Renderer Variants
+
+Create variants of the built-in renderers with different visual styles:
+
+```typescript
+const thinUnderline = new UnderlineRender('underline-thin', {
+  borderWidth: 1
+});
+
+const thickUnderline = new UnderlineRender('underline-thick', {
+  borderWidth: 5
+});
+
+manager.registerRender(thinUnderline);
+manager.registerRender(thickUnderline);
+```
+
+Once registered, assign custom renderers by name:
+
+```typescript
+annotation.render = 'underline-thin';
+```
 
 ## Example
 
@@ -31,6 +54,10 @@ text and dragging to adjust the selection.
 <h4>Underline display renderer</h4>
 <div :id="id_default"></div>
 <div :id="id_line"></div>
+    <h4>Thick line renderer</h4>
+<h4>Thin line renderer</h4>
+<div :id="id_underline_thick"></div>
+<div :id="id_underline_thin"></div>
 </div>
 
 <script setup>
@@ -39,9 +66,11 @@ import { onMounted } from "vue";
 import { createDifferentAnnotationRenders } from "@demo";
 const id_default = `selection-renderer-annotation--default`;
 const id_line = `selection-renderer-annotation--line`;
+const id_underline_thick = `selection-renderer-annotation--line-thick`;
+const id_underline_thin = `selection-renderer-annotation--line-thin`;
 
 onMounted(()=> {
-    createDifferentAnnotationRenders(id_default, id_line);
+    createDifferentAnnotationRenders(id_default, id_line,id_underline_thick,id_underline_thin);
 
 });
 </script>

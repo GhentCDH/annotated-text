@@ -51,7 +51,7 @@ const createGutterAnnotations = (
   const weight = params.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
   const height = y1 - y + lastLineHeight;
-  const color: AnnotationDrawColors = getColors(style, annotation, false);
+  const color: AnnotationDrawColors = getColors(style, annotation, false, true);
 
   const draws: AnnotationDraw[] = [
     {
@@ -79,11 +79,9 @@ export type GutterAnnotationRenderStyle =
 export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = true;
-  static instance = 'gutter';
-  readonly name = GutterAnnotationRender.instance;
 
-  constructor() {
-    super(DefaultGutterAnnotationRenderStyle);
+  constructor(name: string, style: Partial<GutterAnnotationRenderStyle> = {}) {
+    super(name, style, DefaultGutterAnnotationRenderStyle);
   }
 
   createDraws(

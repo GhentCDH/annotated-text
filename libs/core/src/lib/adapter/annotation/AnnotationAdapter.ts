@@ -1,6 +1,11 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
-import { GutterAnnotationRender, HighlightAnnotationRender, UnderLineAnnotationRender } from './renderer';
+import {
+  DefaultRenders,
+  GutterAnnotationRender,
+  HighlightAnnotationRender,
+  UnderLineAnnotationRender
+} from './renderer';
 import { type RenderParams } from './renderer/annotation-render';
 import { DefaultTagConfig, type TagConfig } from './DefaultTag';
 import { RenderInstances } from './renderer/render-instances';
@@ -237,9 +242,15 @@ export const createAnnotationAdapter = <ANNOTATION>(
   const renderInstance = new RenderInstances(params.render);
 
   // by default the default renderers are registered
-  renderInstance.registerRender(new HighlightAnnotationRender());
-  renderInstance.registerRender(new GutterAnnotationRender());
-  renderInstance.registerRender(new UnderLineAnnotationRender());
+  renderInstance.registerRender(
+    new HighlightAnnotationRender(DefaultRenders.highlight),
+  );
+  renderInstance.registerRender(
+    new GutterAnnotationRender(DefaultRenders.gutter),
+  );
+  renderInstance.registerRender(
+    new UnderLineAnnotationRender(DefaultRenders.underline),
+  );
 
   adapter.renderInstance = renderInstance;
 
