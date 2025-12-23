@@ -1,3 +1,5 @@
+export * from './SvgAnnotationRender';
+
 export * from './UnderLineAnnotationRender';
 export * from './TextAnnotationRender';
 

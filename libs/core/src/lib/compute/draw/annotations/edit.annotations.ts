@@ -1,4 +1,5 @@
 import { pick } from 'lodash-es';
+import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
 import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
 import { type Position } from '../types';
 import {
@@ -7,7 +8,6 @@ import {
 } from '../../position';
 import { type AnnotationAdapter } from '../../../adapter';
 import { type TextAnnotation } from '../../../model';
-import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
 
 export class EditAnnotation extends AbstractAnnotationEventEdit {
   constructor(

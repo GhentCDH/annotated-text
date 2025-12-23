@@ -1,10 +1,10 @@
 import { pick } from 'lodash-es';
+import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
 import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
 import { type Position } from '../types';
 import { type CharacterPositionResult } from '../../position';
 import { type AnnotationAdapter } from '../../../adapter';
 import { type Dimensions, type TextAnnotation } from '../../../model';
-import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
 
 export class DragAnnotation extends AbstractAnnotationEventEdit {
   private dragBusy = false;

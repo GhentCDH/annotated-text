@@ -1,19 +1,15 @@
 import {
-  AnnotationRender,
-  type AnnotationRenderParams,
+  AnnotationDrawPath,
   clearAnnotatedTextCache,
   createAnnotatedText,
   createAnnotationFill,
   type createAnnotationPathFn,
-  createTextAnnotationRender,
   DefaultRenders,
   DefaultUnderlineAnnotationRenderStyle,
-  getColorsUnderline,
   GutterAnnotationRender,
   HighlightAnnotationRender,
   type PathParams,
-  type TextAdapterStyle,
-  type TextAnnotation,
+  SvgAnnotationRender,
   UnderLineAnnotationRender,
 } from '@ghentcdh/annotated-text';
 import { annotationColors } from '../data/const';
@@ -77,9 +73,10 @@ const createUnderlineWithCaps: createAnnotationPathFn = (
 };
 
 // Create the custom renderer class
-export class MyUnderLineAnnotationRenderer extends AnnotationRender<any> {
+export class MyUnderLineAnnotationRenderer extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
+  fillBg = false;
 
   static instance = 'my-underline-renderer';
 
@@ -87,21 +84,8 @@ export class MyUnderLineAnnotationRenderer extends AnnotationRender<any> {
     super(name, style, DefaultUnderlineAnnotationRenderStyle);
   }
 
-  createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
-    annotation: TextAnnotation,
-  ) {
-    return createTextAnnotationRender(
-      params,
-      this.style,
-      textStyle,
-      parentDimensions,
-      annotation,
-      createUnderlineWithCaps,
-      getColorsUnderline,
-    );
+  createPath(params: PathParams): AnnotationDrawPath {
+    return createUnderlineWithCaps(params);
   }
 }
 
@@ -132,7 +116,7 @@ const createWavesPath: createAnnotationPathFn = (params: PathParams) => {
 };
 
 // Create the custom renderer class
-export class WavesAnnotationRenderer extends AnnotationRender<any> {
+export class WavesAnnotationRenderer extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
 
@@ -142,26 +126,13 @@ export class WavesAnnotationRenderer extends AnnotationRender<any> {
     super(name, {}, DefaultUnderlineAnnotationRenderStyle);
   }
 
-  createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
-    annotation: TextAnnotation,
-  ) {
-    return createTextAnnotationRender(
-      params,
-      this.style,
-      textStyle,
-      parentDimensions,
-      annotation,
-      createWavesPath,
-      getColorsUnderline,
-    );
+  createPath(params: PathParams) {
+    return createWavesPath(params);
   }
 }
 
 // Create the custom renderer class
-export class SketchyRender extends AnnotationRender<any> {
+export class SketchyRender extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
 
@@ -171,52 +142,35 @@ export class SketchyRender extends AnnotationRender<any> {
     super(name, {}, DefaultUnderlineAnnotationRenderStyle);
   }
 
-  createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
-    annotation: TextAnnotation,
-  ) {
-    return createTextAnnotationRender(
-      params,
-      this.style,
-      textStyle,
-      parentDimensions,
-      annotation,
-      createSketchyPath,
-      getColorsUnderline,
-    );
+  createPath(params: PathParams): AnnotationDrawPath {
+    const { x, y: baseY, width, height } = params;
+    const segmentCount = 6;
+    const amplitude = 4;
+    const y = baseY + height;
+    const segmentWidth = width / segmentCount;
+    const path: string[] = [`M ${x} ${y}`];
+
+    for (let i = 0; i < segmentCount; i++) {
+      const startX = x + i * segmentWidth;
+      const endX = startX + segmentWidth;
+
+      // Random vertical offsets for control points
+      const y1 = y + (Math.random() - 0.5) * amplitude * 2;
+      const y2 = y + (Math.random() - 0.5) * amplitude * 2;
+
+      // Slightly randomize horizontal positions too
+      const x1 = startX + segmentWidth * (0.2 + Math.random() * 0.1);
+      const x2 = startX + segmentWidth * (0.7 + Math.random() * 0.1);
+
+      path.push(`C ${x1} ${y1}, ${x2} ${y2}, ${endX} ${y}`);
+    }
+
+    return {
+      border: path.join(' '),
+      fill: null,
+    };
   }
 }
-
-const createSketchyPath: createAnnotationPathFn = (params: PathParams) => {
-  const { x, y: baseY, width, height } = params;
-  const segmentCount = 6;
-  const amplitude = 4;
-  const y = baseY + height;
-  const segmentWidth = width / segmentCount;
-  const path: string[] = [`M ${x} ${y}`];
-
-  for (let i = 0; i < segmentCount; i++) {
-    const startX = x + i * segmentWidth;
-    const endX = startX + segmentWidth;
-
-    // Random vertical offsets for control points
-    const y1 = y + (Math.random() - 0.5) * amplitude * 2;
-    const y2 = y + (Math.random() - 0.5) * amplitude * 2;
-
-    // Slightly randomize horizontal positions too
-    const x1 = startX + segmentWidth * (0.2 + Math.random() * 0.1);
-    const x2 = startX + segmentWidth * (0.7 + Math.random() * 0.1);
-
-    path.push(`C ${x1} ${y1}, ${x2} ${y2}, ${endX} ${y}`);
-  }
-
-  return {
-    border: path.join(' '),
-    fill: null,
-  };
-};
 
 export const customAnnotationRender = (
   id_default: string,

@@ -5,12 +5,14 @@ export type GetColorsFn<STYLE extends AnnotationRenderStyle> = (
   style: STYLE,
   annotation: TextAnnotation,
   borders: boolean,
+  fillBg: boolean,
 ) => AnnotationDrawColors;
 
 export const getColors: GetColorsFn<any> = (
   style: any,
   annotation: TextAnnotation,
   borders = true,
+  fillBg = true,
 ) => {
   const hoverColor = style.hover.color;
   const editColor = style.edit.color;
@@ -18,7 +20,7 @@ export const getColors: GetColorsFn<any> = (
 
   return {
     default: {
-      fill: color.background,
+      fill: fillBg ? color.background : 'rgba(0,0,0,0)',
       border: borders ? color.border : undefined,
       borderWidth: style.borderWidth,
     },
