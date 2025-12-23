@@ -21,17 +21,17 @@ export const addDraggableAnnotation = (
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
 
-    dragAnnotation.startDrag({ x, y }, event);
+    dragAnnotation.start({ x, y }, 'start', event);
   };
 
   const onDragMove = () => (event: any) => {
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;
-    dragAnnotation.moveDrag({ x, y }, event);
+    dragAnnotation.move({ x, y }, 'start', event);
   };
 
   const onDragEnd = () => (event: any) => {
-    dragAnnotation.endDrag(event);
+    dragAnnotation.end(event);
   };
 
   return drag()
