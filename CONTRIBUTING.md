@@ -45,8 +45,7 @@ This is an [Nx](https://nx.dev/) monorepo. Key directories include:
 
 ```
 annotated-text/
-├── packages/           # Library packages
-├── apps/               # Demo applications
+├── libs/               # Library packages
 ├── docs/               # Documentation (VitePress)
 ├── tools/              # Build and release scripts
 └── dist/               # Build output

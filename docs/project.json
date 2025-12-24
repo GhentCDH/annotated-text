@@ -45,12 +45,5 @@
         "command": "vuepress dev docs"
       }
     }
-  },
-  "e2e": {
-    "executor": "@nx/playwright:playwright",
-    "outputs": ["{workspaceRoot}/docs/playwright-report"],
-    "options": {
-      "config": "docs/playwright.config.ts"
-    }
   }
 }
