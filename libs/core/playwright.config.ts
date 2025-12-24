@@ -16,7 +16,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? 'github' : 'html',
-  outputDir: './playwright-report',
+  outputDir: '../../playwright-report/libs/core',
 
   expect: {
     toHaveScreenshot: {

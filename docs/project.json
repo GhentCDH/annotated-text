@@ -10,11 +10,11 @@
       "outputs": ["{projectRoot}/.vuepress/api"],
       "options": {
         "command": "typedoc"
-      },
-      "cache": true
+      }
     },
     "build:menu": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build:typedoc"],
       "options": {
         "command": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs"
       }
