@@ -3,7 +3,7 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   PlainTextAdapter,
-  TextLineAdapter
+  TextLineAdapter,
 } from '@ghentcdh/annotated-text';
 
 // Clear any cached instances
@@ -47,41 +47,10 @@ rtlText
   .setText('مرحبا بالعالم. هذا نص عربي.')
   .setAnnotations([{ id: '1', start: 0, end: 5 }]);
 
-// Interactive with event logging
-const interactive = createAnnotatedText('interactive', {
-  text: PlainTextAdapter({}),
-  annotation: {
-    edit: true,
-    create: true,
-  },
-});
-
-const eventLog = document.getElementById('event-log')!;
-
-interactive
-  .setText(
-    'Click on annotations to see events. Try selecting text to create new annotations.',
-  )
-  .setAnnotations([
-    { id: '1', start: 0, end: 5 },
-    { id: '2', start: 9, end: 20 },
-  ])
-  .on('all', (event) => {
-    const logEntry = document.createElement('div');
-    logEntry.textContent = `Event: ${event.event} - ${JSON.stringify(event.data?.id ?? event.data)}`;
-    eventLog.appendChild(logEntry);
-
-    // Keep only last 5 events
-    while (eventLog.children.length > 5) {
-      eventLog.removeChild(eventLog.firstChild!);
-    }
-  });
-
 // Expose for test access
 (window as any).__testInstances = {
   basicText,
   withAnnotations,
   overlapping,
   rtlText,
-  interactive,
 };

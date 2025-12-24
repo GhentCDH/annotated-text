@@ -17,20 +17,58 @@ machines and CI. This guarantees that visual regression tests produce identical 
 ```
 libs/core/
 ├── e2e/
-│   ├── __snapshots__/       # Visual regression baseline images
-│   │   └── visual.spec.ts/
-│   │       ├── basic-text-linux.png
-│   │       ├── basic-text-darwin.png   # (if running locally on macOS)
-│   │       └── ...
-│   ├── index.html           # Test page with fixtures
-│   ├── setup.ts             # Test fixture initialization
-│   ├── basic.spec.ts        # Basic rendering tests
-│   ├── visual.spec.ts       # Visual regression tests
-│   └── ...
-├── playwright.config.ts     # Playwright configuration
-├── vite.e2e.config.ts       # Vite config for test server
+│   ├── __snapshots__/           # Visual regression baseline images
+│   │   ├── visual.spec.ts/
+│   │   ├── greektext.spec.ts/
+│   │   └── w3c.spec.ts/
+│   │
+│   ├── index.html               # Main test page
+│   ├── setup.ts                 # Main fixture initialization
+│   │
+│   ├── greektext.html           # Greek text test page
+│   ├── greektext.setup.ts       # Greek text fixtures
+│   ├── greektext.spec.ts        # Greek text tests
+│   │
+│   ├── w3c.html                 # W3C annotations test page
+│   ├── w3c.setup.ts             # W3C annotation fixtures
+│   ├── w3c.spec.ts              # W3C annotation tests
+│   │
+│   ├── basic.spec.ts            # Basic rendering tests
+│   ├── visual.spec.ts           # Visual regression tests
+│   └── annotation-creation.spec.ts  # Annotation workflow tests
+│
+├── playwright.config.ts         # Playwright configuration
+├── vite.e2e.config.ts           # Vite config for test server
 └── docker-compose.playwright.yml
 ```
+
+## Test Pages
+
+The E2E tests use multiple HTML pages to test different features:
+
+| Page | URL | Description |
+|------|-----|-------------|
+| Main | `/` or `/index.html` | Basic text, annotations, overlapping, RTL, interactive |
+| Greek Text | `/greektext.html` | TextLineAdapter with Greek papyrus text |
+| W3C Annotations | `/w3c.html` | W3CAnnotationAdapter with Web Annotation format |
+| Interactive | `/interactive.html` | Focused interactive annotation testing |
+
+### Greek Text Tests (`greektext.spec.ts`)
+
+Tests for the `TextLineAdapter` with ancient Greek text:
+- Line number parsing (e.g., `1.Χαίρημων Ἀπολλωνίωι`)
+- Greek diacritics preservation
+- Editorial marks (`[αι]`, `[ων]`)
+- Multi-line rendering with gutter
+
+### W3C Annotation Tests (`w3c.spec.ts`)
+
+Tests for the `W3CAnnotationAdapter`:
+- TextPositionSelector parsing
+- W3C annotation format compliance
+- TextualBody content handling
+- Tagging motivation annotations
+- Round-trip annotation creation (internal → W3C format)
 
 ## Snapshot Naming
 
@@ -55,6 +93,19 @@ Examples:
 |---------------------|-----------------------|--------------------------------------------------------------------------|
 | `nx e2e core`       | Docker (Linux)        | **Recommended for CI parity** - runs tests in the same environment as CI |
 | `nx e2e:local core` | Local (macOS/Windows) | Fast iteration during development (uses local platform snapshots)        |
+
+### Running Specific Test Files
+
+```bash
+# Run only Greek text tests
+nx e2e:local core -- --grep "Greek Text"
+
+# Run only W3C tests
+nx e2e:local core -- --grep "W3C"
+
+# Run a specific test file
+nx e2e:local core -- libs/core/e2e/greektext.spec.ts
+```
 
 ### Interactive UI Mode
 
@@ -116,12 +167,54 @@ nx e2e core
    git commit -m "Update visual regression snapshots"
    ```
 
+### Adding New Test Pages
+
+1. Create the HTML file (`e2e/myfeature.html`):
+   ```html
+   <!DOCTYPE html>
+   <html>
+     <head>
+       <title>My Feature Tests</title>
+     </head>
+     <body>
+       <div id="my-container"></div>
+       <script type="module" src="./myfeature.setup.ts"></script>
+     </body>
+   </html>
+   ```
+
+2. Create the setup file (`e2e/myfeature.setup.ts`):
+   ```ts
+   import { createAnnotatedText, PlainTextAdapter } from '@ghentcdh/annotated-text';
+
+   const instance = createAnnotatedText('my-container', {
+     text: PlainTextAdapter({}),
+   });
+   instance.setText('My test text');
+   ```
+
+3. Create the spec file (`e2e/myfeature.spec.ts`):
+   ```ts
+   import { test, expect } from '@playwright/test';
+
+   test.describe('My Feature', () => {
+     test.beforeEach(async ({ page }) => {
+       await page.goto('/myfeature.html');
+     });
+
+     test('renders correctly', async ({ page }) => {
+       const container = page.locator('#my-container');
+       await expect(container).toBeVisible();
+     });
+   });
+   ```
+
 ### Adding New Visual Tests
 
 1. Write your test using `toHaveScreenshot()`:
    ```ts
    test('my new feature renders correctly', async ({ page }) => {
-     await page.goto('/');
+     await page.goto('/myfeature.html');
      const element = page.locator('#my-element');
      await expect(element).toHaveScreenshot('my-feature.png');
    });
@@ -162,10 +255,15 @@ The `{platform}` in the snapshot path allows you to:
 
 ```
 __snapshots__/
-└── visual.spec.ts/
-    ├── basic-text-linux.png    # ✅ Commit (used by CI)
-    ├── basic-text-darwin.png   # 📋 Optional (local macOS dev)
-    └── basic-text-win32.png    # 📋 Optional (local Windows dev)
+├── visual.spec.ts/
+│   ├── basic-text-linux.png       # ✅ Commit (used by CI)
+│   └── basic-text-darwin.png      # 📋 Optional (local macOS dev)
+├── greektext.spec.ts/
+│   ├── greek-basic-text-linux.png
+│   └── ...
+└── w3c.spec.ts/
+    ├── w3c-basic-annotations-linux.png
+    └── ...
 ```
 
 ### Docker Image
@@ -218,31 +316,6 @@ export default defineConfig({
     url: 'http://localhost:4173',
   },
 });
-```
-
-### Adding Test Fixtures
-
-Edit `libs/core/e2e/setup.ts` to add new test scenarios:
-
-```ts
-const myFixture = createAnnotatedText('my-fixture', {
-  text: PlainTextAdapter({}),
-});
-myFixture
-  .setText('My test text')
-  .setAnnotations([
-    { id: '1', start: 0, end: 5 },
-  ]);
-```
-
-Then add the corresponding HTML in `libs/core/e2e/index.html`:
-
-```html
-
-<div class="test-container">
-  <h2>My Fixture</h2>
-  <div id="my-fixture"></div>
-</div>
 ```
 
 ## CI Integration

@@ -22,9 +22,7 @@ services:
     volumes:
       - ../..:/app
       - playwright_node_modules:/app/node_modules
-    ports:
-      - "8077:8077"
-      - "4173:4173"
+    network_mode: host
     environment:
       - CI=false
     ipc: host
@@ -33,7 +31,7 @@ services:
       - |
         npm install -g pnpm@10.8.1
         pnpm install --frozen-lockfile
-        npx playwright test -c libs/core/playwright.config.ts --ui --ui-port=8077 --ui-host=0.0.0.0
+        npx playwright test -c libs/core/playwright.config.ts --ui --ui-port=8077 --ui-host=localhost
 
   update-snapshots:
     image: mcr.microsoft.com/playwright:v1.56.0-jammy

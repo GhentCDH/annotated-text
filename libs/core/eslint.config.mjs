@@ -9,4 +9,10 @@ export default [
       parser: await import('jsonc-eslint-parser'),
     },
   },
+  {
+    files: ['**/e2e/**/*.spec.ts', '**/e2e/**/*.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
 ];
