@@ -37,11 +37,30 @@
       "executor": "nx:run-commands",
       "outputs": ["{projectRoot}/playwright-report"],
       "options": {
-        "command": "playwright test -c libs/core/playwright.config.ts",
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm playwright"
+        ],
         "cwd": "{workspaceRoot}"
       }
     },
     "e2e:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm --service-ports playwright-ui"
+        ],
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:local": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/playwright-report"],
+      "options": {
+        "command": "playwright test -c libs/core/playwright.config.ts",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:local:ui": {
       "executor": "nx:run-commands",
       "options": {
         "command": "playwright test -c libs/core/playwright.config.ts --ui",
@@ -51,7 +70,9 @@
     "e2e:update-snapshots": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "playwright test -c libs/core/playwright.config.ts --update-snapshots",
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm update-snapshots"
+        ],
         "cwd": "{workspaceRoot}"
       }
     }

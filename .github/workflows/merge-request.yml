@@ -56,10 +56,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
       - name: Run core e2e tests
         run: npx nx run core:e2e
+        env:
+          CI: true
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
@@ -67,4 +67,3 @@ jobs:
           name: playwright-report-core
           path: libs/core/playwright-report/
           retention-days: 30
-
