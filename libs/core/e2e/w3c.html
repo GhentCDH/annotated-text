@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>W3C Annotations - E2E Tests</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        padding: 20px;
+      }
+      .test-container {
+        margin: 20px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+      #event-log {
+        margin-top: 10px;
+        padding: 10px;
+        background: #f5f5f5;
+        font-family: monospace;
+        font-size: 12px;
+        max-height: 150px;
+        overflow-y: auto;
+      }
+      #event-log div {
+        padding: 2px 0;
+        border-bottom: 1px solid #eee;
+      }
+      #annotation-output {
+        margin-top: 10px;
+        padding: 10px;
+        background: #e8f5e9;
+        font-family: monospace;
+        font-size: 11px;
+        white-space: pre-wrap;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>W3C Web Annotation - Adapter Tests</h1>
+    
+    <div class="test-container">
+      <h2>Basic W3C Annotations</h2>
+      <p>Text with W3C format annotations (TextPositionSelector)</p>
+      <div id="w3c-basic"></div>
+    </div>
+
+    <div class="test-container">
+      <h2>W3C Annotations with Bodies</h2>
+      <p>Annotations with TextualBody content</p>
+      <div id="w3c-bodies"></div>
+    </div>
+
+    <div class="test-container">
+      <h2>W3C Tagging Annotations</h2>
+      <p>Annotations with tagging motivation</p>
+      <div id="w3c-tagging"></div>
+    </div>
+
+    <div class="test-container">
+      <h2>Interactive W3C Annotations</h2>
+      <p>Create and edit W3C annotations. New annotations are output as W3C format.</p>
+      <div id="w3c-interactive"></div>
+      <div id="event-log"></div>
+      <h3>W3C Annotation Output</h3>
+      <div id="annotation-output">Created annotations will appear here in W3C format...</div>
+    </div>
+
+    <script type="module" src="./w3c.setup.ts"></script>
+  </body>
+</html>

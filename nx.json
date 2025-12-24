@@ -19,7 +19,8 @@
       "plugin": "@nx/playwright/plugin",
       "options": {
         "targetName": "e2e"
-      }
+      },
+      "exclude": ["docs/**", "libs/vue-component/**", "libs/core/**"]
     },
     {
       "plugin": "@nx/js/typescript",

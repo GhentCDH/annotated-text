@@ -20,12 +20,18 @@
     "resolveJsonModule": true
     // Allows importing JSON
   },
-  "include": [
-    "tools/**/*"
-  ],
+  "include": ["tools/**/*"],
   // Adjust to match where your .ts files are
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "e2e/*",
+    "e2e/**/*",
+    "playwright.config.ts",
+    "setup.ts",
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts"
   ]
 }

@@ -9,22 +9,21 @@
     "skipLibCheck": true,
     "module": "ESNext",
     "target": "ES2020",
-    "lib": [
-      "ES2020",
-      "DOM"
-    ]
+    "lib": ["ES2020", "DOM"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": [
+    "e2e",
+    "e2e/**/*",
+    "playwright.config.ts",
+    "vite.e2e.config.ts",
     "vite.config.ts",
     "vite.config.mts",
     "vitest.config.ts",
     "vitest.config.mts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
+    "src/**/*.ct.spec.ts",
     "src/**/*.test.tsx",
     "src/**/*.spec.tsx",
     "src/**/*.test.js",
