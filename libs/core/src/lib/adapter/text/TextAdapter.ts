@@ -1,6 +1,6 @@
+import { pick } from 'lodash-es';
 import { BaseAdapter } from '../BaseAdapter';
 import { type TextLine } from '../../model';
-import { pick } from 'lodash-es';
 
 export type TextDirection = 'ltr' | 'rtl';
 
