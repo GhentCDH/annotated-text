@@ -46,7 +46,7 @@ export class TextLineAdapterImpl extends TextAdapter {
   name = 'TextLineAdapter';
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit!, this.textOffset);
+    return textToLines(text, this.limit, this.textOffset);
   }
 }
 

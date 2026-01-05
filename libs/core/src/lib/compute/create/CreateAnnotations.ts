@@ -99,7 +99,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   private configListener() {
     return () => {
-      this.recreateAnnotationModel();
+      this.setAnnotations(this.annotations());
     };
   }
 
@@ -331,16 +331,6 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   public selectAnnotations(ids: AnnotationId[]) {
     this.annotationColors.selectAnnotations(ids, this.svgModel);
-    return this;
-  }
-
-  private recreateAnnotationModel() {
-    this.createAnnotationModel();
-    this.annotationsMap.clear();
-    this.annotations().forEach((annotation) => {
-      this.annotationsMap.set(annotation.id, annotation);
-    });
-    this.redrawSvg();
     return this;
   }
 

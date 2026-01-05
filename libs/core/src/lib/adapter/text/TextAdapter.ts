@@ -1,3 +1,4 @@
+import { pick } from 'lodash-es';
 import { BaseAdapter } from '../BaseAdapter';
 import { type TextLine } from '../../model';
 
@@ -33,7 +34,7 @@ export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = 'ltr';
   flatText = false;
-  private _limit: Limit | null = null;
+  limit: Limit | null = null;
   textOffset = 0;
   style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
 
@@ -44,12 +45,15 @@ export abstract class TextAdapter extends BaseAdapter {
    */
   abstract parse(text: string): TextLine[];
 
-  set limit(limit: Limit | null | undefined) {
-    this._limit = limit ?? null;
-  }
+  getLimit(lines: TextLine[]) {
+    if (!this.limit) return null;
+    if (this.limit.ignoreLines || lines.length === 0)
+      return pick(this.limit, ['start', 'end']);
 
-  get limit() {
-    return this._limit;
+    const start = Math.min(this.limit.start, lines[0].start);
+    const end = Math.max(this.limit.end, lines[lines.length - 1].end);
+
+    return { start, end };
   }
 
   public setLineHeight(height: number) {
@@ -145,7 +149,7 @@ export const createTextAdapter = (
     adapter.textDirection = params.textDirection;
   }
   adapter.flatText = !!params.flatText;
-  adapter.limit = params.limit;
+  adapter.limit = params.limit ?? null;
   adapter.textOffset = params.textOffset ?? 0;
 
   adapter.style = Object.assign(DefaultTextAdapterStyle, params.style ?? {});

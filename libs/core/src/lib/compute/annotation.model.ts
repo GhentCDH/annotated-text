@@ -12,6 +12,8 @@ import { type TextDirection } from '../adapter/text';
 import { type AnnotationRenderParams } from '../adapter/annotation/renderer/annotation-render';
 import { type RenderInstances } from '../adapter/annotation/renderer/render-instances';
 
+// TODO should this exist?
+// Maybe it should go to the abstract AnnotationAdapter and TextAdapter instead
 export interface TextAnnotationModel {
   renderParams: AnnotationRenderParams;
 
