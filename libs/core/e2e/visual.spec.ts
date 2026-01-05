@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('AnnotatedText Core - Visual Regression', () => {
   test.beforeEach(async ({ page }) => {
@@ -36,8 +36,12 @@ test.describe('AnnotatedText Core - Position Assertions', () => {
 
   test('annotation covers correct text range', async ({ page }) => {
     // Get positions of annotations
-    const annotation1 = page.locator('[data-annotation-uid="1"][data-annotation-role="fill"]').first();
-    const annotation2 = page.locator('[data-annotation-uid="2"][data-annotation-role="fill"]').first();
+    const annotation1 = page
+      .locator('[data-annotation-uid="1"][data-annotation-role="fill"]')
+      .first();
+    const annotation2 = page
+      .locator('[data-annotation-uid="2"][data-annotation-role="fill"]')
+      .first();
 
     const box1 = await annotation1.boundingBox();
     const box2 = await annotation2.boundingBox();
@@ -52,37 +56,49 @@ test.describe('AnnotatedText Core - Position Assertions', () => {
     expect(box2!.height).toBeGreaterThan(0);
   });
 
-  test('overlapping annotations have different y positions', async ({ page }) => {
+  test('overlapping annotations have different y positions', async ({
+    page,
+  }) => {
     const container = page.locator('#overlapping');
     await expect(container).toBeVisible();
 
     // Get all three overlapping annotations
     const boxes = await Promise.all([
-      page.locator('[data-annotation-uid="1"][data-annotation-role="fill"]').first().boundingBox(),
-      page.locator('[data-annotation-uid="2"][data-annotation-role="fill"]').first().boundingBox(),
-      page.locator('[data-annotation-uid="3"][data-annotation-role="fill"]').first().boundingBox(),
+      page
+        .locator('[data-annotation-uid="1"][data-annotation-role="fill"]')
+        .first()
+        .boundingBox(),
+      page
+        .locator('[data-annotation-uid="2"][data-annotation-role="fill"]')
+        .first()
+        .boundingBox(),
+      page
+        .locator('[data-annotation-uid="3"][data-annotation-role="fill"]')
+        .first()
+        .boundingBox(),
     ]);
 
     // All should be rendered
-    boxes.forEach(box => {
+    boxes.forEach((box) => {
       expect(box).not.toBeNull();
       expect(box!.width).toBeGreaterThan(0);
     });
 
     // Overlapping annotations should stack (have different y or be layered)
-    const yPositions = boxes.map(b => b!.y);
-    const heights = boxes.map(b => b!.height);
-    
+    const heights = boxes.map((b) => b!.height);
+
     // Verify they're all visible (not collapsed)
-    heights.forEach(h => expect(h).toBeGreaterThan(0));
+    heights.forEach((h) => expect(h).toBeGreaterThan(0));
   });
 
   test('annotation position updates when text changes', async ({ page }) => {
-    const annotation = page.locator('[data-annotation-uid="1"][data-annotation-role="fill"]').first();
-    
+    const annotation = page
+      .locator('[data-annotation-uid="1"][data-annotation-role="fill"]')
+      .first();
+
     const initialBox = await annotation.boundingBox();
     expect(initialBox).not.toBeNull();
-    
+
     // Store initial position
     const initialX = initialBox!.x;
     const initialWidth = initialBox!.width;
