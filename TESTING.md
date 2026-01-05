@@ -50,12 +50,28 @@ libs/core/
 
 ## Coverage Badge
 
-![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FGhentCDH%2Fannotated-text%2Fmain%2F.github%2Fbadges%2Fcoverage.json)
+[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FGhentCDH%2Fannotated-text%2Fgh-pages%2Fbadges%2Fcoverage.json)](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml)
 
 The badge is automatically updated on each push to `main`. It uses:
-- **shields.io endpoint badge** - reads from `.github/badges/coverage.json`
+- **shields.io endpoint badge** - reads from `gh-pages` branch
 - No external account required
 - Combined coverage from unit + E2E tests
+
+### Initial Setup for Coverage Badge
+
+The coverage badge is stored on the `gh-pages` branch. If this is the first time setting it up:
+
+```bash
+# Create gh-pages branch if it doesn't exist
+git checkout --orphan gh-pages
+git reset --hard
+mkdir -p badges
+echo '{"schemaVersion":1,"label":"coverage","message":"0%","color":"red"}' > badges/coverage.json
+git add badges/coverage.json
+git commit -m "chore: initialize coverage badge"
+git push origin gh-pages
+git checkout main
+```
 
 ## Commands
 
@@ -187,15 +203,14 @@ GitHub Actions workflow (`.github/workflows/merge-request.yml`):
 3. **update-coverage-badge** job (main branch only):
    - Downloads coverage from both jobs
    - Calculates combined coverage
-   - Updates `.github/badges/coverage.json`
-   - Commits the updated badge
+   - Updates `badges/coverage.json` on `gh-pages` branch
 
 ## How Coverage Badge Works
 
 1. Each job generates `coverage-summary.json`
 2. The `update-coverage-badge` job reads both summaries
 3. Calculates combined coverage (average of unit + E2E)
-4. Creates a JSON file for shields.io:
+4. Creates a JSON file for shields.io on `gh-pages` branch:
    ```json
    {
      "schemaVersion": 1,
@@ -255,8 +270,8 @@ Use `nx e2e core` (Docker) instead of `nx e2e:local core`. Commit `-linux.png` s
 ### Badge not updating
 
 1. Badge only updates on pushes to `main`
-2. Check Actions log for the `update-coverage-badge` job
-3. Verify `.github/badges/coverage.json` was committed
+2. Ensure `gh-pages` branch exists with `badges/` directory
+3. Check Actions log for the `update-coverage-badge` job
 
 ### Port in use
 

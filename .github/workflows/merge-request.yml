@@ -106,31 +106,33 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/use-cache
+        with:
+          ref: gh-pages
+          fetch-depth: 0
       - name: Download unit coverage
         uses: actions/download-artifact@v4
         with:
           name: coverage-report-unit
-          path: libs/core/coverage/unit/
+          path: coverage/unit/
       - name: Download e2e coverage
         uses: actions/download-artifact@v4
         with:
           name: coverage-report-e2e
-          path: libs/core/coverage/e2e/
+          path: coverage/e2e/
       - name: Generate coverage badge JSON
         run: |
-          mkdir -p .github/badges
+          mkdir -p badges
           
           # Get unit coverage
           UNIT_COV=0
-          if [ -f libs/core/coverage/unit/coverage-summary.json ]; then
-            UNIT_COV=$(node -e "const c = require('./libs/core/coverage/unit/coverage-summary.json'); console.log(c.total.lines.pct)")
+          if [ -f coverage/unit/coverage-summary.json ]; then
+            UNIT_COV=$(node -e "const c = require('./coverage/unit/coverage-summary.json'); console.log(c.total.lines.pct)")
           fi
           
           # Get e2e coverage  
           E2E_COV=0
-          if [ -f libs/core/coverage/e2e/coverage-summary.json ]; then
-            E2E_COV=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
+          if [ -f coverage/e2e/coverage-summary.json ]; then
+            E2E_COV=$(node -e "const c = require('./coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
           fi
           
           # Calculate combined (average)
@@ -148,7 +150,7 @@ jobs:
           fi
           
           # Create badge JSON for shields.io endpoint
-          cat > .github/badges/coverage.json << EOF
+          cat > badges/coverage.json << EOF
           {
             "schemaVersion": 1,
             "label": "coverage",
@@ -158,11 +160,11 @@ jobs:
           EOF
           
           echo "Unit: ${UNIT_COV}%, E2E: ${E2E_COV}%, Combined: ${COMBINED}%"
-          cat .github/badges/coverage.json
-      - name: Commit coverage badge
+          cat badges/coverage.json
+      - name: Commit coverage badge to gh-pages
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add .github/badges/coverage.json
-          git diff --staged --quiet || git commit -m "chore: update coverage badge [skip ci]"
-          git push
+          git add badges/coverage.json
+          git diff --staged --quiet || git commit -m "chore: update coverage badge"
+          git push origin gh-pages
