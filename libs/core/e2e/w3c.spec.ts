@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('W3C Web Annotations', () => {
   test.beforeEach(async ({ page }) => {

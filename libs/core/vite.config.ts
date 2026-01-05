@@ -52,11 +52,22 @@ export default defineConfig(() => ({
     globals: true,
     environment: 'node',
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    exclude: ['e2e/**/*', 'node_modules/**/*'],
     reporters: ['default'],
     coverage: {
-      provider: 'v8', // or 'istanbul'
-      reporter: ['text', 'json', 'json-summary', 'lcov'],
-      reportsDirectory: './coverage',
+      provider: 'v8',
+      enabled: false, // Enable via --coverage flag
+      reporter: ['text', 'text-summary', 'json', 'json-summary', 'lcov', 'html'],
+      reportsDirectory: './coverage/unit',
+      include: ['src/**/*.ts'],
+      exclude: [
+        '**/*.spec.ts',
+        '**/*.test.ts',
+        '**/e2e/**',
+        '**/*.d.ts',
+        '**/index.ts',
+        '**/__tests__/**',
+      ],
     },
   },
 }));

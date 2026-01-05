@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('AnnotatedText Core - Basic Rendering', () => {
   test.beforeEach(async ({ page }) => {

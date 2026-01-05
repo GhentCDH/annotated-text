@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('Greek Text - TextLineAdapter', () => {
   test.beforeEach(async ({ page }) => {

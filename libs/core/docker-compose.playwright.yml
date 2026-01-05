@@ -50,5 +50,26 @@ services:
         pnpm install --frozen-lockfile
         npx playwright test -c libs/core/playwright.config.ts --update-snapshots
 
+  playwright-coverage:
+    image: mcr.microsoft.com/playwright:v1.56.0-jammy
+    working_dir: /app
+    volumes:
+      - ../..:/app
+      - playwright_node_modules:/app/node_modules
+    network_mode: host
+    environment:
+      - CI=${CI:-false}
+      - COVERAGE=true
+    ipc: host
+    entrypoint: /bin/sh -c
+    command:
+      - |
+        npm install -g pnpm@10.8.1
+        pnpm install --frozen-lockfile
+        COVERAGE=true npx playwright test -c libs/core/playwright.config.ts
+        npx nyc report --reporter=text --reporter=text-summary --reporter=html --reporter=lcov --reporter=json-summary
+        echo ""
+        echo "✓ Coverage report generated in libs/core/coverage/e2e/"
+
 volumes:
   playwright_node_modules:

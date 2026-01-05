@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('AnnotatedText Core - Visual Regression', () => {
   test.beforeEach(async ({ page }) => {
