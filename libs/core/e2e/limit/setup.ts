@@ -1,5 +1,10 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { clearAnnotatedTextCache, createAnnotatedText, type Limit, TextLineAdapter } from '@ghentcdh/annotated-text';
+import {
+  clearAnnotatedTextCache,
+  createAnnotatedText,
+  type Limit,
+  TextLineAdapter,
+} from '@ghentcdh/annotated-text';
 
 // Clear any cached instances
 clearAnnotatedTextCache();

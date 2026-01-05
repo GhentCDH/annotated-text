@@ -50,7 +50,7 @@ const updateLine: UpdateLineFn = (
 
 const textToLines = (
   text: string,
-  limit: Limit,
+  limit: Limit | null,
   textOffset: number,
 ): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
@@ -66,7 +66,7 @@ export class PlainTextAdapterImpl extends TextAdapter {
   name = 'PlainTextAdapter';
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this._limit!, this.textOffset);
+    return textToLines(text, this.limit, this.textOffset);
   }
 }
 
