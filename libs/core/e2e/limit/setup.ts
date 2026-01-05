@@ -53,13 +53,13 @@ const renderDemo = (
 
 renderDemo('Show everything', 'No limit', undefined);
 const limitAfterInit = renderDemo(
-  'Limit after initital init [10-30]',
+  'Limit after initial init [10-30]',
   'limit-after-init',
   undefined,
 );
 limitAfterInit.changeTextAdapterConfig('limit', { start: 10, end: 30 });
 const limitAfterIgnoreLinesInit = renderDemo(
-  'Limit after initital init - ignore lines init [10-30]',
+  'Limit after initial init - ignore lines init [10-30]',
   'limit-after-init-ignore-lines',
   undefined,
 );
@@ -71,7 +71,7 @@ limitAfterIgnoreLinesInit.changeTextAdapterConfig('limit', {
 
 annotations.forEach((a) => {
   renderDemo(
-    `Single annotation - [${a.start - a.end}]`,
+    `Single annotation - [${a.start} - ${a.end}]`,
     `no-ignore-lines-${a.id}`,
     {
       start: a.start,
@@ -84,7 +84,7 @@ annotations.forEach((a) => {
 
 annotations.forEach((a) => {
   renderDemo(
-    `Single annotation - Ignore lines [${a.start - a.end}]`,
+    `Single annotation - Ignore lines [${a.start} - ${a.end}]`,
     `ignore-lines-${a.id}`,
     {
       start: a.start,

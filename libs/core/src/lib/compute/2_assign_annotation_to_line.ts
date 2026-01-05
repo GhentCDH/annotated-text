@@ -67,12 +67,12 @@ export const assignAnnotationsToLines = <ANNOTATION>(
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
+  const limit = textAdapter.getLimit(model.lines);
 
   annotations?.forEach((annotation) => {
     const clonedAnnotation = annotationAdapter.parse(annotation);
     if (!clonedAnnotation) return;
 
-    const limit = textAdapter.getLimit(model.lines);
     if (limit && !isIntersection(clonedAnnotation, limit)) {
       return;
     }

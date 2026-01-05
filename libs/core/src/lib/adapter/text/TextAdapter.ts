@@ -1,5 +1,6 @@
 import { BaseAdapter } from '../BaseAdapter';
 import { type TextLine } from '../../model';
+import { pick } from 'lodash-es';
 
 export type TextDirection = 'ltr' | 'rtl';
 
@@ -46,12 +47,13 @@ export abstract class TextAdapter extends BaseAdapter {
 
   getLimit(lines: TextLine[]) {
     if (!this.limit) return null;
-    if (this.limit?.ignoreLines) return this.limit;
+    if (this.limit.ignoreLines || lines.length === 0)
+      return pick(this.limit, ['start', 'end']);
 
-    return {
-      start: lines[0].start,
-      end: lines[lines.length - 1].end,
-    };
+    const start = Math.min(this.limit.start, lines[0].start);
+    const end = Math.max(this.limit.end, lines[lines.length - 1].end);
+
+    return { start, end };
   }
 
   public setLineHeight(height: number) {
