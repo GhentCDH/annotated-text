@@ -1,0 +1,11 @@
+{
+  "all": true,
+  "include": ["libs/core/src/**/*.ts"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "**/e2e/**", "**/*.d.ts", "**/__tests__/**"],
+  "reporter": ["text", "text-summary", "html", "lcov", "json-summary"],
+  "report-dir": "libs/core/coverage/e2e",
+  "temp-dir": "libs/core/coverage/e2e/.nyc_output",
+  "check-coverage": false,
+  "sourceMap": true,
+  "instrument": false
+}

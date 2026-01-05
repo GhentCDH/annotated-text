@@ -7,5 +7,16 @@
     "allowSyntheticDefaultImports": true
   },
   "extends": "./tsconfig.base.json",
-  "references": []
+  "references": [],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "dist",
+    "**/playwright.config.ts",
+    "**/playwright-ct.config.ts",
+    "**/vite.e2e.config.ts",
+    "**/e2e/**",
+    "**/*.ct.spec.ts",
+    "**/playwright/**"
+  ]
 }

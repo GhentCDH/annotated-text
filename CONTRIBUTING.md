@@ -1,76 +1,182 @@
-# Contributing Guide
+# Contributing to @ghentcdh/annotated-text
 
-We're really excited that you are interested in contributing. Please take a moment to read through our [Code of Conduct](CODE_OF_CONDUCT.md) first. All contributions (participation in discussions, issues, pull requests, ...) are welcome. Unfortunately, we cannot make commitments that issues will be resolved or pull requests will be merged swiftly, especially for new features.
+Thank you for your interest in contributing to the annotated-text library! This document provides guidelines and
+instructions for contributing.
 
-## Recommended IDE Setup
+## Prerequisites
 
-* [VSCode](https://code.visualstudio.com/)
-* [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur)
-* [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
-* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-* [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-* [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
-* [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
+Before you begin, ensure you have the following installed:
 
-### Type Support for `.vue` Imports in TS
+- **Node.js** >= 22
+- **pnpm** >= 10
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+You can verify your versions with:
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Useful commands
-
-### Install development dependencies
-
-```sh
-yarn install
+```bash
+node --version
+pnpm --version
 ```
 
-### Compile and Hot-Reload for Development (only Vue 3)
+## Getting Started
 
-```sh
-yarn dev
+1. Fork the repository on GitHub
+2. Clone your fork locally:
+
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/annotated-text.git
+   cd annotated-text
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+4. Set up Git hooks:
+
+   ```bash
+   pnpm prepare
+   ```
+
+## Project Structure
+
+This is an [Nx](https://nx.dev/) monorepo. Key directories include:
+
+```
+annotated-text/
+├── libs/               # Library packages
+├── docs/               # Documentation (VitePress)
+├── tools/              # Build and release scripts
+└── dist/               # Build output
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Development Workflow
 
-#### Vue 2
+### Running the Development Server
 
-```sh
-yarn test:vue2
+```bash
+pnpm nx serve docs
 ```
 
-#### Vue 3
+### Building
 
-```sh
-yarn test:vue3
+```bash
+pnpm nx build docs
 ```
 
-#### Coverage
+To build all projects:
 
-```sh
-yarn test:coverage
+```bash
+pnpm nx run-many -t build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Running Tests
 
-```sh
-yarn lint
+Unit tests use [Vitest](https://vitest.dev/):
+
+```bash
+pnpm nx test core
 ```
 
-### Type check
+End-to-end tests use [Playwright](https://playwright.dev/):
 
-```sh
-yarn type-check
+```bash
+pnpm nx e2e docs
 ```
 
-### Compile and Hot-Reload documentation with [VitePress](https://vitepress.vuejs.org/)
+### Linting
 
-```sh
-yarn docs:dev
+```bash
+pnpm nx lint <project-name>
 ```
+
+## Code Style
+
+This project uses automated code formatting and linting:
+
+- **ESLint** for JavaScript/TypeScript/Vue linting
+- **Prettier** for code formatting
+- **Stylelint** for CSS/SCSS linting
+
+Pre-commit hooks (via Husky and lint-staged) automatically format and lint staged files. To manually format your code:
+
+```bash
+pnpm prettier --write "**/*.{js,ts,vue,css,scss}"
+```
+
+## Commit Guidelines
+
+We use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages. This enables automatic
+changelog generation.
+
+### Format
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+### Types
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, semicolons, etc.)
+- `refactor`: Code changes that neither fix bugs nor add features
+- `perf`: Performance improvements
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks (dependencies, build config, etc.)
+
+### Examples
+
+```
+feat(renderer): add curved underline style option
+fix(highlight): correct color opacity calculation
+docs: update API reference for AnnotationManager
+```
+
+## Pull Request Process
+
+1. Create a new branch from `main`:
+
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+
+2. Make your changes and commit using conventional commit messages
+
+3. Ensure all tests pass:
+
+   ```bash
+   pnpm nx run-many -t test
+   pnpm nx run-many -t lint
+   ```
+
+4. Push your branch and open a pull request against `main`
+
+5. Fill out the pull request template, describing your changes
+
+6. Wait for review—address any feedback from maintainers
+
+## Reporting Issues
+
+When reporting bugs, please include:
+
+- A clear description of the issue
+- Steps to reproduce
+- Expected vs. actual behavior
+- Browser and OS information
+- Minimal reproduction (if possible)
+
+## Questions?
+
+If you have questions or need help, feel free to open
+a [GitHub Discussion](https://github.com/GhentCDH/annotated-text/discussions) or reach out to the maintainers.
+
+## License
+
+By contributing, you agree that your contributions will be licensed under the [MIT License](LICENSE).

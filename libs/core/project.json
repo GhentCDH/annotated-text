@@ -11,9 +11,7 @@
     },
     "build": {
       "executor": "@nx/vite:build",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/core",
         "configFile": "libs/core/vite.config.ts"
@@ -29,15 +27,76 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{options.outputPath}"
-      ]
+      "outputs": ["{projectRoot}/coverage/unit"]
+    },
+    "e2e": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/playwright-report"],
+      "options": {
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm playwright"
+        ],
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm --service-ports playwright-ui"
+        ],
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:local": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/playwright-report"],
+      "options": {
+        "command": "playwright test -c libs/core/playwright.config.ts",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:local:ui": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test -c libs/core/playwright.config.ts --ui",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:update-snapshots": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm update-snapshots"
+        ],
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:coverage": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/coverage/e2e"],
+      "options": {
+        "commands": [
+          "docker compose -f libs/core/docker-compose.playwright.yml run --rm playwright-coverage"
+        ],
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "e2e:coverage:local": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/coverage/e2e"],
+      "options": {
+        "commands": [
+          "COVERAGE=true playwright test -c libs/core/playwright.config.ts",
+          "npx nyc report --reporter=text --reporter=text-summary --reporter=html --reporter=lcov --reporter=json-summary"
+        ],
+        "cwd": "{workspaceRoot}",
+        "parallel": false
+      }
     }
   },
   "tags": []

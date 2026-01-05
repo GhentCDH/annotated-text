@@ -37,7 +37,7 @@ jobs:
       - uses: ./.github/actions/use-cache
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - run: DOCS_BASE=/annotated-text  pnpm run docs:build
+      - run: DOCS_BASE=/annotated-text npx nx run docs:build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

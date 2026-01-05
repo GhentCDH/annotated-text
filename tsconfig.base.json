@@ -26,6 +26,10 @@
   },
   "exclude": [
     "node_modules",
-    "tmp"
+    "tmp",
+    "**/playwright.config.ts",
+    "**/playwright-ct.config.ts",
+    "**/e2e/**",
+    "**/*.ct.spec.ts"
   ]
 }

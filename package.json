@@ -22,12 +22,6 @@
     "dist/**/*"
   ],
   "scripts": {
-    "docs:build:typedoc": "typedoc",
-    "docs:build:vuepress": "vuepress build docs ",
-    "docs:build:menu": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs",
-    "docs:build": "pnpm run docs:build:typedoc &&  pnpm run docs:build:menu && pnpm run docs:build:vuepress",
-    "docs:preview": "vuepress dev docs",
-    "docs:dev": "pnpm run docs:build:typedoc && pnpm run docs:build:menu && vuepress dev docs",
     "prepare": "husky install",
     "release": "git checkout main && git pull && node tools/release/release.mjs"
   },
@@ -84,6 +78,7 @@
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-playwright": "1.8.3",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.5.1",
     "fs-extra": "11.3.2",
@@ -94,6 +89,7 @@
     "lint-staged": "^16.2.6",
     "npm-run-all": "^4.1.5",
     "nx": "22.0.1",
+    "nyc": "^17.1.0",
     "prettier": "^3.6.2",
     "prism-themes": "^1.9.0",
     "rollup": "^4.52.5",
@@ -117,6 +113,7 @@
     "vite": "7.1.12",
     "vite-plugin-checker": "0.11.0",
     "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-istanbul": "^6.0.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitepress": "^1.6.4",
     "vitest": "^4.0.2",

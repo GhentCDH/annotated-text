@@ -1,6 +1,7 @@
-![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fannotated-text?link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40ghentcdh%2Fannotated-text)
+[![NPM Version](https://img.shields.io/npm/v/%40ghentcdh%2Fannotated-text)](https://www.npmjs.com/package/@ghentcdh/annotated-text)
 [![Build](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml/badge.svg)](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml)
 [![Publish](https://github.com/GhentCDH/annotated-text/actions/workflows/publish.yml/badge.svg)](https://github.com/GhentCDH/annotated-text/actions/workflows/publish.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FGhentCDH%2Fannotated-text%2Fmain%2F.github%2Fbadges%2Fcoverage.json)](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml)
 
 # Component annotated text
 
