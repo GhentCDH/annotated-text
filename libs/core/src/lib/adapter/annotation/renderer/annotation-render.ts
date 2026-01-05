@@ -281,20 +281,3 @@ export const DefaultAnnotationRenderStyle = {
  * ```
  */
 export type AnnotationRenderStyle = typeof DefaultAnnotationRenderStyle;
-
-// export const DefaultTextAnnotationRenderStyle = {
-//   ...cloneDeep(DefaultAnnotationRenderStyle),
-//   borderWidth: 2,
-//   borderRadius: 6,
-//   //TODO  These are defined somewhere else too, check how it is done with the gutters
-//   padding: 6,
-//   lineHeight: 22,
-// };
-// export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
-// export const DefaultGutterAnnotationRenderStyle = {
-//   ...cloneDeep(DefaultTextAnnotationRenderStyle),
-//   width: 3,
-//   gap: 6,
-// };
-// export type GutterAnnotationRenderStyle =
-//   typeof DefaultGutterAnnotationRenderStyle;

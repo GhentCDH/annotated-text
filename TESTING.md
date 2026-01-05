@@ -8,7 +8,7 @@ The project uses:
 - **Vitest** for unit testing with v8 coverage
 - **Playwright** for E2E testing with Istanbul coverage
 - **Docker** to ensure consistent rendering across environments
-- **Shields.io** for dynamic coverage badges (no account needed)
+- **GitHub Actions** job summaries for coverage reporting
 
 ## Prerequisites
 
@@ -48,30 +48,14 @@ libs/core/
 └── vite.e2e.config.ts           # E2E test config
 ```
 
-## Coverage Badge
+## Coverage Reporting
 
-[![Coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FGhentCDH%2Fannotated-text%2Fgh-pages%2Fbadges%2Fcoverage.json)](https://github.com/GhentCDH/annotated-text/actions/workflows/merge-request.yml)
+Coverage is displayed in the **GitHub Actions job summary** for each workflow run. Click on any workflow run to see:
 
-The badge is automatically updated on each push to `main`. It uses:
-- **shields.io endpoint badge** - reads from `gh-pages` branch
-- No external account required
-- Combined coverage from unit + E2E tests
+- 🧪 **Unit Test Coverage** - Lines, Branches, Functions, Statements
+- 🎭 **E2E Test Coverage** - Lines, Branches, Functions, Statements
 
-### Initial Setup for Coverage Badge
-
-The coverage badge is stored on the `gh-pages` branch. If this is the first time setting it up:
-
-```bash
-# Create gh-pages branch if it doesn't exist
-git checkout --orphan gh-pages
-git reset --hard
-mkdir -p badges
-echo '{"schemaVersion":1,"label":"coverage","message":"0%","color":"red"}' > badges/coverage.json
-git add badges/coverage.json
-git commit -m "chore: initialize coverage badge"
-git push origin gh-pages
-git checkout main
-```
+Coverage reports are also uploaded as **artifacts** that you can download.
 
 ## Commands
 
@@ -193,37 +177,14 @@ GitHub Actions workflow (`.github/workflows/merge-request.yml`):
 
 1. **test** job:
    - Runs unit tests with coverage
-   - Displays coverage in job summary
+   - Displays coverage table in job summary
+   - Uploads coverage report as artifact
 
 2. **e2e-core** job:
    - Runs E2E tests with coverage in Docker
-   - Displays coverage in job summary
+   - Displays coverage table in job summary
    - Uploads Playwright report as artifact
-
-3. **update-coverage-badge** job (main branch only):
-   - Downloads coverage from both jobs
-   - Calculates combined coverage
-   - Updates `badges/coverage.json` on `gh-pages` branch
-
-## How Coverage Badge Works
-
-1. Each job generates `coverage-summary.json`
-2. The `update-coverage-badge` job reads both summaries
-3. Calculates combined coverage (average of unit + E2E)
-4. Creates a JSON file for shields.io on `gh-pages` branch:
-   ```json
-   {
-     "schemaVersion": 1,
-     "label": "coverage",
-     "message": "75%",
-     "color": "yellow"
-   }
-   ```
-5. Badge colors:
-   - 🟢 Green: ≥80%
-   - 🟡 Yellow: ≥60%
-   - 🟠 Orange: ≥40%
-   - 🔴 Red: <40%
+   - Uploads coverage report as artifact
 
 ## Docker
 
@@ -266,12 +227,6 @@ Use `nx e2e core` (Docker) instead of `nx e2e:local core`. Commit `-linux.png` s
    ```bash
    nx e2e:coverage:local core
    ```
-
-### Badge not updating
-
-1. Badge only updates on pushes to `main`
-2. Ensure `gh-pages` branch exists with `badges/` directory
-3. Check Actions log for the `update-coverage-badge` job
 
 ### Port in use
 

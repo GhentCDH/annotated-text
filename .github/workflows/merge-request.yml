@@ -7,7 +7,7 @@ on:
     branches: [ master, main ]
 
 permissions:
-  contents: write
+  contents: read
   
 env:
   DEPENDENCIES_CACHE: cache-node-modules
@@ -42,13 +42,21 @@ jobs:
       - uses: ./.github/actions/use-cache
       - name: Run unit tests with coverage
         run: npx nx run core:test --coverage
-      - name: Generate coverage summary
-        id: coverage
+      - name: Coverage summary
         run: |
           if [ -f libs/core/coverage/unit/coverage-summary.json ]; then
-            COVERAGE=$(node -e "const c = require('./libs/core/coverage/unit/coverage-summary.json'); console.log(c.total.lines.pct)")
-            echo "unit_coverage=$COVERAGE" >> $GITHUB_OUTPUT
-            echo "### Unit Test Coverage: ${COVERAGE}%" >> $GITHUB_STEP_SUMMARY
+            LINES=$(node -e "const c = require('./libs/core/coverage/unit/coverage-summary.json'); console.log(c.total.lines.pct)")
+            BRANCHES=$(node -e "const c = require('./libs/core/coverage/unit/coverage-summary.json'); console.log(c.total.branches.pct)")
+            FUNCTIONS=$(node -e "const c = require('./libs/core/coverage/unit/coverage-summary.json'); console.log(c.total.functions.pct)")
+            STATEMENTS=$(node -e "const c = require('./libs/core/coverage/unit/coverage-summary.json'); console.log(c.total.statements.pct)")
+            echo "## 🧪 Unit Test Coverage" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | ${FUNCTIONS}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
           fi
       - name: Upload unit test coverage report
         uses: actions/upload-artifact@v4
@@ -77,13 +85,21 @@ jobs:
         env:
           CI: true
           COVERAGE: true
-      - name: Generate coverage summary
-        id: coverage
+      - name: Coverage summary
         run: |
           if [ -f libs/core/coverage/e2e/coverage-summary.json ]; then
-            COVERAGE=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
-            echo "e2e_coverage=$COVERAGE" >> $GITHUB_OUTPUT
-            echo "### E2E Test Coverage: ${COVERAGE}%" >> $GITHUB_STEP_SUMMARY
+            LINES=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
+            BRANCHES=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.branches.pct)")
+            FUNCTIONS=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.functions.pct)")
+            STATEMENTS=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.statements.pct)")
+            echo "## 🎭 E2E Test Coverage" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | ${FUNCTIONS}% |" >> $GITHUB_STEP_SUMMARY
+            echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
           fi
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
@@ -99,72 +115,3 @@ jobs:
           name: coverage-report-e2e
           path: libs/core/coverage/e2e/
           retention-days: 30
-
-  update-coverage-badge:
-    runs-on: ubuntu-latest
-    needs: [test, e2e-core]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          fetch-depth: 0
-      - name: Download unit coverage
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report-unit
-          path: coverage/unit/
-      - name: Download e2e coverage
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report-e2e
-          path: coverage/e2e/
-      - name: Generate coverage badge JSON
-        run: |
-          mkdir -p badges
-          
-          # Get unit coverage
-          UNIT_COV=0
-          if [ -f coverage/unit/coverage-summary.json ]; then
-            UNIT_COV=$(node -e "const c = require('./coverage/unit/coverage-summary.json'); console.log(c.total.lines.pct)")
-          fi
-          
-          # Get e2e coverage  
-          E2E_COV=0
-          if [ -f coverage/e2e/coverage-summary.json ]; then
-            E2E_COV=$(node -e "const c = require('./coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
-          fi
-          
-          # Calculate combined (average)
-          COMBINED=$(node -e "console.log(Math.round(($UNIT_COV + $E2E_COV) / 2 * 10) / 10)")
-          
-          # Determine color
-          if (( $(echo "$COMBINED >= 80" | bc -l) )); then
-            COLOR="brightgreen"
-          elif (( $(echo "$COMBINED >= 60" | bc -l) )); then
-            COLOR="yellow"
-          elif (( $(echo "$COMBINED >= 40" | bc -l) )); then
-            COLOR="orange"
-          else
-            COLOR="red"
-          fi
-          
-          # Create badge JSON for shields.io endpoint
-          cat > badges/coverage.json << EOF
-          {
-            "schemaVersion": 1,
-            "label": "coverage",
-            "message": "${COMBINED}%",
-            "color": "${COLOR}"
-          }
-          EOF
-          
-          echo "Unit: ${UNIT_COV}%, E2E: ${E2E_COV}%, Combined: ${COMBINED}%"
-          cat badges/coverage.json
-      - name: Commit coverage badge to gh-pages
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add badges/coverage.json
-          git diff --staged --quiet || git commit -m "chore: update coverage badge"
-          git push origin gh-pages
