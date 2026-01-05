@@ -72,10 +72,8 @@ export const assignAnnotationsToLines = <ANNOTATION>(
     const clonedAnnotation = annotationAdapter.parse(annotation);
     if (!clonedAnnotation) return;
 
-    if (
-      textAdapter.limit &&
-      !isIntersection(clonedAnnotation, textAdapter.limit)
-    ) {
+    const limit = textAdapter.getLimit(model.lines);
+    if (limit && !isIntersection(clonedAnnotation, limit)) {
       return;
     }
 

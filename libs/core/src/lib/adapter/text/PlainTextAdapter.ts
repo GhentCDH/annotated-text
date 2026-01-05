@@ -66,7 +66,7 @@ export class PlainTextAdapterImpl extends TextAdapter {
   name = 'PlainTextAdapter';
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit!, this.textOffset);
+    return textToLines(text, this._limit!, this.textOffset);
   }
 }
 

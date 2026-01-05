@@ -33,7 +33,7 @@ export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = 'ltr';
   flatText = false;
-  private _limit: Limit | null = null;
+  limit: Limit | null = null;
   textOffset = 0;
   style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
 
@@ -44,12 +44,14 @@ export abstract class TextAdapter extends BaseAdapter {
    */
   abstract parse(text: string): TextLine[];
 
-  set limit(limit: Limit | null | undefined) {
-    this._limit = limit ?? null;
-  }
+  getLimit(lines: TextLine[]) {
+    if (!this.limit) return null;
+    if (this.limit?.ignoreLines) return this.limit;
 
-  get limit() {
-    return this._limit;
+    return {
+      start: lines[0].start,
+      end: lines[lines.length - 1].end,
+    };
   }
 
   public setLineHeight(height: number) {
@@ -145,7 +147,7 @@ export const createTextAdapter = (
     adapter.textDirection = params.textDirection;
   }
   adapter.flatText = !!params.flatText;
-  adapter.limit = params.limit;
+  adapter.limit = params.limit ?? null;
   adapter.textOffset = params.textOffset ?? 0;
 
   adapter.style = Object.assign(DefaultTextAdapterStyle, params.style ?? {});
