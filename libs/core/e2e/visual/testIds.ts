@@ -14,5 +14,8 @@ export const renderProblemIds = {
   default: 'default',
   scaled_1_5: 'scaled-1-5',
   scaled_0_75: 'scaled-0-75',
+  underline_default: 'underline-default',
+  underline_scaled_1_5: 'underline-scaled-1-5',
+  underline_scaled_0_75: 'underline-scaled-0-75',
 };
 export type RenderProblemKeys = keyof typeof renderProblemIds;

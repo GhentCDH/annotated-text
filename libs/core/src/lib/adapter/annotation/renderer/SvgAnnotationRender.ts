@@ -5,7 +5,6 @@ import {
 } from './annotation-render';
 import { type TextAnnotationRenderStyle } from './TextAnnotationRender';
 import { getColors } from '../../../compute/compute/colors';
-import { type PathParams } from '../../../compute/utils/create-path';
 import {
   type AnnotationDimension,
   type AnnotationDraw,

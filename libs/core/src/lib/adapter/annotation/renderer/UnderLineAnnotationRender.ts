@@ -1,15 +1,14 @@
 import { cloneDeep } from 'lodash-es';
-import { DefaultTextAnnotationRenderStyle } from './TextAnnotationRender';
+import {
+  createHighlightPath,
+  DefaultTextAnnotationRenderStyle,
+} from './TextAnnotationRender';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import { type AnnotationDrawPath } from '../../../model';
-import {
-  createAnnotationFill,
-  type createAnnotationPathFn,
-  type PathParams,
-} from '../../../compute/utils/create-path';
+import { type createAnnotationPathFn, type PathParams } from './_utils/path';
 
 const createUnderline: createAnnotationPathFn = (params: PathParams) => {
-  const fill = createAnnotationFill(params);
+  const fill = createHighlightPath(params);
   const { x, y, height, width } = params;
   return {
     border:

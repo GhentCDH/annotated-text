@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Core Library E2E Tests</title>
   <style>
-
+      .container {
+          padding: 0 100px;
+      }
 
       #demo-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          margin: 0 100px;
+          gap: 10px 100px;
       }
 
       #demo-container > div {
@@ -27,9 +29,10 @@
 
 <h1>Scaled render problem</h1>
 When scaling before the rendering then it does not render correct
-<div id="demo-container" class="annotated-text-container"></div>
+<div class="container">
+  <div id="demo-container"></div>
 
-
+</div>
 <script type="module" src="scaling-problem.ts"></script>
 </body>
 </html>

@@ -15,8 +15,22 @@ import {
 } from '../../../model';
 import { getY } from '../../../compute/compute/helpers';
 import { getColors } from '../../../compute/compute/colors';
-import { createGutterPath } from '../../../compute/utils/create-path';
 import { type TextAdapterStyle } from '../../text';
+
+export const createGutterPath = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) => {
+  return {
+    fill: `M${x},${y} 
+          H${x + width} 
+          V${y + height} 
+          H${x} 
+          Z`,
+  };
+};
 
 const createGutterAnnotations = (
   params: AnnotationRenderParams,

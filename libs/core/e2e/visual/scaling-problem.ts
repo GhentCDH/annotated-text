@@ -5,9 +5,10 @@ import '../../src/lib/style/style.scss';
 import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
 import { renderProblemIds, type RenderProblemKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
-import { createAnnotationColor } from '../../src';
+import { createAnnotationColor, DefaultRenders } from '../../src';
 
-const text = 'The quick brown fox jumps over the lazy dog.';
+const text = `The quick brown fox jumps over the lazy dog.
+the second line`;
 
 const annotations = [
   {
@@ -31,13 +32,21 @@ const annotations = [
     label: 'noun',
     color: '#60a5fa',
   },
+  {
+    id: `4_${Date.now()}`,
+    start: 1,
+    end: 19,
+    label: 'noun',
+    color: '#60a5fa',
+    renderer: 'gutter',
+  },
 ];
 
 const renderDemo = (
   _id: RenderProblemKeys,
   title: string,
   scaled: number | null = null,
-  _annotations = annotations,
+  renderer: string = DefaultRenders.highlight,
 ) => {
   const id = renderProblemIds[_id];
   // Clear any cached instances
@@ -50,8 +59,13 @@ const renderDemo = (
   }
 
   // Basic text setup
-  return createAnnotatedText(id, {
+  createAnnotatedText(id, {
     annotation: {
+      edit: true,
+      create: true,
+      render: {
+        renderFn: (a: any) => a.renderer ?? renderer,
+      },
       style: {
         styleFn: (a: any) => ({
           color: createAnnotationColor(a.color),
@@ -61,9 +75,12 @@ const renderDemo = (
   })
     .updateRenderStyle('highlight', { borderRadius: 0.1 })
     .setText(text)
-    .setAnnotations(_annotations);
+    .setAnnotations(annotations);
 };
 
 renderDemo('default', 'Default');
-renderDemo('scaled_1_5', 'Scaled 1.5', 1.5);
-renderDemo('scaled_0_75', 'Scaled 0.75', 0.75);
+renderDemo('underline_default', 'Default', null, DefaultRenders.underline);
+renderDemo('underline_scaled_1_5', 'Scaled 1.5', 1.5);
+renderDemo('scaled_1_5', 'Scaled 1.5', 1.5, DefaultRenders.underline);
+renderDemo('underline_scaled_0_75', 'Scaled 0.75', 0.75);
+renderDemo('scaled_0_75', 'Scaled 0.75', 0.75, DefaultRenders.underline);
