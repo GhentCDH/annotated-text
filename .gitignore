@@ -55,4 +55,5 @@ vite.config.*.timestamp*
 vitest.config.*.timestamp*
 /tmp
 playwright-report
+playwright-reports
 test-results
