@@ -1,8 +1,9 @@
-import { expect, test } from '../fixtures';
+import { lineHeightIds } from './testIds';
+import { expect, test, testVisualIds } from '../fixtures';
 
 test.describe('AnnotatedText Core - Line height Rendering', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/visual/index.html');
+    await page.goto('/visual/line-height.html');
   });
 
   test('visual', async ({ page }) => {
@@ -11,4 +12,6 @@ test.describe('AnnotatedText Core - Line height Rendering', () => {
 
     await expect(container).toHaveScreenshot('line-height.png');
   });
+
+  testVisualIds('Line heights', lineHeightIds);
 });

@@ -1,3 +1,6 @@
+// Import styles directly (not through index.ts to avoid Istanbul/Babel issues)
+import '../../src/lib/style/style.scss';
+
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
   clearAnnotatedTextCache,
@@ -5,41 +8,20 @@ import {
   type Limit,
   TextLineAdapter,
 } from '@ghentcdh/annotated-text';
-
-// Clear any cached instances
-clearAnnotatedTextCache();
-const mainDivId = 'demo-container';
-
-const text = `1. Hello world. This is a simple text example.
-2. This text has some annotations.
-3. Some more lines`;
-
-export const exampleKeys: string[] = [];
-
-const annotations = [
-  { id: '1', start: 0, end: 8 },
-  { id: '2', start: 9, end: 15 },
-  { id: '3', start: 38, end: 59 },
-  { id: '4', start: 90, end: 94 },
-];
+import { annotations, type LimitIdKeys, text } from './testIds';
+import { renderDemoDiv } from '../_utils/render-demo';
 
 const renderDemo = (
   title: string,
-  id: string,
+  _id: LimitIdKeys,
   limit: Limit | undefined,
   _annotations = annotations,
 ) => {
-  const mainDiv = document.getElementById(mainDivId);
-  const demo = document.createElement('div');
+  // Clear any cached instances
+  clearAnnotatedTextCache();
+  const id = _id as string;
 
-  const contentdiv = document.createElement('div');
-  contentdiv.id = id;
-  exampleKeys.push(id);
-  const titleDiv = document.createElement('h4');
-  titleDiv.textContent = `Limit: ${title} `;
-  demo.append(titleDiv);
-  demo.append(contentdiv);
-  mainDiv.append(demo);
+  renderDemoDiv(title, id);
 
   // Basic text setup
   return createAnnotatedText(id, {
@@ -51,7 +33,8 @@ const renderDemo = (
     .setAnnotations(_annotations);
 };
 
-renderDemo('Show everything', 'No limit', undefined);
+renderDemo('Show everything', 'no-limit', undefined);
+
 const limitAfterInit = renderDemo(
   'Limit after initial init [10-30]',
   'limit-after-init',
@@ -72,7 +55,7 @@ limitAfterIgnoreLinesInit.changeTextAdapterConfig('limit', {
 annotations.forEach((a) => {
   renderDemo(
     `Single annotation - [${a.start} - ${a.end}]`,
-    `no-ignore-lines-${a.id}`,
+    `no-ignore-lines-${a.id}` as LimitIdKeys,
     {
       start: a.start,
       end: a.end,
@@ -85,7 +68,7 @@ annotations.forEach((a) => {
 annotations.forEach((a) => {
   renderDemo(
     `Single annotation - Ignore lines [${a.start} - ${a.end}]`,
-    `ignore-lines-${a.id}`,
+    `ignore-lines-${a.id}` as LimitIdKeys,
     {
       start: a.start,
       end: a.end,

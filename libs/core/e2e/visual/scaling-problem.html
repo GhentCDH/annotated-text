@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Library E2E Tests</title>
+  <style>
+
+
+      #demo-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+      }
+
+      #demo-container > div {
+          margin: 20px 0;
+          padding: 10px;
+          border: 1px solid #ccc;
+          width: 300px;
+      }
+
+  </style>
+</head>
+<body>
+
+<h1>Scaled render problem</h1>
+When scaling before the rendering then it does not render correct
+<div id="demo-container" class="annotated-text-container"></div>
+
+
+<script type="module" src="scaling-problem.ts"></script>
+</body>
+</html>

@@ -1,8 +1,9 @@
-import { expect, test } from '../fixtures';
+import { limitIds } from './testIds';
+import { expect, test, testVisualIds } from '../fixtures';
 
 test.describe('AnnotatedText Core - Limit annotation to show', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/limit/index.html');
+    await page.goto('/limit/limit.html');
   });
 
   test('visual', async ({ page }) => {
@@ -11,4 +12,6 @@ test.describe('AnnotatedText Core - Limit annotation to show', () => {
 
     await expect(container).toHaveScreenshot('limit.png');
   });
+
+  testVisualIds('limit', limitIds);
 });
