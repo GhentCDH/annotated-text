@@ -1,32 +1,14 @@
 import { cloneDeep } from 'lodash-es';
-import memoize from 'memoizee';
 import { DefaultAnnotationRenderStyle } from './annotation-render';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
-import type { createAnnotationPathFn, PathParams } from './_utils/path';
+import {
+  createAnnotationFill,
+  createAnnotationPathFn,
+  createLeftBorder,
+  createRightBorder,
+  type PathParams,
+} from './_utils/path';
 import { type AnnotationDrawPath } from '../../../model';
-
-const createRightBorder = memoize(
-  (x: number, y: number, right: number, bottom: number, r: number) => {
-    return [
-      // move to top-left
-      `H${right - r}`, // top edge
-      `A${r},${r} 0 0 1 ${right},${y + r}`, // top-right corner
-      `V${bottom - r}`, // right edge
-      `A${r},${r} 0 0 1 ${right - r},${bottom}`, // bottom-right corner
-    ];
-  },
-);
-
-const createLeftBorder = memoize(
-  (x: number, y: number, bottom: number, r: number) => {
-    return [
-      `H${x + r}`,
-      `A${r},${r} 0 0 1 ${x},${bottom - r}`, // bottom-left corner
-      `V${y + r}`,
-      `A${r},${r} 0 0 1 ${x + r},${y}`,
-    ];
-  },
-);
 
 const createAnnotationBorder = ({
   x,
@@ -61,36 +43,6 @@ const createAnnotationBorder = ({
     path.push(createLeftBorder(x, y, bottom, r));
   } else {
     path.push(`H${x}`);
-  }
-
-  return path.flat().join(' ');
-};
-
-export const createAnnotationFill = ({
-  x,
-  y,
-  width,
-  height,
-  r,
-  leftBorder,
-  rightBorder,
-}: PathParams) => {
-  const right = x + width;
-  const bottom = y + height;
-
-  const path: Array<string | string[]> = [`M${x + (leftBorder ? r : 0)},${y}`];
-
-  // Right border
-  if (rightBorder) {
-    path.push(createRightBorder(x, y, right, bottom, r));
-  } else {
-    path.push(createRightBorder(x, y, right, bottom, 0));
-  }
-
-  if (leftBorder) {
-    path.push(createLeftBorder(x, y, bottom, r));
-  } else {
-    path.push(createLeftBorder(x, y, bottom, 0));
   }
 
   return path.flat().join(' ');

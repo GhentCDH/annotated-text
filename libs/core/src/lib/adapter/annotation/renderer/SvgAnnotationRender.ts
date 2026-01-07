@@ -4,6 +4,7 @@ import {
   type AnnotationRenderParams,
 } from './annotation-render';
 import { type TextAnnotationRenderStyle } from './TextAnnotationRender';
+import { type PathParams } from './_utils/path';
 import { getColors } from '../../../compute/compute/colors';
 import {
   type AnnotationDimension,
@@ -15,7 +16,10 @@ import {
 
 import { type TextAdapterStyle } from '../../text';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
-import { getX, getY } from '../../../compute/compute/helpers';
+import {
+  type DimensionsWithScale,
+  getScaledDimensions,
+} from '../../../compute/position/unscaled';
 
 export abstract class SvgAnnotationRender<
   STYLE extends TextAnnotationRenderStyle,
@@ -43,7 +47,7 @@ export abstract class SvgAnnotationRender<
   createDraws(
     params: AnnotationRenderParams,
     textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
+    parentDimensions: DimensionsWithScale,
     annotation: TextAnnotation,
   ) {
     const radius = this.style.borderRadius;
@@ -67,8 +71,9 @@ export abstract class SvgAnnotationRender<
       const isLastLine = !nextLine || annotation.end < nextLine;
 
       rects?.forEach((rect, rectIdx) => {
-        const x = getX(parentDimensions, rect);
-        const y = getY(parentDimensions, rect) - padding - lineOffset;
+        const dimensions = getScaledDimensions(parentDimensions, rect);
+        const x = dimensions.x;
+        const y = dimensions.y - padding - lineOffset;
         let leftBorder = isFirstLine && rectIdx === 0;
         const lastRect = rectIdx === rects.length - 1;
         let rightBorder = lastRect && isLastLine;
@@ -94,7 +99,7 @@ export abstract class SvgAnnotationRender<
           path: this.createPath({
             x: x,
             y: y,
-            width: rect.width,
+            width: dimensions.width,
             height: height,
             r: radius,
             leftBorder: leftBorder,
@@ -102,7 +107,9 @@ export abstract class SvgAnnotationRender<
           }),
           draggable: {
             start: leftBorder ? { x, y, height } : undefined,
-            end: rightBorder ? { x: x + rect.width, y, height } : undefined,
+            end: rightBorder
+              ? { x: x + dimensions.width, y, height }
+              : undefined,
           },
           height: { x, y, height },
         });

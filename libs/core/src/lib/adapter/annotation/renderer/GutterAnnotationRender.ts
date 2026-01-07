@@ -13,9 +13,12 @@ import {
   type AnnotationDrawColors,
   type TextAnnotation,
 } from '../../../model';
-import { getY } from '../../../compute/compute/helpers';
 import { getColors } from '../../../compute/compute/colors';
 import { type TextAdapterStyle } from '../../text';
+import {
+  DimensionsWithScale,
+  getScaledDimensions,
+} from '../../../compute/position/unscaled';
 
 export const createGutterPath = (
   x: number,
@@ -34,7 +37,7 @@ export const createGutterPath = (
 
 const createGutterAnnotations = (
   params: AnnotationRenderParams,
-  parentDimensions: { x: number; y: number },
+  parentDimensions: DimensionsWithScale,
   annotation: TextAnnotation,
   style: GutterAnnotationRenderStyle,
 ) => {
@@ -51,9 +54,18 @@ const createGutterAnnotations = (
     (line) => line.lineNumber,
   );
 
-  const y = getY(parentDimensions, firstLine.element!.getBoundingClientRect());
-  const y1 = getY(parentDimensions, lastLine.element!.getBoundingClientRect());
-  const lastLineHeight = lastLine.element!.getBoundingClientRect().height;
+  const firstLineDimensions = getScaledDimensions(
+    parentDimensions,
+    firstLine.element!.getBoundingClientRect(),
+  );
+  const lastLineDimensions = getScaledDimensions(
+    parentDimensions,
+    lastLine.element!.getBoundingClientRect(),
+  );
+
+  const y = firstLineDimensions.y;
+
+  const y1 = lastLineDimensions.y;
   const startPosition: AnnotationDimension = {
     x: 0,
     y1: y,
@@ -64,7 +76,7 @@ const createGutterAnnotations = (
   // We want to have the most gutters closest to the text
   const weight = params.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
-  const height = y1 - y + lastLineHeight;
+  const height = y1 - y + lastLineDimensions.height;
   const color: AnnotationDrawColors = getColors(style, annotation, false, true);
 
   const draws: AnnotationDraw[] = [
@@ -79,7 +91,7 @@ const createGutterAnnotations = (
     },
   ];
 
-  return { draws, dimensions: startPosition!, color };
+  return { draws, dimensions: startPosition, color };
 };
 
 export const DefaultGutterAnnotationRenderStyle = {
@@ -101,7 +113,7 @@ export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRen
   createDraws(
     params: AnnotationRenderParams,
     textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
+    parentDimensions: DimensionsWithScale,
     annotation: TextAnnotation,
   ) {
     return createGutterAnnotations(

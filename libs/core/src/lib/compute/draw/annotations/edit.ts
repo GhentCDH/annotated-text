@@ -15,16 +15,14 @@ export const drawAnnotationHandles = (
   draw: AnnotationDraw,
   svgModel: SvgModel,
 ) => {
-  if (draw.path.border) {
-    // TODO add condition to check if annotation is draggable
+  if (!draw.draggable) return;
 
-    if (draw.draggable.start) {
-      drawHandle(svgModel, annotation, draw.draggable.start, 'start');
-    }
+  if (draw.draggable.start) {
+    drawHandle(svgModel, annotation, draw.draggable.start, 'start');
+  }
 
-    if (draw.draggable.end) {
-      drawHandle(svgModel, annotation, draw.draggable.end, 'end');
-    }
+  if (draw.draggable.end) {
+    drawHandle(svgModel, annotation, draw.draggable.end, 'end');
   }
 };
 
@@ -46,6 +44,7 @@ export const drawHandle = (
   const onEditDragEnd = (event: MouseEvent) => {
     editAnnotation.end(event);
   };
+
   const getPosition = (event: any) => {
     const x = event.sourceEvent.clientX;
     const y = event.sourceEvent.clientY;

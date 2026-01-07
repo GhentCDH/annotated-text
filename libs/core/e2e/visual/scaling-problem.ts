@@ -2,7 +2,10 @@
 import '../../src/lib/style/style.scss';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
+import {
+  clearAnnotatedTextCache,
+  createAnnotatedText,
+} from '@ghentcdh/annotated-text';
 import { renderProblemIds, type RenderProblemKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
 import { createAnnotationColor, DefaultRenders } from '../../src';
@@ -80,7 +83,12 @@ const renderDemo = (
 
 renderDemo('default', 'Default');
 renderDemo('underline_default', 'Default', null, DefaultRenders.underline);
-renderDemo('underline_scaled_1_5', 'Scaled 1.5', 1.5);
-renderDemo('scaled_1_5', 'Scaled 1.5', 1.5, DefaultRenders.underline);
-renderDemo('underline_scaled_0_75', 'Scaled 0.75', 0.75);
-renderDemo('scaled_0_75', 'Scaled 0.75', 0.75, DefaultRenders.underline);
+renderDemo('scaled_1_5', 'Scaled 1.5', 2);
+renderDemo('underline_scaled_1_5', 'Scaled 1.5', 1.5, DefaultRenders.underline);
+renderDemo('scaled_0_75', 'Scaled 0.75', 0.75);
+renderDemo(
+  'underline_scaled_0_75',
+  'Scaled 0.75',
+  0.75,
+  DefaultRenders.underline,
+);

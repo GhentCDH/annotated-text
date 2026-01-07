@@ -2,6 +2,7 @@ import { type AnnotationDrawColor, type TextAnnotation } from '../../../model';
 import { DUMMY_UID, type SvgModel } from '../../model/svg.types';
 import { drawAnnotationContent } from '../annotations';
 import { getLinesForAnnotation } from '../../utils/line.utils';
+import { getUnscaledRect } from '../../position/unscaled';
 
 export const drawDummyAnnotation = (
   svgModel: SvgModel,
@@ -10,6 +11,7 @@ export const drawDummyAnnotation = (
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
   const { model, textElement } = svgModel;
+  const parentDimensions = getUnscaledRect(textElement);
 
   dummyAnnotation._render.lines = getLinesForAnnotation(
     model.lines,
@@ -23,7 +25,7 @@ export const drawDummyAnnotation = (
     .createDraws(
       model.renderParams,
       svgModel.textAdapter.style,
-      textElement.getBoundingClientRect(),
+      parentDimensions,
       dummyAnnotation,
     )
     .draws.forEach((a) => {

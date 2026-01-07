@@ -1,20 +1,28 @@
 import { cloneDeep } from 'lodash-es';
-import {
-  createHighlightPath,
-  DefaultTextAnnotationRenderStyle,
-} from './TextAnnotationRender';
+import { DefaultTextAnnotationRenderStyle } from './TextAnnotationRender';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
+import {
+  createAnnotationFill,
+  type createAnnotationPathFn,
+  type PathParams,
+} from './_utils/path';
 import { type AnnotationDrawPath } from '../../../model';
-import { type createAnnotationPathFn, type PathParams } from './_utils/path';
+import memoizee from 'memoizee';
+
+const createLine = memoizee(
+  (x: number, y: number, width: number, height: number) => {
+    return `M${x} ${y + height} h ${width}`;
+  },
+);
 
 const createUnderline: createAnnotationPathFn = (params: PathParams) => {
-  const fill = createHighlightPath(params);
+  const fill = createAnnotationFill(params);
   const { x, y, height, width } = params;
+
   return {
     border:
       // move to top-left
-      `M ${x} ${y + height} h ${width}`,
-
+      createLine(x, y, width, height),
     fill,
   };
 };

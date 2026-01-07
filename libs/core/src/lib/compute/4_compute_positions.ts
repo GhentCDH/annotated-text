@@ -1,10 +1,10 @@
-import { pick } from 'lodash-es';
 import { type TextAnnotationModel } from './annotation.model';
 import type { TextAnnotation, TextLine } from '../model';
 import { type AnnotationAdapter } from '../adapter/annotation';
 import { type TextAdapter } from '../adapter/text';
 
 import { Debugger } from '../utils/debugger';
+import { getUnscaledRect } from './position/unscaled';
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(
@@ -38,13 +38,8 @@ export const createAndAssignDrawAnnotation = (
   annotationAdapter: AnnotationAdapter<any>,
   textAdapter: TextAdapter,
 ) => {
-  const parentDimensions = pick(
-    textElement.getBoundingClientRect(),
-    'width',
-    'height',
-    'x',
-    'y',
-  );
+  const parentDimensions = getUnscaledRect(textElement);
+
   const rendered = annotationAdapter.renderInstance.createDraws(
     model.renderParams,
     textAdapter.style,

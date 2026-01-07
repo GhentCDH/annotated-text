@@ -17,10 +17,12 @@
     }
   }
 
+
   &-wrapper {
     position: relative;
     display: block;
     width: 100%;
+    transform: scale(--wrapper-scale);
   }
 
   &-text {

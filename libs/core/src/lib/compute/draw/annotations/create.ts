@@ -1,4 +1,3 @@
-import { pointer } from 'd3';
 import { CreateAnnotation } from './create.annotation';
 import { type SvgModel } from '../../model/svg.types';
 import { type Position } from '../types';
@@ -10,11 +9,10 @@ export const createNewBlock = (svgModel: SvgModel) => {
   const svg = svgModel.svg;
   const adapter = svgModel.annotationAdapter;
 
-  const getPosition = (event: any) => {
-    const [clientX, clientY] = pointer(event);
-    // const [x, y] = pointer(event);
-    const x = clientX + container.getBoundingClientRect().x;
-    const y = clientY + container.getBoundingClientRect().y;
+  const getPosition = (event: MouseEvent) => {
+    const x = event.clientX;
+    const y = event.clientY;
+
     return { x, y };
   };
 
