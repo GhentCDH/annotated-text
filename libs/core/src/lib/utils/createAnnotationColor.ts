@@ -60,6 +60,7 @@ export const createAnnotationColor = (
   color: string,
   config?: Config,
 ): AnnotationColor => {
+  color = color || '#f51720';
   const opacity = { ...defaultConfig.opacity, ...config?.opacity };
   const rgbColor = hexToRgb(color);
 

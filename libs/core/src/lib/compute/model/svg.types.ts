@@ -3,9 +3,18 @@ import { select } from 'd3';
 import type RBush from 'rbush';
 import { merge } from 'lodash-es';
 import { type AnnotationColors } from './annotation.colors';
-import { type AnnotationEventType, CHANGED_EVENTS, type EventData, NEW_EVENTS } from '../../events';
+import {
+  type AnnotationEventType,
+  CHANGED_EVENTS,
+  type EventData,
+  NEW_EVENTS,
+} from '../../events';
 import { Debugger } from '../../utils/debugger';
-import { type AnnotationDrawColor, type AnnotationDrawColors, type AnnotationId } from '../../model';
+import {
+  type AnnotationDrawColor,
+  type AnnotationDrawColors,
+  type AnnotationId,
+} from '../../model';
 import { type TextAnnotationModel } from '../annotation.model';
 import { styles } from '../styles.const';
 import { drawAnnotation } from '../draw/annotations';
@@ -16,6 +25,7 @@ import { type TextAdapter } from '../../adapter/text';
 import { drawTextRaster, type TextRasterItem } from '../draw/text/text-raster';
 import { drawAllTags } from '../draw/tag';
 import { type InternalEventListener } from '../../events/internal/internal.event.listener';
+import { getUnscaledRect } from '../position/unscaled';
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -51,13 +61,13 @@ export class SvgModel {
     public readonly annotationColors: AnnotationColors,
     public readonly internalEventListener: InternalEventListener,
   ) {
-    const width = textElement.getBoundingClientRect().width;
-    const height = textElement.getBoundingClientRect().height;
+    const textElementDimensions = getUnscaledRect(textElement);
+
     this.svg = select('body')
       .append('svg')
       .attr('class', styles.svg)
-      .attr('width', width)
-      .attr('height', height) as any;
+      .attr('width', textElementDimensions.original.width)
+      .attr('height', textElementDimensions.original.height) as any;
     // .style("font-family", textAdapter.style.fontFamily)
     // .style("font-size", textAdapter.style.fontSize) as any;
     this.annotations = this.svg

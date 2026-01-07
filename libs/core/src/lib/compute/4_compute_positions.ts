@@ -38,6 +38,7 @@ export const createAndAssignDrawAnnotation = (
   annotationAdapter: AnnotationAdapter<any>,
   textAdapter: TextAdapter,
 ) => {
+  // This should be recalculated when drawing, if there was a scroll or something similar then the position changed
   const parentDimensions = getUnscaledRect(textElement);
 
   const rendered = annotationAdapter.renderInstance.createDraws(

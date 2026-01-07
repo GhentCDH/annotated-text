@@ -14,8 +14,8 @@ test.describe('AnnotatedText Core - Scaling problem', () => {
           id                            | startX | startY | endX | endY
           ${renderProblemIds.default}   | 45     | 75     | 90   | 75
           ${renderProblemIds.scaled_1_5}| 90     | 175     | 180   | 175
+          ${renderProblemIds.scaled_0_75}| 35     | 65    | 65 | 65
         `(
-    // FIXME ${renderProblemIds.scaled_0_75}| 35     | 60     | 70   | 60
     'CREATE: $id',
     async ({ page }, { id, startX, startY, endX, endY }) => {
       const container = page.locator(`#${id}`);
@@ -82,37 +82,34 @@ test.describe('AnnotatedText Core - Scaling problem', () => {
           id                            | startX | startY | endX | endY
           ${renderProblemIds.default}   | 100     | 15    | 55 | 75
           ${renderProblemIds.scaled_1_5}   | 250     | 15  | 155 | 175
-        `(
-    //FIXME ${renderProblemIds.scaled_0_75}   | 80     | 10    | 55 | 60
-    'MOVE: $id',
-    async ({ page }, { id, startX, startY, endY, endX }) => {
-      const container = page.locator(`#${id}`);
-      await expect(container).toBeVisible();
+          ${renderProblemIds.scaled_0_75}   | 80     | 10    | 55 | 60
+        `('MOVE: $id', async ({ page }, { id, startX, startY, endY, endX }) => {
+    const container = page.locator(`#${id}`);
+    await expect(container).toBeVisible();
 
-      const mouse = new MouseMove(page, container);
+    const mouse = new MouseMove(page, container);
 
-      // Step 1: Click on position (mousedown)
-      // appears in hover color
-      await mouse.onMouseDown({ x: startX, y: startY });
-      await expect(container).toHaveScreenshot(
-        `${id}-annotation-move-started.png`,
-      );
+    // Step 1: Click on position (mousedown)
+    // appears in hover color
+    await mouse.onMouseDown({ x: startX, y: startY });
+    await expect(container).toHaveScreenshot(
+      `${id}-annotation-move-started.png`,
+    );
 
-      // Step2: Change selection to Fox Jumps
-      // See the original one and edited one
-      await mouse.onMouseDrag({ x: endX, y: endY });
-      await expect(container).toHaveScreenshot(
-        `${id}-annotation-move-in-progress.png`,
-      );
+    // Step2: Change selection to Fox Jumps
+    // See the original one and edited one
+    await mouse.onMouseDrag({ x: endX, y: endY });
+    await expect(container).toHaveScreenshot(
+      `${id}-annotation-move-in-progress.png`,
+    );
 
-      // Step 3: End click (mouseup)
-      await mouse.onMouseEnd();
-      // dummy annotation is removed
-      await expect(container).toHaveScreenshot(
-        `${id}-annotation-move-complete.png`,
-      );
-    },
-  );
+    // Step 3: End click (mouseup)
+    await mouse.onMouseEnd();
+    // dummy annotation is removed
+    await expect(container).toHaveScreenshot(
+      `${id}-annotation-move-complete.png`,
+    );
+  });
 
   // Hover over brown
   tableTest<'id' | 'startX' | 'startY'>`
