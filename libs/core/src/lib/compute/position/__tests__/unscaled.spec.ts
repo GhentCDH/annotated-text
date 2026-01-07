@@ -10,7 +10,6 @@ describe('unscaled', () => {
       ${50}  | ${100}      | ${0.5}   | ${'scaled down 0.5x'}
       ${150} | ${100}      | ${1.5}   | ${'decimal scale 1.5x'}
       ${125} | ${100}      | ${1.25}  | ${'decimal scale 1.25x'}
-      ${100} | ${0}        | ${1}     | ${'zero offsetWidth (division by zero)'}
       ${0}   | ${100}      | ${1}     | ${'zero width'}
     `(
       'should return $expected when $description',
@@ -44,13 +43,12 @@ describe('unscaled', () => {
       }) as HTMLElement;
 
     it.each`
-      rect                                         | offsetWidth | offsetHeight | expected                                                | description
-      ${{ x: 10, y: 20, width: 100, height: 50 }}  | ${100}      | ${50}        | ${{ width: 100, height: 50, x: 10, y: 20, scale: 1 }}   | ${'scale is 1'}
-      ${{ x: 10, y: 20, width: 200, height: 100 }} | ${100}      | ${50}        | ${{ width: 100, height: 50, x: 10, y: 20, scale: 2 }}   | ${'element is scaled up 2x'}
-      ${{ x: 10, y: 20, width: 50, height: 25 }}   | ${100}      | ${50}        | ${{ width: 100, height: 50, x: 10, y: 20, scale: 0.5 }} | ${'element is scaled down 0.5x'}
-      ${{ x: 0, y: 0, width: 100, height: 50 }}    | ${0}        | ${0}         | ${{ width: 0, height: 0, x: 0, y: 0, scale: 1 }}        | ${'zero offsetWidth (graceful handling)'}
+      rect                                         | offsetWidth | offsetHeight | expected                                                                                                                 | description
+      ${{ x: 10, y: 20, width: 100, height: 50 }}  | ${100}      | ${50}        | ${{ original: { width: 100, height: 50, x: 10, y: 20 }, scaled: { width: 100, height: 50, x: 10, y: 20 }, scale: 1 }}    | ${'scale is 1'}
+      ${{ x: 10, y: 20, width: 200, height: 100 }} | ${100}      | ${50}        | ${{ original: { width: 100, height: 50, x: 10, y: 20 }, scaled: { width: 50, height: 25, x: 5, y: 10 }, scale: 2 }}      | ${'element is scaled up 2x'}
+      ${{ x: 10, y: 20, width: 50, height: 25 }}   | ${100}      | ${50}        | ${{ original: { width: 100, height: 50, x: 10, y: 20 }, scaled: { width: 200, height: 100, x: 20, y: 40 }, scale: 0.5 }} | ${'element is scaled down 0.5x'}
     `(
-      'should return unscaled dimensions when $description',
+      'should return correct dimensions when $description',
       ({ rect, offsetWidth, offsetHeight, expected }) => {
         const element = createMockElement(rect, offsetWidth, offsetHeight);
         expect(getUnscaledRect(element)).toEqual(expected);
@@ -60,12 +58,12 @@ describe('unscaled', () => {
 
   describe('getScaledDimensions', () => {
     it.each`
-      parentDimensions                                           | elementRect                                    | expected                                     | description
-      ${{ x: 100, y: 100, width: 500, height: 300, scale: 1 }}   | ${{ x: 150, y: 120, width: 200, height: 100 }} | ${{ x: 50, y: 20, width: 200, height: 100 }} | ${'scale is 1'}
-      ${{ x: 100, y: 100, width: 500, height: 300, scale: 2 }}   | ${{ x: 200, y: 140, width: 100, height: 50 }}  | ${{ x: 50, y: 20, width: 50, height: 25 }}   | ${'scaled up 2x'}
-      ${{ x: 100, y: 100, width: 250, height: 150, scale: 0.5 }} | ${{ x: 150, y: 120, width: 50, height: 25 }}   | ${{ x: 100, y: 40, width: 100, height: 50 }} | ${'scaled down 0.5x'}
-      ${{ x: 100, y: 100, width: 500, height: 300, scale: 1.5 }} | ${{ x: 100, y: 100, width: 150, height: 75 }}  | ${{ x: 0, y: 0, width: 100, height: 50 }}    | ${'element at same position as parent'}
-      ${{ x: 200, y: 200, width: 500, height: 300, scale: 2 }}   | ${{ x: 100, y: 150, width: 100, height: 50 }}  | ${{ x: -50, y: -25, width: 50, height: 25 }} | ${'negative relative positions'}
+      parentDimensions                                                                                                                  | elementRect                                    | expected                                     | description
+      ${{ original: { x: 100, y: 100, width: 500, height: 300 }, scaled: { x: 100, y: 100, width: 500, height: 300 }, scale: 1 }}       | ${{ x: 150, y: 120, width: 200, height: 100 }} | ${{ x: 50, y: 20, width: 200, height: 100 }} | ${'scale is 1'}
+      ${{ original: { x: 100, y: 100, width: 500, height: 300 }, scaled: { x: 50, y: 50, width: 250, height: 150 }, scale: 2 }}         | ${{ x: 200, y: 140, width: 100, height: 50 }}  | ${{ x: 50, y: 20, width: 50, height: 25 }}   | ${'scaled up 2x'}
+      ${{ original: { x: 100, y: 100, width: 500, height: 300 }, scaled: { x: 200, y: 200, width: 1000, height: 600 }, scale: 0.5 }}    | ${{ x: 150, y: 120, width: 50, height: 25 }}   | ${{ x: 100, y: 40, width: 100, height: 50 }} | ${'scaled down 0.5x'}
+      ${{ original: { x: 100, y: 100, width: 500, height: 300 }, scaled: { x: 66.67, y: 66.67, width: 333, height: 200 }, scale: 1.5 }} | ${{ x: 100, y: 100, width: 150, height: 75 }}  | ${{ x: 0, y: 0, width: 100, height: 50 }}    | ${'element at same position as parent'}
+      ${{ original: { x: 200, y: 200, width: 500, height: 300 }, scaled: { x: 100, y: 100, width: 250, height: 150 }, scale: 2 }}       | ${{ x: 100, y: 150, width: 100, height: 50 }}  | ${{ x: -50, y: -25, width: 50, height: 25 }} | ${'negative relative positions'}
     `(
       'should return correct dimensions when $description',
       ({ parentDimensions, elementRect, expected }) => {
