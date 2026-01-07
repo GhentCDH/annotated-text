@@ -7,6 +7,7 @@ import type {
 } from '../annotation-render';
 import type { TextAnnotation } from '../../../../model';
 import { type TextAdapterStyle } from '../../../text';
+import type { DimensionsWithScale } from '../../../../compute/position/unscaled';
 
 // Mock the Debugger module
 vi.mock('../../../utils/debugger', () => ({
@@ -446,7 +447,7 @@ describe('RenderInstances', () => {
 
       const textStyle = {} as TextAdapterStyle;
       const params = {} as AnnotationRenderParams;
-      const parentDimensions = { x: 10, y: 20 };
+      const parentDimensions = {} as DimensionsWithScale;
       const annotation = {
         _render: { render: 'highlight' },
       } as unknown as TextAnnotation;
@@ -474,7 +475,7 @@ describe('RenderInstances', () => {
       const result = renders.createDraws(
         {} as AnnotationRenderParams,
         {} as any,
-        { x: 0, y: 0 },
+        {} as DimensionsWithScale,
         { _render: { render: 'highlight' } } as unknown as TextAnnotation,
       );
 
@@ -495,7 +496,7 @@ describe('RenderInstances', () => {
         renders.createDraws(
           {} as AnnotationRenderParams,
           {} as any,
-          { x: 0, y: 0 },
+          {} as any,
           annotation,
         );
       }).toThrow('Renderer not found: non-existent');
@@ -519,13 +520,13 @@ describe('RenderInstances', () => {
       renders.createDraws(
         {} as AnnotationRenderParams,
         {} as any,
-        { x: 0, y: 0 },
+        {} as any,
         highlightAnnotation,
       );
       renders.createDraws(
         {} as AnnotationRenderParams,
         {} as any,
-        { x: 0, y: 0 },
+        {} as any,
         underlineAnnotation,
       );
 
