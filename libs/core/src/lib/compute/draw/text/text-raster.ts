@@ -1,6 +1,7 @@
 import RBush from 'rbush';
 import { type SvgModel } from '../../model/svg.types';
 import { calculateOffset, findLineElement } from '../utils/bounding-rect';
+import { getScaledDimensions, getUnscaledRect } from '../../position/unscaled';
 
 /**
  * Represents a character in the spatial index tree with its bounding box
@@ -28,6 +29,7 @@ export const drawTextRaster = (svgModel: SvgModel) => {
   const tree = new RBush<TextRasterItem>();
 
   const container = svgModel.textElement;
+  const containerDimensions = getUnscaledRect(container);
 
   // Create a tree walker to traverse all text nodes in the DOM
   const walker = document.createTreeWalker(
@@ -71,19 +73,21 @@ export const drawTextRaster = (svgModel: SvgModel) => {
       range.setEnd(node, i + 1);
 
       // Get the character's bounding rectangle in viewport coordinates
-      const rect = range.getBoundingClientRect();
-
+      const rectDimensions = getScaledDimensions(
+        containerDimensions,
+        range.getBoundingClientRect(),
+      );
       // Calculate vertical offset adjustment based on line height
-      const offset = calculateOffset(lineHeight, rect.height);
+      const offset = calculateOffset(lineHeight, rectDimensions.height);
 
       // Calculate absolute position in document
       const textPosition = line.start + i + prevEnd;
 
       // Convert viewport coordinates to container-relative coordinates
-      const minX = rect.x - container.getBoundingClientRect().x;
-      const minY = rect.y - container.getBoundingClientRect().y - offset;
-      const width = rect.width;
-      const height = rect.height + offset * 2;
+      const minX = rectDimensions.x;
+      const minY = rectDimensions.y - offset;
+      const width = rectDimensions.width;
+      const height = rectDimensions.height + offset * 2;
       const centerX = minX + width / 2;
 
       // Create spatial index item for this character

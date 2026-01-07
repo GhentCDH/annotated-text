@@ -3,11 +3,12 @@ import {
   type AnnotationRender,
   type AnnotationRenderParams,
   type AnnotationRenderStyle,
-  type RenderParams
+  type RenderParams,
 } from './annotation-render';
 import { type TextAdapterStyle } from '../../text';
 import { Debugger } from '../../../utils/debugger';
 import type { TextAnnotation } from '../../../model';
+import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 
 export class RenderInstances<ANNOTATION> {
   private renderParams = {
@@ -94,7 +95,7 @@ export class RenderInstances<ANNOTATION> {
   createDraws(
     params: AnnotationRenderParams,
     textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
+    parentDimensions: DimensionsWithScale,
     annotation: TextAnnotation,
   ) {
     const renderer = this.renderMap.get(annotation._render.render);

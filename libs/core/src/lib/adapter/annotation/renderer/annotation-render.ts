@@ -6,6 +6,7 @@ import {
   type TextAnnotation
 } from '../../../model';
 import { type TextAdapterStyle } from '../../text';
+import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 
 /**
  * Parameters passed to the render method of annotation renderers.
@@ -195,7 +196,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
   abstract createDraws(
     params: AnnotationRenderParams,
     textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
+    parentDimensions: DimensionsWithScale,
     annotation: TextAnnotation,
   ): {
     draws: AnnotationDraw[];

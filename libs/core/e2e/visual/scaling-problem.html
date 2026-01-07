@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Library E2E Tests</title>
+  <style>
+      .container {
+          padding: 0 100px;
+      }
+
+      #demo-container {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          margin: 0 100px;
+          gap: 10px 100px;
+      }
+
+      #demo-container > div {
+          margin: 20px 0;
+          padding: 10px;
+          border: 1px solid #ccc;
+          width: 300px;
+      }
+
+  </style>
+</head>
+<body>
+
+<h1>Scaled render problem</h1>
+This is a testcase for a problem that happend before, when scaling before the rendering the rendering, edit, create and
+other actions became ineffective
+
+<div class="container">
+  <div id="demo-container"></div>
+
+</div>
+<script type="module" src="scaling-problem.ts"></script>
+</body>
+</html>

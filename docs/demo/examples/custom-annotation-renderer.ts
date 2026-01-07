@@ -1,5 +1,5 @@
 import {
-  AnnotationDrawPath,
+  type AnnotationDrawPath,
   clearAnnotatedTextCache,
   createAnnotatedText,
   createAnnotationFill,

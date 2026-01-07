@@ -1,5 +1,5 @@
-import { pick } from 'lodash-es';
 import { type TextAnnotationModel } from './annotation.model';
+import { getUnscaledRect } from './position/unscaled';
 import type { TextAnnotation, TextLine } from '../model';
 import { type AnnotationAdapter } from '../adapter/annotation';
 import { type TextAdapter } from '../adapter/text';
@@ -38,13 +38,9 @@ export const createAndAssignDrawAnnotation = (
   annotationAdapter: AnnotationAdapter<any>,
   textAdapter: TextAdapter,
 ) => {
-  const parentDimensions = pick(
-    textElement.getBoundingClientRect(),
-    'width',
-    'height',
-    'x',
-    'y',
-  );
+  // This should be recalculated when drawing, if there was a scroll or something similar then the position changed
+  const parentDimensions = getUnscaledRect(textElement);
+
   const rendered = annotationAdapter.renderInstance.createDraws(
     model.renderParams,
     textAdapter.style,
