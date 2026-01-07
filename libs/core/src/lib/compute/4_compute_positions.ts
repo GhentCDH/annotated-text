@@ -1,10 +1,10 @@
 import { type TextAnnotationModel } from './annotation.model';
+import { getUnscaledRect } from './position/unscaled';
 import type { TextAnnotation, TextLine } from '../model';
 import { type AnnotationAdapter } from '../adapter/annotation';
 import { type TextAdapter } from '../adapter/text';
 
 import { Debugger } from '../utils/debugger';
-import { getUnscaledRect } from './position/unscaled';
 
 const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   return textElement.querySelector(

@@ -1,8 +1,8 @@
 import type RBush from 'rbush';
+import { getScaledDimensions, getUnscaledRect } from './unscaled';
 import { type SvgModel } from '../model/svg.types';
 import { type TextRasterItem } from '../draw/text/text-raster';
 import { insideRange } from '../draw/utils/bounding-rect';
-import { getScaledDimensions, getUnscaledRect } from './unscaled';
 
 /**
  * Searches for a TextRasterItem at a specific point in the R-tree.

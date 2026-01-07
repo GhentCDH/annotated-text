@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
+import { renderProblemIds } from './testIds';
 import { test } from '../fixtures';
 import { MouseMove } from '../_utils/mouse';
 import { tableTest } from '../_utils/parse-table';
-import { renderProblemIds } from './testIds';
 
 test.describe('AnnotatedText Core - Scaling problem', () => {
   test.beforeEach(async ({ page }) => {

@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash-es';
+import memoizee from 'memoizee';
 import { DefaultTextAnnotationRenderStyle } from './TextAnnotationRender';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
@@ -7,7 +8,6 @@ import {
   type PathParams,
 } from './_utils/path';
 import { type AnnotationDrawPath } from '../../../model';
-import memoizee from 'memoizee';
 
 const createLine = memoizee(
   (x: number, y: number, width: number, height: number) => {

@@ -16,7 +16,7 @@ import {
 import { getColors } from '../../../compute/compute/colors';
 import { type TextAdapterStyle } from '../../text';
 import {
-  DimensionsWithScale,
+  type DimensionsWithScale,
   getScaledDimensions,
 } from '../../../compute/position/unscaled';
 

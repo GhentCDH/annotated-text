@@ -3,7 +3,7 @@ import { DefaultAnnotationRenderStyle } from './annotation-render';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
   createAnnotationFill,
-  createAnnotationPathFn,
+  type createAnnotationPathFn,
   createLeftBorder,
   createRightBorder,
   type PathParams,

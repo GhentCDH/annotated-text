@@ -6,7 +6,7 @@ import {
   type TextAnnotation
 } from '../../../model';
 import { type TextAdapterStyle } from '../../text';
-import { DimensionsWithScale } from '../../../compute/position/unscaled';
+import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 
 /**
  * Parameters passed to the render method of annotation renderers.
