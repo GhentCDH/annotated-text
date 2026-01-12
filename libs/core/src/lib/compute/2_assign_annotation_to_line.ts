@@ -8,7 +8,8 @@ import { type AnnotationAdapter } from '../adapter/annotation';
 import { Debugger } from '../utils/debugger';
 import { type EventListener } from '../events/event.listener';
 
-export const assignAnnotationToLines = (
+const assignAnnotationToLines = (
+  textAdapter: TextAdapter,
   model: TextAnnotationModel,
   eventListener: EventListener,
   _annotation: Annotation,
@@ -23,25 +24,25 @@ export const assignAnnotationToLines = (
       annotation,
     );
   }
-  if (model.textLength < annotation.start) {
+  if (textAdapter.textLength < annotation.start) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
-      `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
+      `Invalid annotation: start (${annotation.start}) must be less than text length (${textAdapter.textLength})`,
       annotation,
     );
     return model;
   }
-  if (model.textLength < annotation.end) {
+  if (textAdapter.textLength < annotation.end) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
-      `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
+      `Invalid annotation: end (${annotation.end}) must be less than text length (${textAdapter.textLength})`,
       annotation,
     );
 
     // Maybe update the annotation end so it ends somewhere?
   }
 
-  const lines = getLinesForAnnotation(model.lines, annotation);
+  const lines = getLinesForAnnotation(textAdapter.lines, annotation);
 
   if (!lines?.length) {
     Debugger.warn(
@@ -54,8 +55,6 @@ export const assignAnnotationToLines = (
   annotation._render.lines = lines;
 
   model.setAnnotation(annotation, calculateWeights);
-
-  return model;
 };
 
 export const assignAnnotationsToLines = <ANNOTATION>(
@@ -67,7 +66,10 @@ export const assignAnnotationsToLines = <ANNOTATION>(
   calculateWeights = false,
 ): TextAnnotationModel => {
   model.resetAnnotations();
-  const limit = textAdapter.getLimit(model.lines);
+
+  textAdapter.clear();
+
+  const limit = textAdapter.getLimit();
 
   annotations?.forEach((annotation) => {
     const clonedAnnotation = annotationAdapter.parse(annotation);
@@ -78,12 +80,15 @@ export const assignAnnotationsToLines = <ANNOTATION>(
     }
 
     assignAnnotationToLines(
+      textAdapter,
       model,
       eventListener,
       clonedAnnotation,
       calculateWeights,
     );
   });
+
+  model.calculateAllWeights();
 
   return model;
 };

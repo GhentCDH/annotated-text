@@ -12,11 +12,8 @@ const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   ) as HTMLDivElement;
 };
 
-export const computeLinePositions = (
-  model: TextAnnotationModel,
-  textElement: HTMLElement,
-) => {
-  model.lines.forEach((line) => {
+const computeLinePositions = (lines: TextLine[], textElement: HTMLElement) => {
+  lines.forEach((line) => {
     const textLine = findTextLine(textElement, line);
     if (!textLine) {
       Debugger.debug(
@@ -27,8 +24,6 @@ export const computeLinePositions = (
     }
     line.element = textLine;
   });
-
-  return model;
 };
 
 export const createAndAssignDrawAnnotation = (
@@ -85,6 +80,7 @@ export const computePositions = (
   annotationAdapter: AnnotationAdapter<any>,
   textAdapter: TextAdapter,
 ) => {
+  computeLinePositions(textAdapter.lines, textElement);
   model.clearDrawAnnotation();
   computeAnnotations(model, textElement, annotationAdapter, textAdapter);
 

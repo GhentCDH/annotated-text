@@ -10,11 +10,11 @@ export const drawDummyAnnotation = (
   color: AnnotationDrawColor,
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
-  const { model, textElement } = svgModel;
+  const { model, textElement, textAdapter } = svgModel;
   const parentDimensions = getUnscaledRect(textElement);
 
   dummyAnnotation._render.lines = getLinesForAnnotation(
-    model.lines,
+    textAdapter.lines,
     dummyAnnotation,
   );
 

@@ -8,7 +8,7 @@ import {
   type TextAnnotation,
   type TextLine,
 } from '../model';
-import { type TextDirection } from '../adapter/text';
+import { type TextAdapter, type TextDirection } from '../adapter/text';
 import { type AnnotationRenderParams } from '../adapter/annotation/renderer/annotation-render';
 import { type RenderInstances } from '../adapter/annotation/renderer/render-instances';
 
@@ -20,11 +20,7 @@ export interface TextAnnotationModel {
   // Configuration for the annotation model
   textDirection: TextDirection;
 
-  lines: TextLine[];
-
   annotations: TextAnnotation[];
-
-  textLength: number;
 
   getMinStartPosition(): number;
 
@@ -52,16 +48,14 @@ export interface TextAnnotationModel {
 
   calculateAllWeights(): void;
 
-  getLine(lineUid: string): TextLine | undefined;
-
   gutterModel: GutterCacheModel;
   annotationTextModel: TextAnnotationCacheModel;
 }
 
 export class TextAnnotationModelImpl implements TextAnnotationModel {
   textDirection: TextDirection;
-  blockEvents = false;
 
+  // public readonly textCache: TextCache;
   public readonly gutterModel: GutterCacheModel = new GutterCacheModel();
   public readonly annotationTextModel: TextAnnotationCacheModel =
     new TextAnnotationCacheModel();
@@ -69,23 +63,15 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   // readonly annotationLineMap = new Map<AnnotationId, TextLine[]>();
   readonly annotationsMap = new Map<AnnotationId, TextAnnotation>();
 
-  public textLength = 0;
-
   constructor(
-    public readonly lines: TextLine[],
+    private readonly textAdapter: TextAdapter,
     public readonly renderInstances: RenderInstances<any>,
   ) {
-    this.resetAnnotations();
+    // this.textCache = new TextCache(lines);
   }
 
   resetAnnotations() {
     this.annotationsMap.clear();
-    this.textLength = 0;
-    this.lines.forEach((line) => {
-      if (this.textLength < line.end) {
-        this.textLength = line.end;
-      }
-    });
 
     this.gutterModel.clear();
   }
@@ -123,10 +109,6 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
     this.annotationsMap.get(annotationUuid)!._drawMetadata.dimensions =
       dimensions;
     this.annotationsMap.get(annotationUuid)!._drawMetadata.color = color;
-  }
-
-  getLine(lineUid: string) {
-    return this.lines.find((line) => line.uuid === lineUid);
   }
 
   // getAnnotations(line: number): Annotation[] {
@@ -180,12 +162,12 @@ export class TextAnnotationModelImpl implements TextAnnotationModel {
   }
 
   calculateMaxGutterWeight() {
-    this.gutterModel.updateGutters(this.lines, this.annotations);
+    this.gutterModel.updateGutters(this.textAdapter.lines, this.annotations);
   }
 
   calculateLinesWeights() {
     this.annotationTextModel.updateTextAnnotations(
-      this.lines,
+      this.textAdapter.lines,
       this.annotations,
       this.renderInstances,
     );

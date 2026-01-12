@@ -54,7 +54,7 @@ export const drawTextRaster = (svgModel: SvgModel) => {
     }
 
     // Get line model data for position calculation
-    const line = svgModel.model.getLine(lineUid);
+    const line = svgModel.textAdapter.getLine(lineUid);
     if (!line) {
       continue;
     }

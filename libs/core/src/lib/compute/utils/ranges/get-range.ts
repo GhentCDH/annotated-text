@@ -1,5 +1,10 @@
 import { type Annotation, type TextLine } from '../../../model';
 import { Debugger } from '../../../utils/debugger';
+import {
+  type Dimensions,
+  type DimensionsWithScale,
+  getScaledDimensions,
+} from '../../position/unscaled';
 
 export const getTextRange = (annotation: Annotation, line: TextLine) => {
   let start = annotation.start - line.start;
@@ -11,13 +16,23 @@ export const getTextRange = (annotation: Annotation, line: TextLine) => {
   return { start, end };
 };
 
+type RangeDimensions = {
+  original: Dimensions;
+  dimensions: Dimensions;
+};
+
 /**
  * Get ranges for an annotation in a line.
  * Works only if the line has text content.
+ * @param parentDimensions
  * @param annotation
  * @param line
  */
-export const getRanges = (annotation: Annotation, line: TextLine) => {
+export const getRanges = (
+  parentDimensions: DimensionsWithScale,
+  annotation: Annotation,
+  line: TextLine,
+): RangeDimensions[] | null => {
   const lineElement = line.element;
   if (!lineElement) {
     Debugger.debug(
@@ -35,24 +50,21 @@ export const getRanges = (annotation: Annotation, line: TextLine) => {
     return null;
   }
 
-  return alignRects(getRangesRect(lineElement, start, end));
-};
-
-const alignRects = (rects: DOMRect[]) => {
-  // If multiple rects on the same line, merge them
-  return rects.flat();
+  return getRangesRect(parentDimensions, lineElement, start, end).flat();
 };
 
 /**
+ * @param parentDimensions
  * @param textNode
  * @param start
  * @param end
  */
-export const getRangesRect = (
+const getRangesRect = (
+  parentDimensions: DimensionsWithScale,
   textNode: ChildNode | null,
   start: number,
   end: number,
-) => {
+): RangeDimensions[] => {
   if (!textNode) {
     return [];
   }
@@ -63,7 +75,8 @@ export const getRangesRect = (
 
   if (textNode.childNodes?.length > 0) {
     let offset = 0;
-    const rects: DOMRect[] = [];
+    const rects: Array<RangeDimensions> = [];
+
     for (const child of textNode.childNodes) {
       if (offset > end) {
         break;
@@ -71,11 +84,17 @@ export const getRangesRect = (
 
       const childLength = child.textContent!.length;
 
-      const childRects = getRangesRect(child, start - offset, end - offset);
+      const childRects = getRangesRect(
+        parentDimensions,
+        child,
+        start - offset,
+        end - offset,
+      );
       offset += childLength;
 
       rects.push(...childRects);
     }
+
     return rects;
   }
 
@@ -92,6 +111,10 @@ export const getRangesRect = (
   range.setStart(textNode, start);
   range.setEnd(textNode, newEnd);
 
-  const rects = range.getClientRects();
-  return Array.from(rects).flat();
+  return Array.from(range.getClientRects())
+    .map((r) => ({
+      original: { x: r.x, y: r.y, height: r.height, width: r.width },
+      dimensions: getScaledDimensions(parentDimensions, r),
+    }))
+    .flat();
 };
