@@ -1,5 +1,5 @@
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { CrudIdKeys, crudIds } from './testIds';
+ 
+import { type CrudIdKeys, crudIds } from './testIds';
 import { renderDemoDiv, writeToLogDiv } from '../_utils/render-demo';
 import {
   clearAnnotatedTextCache,
