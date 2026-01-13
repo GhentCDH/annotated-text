@@ -1,6 +1,6 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { greekText } from '@demo/data';
-import { type GreekIdKeys } from './testIds';
+import { type GreekIdKeys, greekIds } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
 import {
   clearAnnotatedTextCache,
@@ -17,7 +17,7 @@ const renderDemo = (
 ) => {
   // Clear any cached instances
   clearAnnotatedTextCache();
-  const id = _id as string;
+  const id = greekIds[_id];
 
   renderDemoDiv(title, id);
 

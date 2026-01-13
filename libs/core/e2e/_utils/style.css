@@ -1,0 +1,19 @@
+
+body {
+    font-family: system-ui, sans-serif;
+    padding: 20px;
+}
+
+#demo-container > .demo {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.log {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    height: 40px;
+    background-color: #ccc;
+}

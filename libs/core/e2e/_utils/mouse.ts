@@ -60,10 +60,12 @@ export class MouseMove {
     const endY = boundingBox.y + position.y;
 
     const stepX = (endX - this.startX) / moveSteps;
+    const stepY = (endY - this.startY) / moveSteps;
 
     for (let i = 1; i <= moveSteps; i++) {
       const currentX = this.startX + stepX * i;
-      await this.page.mouse.move(currentX, endY);
+      const currentY = this.startY + stepY * i;
+      await this.page.mouse.move(currentX, currentY);
       await this.page.waitForTimeout(50);
     }
     return this;

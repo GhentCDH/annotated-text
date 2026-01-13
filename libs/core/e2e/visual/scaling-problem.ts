@@ -1,5 +1,8 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
+import {
+  clearAnnotatedTextCache,
+  createAnnotatedText,
+} from '@ghentcdh/annotated-text';
 import { renderProblemIds, type RenderProblemKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
 import { createAnnotationColor, DefaultRenders } from '../../src';
