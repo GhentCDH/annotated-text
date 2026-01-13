@@ -79,7 +79,7 @@ describe('drawTextRaster', () => {
     // Mock SvgModel
     mockSvgModel = {
       textElement: mockContainer,
-      model: {
+      textAdapter: {
         getLine: vi.fn().mockReturnValue({
           start: 0,
           end: 5,
