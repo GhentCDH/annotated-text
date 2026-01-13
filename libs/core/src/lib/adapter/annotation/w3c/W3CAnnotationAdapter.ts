@@ -49,7 +49,9 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   ): W3CAnnotation | null {
     if (!annotation) return null;
 
-    if (!isNew && !hasChanged) return this.getAnnotation(annotation.id);
+    const originalAnnotation = this.getOriginalAnnotation(annotation.id);
+
+    if (!isNew && !hasChanged) return originalAnnotation;
 
     const selectedText = selectText(
       this.text,
@@ -66,14 +68,14 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
           annotation,
         )
       : updateTextSelectionAnnotation(
-          this.getAnnotation(annotation.id),
+          originalAnnotation,
           this.sourceUri!,
           this.language!,
           selectedText,
           annotation,
         );
 
-    super.addAnnotation(annotation.id, w3CAnnotation);
+    this.addAnnotation(annotation.id, w3CAnnotation, annotation);
 
     return w3CAnnotation;
   }

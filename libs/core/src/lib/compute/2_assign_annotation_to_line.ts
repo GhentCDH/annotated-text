@@ -1,4 +1,3 @@
-import { type TextAnnotationModel } from './annotation.model';
 import { isIntersection } from './utils/intersect';
 import { getLinesForAnnotation } from './utils/line.utils';
 import { type TextAdapter } from '../adapter/text';
@@ -10,10 +9,8 @@ import { type EventListener } from '../events/event.listener';
 
 const assignAnnotationToLines = (
   textAdapter: TextAdapter,
-  model: TextAnnotationModel,
   eventListener: EventListener,
   _annotation: Annotation,
-  calculateWeights = true,
 ) => {
   const annotation = _annotation as TextAnnotation;
 
@@ -30,7 +27,7 @@ const assignAnnotationToLines = (
       `Invalid annotation: start (${annotation.start}) must be less than text length (${textAdapter.textLength})`,
       annotation,
     );
-    return model;
+    return;
   }
   if (textAdapter.textLength < annotation.end) {
     eventListener.sendError(
@@ -49,25 +46,22 @@ const assignAnnotationToLines = (
       'Invalid annotation: no lines found for annotation',
       annotation,
     );
-    return model;
+    return;
   }
 
   annotation._render.lines = lines;
 
-  model.setAnnotation(annotation, calculateWeights);
+  return;
 };
 
 export const assignAnnotationsToLines = <ANNOTATION>(
-  model: TextAnnotationModel,
   annotationAdapter: AnnotationAdapter<ANNOTATION>,
   textAdapter: TextAdapter,
   annotations: ANNOTATION[],
   eventListener: EventListener,
-  calculateWeights = false,
-): TextAnnotationModel => {
-  model.resetAnnotations();
-
+) => {
   textAdapter.clear();
+  annotationAdapter.clear();
 
   const limit = textAdapter.getLimit();
 
@@ -79,16 +73,9 @@ export const assignAnnotationsToLines = <ANNOTATION>(
       return;
     }
 
-    assignAnnotationToLines(
-      textAdapter,
-      model,
-      eventListener,
-      clonedAnnotation,
-      calculateWeights,
-    );
+    assignAnnotationToLines(textAdapter, eventListener, clonedAnnotation);
   });
 
-  model.calculateAllWeights();
-
-  return model;
+  textAdapter.calculateWeights();
+  annotationAdapter.calculateWeights(textAdapter.lines);
 };

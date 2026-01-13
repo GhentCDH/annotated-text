@@ -1,7 +1,3 @@
-import {
-  type TextAnnotationModel,
-  TextAnnotationModelImpl,
-} from './annotation.model';
 import { getLineHeight } from './draw/utils/line-height';
 import { type AnnotationAdapter } from '../adapter';
 import { type TextAdapter } from '../adapter/text';
@@ -11,7 +7,7 @@ export const createAnnotationModel = (
   text: string,
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
-): TextAnnotationModel => {
+) => {
   Debugger.debug('LineAdapter', textAdapter.name);
 
   // 1. first parse the text into lines
@@ -20,13 +16,6 @@ export const createAnnotationModel = (
   // 2. set the lines on the text adapter
   textAdapter.setLines(lines);
 
-  const annotationModel = new TextAnnotationModelImpl(
-    textAdapter,
-    annotationAdapter.renderInstance,
-  );
-  annotationModel.textDirection = textAdapter.textDirection;
   annotationAdapter.setText(text, textAdapter.textOffset);
   textAdapter.setLineHeight(getLineHeight(text, textAdapter.style.lineOffset));
-
-  return annotationModel;
 };

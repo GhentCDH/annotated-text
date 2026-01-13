@@ -52,9 +52,9 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(120, 70, mockSvgModel);
 
     expect(result).not.toBeNull();
-    expect(result!.characterPos).toBe(5);
-    expect(result!.side).toBe('left');
-    expect(result!.newIndex).toBe(5);
+    expect(result?.characterPos).toBe(5);
+    expect(result?.side).toBe('left');
+    expect(result?.newIndex).toBe(5);
   });
 
   it('should return character on right side when point is right of center', () => {
@@ -73,8 +73,8 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(140, 70, mockSvgModel);
 
     expect(result).not.toBeNull();
-    expect(result!.characterPos).toBe(5);
-    expect(result!.side).toBe('right');
+    expect(result?.characterPos).toBe(5);
+    expect(result?.side).toBe('right');
   });
 
   it('should correctly calculate relative coordinates', () => {
@@ -139,7 +139,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(135, 60, mockSvgModel);
 
     expect(result).not.toBeNull();
-    expect(result!.characterPos).toBe(1);
+    expect(result?.characterPos).toBe(1);
   });
 
   it('should handle point exactly on boundary', () => {
@@ -163,7 +163,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
 });
 
 describe('getCharacterStartEndPosition', () => {
-  describe('when target is \'start\'', () => {
+  describe('when target is "start"', () => {
     it('should update start position when clicking left side', () => {
       const charResult: CharacterPositionResult = {
         side: 'left',

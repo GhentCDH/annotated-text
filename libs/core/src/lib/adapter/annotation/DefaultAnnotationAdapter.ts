@@ -31,9 +31,11 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
   ): Annotation | null {
     if (!annotation) return null;
 
-    if (!hasChanged) return this.getAnnotation(annotation.id);
+    const originalAnnotation = this.annotationCache.getOriginalAnnotation(
+      annotation.id,
+    );
 
-    const originalAnnotation = isNew ? {} : this.getAnnotation(annotation.id);
+    if (!hasChanged) return originalAnnotation;
 
     const textSelection = selectText(
       this.text,
@@ -53,8 +55,15 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
       formattedAnnotation = annotation;
     } else formattedAnnotation = data.data;
 
-    formattedAnnotation = { ...originalAnnotation, ...formattedAnnotation };
-    super.addAnnotation(annotation.id, formattedAnnotation);
+    formattedAnnotation = {
+      ...(originalAnnotation ?? {}),
+      ...formattedAnnotation,
+    };
+    this.annotationCache.addAnnotation(
+      annotation.id,
+      formattedAnnotation,
+      annotation,
+    );
 
     return formattedAnnotation;
   }

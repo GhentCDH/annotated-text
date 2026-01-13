@@ -5,7 +5,6 @@ import {
   type TextAdapter,
   type TextDirection,
 } from '../../../adapter';
-import { type TextAnnotationModel } from '../../annotation.model';
 import { type TextLine } from '../../../model';
 import { styles } from '../../styles.const';
 
@@ -65,7 +64,6 @@ const createText = (
 };
 
 export const drawText = (
-  textAnnotationModel: TextAnnotationModel,
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
@@ -74,9 +72,7 @@ export const drawText = (
     return;
   }
 
-  const gutterPaddingLeft = textAnnotationModel.gutterModel.gutterPaddingLeft(
-    annotationAdapter.renderInstance,
-  );
+  const gutterPaddingLeft = annotationAdapter.gutter.paddingLeft;
 
   const textDiv = document?.createElement('div');
   textDiv.className = `${styles.text} `;
@@ -87,7 +83,7 @@ export const drawText = (
   textAdapter.lines.forEach((line) => {
     textDiv.appendChild(createGutter(line, textAdapter));
     textDiv.appendChild(
-      createText(line, textAnnotationModel.textDirection, textAdapter),
+      createText(line, textAdapter.textDirection, textAdapter),
     );
   });
 

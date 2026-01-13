@@ -1,4 +1,3 @@
-import { type TextAnnotationModel } from './annotation.model';
 import { getUnscaledRect } from './position/unscaled';
 import type { TextAnnotation, TextLine } from '../model';
 import { type AnnotationAdapter } from '../adapter/annotation';
@@ -27,7 +26,6 @@ const computeLinePositions = (lines: TextLine[], textElement: HTMLElement) => {
 };
 
 export const createAndAssignDrawAnnotation = (
-  model: TextAnnotationModel,
   textElement: HTMLElement,
   annotation: TextAnnotation,
   annotationAdapter: AnnotationAdapter<any>,
@@ -37,33 +35,34 @@ export const createAndAssignDrawAnnotation = (
   const parentDimensions = getUnscaledRect(textElement);
 
   const rendered = annotationAdapter.renderInstance.createDraws(
-    model.renderParams,
+    {
+      textDirection: textAdapter.textDirection,
+      maxGutterWeight: annotationAdapter.gutter.maxWeight,
+    },
     textAdapter.style,
     parentDimensions,
     annotation,
   );
 
-  model.addDrawAnnotations(
+  annotationAdapter.addDrawAnnotations(
     annotation.id,
     rendered.draws,
     rendered.dimensions,
     rendered.color,
   );
 
-  return model;
+  return;
 };
 
 export const computeAnnotations = (
-  model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
   textAdapter: TextAdapter,
 ) => {
   // Compute positions of gutters
 
-  model.annotations.forEach((annotation) => {
+  annotationAdapter.annotations().forEach((annotation) => {
     createAndAssignDrawAnnotation(
-      model,
       textElement,
       annotation,
       annotationAdapter,
@@ -71,18 +70,17 @@ export const computeAnnotations = (
     );
   });
 
-  return model;
+  return;
 };
 
 export const computePositions = (
-  model: TextAnnotationModel,
   textElement: HTMLElement,
   annotationAdapter: AnnotationAdapter<any>,
   textAdapter: TextAdapter,
 ) => {
   computeLinePositions(textAdapter.lines, textElement);
-  model.clearDrawAnnotation();
-  computeAnnotations(model, textElement, annotationAdapter, textAdapter);
+  annotationAdapter.clearDraws();
+  computeAnnotations(textElement, annotationAdapter, textAdapter);
 
-  return model;
+  return;
 };
