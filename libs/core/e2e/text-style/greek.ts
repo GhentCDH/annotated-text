@@ -2,7 +2,11 @@
 import { greekText } from '@demo/data';
 import { type GreekIdKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
-import { clearAnnotatedTextCache, createAnnotatedText, TextLineAdapter } from '../../src';
+import {
+  clearAnnotatedTextCache,
+  createAnnotatedText,
+  TextLineAdapter,
+} from '../../src';
 
 const annotations = [];
 

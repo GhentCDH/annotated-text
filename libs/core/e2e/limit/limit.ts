@@ -1,6 +1,3 @@
-// Import styles directly (not through index.ts to avoid Istanbul/Babel issues)
-import '../../src/lib/style/style.scss';
-
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
   clearAnnotatedTextCache,
