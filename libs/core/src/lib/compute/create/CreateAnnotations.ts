@@ -1,10 +1,14 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES, type TextAdapter } from '../../adapter/text';
+import {
+  type TEXT_CONFIG_KEYS,
+  type TEXT_CONFIG_VALUES,
+  type TextAdapter,
+} from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
-  type AnnotationAdapter
+  type AnnotationAdapter,
 } from '../../adapter/annotation';
 import { createAnnotationModel } from '../1_create_annotation_model';
 import { SvgModel } from '../model/svg.types';
@@ -12,11 +16,18 @@ import { Debugger } from '../../utils/debugger';
 import { computePositions } from '../4_compute_positions';
 import { styles } from '../styles.const';
 import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
-import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import { drawText } from '../draw/text/text';
 import { type Annotation, type AnnotationId } from '../../model';
 import { AnnotationColors } from '../model/annotation.colors';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { drawDummyAnnotation } from '../draw/annotations/draw-dummy';

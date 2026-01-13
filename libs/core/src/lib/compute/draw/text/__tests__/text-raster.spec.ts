@@ -158,7 +158,9 @@ describe('drawTextRaster', () => {
         .mockReturnValueOnce(null),
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
-    vi.mocked(mockSvgModel.model.getLine).mockReturnValueOnce(null as any);
+    vi.mocked(mockSvgModel.textAdapter.getLine).mockReturnValueOnce(
+      null as any,
+    );
 
     drawTextRaster(mockSvgModel);
 
@@ -237,7 +239,7 @@ describe('drawTextRaster', () => {
       .mockReturnValueOnce({ lineUid: 'line-2', lineHeight: 20 } as any); // For textNode2
 
     // getLine is called ONCE per text node (not per character)
-    const mockGetLine = vi.mocked(mockSvgModel.model.getLine);
+    const mockGetLine = vi.mocked(mockSvgModel.textAdapter.getLine);
     mockGetLine.mockReset();
     mockGetLine
       .mockReturnValueOnce({ start: 0, end: 3 } as any) // For textNode1
@@ -277,7 +279,7 @@ describe('drawTextRaster', () => {
       .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // For textNode1
       .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any); // For textNode2
 
-    const mockGetLine = vi.mocked(mockSvgModel.model.getLine);
+    const mockGetLine = vi.mocked(mockSvgModel.textAdapter.getLine);
     mockGetLine.mockReset();
     mockGetLine
       .mockReturnValueOnce({ start: 0, end: 4 } as any) // For textNode1
@@ -328,7 +330,7 @@ describe('drawTextRaster', () => {
       .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // textNode2
       .mockReturnValueOnce({ lineUid: 'line-2', lineHeight: 20 } as any); // textNode3
 
-    const mockGetLine = vi.mocked(mockSvgModel.model.getLine);
+    const mockGetLine = vi.mocked(mockSvgModel.textAdapter.getLine);
     mockGetLine.mockReset();
     mockGetLine
       .mockReturnValueOnce({ start: 0, end: 2 } as any) // textNode1

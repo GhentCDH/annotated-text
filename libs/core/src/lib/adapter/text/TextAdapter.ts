@@ -39,7 +39,7 @@ export abstract class TextAdapter extends BaseAdapter {
   style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
   public textLength = 0;
 
-  public lines: TextLine[];
+  public lines: TextLine[] = [];
 
   /**
    * Parses the given text into an array of TextLine objects.

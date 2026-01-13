@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { AnnotationWeight } from '../annotation.weight';
 import { type TextAnnotation, type TextLine, type TextRender } from '../../../model';
-import { type AnnotationRender } from '../../../adapter/annotation/renderer/annotation-render'; // Helper to create annotations
+import { type AnnotationRender } from '../../../adapter/annotation/renderer';
 
 // Helper to create annotations
 const createAnnotation = (

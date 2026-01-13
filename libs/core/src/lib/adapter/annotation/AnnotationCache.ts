@@ -18,7 +18,6 @@ export class AnnotationCache<ANNOTATION> {
     AnnotationId,
     TextAnnotation
   >();
-  public maxGutterWeight = 0;
   public gutter = {
     maxWeight: 0,
     paddingLeft: 0,
@@ -124,20 +123,6 @@ export class AnnotationCache<ANNOTATION> {
     const textAnnotations = this.getAnnotations().filter(
       (a) => !a._render.isGutter,
     );
-    const lineAnnotationMap = new Map<number, TextAnnotation[]>();
-    const usedRenders = new Set<string>();
-
-    lines.forEach((line) => {
-      lineAnnotationMap.set(line.lineNumber, []);
-    });
-
-    textAnnotations.forEach((t) => {
-      usedRenders.add(t._render.render);
-      t._render.lines.forEach((l) =>
-        lineAnnotationMap.get(l.lineNumber)?.push(t),
-      );
-    });
-
     AnnotationWeight.calculate(
       textAnnotations,
       renderInstances.getTextRenders(),

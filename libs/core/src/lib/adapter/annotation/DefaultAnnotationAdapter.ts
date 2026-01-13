@@ -31,9 +31,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
   ): Annotation | null {
     if (!annotation) return null;
 
-    const originalAnnotation = this.annotationCache.getOriginalAnnotation(
-      annotation.id,
-    );
+    const originalAnnotation = this.getOriginalAnnotation(annotation.id);
 
     if (!hasChanged) return originalAnnotation;
 
@@ -59,11 +57,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
       ...(originalAnnotation ?? {}),
       ...formattedAnnotation,
     };
-    this.annotationCache.addAnnotation(
-      annotation.id,
-      formattedAnnotation,
-      annotation,
-    );
+    this.addAnnotation(annotation.id, formattedAnnotation, annotation);
 
     return formattedAnnotation;
   }

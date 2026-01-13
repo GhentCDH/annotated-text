@@ -50,7 +50,7 @@ export const getRanges = (
     return null;
   }
 
-  return getRangesRect(parentDimensions, lineElement, start, end).flat();
+  return getRangesRect(parentDimensions, lineElement, start, end);
 };
 
 /**

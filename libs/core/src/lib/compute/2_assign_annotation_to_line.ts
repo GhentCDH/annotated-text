@@ -76,6 +76,5 @@ export const assignAnnotationsToLines = <ANNOTATION>(
     assignAnnotationToLines(textAdapter, eventListener, clonedAnnotation);
   });
 
-  textAdapter.calculateWeights();
   annotationAdapter.calculateWeights(textAdapter.lines);
 };
