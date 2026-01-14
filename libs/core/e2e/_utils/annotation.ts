@@ -1,5 +1,5 @@
 import { expect, type Page } from '@playwright/test';
-import { scrollTo } from './scroll';
+import { getPositionRelativeTo, scrollTo } from './scroll';
 import { MouseMove } from './mouse';
 import { getLogDivId } from './render-demo';
 
@@ -10,9 +10,9 @@ export const findAnnotatedTextContainer = (page: Page, id: string) => {
     const annotationSvg = container
       .locator(`[data-annotation-uid='${annotationId}']`)
       .first();
-
     return {
       annotation: annotationSvg,
+      getPositition: () => getPositionRelativeTo(container, annotationSvg),
       toBeVisible: () => expect(annotationSvg).toBeVisible(),
       notVisible: () => expect(annotationSvg).not.toBeVisible(),
     };
@@ -42,7 +42,8 @@ export const findAnnotatedTextContainer = (page: Page, id: string) => {
     annotation: (annotationId: string) => annotation(annotationId),
     annotations: (ids: string[]) => annotations(ids),
     expect: {
-      toHaveLog: (msg: string) => expect(log.innerText()).toEqual(msg),
+      toHaveLog: async (msg: string) =>
+        expect(await log.innerText()).toEqual(msg),
       toHaveScreenshot: (name: string) =>
         expect(container).toHaveScreenshot(`${id}-${name}.png`),
       annotationsNotVisible: (...ids: string[]) =>

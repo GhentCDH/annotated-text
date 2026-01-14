@@ -18,11 +18,13 @@ export class MouseMove {
     return boundingBox;
   }
 
-  async onMouseDown(position: Position) {
+  async onMouseDown(position: Position, scrollToPos = true) {
     // Scroll the specific position into view
-    await scrollTo(this.container, position);
+    if (scrollToPos) {
+      await scrollTo(this.container, position);
 
-    await this.page.waitForTimeout(100);
+      await this.page.waitForTimeout(100);
+    }
 
     const boundingBox = await this.boundingBox;
 

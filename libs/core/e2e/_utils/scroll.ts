@@ -17,3 +17,23 @@ export const scrollTo = (
     });
   }, position);
 };
+export const getPositionRelativeTo = async (
+  mainContainer: Locator,
+  container: Locator,
+) => {
+  const mainPos = await mainContainer.boundingBox()!;
+  const innerPos = await container.boundingBox()!;
+
+  const startX = innerPos.x - mainPos.x;
+  const startY = innerPos.y - mainPos.y;
+  const endY = startY + innerPos.height;
+  const endX = startX + innerPos.width;
+  return {
+    startX: startX + 2,
+    startY,
+    endY,
+    endX: endX - 4,
+    middleX: startX + innerPos.width / 2,
+    middleY: startY + innerPos.height / 2,
+  };
+};
