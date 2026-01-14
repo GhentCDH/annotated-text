@@ -1,8 +1,8 @@
 import { type CrudIdKeys, crudIds } from './testIds';
 import { renderDemoDiv, writeToLogDiv } from '../_utils/render-demo';
 import {
-  Annotation,
-  AnnotationEventType,
+  type Annotation,
+  type AnnotationEventType,
   clearAnnotatedTextCache,
   createAnnotatedText,
   createAnnotationColor,
@@ -21,6 +21,7 @@ type Params = {
 };
 
 const offsetMainId = 'demo-with-offsets';
+const actionsId = 'demo-with-actions';
 
 const ParamConfig: Record<CrudIdKeys, Params> = {
   'create-edit': { edit: true, create: true },
@@ -52,6 +53,12 @@ const ParamConfig: Record<CrudIdKeys, Params> = {
     offset: -10,
     mainContainer: offsetMainId,
   },
+  actions: {
+    edit: true,
+    create: true,
+    mainContainer: actionsId,
+    tags: true,
+  },
 };
 
 const renderDemo = (_id: CrudIdKeys, title: string) => {
@@ -61,14 +68,14 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
 
   const params = ParamConfig[_id];
 
-  renderDemoDiv(title, id, params.mainContainer, true);
+  const rendered = renderDemoDiv(title, id, params.mainContainer, true);
 
   const writeLog = (event: AnnotationEventType, a: Annotation) => {
     writeToLogDiv(id, `${event}: ${a.start}-${a.end}`);
   };
 
   // Basic text setup
-  createAnnotatedText(id, {
+  const annotatedText = createAnnotatedText(id, {
     text: { textOffset: params.offset ?? 0 },
     annotation: {
       tagConfig: {
@@ -107,6 +114,8 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
     .on('annotation-edit--move', (e) => {
       writeLog(e.event, e.data.annotation);
     });
+
+  return { ...rendered, annotatedText, id };
 };
 
 renderDemo('default', 'Default');
@@ -118,3 +127,32 @@ renderDemo('offset-1', 'offset 1');
 renderDemo('offset-0', 'offset 0');
 renderDemo('offset-10', 'offset 10');
 renderDemo('offset--10', 'offset -10');
+
+const createWithActions = (_id: CrudIdKeys, title: string) => {
+  const actionsRendered = renderDemo(_id, title);
+  const id = actionsRendered.id;
+
+  const actionsDiv = document.createElement('div');
+  const addAnnotationBtn = document.createElement('button');
+
+  annotations.forEach((a) => {
+    const deleteBtn = document.createElement('button');
+    deleteBtn.id = `${id}-delete-${a.id}`;
+    deleteBtn.innerText = `Delete ${a.label}`;
+    deleteBtn.addEventListener('click', () => {
+      actionsRendered.annotatedText.deleteAnnotation(a.id);
+    });
+    actionsDiv.append(deleteBtn);
+  });
+
+  addAnnotationBtn.innerText = 'Add annotation';
+  addAnnotationBtn.addEventListener('click', () => {
+    actionsRendered.annotatedText.addAnnotation(DemoShortText.extraAnnotation);
+  });
+
+  actionsDiv.classList.add('flex');
+  actionsDiv.append(addAnnotationBtn);
+  actionsRendered.demo.append(actionsDiv);
+};
+
+createWithActions('actions', 'actions');

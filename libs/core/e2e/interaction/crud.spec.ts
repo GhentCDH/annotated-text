@@ -3,8 +3,8 @@ import { crudIds } from './testIds';
 import { test } from '../fixtures';
 import { tableTest, tableTestDescribe } from '../_utils/parse-table';
 import { DemoShortText } from '../_demo/data-short';
-import { MouseMove } from '../_utils/mouse';
 import { getLog } from '../_utils/log';
+import { findAnnotatedTextContainer } from '../_utils/annotation';
 
 const firstAnnotation = DemoShortText.annotations[0];
 
@@ -21,10 +21,12 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
           ${crudIds['create-edit']} | ${true}   | ${true}
                `('Test functionality: $id', ({ id, canEdit, canCreate }) => {
     test(`Create: ${canCreate}`, async ({ page }) => {
-      const container = page.locator(`#${id}`);
-      await expect(container).toBeVisible();
+      const container = findAnnotatedTextContainer(page, id);
 
-      const mouseMove = new MouseMove(page, container);
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      const mouseMove = container.mouse;
       const y = 50;
 
       await mouseMove.onMouseDown({ x: 30, y });
@@ -42,13 +44,15 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
         canCreate ? 'annotation-create--end: 36-43' : '',
       );
 
-      await expect(container).toHaveScreenshot(`create-${id}.png`);
+      await container.expect.toHaveScreenshot('create.png');
     });
     test(`Edit: ${canEdit}`, async ({ page }) => {
-      const container = page.locator(`#${id}`);
-      await expect(container).toBeVisible();
+      const container = findAnnotatedTextContainer(page, id);
 
-      const mouseMove = new MouseMove(page, container);
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      const mouseMove = container.mouse;
       const x = firstAnnotation.positionScreen.startX;
       const y = firstAnnotation.positionScreen.startY;
 
@@ -65,7 +69,7 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
       await mouseMove.onMouseEnd();
       await getLog(page, id).expect(canEdit ? 'annotation-edit--end: 1-9' : '');
 
-      await expect(container).toHaveScreenshot(`edit-${id}.png`);
+      await container.expect.toHaveScreenshot('edit.png');
     });
   });
 
@@ -88,10 +92,12 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
       `(
       '$description',
       async ({ page }, { description, startX, startY, endX, endY, steps }) => {
-        const container = page.locator(`#${id}`);
-        await expect(container).toBeVisible();
+        const container = findAnnotatedTextContainer(page, id);
 
-        const mouseMove = new MouseMove(page, container);
+        await container.scrollTo();
+        await container.toBeVisible();
+
+        const mouseMove = container.mouse;
 
         await mouseMove.onMouseDown({ x: startX, y: startY });
         await mouseMove.onMouseDrag({ x: endX, y: endY }, steps);
@@ -100,9 +106,46 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
         // Move out of annotation
         await mouseMove.onMouseMoveTo({ x: 0, y: 0 });
 
-        await expect(container).toHaveScreenshot(`edit-${description}.png`);
+        await container.expect.toHaveScreenshot(`edit-${description}.png`);
       },
     );
+  });
+
+  test.describe('Delete', () => {
+    const id = crudIds.actions;
+    const annotationId = firstAnnotation.id;
+    const deleteId = `${id}-delete-${annotationId}`;
+    const annotations = DemoShortText.annotations;
+    const annotationIds = annotations.map((a) => a.id);
+
+    test('it should rerender without the deleted annotation', async ({
+      page,
+    }) => {
+      const container = findAnnotatedTextContainer(page, id);
+
+      await container.expect.toHaveScreenshot(
+        `delete-${annotationId}--start.png`,
+      );
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      await container.expect.annotationsVisible(...annotationIds);
+
+      const button = page.locator(`#${deleteId}`);
+      await expect(button).toBeVisible();
+
+      button.click();
+      await page.waitForTimeout(100);
+
+      await container.expect.annotationsVisible(
+        ...annotationIds.filter((id) => id !== annotationId),
+      );
+
+      await container.expect.annotationsNotVisible(annotationId);
+      await container.expect.toHaveScreenshot(
+        `delete-${annotationId}--done.png`,
+      );
+    });
   });
 
   test.describe('with tags', () => {
@@ -115,23 +158,23 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
     `(
       '$description',
       async ({ page }, { description, startX, startY, endX, endY, steps }) => {
-        const container = page.locator(`#${id}`);
-        await expect(container).toBeVisible();
+        const container = findAnnotatedTextContainer(page, id);
 
-        const mouseMove = new MouseMove(page, container);
+        await container.scrollTo();
+        await container.toBeVisible();
+
+        const mouseMove = container.mouse;
 
         await mouseMove.onMouseDown({ x: startX, y: startY });
-        await expect(container).toHaveScreenshot(
-          `tag-start-${description}.png`,
-        );
+        await container.expect.toHaveScreenshot(`tag-start-${description}`);
 
         await mouseMove.onMouseDrag({ x: endX, y: endY });
         // During drag the tag should dissapear
-        await expect(container).toHaveScreenshot(`tag-move-${description}.png`);
+        await container.expect.toHaveScreenshot(`tag-move-${description}.png`);
 
         await mouseMove.onMouseEnd();
         // When released the tag should reappear
-        await expect(container).toHaveScreenshot(`tag-end-${description}.png`);
+        await container.expect.toHaveScreenshot(`tag-end-${description}.png`);
 
         // Move out of annotation
         await mouseMove.onMouseMoveTo({ x: 0, y: 0 });
