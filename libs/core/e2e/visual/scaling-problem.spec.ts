@@ -12,9 +12,9 @@ test.describe('AnnotatedText Core - Scaling problem', () => {
   // Select the word "second"
   tableTest<'id' | 'startX' | 'startY' | 'endX' | 'endY'>`
           id                            | startX | startY | endX | endY
-          ${renderProblemIds.default}   | 45     | 75     | 90   | 75
-          ${renderProblemIds.scaled_1_5}| 90     | 175     | 180   | 175
-          ${renderProblemIds.scaled_0_75}| 35     | 65    | 65 | 65
+          ${renderProblemIds.default}   | 50     | 75     | 100   | 75
+          ${renderProblemIds.scaled_1_5}| 100    | 175    | 190   | 175
+          ${renderProblemIds.scaled_0_75}| 40     | 65    | 75    | 65
         `(
     'CREATE: $id',
     async ({ page }, { id, startX, startY, endX, endY }) => {
@@ -45,10 +45,10 @@ test.describe('AnnotatedText Core - Scaling problem', () => {
 
   // Edit fox to Fox Jumps
   tableTest<'id' | 'startX' | 'startY' | 'endX' | 'endY'>`
-          id                            | startX | startY | endX | endY
-          ${renderProblemIds.default}   | 155     | 15     | 200   | 15
-          ${renderProblemIds.scaled_1_5}   | 310     | 15     | 400   | 15
-          ${renderProblemIds.scaled_0_75}   | 115     | 10     | 150   | 15
+          id                              | startX | startY | endX | endY
+          ${renderProblemIds.default}     | 165     | 15     | 210   | 15
+          ${renderProblemIds.scaled_1_5}  | 330     | 20     | 420   | 20
+          ${renderProblemIds.scaled_0_75} | 125     | 10     | 160   | 15
         `('EDIT: $id', async ({ page }, { id, startX, startY, endX, endY }) => {
     const container = page.locator(`#${id}`);
     await expect(container).toBeVisible();
@@ -82,7 +82,7 @@ test.describe('AnnotatedText Core - Scaling problem', () => {
           id                            | startX | startY | endX | endY
           ${renderProblemIds.default}   | 100     | 15    | 55 | 75
           ${renderProblemIds.scaled_1_5}   | 250     | 15  | 155 | 175
-          ${renderProblemIds.scaled_0_75}   | 80     | 10    | 55 | 60
+          ${renderProblemIds.scaled_0_75}   | 80     | 10    | 40 | 60
         `('MOVE: $id', async ({ page }, { id, startX, startY, endY, endX }) => {
     const container = page.locator(`#${id}`);
     await expect(container).toBeVisible();
@@ -116,7 +116,7 @@ test.describe('AnnotatedText Core - Scaling problem', () => {
           id                            | startX | startY  | 200   | 15
           ${renderProblemIds.default}   | 100     | 15    
           ${renderProblemIds.scaled_1_5}   | 250     | 15  
-          ${renderProblemIds.scaled_0_75}   | 80     | 10    
+          ${renderProblemIds.scaled_0_75}   | 90     | 10    
         `('HOVER: $id', async ({ page }, { id, startX, startY }) => {
     const container = page.locator(`#${id}`);
     await expect(container).toBeVisible();

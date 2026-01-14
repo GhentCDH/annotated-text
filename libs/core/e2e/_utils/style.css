@@ -1,13 +1,26 @@
 
 body {
-    font-family: system-ui, sans-serif;
+    font-family: sans-serif;
     padding: 20px;
 }
 
-#demo-container > .demo {
+.demo-container > .demo {
     margin: 20px 0;
     padding: 10px;
     border: 1px solid #ccc;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 100px;
+    gap: 10px 100px;
 }
 
 .log {

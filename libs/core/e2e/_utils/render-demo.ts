@@ -10,8 +10,13 @@ export const writeToLogDiv = (id: string, text: string) => {
   return logDiv;
 };
 
-export const renderDemoDiv = (title: string, id: string, addLogger?: true) => {
-  const mainDiv = document.getElementById(mainDivId);
+export const renderDemoDiv = (
+  title: string,
+  id: string,
+  mainContainer = mainDivId,
+  addLogger?: true,
+) => {
+  const mainDiv = document.getElementById(mainContainer);
   const demo = document.createElement('div');
 
   demo.classList.add('demo');

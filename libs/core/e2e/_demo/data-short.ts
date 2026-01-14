@@ -9,7 +9,7 @@ const annotations = [
     label: 'adjective',
     color: '#fbbf24',
     positionScreen: {
-      startX: 50,
+      startX: 55,
       startY: 15,
       endX: 90,
       endY: 15,
