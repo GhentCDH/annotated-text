@@ -15,7 +15,6 @@ import {
   type AnnotationDrawColors,
   type AnnotationId,
 } from '../../model';
-import { type TextAnnotationModel } from '../annotation.model';
 import { styles } from '../styles.const';
 import { drawAnnotation } from '../draw/annotations';
 import { createNewBlock } from '../draw/annotations/create';
@@ -54,7 +53,6 @@ export class SvgModel {
 
   constructor(
     public readonly textElement: HTMLElement,
-    public readonly model: TextAnnotationModel,
     public readonly eventListener: EventListener,
     public readonly annotationAdapter: AnnotationAdapter<any>,
     public readonly textAdapter: TextAdapter,
@@ -130,7 +128,7 @@ export class SvgModel {
   }
 
   resetAnnotationColor(annotationUuid: AnnotationId) {
-    const annotation = this.model.getAnnotation(annotationUuid);
+    const annotation = this.annotationAdapter.getAnnotation(annotationUuid);
     if (!annotation) {
       Debugger.warn('No annotation found for uuid', annotationUuid);
       return;
@@ -175,8 +173,8 @@ export class SvgModel {
   drawAnnotations() {
     const now = Date.now();
 
-    this.model.annotations
-      .sort((a1, a2) => (a1._render.weight! > a2._render.weight! ? -1 : 1))
+    this.annotationAdapter.annotations
+      .sortBy('weight')
       .forEach((annotation) => drawAnnotation(this, annotation));
 
     Debugger.time(now, '--- drawComputedAnnotations ');
@@ -194,7 +192,7 @@ export class SvgModel {
     },
     additionalData: Partial<EventData[EVENT]> = {},
   ) {
-    const fullAnnotation = this.model.getAnnotation(annotationUuid);
+    const fullAnnotation = this.annotationAdapter.getAnnotation(annotationUuid);
     const annotationData = {
       ...merge({ annotation: fullAnnotation }, additionalData),
       annotationUuid,

@@ -6,5 +6,5 @@ export const drawAllTags = (svgModel: SvgModel) => {
   if (svgModel.annotationAdapter.tagConfig.enabledOnHover) return;
 
   // Draw all tags
-  svgModel.model.annotations.forEach((a) => drawTag(svgModel, a));
+  svgModel.annotationAdapter.annotations().forEach((a) => drawTag(svgModel, a));
 };

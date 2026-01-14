@@ -11,16 +11,21 @@ import { DefaultTagConfig, type TagConfig } from './DefaultTag';
 import { RenderInstances } from './renderer/render-instances';
 import { StyleInstances } from './style/style-instances';
 import { type AnnotationStyleParams } from './style';
+import { AnnotationCache } from './AnnotationCache';
 import { BaseAdapter } from '../BaseAdapter';
 import { createAnnotationColor } from '../../utils/createAnnotationColor';
 import {
   type Annotation,
+  type AnnotationDimension,
+  type AnnotationDraw,
+  type AnnotationDrawColors,
   annotationDrawMetadataSchema,
   type AnnotationId,
   renderSchema,
   renderStyleSchema,
   type TextAnnotation,
-  textAnnotationSchema
+  textAnnotationSchema,
+  type TextLine
 } from '../../model';
 
 import type { Snapper } from '../text';
@@ -39,8 +44,7 @@ const config = {
 export type AnnotationConfig = typeof config;
 
 export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
-  protected readonly originalAnnotations = new Map<AnnotationId, ANNOTATION>();
-
+  private readonly annotationCache = new AnnotationCache<ANNOTATION>();
   /**
    * If true, creation of annotations is enabled.
    * @param params
@@ -51,6 +55,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * @param params
    */
   public edit = false;
+
   /**
    * Configuration for styling the annotations, can be used to override default styles.
    */
@@ -80,16 +85,10 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    */
   abstract _parse(annotation: ANNOTATION): Annotation | null;
 
-  addAnnotation(annotationId: AnnotationId, originalAnnotation: ANNOTATION) {
-    this.originalAnnotations.set(annotationId, originalAnnotation);
-  }
-
   public parse(annotation: ANNOTATION): TextAnnotation | null {
     const parsedAnnotation = this._parse(annotation);
 
     if (!parsedAnnotation) return null;
-
-    this.addAnnotation(parsedAnnotation.id, annotation);
 
     const renderInstance = this.renderInstance.getRenderer(annotation);
 
@@ -108,11 +107,15 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
 
     const _drawMetadata = annotationDrawMetadataSchema.parse({});
 
-    return textAnnotationSchema.parse({
+    const textAnnotation = textAnnotationSchema.parse({
       ...parsedAnnotation,
       _render: renderParams,
       _drawMetadata,
     });
+
+    this.addAnnotation(parsedAnnotation.id, annotation, textAnnotation);
+
+    return textAnnotation;
   }
 
   /**
@@ -133,7 +136,7 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
    * @param annotation
    */
   tagLabel(annotation: Pick<TextAnnotation, 'id'>) {
-    return this.tagConfig.tagFn(this.getAnnotation(annotation.id));
+    return this.tagConfig.tagFn(this.getOriginalAnnotation(annotation.id));
   }
 
   /**
@@ -202,9 +205,64 @@ export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
     }
   }
 
-  getAnnotation(annotationId: AnnotationId): ANNOTATION {
-    return this.originalAnnotations.get(annotationId) as ANNOTATION;
+  // @region annotation  cache
+  protected getOriginalAnnotation(annotationId: AnnotationId): ANNOTATION {
+    return this.annotationCache.getOriginalAnnotation(annotationId);
   }
+
+  getAnnotation(annotationId: AnnotationId) {
+    return this.annotationCache.getParsedAnnotation(annotationId);
+  }
+
+  addDrawAnnotations(
+    annotationUuid: AnnotationId,
+    annotations: AnnotationDraw[],
+    dimensions: AnnotationDimension,
+    color: AnnotationDrawColors,
+  ) {
+    return this.annotationCache.addDrawAnnotations(
+      annotationUuid,
+      annotations,
+      dimensions,
+      color,
+    );
+  }
+
+  protected addAnnotation(
+    annotationId: AnnotationId,
+    originalAnnotation: ANNOTATION,
+    parsedAnnotation: TextAnnotation,
+  ) {
+    this.annotationCache.addAnnotation(
+      annotationId,
+      originalAnnotation,
+      parsedAnnotation,
+    );
+  }
+
+  clear() {
+    this.annotationCache.clear();
+  }
+
+  clearDraws() {
+    return this.annotationCache.clearDrawAnnotation();
+  }
+
+  annotations = this.annotationCache.getAnnotationsSortedBy;
+
+  calculateWeights(lines: TextLine[]) {
+    return this.annotationCache.calculateWeights(lines, this.renderInstance);
+  }
+
+  get gutter() {
+    return this.annotationCache.gutter;
+  }
+
+  get position() {
+    return this.annotationCache.positions;
+  }
+
+  // @endregion annotation  cache
 }
 
 type CONFIG = InstanceType<typeof AnnotationAdapter>;

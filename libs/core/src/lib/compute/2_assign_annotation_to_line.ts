@@ -1,4 +1,3 @@
-import { type TextAnnotationModel } from './annotation.model';
 import { isIntersection } from './utils/intersect';
 import { getLinesForAnnotation } from './utils/line.utils';
 import { type TextAdapter } from '../adapter/text';
@@ -8,11 +7,10 @@ import { type AnnotationAdapter } from '../adapter/annotation';
 import { Debugger } from '../utils/debugger';
 import { type EventListener } from '../events/event.listener';
 
-export const assignAnnotationToLines = (
-  model: TextAnnotationModel,
+const assignAnnotationToLines = (
+  textAdapter: TextAdapter,
   eventListener: EventListener,
   _annotation: Annotation,
-  calculateWeights = true,
 ) => {
   const annotation = _annotation as TextAnnotation;
 
@@ -23,51 +21,49 @@ export const assignAnnotationToLines = (
       annotation,
     );
   }
-  if (model.textLength < annotation.start) {
+  if (textAdapter.textLength < annotation.start) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
-      `Invalid annotation: start (${annotation.start}) must be less than text length (${model.textLength})`,
+      `Invalid annotation: start (${annotation.start}) must be less than text length (${textAdapter.textLength})`,
       annotation,
     );
-    return model;
+    return;
   }
-  if (model.textLength < annotation.end) {
+  if (textAdapter.textLength < annotation.end) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
-      `Invalid annotation: end (${annotation.end}) must be less than text length (${model.textLength})`,
+      `Invalid annotation: end (${annotation.end}) must be less than text length (${textAdapter.textLength})`,
       annotation,
     );
 
     // Maybe update the annotation end so it ends somewhere?
   }
 
-  const lines = getLinesForAnnotation(model.lines, annotation);
+  const lines = getLinesForAnnotation(textAdapter.lines, annotation);
 
   if (!lines?.length) {
     Debugger.warn(
       'Invalid annotation: no lines found for annotation',
       annotation,
     );
-    return model;
+    return;
   }
 
   annotation._render.lines = lines;
 
-  model.setAnnotation(annotation, calculateWeights);
-
-  return model;
+  return;
 };
 
 export const assignAnnotationsToLines = <ANNOTATION>(
-  model: TextAnnotationModel,
   annotationAdapter: AnnotationAdapter<ANNOTATION>,
   textAdapter: TextAdapter,
   annotations: ANNOTATION[],
   eventListener: EventListener,
-  calculateWeights = false,
-): TextAnnotationModel => {
-  model.resetAnnotations();
-  const limit = textAdapter.getLimit(model.lines);
+) => {
+  textAdapter.clear();
+  annotationAdapter.clear();
+
+  const limit = textAdapter.getLimit();
 
   annotations?.forEach((annotation) => {
     const clonedAnnotation = annotationAdapter.parse(annotation);
@@ -77,13 +73,8 @@ export const assignAnnotationsToLines = <ANNOTATION>(
       return;
     }
 
-    assignAnnotationToLines(
-      model,
-      eventListener,
-      clonedAnnotation,
-      calculateWeights,
-    );
+    assignAnnotationToLines(textAdapter, eventListener, clonedAnnotation);
   });
 
-  return model;
+  annotationAdapter.calculateWeights(textAdapter.lines);
 };

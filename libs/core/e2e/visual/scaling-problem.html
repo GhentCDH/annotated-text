@@ -9,21 +9,13 @@
           padding: 0 100px;
       }
 
-      #demo-container {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          margin: 0 100px;
-          gap: 10px 100px;
-      }
 
       #demo-container > div {
-          margin: 20px 0;
-          padding: 10px;
-          border: 1px solid #ccc;
           width: 300px;
       }
 
   </style>
+  <link rel="stylesheet" href="../_utils/style.css" />
 </head>
 <body>
 
@@ -32,7 +24,7 @@ This is a testcase for a problem that happend before, when scaling before the re
 other actions became ineffective
 
 <div class="container">
-  <div id="demo-container"></div>
+  <div id="demo-container" class="demo-container grid-2"></div>
 
 </div>
 <script type="module" src="scaling-problem.ts"></script>

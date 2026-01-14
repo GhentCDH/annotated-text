@@ -10,11 +10,11 @@ export const drawDummyAnnotation = (
   color: AnnotationDrawColor,
 ) => {
   svgModel.removeAnnotations(DUMMY_UID);
-  const { model, textElement } = svgModel;
+  const { textElement, textAdapter, annotationAdapter } = svgModel;
   const parentDimensions = getUnscaledRect(textElement);
 
   dummyAnnotation._render.lines = getLinesForAnnotation(
-    model.lines,
+    textAdapter.lines,
     dummyAnnotation,
   );
 
@@ -23,8 +23,11 @@ export const drawDummyAnnotation = (
 
   renderInstance
     .createDraws(
-      model.renderParams,
-      svgModel.textAdapter.style,
+      {
+        textDirection: textAdapter.textDirection,
+        maxGutterWeight: annotationAdapter.gutter.maxWeight,
+      },
+      textAdapter.style,
       parentDimensions,
       dummyAnnotation,
     )

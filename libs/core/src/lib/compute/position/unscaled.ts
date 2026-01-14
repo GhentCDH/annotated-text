@@ -4,7 +4,7 @@ export const getScale = memoizee((width: number, offsetWidth: number) => {
   return width / offsetWidth || 1;
 });
 
-type Dimensions = {
+export type Dimensions = {
   width: number;
   height: number;
   x: number;
@@ -16,6 +16,17 @@ export type DimensionsWithScale = {
   scaled: Dimensions;
   scale: number;
 };
+
+const getScaledRect = memoizee(
+  (width: number, height: number, x: number, y: number, scale: number) => {
+    return {
+      width: getScaled(width, scale),
+      height: getScaled(height, scale),
+      x: getScaled(x, scale),
+      y: getScaled(y, scale),
+    };
+  },
+);
 
 export const getUnscaledRect = (element: HTMLElement): DimensionsWithScale => {
   const rect = element.getBoundingClientRect();
@@ -30,12 +41,13 @@ export const getUnscaledRect = (element: HTMLElement): DimensionsWithScale => {
 
   return {
     original: originalDimensions,
-    scaled: {
-      width: getScaled(originalDimensions.width, scale),
-      height: getScaled(originalDimensions.height, scale),
-      x: getScaled(rect.x, scale),
-      y: getScaled(rect.y, scale),
-    },
+    scaled: getScaledRect(
+      originalDimensions.width,
+      originalDimensions.height,
+      originalDimensions.x,
+      originalDimensions.y,
+      scale,
+    ),
     scale,
   };
 };

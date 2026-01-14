@@ -7,6 +7,7 @@ export default [
   ...nx.configs['flat/javascript'],
   {
     ignores: [
+      '**/playwright-report/**',
       '**/dist/**',
       '**/dist-ssr/**',
       '**/coverage/**',

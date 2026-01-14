@@ -16,10 +16,7 @@ import {
 
 import { type TextAdapterStyle } from '../../text';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
-import {
-  type DimensionsWithScale,
-  getScaledDimensions,
-} from '../../../compute/position/unscaled';
+import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 
 export abstract class SvgAnnotationRender<
   STYLE extends TextAnnotationRenderStyle,
@@ -62,7 +59,7 @@ export abstract class SvgAnnotationRender<
 
     const lines = annotation._render.lines ?? [];
     lines.forEach((line, index: number) => {
-      const rects = getRanges(annotation, line);
+      const rects = getRanges(parentDimensions, annotation, line);
 
       const prevEnd = lines[index - 1]?.end;
       const isFirstLine = !prevEnd || prevEnd <= annotation.start;
@@ -71,12 +68,13 @@ export abstract class SvgAnnotationRender<
       const isLastLine = !nextLine || annotation.end < nextLine;
 
       rects?.forEach((rect, rectIdx) => {
-        const dimensions = getScaledDimensions(parentDimensions, rect);
+        const dimensions = rect.dimensions;
         const x = dimensions.x;
         const y = dimensions.y - padding - lineOffset;
         let leftBorder = isFirstLine && rectIdx === 0;
         const lastRect = rectIdx === rects.length - 1;
         let rightBorder = lastRect && isLastLine;
+
         if (params.textDirection === 'rtl') {
           const r = rightBorder;
           rightBorder = leftBorder;

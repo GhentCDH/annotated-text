@@ -13,12 +13,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@demo": [
-        "./docs/demo/index.ts"
-      ],
-      "@ghentcdh/annotated-text": [
-        "./libs/core/src/index.ts"
-      ],
+      "@demo/data": ["./docs/demo/data/index.ts"],
+      "@demo": ["./docs/demo/index.ts"],
+      "@ghentcdh/annotated-text": ["./libs/core/src/index.ts"],
       "@ghentcdh/annotated-text-vue-component": [
         "./libs/vue-component/src/index.ts"
       ]

@@ -10,7 +10,7 @@ export const addDraggableAnnotation = (
   annotation: TextAnnotation,
 ) => {
   const dragAnnotation = new DragAnnotation(
-    svgModel.model.getMinStartPosition(),
+    svgModel.annotationAdapter.position.minStartPosition,
     annotation,
     svgModel.internalEventListener,
     svgModel.annotationAdapter,

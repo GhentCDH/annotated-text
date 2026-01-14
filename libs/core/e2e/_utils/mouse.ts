@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { scrollTo } from './scroll';
 import { type Position } from '../../src/lib/compute/draw/types';
 
 export class MouseMove {
@@ -19,18 +20,7 @@ export class MouseMove {
 
   async onMouseDown(position: Position) {
     // Scroll the specific position into view
-    await this.container.evaluate((el, pos) => {
-      const rect = el.getBoundingClientRect();
-      const targetY = rect.top + pos.y;
-      const targetX = rect.left + pos.x;
-
-      // Scroll so the target position is centered in viewport
-      window.scrollTo({
-        top: window.scrollY + targetY - window.innerHeight / 2,
-        left: window.scrollX + targetX - window.innerWidth / 2,
-        behavior: 'instant',
-      });
-    }, position);
+    await scrollTo(this.container, position);
 
     await this.page.waitForTimeout(100);
 
@@ -60,10 +50,12 @@ export class MouseMove {
     const endY = boundingBox.y + position.y;
 
     const stepX = (endX - this.startX) / moveSteps;
+    const stepY = (endY - this.startY) / moveSteps;
 
     for (let i = 1; i <= moveSteps; i++) {
       const currentX = this.startX + stepX * i;
-      await this.page.mouse.move(currentX, endY);
+      const currentY = this.startY + stepY * i;
+      await this.page.mouse.move(currentX, currentY);
       await this.page.waitForTimeout(50);
     }
     return this;

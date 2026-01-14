@@ -1,5 +1,4 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
-import { type TextAnnotationModel } from '../annotation.model';
 import { EventListener } from '../../events/event.listener';
 import {
   type TEXT_CONFIG_KEYS,
@@ -14,9 +13,8 @@ import {
 import { createAnnotationModel } from '../1_create_annotation_model';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import { computeLinePositions, computePositions } from '../4_compute_positions';
+import { computePositions } from '../4_compute_positions';
 import { styles } from '../styles.const';
-import { computeAnnotationsOnLines } from '../3_compute_annotations_on_line';
 import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
 import {
   type AnnotationEventType,
@@ -29,8 +27,8 @@ import { AnnotationColors } from '../model/annotation.colors';
 import {
   type AnnotationRender,
   type AnnotationRenderStyle,
-} from '../../adapter/annotation/renderer/annotation-render';
-import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
+} from '../../adapter/annotation/renderer';
+import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { drawDummyAnnotation } from '../draw/annotations/draw-dummy';
 
@@ -40,7 +38,6 @@ export type BaseAnnotation = Pick<Annotation, 'id'>;
 export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   implements AnnotatedText<ANNOTATION>
 {
-  private textAnnotationModel: TextAnnotationModel | null = null;
   private annotationsMap = new Map<AnnotationId, ANNOTATION>();
   private mainElement: HTMLElement;
   private element: HTMLElement;
@@ -104,21 +101,13 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   private createAnnotationModel() {
-    this.textAnnotationModel = createAnnotationModel(
-      this.text,
-      this.textAdapter,
-      this.annotationAdapter,
-    );
+    createAnnotationModel(this.text, this.textAdapter, this.annotationAdapter);
 
-    this.textAnnotationModel = assignAnnotationsToLines(
-      this.textAnnotationModel,
+    assignAnnotationsToLines(
       this.annotationAdapter,
       this.textAdapter,
       this.annotations(),
       this.eventListener,
-    );
-    this.textAnnotationModel = computeAnnotationsOnLines(
-      this.textAnnotationModel,
     );
 
     return this;
@@ -142,14 +131,6 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     annotations.forEach((annotation) => {
       this.annotationsMap.set(annotation.id, annotation);
     });
-
-    if (!this.textAnnotationModel) {
-      Debugger.debug(
-        'setAnnotations',
-        'Annotations set before lines, cannot set annotations',
-      );
-      return this;
-    }
 
     if (!this.text) {
       Debugger.debug(
@@ -180,11 +161,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   private drawText() {
-    this.textElement = drawText(
-      this.textAnnotationModel!,
-      this.textAdapter,
-      this.annotationAdapter,
-    );
+    this.textElement = drawText(this.textAdapter, this.annotationAdapter);
 
     return this;
   }
@@ -221,7 +198,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     this.startObserving();
 
-    if (!this.textAnnotationModel) {
+    if (!this.text) {
       return;
     }
     this.redrawSvg();
@@ -244,21 +221,11 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     const textElement = this.textElement!;
     this.element?.append(textElement);
-    this.textAnnotationModel = computeLinePositions(
-      this.textAnnotationModel!,
-      textElement,
-    );
 
-    this.textAnnotationModel = computePositions(
-      this.textAnnotationModel,
-      textElement,
-      this.annotationAdapter,
-      this.textAdapter,
-    );
+    computePositions(textElement, this.annotationAdapter, this.textAdapter);
 
     this.svgModel = new SvgModel(
       textElement,
-      this.textAnnotationModel,
       this.eventListener,
       this.annotationAdapter,
       this.textAdapter,
@@ -277,7 +244,6 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     this.textElement = null;
     this.svgNode = null;
-    this.textAnnotationModel = null;
 
     this.stopObserving();
 
@@ -294,7 +260,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       return;
     }
     let initialized = false;
-    this.resizeObserver = new ResizeObserver((entries) => {
+    this.resizeObserver = new ResizeObserver(() => {
       Debugger.verbose('CreateAnnotations', 'resize detected', initialized);
       if (initialized) this.redrawSvg();
       initialized = true;
@@ -351,7 +317,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   scrollToAnnotation(id: AnnotationId): this {
-    const lines = this.textAnnotationModel?.getAnnotation(id)?._render.lines;
+    const lines = this.annotationAdapter.getAnnotation(id)?._render.lines;
     if (!lines) {
       console.warn('No lines found for annotation', id);
       return this;
@@ -392,11 +358,8 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   deleteAnnotation(id: AnnotationId): this {
-    if (!this.textAnnotationModel) return this;
-    const annotation = this.textAnnotationModel.getAnnotation(id);
-    this.textAnnotationModel.removeAnnotation(annotation, true);
-    this.svgModel.removeAnnotations(annotation.id);
-    this.annotationsMap.delete(annotation.id);
+    this.annotationsMap.delete(id);
+    this.setAnnotations(this.annotations());
 
     return this;
   }

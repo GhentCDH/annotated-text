@@ -37,6 +37,9 @@ export abstract class TextAdapter extends BaseAdapter {
   limit: Limit | null = null;
   textOffset = 0;
   style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
+  public textLength = 0;
+
+  public lines: TextLine[] = [];
 
   /**
    * Parses the given text into an array of TextLine objects.
@@ -45,8 +48,10 @@ export abstract class TextAdapter extends BaseAdapter {
    */
   abstract parse(text: string): TextLine[];
 
-  getLimit(lines: TextLine[]) {
+  getLimit(lines?: TextLine[]) {
     if (!this.limit) return null;
+    lines = lines ?? this.lines;
+
     if (this.limit.ignoreLines || lines.length === 0)
       return pick(this.limit, ['start', 'end']);
 
@@ -54,6 +59,11 @@ export abstract class TextAdapter extends BaseAdapter {
     const end = Math.max(this.limit.end, lines[lines.length - 1].end);
 
     return { start, end };
+  }
+
+  public setLines(lines: TextLine[]) {
+    this.lines = lines;
+    this.clear();
   }
 
   public setLineHeight(height: number) {
@@ -90,6 +100,19 @@ export abstract class TextAdapter extends BaseAdapter {
         console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
     }
+  }
+
+  getLine(lineUid: string) {
+    return this.lines.find((line) => line.uuid === lineUid);
+  }
+
+  clear() {
+    this.textLength = 0;
+    this.lines.forEach((line) => {
+      if (this.textLength < line.end) {
+        this.textLength = line.end;
+      }
+    });
   }
 }
 
