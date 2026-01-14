@@ -101,6 +101,7 @@ test.describe('AnnotatedText Core - Offset', () => {
       await container.expect.annotationsVisible(
         DemoShortText.annotations[3].id,
       );
+      await container.expect.toHaveScreenshot('limitted-annotations.png');
     });
   });
 });
