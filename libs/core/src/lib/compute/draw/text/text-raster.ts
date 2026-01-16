@@ -72,7 +72,7 @@ export const drawTextRaster = (svgModel: SvgModel) => {
       range.setStart(node, i);
       range.setEnd(node, i + 1);
 
-      // Get the character's bounding rectangle in viewport coordinates
+      // Get the character's bounding rectangle in viewport coordinates .
       const rectDimensions = getScaledDimensions(
         containerDimensions,
         range.getBoundingClientRect(),
