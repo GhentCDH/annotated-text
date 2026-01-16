@@ -16,15 +16,19 @@ export default defineConfig({
   fullyParallel: !isCoverage,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: isCoverage ? 1 : (process.env.CI ? 1 : undefined),
+  workers: isCoverage ? 1 : process.env.CI ? 1 : undefined,
   reporter: [
     ['html', { outputFolder: resolve(__dirname, 'playwright-report') }],
     process.env.CI ? ['github'] : ['list'],
   ],
   outputDir: resolve(__dirname, 'test-results'),
-  
-  globalSetup: isCoverage ? resolve(__dirname, 'e2e/global-setup.ts') : undefined,
-  globalTeardown: isCoverage ? resolve(__dirname, 'e2e/global-teardown.ts') : undefined,
+
+  globalSetup: isCoverage
+    ? resolve(__dirname, 'e2e/_utils/global-setup.ts')
+    : undefined,
+  globalTeardown: isCoverage
+    ? resolve(__dirname, 'e2e/_utils/global-teardown.ts')
+    : undefined,
 
   expect: {
     toHaveScreenshot: {
@@ -49,7 +53,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: isCoverage 
+    command: isCoverage
       ? 'COVERAGE=true npx vite --config libs/core/vite.e2e.config.ts --host 0.0.0.0'
       : 'npx vite --config libs/core/vite.e2e.config.ts --host 0.0.0.0',
     cwd: resolve(__dirname, '../..'),

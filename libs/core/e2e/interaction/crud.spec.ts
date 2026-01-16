@@ -1,9 +1,8 @@
 import { expect } from '@playwright/test';
 import { crudIds } from './testIds';
-import { test } from '../fixtures';
+import { test } from '../_utils/fixtures';
 import { tableTest, tableTestDescribe } from '../_utils/parse-table';
 import { DemoShortText } from '../_demo/data-short';
-import { getLog } from '../_utils/log';
 import { findAnnotatedTextContainer } from '../_utils/annotation';
 
 const firstAnnotation = DemoShortText.annotations[0];
@@ -30,17 +29,17 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
       const y = 50;
 
       await mouseMove.onMouseDown({ x: 30, y });
-      await getLog(page, id).expect(
+      await container.expect.toHaveLog(
         canCreate ? 'annotation-create--start: 37-36' : '',
       );
 
       await mouseMove.onMouseDrag({ x: 80, y });
-      await getLog(page, id).expect(
+      await container.expect.toHaveLog(
         canCreate ? 'annotation-create--move: 36-43' : '',
       );
 
       await mouseMove.onMouseEnd();
-      await getLog(page, id).expect(
+      await container.expect.toHaveLog(
         canCreate ? 'annotation-create--end: 36-43' : '',
       );
 
@@ -57,17 +56,19 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
       const y = firstAnnotation.positionScreen.startY;
 
       await mouseMove.onMouseDown({ x, y });
-      await getLog(page, id).expect(
+      await container.expect.toHaveLog(
         canEdit ? 'annotation-edit--start: 4-9' : '',
       );
 
       await mouseMove.onMouseDrag({ x: x - 20, y });
-      await getLog(page, id).expect(
+      await container.expect.toHaveLog(
         canEdit ? 'annotation-edit--move: 1-9' : '',
       );
 
       await mouseMove.onMouseEnd();
-      await getLog(page, id).expect(canEdit ? 'annotation-edit--end: 1-9' : '');
+      await container.expect.toHaveLog(
+        canEdit ? 'annotation-edit--end: 1-9' : '',
+      );
 
       await container.expect.toHaveScreenshot('edit.png');
     });

@@ -17,6 +17,7 @@ import { getColors } from '../../../compute/compute/colors';
 import { type TextAdapterStyle } from '../../text';
 import {
   type DimensionsWithScale,
+  getDimensions,
   getScaledDimensions,
 } from '../../../compute/position/unscaled';
 
@@ -56,11 +57,11 @@ const createGutterAnnotations = (
 
   const firstLineDimensions = getScaledDimensions(
     parentDimensions,
-    firstLine.element!.getBoundingClientRect(),
+    getDimensions(firstLine.element),
   );
   const lastLineDimensions = getScaledDimensions(
     parentDimensions,
-    lastLine.element!.getBoundingClientRect(),
+    getDimensions(lastLine.element),
   );
 
   const y = firstLineDimensions.y;

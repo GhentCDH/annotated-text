@@ -1,5 +1,5 @@
 import { lineHeightIds } from './testIds';
-import { test, testVisualIds } from '../fixtures';
+import { test, testVisualIds } from '../_utils/fixtures';
 
 test.describe('AnnotatedText Core - Line height Rendering', () => {
   test.beforeEach(async ({ page }) => {

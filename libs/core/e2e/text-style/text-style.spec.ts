@@ -1,5 +1,5 @@
 import { greekIds } from './testIds';
-import { test, testVisualIds } from '../fixtures';
+import { test, testVisualIds } from '../_utils/fixtures';
 
 test.describe('AnnotatedText Core - Text styles', () => {
   test.describe('Greek', () => {

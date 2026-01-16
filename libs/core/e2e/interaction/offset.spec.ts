@@ -1,5 +1,5 @@
 import { crudIds } from './testIds';
-import { test } from '../fixtures';
+import { test } from '../_utils/fixtures';
 import { tableTest } from '../_utils/parse-table';
 import { DemoShortText } from '../_demo/data-short';
 import { findAnnotatedTextContainer } from '../_utils/annotation';
