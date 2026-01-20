@@ -1,10 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
-import {
-  type DimensionsWithScale,
-  getScale,
-  getScaledDimensions,
-  getUnscaledRect,
-} from '../unscaled';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { type DimensionsWithScale, getScale, getScaledDimensions, getUnscaledRect } from '../unscaled';
 
 describe('unscaled', () => {
   describe('getScale', () => {
