@@ -13,7 +13,9 @@ export const drawDummyAnnotation = <ANNOTATION extends BaseAnnotation>(
   dummyAnnotation: TextAnnotation,
   color: AnnotationDrawColor,
 ) => {
-  svgModel.removeAnnotations(DUMMY_UID);
+  svgModel.internalEventListener.sendEvent('annotation--remove', {
+    annotationUuid: DUMMY_UID,
+  });
   const { textElement, textAdapter, annotationAdapter } = svgModel;
   const parentDimensions = getUnscaledRect(textElement);
 
