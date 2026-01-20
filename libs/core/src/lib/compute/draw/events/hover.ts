@@ -3,7 +3,7 @@ import { drawTag } from '../tag';
 
 import {
   type AnnotationDrawColors,
-  BaseAnnotation,
+  type BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
 

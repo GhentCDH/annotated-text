@@ -2,7 +2,7 @@ import memoize from 'memoizee';
 import {
   type AnnotationDimension,
   type AnnotationDrawColors,
-  BaseAnnotation,
+  type BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
 import { SVG_ID, SVG_ROLE, type SvgModel } from '../../model/svg.types';

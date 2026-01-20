@@ -3,7 +3,7 @@ import { EditAnnotation } from './edit.annotations';
 import { SVG_ID, type SvgModel } from '../../model/svg.types';
 import {
   type AnnotationDraw,
-  BaseAnnotation,
+  type BaseAnnotation,
   type Dimensions,
   type TextAnnotation,
 } from '../../../model';

@@ -1,6 +1,6 @@
 import {
   type AnnotationDrawColor,
-  BaseAnnotation,
+  type BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
 import { DUMMY_UID, type SvgModel } from '../../model/svg.types';

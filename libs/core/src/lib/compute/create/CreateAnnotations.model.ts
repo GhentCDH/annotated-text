@@ -1,5 +1,4 @@
-import type { BaseAnnotation } from '../../model';
-import { type AnnotationId } from '../../model';
+import type { BaseAnnotation , type AnnotationId } from '../../model';
 import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
 import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
