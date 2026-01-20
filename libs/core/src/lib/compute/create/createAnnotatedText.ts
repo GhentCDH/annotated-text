@@ -1,5 +1,6 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
-import { type BaseAnnotation, CreateAnnotationsImpl } from './CreateAnnotations';
+import { CreateAnnotationsImpl } from './CreateAnnotations';
+import type { BaseAnnotation } from '../../model';
 import {
   AnnotationAdapter,
   type createAnnotationAdapterParams,

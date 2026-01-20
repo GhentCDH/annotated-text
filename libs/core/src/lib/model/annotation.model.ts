@@ -52,3 +52,5 @@ export const textAnnotationSchema = annotationSchema.extend({
 });
 
 export type TextAnnotation = z.infer<typeof textAnnotationSchema>;
+
+export type BaseAnnotation = Pick<Annotation, 'id'>;

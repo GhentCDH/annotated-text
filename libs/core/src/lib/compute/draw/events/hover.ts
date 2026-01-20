@@ -1,10 +1,14 @@
 import { type SvgModel } from '../../model/svg.types';
 import { drawTag } from '../tag';
 
-import { type AnnotationDrawColors, type TextAnnotation } from '../../../model';
+import {
+  type AnnotationDrawColors,
+  type BaseAnnotation,
+  type TextAnnotation,
+} from '../../../model';
 
 export const hoverAnnotation =
-  (annotation: TextAnnotation, svgModel: SvgModel) =>
+  (annotation: TextAnnotation, svgModel: SvgModel<BaseAnnotation>) =>
   (mouseEvent: MouseEvent) => {
     if (svgModel.internalEventListener.isBlocking) return;
     const fullAnnotation = svgModel.sendEvent({
@@ -23,7 +27,7 @@ export const hoverAnnotation =
   };
 
 export const leaveAnnotation =
-  (annotation: TextAnnotation, svgModel: SvgModel) =>
+  (annotation: TextAnnotation, svgModel: SvgModel<BaseAnnotation>) =>
   (mouseEvent: MouseEvent) => {
     if (svgModel.internalEventListener.isBlocking) return;
 

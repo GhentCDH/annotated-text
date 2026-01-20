@@ -13,7 +13,7 @@ import { type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
 
 export const drawAnnotationContent = (
   draw: AnnotationDraw,
-  svgModel: SvgModel,
+  svgModel: SvgModel<any>,
   style: AnnotationRenderStyle,
   color: AnnotationDrawColor,
 ) => {
@@ -48,7 +48,7 @@ export const drawAnnotationContent = (
 };
 
 export const drawAnnotation = (
-  svgModel: SvgModel,
+  svgModel: SvgModel<any>,
   annotation: TextAnnotation,
 ) => {
   const color = annotation._drawMetadata.color as AnnotationDrawColors;

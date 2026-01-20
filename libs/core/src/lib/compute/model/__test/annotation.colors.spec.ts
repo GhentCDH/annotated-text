@@ -4,8 +4,10 @@ import type { SvgModel } from '../svg.types';
 import { AnnotationColors } from '../annotation.colors';
 
 describe('AnnotationColors', () => {
-  let colors: AnnotationColors;
-  let svgModel: SvgModel & { resetAnnotationColor: ReturnType<typeof vi.fn> };
+  let colors: AnnotationColors<any>;
+  let svgModel: SvgModel<any> & {
+    resetAnnotationColor: ReturnType<typeof vi.fn>;
+  };
 
   const makeAnnotation = (
     id: AnnotationId,
@@ -21,7 +23,7 @@ describe('AnnotationColors', () => {
     svgModel = {
       // other SvgModel props are not required for these tests
       resetAnnotationColor: vi.fn(),
-    } as unknown as SvgModel & {
+    } as unknown as SvgModel<any> & {
       resetAnnotationColor: ReturnType<typeof vi.fn>;
     };
   });

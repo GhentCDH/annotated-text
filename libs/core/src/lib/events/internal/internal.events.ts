@@ -1,4 +1,5 @@
 import type {
+  Annotation,
   AnnotationDrawColor,
   AnnotationId,
   TextAnnotation,
@@ -11,7 +12,7 @@ export type InternalEventData = {
     color: AnnotationDrawColor;
   };
   'send-event--annotation': {
-    event: AnnotationEventType;
+    event: AnnotationEventType<Annotation>;
     mouseEvent?: MouseEvent;
     annotationUuid: AnnotationId;
     additionalData?: any;

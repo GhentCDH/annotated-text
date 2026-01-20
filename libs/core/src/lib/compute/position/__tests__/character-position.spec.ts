@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   type CharacterPositionResult,
   getCharacterFromTextNodesAtPoint,
-  getCharacterStartEndPosition
+  getCharacterStartEndPosition,
 } from '../character-position';
 import { type SvgModel } from '../../model/svg.types';
 import { type TextRasterItem } from '../../draw/text/text-raster';
@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 
 describe('getCharacterFromTextNodesAtPoint', () => {
-  let mockSvgModel: SvgModel;
+  let mockSvgModel: SvgModel<any>;
   let mockTextTree: RBush<TextRasterItem>;
 
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockSvgModel = {
       textElement: mockTextElement,
       textTree: mockTextTree,
-    } as any as SvgModel;
+    } as any as SvgModel<any>;
   });
 
   it('should return null when no text is found at the point', () => {

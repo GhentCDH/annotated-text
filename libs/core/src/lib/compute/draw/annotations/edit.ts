@@ -3,6 +3,7 @@ import { EditAnnotation } from './edit.annotations';
 import { SVG_ID, type SvgModel } from '../../model/svg.types';
 import {
   type AnnotationDraw,
+  type BaseAnnotation,
   type Dimensions,
   type TextAnnotation,
 } from '../../../model';
@@ -13,7 +14,7 @@ import { hoverAnnotation, leaveAnnotation } from '../events/hover';
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
   draw: AnnotationDraw,
-  svgModel: SvgModel,
+  svgModel: SvgModel<BaseAnnotation>,
 ) => {
   if (!draw.draggable) return;
 
@@ -27,7 +28,7 @@ export const drawAnnotationHandles = (
 };
 
 export const drawHandle = (
-  svgModel: SvgModel,
+  svgModel: SvgModel<BaseAnnotation>,
   annotation: TextAnnotation,
   dimensions: Dimensions,
   target: 'start' | 'end',

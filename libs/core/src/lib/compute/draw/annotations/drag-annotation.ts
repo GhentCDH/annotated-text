@@ -6,7 +6,7 @@ import { getCharacterFromTextNodesAtPoint } from '../../position';
 import { type Position } from '../types';
 
 export const addDraggableAnnotation = (
-  svgModel: SvgModel,
+  svgModel: SvgModel<any>,
   annotation: TextAnnotation,
 ) => {
   const dragAnnotation = new DragAnnotation(
