@@ -226,7 +226,7 @@ describe('getCharacterStartEndPosition', () => {
     });
   });
 
-  describe("when target is 'end'", () => {
+  describe('when target is \'end\'', () => {
     it('should update end position when clicking left side', () => {
       const charResult: CharacterPositionResult = {
         side: 'left',
