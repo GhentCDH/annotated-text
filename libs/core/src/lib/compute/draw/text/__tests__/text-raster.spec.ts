@@ -23,7 +23,7 @@ beforeEach(() => {
 });
 
 describe('drawTextRaster', () => {
-  let mockSvgModel: SvgModel;
+  let mockSvgModel: SvgModel<any>;
   let mockInsert: ReturnType<typeof vi.fn>;
   let mockContainer: HTMLElement;
   let mockTextNode: Text;
