@@ -2,14 +2,18 @@ import { type SvgModel } from './svg.types';
 import {
   type AnnotationDrawColors,
   type AnnotationId,
+  type BaseAnnotation,
   type TextAnnotation,
 } from '../../model';
 
-export class AnnotationColors {
+export class AnnotationColors<ANNOTATION extends BaseAnnotation> {
   private readonly activeIds = new Set<AnnotationId>();
   private readonly highlightedIds = new Set<AnnotationId>();
 
-  public highlightAnnotations(ids: AnnotationId[], svgModel: SvgModel) {
+  public highlightAnnotations(
+    ids: AnnotationId[],
+    svgModel: SvgModel<ANNOTATION>,
+  ) {
     const oldIds = new Set(this.highlightedIds);
     this.highlightedIds.clear();
     ids.forEach((id) => this.highlightedIds.add(id));
@@ -19,7 +23,10 @@ export class AnnotationColors {
     return this;
   }
 
-  public selectAnnotations(ids: AnnotationId[], svgModel: SvgModel) {
+  public selectAnnotations(
+    ids: AnnotationId[],
+    svgModel: SvgModel<ANNOTATION>,
+  ) {
     const oldIds = new Set(this.activeIds);
     this.activeIds.clear();
     ids.forEach((id) => this.highlightedIds.delete(id));
@@ -33,13 +40,13 @@ export class AnnotationColors {
 
   public resetColors(
     ids: Set<AnnotationId> | AnnotationId[],
-    svgModel: SvgModel,
+    svgModel: SvgModel<ANNOTATION>,
   ) {
     ids.forEach((id) => svgModel.resetAnnotationColor(id));
     return this;
   }
 
-  public color(svgModel: SvgModel) {
+  public color(svgModel: SvgModel<any>) {
     this.resetColors(this.highlightedIds, svgModel).resetColors(
       this.activeIds,
       svgModel,

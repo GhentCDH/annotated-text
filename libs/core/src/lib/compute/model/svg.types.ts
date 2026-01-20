@@ -14,6 +14,7 @@ import {
   type AnnotationDrawColor,
   type AnnotationDrawColors,
   type AnnotationId,
+  type BaseAnnotation,
 } from '../../model';
 import { styles } from '../styles.const';
 import { drawAnnotation } from '../draw/annotations';
@@ -44,7 +45,7 @@ export const SVG_ROLE = {
   TAG: 'tag',
 };
 
-export class SvgModel {
+export class SvgModel<ANNOTATION extends BaseAnnotation> {
   readonly annotations: AnnotationSvg;
   readonly handles: AnnotationSvg;
   readonly svg: AnnotationSvg;
@@ -53,10 +54,10 @@ export class SvgModel {
 
   constructor(
     public readonly textElement: HTMLElement,
-    public readonly eventListener: EventListener,
+    public readonly eventListener: EventListener<ANNOTATION>,
     public readonly annotationAdapter: AnnotationAdapter<any>,
     public readonly textAdapter: TextAdapter,
-    public readonly annotationColors: AnnotationColors,
+    public readonly annotationColors: AnnotationColors<ANNOTATION>,
     public readonly internalEventListener: InternalEventListener,
   ) {
     const textElementDimensions = getUnscaledRect(textElement);
@@ -83,9 +84,9 @@ export class SvgModel {
         SVG_ID.ANNOTATION_ROLE,
         SVG_ROLE.HANDLE,
       ) as unknown as AnnotationSvg;
-    this.textTree = drawTextRaster(this);
+    this.textTree = drawTextRaster(this as SvgModel<BaseAnnotation>);
     createNewBlock(this);
-    drawAllTags(this);
+    drawAllTags(this as SvgModel<BaseAnnotation>);
   }
 
   removeTag(annotationUuid: AnnotationId) {
@@ -180,7 +181,7 @@ export class SvgModel {
     Debugger.time(now, '--- drawComputedAnnotations ');
   }
 
-  sendEvent<EVENT extends AnnotationEventType>(
+  sendEvent<EVENT extends AnnotationEventType<ANNOTATION>>(
     {
       event,
       mouseEvent,
@@ -190,7 +191,7 @@ export class SvgModel {
       mouseEvent?: MouseEvent;
       annotationUuid: AnnotationId;
     },
-    additionalData: Partial<EventData[EVENT]> = {},
+    additionalData: Partial<EventData<ANNOTATION>[EVENT]> = {},
   ) {
     const fullAnnotation = this.annotationAdapter.getAnnotation(annotationUuid);
     const annotationData = {

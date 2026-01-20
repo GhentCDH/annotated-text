@@ -61,7 +61,7 @@ export type CharacterPositionResult = {
 export function getCharacterFromTextNodesAtPoint(
   x: number,
   y: number,
-  svgModel: SvgModel,
+  svgModel: SvgModel<any>,
 ) {
   const textElementDimensions = getUnscaledRect(svgModel.textElement);
 

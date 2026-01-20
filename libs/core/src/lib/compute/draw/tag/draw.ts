@@ -2,6 +2,7 @@ import memoize from 'memoizee';
 import {
   type AnnotationDimension,
   type AnnotationDrawColors,
+  BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
 import { SVG_ID, SVG_ROLE, type SvgModel } from '../../model/svg.types';
@@ -48,7 +49,10 @@ const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
   return { textWidth, textHeight };
 };
 
-export const drawTag = (svgModel: SvgModel, annotation: TextAnnotation) => {
+export const drawTag = (
+  svgModel: SvgModel<BaseAnnotation>,
+  annotation: TextAnnotation,
+) => {
   svgModel.removeTag(annotation.id);
   const tagConfig = svgModel.annotationAdapter.tagConfig;
   if (!tagConfig.enabled) return;

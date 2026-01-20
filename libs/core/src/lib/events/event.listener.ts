@@ -6,11 +6,12 @@ import {
 } from './events';
 import { type ErrorCode, Errors } from './errors';
 import { Debugger } from '../utils/debugger';
+import type { BaseAnnotation } from '../model';
 
-export class EventListener {
+export class EventListener<ANNOTATION extends BaseAnnotation> {
   private readonly eventMap = new Map<
-    AnnotationEventType,
-    EventCallback<any>[]
+    AnnotationEventType<ANNOTATION>,
+    EventCallback<any, ANNOTATION>[]
   >();
   private readonly errorSet: ErrorEventCallback[] = [];
 
@@ -18,9 +19,9 @@ export class EventListener {
     this.eventMap.set('all', []);
   }
 
-  public register<EVENT extends AnnotationEventType>(
-    event: AnnotationEventType,
-    callback: EventCallback<EVENT>,
+  public register<EVENT extends AnnotationEventType<ANNOTATION>>(
+    event: AnnotationEventType<ANNOTATION>,
+    callback: EventCallback<EVENT, ANNOTATION>,
   ) {
     if (!this.eventMap.has(event)) {
       this.eventMap.set(event, []);
@@ -40,9 +41,9 @@ export class EventListener {
     );
   }
 
-  public sendEvent<EVENT extends AnnotationEventType>(
+  public sendEvent<EVENT extends AnnotationEventType<ANNOTATION>>(
     event: EVENT,
-    data: EventData[EVENT],
+    data: EventData<ANNOTATION>[EVENT],
     mouseEvent?: MouseEvent | undefined | null,
   ): void {
     const callbacks = [
