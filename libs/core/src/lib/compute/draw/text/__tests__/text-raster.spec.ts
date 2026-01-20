@@ -13,6 +13,15 @@ global.NodeFilter = {
   SHOW_TEXT: 4,
 } as any;
 
+beforeEach(() => {
+  globalThis.getComputedStyle = vi.fn().mockReturnValue({
+    getPropertyValue: vi.fn().mockReturnValue(''),
+    // Add other properties you need
+    lineHeight: '20px',
+    fontSize: '16px',
+  });
+});
+
 describe('drawTextRaster', () => {
   let mockSvgModel: SvgModel;
   let mockInsert: ReturnType<typeof vi.fn>;

@@ -29,7 +29,7 @@ const getScaledRect = memoizee(
 );
 
 export const getUnscaledRect = (element: HTMLElement): DimensionsWithScale => {
-  const rect = element.getBoundingClientRect();
+  const rect = getDimensions(element);
   const scale = getScale(rect.width, element.offsetWidth); //rect.width / element.offsetWidth || 1;
 
   const originalDimensions = {
@@ -59,6 +59,22 @@ const getScaled = memoizee((size: number, scale: number) => {
 const getDif = memoizee((parent: number, element: number, scale: number) => {
   return (element - parent) / scale;
 });
+
+export const getDimensions = (element: HTMLElement) => {
+  const rect = element.getBoundingClientRect();
+  const computedStyle = getComputedStyle(element);
+  const lineHeight = parseFloat(computedStyle.lineHeight);
+
+  // Use computed lineHeight if available, otherwise fall back to rect height
+  const normalizedHeight = !isNaN(lineHeight) ? lineHeight : rect.height;
+
+  return {
+    x: rect.x,
+    y: rect.y,
+    width: rect.width,
+    height: normalizedHeight,
+  };
+};
 
 export const getScaledDimensions = (
   parentDimensions: DimensionsWithScale,
