@@ -1,5 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { type DimensionsWithScale, getScale, getScaledDimensions, getUnscaledRect } from '../unscaled';
+import { describe, expect, it, vi } from 'vitest';
+import {
+  type DimensionsWithScale,
+  getScale,
+  getScaledDimensions,
+  getUnscaledRect,
+} from '../unscaled';
 
 describe('unscaled', () => {
   describe('getScale', () => {
@@ -17,6 +22,15 @@ describe('unscaled', () => {
         expect(getScale(width, offsetWidth)).toBe(expected);
       },
     );
+  });
+
+  beforeEach(() => {
+    globalThis.getComputedStyle = vi.fn().mockReturnValue({
+      getPropertyValue: vi.fn().mockReturnValue(''),
+      // Add other properties you need
+      lineHeight: '20px',
+      fontSize: '16px',
+    });
   });
 
   describe('getUnscaledRect', () => {

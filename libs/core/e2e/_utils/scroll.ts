@@ -21,8 +21,14 @@ export const getPositionRelativeTo = async (
   mainContainer: Locator,
   container: Locator,
 ) => {
-  const mainPos = await mainContainer.boundingBox()!;
-  const innerPos = await container.boundingBox()!;
+  const mainPos = await mainContainer.boundingBox();
+  const innerPos = await container.boundingBox();
+
+  if (!mainPos || !innerPos) {
+    throw new Error(
+      'Failed to get bounding box for mainContainer or container',
+    );
+  }
 
   const startX = innerPos.x - mainPos.x;
   const startY = innerPos.y - mainPos.y;

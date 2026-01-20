@@ -58,7 +58,7 @@ test.describe('AnnotatedText Core - Offset', () => {
 
         await container.expect.annotationsVisible(firstAnnotation.id);
         const annotation = container.annotation(firstAnnotation.id);
-        const position = await annotation.getPositition();
+        const position = await annotation.getPosition();
 
         const x = position[startX];
         const y = position.middleY;

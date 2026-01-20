@@ -50,14 +50,21 @@ export default defineConfig(() => ({
     name: 'core',
     watch: false,
     globals: true,
-    environment: 'node',
+    environment: 'jsdom', // or 'happy-dom'
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['e2e/**/*', 'node_modules/**/*'],
     reporters: ['default'],
     coverage: {
       provider: 'v8',
       enabled: false, // Enable via --coverage flag
-      reporter: ['text', 'text-summary', 'json', 'json-summary', 'lcov', 'html'],
+      reporter: [
+        'text',
+        'text-summary',
+        'json',
+        'json-summary',
+        'lcov',
+        'html',
+      ],
       reportsDirectory: './coverage/unit',
       include: ['src/**/*.ts'],
       exclude: [

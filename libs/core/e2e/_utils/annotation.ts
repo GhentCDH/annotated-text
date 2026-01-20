@@ -12,7 +12,7 @@ export const findAnnotatedTextContainer = (page: Page, id: string) => {
       .first();
     return {
       annotation: annotationSvg,
-      getPositition: () => getPositionRelativeTo(container, annotationSvg),
+      getPosition: () => getPositionRelativeTo(container, annotationSvg),
       toBeVisible: () => expect(annotationSvg).toBeVisible(),
       notVisible: () => expect(annotationSvg).not.toBeVisible(),
     };

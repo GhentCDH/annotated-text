@@ -3,10 +3,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   type CharacterPositionResult,
   getCharacterFromTextNodesAtPoint,
-  getCharacterStartEndPosition,
+  getCharacterStartEndPosition
 } from '../character-position';
 import { type SvgModel } from '../../model/svg.types';
 import { type TextRasterItem } from '../../draw/text/text-raster';
+
+beforeEach(() => {
+  globalThis.getComputedStyle = vi.fn().mockReturnValue({
+    getPropertyValue: vi.fn().mockReturnValue(''),
+    // Add other properties you need
+    lineHeight: '20px',
+    fontSize: '16px',
+  });
+});
 
 describe('getCharacterFromTextNodesAtPoint', () => {
   let mockSvgModel: SvgModel;
@@ -217,7 +226,7 @@ describe('getCharacterStartEndPosition', () => {
     });
   });
 
-  describe('when target is \'end\'', () => {
+  describe("when target is 'end'", () => {
     it('should update end position when clicking left side', () => {
       const charResult: CharacterPositionResult = {
         side: 'left',
