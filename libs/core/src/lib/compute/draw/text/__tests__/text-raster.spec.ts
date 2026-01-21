@@ -2,11 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RBush from 'rbush';
 import { drawTextRaster } from '../text-raster';
 import { calculateOffset, findLineElement } from '../../utils/bounding-rect';
-import { type SvgModel } from '../../../model/svg.types';
+import { getScaledDimensions, getUnscaledRect } from '../../../position/unscaled';
+import type { TextAdapter } from '../../../../adapter/text';
 
 // Mock dependencies
 vi.mock('rbush');
 vi.mock('../../utils/bounding-rect');
+vi.mock('../../../position/unscaled');
 
 // Mock NodeFilter for browser API
 global.NodeFilter = {
@@ -16,14 +18,13 @@ global.NodeFilter = {
 beforeEach(() => {
   globalThis.getComputedStyle = vi.fn().mockReturnValue({
     getPropertyValue: vi.fn().mockReturnValue(''),
-    // Add other properties you need
     lineHeight: '20px',
     fontSize: '16px',
   });
 });
 
 describe('drawTextRaster', () => {
-  let mockSvgModel: SvgModel<any>;
+  let mockTextAdapter: TextAdapter;
   let mockInsert: ReturnType<typeof vi.fn>;
   let mockContainer: HTMLElement;
   let mockTextNode: Text;
@@ -85,15 +86,26 @@ describe('drawTextRaster', () => {
     } as any);
     vi.mocked(calculateOffset).mockReturnValue(2);
 
-    // Mock SvgModel
-    mockSvgModel = {
-      textElement: mockContainer,
-      textAdapter: {
-        getLine: vi.fn().mockReturnValue({
-          start: 0,
-          end: 5,
-        } as any),
-      },
+    // Mock unscaled rect functions
+    vi.mocked(getUnscaledRect).mockReturnValue({
+      original: { x: 100, y: 50, width: 800, height: 600 },
+      scaled: { x: 100, y: 50, width: 800, height: 600 },
+      scale: 1,
+    } as any);
+
+    vi.mocked(getScaledDimensions).mockReturnValue({
+      x: 50,
+      y: 50,
+      width: 10,
+      height: 16,
+    });
+
+    // Mock TextAdapter
+    mockTextAdapter = {
+      getLine: vi.fn().mockReturnValue({
+        start: 0,
+        end: 5,
+      } as any),
     } as any;
   });
 
@@ -104,7 +116,7 @@ describe('drawTextRaster', () => {
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
 
-    const result = drawTextRaster(mockSvgModel);
+    const result = drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(RBush).toHaveBeenCalled();
     expect(result).toBeDefined();
@@ -117,7 +129,7 @@ describe('drawTextRaster', () => {
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(document.createTreeWalker).toHaveBeenCalledWith(
       mockContainer,
@@ -136,7 +148,7 @@ describe('drawTextRaster', () => {
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(mockInsert).not.toHaveBeenCalled();
   });
@@ -154,7 +166,7 @@ describe('drawTextRaster', () => {
       lineHeight: 20,
     } as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(mockInsert).not.toHaveBeenCalled();
   });
@@ -167,11 +179,9 @@ describe('drawTextRaster', () => {
         .mockReturnValueOnce(null),
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
-    vi.mocked(mockSvgModel.textAdapter.getLine).mockReturnValueOnce(
-      null as any,
-    );
+    vi.mocked(mockTextAdapter.getLine).mockReturnValueOnce(null as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(mockInsert).not.toHaveBeenCalled();
   });
@@ -183,15 +193,15 @@ describe('drawTextRaster', () => {
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     // Should be called once for each character
     expect(mockInsert).toHaveBeenCalledTimes(2);
 
-    // Check first character "H"
+    // Check first character "H" - using mocked getScaledDimensions values
     expect(mockInsert).toHaveBeenNthCalledWith(1, {
-      minX: 50, // 150 - 100 (container x)
-      minY: 48, // 100 - 50 (container y) - 2 (offset)
+      minX: 50, // from getScaledDimensions
+      minY: 48, // 50 - 2 (offset)
       maxX: 60, // 50 + 10 (width)
       maxY: 68, // 48 + 16 (height) + 4 (offset * 2)
       textPosition: 0,
@@ -206,7 +216,7 @@ describe('drawTextRaster', () => {
       maxX: 60,
       maxY: 68,
       textPosition: 1,
-      centerX: 55, // 50 (minX) + 10 (width) / 2
+      centerX: 55,
       text: 'i',
     });
   });
@@ -218,7 +228,7 @@ describe('drawTextRaster', () => {
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(document.createRange).toHaveBeenCalledTimes(2);
     expect(mockRange.setStart).toHaveBeenCalledWith(textNode, 0);
@@ -248,13 +258,13 @@ describe('drawTextRaster', () => {
       .mockReturnValueOnce({ lineUid: 'line-2', lineHeight: 20 } as any); // For textNode2
 
     // getLine is called ONCE per text node (not per character)
-    const mockGetLine = vi.mocked(mockSvgModel.textAdapter.getLine);
+    const mockGetLine = vi.mocked(mockTextAdapter.getLine);
     mockGetLine.mockReset();
     mockGetLine
       .mockReturnValueOnce({ start: 0, end: 3 } as any) // For textNode1
       .mockReturnValueOnce({ start: 10, end: 13 } as any); // For textNode2
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     // Characters in first line should have positions 0, 1, 2
     // Characters in second line should have positions 10, 11, 12 (not 13, 14, 15)
@@ -288,13 +298,13 @@ describe('drawTextRaster', () => {
       .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // For textNode1
       .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any); // For textNode2
 
-    const mockGetLine = vi.mocked(mockSvgModel.textAdapter.getLine);
+    const mockGetLine = vi.mocked(mockTextAdapter.getLine);
     mockGetLine.mockReset();
     mockGetLine
       .mockReturnValueOnce({ start: 0, end: 4 } as any) // For textNode1
       .mockReturnValueOnce({ start: 0, end: 4 } as any); // For textNode2
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     const calls = mockInsert.mock.calls;
 
@@ -311,7 +321,7 @@ describe('drawTextRaster', () => {
     };
     vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     expect(calculateOffset).toHaveBeenCalledWith(20, 16);
   });
@@ -339,19 +349,52 @@ describe('drawTextRaster', () => {
       .mockReturnValueOnce({ lineUid: 'line-1', lineHeight: 20 } as any) // textNode2
       .mockReturnValueOnce({ lineUid: 'line-2', lineHeight: 20 } as any); // textNode3
 
-    const mockGetLine = vi.mocked(mockSvgModel.textAdapter.getLine);
+    const mockGetLine = vi.mocked(mockTextAdapter.getLine);
     mockGetLine.mockReset();
     mockGetLine
       .mockReturnValueOnce({ start: 0, end: 2 } as any) // textNode1
       .mockReturnValueOnce({ start: 0, end: 2 } as any) // textNode2
       .mockReturnValueOnce({ start: 5, end: 6 } as any); // textNode3
 
-    drawTextRaster(mockSvgModel);
+    drawTextRaster(mockContainer, mockTextAdapter);
 
     const calls = mockInsert.mock.calls;
 
     expect(calls[0][0].textPosition).toBe(0); // A in line-1
     expect(calls[1][0].textPosition).toBe(1); // B in line-1
     expect(calls[2][0].textPosition).toBe(5); // C in line-2
+  });
+
+  it('should call getUnscaledRect with container element', () => {
+    const mockWalker = {
+      nextNode: vi.fn().mockReturnValue(null),
+    };
+    vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
+
+    drawTextRaster(mockContainer, mockTextAdapter);
+
+    expect(getUnscaledRect).toHaveBeenCalledWith(mockContainer);
+  });
+
+  it('should call getScaledDimensions with container dimensions and range rect', () => {
+    const textNode = { textContent: 'X' } as Text;
+    const mockWalker = {
+      nextNode: vi.fn().mockReturnValueOnce(textNode).mockReturnValueOnce(null),
+    };
+    vi.mocked(document.createTreeWalker).mockReturnValue(mockWalker as any);
+
+    const mockContainerDimensions = {
+      original: { x: 100, y: 50, width: 800, height: 600 },
+      scaled: { x: 100, y: 50, width: 800, height: 600 },
+      scale: 1,
+    };
+    vi.mocked(getUnscaledRect).mockReturnValue(mockContainerDimensions as any);
+
+    drawTextRaster(mockContainer, mockTextAdapter);
+
+    expect(getScaledDimensions).toHaveBeenCalledWith(
+      mockContainerDimensions,
+      expect.any(Object),
+    );
   });
 });
