@@ -1,10 +1,14 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES, type TextAdapter } from '../../adapter/text';
+import {
+  type TEXT_CONFIG_KEYS,
+  type TEXT_CONFIG_VALUES,
+  type TextAdapter,
+} from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
-  type AnnotationAdapter
+  type AnnotationAdapter,
 } from '../../adapter/annotation';
 import { createAnnotationModel } from '../1_create_annotation_model';
 import { SvgModel } from '../model/svg.types';
@@ -12,14 +16,23 @@ import { Debugger } from '../../utils/debugger';
 import { computePositions } from '../4_compute_positions';
 import { styles } from '../styles.const';
 import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
-import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import { drawText } from '../draw/text/text';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { AnnotationColors } from '../model/annotation.colors';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
-import { drawDummyAnnotation } from '../draw/annotations/draw-dummy';
+import { AnnotationModule } from '../../di/annotation.module';
+import { rootContainer } from '../../di/container';
+import { Draw } from '../draw/Draw';
+import { ExternalEventSender } from '../../events/send-event';
 
 const document = globalThis.document || null;
 
@@ -30,13 +43,14 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private mainElement: HTMLElement;
   private element: HTMLElement;
   private textElement: HTMLDivElement | null | undefined = null;
-  private svgModel: SvgModel<ANNOTATION>;
+  private readonly svgModel: SvgModel<ANNOTATION>;
+  private readonly draw: Draw;
   private svgNode: SVGElement | null = null;
   private resizeObserver: ResizeObserver | null;
   private text: string;
-  private readonly eventListener = new EventListener<ANNOTATION>();
-  private readonly internalEventListener = new InternalEventListener();
-  private readonly annotationColors = new AnnotationColors<ANNOTATION>();
+  private readonly eventListener: EventListener<ANNOTATION>;
+
+  private readonly annotationModule: AnnotationModule;
 
   constructor(
     private readonly id: string,
@@ -44,19 +58,36 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
   ) {
     this.init();
-    this.annotationAdapter.setConfigListener(this.configListener());
-    this.textAdapter.setConfigListener(this.configListener());
-    this.internalEventListener.on('annotation--add', ({ data }) => {
-      const fullAnnotation = this.annotationAdapter.format(
-        data.annotation,
-        true,
-        true,
-      );
 
-      this.addAnnotation(fullAnnotation!);
+    this.annotationModule = new AnnotationModule(rootContainer, {
+      textAdapter,
+      annotationAdapter,
     });
 
-    this.internalEventListener
+    this.svgModel = this.annotationModule.inject(SvgModel);
+    this.draw = this.annotationModule.inject(Draw);
+
+    const internalEventListener = this.annotationModule.inject(
+      InternalEventListener,
+    );
+
+    this.annotationAdapter.setConfigListener(this.configListener());
+    this.textAdapter.setConfigListener(this.configListener());
+
+    this.eventListener = this.annotationModule.inject(
+      EventListener,
+    ) as EventListener<ANNOTATION>;
+
+    internalEventListener
+      .on('annotation--add', ({ data }) => {
+        const fullAnnotation = this.annotationAdapter.format(
+          data.annotation,
+          true,
+          true,
+        );
+
+        this.addAnnotation(fullAnnotation!);
+      })
       .on('annotation--update', ({ data }) => {
         const fullAnnotation = this.annotationAdapter.format(
           data.annotation,
@@ -66,19 +97,23 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
         this.addAnnotation(fullAnnotation!);
       })
       .on('send-event--annotation', ({ data }) => {
-        this.svgModel?.sendEvent(data, data.additionalData);
+        this.annotationModule
+          .inject(ExternalEventSender)
+          .sendEvent(data, data.additionalData);
       })
       .on('annotation--set-class', ({ data }) => {
         this.svgModel?.setClass(data.annotationUuid, data.cssClass);
       })
       .on('annotation--remove-tag', ({ data }) => {
-        this.svgModel?.removeTag(data.annotationUuid);
+        this.svgModel?.findTags(data.annotationUuid)?.remove();
       })
       .on('annotation--remove', ({ data }) => {
-        this.svgModel?.removeAnnotations(data.annotationUuid, data.selector);
+        this.svgModel
+          ?.findRelatedAnnotations(data.annotationUuid, data.selector)
+          ?.remove();
       })
       .on('annotation--draw-dummy', ({ data }) => {
-        drawDummyAnnotation(this.svgModel, data.dummyAnnotation, data.color);
+        this.draw.annotation.dummy(data.dummyAnnotation, data.color);
       });
   }
 
@@ -155,8 +190,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   private drawSvg() {
-    this.svgModel.drawAnnotations();
-    this.annotationColors.color(this.svgModel);
+    this.draw.annotations().color();
   }
 
   private init() {
@@ -212,14 +246,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     computePositions(textElement, this.annotationAdapter, this.textAdapter);
 
-    this.svgModel = new SvgModel(
-      textElement,
-      this.eventListener,
-      this.annotationAdapter,
-      this.textAdapter,
-      this.annotationColors,
-      this.internalEventListener,
-    );
+    this.svgModel.createModel(textElement);
 
     this.svgNode = this.svgModel.node();
     this.element?.prepend(this.svgNode!);
@@ -279,12 +306,12 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   }
 
   public highlightAnnotations(ids: AnnotationId[]) {
-    this.annotationColors.highlightAnnotations(ids, this.svgModel);
+    this.draw.highlightAnnotations(ids);
     return this;
   }
 
   public selectAnnotations(ids: AnnotationId[]) {
-    this.annotationColors.selectAnnotations(ids, this.svgModel);
+    this.draw.selectAnnotations(ids);
     return this;
   }
 

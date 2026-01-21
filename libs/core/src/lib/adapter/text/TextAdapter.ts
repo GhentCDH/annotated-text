@@ -31,6 +31,7 @@ export const DefaultTextAdapterStyle = {
 
 export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 
+export const TextAdapterToken = 'TEXT_ADAPTER';
 export abstract class TextAdapter extends BaseAdapter {
   textDirection: TextDirection = 'ltr';
   flatText = false;

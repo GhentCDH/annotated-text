@@ -1,31 +1,14 @@
 import { type Selection } from 'd3-selection';
 import { select } from 'd3';
 import type RBush from 'rbush';
-import { merge } from 'lodash-es';
-import { type AnnotationColors } from './annotation.colors';
-import {
-  type AnnotationEventType,
-  CHANGED_EVENTS,
-  type EventData,
-  NEW_EVENTS,
-} from '../../events';
-import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationDrawColor,
-  type AnnotationDrawColors,
-  type AnnotationId,
-  type BaseAnnotation,
-} from '../../model';
+import { AnnotationColors } from './annotation.colors';
+import { type AnnotationId, type BaseAnnotation } from '../../model';
 import { styles } from '../styles.const';
-import { drawAnnotation } from '../draw/annotations';
-import { createNewBlock } from '../draw/annotations/create';
-import { type EventListener } from '../../events/event.listener';
-import { type AnnotationAdapter } from '../../adapter/annotation';
-import { type TextAdapter } from '../../adapter/text';
-import { drawTextRaster, type TextRasterItem } from '../draw/text/text-raster';
-import { drawAllTags } from '../draw/tag';
-import { type InternalEventListener } from '../../events/internal/internal.event.listener';
+import { type TextRasterItem } from '../draw/text/text-raster';
 import { getUnscaledRect } from '../position/unscaled';
+import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
+import { type AnnotationModule } from '../../di/annotation.module';
+import { Draw } from '../draw/Draw';
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -45,21 +28,30 @@ export const SVG_ROLE = {
   TAG: 'tag',
 };
 
-export class SvgModel<ANNOTATION extends BaseAnnotation> {
-  readonly annotations: AnnotationSvg;
-  readonly handles: AnnotationSvg;
-  readonly svg: AnnotationSvg;
-  readonly tagSvg: AnnotationSvg;
-  readonly textTree: RBush<TextRasterItem>;
+/**
+ * this contains some helper function for the svg drawing, here there should not be any dependency on edit them
+ */
+export class SvgModel<
+  ANNOTATION extends BaseAnnotation,
+> extends BaseAnnotationDi {
+  annotations: AnnotationSvg;
+  handles: AnnotationSvg;
+  svg: AnnotationSvg;
+  tagSvg: AnnotationSvg;
+  textTree: RBush<TextRasterItem>;
 
-  constructor(
-    public readonly textElement: HTMLElement,
-    public readonly eventListener: EventListener<ANNOTATION>,
-    public readonly annotationAdapter: AnnotationAdapter<any>,
-    public readonly textAdapter: TextAdapter,
-    public readonly annotationColors: AnnotationColors<ANNOTATION>,
-    public readonly internalEventListener: InternalEventListener,
-  ) {
+  textElement: HTMLElement;
+
+  constructor(annotationModule: AnnotationModule) {
+    super(annotationModule);
+  }
+
+  get annotationColors() {
+    return this.annotationModule.inject(AnnotationColors);
+  }
+
+  createModel(textElement: HTMLElement) {
+    this.textElement = textElement;
     const textElementDimensions = getUnscaledRect(textElement);
 
     this.svg = select('body')
@@ -84,22 +76,20 @@ export class SvgModel<ANNOTATION extends BaseAnnotation> {
         SVG_ID.ANNOTATION_ROLE,
         SVG_ROLE.HANDLE,
       ) as unknown as AnnotationSvg;
-    this.textTree = drawTextRaster(this as SvgModel<BaseAnnotation>);
-    createNewBlock(this);
-    drawAllTags(this as SvgModel<BaseAnnotation>);
+
+    const draw = this.annotationModule.inject(Draw);
+    draw.initialDraw(textElement);
+
+    this.textTree = draw.textTree;
+
+    return this;
   }
 
-  removeTag(annotationUuid: AnnotationId) {
-    this.findRelatedAnnotations(
+  findTags(annotationUuid: AnnotationId) {
+    return this.findRelatedAnnotations(
       annotationUuid,
       `[${SVG_ID.ANNOTATION_ROLE}="${SVG_ROLE.TAG}"]`,
-    )?.remove();
-    return this;
-  }
-
-  removeAnnotations(annotationUuid: AnnotationId, selector = '') {
-    this.findRelatedAnnotations(annotationUuid, selector)?.remove();
-    return this;
+    );
   }
 
   findRelatedAnnotations(annotationUuid: AnnotationId, selector = '') {
@@ -128,40 +118,6 @@ export class SvgModel<ANNOTATION extends BaseAnnotation> {
     );
   }
 
-  resetAnnotationColor(annotationUuid: AnnotationId) {
-    const annotation = this.annotationAdapter.getAnnotation(annotationUuid);
-    if (!annotation) {
-      Debugger.warn('No annotation found for uuid', annotationUuid);
-      return;
-    }
-
-    const color = this.annotationColors.getAnnotationColor(
-      annotation,
-      annotation._drawMetadata.color as AnnotationDrawColors,
-    );
-
-    if (!color) {
-      Debugger.warn('No default color found for annotation', annotationUuid);
-      return;
-    }
-
-    this.colorAnnotation(annotationUuid, color);
-  }
-
-  colorAnnotation(annotationUuid: AnnotationId, color: AnnotationDrawColor) {
-    if (!color) {
-      Debugger.warn('No color provided for annotation', annotationUuid);
-      return;
-    }
-    this.findFills(annotationUuid)
-      ?.attr('fill', color.fill!)
-      .attr('stroke', 'none');
-    if (color.border)
-      this.findBorders(annotationUuid)
-        ?.attr('fill', 'none')
-        .attr('stroke', color.border);
-  }
-
   setClass(annotationUuid: AnnotationId, cssClass: string) {
     this.findFills(annotationUuid)?.attr('class', cssClass);
     this.findBorders(annotationUuid)?.attr('class', cssClass);
@@ -169,51 +125,5 @@ export class SvgModel<ANNOTATION extends BaseAnnotation> {
 
   node() {
     return this.svg.node();
-  }
-
-  drawAnnotations() {
-    const now = Date.now();
-
-    this.annotationAdapter.annotations
-      .sortBy('weight')
-      .forEach((annotation) => drawAnnotation(this, annotation));
-
-    Debugger.time(now, '--- drawComputedAnnotations ');
-  }
-
-  sendEvent<EVENT extends AnnotationEventType<ANNOTATION>>(
-    {
-      event,
-      mouseEvent,
-      annotationUuid,
-    }: {
-      event: EVENT;
-      mouseEvent?: MouseEvent;
-      annotationUuid: AnnotationId;
-    },
-    additionalData: Partial<EventData<ANNOTATION>[EVENT]> = {},
-  ) {
-    const fullAnnotation = this.annotationAdapter.getAnnotation(annotationUuid);
-    const annotationData = {
-      ...merge({ annotation: fullAnnotation }, additionalData),
-      annotationUuid,
-    };
-
-    const isNew = NEW_EVENTS.includes(event);
-    const hasChanged = CHANGED_EVENTS.includes(event);
-
-    annotationData.annotation = this.annotationAdapter.format(
-      annotationData.annotation,
-      isNew,
-      hasChanged,
-    );
-
-    this.eventListener.sendEvent(
-      event,
-      annotationData as unknown as any,
-      mouseEvent,
-    );
-
-    return fullAnnotation;
   }
 }

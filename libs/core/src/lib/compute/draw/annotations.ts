@@ -1,8 +1,12 @@
-import { hoverAnnotation, leaveAnnotation } from './events/hover';
-import { clickAnnotation, doubleClickAnnotation } from './events/click';
 import { addDraggableAnnotation } from './annotations/drag-annotation';
 import { drawAnnotationHandles } from './annotations/edit';
-import { SVG_ID, SVG_ROLE, type SvgModel } from '../model/svg.types';
+import { EventAnnotations } from './annotations/EventAnnotation';
+import {
+  type AnnotationSvg,
+  SVG_ID,
+  SVG_ROLE,
+  type SvgModel,
+} from '../model/svg.types';
 import {
   type AnnotationDraw,
   type AnnotationDrawColor,
@@ -64,13 +68,13 @@ export const drawAnnotation = (
 
     drawAnnotationHandles(annotation, draw, svgModel);
 
-    rect
-      ?.on('mouseover', hoverAnnotation(annotation, svgModel))
-      .on('mouseleave', leaveAnnotation(annotation, svgModel))
-      // TODO check double click also fires click event
-      .on('dblclick', doubleClickAnnotation(annotation, svgModel))
-      .on('click', clickAnnotation(annotation, svgModel))
-      .call(addDraggableAnnotation(svgModel, annotation));
+    const eventAnnotations = svgModel.inject(EventAnnotations);
+    eventAnnotations.addToAnnotation(
+      annotation,
+      rect as unknown as AnnotationSvg,
+    );
+
+    rect?.call(addDraggableAnnotation(svgModel, annotation));
 
     border?.call(addDraggableAnnotation(svgModel, annotation));
   });

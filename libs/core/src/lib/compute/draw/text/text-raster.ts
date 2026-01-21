@@ -1,9 +1,7 @@
 import RBush from 'rbush';
-import { type SvgModel } from '../../model/svg.types';
+import { type TextAdapter } from '../../../adapter/text';
 import { calculateOffset, findLineElement } from '../utils/bounding-rect';
 import { getScaledDimensions, getUnscaledRect } from '../../position/unscaled';
-
-import type { BaseAnnotation } from '../../../model';
 
 /**
  * Represents a character in the spatial index tree with its bounding box
@@ -26,11 +24,14 @@ export type TextRasterItem = {
  * @param svgModel - The SVG model containing text elements and line data
  * @returns RBush tree with spatial index of all characters
  */
-export const drawTextRaster = (svgModel: SvgModel<BaseAnnotation>) => {
+export const drawTextRaster = (
+  textElement: HTMLElement,
+  textAdapter: TextAdapter,
+) => {
   // Initialize R-tree for spatial indexing of text characters
   const tree = new RBush<TextRasterItem>();
 
-  const container = svgModel.textElement;
+  const container = textElement;
   const containerDimensions = getUnscaledRect(container);
 
   // Create a tree walker to traverse all text nodes in the DOM
@@ -56,7 +57,7 @@ export const drawTextRaster = (svgModel: SvgModel<BaseAnnotation>) => {
     }
 
     // Get line model data for position calculation
-    const line = svgModel.textAdapter.getLine(lineUid);
+    const line = textAdapter.getLine(lineUid);
     if (!line) {
       continue;
     }

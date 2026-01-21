@@ -1,5 +1,6 @@
 import { drag } from 'd3';
 import { EditAnnotation } from './edit.annotations';
+import { EventAnnotations } from './EventAnnotation';
 import { SVG_ID, type SvgModel } from '../../model/svg.types';
 import {
   type AnnotationDraw,
@@ -9,7 +10,6 @@ import {
 } from '../../../model';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
 import { type Position } from '../types';
-import { hoverAnnotation, leaveAnnotation } from '../events/hover';
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
@@ -76,10 +76,15 @@ export const drawHandle = (
         .on('drag', onEditDrag)
         .on('start', onEditDragStart)
         .on('end', onEditDragEnd) as any,
-    );
+    ) as any;
+
+  const eventAnnotations = svgModel.inject(EventAnnotations);
+
+  eventAnnotations.addToAnnotation(annotation, handle);
+
   handle
-    .on('mouseover', hoverAnnotation(annotation, svgModel))
-    .on('mouseleave', leaveAnnotation(annotation, svgModel))
+    // .on('mouseover', hoverAnnotation(annotation, svgModel))
+    // .on('mouseleave', leaveAnnotation(annotation, svgModel))
     .on('mouseenter', () => {
       handle.attr('class', svgModel.annotationAdapter.edit ? 'handle' : '');
     });

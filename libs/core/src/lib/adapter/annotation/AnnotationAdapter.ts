@@ -21,6 +21,7 @@ import {
   type AnnotationDrawColors,
   annotationDrawMetadataSchema,
   type AnnotationId,
+  type BaseAnnotation,
   renderSchema,
   renderStyleSchema,
   type TextAnnotation,
@@ -43,7 +44,11 @@ const config = {
 };
 export type AnnotationConfig = typeof config;
 
-export abstract class AnnotationAdapter<ANNOTATION> extends BaseAdapter {
+export const AnnotationAdapterToken = 'ANNOTATION_ADAPTER';
+
+export abstract class AnnotationAdapter<
+  ANNOTATION extends BaseAnnotation,
+> extends BaseAdapter {
   private readonly annotationCache = new AnnotationCache<ANNOTATION>();
   /**
    * If true, creation of annotations is enabled.
@@ -280,7 +285,7 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   style?: Partial<AnnotationStyleParams<ANNOTATION>>;
 };
 
-export const createAnnotationAdapter = <ANNOTATION>(
+export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
   adapter: AnnotationAdapter<ANNOTATION>,
   params: createAnnotationAdapterParams<ANNOTATION>,
 ): AnnotationAdapter<ANNOTATION> => {

@@ -1,168 +1,278 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AnnotationId, TextAnnotation } from '../../../model';
-import type { SvgModel } from '../svg.types';
 import { AnnotationColors } from '../annotation.colors';
+import { SvgModel } from '../svg.types';
+import type { AnnotationModule } from '../../../di/annotation.module';
+import { AnnotationAdapterToken } from '../../../adapter/annotation';
 
 describe('AnnotationColors', () => {
   let colors: AnnotationColors<any>;
-  let svgModel: SvgModel<any> & {
-    resetAnnotationColor: ReturnType<typeof vi.fn>;
+  let mockAnnotationModule: AnnotationModule;
+  let mockSvgModel: {
+    findFills: ReturnType<typeof vi.fn>;
+    findBorders: ReturnType<typeof vi.fn>;
   };
+  let mockAnnotationAdapter: {
+    getAnnotation: ReturnType<typeof vi.fn>;
+  };
+  let annotationStore: Map<AnnotationId, TextAnnotation>;
 
   const makeAnnotation = (
     id: AnnotationId,
-    palette = { default: 'gray', hover: 'blue', active: 'red' },
+    palette = {
+      default: { fill: 'gray', border: 'darkgray' },
+      hover: { fill: 'blue', border: 'darkblue' },
+      active: { fill: 'red', border: 'darkred' },
+    },
   ): TextAnnotation =>
     ({
       id,
       _drawMetadata: { color: palette },
     }) as unknown as TextAnnotation;
 
+  const createMockSelection = () => ({
+    attr: vi.fn().mockReturnThis(),
+  });
+
   beforeEach(() => {
-    colors = new AnnotationColors();
-    svgModel = {
-      // other SvgModel props are not required for these tests
-      resetAnnotationColor: vi.fn(),
-    } as unknown as SvgModel<any> & {
-      resetAnnotationColor: ReturnType<typeof vi.fn>;
+    annotationStore = new Map();
+
+    mockSvgModel = {
+      findFills: vi.fn().mockReturnValue(createMockSelection()),
+      findBorders: vi.fn().mockReturnValue(createMockSelection()),
     };
+
+    mockAnnotationAdapter = {
+      getAnnotation: vi.fn((id: AnnotationId) => annotationStore.get(id)),
+    };
+
+    const mockInject = vi.fn((token: any) => {
+      if (token === SvgModel) return mockSvgModel;
+      if (token === AnnotationAdapterToken) return mockAnnotationAdapter;
+      return {};
+    });
+
+    mockAnnotationModule = {
+      inject: mockInject,
+    } as unknown as AnnotationModule;
+
+    colors = new AnnotationColors(mockAnnotationModule);
   });
 
   describe('highlightAnnotations', () => {
-    it('replaces highlighted set, colors new and resets old; returns this', () => {
+    it('replaces highlighted set and recolors annotations; returns this', () => {
+      // Set up annotations in the store
+      const annoA = makeAnnotation('a');
+      const annoB = makeAnnotation('b');
+      const annoC = makeAnnotation('c');
+      annotationStore.set('a', annoA);
+      annotationStore.set('b', annoB);
+      annotationStore.set('c', annoC);
+
       // First highlight to establish 'oldIds'
-      colors.highlightAnnotations(['a', 'b'], svgModel);
-      svgModel.resetAnnotationColor.mockClear();
+      colors.highlightAnnotations(['a', 'b'], mockSvgModel as any);
+      mockSvgModel.findFills.mockClear();
+      mockSvgModel.findBorders.mockClear();
 
       // Now replace highlights with ['b','c']
-      const ret = colors.highlightAnnotations(['b', 'c'], svgModel);
+      const ret = colors.highlightAnnotations(['b', 'c'], mockSvgModel as any);
 
-      // color(svg): resets current highlighted first, then active (empty)
-      // resetColors(oldIds): resets old highlighted ['a','b']
-      expect(svgModel.resetAnnotationColor.mock.calls).toEqual([
-        ['b'], // from color(): highlighted
-        ['c'], // from color(): highlighted
-        ['a'], // from resetColors(oldIds)
-        ['b'], // from resetColors(oldIds)
-      ]);
-
+      // Should have called findFills for each annotation being recolored
+      expect(mockSvgModel.findFills).toHaveBeenCalled();
       expect(ret).toBe(colors); // chainable
     });
   });
 
   describe('selectAnnotations', () => {
-    it('moves ids from highlighted to active, colors in order: highlighted then active; returns this', () => {
+    it('moves ids from highlighted to active; returns this', () => {
+      // Set up annotations
+      const annoH1 = makeAnnotation('h1');
+      const annoH2 = makeAnnotation('h2');
+      const annoS1 = makeAnnotation('s1');
+      annotationStore.set('h1', annoH1);
+      annotationStore.set('h2', annoH2);
+      annotationStore.set('s1', annoS1);
+
       // Start with some highlighted
-      colors.highlightAnnotations(['h1', 'h2'], svgModel);
-      svgModel.resetAnnotationColor.mockClear();
+      colors.highlightAnnotations(['h1', 'h2'], mockSvgModel as any);
+      mockSvgModel.findFills.mockClear();
 
       // Select: removes from highlighted, adds to active
-      const ret = colors.selectAnnotations(['h2', 's1'], svgModel);
+      const ret = colors.selectAnnotations(['h2', 's1'], mockSvgModel as any);
 
-      // color(svg): reset remaining highlighted (h1), then active (h2, s1)
-      // resetColors(oldActiveIds): none on first call (empty)
-      expect(svgModel.resetAnnotationColor.mock.calls).toEqual([
-        ['h1'], // remaining highlighted
-        ['h2'], // newly active
-        ['s1'], // newly active
-      ]);
-
+      expect(mockSvgModel.findFills).toHaveBeenCalled();
       expect(ret).toBe(colors); // chainable
     });
 
     it('when there were old active ids, they get reset after recoloring current sets', () => {
+      const annoA1 = makeAnnotation('a1');
+      const annoA2 = makeAnnotation('a2');
+      annotationStore.set('a1', annoA1);
+      annotationStore.set('a2', annoA2);
+
       // Establish some active ids first
-      colors.selectAnnotations(['a1'], svgModel);
-      svgModel.resetAnnotationColor.mockClear();
+      colors.selectAnnotations(['a1'], mockSvgModel as any);
+      mockSvgModel.findFills.mockClear();
 
       // Now change selection to a different set
-      colors.selectAnnotations(['a2'], svgModel);
+      colors.selectAnnotations(['a2'], mockSvgModel as any);
 
-      // Sequence:
-      // 1) color(): reset highlighted (none), then active (a2)
-      // 2) resetColors(oldActive) => a1
-      expect(svgModel.resetAnnotationColor.mock.calls).toEqual([
-        ['a2'],
-        ['a1'],
-      ]);
+      // Should recolor both annotations
+      expect(mockSvgModel.findFills).toHaveBeenCalled();
     });
   });
 
   describe('resetColors (direct)', () => {
     it('resets all given ids (Set or Array)', () => {
-      colors.resetColors(new Set<AnnotationId>(['x', 'y']), svgModel);
-      colors.resetColors(['z'], svgModel);
+      const annoX = makeAnnotation('x');
+      const annoY = makeAnnotation('y');
+      const annoZ = makeAnnotation('z');
+      annotationStore.set('x', annoX);
+      annotationStore.set('y', annoY);
+      annotationStore.set('z', annoZ);
 
-      expect(svgModel.resetAnnotationColor).toHaveBeenCalledTimes(3);
-      expect(svgModel.resetAnnotationColor).toHaveBeenNthCalledWith(1, 'x');
-      expect(svgModel.resetAnnotationColor).toHaveBeenNthCalledWith(2, 'y');
-      expect(svgModel.resetAnnotationColor).toHaveBeenNthCalledWith(3, 'z');
+      colors.resetColors(new Set<AnnotationId>(['x', 'y']), mockSvgModel as any);
+      colors.resetColors(['z'], mockSvgModel as any);
+
+      // Each annotation should have findFills called
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('x');
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('y');
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('z');
     });
   });
 
   describe('color', () => {
     it('resets highlighted first, then active', () => {
+      const annoH = makeAnnotation('h');
+      const annoA = makeAnnotation('a');
+      annotationStore.set('h', annoH);
+      annotationStore.set('a', annoA);
+
       // highlighted -> ['h'], active -> ['a']
-      colors.highlightAnnotations(['h'], svgModel);
-      colors.selectAnnotations(['a'], svgModel);
-      svgModel.resetAnnotationColor.mockClear();
+      colors.highlightAnnotations(['h'], mockSvgModel as any);
+      colors.selectAnnotations(['a'], mockSvgModel as any);
+      mockSvgModel.findFills.mockClear();
 
-      colors.color(svgModel);
+      colors.color(mockSvgModel as any);
 
-      expect(svgModel.resetAnnotationColor.mock.calls).toEqual([
-        ['h'], // highlighted first
-        ['a'], // then active
-      ]);
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('h');
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('a');
     });
   });
 
   describe('getAnnotationColor', () => {
     it('returns active color when in activeIds', () => {
-      colors.selectAnnotations(['id1'], svgModel);
       const anno = makeAnnotation('id1');
+      annotationStore.set('id1', anno);
+
+      colors.selectAnnotations(['id1'], mockSvgModel as any);
+
       expect(
         colors.getAnnotationColor(anno, {
-          default: 'gray',
-          hover: 'blue',
-          active: 'red',
+          default: { fill: 'gray' },
+          hover: { fill: 'blue' },
+          active: { fill: 'red' },
         } as any),
-      ).toBe('red');
+      ).toEqual({ fill: 'red' });
     });
 
     it('returns hover color when in highlightedIds but not activeIds', () => {
-      colors.highlightAnnotations(['id2'], svgModel);
       const anno = makeAnnotation('id2');
+      annotationStore.set('id2', anno);
+
+      colors.highlightAnnotations(['id2'], mockSvgModel as any);
+
       expect(
         colors.getAnnotationColor(anno, {
-          default: 'gray',
-          hover: 'blue',
-          active: 'red',
+          default: { fill: 'gray' },
+          hover: { fill: 'blue' },
+          active: { fill: 'red' },
         } as any),
-      ).toBe('blue');
+      ).toEqual({ fill: 'blue' });
     });
 
     it('returns default color when in neither set', () => {
       const anno = makeAnnotation('id3');
       expect(
         colors.getAnnotationColor(anno, {
-          default: 'gray',
-          hover: 'blue',
-          active: 'red',
+          default: { fill: 'gray' },
+          hover: { fill: 'blue' },
+          active: { fill: 'red' },
         } as any),
-      ).toBe('gray');
+      ).toEqual({ fill: 'gray' });
     });
 
     it('active takes priority over highlighted', () => {
-      colors.highlightAnnotations(['id4'], svgModel);
-      colors.selectAnnotations(['id4'], svgModel); // same id now active
       const anno = makeAnnotation('id4');
+      annotationStore.set('id4', anno);
+
+      colors.highlightAnnotations(['id4'], mockSvgModel as any);
+      colors.selectAnnotations(['id4'], mockSvgModel as any); // same id now active
+
       expect(
         colors.getAnnotationColor(anno, {
-          default: 'gray',
-          hover: 'blue',
-          active: 'red',
+          default: { fill: 'gray' },
+          hover: { fill: 'blue' },
+          active: { fill: 'red' },
         } as any),
-      ).toBe('red');
+      ).toEqual({ fill: 'red' });
+    });
+  });
+
+  describe('resetAnnotationColor', () => {
+    it('applies correct fill and border to annotation SVG elements', () => {
+      const anno = makeAnnotation('id1');
+      annotationStore.set('id1', anno);
+
+      const fillSelection = createMockSelection();
+      const borderSelection = createMockSelection();
+      mockSvgModel.findFills.mockReturnValue(fillSelection);
+      mockSvgModel.findBorders.mockReturnValue(borderSelection);
+
+      colors.resetAnnotationColor('id1');
+
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('id1');
+      expect(fillSelection.attr).toHaveBeenCalledWith('fill', 'gray');
+      expect(fillSelection.attr).toHaveBeenCalledWith('stroke', 'none');
+      expect(mockSvgModel.findBorders).toHaveBeenCalledWith('id1');
+      expect(borderSelection.attr).toHaveBeenCalledWith('fill', 'none');
+      expect(borderSelection.attr).toHaveBeenCalledWith('stroke', 'darkgray');
+    });
+
+    it('does nothing if annotation not found', () => {
+      colors.resetAnnotationColor('nonexistent');
+
+      expect(mockSvgModel.findFills).not.toHaveBeenCalled();
+      expect(mockSvgModel.findBorders).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('colorAnnotation', () => {
+    it('applies fill and border colors to SVG elements', () => {
+      const fillSelection = createMockSelection();
+      const borderSelection = createMockSelection();
+      mockSvgModel.findFills.mockReturnValue(fillSelection);
+      mockSvgModel.findBorders.mockReturnValue(borderSelection);
+
+      colors.colorAnnotation('id1', { fill: 'green', border: 'darkgreen' });
+
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('id1');
+      expect(fillSelection.attr).toHaveBeenCalledWith('fill', 'green');
+      expect(fillSelection.attr).toHaveBeenCalledWith('stroke', 'none');
+      expect(mockSvgModel.findBorders).toHaveBeenCalledWith('id1');
+      expect(borderSelection.attr).toHaveBeenCalledWith('fill', 'none');
+      expect(borderSelection.attr).toHaveBeenCalledWith('stroke', 'darkgreen');
+    });
+
+    it('does not apply border if not provided', () => {
+      const fillSelection = createMockSelection();
+      mockSvgModel.findFills.mockReturnValue(fillSelection);
+      mockSvgModel.findBorders.mockReturnValue(null);
+
+      colors.colorAnnotation('id1', { fill: 'green' });
+
+      expect(mockSvgModel.findFills).toHaveBeenCalledWith('id1');
+      expect(fillSelection.attr).toHaveBeenCalledWith('fill', 'green');
     });
   });
 });

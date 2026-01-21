@@ -5,8 +5,10 @@ import {
   type BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
-import { SVG_ID, SVG_ROLE, type SvgModel } from '../../model/svg.types';
+import { type AnnotationSvg, SVG_ID, SVG_ROLE } from '../../model/svg.types';
 import { type TagConfig } from '../../../adapter/annotation/DefaultTag';
+import { type AnnotationAdapter } from '../../../adapter/annotation';
+import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
 
 const defaultParams = memoize((tagConfig: TagConfig<any>) => {
   const fontSize = `${tagConfig.fontSize || 12}px`;
@@ -49,12 +51,17 @@ const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
   return { textWidth, textHeight };
 };
 
-export const drawTag = (
-  svgModel: SvgModel<BaseAnnotation>,
+export const drawTag = <ANNOTATION extends BaseAnnotation>(
+  internalEventListener: InternalEventListener,
+  annotationAdapter: AnnotationAdapter<ANNOTATION>,
+  tagSvg: AnnotationSvg,
   annotation: TextAnnotation,
 ) => {
-  svgModel.removeTag(annotation.id);
-  const tagConfig = svgModel.annotationAdapter.tagConfig;
+  internalEventListener.sendEvent('annotation--remove-tag', {
+    annotationUuid: annotation.id,
+  });
+
+  const tagConfig = annotationAdapter.tagConfig;
   if (!tagConfig.enabled) return;
 
   const annotationDimensions = annotation._drawMetadata
@@ -70,13 +77,13 @@ export const drawTag = (
   };
 
   // Create a group for the tag
-  const tagGroup = svgModel.tagSvg
+  const tagGroup = tagSvg
     .append('g')
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
     .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG);
 
   const { fontSize, padding } = defaultParams(tagConfig);
-  const text = svgModel.annotationAdapter.tagLabel(annotation);
+  const text = annotationAdapter.tagLabel(annotation);
 
   if (!text) return;
 

@@ -155,4 +155,4 @@ const createWithActions = (_id: CrudIdKeys, title: string) => {
   actionsRendered.demo.append(actionsDiv);
 };
 
-createWithActions('actions', 'actions');
+// createWithActions('actions', 'actions');
