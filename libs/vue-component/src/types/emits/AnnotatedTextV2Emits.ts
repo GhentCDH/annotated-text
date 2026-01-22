@@ -1,4 +1,8 @@
-import type { Annotation, AnnotationEventType, ErrorAnnotationEventData } from '@ghentcdh/annotated-text';
+import type {
+  Annotation,
+  AnnotationEventType,
+  ErrorAnnotationEventData,
+} from '@ghentcdh/annotated-text';
 
 export type AnnotatedTextV2Emits = {
   /**

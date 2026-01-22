@@ -7,12 +7,12 @@ import {
   type createTextAdapterParams,
   DefaultAnnotationAdapter,
   PlainTextAdapter,
-  TextAdapter,
+  TextAdapter
 } from '../../adapter';
 import type { Annotation } from '../../model/';
 import { Debugger } from '../../utils/debugger';
 
-type createAnnotatedTextParams<ANNOTATION> = {
+type createAnnotatedTextParams<ANNOTATION extends BaseAnnotation> = {
   text?: TextAdapter | createTextAdapterParams;
   annotation?:
     | AnnotationAdapter<ANNOTATION>
