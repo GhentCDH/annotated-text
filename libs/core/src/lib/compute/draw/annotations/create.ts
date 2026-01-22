@@ -1,14 +1,11 @@
 import { CreateAnnotation } from './create.annotation';
-import {
-  type AnnotationAdapter,
-  AnnotationAdapterToken,
-  type BaseAnnotation,
-} from '../../../adapter/annotation';
+import { type AnnotationAdapter, AnnotationAdapterToken } from '../../../adapter/annotation';
 import { SvgModel } from '../../model/svg.types';
 import { type Position } from '../types';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 import { DrawText } from '../text/DrawText';
+import { BaseAnnotation } from '../../../model';
 
 export const createNewBlock = <ANNOTATION extends BaseAnnotation>(
   annotationModule: AnnotationModule,
