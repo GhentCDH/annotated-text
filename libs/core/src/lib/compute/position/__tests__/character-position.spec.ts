@@ -5,43 +5,63 @@ import {
   getCharacterFromTextNodesAtPoint,
   getCharacterStartEndPosition,
 } from '../character-position';
-import { type SvgModel } from '../../model/svg.types';
 import { type TextRasterItem } from '../../draw/text/text-raster';
+import { getScaledDimensions, getUnscaledRect } from '../unscaled';
+
+// Mock the unscaled module
+vi.mock('../unscaled');
 
 beforeEach(() => {
   globalThis.getComputedStyle = vi.fn().mockReturnValue({
     getPropertyValue: vi.fn().mockReturnValue(''),
-    // Add other properties you need
     lineHeight: '20px',
     fontSize: '16px',
   });
 });
 
 describe('getCharacterFromTextNodesAtPoint', () => {
-  let mockSvgModel: SvgModel<any>;
+  let mockTextElement: HTMLElement;
   let mockTextTree: RBush<TextRasterItem>;
 
   beforeEach(() => {
+    vi.clearAllMocks();
+
     mockTextTree = new RBush<TextRasterItem>();
 
-    // Mock text element with getBoundingClientRect
-    const mockTextElement = {
+    // Mock text element
+    mockTextElement = {
       getBoundingClientRect: vi.fn().mockReturnValue({
         x: 100,
         y: 50,
         width: 200,
         height: 100,
       }),
-    } as unknown as SVGTextElement;
+    } as unknown as HTMLElement;
 
-    mockSvgModel = {
-      textElement: mockTextElement,
-      textTree: mockTextTree,
-    } as any as SvgModel<any>;
+    // Mock getUnscaledRect to return container dimensions
+    vi.mocked(getUnscaledRect).mockReturnValue({
+      original: { x: 100, y: 50, width: 200, height: 100 },
+      scaled: { x: 100, y: 50, width: 200, height: 100 },
+      scale: 1,
+    } as any);
+
+    // Mock getScaledDimensions to convert absolute to relative coordinates
+    // It subtracts container position from the input coordinates
+    vi.mocked(getScaledDimensions).mockImplementation((containerDims, rect) => ({
+      x: rect.x - containerDims.original.x,
+      y: rect.y - containerDims.original.y,
+      width: rect.width,
+      height: rect.height,
+    }));
   });
 
   it('should return null when no text is found at the point', () => {
-    const result = getCharacterFromTextNodesAtPoint(150, 75, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      150,
+      75,
+      mockTextElement,
+      mockTextTree,
+    );
     expect(result).toBeNull();
   });
 
@@ -58,7 +78,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockTextTree.insert(textItem);
 
     // Point at x=120 (relative: 20), which is left of centerX (30)
-    const result = getCharacterFromTextNodesAtPoint(120, 70, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      120,
+      70,
+      mockTextElement,
+      mockTextTree,
+    );
 
     expect(result).not.toBeNull();
     expect(result?.characterPos).toBe(5);
@@ -79,7 +104,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockTextTree.insert(textItem);
 
     // Point at x=140 (relative: 40), which is right of centerX (30)
-    const result = getCharacterFromTextNodesAtPoint(140, 70, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      140,
+      70,
+      mockTextElement,
+      mockTextTree,
+    );
 
     expect(result).not.toBeNull();
     expect(result?.characterPos).toBe(5);
@@ -99,7 +129,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockTextTree.insert(textItem);
 
     // Absolute coords: (100, 50), Relative: (0, 0)
-    const result = getCharacterFromTextNodesAtPoint(100, 50, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      100,
+      50,
+      mockTextElement,
+      mockTextTree,
+    );
 
     expect(result).not.toBeNull();
   });
@@ -117,7 +152,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockTextTree.insert(textItem);
 
     // Point far outside the rectangle
-    const result = getCharacterFromTextNodesAtPoint(500, 500, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      500,
+      500,
+      mockTextElement,
+      mockTextTree,
+    );
 
     expect(result).toBeNull();
   });
@@ -145,7 +185,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockTextTree.insert(textItem2);
 
     // Point in second rectangle (absolute: 135, relative: 35)
-    const result = getCharacterFromTextNodesAtPoint(135, 60, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      135,
+      60,
+      mockTextElement,
+      mockTextTree,
+    );
 
     expect(result).not.toBeNull();
     expect(result?.characterPos).toBe(1);
@@ -164,7 +209,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     mockTextTree.insert(textItem);
 
     // Point exactly on minX boundary (absolute: 110, relative: 10)
-    const result = getCharacterFromTextNodesAtPoint(110, 60, mockSvgModel);
+    const result = getCharacterFromTextNodesAtPoint(
+      110,
+      60,
+      mockTextElement,
+      mockTextTree,
+    );
 
     expect(result).not.toBeNull();
     expect(result!.characterPos).toBe(0);

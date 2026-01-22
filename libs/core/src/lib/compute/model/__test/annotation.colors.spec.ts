@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { AnnotationDrawColor, AnnotationId, TextAnnotation } from '../../../model';
+import type {
+  AnnotationDrawColor,
+  AnnotationId,
+  TextAnnotation,
+} from '../../../model';
 import { AnnotationColors } from '../annotation.colors';
 import { SvgModel } from '../svg.types';
 import type { AnnotationModule } from '../../../di/annotation.module';

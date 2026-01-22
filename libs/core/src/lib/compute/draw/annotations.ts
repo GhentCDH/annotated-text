@@ -5,7 +5,7 @@ import {
   type AnnotationSvg,
   SVG_ID,
   SVG_ROLE,
-  type SvgModel,
+  SvgModel,
 } from '../model/svg.types';
 import {
   type AnnotationDraw,
@@ -13,12 +13,11 @@ import {
   type AnnotationDrawColors,
   type TextAnnotation,
 } from '../../model';
-import { type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import { type AnnotationModule } from '../../di/annotation.module';
 
 export const drawAnnotationContent = (
   draw: AnnotationDraw,
-  svgModel: SvgModel<any>,
-  style: AnnotationRenderStyle,
+  svgModel: SvgModel,
   color: AnnotationDrawColor,
 ) => {
   let border = null;
@@ -52,30 +51,29 @@ export const drawAnnotationContent = (
 };
 
 export const drawAnnotation = (
-  svgModel: SvgModel<any>,
+  annotationModule: AnnotationModule,
   annotation: TextAnnotation,
 ) => {
   const color = annotation._drawMetadata.color as AnnotationDrawColors;
-  const style = annotation._render.style.renderStyle as AnnotationRenderStyle;
+  const svgModel = annotationModule.inject(SvgModel);
 
   annotation._drawMetadata.draws.forEach((draw) => {
     const { rect, border } = drawAnnotationContent(
       draw,
       svgModel,
-      style,
       color.default,
     );
 
-    drawAnnotationHandles(annotation, draw, svgModel);
+    drawAnnotationHandles(annotation, draw, annotationModule);
 
-    const eventAnnotations = svgModel.inject(EventAnnotations);
+    const eventAnnotations = annotationModule.inject(EventAnnotations);
     eventAnnotations.addToAnnotation(
       annotation,
       rect as unknown as AnnotationSvg,
     );
 
-    rect?.call(addDraggableAnnotation(svgModel, annotation));
+    rect?.call(addDraggableAnnotation(annotationModule, annotation));
 
-    border?.call(addDraggableAnnotation(svgModel, annotation));
+    border?.call(addDraggableAnnotation(annotationModule, annotation));
   });
 };

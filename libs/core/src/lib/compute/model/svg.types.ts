@@ -1,12 +1,8 @@
 import { type Selection } from 'd3-selection';
 import { select } from 'd3';
-import type RBush from 'rbush';
-import { AnnotationColors } from './annotation.colors';
-import { type AnnotationId, type BaseAnnotation } from '../../model';
+import { type AnnotationId } from '../../model';
 import { styles } from '../styles.const';
-import { type TextRasterItem } from '../draw/text/text-raster';
 import { getUnscaledRect } from '../position/unscaled';
-import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { Draw } from '../draw/Draw';
 
@@ -31,24 +27,15 @@ export const SVG_ROLE = {
 /**
  * this contains some helper function for the svg drawing, here there should not be any dependency on edit them
  */
-export class SvgModel<
-  ANNOTATION extends BaseAnnotation,
-> extends BaseAnnotationDi {
+export class SvgModel {
   annotations: AnnotationSvg;
   handles: AnnotationSvg;
   svg: AnnotationSvg;
   tagSvg: AnnotationSvg;
-  textTree: RBush<TextRasterItem>;
 
   textElement: HTMLElement;
 
-  constructor(annotationModule: AnnotationModule) {
-    super(annotationModule);
-  }
-
-  get annotationColors() {
-    return this.annotationModule.inject(AnnotationColors);
-  }
+  constructor(private readonly annotationModule: AnnotationModule) {}
 
   createModel(textElement: HTMLElement) {
     this.textElement = textElement;
@@ -78,9 +65,7 @@ export class SvgModel<
       ) as unknown as AnnotationSvg;
 
     const draw = this.annotationModule.inject(Draw);
-    draw.initialDraw(textElement);
-
-    this.textTree = draw.textTree;
+    draw.initialDraw();
 
     return this;
   }

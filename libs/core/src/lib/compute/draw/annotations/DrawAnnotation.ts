@@ -4,7 +4,7 @@ import type {
   TextAnnotation,
 } from '../../../model';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { drawAnnotationContent } from '../annotations';
+import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
 import { getUnscaledRect } from '../../position/unscaled';
 import { AnnotationColors } from '../../model/annotation.colors';
@@ -14,6 +14,10 @@ export class DrawAnnotation extends BaseAnnotationDi {
   private readonly svgModel = this.annotationModule.inject(SvgModel);
   private readonly annotationColors =
     this.annotationModule.inject(AnnotationColors);
+
+  draw(annotation: TextAnnotation) {
+    drawAnnotation(this.annotationModule, annotation);
+  }
 
   dummy(dummyAnnotation: TextAnnotation, color: AnnotationDrawColor) {
     const annotationUuid = DUMMY_UID;
@@ -57,12 +61,7 @@ export class DrawAnnotation extends BaseAnnotationDi {
         annotation,
       )
       .draws.forEach((a) => {
-        drawAnnotationContent(
-          { ...a, annotationUuid },
-          this.svgModel,
-          renderInstance.style,
-          color,
-        );
+        drawAnnotationContent({ ...a, annotationUuid }, this.svgModel, color);
       });
 
     this.annotationColors.colorAnnotation(annotationUuid, color);

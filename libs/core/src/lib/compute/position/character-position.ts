@@ -1,6 +1,5 @@
 import type RBush from 'rbush';
 import { getScaledDimensions, getUnscaledRect } from './unscaled';
-import { type SvgModel } from '../model/svg.types';
 import { type TextRasterItem } from '../draw/text/text-raster';
 import { insideRange } from '../draw/utils/bounding-rect';
 
@@ -55,15 +54,17 @@ export type CharacterPositionResult = {
  *
  * @param x - Absolute X coordinate (screen space)
  * @param y - Absolute Y coordinate (screen space)
- * @param svgModel - The SVG model containing the text element and spatial index
+ * @param textElement
+ * @param textTree
  * @returns Character position info, or null if no text at that point
  */
 export function getCharacterFromTextNodesAtPoint(
   x: number,
   y: number,
-  svgModel: SvgModel<any>,
+  textElement: HTMLElement,
+  textTree: RBush<TextRasterItem>,
 ) {
-  const textElementDimensions = getUnscaledRect(svgModel.textElement);
+  const textElementDimensions = getUnscaledRect(textElement);
 
   const scaledDimensions = getScaledDimensions(textElementDimensions, {
     x,
@@ -77,7 +78,7 @@ export function getCharacterFromTextNodesAtPoint(
   const relativeY = scaledDimensions.y;
 
   // Search for text at this position in the spatial index
-  const rect = rectAtPointRTree(svgModel.textTree, relativeX, relativeY);
+  const rect = rectAtPointRTree(textTree, relativeX, relativeY);
 
   if (!rect) return null;
 

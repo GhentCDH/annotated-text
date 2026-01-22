@@ -1,11 +1,25 @@
 import { CreateAnnotation } from './create.annotation';
-import { type SvgModel } from '../../model/svg.types';
+import {
+  type AnnotationAdapter,
+  AnnotationAdapterToken,
+  type BaseAnnotation,
+} from '../../../adapter/annotation';
+import { SvgModel } from '../../model/svg.types';
 import { type Position } from '../types';
-import { getCharacterFromTextNodesAtPoint } from '../../position';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { InternalEventListener } from '../../../events/internal/internal.event.listener';
+import { DrawText } from '../text/DrawText';
 
-export const createNewBlock = (svgModel: SvgModel<any>) => {
+export const createNewBlock = <ANNOTATION extends BaseAnnotation>(
+  annotationModule: AnnotationModule,
+) => {
+  const svgModel = annotationModule.inject(SvgModel);
   const svg = svgModel.svg;
-  const adapter = svgModel.annotationAdapter;
+  const adapter = annotationModule.inject<AnnotationAdapter<ANNOTATION>>(
+    AnnotationAdapterToken,
+  );
+  const internalEventListener = annotationModule.inject(InternalEventListener);
+  const drawText = annotationModule.inject(DrawText);
 
   const getPosition = (event: MouseEvent) => {
     const x = event.clientX;
@@ -15,20 +29,20 @@ export const createNewBlock = (svgModel: SvgModel<any>) => {
   };
 
   const createAnnotation: CreateAnnotation = new CreateAnnotation(
-    svgModel.internalEventListener,
+    internalEventListener,
     adapter,
-    ({ x, y }: Position) => getCharacterFromTextNodesAtPoint(x, y, svgModel),
+    ({ x, y }: Position) => drawText.getCharacterFromTextNodesAtPoint(x, y),
   );
 
-  svg.on('mousedown', (event: MouseEvent) => {
+  svg.on('mousedown', (event) => {
     createAnnotation.startCreate(getPosition(event), event);
   });
 
-  svg.on('mousemove', (event: MouseEvent) => {
+  svg.on('mousemove', (event) => {
     createAnnotation.moveCreate(getPosition(event), event);
   });
 
-  svg.on('mouseup', (event: MouseEvent) => {
+  svg.on('mouseup', (event) => {
     createAnnotation.endCreate(getPosition(event), event);
   });
 };

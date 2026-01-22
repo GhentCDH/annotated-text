@@ -1,11 +1,8 @@
-import type RBush from 'rbush';
-import { drawTextRaster, type TextRasterItem } from './text/text-raster';
 import { Tag } from './tag/tag';
 import { createNewBlock } from './annotations/create';
-import { drawAnnotation } from './annotations';
 import { DrawAnnotation } from './annotations/DrawAnnotation';
+import { DrawText } from './text/DrawText';
 import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
-import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
 import { AnnotationColors } from '../model/annotation.colors';
 import type { AnnotationId } from '../../model';
@@ -15,21 +12,19 @@ import { type AnnotationModule } from '../../di/annotation.module';
  * This is a dispatcher class for all actions made on visual drawing of the annotations
  */
 export class Draw extends BaseAnnotationDi {
-  private readonly svgModel;
   private readonly annotationColors = this.inject(AnnotationColors);
   readonly annotation = this.inject(DrawAnnotation);
-
-  textTree: RBush<TextRasterItem>;
+  readonly text = this.inject(DrawText);
+  readonly tag = this.inject(Tag);
 
   constructor(mod: AnnotationModule) {
     super(mod);
-    this.svgModel = this.annotationModule.inject(SvgModel);
   }
 
-  initialDraw(textElement: HTMLElement) {
-    this.textTree = drawTextRaster(textElement, this.textAdapter);
-    createNewBlock(this.annotationModule.inject(SvgModel));
-    this.annotationModule.inject(Tag).drawAll();
+  initialDraw() {
+    this.text.createTree();
+    createNewBlock(this.annotationModule);
+    this.tag.drawAll();
 
     return this;
   }
@@ -39,7 +34,7 @@ export class Draw extends BaseAnnotationDi {
 
     this.annotationAdapter.annotations
       .sortBy('weight')
-      .forEach((annotation) => drawAnnotation(this.svgModel, annotation));
+      .forEach((annotation) => this.annotation.draw(annotation));
 
     Debugger.time(now, '--- drawComputedAnnotations ');
 

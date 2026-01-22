@@ -43,7 +43,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   private mainElement: HTMLElement;
   private element: HTMLElement;
   private textElement: HTMLDivElement | null | undefined = null;
-  private readonly svgModel: SvgModel<ANNOTATION>;
+  private readonly svgModel: SvgModel;
   private readonly draw: Draw;
   private svgNode: SVGElement | null = null;
   private resizeObserver: ResizeObserver | null;

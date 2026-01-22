@@ -1,20 +1,27 @@
 import { drag } from 'd3';
 import { DragAnnotation } from './drag.annotations';
+import { type AnnotationAdapter, AnnotationAdapterToken } from '../../../adapter';
 import { type TextAnnotation } from '../../../model';
-import { type SvgModel } from '../../model/svg.types';
-import { getCharacterFromTextNodesAtPoint } from '../../position';
 import { type Position } from '../types';
+import { DrawText } from '../text/DrawText';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 
 export const addDraggableAnnotation = (
-  svgModel: SvgModel<any>,
+  annotationModule: AnnotationModule,
   annotation: TextAnnotation,
 ) => {
+  const drawText = annotationModule.inject(DrawText);
+  const annotationAdapter = annotationModule.inject<AnnotationAdapter<any>>(
+    AnnotationAdapterToken,
+  );
+  const internalEventListener = annotationModule.inject(InternalEventListener);
   const dragAnnotation = new DragAnnotation(
-    svgModel.annotationAdapter.position.minStartPosition,
+    annotationAdapter.position.minStartPosition,
     annotation,
-    svgModel.internalEventListener,
-    svgModel.annotationAdapter,
-    ({ x, y }: Position) => getCharacterFromTextNodesAtPoint(x, y, svgModel),
+    internalEventListener,
+    annotationAdapter,
+    ({ x, y }: Position) => drawText.getCharacterFromTextNodesAtPoint(x, y),
   );
 
   const onDragStart = () => (event: any) => {
