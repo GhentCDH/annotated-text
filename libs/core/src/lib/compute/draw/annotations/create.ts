@@ -5,7 +5,7 @@ import { type Position } from '../types';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 import { DrawText } from '../text/DrawText';
-import { BaseAnnotation } from '../../../model';
+import { type BaseAnnotation } from '../../../model';
 
 export const createNewBlock = <ANNOTATION extends BaseAnnotation>(
   annotationModule: AnnotationModule,
