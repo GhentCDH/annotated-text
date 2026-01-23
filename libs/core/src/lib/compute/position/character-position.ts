@@ -1,5 +1,5 @@
 import type RBush from 'rbush';
-import { getScaledDimensions, getUnscaledRect } from './unscaled';
+import { DimensionsWithScale, getScaledDimensions } from './unscaled';
 import { type TextRasterItem } from '../draw/text/text-raster';
 import { insideRange } from '../draw/utils/bounding-rect';
 
@@ -54,18 +54,16 @@ export type CharacterPositionResult = {
  *
  * @param x - Absolute X coordinate (screen space)
  * @param y - Absolute Y coordinate (screen space)
- * @param textElement
+ * @param textElementDimensions
  * @param textTree
  * @returns Character position info, or null if no text at that point
  */
 export function getCharacterFromTextNodesAtPoint(
   x: number,
   y: number,
-  textElement: HTMLElement,
+  textElementDimensions: DimensionsWithScale,
   textTree: RBush<TextRasterItem>,
 ) {
-  const textElementDimensions = getUnscaledRect(textElement);
-
   const scaledDimensions = getScaledDimensions(textElementDimensions, {
     x,
     y,

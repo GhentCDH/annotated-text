@@ -188,17 +188,18 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
     this.mainContainer.clear();
 
-    const textElement = this.draw.text.draw()!;
+    // First create the text
+    this.svgModel.createTextElement();
+    this.draw.text.draw();
 
-    this.mainContainer.setTextElement(textElement);
+    this.mainContainer.setTextElement(this.svgModel.textElement);
 
-    this.draw.compute(textElement);
-
-    this.svgModel.createModel(textElement);
-
+    // Create the svg depending on the text element
+    this.svgModel.createModel();
     this.mainContainer.setSvg(this.svgModel.node());
 
-    this.draw.annotation.drawAll();
+    // Start computations with the known values
+    this.draw.compute().initialDraw();
   }
 
   public destroy() {

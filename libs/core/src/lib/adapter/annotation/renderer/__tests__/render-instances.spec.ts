@@ -517,18 +517,8 @@ describe('RenderInstances', () => {
         _render: { render: 'underline' },
       } as unknown as TextAnnotation;
 
-      renders.createDraws(
-        {} as AnnotationRenderParams,
-        {} as any,
-        {} as any,
-        highlightAnnotation,
-      );
-      renders.createDraws(
-        {} as AnnotationRenderParams,
-        {} as any,
-        {} as any,
-        underlineAnnotation,
-      );
+      renders.createDraws({} as any, highlightAnnotation);
+      renders.createDraws({} as any, underlineAnnotation);
 
       expect(highlightRenderer.createDraws).toHaveBeenCalled();
       expect(underlineRenderer.createDraws).toHaveBeenCalled();

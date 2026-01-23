@@ -19,16 +19,24 @@ export class DrawText extends BaseAnnotationDi {
     return getCharacterFromTextNodesAtPoint(
       x,
       y,
-      this.svgModel.textElement,
+      this.svgModel.getTextElementDimensions(),
       this.textTree,
     );
   }
 
   draw() {
-    return drawText(this.textAdapter, this.annotationAdapter);
+    drawText(
+      this.svgModel.textElement,
+      this.textAdapter,
+      this.annotationAdapter,
+    );
+
+    return this;
   }
 
-  compute(textElement: HTMLDivElement) {
+  compute() {
+    const textElement = this.svgModel.textElement;
+
     this.textAdapter.lines.forEach((line) => {
       const textLine = findTextLine(textElement, line);
       if (!textLine) {
@@ -40,5 +48,7 @@ export class DrawText extends BaseAnnotationDi {
       }
       line.element = textLine;
     });
+
+    return this;
   }
 }

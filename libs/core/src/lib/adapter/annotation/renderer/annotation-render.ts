@@ -5,7 +5,6 @@ import {
   type AnnotationDrawColors,
   type TextAnnotation
 } from '../../../model';
-import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 
 /**
@@ -196,10 +195,7 @@ export abstract class AnnotationRender<
    * }
    * ```
    */
-  abstract createDraws(
-    parentDimensions: DimensionsWithScale,
-    annotation: TextAnnotation,
-  ): {
+  abstract createDraws(annotation: TextAnnotation): {
     draws: AnnotationDraw[];
     dimensions: AnnotationDimension;
     color: AnnotationDrawColors;

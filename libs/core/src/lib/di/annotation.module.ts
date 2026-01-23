@@ -1,7 +1,7 @@
-import { type AnnotationAdapter } from '../adapter/annotation';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
 import { type Container, type Token } from './container';
 import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
+import { type AnnotationAdapter } from '../adapter/annotation';
+import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 
@@ -70,6 +70,8 @@ export class AnnotationModule {
     // Register event listeners (no dependencies)
     this.container.register(InternalEventListener).register(EventListener);
 
+    this.container.register(SvgModel, () => new SvgModel());
+
     // Register adapters provided by the configuration
     this.container
       .register(TextAdapterToken, () => config.textAdapter)
@@ -86,10 +88,7 @@ export class AnnotationModule {
       .register(DrawText, () => new DrawText(this))
       .register(RenderInstances, () => new RenderInstances(this));
 
-    // SvgModel must be registered last as it may depend on other services
-    this.container
-      .register(SvgModel, () => new SvgModel(this))
-      .register(MainContainer, () => new MainContainer(this));
+    this.container.register(MainContainer, () => new MainContainer(this));
 
     config.textAdapter.setModule(this);
     config.annotationAdapter.setModule(this);

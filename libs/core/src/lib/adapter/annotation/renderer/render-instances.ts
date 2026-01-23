@@ -6,7 +6,6 @@ import { HighlightAnnotationRender } from './TextAnnotationRender';
 import { UnderLineAnnotationRender } from './UnderLineAnnotationRender';
 import { Debugger } from '../../../utils/debugger';
 import type { BaseAnnotation, TextAnnotation } from '../../../model';
-import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { AnnotationAdapterToken } from '../../../di/tokens';
@@ -95,13 +94,10 @@ export class RenderInstances<
     return renderer;
   }
 
-  createDraws(
-    parentDimensions: DimensionsWithScale,
-    annotation: TextAnnotation,
-  ) {
+  createDraws(annotation: TextAnnotation) {
     const renderName = annotation._render.render;
     const renderer = this.annotationModule.injectRender(renderName);
 
-    return renderer.createDraws(parentDimensions, annotation);
+    return renderer.createDraws(annotation);
   }
 }

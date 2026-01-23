@@ -27,6 +27,8 @@ export class Draw<
     createNewBlock(this.annotationModule);
     this.tag.drawAll();
 
+    this.annotation.drawAll();
+
     return this;
   }
 
@@ -37,6 +39,8 @@ export class Draw<
     this.textAdapter.setLineHeight(
       getLineHeight(text, this.textAdapter.style.lineOffset),
     );
+
+    return this;
   }
 
   setAnnotations(annotations: ANNOTATION[]) {
@@ -46,16 +50,22 @@ export class Draw<
       annotations,
       this.eventListener,
     );
+
+    return this;
   }
 
   initDraw(text: string, annotations: ANNOTATION[]) {
     this.setText(text);
     this.setAnnotations(annotations);
+
+    return this;
   }
 
-  compute(textElement: HTMLDivElement) {
-    this.text.compute(textElement);
+  compute() {
+    this.text.compute();
     this.annotationAdapter.clearDraws();
-    this.annotation.compute(textElement);
+    this.annotation.compute();
+
+    return this;
   }
 }

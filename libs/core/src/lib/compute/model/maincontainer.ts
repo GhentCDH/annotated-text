@@ -8,8 +8,8 @@ export class MainContainer {
   private element: HTMLElement;
   private textElement: HTMLDivElement | null | undefined = null;
 
-  private resizeObserver: ResizeObserver | null;
-  private prevSvgNode: SVGElement | null;
+  private resizeObserver: ResizeObserver | null = null;
+  private prevSvgNode: SVGElement | null = null;
 
   private internalEventListener = this.annotationModule.inject(
     InternalEventListener,
@@ -31,10 +31,6 @@ export class MainContainer {
     this.mainElement.appendChild(divElement);
 
     this.element = divElement;
-
-    this.element.innerHTML = '';
-
-    this.element.classList.add(styles.wrapper);
 
     this.element.innerHTML = '';
 

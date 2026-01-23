@@ -11,7 +11,6 @@ import {
   type TextAnnotation,
 } from '../../../model';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
-import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 
 export abstract class SvgAnnotationRender<
   STYLE extends TextAnnotationRenderStyle,
@@ -36,10 +35,8 @@ export abstract class SvgAnnotationRender<
   }
 
   // Implemented by default
-  createDraws(
-    parentDimensions: DimensionsWithScale,
-    annotation: TextAnnotation,
-  ) {
+  createDraws(annotation: TextAnnotation) {
+    const parentDimensions = this.svgModel.getTextElementDimensions();
     const params = {
       textDirection: this.textAdapter.textDirection,
       maxGutterWeight: this.annotationAdapter.gutter.maxWeight,

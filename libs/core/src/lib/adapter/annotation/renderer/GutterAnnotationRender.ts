@@ -110,10 +110,8 @@ export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRen
     super(name, style, DefaultGutterAnnotationRenderStyle);
   }
 
-  createDraws(
-    parentDimensions: DimensionsWithScale,
-    annotation: TextAnnotation,
-  ) {
+  createDraws(annotation: TextAnnotation) {
+    const parentDimensions = this.svgModel.getTextElementDimensions();
     const params = {
       textDirection: this.textAdapter.textDirection,
       maxGutterWeight: this.annotationAdapter.gutter.maxWeight,

@@ -6,7 +6,6 @@ import type {
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
-import { getUnscaledRect } from '../../position/unscaled';
 import { getLinesForAnnotation } from '../../utils/line.utils';
 
 import { Debugger } from '../../../utils/debugger';
@@ -57,16 +56,10 @@ export class DrawAnnotation extends BaseAnnotationDi {
       dummyAnnotation,
     );
 
-    this.createDraws(
-      this.svgModel.textElement,
-      dummyAnnotation,
-      color,
-      annotationUuid,
-    );
+    this.createDraws(dummyAnnotation, color, annotationUuid);
   }
 
   private createDraws(
-    textElement: HTMLElement,
     annotation: TextAnnotation,
     color: AnnotationDrawColor,
     newUuid?: AnnotationId,
@@ -76,7 +69,7 @@ export class DrawAnnotation extends BaseAnnotationDi {
     this.internalEventListener.sendEvent('annotation--remove', {
       annotationUuid,
     });
-    const parentDimensions = getUnscaledRect(textElement);
+    const parentDimensions = this.svgModel.getTextElementDimensions();
     const renderInstance = this.renderInstances.highlightInstance;
 
     renderInstance
@@ -88,19 +81,14 @@ export class DrawAnnotation extends BaseAnnotationDi {
     this.annotationColors.colorAnnotation(annotationUuid, color);
   }
 
-  compute(textElement: HTMLDivElement) {
+  compute() {
     this.annotationAdapter.annotations().forEach((annotation) => {
-      this.computeOne(textElement, annotation);
+      this.computeOne(annotation);
     });
   }
 
-  private computeOne(textElement: HTMLDivElement, annotation: TextAnnotation) {
-    const parentDimensions = getUnscaledRect(textElement);
-
-    const rendered = this.renderInstances.createDraws(
-      parentDimensions,
-      annotation,
-    );
+  private computeOne(annotation: TextAnnotation) {
+    const rendered = this.renderInstances.createDraws(annotation);
 
     this.annotationAdapter.addDrawAnnotations(
       annotation.id,

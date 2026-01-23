@@ -59,33 +59,26 @@ const createText = (
   textDiv.innerHTML = textAdapter?.flatText ? textLine.flatText : textLine.html;
   textDiv.setAttribute('data-line-uid', textLine.uuid);
   textDiv.setAttribute('data-annotation-role', 'line');
-
   return textDiv;
 };
 
 export const drawText = (
+  textElement: HTMLDivElement,
   textAdapter: TextAdapter,
   annotationAdapter: AnnotationAdapter<any>,
 ) => {
-  if (!document) {
-    Debugger.debug('drawText', 'no document available, cannot draw text');
-    return;
-  }
+  textElement.innerHTML = '';
 
   const gutterPaddingLeft = annotationAdapter.gutter.paddingLeft;
+  textElement.className = `${styles.text} `;
 
-  const textDiv = document?.createElement('div');
-  textDiv.className = `${styles.text} `;
-
-  textDiv.style.setProperty('--gutter-left', `${gutterPaddingLeft}px`);
+  textElement.style.setProperty('--gutter-left', `${gutterPaddingLeft}px`);
 
   Debugger.verbose('DrawText', 'Draw the lines', textAdapter.lines.length);
   textAdapter.lines.forEach((line) => {
-    textDiv.appendChild(createGutter(line, textAdapter));
-    textDiv.appendChild(
+    textElement.appendChild(createGutter(line, textAdapter));
+    textElement.appendChild(
       createText(line, textAdapter.textDirection, textAdapter),
     );
   });
-
-  return textDiv as HTMLDivElement;
 };

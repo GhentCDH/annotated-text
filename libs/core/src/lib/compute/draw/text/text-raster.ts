@@ -21,8 +21,9 @@ export type TextRasterItem = {
  * Creates a spatial index (R-tree) of all text characters in an SVG document.
  * This enables efficient spatial queries to find text at specific coordinates.
  *
- * @param svgModel - The SVG model containing text elements and line data
  * @returns RBush tree with spatial index of all characters
+ * @param textElement
+ * @param textAdapter
  */
 export const drawTextRaster = (
   textElement: HTMLElement,
