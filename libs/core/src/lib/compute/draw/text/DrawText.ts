@@ -1,9 +1,11 @@
 import type RBush from 'rbush';
 import { drawTextRaster, type TextRasterItem } from './text-raster';
 import { drawText } from './text';
+import { Debugger } from '../../../utils/debugger';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { SvgModel } from '../../model/svg.types';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
+import { findTextLine } from '../../4_compute_positions';
 
 export class DrawText extends BaseAnnotationDi {
   private readonly svgModel = this.inject(SvgModel);
@@ -24,5 +26,19 @@ export class DrawText extends BaseAnnotationDi {
 
   draw() {
     return drawText(this.textAdapter, this.annotationAdapter);
+  }
+
+  compute(textElement: HTMLDivElement) {
+    this.textAdapter.lines.forEach((line) => {
+      const textLine = findTextLine(textElement, line);
+      if (!textLine) {
+        Debugger.debug(
+          'computeLinePositions',
+          `Text line with UUID ${line.uuid} not found in the text element.`,
+        );
+        return;
+      }
+      line.element = textLine;
+    });
   }
 }

@@ -11,10 +11,13 @@ import { getLinesForAnnotation } from '../../utils/line.utils';
 
 import { Debugger } from '../../../utils/debugger';
 import { AnnotationColors } from '../../model/annotation.colors';
+import { RenderInstances } from '../../../adapter/annotation/renderer/render-instances';
 
 export class DrawAnnotation extends BaseAnnotationDi {
   private readonly annotationColors = this.inject(AnnotationColors);
   private readonly svgModel = this.annotationModule.inject(SvgModel);
+  private readonly renderInstances =
+    this.annotationModule.inject(RenderInstances);
 
   drawAll() {
     const now = Date.now();
@@ -74,23 +77,36 @@ export class DrawAnnotation extends BaseAnnotationDi {
       annotationUuid,
     });
     const parentDimensions = getUnscaledRect(textElement);
-    const renderInstance =
-      this.annotationAdapter.renderInstance.highlightInstance;
+    const renderInstance = this.renderInstances.highlightInstance;
 
     renderInstance
-      .createDraws(
-        {
-          textDirection: this.textAdapter.textDirection,
-          maxGutterWeight: this.annotationAdapter.gutter.maxWeight,
-        },
-        this.textAdapter.style,
-        parentDimensions,
-        annotation,
-      )
+      .createDraws(parentDimensions, annotation)
       .draws.forEach((a) => {
         drawAnnotationContent({ ...a, annotationUuid }, this.svgModel, color);
       });
 
     this.annotationColors.colorAnnotation(annotationUuid, color);
+  }
+
+  compute(textElement: HTMLDivElement) {
+    this.annotationAdapter.annotations().forEach((annotation) => {
+      this.computeOne(textElement, annotation);
+    });
+  }
+
+  private computeOne(textElement: HTMLDivElement, annotation: TextAnnotation) {
+    const parentDimensions = getUnscaledRect(textElement);
+
+    const rendered = this.renderInstances.createDraws(
+      parentDimensions,
+      annotation,
+    );
+
+    this.annotationAdapter.addDrawAnnotations(
+      annotation.id,
+      rendered.draws,
+      rendered.dimensions,
+      rendered.color,
+    );
   }
 }

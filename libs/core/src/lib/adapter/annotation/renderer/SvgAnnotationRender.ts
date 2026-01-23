@@ -1,8 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import {
-  AnnotationRender,
-  type AnnotationRenderParams,
-} from './annotation-render';
+import { AnnotationRender } from './annotation-render';
 import { type TextAnnotationRenderStyle } from './TextAnnotationRender';
 import { type PathParams } from './_utils/path';
 import { getColors } from '../../../compute/compute/colors';
@@ -13,8 +10,6 @@ import {
   type AnnotationDrawPath,
   type TextAnnotation,
 } from '../../../model';
-
-import { type TextAdapterStyle } from '../../text';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
 import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 
@@ -42,11 +37,15 @@ export abstract class SvgAnnotationRender<
 
   // Implemented by default
   createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
     parentDimensions: DimensionsWithScale,
     annotation: TextAnnotation,
   ) {
+    const params = {
+      textDirection: this.textAdapter.textDirection,
+      maxGutterWeight: this.annotationAdapter.gutter.maxWeight,
+    };
+    const textStyle = this.textAdapter.style;
+
     const radius = this.style.borderRadius;
 
     const draws: AnnotationDraw[] = [];

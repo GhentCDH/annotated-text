@@ -1,17 +1,11 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  DefaultRenders,
-  GutterAnnotationRender,
-  HighlightAnnotationRender,
-  UnderLineAnnotationRender
-} from './renderer';
 import { type RenderParams } from './renderer/annotation-render';
 import { DefaultTagConfig, type TagConfig } from './DefaultTag';
-import { RenderInstances } from './renderer/render-instances';
 import { StyleInstances } from './style/style-instances';
 import { type AnnotationStyleParams } from './style';
 import { AnnotationCache } from './AnnotationCache';
+import { RenderInstances } from './renderer/render-instances';
 import { BaseAdapter } from '../BaseAdapter';
 import { createAnnotationColor } from '../../utils/createAnnotationColor';
 import {
@@ -32,6 +26,7 @@ import {
 import type { Snapper } from '../text';
 import { DefaultSnapper } from '../text';
 import { type DeepPartial } from '../../deep-partial.type';
+import { type AnnotationModule } from '../../di/annotation.module';
 
 /**
  * @deprecated
@@ -66,7 +61,7 @@ export abstract class AnnotationAdapter<
    */
   public config?: AnnotationConfig;
   public tagConfig: TagConfig<ANNOTATION>;
-  public renderInstance: RenderInstances<ANNOTATION>;
+  public renderParams: Partial<RenderParams<ANNOTATION>>;
   public styleInstance: StyleInstances<ANNOTATION>;
 
   protected text = '';
@@ -89,6 +84,13 @@ export abstract class AnnotationAdapter<
    * @param annotation
    */
   abstract _parse(annotation: ANNOTATION): Annotation | null;
+
+  protected renderInstance: RenderInstances<ANNOTATION>;
+  override setModule(module: AnnotationModule) {
+    super.setModule(module);
+    this.renderInstance =
+      this.inject<RenderInstances<ANNOTATION>>(RenderInstances);
+  }
 
   public parse(annotation: ANNOTATION): TextAnnotation | null {
     const parsedAnnotation = this._parse(annotation);
@@ -301,21 +303,7 @@ export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
     cloneDeep(DefaultTagConfig),
     params.tagConfig ?? {},
   );
-
-  const renderInstance = new RenderInstances(params.render);
-
-  // by default the default renderers are registered
-  renderInstance.registerRender(
-    new HighlightAnnotationRender(DefaultRenders.highlight),
-  );
-  renderInstance.registerRender(
-    new GutterAnnotationRender(DefaultRenders.gutter),
-  );
-  renderInstance.registerRender(
-    new UnderLineAnnotationRender(DefaultRenders.underline),
-  );
-
-  adapter.renderInstance = renderInstance;
+  adapter.renderParams = params.render ?? {};
 
   adapter.styleInstance = new StyleInstances<ANNOTATION>(params.style);
 

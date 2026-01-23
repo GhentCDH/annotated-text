@@ -1,58 +1,67 @@
 import { merge } from 'lodash-es';
-import {
-  type AnnotationRender,
-  type AnnotationRenderParams,
-  type AnnotationRenderStyle,
-  type RenderParams,
-} from './annotation-render';
-import { type TextAdapterStyle } from '../../text';
+import { type RenderParams } from './annotation-render';
+import { DefaultRenders } from './default.renderer';
+import { GutterAnnotationRender } from './GutterAnnotationRender';
+import { HighlightAnnotationRender } from './TextAnnotationRender';
+import { UnderLineAnnotationRender } from './UnderLineAnnotationRender';
 import { Debugger } from '../../../utils/debugger';
-import type { TextAnnotation } from '../../../model';
+import type { BaseAnnotation, TextAnnotation } from '../../../model';
 import { type DimensionsWithScale } from '../../../compute/position/unscaled';
+import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { AnnotationAdapterToken } from '../../../di/tokens';
+import { type AnnotationAdapter } from '../../annotation';
 
-export class RenderInstances<ANNOTATION> {
+export class RenderInstances<
+  ANNOTATION extends BaseAnnotation,
+> extends BaseAnnotationDiFn {
   private renderParams = {
-    defaultRenderer: null,
+    defaultRenderer: DefaultRenders.highlight,
     styleFn: (annotation: ANNOTATION) => null,
     renderFn: (annotation: ANNOTATION) => null,
   } as unknown as RenderParams<ANNOTATION>;
 
-  protected readonly renderMap = new Map<string, AnnotationRender<any>>();
+  // Should be removed
+  // protected readonly renderMap = new Map<string, AnnotationRender<any>>();
 
-  constructor(public readonly params?: Partial<RenderParams<ANNOTATION>>) {
-    this.renderParams = merge(this.renderParams, params ?? {});
+  constructor(annotationModule: AnnotationModule) {
+    super();
+    this.setModule(annotationModule);
+
+    this.renderParams = merge(
+      this.renderParams,
+      this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken)
+        .renderParams ?? {},
+    );
+
+    this.annotationModule.registerRender(
+      DefaultRenders.highlight,
+      () => new HighlightAnnotationRender(DefaultRenders.highlight),
+    );
+    this.annotationModule.registerRender(
+      DefaultRenders.gutter,
+      () => new GutterAnnotationRender(DefaultRenders.gutter),
+    );
+    this.annotationModule.registerRender(
+      DefaultRenders.underline,
+      () => new UnderLineAnnotationRender(DefaultRenders.underline),
+    );
   }
 
   get defaultRenderer() {
     return this.renderParams.defaultRenderer;
   }
 
-  registerRender<STYLE extends AnnotationRenderStyle>(
-    render: AnnotationRender<STYLE>,
-  ) {
-    this.renderMap.set(render.name, render);
-    // Set the first renderer as default if no default is provided
-    if (!this.defaultRenderer) this.renderParams.defaultRenderer = render.name;
-  }
-
-  updateRenderStyle<STYLE extends AnnotationRenderStyle>(
-    name: string,
-    style: Partial<STYLE>,
-  ) {
-    const render = this.renderMap.get(name);
-    render?.updateStyle(style);
+  private getRenders() {
+    return this.annotationModule.getAllRenderInstances();
   }
 
   getGutterRenders() {
-    return Array.from(this.renderMap.values()).filter((r) => r.isGutter);
+    return Array.from(this.getRenders()).filter((r) => r.isGutter);
   }
 
   getTextRenders() {
-    return Array.from(this.renderMap.values()).filter((r) => !r.isGutter);
-  }
-
-  getRendererByName(name: string) {
-    return this.renderMap.get(name);
+    return Array.from(this.getRenders()).filter((r) => !r.isGutter);
   }
 
   getRenderer(annotation: ANNOTATION) {
@@ -66,48 +75,33 @@ export class RenderInstances<ANNOTATION> {
       render = this.defaultRenderer;
     }
 
-    let annotationRender = this.renderMap.get(render);
+    if (this.annotationModule.hasRender(render))
+      return this.annotationModule.injectRender(render);
 
-    if (annotationRender) return annotationRender;
-
-    if (render !== this.defaultRenderer) {
-      Debugger.warn(
-        'RenderInstances',
-        `Renderer "${render}" not found for annotation. fallback to default renderer: [${this.defaultRenderer}]`,
-      );
-
-      annotationRender = this.renderMap.get(this.defaultRenderer);
+    if (render === this.defaultRenderer) {
+      throw new Error('Default renderer not found: ' + this.defaultRenderer);
     }
 
-    if (annotationRender) return annotationRender;
+    Debugger.warn(
+      'RenderInstances',
+      `Renderer "${render}" not found for annotation. fallback to default renderer: [${this.defaultRenderer}]`,
+    );
 
-    throw new Error('Default renderer not found: ' + this.defaultRenderer);
+    return this.annotationModule.injectRender(this.defaultRenderer);
   }
 
   get highlightInstance() {
-    const renderer = this.renderMap.get('highlight');
-    if (!renderer) {
-      throw new Error('Renderer not found: highlight');
-    }
+    const renderer = this.annotationModule.injectRender('highlight');
     return renderer;
   }
 
   createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
     parentDimensions: DimensionsWithScale,
     annotation: TextAnnotation,
   ) {
-    const renderer = this.renderMap.get(annotation._render.render);
-    if (!renderer) {
-      throw new Error('Renderer not found: ' + annotation._render.render);
-    }
+    const renderName = annotation._render.render;
+    const renderer = this.annotationModule.injectRender(renderName);
 
-    return renderer.createDraws(
-      params,
-      textStyle,
-      parentDimensions,
-      annotation,
-    );
+    return renderer.createDraws(parentDimensions, annotation);
   }
 }

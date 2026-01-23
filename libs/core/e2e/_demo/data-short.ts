@@ -9,7 +9,7 @@ const annotations = [
     label: 'quick',
     color: '#fbbf24',
     positionScreen: {
-      startX: 55,
+      startX: 53,
       startY: 15,
       endX: 90,
       endY: 15,

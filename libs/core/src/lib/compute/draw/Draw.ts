@@ -7,7 +7,6 @@ import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
 import type { BaseAnnotation } from '../../model';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { assignAnnotationsToLines } from '../utils/assign_annotation_to_line';
-import { computeAnnotations, computeLinePositions } from '../4_compute_positions';
 
 /**
  * This is a dispatcher class for all actions made on visual drawing of the annotations
@@ -55,8 +54,8 @@ export class Draw<
   }
 
   compute(textElement: HTMLDivElement) {
-    computeLinePositions(this.textAdapter.lines, textElement);
+    this.text.compute(textElement);
     this.annotationAdapter.clearDraws();
-    computeAnnotations(textElement, this.annotationAdapter, this.textAdapter);
+    this.annotation.compute(textElement);
   }
 }

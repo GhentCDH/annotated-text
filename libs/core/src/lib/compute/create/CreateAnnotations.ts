@@ -1,16 +1,27 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES, type TextAdapter } from '../../adapter/text';
+import {
+  type TEXT_CONFIG_KEYS,
+  type TEXT_CONFIG_VALUES,
+  type TextAdapter,
+} from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
-  type AnnotationAdapter
+  type AnnotationAdapter,
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
@@ -96,6 +107,9 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       })
       .on('annotation--draw-dummy', ({ data }) => {
         this.draw.annotation.dummy(data.dummyAnnotation, data.color);
+      })
+      .on('redraw-svg', () => {
+        this.redrawSvg();
       });
   }
 
@@ -273,16 +287,14 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   registerRender<STYLE extends AnnotationRenderStyle>(
     render: AnnotationRender<STYLE>,
   ) {
-    this.annotationAdapter.renderInstance.registerRender(render);
+    this.annotationModule.registerRender(render.name, () => render);
 
     // TODO check if added later the new render is used in the existing annotations
     return this;
   }
 
   registerRenders(...renders: AnnotationRender<any>[]) {
-    renders.forEach((render) =>
-      this.annotationAdapter.renderInstance.registerRender(render),
-    );
+    renders.forEach((render) => this.registerRender(render));
 
     // TODO check if added later the new render is used in the existing annotations
     return this;
@@ -292,7 +304,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     name: string,
     style: Partial<STYLE>,
   ) {
-    this.annotationAdapter.renderInstance.updateRenderStyle(name, style);
+    this.annotationModule.injectRender<STYLE>(name).updateStyle(style);
     // TODO check if updated later the new render is used in the existing annotations
     return this;
   }
@@ -306,7 +318,8 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   registerStyles(styles: Record<string, AnnotationStyle>) {
     Object.keys(styles).forEach((key) => {
-      this.annotationAdapter.styleInstance.registerStyle(key, styles[key]);
+      this.registerStyle(key, styles[key]);
+      // this.annotationAdapter.styleInstance.registerStyle(key, styles[key]);
     });
     // TODO check if updated later the new render is used in the existing annotations
     return this;
