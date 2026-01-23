@@ -11,7 +11,10 @@ const findTextLine = (textElement: HTMLElement, line: TextLine) => {
   ) as HTMLDivElement;
 };
 
-const computeLinePositions = (lines: TextLine[], textElement: HTMLElement) => {
+export const computeLinePositions = (
+  lines: TextLine[],
+  textElement: HTMLElement,
+) => {
   lines.forEach((line) => {
     const textLine = findTextLine(textElement, line);
     if (!textLine) {
@@ -69,18 +72,6 @@ export const computeAnnotations = (
       textAdapter,
     );
   });
-
-  return;
-};
-
-export const computePositions = (
-  textElement: HTMLElement,
-  annotationAdapter: AnnotationAdapter<any>,
-  textAdapter: TextAdapter,
-) => {
-  computeLinePositions(textAdapter.lines, textElement);
-  annotationAdapter.clearDraws();
-  computeAnnotations(textElement, annotationAdapter, textAdapter);
 
   return;
 };

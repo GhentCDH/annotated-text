@@ -1,11 +1,10 @@
-import { isIntersection } from './utils/intersect';
-import { getLinesForAnnotation } from './utils/line.utils';
-import type { Annotation, BaseAnnotation, TextAnnotation } from '../model';
-import { type TextAdapter } from '../adapter/text';
-import { type AnnotationAdapter } from '../adapter/annotation';
+import { isIntersection } from './intersect';
+import { getLinesForAnnotation } from './line.utils';
+import type { Annotation, BaseAnnotation, TextAnnotation } from '../../model';
+import { type AnnotationAdapter, type TextAdapter } from '../../adapter';
 
-import { Debugger } from '../utils/debugger';
-import { type EventListener } from '../events/event.listener';
+import { Debugger } from '../../utils/debugger';
+import { type EventListener } from '../../events/event.listener';
 
 const assignAnnotationToLines = <ANNOTATION extends BaseAnnotation>(
   textAdapter: TextAdapter,

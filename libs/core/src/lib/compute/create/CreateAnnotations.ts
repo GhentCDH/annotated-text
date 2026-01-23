@@ -1,38 +1,23 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import {
-  type TEXT_CONFIG_KEYS,
-  type TEXT_CONFIG_VALUES,
-  type TextAdapter,
-} from '../../adapter/text';
+import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES, type TextAdapter } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
-  type AnnotationAdapter,
+  type AnnotationAdapter
 } from '../../adapter/annotation';
-import { createAnnotationModel } from '../1_create_annotation_model';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import { computePositions } from '../4_compute_positions';
-import { styles } from '../styles.const';
-import { assignAnnotationsToLines } from '../2_assign_annotation_to_line';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
-import { drawText } from '../draw/text/text';
+import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-} from '../../adapter/annotation/renderer';
+import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
 import { rootContainer } from '../../di/container';
 import { Draw } from '../draw/Draw';
 import { ExternalEventSender } from '../../events/send-event';
+import { MainContainer } from '../model/maincontainer';
 
 const document = globalThis.document || null;
 
@@ -40,43 +25,40 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
   implements AnnotatedText<ANNOTATION>
 {
   private annotationsMap = new Map<AnnotationId, ANNOTATION>();
-  private mainElement: HTMLElement;
-  private element: HTMLElement;
-  private textElement: HTMLDivElement | null | undefined = null;
   private readonly svgModel: SvgModel;
-  private readonly draw: Draw;
-  private svgNode: SVGElement | null = null;
-  private resizeObserver: ResizeObserver | null;
+  private readonly draw: Draw<ANNOTATION>;
   private text: string;
   private readonly eventListener: EventListener<ANNOTATION>;
 
   private readonly annotationModule: AnnotationModule;
+  private readonly mainContainer: MainContainer;
 
   constructor(
     private readonly id: string,
     private readonly textAdapter: TextAdapter,
     private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
   ) {
-    this.init();
-
     this.annotationModule = new AnnotationModule(rootContainer, {
       textAdapter,
       annotationAdapter,
     });
 
     this.svgModel = this.annotationModule.inject(SvgModel);
-    this.draw = this.annotationModule.inject(Draw);
+    this.mainContainer = this.annotationModule.inject(MainContainer);
+    this.draw = this.annotationModule.inject<Draw<ANNOTATION>>(Draw);
 
     const internalEventListener = this.annotationModule.inject(
       InternalEventListener,
     );
 
-    this.annotationAdapter.setConfigListener(this.configListener());
-    this.textAdapter.setConfigListener(this.configListener());
+    annotationAdapter.setConfigListener(this.configListener());
+    textAdapter.setConfigListener(this.configListener());
 
     this.eventListener = this.annotationModule.inject(
       EventListener,
     ) as EventListener<ANNOTATION>;
+
+    this.init();
 
     internalEventListener
       .on('annotation--add', ({ data }) => {
@@ -123,27 +105,13 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     };
   }
 
-  private createAnnotationModel() {
-    createAnnotationModel(this.text, this.textAdapter, this.annotationAdapter);
-
-    assignAnnotationsToLines<ANNOTATION>(
-      this.annotationAdapter,
-      this.textAdapter,
-      this.annotations(),
-      this.eventListener,
-    );
-
-    return this;
-  }
-
   private annotations() {
     return Array.from(this.annotationsMap.values());
   }
 
   public setText(text: string, redraw = true) {
     this.text = text || '';
-
-    this.createAnnotationModel();
+    this.draw.initDraw(this.text, this.annotations());
     this.setAnnotations(this.annotations(), redraw);
 
     return this;
@@ -163,7 +131,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
       return this;
     }
 
-    this.createAnnotationModel();
+    this.draw.initDraw(this.text, this.annotations());
 
     if (redraw) this.redrawSvg();
 
@@ -183,42 +151,17 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     return this;
   }
 
-  private drawText() {
-    this.textElement = drawText(this.textAdapter, this.annotationAdapter);
-
-    return this;
-  }
-
-  private drawSvg() {
-    this.draw.annotations().color();
-  }
-
   private init() {
     if (!document) return;
     const id = this.id;
-    this.mainElement = document?.getElementById(id) as HTMLDivElement;
 
-    if (this.textElement) {
-      this.mainElement.removeChild(this.textElement);
-      console.warn('element already initialized, clear and reinitialize');
-    }
-
-    const divElement = document.createElement('div');
-
-    this.mainElement.innerHTML = '';
-    this.mainElement.appendChild(divElement);
-
-    this.element = divElement;
-    if (!this.element) {
+    const mainElement = document?.getElementById(id);
+    if (!mainElement) {
       console.error('element not found', id);
       return;
     }
 
-    this.element.innerHTML = '';
-
-    this.element.classList.add(styles.wrapper);
-
-    this.startObserving();
+    this.mainContainer.setMainElement(mainElement);
 
     if (!this.text) {
       return;
@@ -228,90 +171,38 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
 
   private redrawSvg() {
     if (!document) return;
-    // if (!this.textElement) {
-    //   console.warn("text element not initialized, cannot redraw svg");
-    //   return;
-    // }
 
-    if (this.svgNode) {
-      this.element?.removeChild(this.svgNode);
-    }
-    if (this.textElement) {
-      this.element?.removeChild(this.textElement);
-    }
-    this.drawText();
+    this.mainContainer.clear();
 
-    const textElement = this.textElement!;
-    this.element?.append(textElement);
+    const textElement = this.draw.text.draw()!;
 
-    computePositions(textElement, this.annotationAdapter, this.textAdapter);
+    this.mainContainer.setTextElement(textElement);
+
+    this.draw.compute(textElement);
 
     this.svgModel.createModel(textElement);
 
-    this.svgNode = this.svgModel.node();
-    this.element?.prepend(this.svgNode!);
-    this.drawSvg();
+    this.mainContainer.setSvg(this.svgModel.node());
+
+    this.draw.annotation.drawAll();
   }
 
   public destroy() {
     Debugger.debug('CreateAnnotations', 'destroy', this.id);
     this.eventListener.sendEvent('destroy', null, null);
 
-    this.textElement = null;
-    this.svgNode = null;
-
-    this.stopObserving();
+    this.mainContainer.destroy();
 
     return this;
   }
 
-  private startObserving() {
-    Debugger.debug(
-      'CreateAnnotations',
-      'Start observing element',
-      this.mainElement,
-    );
-    if (this.resizeObserver) {
-      return;
-    }
-    let initialized = false;
-    this.resizeObserver = new ResizeObserver(() => {
-      Debugger.verbose('CreateAnnotations', 'resize detected', initialized);
-      if (initialized) this.redrawSvg();
-      initialized = true;
-    });
-    if (this.element) {
-      Debugger.debug('CreateAnnotations', 'start observing', this.mainElement);
-
-      this.resizeObserver.observe(this.mainElement);
-    }
-  }
-
-  private stopObserving() {
-    if (!this.resizeObserver) {
-      return;
-    }
-
-    Debugger.debug(
-      'CreateAnnotations',
-      'Stop observing element',
-      this.mainElement,
-    );
-    if (this.mainElement) {
-      this.resizeObserver?.unobserve(this.mainElement);
-      this.mainElement.innerHTML = '';
-    }
-    this.resizeObserver?.disconnect();
-    this.resizeObserver = null;
-  }
-
   public highlightAnnotations(ids: AnnotationId[]) {
-    this.draw.highlightAnnotations(ids);
+    this.draw.annotation.highlight(ids);
     return this;
   }
 
   public selectAnnotations(ids: AnnotationId[]) {
-    this.draw.selectAnnotations(ids);
+    this.draw.annotation.select(ids);
     return this;
   }
 

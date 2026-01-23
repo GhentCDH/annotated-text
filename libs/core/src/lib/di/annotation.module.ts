@@ -12,6 +12,7 @@ import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
 import { EventAnnotations } from '../compute/draw/annotations/EventAnnotation';
 import { ExternalEventSender } from '../events/send-event';
 import { DrawText } from '../compute/draw/text/DrawText';
+import { MainContainer } from '../compute/model/maincontainer';
 
 /**
  * Configuration required to create an AnnotationModule.
@@ -82,7 +83,9 @@ export class AnnotationModule {
       .register(DrawText, () => new DrawText(this));
 
     // SvgModel must be registered last as it may depend on other services
-    this.container.register(SvgModel, () => new SvgModel(this));
+    this.container
+      .register(SvgModel, () => new SvgModel(this))
+      .register(MainContainer, () => new MainContainer(this));
   }
 
   /**

@@ -34,6 +34,7 @@ export type InternalEventData = {
   'annotation--update': {
     annotation: TextAnnotation;
   };
+  'redraw-svg': void;
 };
 
 export type InternalEvent = keyof InternalEventData;

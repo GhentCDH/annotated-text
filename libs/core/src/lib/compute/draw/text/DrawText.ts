@@ -1,5 +1,6 @@
 import type RBush from 'rbush';
 import { drawTextRaster, type TextRasterItem } from './text-raster';
+import { drawText } from './text';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { SvgModel } from '../../model/svg.types';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
@@ -19,5 +20,9 @@ export class DrawText extends BaseAnnotationDi {
       this.svgModel.textElement,
       this.textTree,
     );
+  }
+
+  draw() {
+    return drawText(this.textAdapter, this.annotationAdapter);
   }
 }

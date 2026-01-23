@@ -3,7 +3,7 @@ import {
   type AnnotationDrawColors,
   type AnnotationId,
   type TextAnnotation,
-  textAnnotationSchema
+  textAnnotationSchema,
 } from '../../../model';
 import type { InternalEventListener } from '../../../events/internal/internal.event.listener';
 import type { Position, StartEnd } from '../types';

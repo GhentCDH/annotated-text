@@ -7,13 +7,40 @@ import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
 import { getUnscaledRect } from '../../position/unscaled';
-import { AnnotationColors } from '../../model/annotation.colors';
 import { getLinesForAnnotation } from '../../utils/line.utils';
 
+import { Debugger } from '../../../utils/debugger';
+import { AnnotationColors } from '../../model/annotation.colors';
+
 export class DrawAnnotation extends BaseAnnotationDi {
+  private readonly annotationColors = this.inject(AnnotationColors);
   private readonly svgModel = this.annotationModule.inject(SvgModel);
-  private readonly annotationColors =
-    this.annotationModule.inject(AnnotationColors);
+
+  drawAll() {
+    const now = Date.now();
+
+    this.annotationAdapter.annotations
+      .sortBy('weight')
+      .forEach((annotation) => this.draw(annotation));
+
+    Debugger.time(now, '--- drawComputedAnnotations ');
+
+    this.color();
+
+    return this;
+  }
+
+  color() {
+    this.annotationColors.color();
+  }
+
+  highlight(ids: AnnotationId[]) {
+    this.annotationColors.highlightAnnotations(ids);
+  }
+
+  select(ids: AnnotationId[]) {
+    this.annotationColors.selectAnnotations(ids);
+  }
 
   draw(annotation: TextAnnotation) {
     drawAnnotation(this.annotationModule, annotation);
