@@ -45,7 +45,7 @@ export class Draw<
 
   setAnnotations(annotations: ANNOTATION[]) {
     assignAnnotationsToLines(
-      this.annotationAdapter,
+      this.annotationAdapter as any,
       this.textAdapter,
       annotations,
       this.eventListener,
