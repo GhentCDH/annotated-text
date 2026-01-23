@@ -14,18 +14,19 @@ Custom renderers let you:
 
 ## Creating a Custom Renderer
 
-To create a custom renderer, extend the `AnnotationRender` base class and implement the required properties and methods.
+To create a custom renderer, extend the `SvgAnnotationRender` base class and implement the required `createPath` method.
 
 ### Basic Structure
 
 ```typescript
 import {
-  AnnotationRender,
-  AnnotationRenderParams,
-  TextAnnotation,
+  type AnnotationDrawPath,
+  type PathParams,
+  SvgAnnotationRender,
+  DefaultUnderlineAnnotationRenderStyle,
 } from "@ghentcdh/annotated-text";
 
-export class MyCustomRenderer extends AnnotationRender {
+export class MyCustomRenderer extends SvgAnnotationRender<any> {
   /** Determines rendering order - lower values render first (behind higher values) */
   readonly weightOrder: number = 1;
 
@@ -34,18 +35,17 @@ export class MyCustomRenderer extends AnnotationRender {
 
   /** Unique identifier for this renderer - used with renderFn */
   static instance = "my-custom-renderer";
-  readonly name = MyCustomRenderer.instance;
 
-  constructor() {
-    super(DefaultRenderStyle); // Pass default style configuration
+  constructor(name: string, style: Partial<any> = {}) {
+    super(name, style, DefaultUnderlineAnnotationRenderStyle);
   }
 
-  createDraws(
-    params: AnnotationRenderParams,
-    parentDimensions: { x: number; y: number },
-    annotation: TextAnnotation,
-  ) {
-    // Return drawing instructions
+  createPath(params: PathParams): AnnotationDrawPath {
+    // Return drawing instructions with border and fill paths
+    return {
+      border: "...", // SVG path string for the border
+      fill: null,    // SVG path string for the fill (or null)
+    };
   }
 }
 ```
@@ -56,28 +56,25 @@ export class MyCustomRenderer extends AnnotationRender {
 |---------------|-----------|--------------------------------------------------------------------------------------|
 | `weightOrder` | `number`  | Determines rendering order. Lower values render first (appear behind higher values)  |
 | `isGutter`    | `boolean` | Set to `true` if the renderer draws in the gutter area, `false` for inline rendering |
-| `name`        | `string`  | Unique identifier used to reference this renderer in `renderFn`                      |
 
 ### Example: Custom Underline with End Caps
 
 ```typescript
 import {
-  AnnotationRender,
-  AnnotationRenderParams,
+  type AnnotationDrawPath,
   clearAnnotatedTextCache,
   createAnnotatedText,
   createAnnotationFill,
-  createAnnotationPathFn,
-  createTextAnnotationRender,
+  type createAnnotationPathFn,
   DefaultUnderlineAnnotationRenderStyle,
-  getColorsUnderline,
-  PathParams,
-  TextAnnotation,
-  UnderlineAnnotationRenderStyle,
+  type PathParams,
+  SvgAnnotationRender,
 } from "@ghentcdh/annotated-text";
 
 // Define the custom path function
-const createUnderlineWithCaps: createAnnotationPathFn = (params: PathParams) => {
+const createUnderlineWithCaps: createAnnotationPathFn = (
+  params: PathParams,
+) => {
   const fill = createAnnotationFill(params);
   const { x, y, height, width, leftBorder, rightBorder } = params;
 
@@ -102,36 +99,25 @@ const createUnderlineWithCaps: createAnnotationPathFn = (params: PathParams) => 
 };
 
 // Create the custom renderer class
-export class MyUnderLineAnnotationRenderer extends AnnotationRender {
+export class MyUnderLineAnnotationRenderer extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
+  fillBg = false;
 
   static instance = "my-underline-renderer";
-  readonly name = MyUnderLineAnnotationRenderer.instance;
 
-  constructor() {
-    super(DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string, style: Partial<any> = {}) {
+    super(name, style, DefaultUnderlineAnnotationRenderStyle);
   }
 
-  createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
-    parentDimensions: { x: number; y: number },
-    annotation: TextAnnotation,
-  ) {
-    return createTextAnnotationRender(
-      params,
-      this.style,
-      textStyle,
-      parentDimensions,
-      annotation,
-      createUnderlineWithCaps,
-      getColorsUnderline,
-    );
+  createPath(params: PathParams): AnnotationDrawPath {
+    return createUnderlineWithCaps(params);
   }
 }
 
 // Usage
+clearAnnotatedTextCache();
+
 createAnnotatedText("container", {
   annotation: {
     render: {
@@ -139,7 +125,11 @@ createAnnotatedText("container", {
     },
   },
 })
-  .registerRender(new MyUnderLineAnnotationRenderer())
+  .registerRender(
+    new MyUnderLineAnnotationRenderer(MyUnderLineAnnotationRenderer.instance)
+  )
+  .setText(text)
+  .setAnnotations(annotations);
 ```
 
 #### Demo custom caps
