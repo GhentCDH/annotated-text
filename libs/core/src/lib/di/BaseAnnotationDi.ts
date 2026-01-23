@@ -3,11 +3,8 @@ import { type AnnotationModule } from './annotation.module';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 import { type TextAdapter, TextAdapterToken } from '../adapter/text';
-import {
-  type AnnotationAdapter,
-  AnnotationAdapterToken,
-} from '../adapter/annotation';
-import { type Annotation } from '../model';
+import { type AnnotationAdapter, AnnotationAdapterToken } from '../adapter/annotation';
+import { type Annotation, type BaseAnnotation } from '../model';
 
 /**
  * Abstract base class for services that participate in the annotation DI system.
@@ -33,7 +30,9 @@ import { type Annotation } from '../model';
  * }
  * ```
  */
-export abstract class BaseAnnotationDi {
+export abstract class BaseAnnotationDi<
+  ANNOTATION extends BaseAnnotation = Annotation,
+> {
   /** Event listener for emitting events to external consumers (Vue component) */
   readonly eventListener = this.inject(EventListener);
 
@@ -43,7 +42,7 @@ export abstract class BaseAnnotationDi {
   /** Adapter for accessing and modifying annotation data */
   readonly annotationAdapter = this.inject(
     AnnotationAdapterToken,
-  ) as AnnotationAdapter<Annotation>;
+  ) as AnnotationAdapter<ANNOTATION>;
 
   /** Adapter for accessing text content and styling */
   readonly textAdapter = this.inject(TextAdapterToken) as TextAdapter;
@@ -64,3 +63,6 @@ export abstract class BaseAnnotationDi {
     return this.annotationModule.inject(token);
   }
 }
+
+// Re-export for backwards compatibility
+export { BaseAnnotationDiFn } from './BaseAnnotationDiFn';

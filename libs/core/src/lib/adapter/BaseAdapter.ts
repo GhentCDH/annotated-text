@@ -1,4 +1,6 @@
-export abstract class BaseAdapter {
+import { BaseAnnotationDiFn } from '../di/BaseAnnotationDiFn';
+
+export abstract class BaseAdapter extends BaseAnnotationDiFn {
   /**
    * Name of the adapter. Be unique :-).
    */

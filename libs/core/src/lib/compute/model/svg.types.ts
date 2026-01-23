@@ -1,10 +1,9 @@
 import { type Selection } from 'd3-selection';
 import { select } from 'd3';
+import { Debugger } from '../../utils/debugger';
 import { type AnnotationId } from '../../model';
 import { styles } from '../styles.const';
 import { getUnscaledRect } from '../position/unscaled';
-import { type AnnotationModule } from '../../di/annotation.module';
-import { Draw } from '../draw/Draw';
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 
@@ -33,13 +32,21 @@ export class SvgModel {
   svg: AnnotationSvg;
   tagSvg: AnnotationSvg;
 
-  textElement: HTMLElement;
+  textElement: HTMLDivElement;
 
-  constructor(private readonly annotationModule: AnnotationModule) {}
+  createTextElement() {
+    if (!document) {
+      Debugger.debug('drawText', 'no document available, cannot draw text');
 
-  createModel(textElement: HTMLElement) {
-    this.textElement = textElement;
-    const textElementDimensions = getUnscaledRect(textElement);
+      return this;
+    }
+    this.textElement = document?.createElement('div');
+
+    return this;
+  }
+
+  createModel() {
+    const textElementDimensions = this.getTextElementDimensions();
 
     this.svg = select('body')
       .append('svg')
@@ -64,10 +71,12 @@ export class SvgModel {
         SVG_ROLE.HANDLE,
       ) as unknown as AnnotationSvg;
 
-    const draw = this.annotationModule.inject(Draw);
-    draw.initialDraw();
-
     return this;
+  }
+
+  getTextElementDimensions() {
+    // This should be calculated on the fly, or when the size changes or the scale or something else
+    return getUnscaledRect(this.textElement);
   }
 
   findTags(annotationUuid: AnnotationId) {

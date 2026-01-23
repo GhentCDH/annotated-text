@@ -2,17 +2,21 @@ import { Tag } from './tag/tag';
 import { createNewBlock } from './annotations/create';
 import { DrawAnnotation } from './annotations/DrawAnnotation';
 import { DrawText } from './text/DrawText';
-import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
+import { getLineHeight } from './utils/line-height';
 import { Debugger } from '../../utils/debugger';
-import { AnnotationColors } from '../model/annotation.colors';
-import type { AnnotationId } from '../../model';
+import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
+import type { BaseAnnotation, TextAnnotation } from '../../model';
 import { type AnnotationModule } from '../../di/annotation.module';
+import { isIntersection } from '../utils/intersect';
+import { getLinesForAnnotation } from '../utils/line.utils';
+import { validateAnnotation } from '../utils/assign_annotation_to_line';
 
 /**
  * This is a dispatcher class for all actions made on visual drawing of the annotations
  */
-export class Draw extends BaseAnnotationDi {
-  private readonly annotationColors = this.inject(AnnotationColors);
+export class Draw<
+  ANNOTATION extends BaseAnnotation,
+> extends BaseAnnotationDi<ANNOTATION> {
   readonly annotation = this.inject(DrawAnnotation);
   readonly text = this.inject(DrawText);
   readonly tag = this.inject(Tag);
@@ -26,30 +30,78 @@ export class Draw extends BaseAnnotationDi {
     createNewBlock(this.annotationModule);
     this.tag.drawAll();
 
-    return this;
-  }
-
-  annotations() {
-    const now = Date.now();
-
-    this.annotationAdapter.annotations
-      .sortBy('weight')
-      .forEach((annotation) => this.annotation.draw(annotation));
-
-    Debugger.time(now, '--- drawComputedAnnotations ');
+    this.annotation.drawAll();
 
     return this;
   }
 
-  color() {
-    this.annotationColors.color();
+  setText(text: string) {
+    const lines = this.textAdapter.parse(text);
+    this.textAdapter.setLines(lines);
+    this.annotationAdapter.setText(text, this.textAdapter.textOffset);
+    this.textAdapter.setLineHeight(
+      getLineHeight(text, this.textAdapter.style.lineOffset),
+    );
+
+    return this;
   }
 
-  highlightAnnotations(ids: AnnotationId[]) {
-    this.annotationColors.highlightAnnotations(ids);
+  setAnnotations(annotations: ANNOTATION[]) {
+    this.textAdapter.clear();
+    this.annotationAdapter.clear();
+
+    const limit = this.textAdapter.getLimit();
+
+    annotations?.forEach((annotation) => {
+      const clonedAnnotation = this.annotationAdapter.parse(annotation);
+      if (!clonedAnnotation) return;
+
+      if (limit && !isIntersection(clonedAnnotation, limit)) {
+        return;
+      }
+
+      this.setAnnotation(clonedAnnotation);
+    });
+
+    this.annotationAdapter.calculateWeights(this.textAdapter.lines);
+
+    return this;
   }
 
-  selectAnnotations(ids: AnnotationId[]) {
-    this.annotationColors.selectAnnotations(ids);
+  setAnnotation(annotation: TextAnnotation) {
+    validateAnnotation(
+      annotation,
+      this.textAdapter.textLength,
+      this.eventListener,
+    );
+
+    const lines = getLinesForAnnotation(this.textAdapter.lines, annotation);
+
+    if (!lines?.length) {
+      Debugger.warn(
+        'Invalid annotation: no lines found for annotation',
+        annotation,
+      );
+      return;
+    }
+
+    annotation._render.lines = lines;
+
+    return;
+  }
+
+  initDraw(text: string, annotations: ANNOTATION[]) {
+    this.setText(text);
+    this.setAnnotations(annotations);
+
+    return this;
+  }
+
+  compute() {
+    this.text.compute();
+    this.annotationAdapter.clearDraws();
+    this.annotation.compute();
+
+    return this;
   }
 }

@@ -14,7 +14,6 @@ import {
   type TextAnnotation,
 } from '../../../model';
 import { getColors } from '../../../compute/compute/colors';
-import { type TextAdapterStyle } from '../../text';
 import {
   type DimensionsWithScale,
   getDimensions,
@@ -111,12 +110,13 @@ export class GutterAnnotationRender extends AnnotationRender<GutterAnnotationRen
     super(name, style, DefaultGutterAnnotationRenderStyle);
   }
 
-  createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
-    parentDimensions: DimensionsWithScale,
-    annotation: TextAnnotation,
-  ) {
+  createDraws(annotation: TextAnnotation) {
+    const parentDimensions = this.svgModel.getTextElementDimensions();
+    const params = {
+      textDirection: this.textAdapter.textDirection,
+      maxGutterWeight: this.annotationAdapter.gutter.maxWeight,
+    };
+
     return createGutterAnnotations(
       params,
       parentDimensions,

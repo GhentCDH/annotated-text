@@ -93,6 +93,37 @@ export class Container {
   }
 
   /**
+   * Get all registered tokens in this container.
+   * Does not include tokens from parent containers.
+   */
+  getTokens(): any[] {
+    return Array.from(this.factories.keys());
+  }
+
+  /**
+   * Get all registered tokens including those from parent containers.
+   */
+  getAllTokens(): any[] {
+    const tokens = new Set(this.factories.keys());
+    if (this.parent) {
+      for (const token of this.parent.getAllTokens()) {
+        tokens.add(token);
+      }
+    }
+    return Array.from(tokens);
+  }
+
+  /**
+   * Retrieve multiple service instances at once.
+   *
+   * @param tokens - Array of tokens identifying the services
+   * @returns Array of service instances in the same order as the tokens
+   */
+  getMany<T extends any[]>(tokens: { [K in keyof T]: Token<T[K]> }): T {
+    return tokens.map((token) => this.get(token)) as T;
+  }
+
+  /**
    * Create a child container with this container as its parent.
    * Child containers inherit access to parent services but can override them.
    */

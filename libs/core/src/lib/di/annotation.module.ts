@@ -1,17 +1,21 @@
 import { type Container, type Token } from './container';
+import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
+import { type AnnotationAdapter } from '../adapter/annotation';
+import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { type TextAdapter, TextAdapterToken } from '../adapter/text';
-import { type AnnotationAdapter, AnnotationAdapterToken } from '../adapter/annotation';
+import { type TextAdapter } from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
 import { EventAnnotations } from '../compute/draw/annotations/EventAnnotation';
 import { ExternalEventSender } from '../events/send-event';
 import { DrawText } from '../compute/draw/text/DrawText';
+import { MainContainer } from '../compute/model/maincontainer';
+import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
 
 /**
  * Configuration required to create an AnnotationModule.
@@ -66,6 +70,8 @@ export class AnnotationModule {
     // Register event listeners (no dependencies)
     this.container.register(InternalEventListener).register(EventListener);
 
+    this.container.register(SvgModel, () => new SvgModel());
+
     // Register adapters provided by the configuration
     this.container
       .register(TextAdapterToken, () => config.textAdapter)
@@ -79,10 +85,13 @@ export class AnnotationModule {
       .register(AnnotationColors, () => new AnnotationColors(this))
       .register(Draw, () => new Draw(this))
       .register(DrawAnnotation, () => new DrawAnnotation(this))
-      .register(DrawText, () => new DrawText(this));
+      .register(DrawText, () => new DrawText(this))
+      .register(RenderInstances, () => new RenderInstances(this));
 
-    // SvgModel must be registered last as it may depend on other services
-    this.container.register(SvgModel, () => new SvgModel(this));
+    this.container.register(MainContainer, () => new MainContainer(this));
+
+    config.textAdapter.setModule(this);
+    config.annotationAdapter.setModule(this);
   }
 
   /**
@@ -113,5 +122,29 @@ export class AnnotationModule {
     this.container.register(tokenOrClass, factory);
 
     return this;
+  }
+
+  getAllRenderInstances() {
+    const instances = this.container
+      .getAllTokens()
+      .filter((token) => String(token).startsWith('RENDER_INSTANCE_'));
+    return this.container.getMany(instances as any);
+  }
+
+  registerRender(token: string | symbol, factory: () => AnnotationRender<any>) {
+    factory().setModule(this);
+    this.register(`RENDER_INSTANCE_${token as any}`, factory)
+      .injectRender(token)
+      .setModule(this);
+  }
+
+  hasRender(token: string | symbol) {
+    return this.container.has(`RENDER_INSTANCE_${token as any}`);
+  }
+
+  injectRender<STYLE extends AnnotationRenderStyle>(token: string | symbol) {
+    return this.inject<AnnotationRender<STYLE>>(
+      `RENDER_INSTANCE_${token as any}`,
+    );
   }
 }

@@ -5,8 +5,7 @@ import {
   type AnnotationDrawColors,
   type TextAnnotation
 } from '../../../model';
-import { type TextAdapterStyle } from '../../text';
-import { type DimensionsWithScale } from '../../../compute/position/unscaled';
+import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 
 /**
  * Parameters passed to the render method of annotation renderers.
@@ -99,7 +98,9 @@ export type RenderParams<ANNOTATION> = {
  * }
  * ```
  */
-export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
+export abstract class AnnotationRender<
+  STYLE extends AnnotationRenderStyle,
+> extends BaseAnnotationDiFn {
   /**
    * Determines the rendering priority when multiple renderers apply to overlapping annotations.
    *
@@ -151,6 +152,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
     style: Partial<STYLE>,
     private defaultStyle: STYLE,
   ) {
+    super();
     this.style = cloneDeep(defaultStyle);
     this.updateStyle(style);
   }
@@ -193,12 +195,7 @@ export abstract class AnnotationRender<STYLE extends AnnotationRenderStyle> {
    * }
    * ```
    */
-  abstract createDraws(
-    params: AnnotationRenderParams,
-    textStyle: TextAdapterStyle,
-    parentDimensions: DimensionsWithScale,
-    annotation: TextAnnotation,
-  ): {
+  abstract createDraws(annotation: TextAnnotation): {
     draws: AnnotationDraw[];
     dimensions: AnnotationDimension;
     color: AnnotationDrawColors;
