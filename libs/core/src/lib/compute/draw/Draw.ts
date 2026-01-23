@@ -3,12 +3,12 @@ import { createNewBlock } from './annotations/create';
 import { DrawAnnotation } from './annotations/DrawAnnotation';
 import { DrawText } from './text/DrawText';
 import { getLineHeight } from './utils/line-height';
+import { Debugger } from '../../utils/debugger';
 import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
 import type { BaseAnnotation, TextAnnotation } from '../../model';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { isIntersection } from '../utils/intersect';
 import { getLinesForAnnotation } from '../utils/line.utils';
-import { Debugger } from '@ghentcdh/annotated-text';
 import { validateAnnotation } from '../utils/assign_annotation_to_line';
 
 /**
