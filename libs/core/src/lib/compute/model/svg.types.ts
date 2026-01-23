@@ -1,9 +1,9 @@
 import { type Selection } from 'd3-selection';
 import { select } from 'd3';
+import { Debugger } from '../../utils/debugger';
 import { type AnnotationId } from '../../model';
 import { styles } from '../styles.const';
 import { getUnscaledRect } from '../position/unscaled';
-import { Debugger } from '@ghentcdh/annotated-text';
 
 export type AnnotationSvg = Selection<SVGElement, unknown, null, undefined>;
 

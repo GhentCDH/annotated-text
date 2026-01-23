@@ -1,5 +1,5 @@
 import type RBush from 'rbush';
-import { DimensionsWithScale, getScaledDimensions } from './unscaled';
+import { type DimensionsWithScale, getScaledDimensions } from './unscaled';
 import { type TextRasterItem } from '../draw/text/text-raster';
 import { insideRange } from '../draw/utils/bounding-rect';
 
