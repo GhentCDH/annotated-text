@@ -1,4 +1,8 @@
-import type { AnnotationDrawColor, AnnotationId, TextAnnotation } from '../../../model';
+import type {
+  AnnotationDrawColor,
+  AnnotationId,
+  TextAnnotation,
+} from '../../../model';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';

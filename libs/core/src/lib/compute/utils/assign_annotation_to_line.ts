@@ -1,18 +1,11 @@
-import { isIntersection } from './intersect';
-import { getLinesForAnnotation } from './line.utils';
-import type { Annotation, BaseAnnotation, TextAnnotation } from '../../model';
-import { type AnnotationAdapter, type TextAdapter } from '../../adapter';
-
-import { Debugger } from '../../utils/debugger';
+import type { Annotation, BaseAnnotation } from '../../model';
 import { type EventListener } from '../../events/event.listener';
 
-const assignAnnotationToLines = <ANNOTATION extends BaseAnnotation>(
-  textAdapter: TextAdapter,
+export const validateAnnotation = <ANNOTATION extends BaseAnnotation>(
+  annotation: Annotation,
+  textLength: number,
   eventListener: EventListener<ANNOTATION>,
-  _annotation: Annotation,
 ) => {
-  const annotation = _annotation as TextAnnotation;
-
   if (annotation.start >= annotation.end) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
@@ -20,60 +13,21 @@ const assignAnnotationToLines = <ANNOTATION extends BaseAnnotation>(
       annotation,
     );
   }
-  if (textAdapter.textLength < annotation.start) {
+  if (textLength < annotation.start) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
-      `Invalid annotation: start (${annotation.start}) must be less than text length (${textAdapter.textLength})`,
+      `Invalid annotation: start (${annotation.start}) must be less than text length (${textLength})`,
       annotation,
     );
     return;
   }
-  if (textAdapter.textLength < annotation.end) {
+  if (textLength < annotation.end) {
     eventListener.sendError(
       'INVALID_ANNOTATION',
-      `Invalid annotation: end (${annotation.end}) must be less than text length (${textAdapter.textLength})`,
+      `Invalid annotation: end (${annotation.end}) must be less than text length (${textLength})`,
       annotation,
     );
 
     // Maybe update the annotation end so it ends somewhere?
   }
-
-  const lines = getLinesForAnnotation(textAdapter.lines, annotation);
-
-  if (!lines?.length) {
-    Debugger.warn(
-      'Invalid annotation: no lines found for annotation',
-      annotation,
-    );
-    return;
-  }
-
-  annotation._render.lines = lines;
-
-  return;
-};
-
-export const assignAnnotationsToLines = <ANNOTATION extends BaseAnnotation>(
-  annotationAdapter: AnnotationAdapter<ANNOTATION>,
-  textAdapter: TextAdapter,
-  annotations: ANNOTATION[],
-  eventListener: EventListener<ANNOTATION>,
-) => {
-  textAdapter.clear();
-  annotationAdapter.clear();
-
-  const limit = textAdapter.getLimit();
-
-  annotations?.forEach((annotation) => {
-    const clonedAnnotation = annotationAdapter.parse(annotation);
-    if (!clonedAnnotation) return;
-
-    if (limit && !isIntersection(clonedAnnotation, limit)) {
-      return;
-    }
-
-    assignAnnotationToLines(textAdapter, eventListener, clonedAnnotation);
-  });
-
-  annotationAdapter.calculateWeights(textAdapter.lines);
 };

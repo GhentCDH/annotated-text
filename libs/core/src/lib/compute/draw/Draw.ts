@@ -4,9 +4,12 @@ import { DrawAnnotation } from './annotations/DrawAnnotation';
 import { DrawText } from './text/DrawText';
 import { getLineHeight } from './utils/line-height';
 import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
-import type { BaseAnnotation } from '../../model';
+import type { BaseAnnotation, TextAnnotation } from '../../model';
 import { type AnnotationModule } from '../../di/annotation.module';
-import { assignAnnotationsToLines } from '../utils/assign_annotation_to_line';
+import { isIntersection } from '../utils/intersect';
+import { getLinesForAnnotation } from '../utils/line.utils';
+import { Debugger } from '@ghentcdh/annotated-text';
+import { validateAnnotation } from '../utils/assign_annotation_to_line';
 
 /**
  * This is a dispatcher class for all actions made on visual drawing of the annotations
@@ -44,14 +47,47 @@ export class Draw<
   }
 
   setAnnotations(annotations: ANNOTATION[]) {
-    assignAnnotationsToLines(
-      this.annotationAdapter as any,
-      this.textAdapter,
-      annotations,
+    this.textAdapter.clear();
+    this.annotationAdapter.clear();
+
+    const limit = this.textAdapter.getLimit();
+
+    annotations?.forEach((annotation) => {
+      const clonedAnnotation = this.annotationAdapter.parse(annotation);
+      if (!clonedAnnotation) return;
+
+      if (limit && !isIntersection(clonedAnnotation, limit)) {
+        return;
+      }
+
+      this.setAnnotation(clonedAnnotation);
+    });
+
+    this.annotationAdapter.calculateWeights(this.textAdapter.lines);
+
+    return this;
+  }
+
+  setAnnotation(annotation: TextAnnotation) {
+    validateAnnotation(
+      annotation,
+      this.textAdapter.textLength,
       this.eventListener,
     );
 
-    return this;
+    const lines = getLinesForAnnotation(this.textAdapter.lines, annotation);
+
+    if (!lines?.length) {
+      Debugger.warn(
+        'Invalid annotation: no lines found for annotation',
+        annotation,
+      );
+      return;
+    }
+
+    annotation._render.lines = lines;
+
+    return;
   }
 
   initDraw(text: string, annotations: ANNOTATION[]) {

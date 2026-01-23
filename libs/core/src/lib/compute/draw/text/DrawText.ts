@@ -5,7 +5,7 @@ import { Debugger } from '../../../utils/debugger';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { SvgModel } from '../../model/svg.types';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
-import { findTextLine } from '../../4_compute_positions';
+import { findTextLine } from '../../utils/line.utils';
 
 export class DrawText extends BaseAnnotationDi {
   private readonly svgModel = this.inject(SvgModel);
