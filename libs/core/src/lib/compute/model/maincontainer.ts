@@ -11,11 +11,13 @@ export class MainContainer {
   private resizeObserver: ResizeObserver | null = null;
   private prevSvgNode: SVGElement | null = null;
 
-  private internalEventListener = this.annotationModule.inject(
-    InternalEventListener,
-  );
+  private readonly internalEventListener: InternalEventListener;
 
-  constructor(private readonly annotationModule: AnnotationModule) {}
+  constructor(private readonly annotationModule: AnnotationModule) {
+    this.internalEventListener = this.annotationModule.inject(
+      InternalEventListener,
+    );
+  }
 
   setMainElement(mainElement: HTMLElement) {
     this.mainElement = mainElement;

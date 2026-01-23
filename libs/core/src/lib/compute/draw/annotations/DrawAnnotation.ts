@@ -1,8 +1,4 @@
-import type {
-  AnnotationDrawColor,
-  AnnotationId,
-  TextAnnotation,
-} from '../../../model';
+import type { AnnotationDrawColor, AnnotationId, TextAnnotation } from '../../../model';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
@@ -69,14 +65,11 @@ export class DrawAnnotation extends BaseAnnotationDi {
     this.internalEventListener.sendEvent('annotation--remove', {
       annotationUuid,
     });
-    const parentDimensions = this.svgModel.getTextElementDimensions();
     const renderInstance = this.renderInstances.highlightInstance;
 
-    renderInstance
-      .createDraws(parentDimensions, annotation)
-      .draws.forEach((a) => {
-        drawAnnotationContent({ ...a, annotationUuid }, this.svgModel, color);
-      });
+    renderInstance.createDraws(annotation).draws.forEach((a) => {
+      drawAnnotationContent({ ...a, annotationUuid }, this.svgModel, color);
+    });
 
     this.annotationColors.colorAnnotation(annotationUuid, color);
   }

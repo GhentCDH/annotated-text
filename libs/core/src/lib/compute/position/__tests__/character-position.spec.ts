@@ -6,7 +6,10 @@ import {
   getCharacterStartEndPosition,
 } from '../character-position';
 import { type TextRasterItem } from '../../draw/text/text-raster';
-import { getScaledDimensions, getUnscaledRect } from '../unscaled';
+import {
+  type DimensionsWithScale,
+  getScaledDimensions,
+} from '../unscaled';
 
 // Mock the unscaled module
 vi.mock('../unscaled');
@@ -20,7 +23,7 @@ beforeEach(() => {
 });
 
 describe('getCharacterFromTextNodesAtPoint', () => {
-  let mockTextElement: HTMLElement;
+  let mockTextElementDimensions: DimensionsWithScale;
   let mockTextTree: RBush<TextRasterItem>;
 
   beforeEach(() => {
@@ -28,22 +31,12 @@ describe('getCharacterFromTextNodesAtPoint', () => {
 
     mockTextTree = new RBush<TextRasterItem>();
 
-    // Mock text element
-    mockTextElement = {
-      getBoundingClientRect: vi.fn().mockReturnValue({
-        x: 100,
-        y: 50,
-        width: 200,
-        height: 100,
-      }),
-    } as unknown as HTMLElement;
-
-    // Mock getUnscaledRect to return container dimensions
-    vi.mocked(getUnscaledRect).mockReturnValue({
+    // Mock text element dimensions
+    mockTextElementDimensions = {
       original: { x: 100, y: 50, width: 200, height: 100 },
       scaled: { x: 100, y: 50, width: 200, height: 100 },
       scale: 1,
-    } as any);
+    } as DimensionsWithScale;
 
     // Mock getScaledDimensions to convert absolute to relative coordinates
     // It subtracts container position from the input coordinates
@@ -59,7 +52,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       150,
       75,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
     expect(result).toBeNull();
@@ -81,7 +74,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       120,
       70,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
 
@@ -107,7 +100,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       140,
       70,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
 
@@ -132,7 +125,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       100,
       50,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
 
@@ -155,7 +148,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       500,
       500,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
 
@@ -188,7 +181,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       135,
       60,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
 
@@ -212,7 +205,7 @@ describe('getCharacterFromTextNodesAtPoint', () => {
     const result = getCharacterFromTextNodesAtPoint(
       110,
       60,
-      mockTextElement,
+      mockTextElementDimensions,
       mockTextTree,
     );
 
