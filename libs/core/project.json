@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/core/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "nx-release-publish": {
       "options": {
@@ -30,7 +31,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "outputs": ["{projectRoot}/coverage/unit"]
     },
     "e2e": {
@@ -98,6 +99,5 @@
         "parallel": false
       }
     }
-  },
-  "tags": []
+  }
 }
