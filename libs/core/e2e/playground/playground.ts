@@ -1,12 +1,12 @@
+import { text } from './text';
+import { annotations } from './annotations';
 import { renderDemoDiv, writeToLogDiv } from '../_utils/render-demo';
 import {
-  Annotation,
-  AnnotationEventType,
+  type Annotation,
+  type AnnotationEventType,
   createAnnotatedText,
   W3CAnnotationAdapter,
 } from '../../src';
-import { text } from './text';
-import { annotations } from './annotations';
 
 const mainContainer = 'playground';
 
