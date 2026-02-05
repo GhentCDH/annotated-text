@@ -1,4 +1,4 @@
-## [0.12.20](https://github.com/GhentCDH/annotated-text/compare/v0.12.19...v0.12.20) (2026-01-20)
+## [0.12.21](https://github.com/GhentCDH/annotated-text/compare/v0.12.20...v0.12.21) (2026-02-05)
 
 
 
