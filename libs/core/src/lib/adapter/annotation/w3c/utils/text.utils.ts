@@ -6,7 +6,7 @@ export const getTextFromSelector = (
   sourceUri: string,
   text: string,
 ) => {
-  const selector = findTextPositionSelector(sourceUri)(annotation)?.selector;
+  const selector = findTextPositionSelector(sourceUri)(annotation);
 
   if (!selector) return '';
 

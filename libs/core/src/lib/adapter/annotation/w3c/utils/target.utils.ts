@@ -1,8 +1,4 @@
-import type {
-  W3CAnnotation,
-  W3CAnnotationTarget,
-  W3CAnnotationTargetType,
-} from '../model';
+import { type TargetSelector, type TextPositionSelector, type W3CAnnotation, type W3CAnnotationTarget } from '../model';
 
 export const getTarget = (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
   if (!annotation.target) return [];
@@ -10,6 +6,12 @@ export const getTarget = (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
   return Array.isArray(annotation.target)
     ? annotation.target
     : [annotation.target];
+};
+
+const getTargetSelectors = (target: W3CAnnotationTarget) => {
+  if (!target.selector) return [];
+
+  return Array.isArray(target.selector) ? target.selector : [target.selector];
 };
 
 export const findSourceInTargets = (sourceUri: string) => {
@@ -27,24 +29,31 @@ export const hasSourceInTargets = (sourceUri: string) => {
   };
 };
 
-export const findTargetType = <B extends W3CAnnotationTarget>(
-  type: W3CAnnotationTargetType,
-  validator: (body: B) => boolean,
-) => {
-  return (annotation: W3CAnnotation): B | undefined => {
-    return getTarget(annotation).find(
-      (b: any) => b.type === type && validator(b),
-    ) as unknown as B;
+const findSelectorByType = <TYPE extends TargetSelector>(type: string) => {
+  return (sourceUri?: string) => {
+    return (annotation: W3CAnnotation): TYPE | undefined => {
+      const targets = getTarget(annotation);
+
+      for (const target of targets) {
+        if (sourceUri && target.source !== sourceUri) {
+          continue;
+        }
+
+        for (const selector of getTargetSelectors(target)) {
+          if (selector.type === type) {
+            return selector as TYPE;
+          }
+        }
+      }
+      return undefined;
+    };
   };
 };
 
 export const findTextPositionSelector = (sourceUri?: string) => {
-  return findTargetType<W3CAnnotationTarget>('Text', (body) => {
-    return (
-      (!sourceUri || body.source === sourceUri) &&
-      body.selector?.type === 'TextPositionSelector'
-    );
-  });
+  return findSelectorByType<TextPositionSelector>('TextPositionSelector')(
+    sourceUri,
+  );
 };
 
 export const hasSameFields = <T>(

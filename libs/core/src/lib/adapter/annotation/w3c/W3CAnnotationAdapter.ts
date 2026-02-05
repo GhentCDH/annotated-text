@@ -27,9 +27,7 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   }
 
   _parse(annotation: W3CAnnotation): Annotation | null {
-    const selector = findTextPositionSelector(this.sourceUri)(
-      annotation,
-    )?.selector;
+    const selector = findTextPositionSelector(this.sourceUri)(annotation);
 
     if (!selector) return null;
 

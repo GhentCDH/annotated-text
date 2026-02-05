@@ -50,12 +50,16 @@ export const TextPositionSelectorSchema = z.object({
   end: z.number(),
 });
 
+export type TextPositionSelector = z.infer<typeof TextPositionSelectorSchema>;
+
+export const TargetSelectorSchema = TextPositionSelectorSchema;
+export type TargetSelector = z.infer<typeof TargetSelectorSchema>;
 export const TextTargetSchema = z.object({
   source: z.string().optional(),
   textDirection: z.enum(['ltr', 'rtl']).optional(),
   type: z.enum(['Text']).default('Text'),
   processingLanguage: z.string().optional(),
-  selector: TextPositionSelectorSchema.optional(),
+  selector: TargetSelectorSchema.or(z.array(TargetSelectorSchema)).optional(),
 });
 
 export const W3CAnnotationTargetSchema = TextTargetSchema;
