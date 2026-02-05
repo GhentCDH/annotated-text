@@ -1,8 +1,4 @@
-import type {
-  W3CAnnotation,
-  W3CAnnotationTarget,
-  W3CAnnotationTargetType,
-} from '../model';
+import type { W3CAnnotation, W3CAnnotationTarget } from '../model';
 
 export const getTarget = (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
   if (!annotation.target) return [];
@@ -27,24 +23,23 @@ export const hasSourceInTargets = (sourceUri: string) => {
   };
 };
 
-export const findTargetType = <B extends W3CAnnotationTarget>(
-  type: W3CAnnotationTargetType,
-  validator: (body: B) => boolean,
-) => {
-  return (annotation: W3CAnnotation): B | undefined => {
-    return getTarget(annotation).find(
-      (b: any) => b.type === type && validator(b),
-    ) as unknown as B;
-  };
-};
-
 export const findTextPositionSelector = (sourceUri?: string) => {
-  return findTargetType<W3CAnnotationTarget>('Text', (body) => {
-    return (
-      (!sourceUri || body.source === sourceUri) &&
-      body.selector?.type === 'TextPositionSelector'
-    );
-  });
+  return (annotation: W3CAnnotation): W3CAnnotationTarget | undefined => {
+    const targets = getTarget(annotation);
+
+    for (const target of targets) {
+      if (sourceUri && target.source !== sourceUri) {
+        break;
+      }
+
+      for (const selector of target.selector) {
+        if (selector.type === 'TextPositionSelector') {
+          return selector;
+        }
+      }
+    }
+    return undefined;
+  };
 };
 
 export const hasSameFields = <T>(
