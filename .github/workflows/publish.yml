@@ -31,7 +31,7 @@ jobs:
         run: npx nx build core --production
 
       - name: Publish package on NPM
-        run: npx nx release publish --access public
+        run: npx nx release publish --access public --verbose
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
