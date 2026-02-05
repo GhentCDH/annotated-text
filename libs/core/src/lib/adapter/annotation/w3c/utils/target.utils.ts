@@ -36,7 +36,7 @@ const findSelectorByType = <TYPE extends TargetSelector>(type: string) => {
 
       for (const target of targets) {
         if (sourceUri && target.source !== sourceUri) {
-          break;
+          continue;
         }
 
         for (const selector of getTargetSelectors(target)) {
