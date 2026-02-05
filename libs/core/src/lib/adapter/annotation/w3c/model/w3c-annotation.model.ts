@@ -59,9 +59,7 @@ export const TextTargetSchema = z.object({
   textDirection: z.enum(['ltr', 'rtl']).optional(),
   type: z.enum(['Text']).default('Text'),
   processingLanguage: z.string().optional(),
-  selector: TargetSelectorSchema.optional().or(
-    z.array(TargetSelectorSchema).optional(),
-  ),
+  selector: TargetSelectorSchema.or(z.array(TargetSelectorSchema)).optional(),
 });
 
 export const W3CAnnotationTargetSchema = TextTargetSchema;
