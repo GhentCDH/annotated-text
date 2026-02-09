@@ -65,7 +65,7 @@ export abstract class AnnotationAdapter<
   private tagRenderer: TagRenderer<ANNOTATION>;
 
   protected text = '';
-  startOffset: number = 0;
+  startOffset = 0;
 
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.
