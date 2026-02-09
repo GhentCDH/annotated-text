@@ -55,7 +55,7 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
       this.text,
       annotation.start,
       annotation.end,
-      this.offsetStart,
+      this.annotationAdapter.startOffset,
     );
 
     const w3CAnnotation = isNew

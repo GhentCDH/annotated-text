@@ -8,28 +8,30 @@ import {
 import { mapLinesToLimit, type UpdateLineFn } from './utils/mapLineToLimit';
 import { type TextLine, textLineSchema } from '../../model';
 
-const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
-  const lines = text?.split('\n') ?? [''];
-  let start = textOffset;
+const _textToLines = memoize(
+  (text: string, startOffset: number): TextLine[] => {
+    const lines = text?.split('\n') ?? [''];
+    let start = startOffset;
 
-  return lines.map((textLine, index) => {
-    // Add additional 1 because the \n symbol consist of 2 characters
-    const end = start + textLine.length + 1;
-    const line = textLineSchema.parse({
-      lineNumber: index,
-      start,
-      end,
-      id: `line-${index}`,
-      text: textLine,
-      html: `${textLine}`,
-      flatText: textLine,
-    }) as TextLine;
+    return lines.map((textLine, index) => {
+      // Add additional 1 because the \n symbol consist of 2 characters
+      const end = start + textLine.length + 1;
+      const line = textLineSchema.parse({
+        lineNumber: index,
+        start,
+        end,
+        id: `line-${index}`,
+        text: textLine,
+        html: `${textLine}`,
+        flatText: textLine,
+      }) as TextLine;
 
-    start = end;
+      start = end;
 
-    return line;
-  });
-});
+      return line;
+    });
+  },
+);
 
 const updateLine: UpdateLineFn = (
   line: TextLine,
@@ -51,10 +53,10 @@ const updateLine: UpdateLineFn = (
 const textToLines = (
   text: string,
   limit: Limit | null,
-  textOffset: number,
+  startOffset: number,
 ): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
-  const lines = _textToLines(text, textOffset);
+  const lines = _textToLines(text, startOffset);
   return mapLinesToLimit(lines, limit, updateLine);
 };
 
@@ -66,7 +68,7 @@ export class PlainTextAdapterImpl extends TextAdapter {
   name = 'PlainTextAdapter';
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit, this.textOffset);
+    return textToLines(text, this.limit, this.annotationAdapter.startOffset);
   }
 }
 

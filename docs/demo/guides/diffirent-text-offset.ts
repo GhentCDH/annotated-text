@@ -20,13 +20,14 @@ const annotations = [
   },
 ] as DemoAnnotation[];
 
-const text = `The quick brown fox jumps over the lazy dog near the riverbank at dawn.`;
+const text =
+  'The quick brown fox jumps over the lazy dog near the riverbank at dawn.';
 
-export const createDifferentTextOffset = (id: string, textOffset: number) => {
+export const createDifferentTextOffset = (id: string, startOffset: number) => {
   createAnnotatedText(id, {
-    text: { textOffset },
     annotation: {
       ...DemoAnnotationConfig,
+      startOffset,
       edit: true,
     },
   })
@@ -39,13 +40,14 @@ export const createDifferentTextOffset = (id: string, textOffset: number) => {
 
 export const createDifferentTextOffsetWordsnapper = (
   id: string,
-  textOffset: number,
+  startOffset: number,
 ) => {
   createAnnotatedText(id, {
-    text: { textOffset },
+    text: TextLineAdapter(),
     annotation: {
       ...DemoAnnotationConfig,
       edit: true,
+      startOffset,
       snapper: new WordSnapper(),
     },
   })
@@ -58,12 +60,13 @@ export const createDifferentTextOffsetWordsnapper = (
 
 export const createDifferentTextOffsetLines = (
   id: string,
-  textOffset: number,
+  startOffset: number,
 ) => {
   createAnnotatedText(id, {
-    text: TextLineAdapter({ textOffset }),
+    text: TextLineAdapter(),
     annotation: {
       ...DemoAnnotationConfig,
+      startOffset,
     },
   })
     .setTagLabelFn((annotation) => annotation.label)
