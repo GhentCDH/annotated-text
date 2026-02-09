@@ -63,6 +63,3 @@ export abstract class BaseAnnotationDi<
     return this.annotationModule.inject(token);
   }
 }
-
-// Re-export for backwards compatibility
-export { BaseAnnotationDiFn } from './BaseAnnotationDiFn';
