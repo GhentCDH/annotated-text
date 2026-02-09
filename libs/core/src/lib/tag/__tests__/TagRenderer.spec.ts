@@ -1,8 +1,8 @@
-import { beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { TagRenderer } from '../TagRenderer';
 import { type AnnotationModule } from '../../di/annotation.module';
 
-const annoationModuleMock = {
+const annotationModuleMock = {
   inject: () => null,
 } as unknown as AnnotationModule;
 
@@ -10,16 +10,16 @@ describe('TagRenderer', () => {
   let tagRenderer: TagRenderer<any>;
 
   beforeEach(() => {
-    tagRenderer = new TagRenderer(annoationModuleMock);
+    tagRenderer = new TagRenderer(annotationModuleMock);
   });
 
   describe('getTagConfig should return null when ', () => {
-    test('tagFn is not set', () => {
+    it('tagFn is not set', () => {
       const result = tagRenderer.getTagConfig({} as any, {} as any);
       expect(result).toBeNull();
     });
 
-    test('renderInstance.renderTag is not false', () => {
+    it('renderInstance.renderTag is not false', () => {
       tagRenderer.setTagFn(() => 'test');
       const result = tagRenderer.getTagConfig(
         {} as any,
@@ -28,7 +28,7 @@ describe('TagRenderer', () => {
       expect(result).toBeNull();
     });
 
-    test('tagFn returns empty string', () => {
+    it('tagFn returns empty string', () => {
       tagRenderer.setTagFn(() => '');
       const result = tagRenderer.getTagConfig(
         {} as any,
@@ -39,7 +39,7 @@ describe('TagRenderer', () => {
   });
 
   describe('getTagConfig should return tag metadata when ', () => {
-    test('tagFn is set, renderInstance supports tags, and tagFn returns non-empty string', () => {
+    it('tagFn is set, renderInstance supports tags, and tagFn returns non-empty string', () => {
       tagRenderer.setTagFn(() => 'test');
       const result = tagRenderer.getTagConfig(
         {} as any,
