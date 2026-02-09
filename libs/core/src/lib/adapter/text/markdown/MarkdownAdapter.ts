@@ -13,7 +13,7 @@ const _textToLines = memoize(
       const html = replaceMarkdownToHtml(textLine);
       const flatText = stripHtmlFromText(html);
 
-      // Add additional 1 because the \n symbol consist of 2 characters
+      // Add 1 to account for the newline separator that was removed by split('\n\n')
       const end = start + textLine.length + 1;
 
       const line = textLineSchema.parse({
