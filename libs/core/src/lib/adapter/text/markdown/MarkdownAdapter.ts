@@ -4,32 +4,34 @@ import { createTextAdapter, type createTextAdapterParams, type Limit, TextAdapte
 import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
-const _textToLines = memoize((text: string, textOffset: number): TextLine[] => {
-  // Split into paragraphs we do it ourself
-  const lines = text?.split('\n\n') ?? [''];
-  let start = textOffset;
-  return lines.map((textLine, index) => {
-    const html = replaceMarkdownToHtml(textLine);
-    const flatText = stripHtmlFromText(html);
+const _textToLines = memoize(
+  (text: string, startOffset: number): TextLine[] => {
+    // Split into paragraphs we do it ourself
+    const lines = text?.split('\n\n') ?? [''];
+    let start = startOffset;
+    return lines.map((textLine, index) => {
+      const html = replaceMarkdownToHtml(textLine);
+      const flatText = stripHtmlFromText(html);
 
-    // Add additional 1 because the \n symbol consist of 2 characters
-    const end = start + textLine.length + 1;
+      // Add 1 to account for the newline separator that was removed by split('\n\n')
+      const end = start + textLine.length + 1;
 
-    const line = textLineSchema.parse({
-      lineNumber: index,
-      start,
-      end,
-      id: `line-${index}`,
-      text: textLine,
-      html,
-      flatText,
-    }) as TextLine;
+      const line = textLineSchema.parse({
+        lineNumber: index,
+        start,
+        end,
+        id: `line-${index}`,
+        text: textLine,
+        html,
+        flatText,
+      }) as TextLine;
 
-    start = end;
+      start = end;
 
-    return line;
-  });
-});
+      return line;
+    });
+  },
+);
 
 const updateLine: UpdateLineFn = (
   line: TextLine,
@@ -53,10 +55,10 @@ const updateLine: UpdateLineFn = (
 const textToLines = (
   text: string,
   limit: Limit,
-  textOffset: number,
+  startOffset: number,
 ): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
-  const lines = _textToLines(text, textOffset);
+  const lines = _textToLines(text, startOffset);
   return mapLinesToLimit(lines, limit, updateLine);
 };
 
@@ -68,7 +70,7 @@ export class MarkdownTextAdapterImpl extends TextAdapter {
   name = 'MarkdownLineAdapter';
 
   parse(text: string): TextLine[] {
-    return textToLines(text, this.limit, this.textOffset);
+    return textToLines(text, this.limit, this.annotationAdapter.startOffset);
   }
 }
 

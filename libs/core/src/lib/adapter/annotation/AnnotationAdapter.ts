@@ -65,7 +65,8 @@ export abstract class AnnotationAdapter<
   private tagRenderer: TagRenderer<ANNOTATION>;
 
   protected text = '';
-  protected offsetStart = 0;
+  startOffset = 0;
+
   /**
    * Use a word snapper function to adjust the start and end indices of an annotation.
    * @param action
@@ -73,10 +74,9 @@ export abstract class AnnotationAdapter<
    */
   public snapper: Snapper = new DefaultSnapper();
 
-  public setText(text: string, offsetStart: number) {
+  public setText(text: string) {
     this.text = text;
-    this.offsetStart = offsetStart;
-    this.snapper.setText(text, offsetStart);
+    this.snapper.setText(text, this.startOffset);
   }
 
   /**
@@ -199,7 +199,7 @@ export abstract class AnnotationAdapter<
         break;
       case 'snapper':
         this.snapper = value as Snapper;
-        this.snapper.setText(this.text, this.offsetStart);
+        this.snapper.setText(this.text, this.startOffset);
         break;
       default:
         console.warn('Unsupported config key:', value);
@@ -277,6 +277,28 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
   snapper?: Snapper;
+  /**
+   * Custom offset for text character indexing.
+   *
+   * By default, text uses zero-based indexing (starting at 0), which is standard in programming.
+   * However, many scholarly and editorial workflows reference text positions starting from 1.
+   * This option allows you to configure the starting index to match your workflow.
+   *
+   * @default 0
+   *
+   * @example
+   * // Zero-based indexing (default, programming standard)
+   * startOffset: 0  // First character is at position 0
+   *
+   * @example
+   * // One-based indexing (scholarly/editorial standard)
+   * startOffset: 1  // First character is at position 1
+   *
+   * @example
+   * // Custom offset (e.g., continuing from a previous section)
+   * startOffset: 100  // First character is at position 100
+   */
+  startOffset?: number;
   render?: Partial<RenderParams<ANNOTATION>>;
   style?: Partial<AnnotationStyleParams<ANNOTATION>>;
 };
@@ -292,6 +314,7 @@ export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
     adapter.create = params.create;
   }
   adapter.config = merge(cloneDeep(config), params.config);
+  adapter.startOffset = params.startOffset ?? 0;
   adapter.snapper = params.snapper ?? new DefaultSnapper();
   adapter.renderParams = params.render ?? {};
 

@@ -39,7 +39,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
       this.text,
       annotation.start,
       annotation.end,
-      this.offsetStart,
+      this.startOffset,
     );
 
     const data = annotationSchema.safeParse({

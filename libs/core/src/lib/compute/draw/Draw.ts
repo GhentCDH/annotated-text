@@ -38,7 +38,7 @@ export class Draw<
   setText(text: string) {
     const lines = this.textAdapter.parse(text);
     this.textAdapter.setLines(lines);
-    this.annotationAdapter.setText(text, this.textAdapter.textOffset);
+    this.annotationAdapter.setText(text);
     this.textAdapter.setLineHeight(
       getLineHeight(text, this.textAdapter.style.lineOffset),
     );
