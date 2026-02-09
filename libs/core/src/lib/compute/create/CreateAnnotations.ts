@@ -309,7 +309,7 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
-  setRenderParams(params: Partial<StyleInstances<ANNOTATION>>): this {
+  setRenderParams(params: Partial<RenderInstances<ANNOTATION>>): this {
     this.annotationModule.inject(RenderInstances).setParams(params);
     this.recalculate();
     return this;

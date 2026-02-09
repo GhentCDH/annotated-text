@@ -82,7 +82,7 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
 type W3CAnnotationAdapterParams = {
   sourceUri?: string;
   language?: string;
-} & createAnnotationAdapterParams<W3CAnnotation>;
+} & createAnnotationAdapterParams;
 
 export const W3CAnnotationAdapter = (
   params: W3CAnnotationAdapterParams = {},

@@ -9,7 +9,7 @@ import {
 import {
   type AnnotationRender,
   type AnnotationRenderStyle,
-  RenderParams
+  type RenderParams
 } from '../../adapter/annotation/renderer/annotation-render';
 import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
 import { type tagLabelFn } from '../../tag/TagRenderer';
