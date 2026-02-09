@@ -17,6 +17,7 @@ import { DrawText } from '../compute/draw/text/DrawText';
 import { MainContainer } from '../compute/model/maincontainer';
 import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
 import { TagRenderer } from '../tag/TagRenderer';
+import { StyleInstances } from '../adapter/annotation/style/style-instances';
 
 /**
  * Configuration required to create an AnnotationModule.
@@ -89,6 +90,7 @@ export class AnnotationModule {
       .register(DrawText, () => new DrawText(this))
       .register(RenderInstances, () => new RenderInstances(this))
       .register(TagRenderer, () => new TagRenderer(this))
+      .register(StyleInstances, () => new StyleInstances())
       .register(SnapperToken, () => new DefaultSnapper());
 
     this.container.register(MainContainer, () => new MainContainer(this));

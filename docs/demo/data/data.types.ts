@@ -1,8 +1,4 @@
-import {
-  Annotation,
-  AnnotationColor,
-  createAnnotationAdapterParams,
-} from "@ghentcdh/annotated-text";
+import { Annotation, AnnotationColor } from '@ghentcdh/annotated-text';
 
 export type DemoAnnotation = Annotation & {
   style?: string;
@@ -36,4 +32,4 @@ const DefaultStyle = {
 export const DemoAnnotationConfig = {
   render: DefaultRender,
   style: DefaultStyle,
-} as createAnnotationAdapterParams<DemoAnnotation>;
+};

@@ -5,19 +5,26 @@ import {
   SnapperToken,
   type TEXT_CONFIG_KEYS,
   type TEXT_CONFIG_VALUES,
-  type TextAdapter
+  type TextAdapter,
 } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
-  type AnnotationStyleParams
+  type AnnotationStyleParams,
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
