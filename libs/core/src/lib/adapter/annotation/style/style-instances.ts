@@ -48,7 +48,7 @@ import { Debugger } from '../../../utils/debugger';
  * ```
  */
 export class StyleInstances<ANNOTATION> {
-  private readonly styleParams: AnnotationStyleParams<ANNOTATION>;
+  private styleParams = DefaultAnnotationStyleParams;
   protected readonly styleMap = new Map<string, AnnotationStyle>();
 
   /**
@@ -77,10 +77,8 @@ export class StyleInstances<ANNOTATION> {
     this.styleMap.set(name, style);
   }
 
-  constructor(
-    public readonly params?: Partial<AnnotationStyleParams<ANNOTATION>>,
-  ) {
-    this.styleParams = merge(DefaultAnnotationStyleParams, params ?? {});
+  setParams(params: Partial<AnnotationStyleParams<ANNOTATION>>) {
+    this.styleParams = merge(this.styleParams, params);
   }
 
   /**

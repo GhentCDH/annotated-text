@@ -5,25 +5,19 @@ import {
   SnapperToken,
   type TEXT_CONFIG_KEYS,
   type TEXT_CONFIG_VALUES,
-  type TextAdapter,
+  type TextAdapter
 } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
+  AnnotationStyleParams
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
+import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-} from '../../adapter/annotation/renderer';
+import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
@@ -32,6 +26,8 @@ import { Draw } from '../draw/Draw';
 import { ExternalEventSender } from '../../events/send-event';
 import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { StyleInstances } from '../../adapter/annotation/style/style-instances';
 
 const document = globalThis.document || null;
 
@@ -306,6 +302,12 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
+  setRenderParams(params: Partial<StyleInstances<ANNOTATION>>): this {
+    this.annotationModule.inject(RenderInstances).setParams(params);
+    this.recalculate();
+    return this;
+  }
+
   registerRender<STYLE extends AnnotationRenderStyle>(
     render: AnnotationRender<STYLE>,
   ) {
@@ -332,9 +334,19 @@ export class CreateAnnotationsImpl<
   }
 
   registerStyle(name: string, style: AnnotationStyle) {
-    this.annotationAdapter.styleInstance.registerStyle(name, style);
+    this.annotationModule
+      .inject<StyleInstances<ANNOTATION>>(StyleInstances)
+      .registerStyle(name, style);
     // TODO check if updated later the new render is used in the existing annotations
 
+    return this;
+  }
+
+  setStyleParams(params: Partial<AnnotationStyleParams<ANNOTATION>>): this {
+    this.annotationModule
+      .inject<StyleInstances<ANNOTATION>>(StyleInstances)
+      .setParams(params);
+    this.recalculate();
     return this;
   }
 

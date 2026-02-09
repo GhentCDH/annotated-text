@@ -1,10 +1,15 @@
 import { type AnnotationId, type BaseAnnotation } from '../../model';
 import { type Snapper, type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
 import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
-import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
+import {
+  type ANNOTATION_CONFIG_KEYS,
+  type ANNOTATION_CONFIG_VALUES,
+  AnnotationStyleParams
+} from '../../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
 import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
 import { type tagLabelFn } from '../../tag/TagRenderer';
+import { StyleInstances } from '../../adapter/annotation/style/style-instances';
 
 /**
  * Create annotation is a factory function that creates an annotation model.
@@ -109,6 +114,8 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @param id
    */
   scrollToAnnotation: (id: AnnotationId) => this;
+
+  setRenderParams(params: Partial<StyleInstances<ANNOTATION>>): this;
   /**
    * Registers a single annotation renderer.
    *
@@ -183,4 +190,6 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    *   });
    */
   registerStyles: (styles: Record<string, AnnotationStyle>) => this;
+
+  setStyleParams(params: Partial<AnnotationStyleParams<ANNOTATION>>): this;
 }

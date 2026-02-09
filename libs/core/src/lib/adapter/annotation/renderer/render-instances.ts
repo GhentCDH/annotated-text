@@ -8,8 +8,6 @@ import { Debugger } from '../../../utils/debugger';
 import type { BaseAnnotation, TextAnnotation } from '../../../model';
 import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { AnnotationAdapterToken } from '../../../di/tokens';
-import { type AnnotationAdapter } from '../../annotation';
 
 export class RenderInstances<
   ANNOTATION extends BaseAnnotation,
@@ -27,12 +25,6 @@ export class RenderInstances<
     super();
     this.setModule(annotationModule);
 
-    this.renderParams = merge(
-      this.renderParams,
-      this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken)
-        .renderParams ?? {},
-    );
-
     this.annotationModule.registerRender(
       DefaultRenders.highlight,
       () => new HighlightAnnotationRender(DefaultRenders.highlight),
@@ -45,6 +37,10 @@ export class RenderInstances<
       DefaultRenders.underline,
       () => new UnderLineAnnotationRender(DefaultRenders.underline),
     );
+  }
+
+  setParams(params: Partial<RenderParams<ANNOTATION>>) {
+    this.renderParams = merge(this.renderParams, params);
   }
 
   get defaultRenderer() {
