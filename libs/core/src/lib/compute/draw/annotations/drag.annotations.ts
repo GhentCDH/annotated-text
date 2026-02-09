@@ -3,7 +3,7 @@ import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
 import { type Position } from '../types';
 import { type CharacterPositionResult } from '../../position';
 import { type Dimensions, type TextAnnotation } from '../../../model';
-import { AnnotationModule } from '../../../di/annotation.module';
+import { type AnnotationModule } from '../../../di/annotation.module';
 
 export class DragAnnotation extends AbstractAnnotationEventEdit {
   private dragBusy = false;

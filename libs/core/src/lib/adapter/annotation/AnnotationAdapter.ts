@@ -24,7 +24,7 @@ import {
 import { type DeepPartial } from '../../deep-partial.type';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { TagRenderer } from '../../tag/TagRenderer';
-import { Snapper, SnapperToken } from '../text';
+import { type Snapper, SnapperToken } from '../text';
 
 /**
  * @deprecated

@@ -8,8 +8,8 @@ import {
 import type { Position, StartEnd } from '../types';
 import { DUMMY_UID } from '../../model/svg.types';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { AnnotationModule } from '../../../di/annotation.module';
-import { Snapper, SnapperToken } from '../../../adapter/text';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { type Snapper, SnapperToken } from '../../../adapter/text';
 
 export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;

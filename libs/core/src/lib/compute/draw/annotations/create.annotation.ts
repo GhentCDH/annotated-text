@@ -4,9 +4,9 @@ import {
   type CharacterPositionResult,
   getCharacterStartEndPosition,
 } from '../../position';
-import { AnnotationModule } from '../../../di/annotation.module';
+import { type AnnotationModule } from '../../../di/annotation.module';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { Snapper, SnapperToken } from '../../../adapter/text';
+import { type Snapper, SnapperToken } from '../../../adapter/text';
 
 export class CreateAnnotation extends BaseAnnotationDi {
   private startIndex: number;

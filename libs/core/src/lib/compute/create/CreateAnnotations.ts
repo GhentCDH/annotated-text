@@ -1,7 +1,7 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
 import {
-  Snapper,
+  type Snapper,
   SnapperToken,
   type TEXT_CONFIG_KEYS,
   type TEXT_CONFIG_VALUES,

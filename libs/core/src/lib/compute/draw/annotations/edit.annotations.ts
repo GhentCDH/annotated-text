@@ -6,7 +6,7 @@ import {
   getCharacterStartEndPosition,
 } from '../../position';
 import { type TextAnnotation } from '../../../model';
-import { AnnotationModule } from '../../../di/annotation.module';
+import { type AnnotationModule } from '../../../di/annotation.module';
 
 export class EditAnnotation extends AbstractAnnotationEventEdit {
   constructor(
