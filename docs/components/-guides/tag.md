@@ -1,28 +1,45 @@
 # Tags
 
-For tags, you can configure the `tagConfig` property within the `annotation` configuration. This allows you to enable or
-disable tags and define a custom function to determine the tag's content.
+## Renderer Responsibility
 
-By default, tags are disabled. You can enable them by setting the `enabled` property to `true`. The `tagFn` function
+Tag visibility is controlled at the annotation renderer level. Each renderer is responsible for determining whether to
+display tags for its annotations.
+
+## Tag Label Function
+
+To display tags, you must set a tag label function using `.setTagLabelFn()`:
 
 ```typescript
- createAnnotatedText(id, {
-  annotation: {
-    tagConfig: {
-      enabled: true,
-      tagFn: (annotation) => annotation.label ?? "No label",
-    },
-  },
-});
+createAnnotatedText(id)
+  .setTagLabelFn((annotation) => annotation.label ?? 'No label')
 ```
 
-Some additional properties you can configure include:
+**Behavior:**
 
-- `enabledOnHover`: A boolean that determines whether the tag is displayed only on hover (`true`) or always visible (
-  `false`).
-  The default is `false`.
-- `padding`: A number that sets the padding around the tag. The default is `1`.
-- `fontSize`: A number that sets the font size of the tag text. The default is `8`.
+- If no `.setTagLabelFn()` is configured, no tags will be displayed
+- The function receives an annotation and must return:
+    - A **string** to display that text as the tag label
+    - `null` or `undefined` to hide the tag for that annotation
+
+## Examples
+
+```typescript
+   // Show annotation label or fallback text
+   .setTagLabelFn((annotation) => annotation.label ?? 'No label')
+
+  // Show only annotations with labels
+  .setTagLabelFn((annotation) => annotation.label ?? null)
+
+  // Conditional display
+  .setTagLabelFn((annotation) =>
+    annotation.confidence > 0.8 ? annotation.label : null
+  )
+```
+
+## Future Enhancement
+
+In a later phase, custom tag rendering will be supported, allowing you to provide your own rendering logic for tag
+display.
 
 ## Example
 

@@ -4,6 +4,7 @@ import { type AnnotationEventType, type ErrorEventCallback, type EventCallback }
 import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
 import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
+import { type tagLabelFn } from '../../tag/TagRenderer';
 
 /**
  * Create annotation is a factory function that creates an annotation model.
@@ -13,15 +14,20 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
   /**
    * Set the text for the model. The adapter will parse the text to the internal model.
    * @param text
-   * @param redraw
    */
-  setText: (text: string, redraw?: boolean) => this;
+  setText: (text: string) => this;
+
+  /**
+   * Set the function to get the tag label from an annotation. This is used by the tag renderer to get the label for the tag.
+   * @param tagFn
+   */
+  setTagLabelFn: (tagFn: tagLabelFn<ANNOTATION> | null) => this;
+
   /**
    * Set the annotations for the model. The adapter will parse the annotations to the internal model
    * @param annotations
-   * @param redraw If true, the annotations will be redrawn.
    */
-  setAnnotations: (annotations: ANNOTATION[], redraw?: boolean) => this;
+  setAnnotations: (annotations: ANNOTATION[]) => this;
 
   /**
    * Add a single annotation to the model. If you update the complete list of annotations, on a large set than it can start hanging.

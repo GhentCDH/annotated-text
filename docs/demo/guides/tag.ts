@@ -2,8 +2,8 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+} from '@ghentcdh/annotated-text';
+import { greekText } from '../data';
 
 export const RenderTag = (
   id: string,
@@ -22,13 +22,9 @@ export const RenderTag = (
         defaultRenderer,
         renderFn: greekText.annotationConfig.render.renderFn,
       },
-      tagConfig: {
-        enabled: true,
-        enabledOnHover,
-        tagFn: (annotation) => annotation.label ?? "No label",
-      },
     },
   })
+    .setTagLabelFn((annotation) => annotation.label ?? 'No label')
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 };

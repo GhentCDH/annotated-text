@@ -29,12 +29,13 @@ import { rootContainer } from '../../di/container';
 import { Draw } from '../draw/Draw';
 import { ExternalEventSender } from '../../events/send-event';
 import { MainContainer } from '../model/maincontainer';
+import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 
 const document = globalThis.document || null;
 
-export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
-  implements AnnotatedText<ANNOTATION>
-{
+export class CreateAnnotationsImpl<
+  ANNOTATION extends BaseAnnotation,
+> implements AnnotatedText<ANNOTATION> {
   private annotationsMap = new Map<AnnotationId, ANNOTATION>();
   private readonly svgModel: SvgModel;
   private readonly draw: Draw<ANNOTATION>;
@@ -123,20 +124,32 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     return Array.from(this.annotationsMap.values());
   }
 
-  public setText(text: string, redraw = true) {
+  public setText(text: string) {
     this.text = text || '';
     this.draw.initDraw(this.text, this.annotations());
-    this.setAnnotations(this.annotations(), redraw);
+    this.setAnnotations(this.annotations());
 
     return this;
   }
 
-  public setAnnotations(annotations: ANNOTATION[], redraw = true) {
+  public setTagLabelFn(tagFn: tagLabelFn<ANNOTATION> | null) {
+    this.annotationModule.inject(TagRenderer).setTagFn(tagFn as any);
+    this.recalculate();
+    return this;
+  }
+
+  public setAnnotations(annotations: ANNOTATION[]) {
     this.annotationsMap.clear();
     annotations.forEach((annotation) => {
       this.annotationsMap.set(annotation.id, annotation);
     });
 
+    this.recalculate();
+
+    return this;
+  }
+
+  private recalculate() {
     if (!this.text) {
       Debugger.debug(
         'setAnnotations',
@@ -146,8 +159,7 @@ export class CreateAnnotationsImpl<ANNOTATION extends BaseAnnotation>
     }
 
     this.draw.initDraw(this.text, this.annotations());
-
-    if (redraw) this.redrawSvg();
+    this.redrawSvg();
 
     return this;
   }

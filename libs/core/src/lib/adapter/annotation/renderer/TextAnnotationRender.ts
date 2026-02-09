@@ -67,6 +67,7 @@ export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
 export class HighlightAnnotationRender extends SvgAnnotationRender<TextAnnotationRenderStyle> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
+  readonly renderTag = true;
 
   constructor(name: string, style: Partial<TextAnnotationRenderStyle> = {}) {
     super(name, style, DefaultTextAnnotationRenderStyle);

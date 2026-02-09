@@ -36,6 +36,7 @@ export type UnderlineAnnotationRenderStyle =
 export class UnderLineAnnotationRender extends SvgAnnotationRender<UnderlineAnnotationRenderStyle> {
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
+  readonly renderTag = true;
   override fillBg = false;
 
   constructor(

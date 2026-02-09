@@ -1,22 +1,22 @@
 /* eslint-disable no-console */
-import { createAnnotatedText, TextLineAdapter, WordSnapper } from "@ghentcdh/annotated-text";
-import { annotationColors } from "../data/const";
-import { DemoAnnotation, DemoAnnotationConfig } from "../data/data.types";
+import { createAnnotatedText, TextLineAdapter, WordSnapper } from '@ghentcdh/annotated-text';
+import { annotationColors } from '../data/const';
+import { DemoAnnotation, DemoAnnotationConfig } from '../data/data.types';
 
 const annotations = [
   {
     start: 10,
     end: 29,
-    label: "Subject phrase",
-    color: annotationColors["2"],
-    id: "anno1",
+    label: 'Subject phrase',
+    color: annotationColors['2'],
+    id: 'anno1',
   },
   {
     start: 30,
     end: 53,
-    label: "Action and object",
-    color: annotationColors["3"],
-    id: "anno2",
+    label: 'Action and object',
+    color: annotationColors['3'],
+    id: 'anno2',
   },
 ] as DemoAnnotation[];
 
@@ -28,12 +28,9 @@ export const createDifferentTextOffset = (id: string, textOffset: number) => {
     annotation: {
       ...DemoAnnotationConfig,
       edit: true,
-      tagConfig: {
-        enabled: true,
-        tagFn: (annotation) => annotation.label,
-      },
     },
   })
+    .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
     .setAnnotations(annotations);
 
@@ -49,13 +46,10 @@ export const createDifferentTextOffsetWordsnapper = (
     annotation: {
       ...DemoAnnotationConfig,
       edit: true,
-      tagConfig: {
-        enabled: true,
-        tagFn: (annotation) => annotation.label,
-      },
       snapper: new WordSnapper(),
     },
   })
+    .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
     .setAnnotations(annotations);
 
@@ -70,12 +64,9 @@ export const createDifferentTextOffsetLines = (
     text: TextLineAdapter({ textOffset }),
     annotation: {
       ...DemoAnnotationConfig,
-      tagConfig: {
-        enabled: true,
-        tagFn: (annotation) => annotation.label,
-      },
     },
   })
+    .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
     .setAnnotations(annotations);
 };

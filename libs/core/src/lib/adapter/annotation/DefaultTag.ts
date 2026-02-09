@@ -17,11 +17,3 @@ export type TagConfig<ANNOTATION> = {
   padding: number;
   fontSize: number;
 };
-
-export const DefaultTagConfig: TagConfig<any> = {
-  enabledOnHover: false,
-  enabled: false,
-  tagFn: (annotation: any) => 'No tag',
-  padding: 1,
-  fontSize: 8,
-};

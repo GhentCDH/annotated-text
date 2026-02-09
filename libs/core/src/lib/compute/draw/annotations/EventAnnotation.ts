@@ -66,7 +66,8 @@ class EventAnnotation<
 
         this.annotationColors.colorAnnotation(this.annotation.id, color.hover);
       }
-      if (this.annotationAdapter.tagConfig.enabledOnHover) {
+
+      if (this.annotation._tagMetadata?.enabledOnHover) {
         this.tag.drawTag(fullAnnotation);
       }
     };
@@ -79,8 +80,9 @@ class EventAnnotation<
       this.sendEvent('mouse-leave', mouseEvent);
       this.annotationColors.resetAnnotationColor(this.annotation.id);
 
-      if (this.annotationAdapter.tagConfig.enabledOnHover)
+      if (this.annotation._tagMetadata?.enabledOnHover) {
         this.sendEventIntern('annotation--remove-tag');
+      }
     };
   }
 

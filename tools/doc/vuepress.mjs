@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
 const docsPath = "docs/";
 
@@ -122,4 +122,3 @@ copyReadme("", "", 1);
 
 createMenu("components");
 // createMenu("demo");
-createMenu("api", ["_media", "globals.md"]);

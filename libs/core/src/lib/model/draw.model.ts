@@ -57,6 +57,14 @@ export const annotationDrawMetadataSchema = z.object({
   color: annotationDrawColorsSchema.optional(),
 });
 
+export const tagDrawMetadataSchema = z.object({
+  label: z.string(),
+  padding: z.number(),
+  fontSize: z.number(),
+  enabledOnHover: z.boolean(),
+});
+
+export type TagDrawMetadata = z.infer<typeof tagDrawMetadataSchema>;
 export type AnnotationDraw = z.infer<typeof annotationDrawSchema>;
 export type AnnotationDrawColor = z.infer<typeof annotationDrawColorSchema>;
 export type AnnotationDrawColors = z.infer<typeof annotationDrawColorsSchema>;
