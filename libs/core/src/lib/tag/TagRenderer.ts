@@ -1,4 +1,4 @@
-import type { AnnotationRender } from '../adapter/annotation';
+import type { AnnotationRender } from '../adapter/annotation/renderer';
 import { type BaseAnnotation, type TagDrawMetadata, tagDrawMetadataSchema } from '../model';
 import { BaseAnnotationDiFn } from '../di/BaseAnnotationDi';
 import type { AnnotationModule } from '../di/annotation.module';
