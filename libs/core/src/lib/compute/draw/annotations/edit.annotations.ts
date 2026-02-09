@@ -1,24 +1,22 @@
 import { pick } from 'lodash-es';
 import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
-import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
 import { type Position } from '../types';
 import {
   type CharacterPositionResult,
   getCharacterStartEndPosition,
 } from '../../position';
-import { type AnnotationAdapter } from '../../../adapter';
 import { type TextAnnotation } from '../../../model';
+import { AnnotationModule } from '../../../di/annotation.module';
 
 export class EditAnnotation extends AbstractAnnotationEventEdit {
   constructor(
     annotation: TextAnnotation,
-    internalEventListener: InternalEventListener,
-    annotationAdapter: AnnotationAdapter<any>,
+    annotationModule: AnnotationModule,
     private readonly getCharacterFromTextNodesAtPoint: (
       position: Position,
     ) => CharacterPositionResult | null,
   ) {
-    super(annotationAdapter, internalEventListener, { annotation });
+    super(annotationModule, { annotation });
   }
 
   protected override onStart(position: Position, target: 'start' | 'end') {

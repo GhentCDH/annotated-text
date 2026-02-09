@@ -21,12 +21,10 @@ import {
   textAnnotationSchema,
   type TextLine
 } from '../../model';
-
-import type { Snapper } from '../text';
-import { DefaultSnapper } from '../text';
 import { type DeepPartial } from '../../deep-partial.type';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { TagRenderer } from '../../tag/TagRenderer';
+import { Snapper, SnapperToken } from '../text';
 
 /**
  * @deprecated
@@ -67,16 +65,11 @@ export abstract class AnnotationAdapter<
   protected text = '';
   startOffset = 0;
 
-  /**
-   * Use a word snapper function to adjust the start and end indices of an annotation.
-   * @param action
-   * @param annotation
-   */
-  public snapper: Snapper = new DefaultSnapper();
-
   public setText(text: string) {
     this.text = text;
-    this.snapper.setText(text, this.startOffset);
+    this.annotationModule
+      .inject<Snapper>(SnapperToken)
+      .setText(text, this.startOffset);
   }
 
   /**
@@ -197,10 +190,6 @@ export abstract class AnnotationAdapter<
         this.config = merge(cloneDeep(config), value);
         this.changeConfig();
         break;
-      case 'snapper':
-        this.snapper = value as Snapper;
-        this.snapper.setText(this.text, this.startOffset);
-        break;
       default:
         console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
@@ -276,7 +265,6 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   create?: boolean;
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
-  snapper?: Snapper;
   /**
    * Custom offset for text character indexing.
    *
@@ -315,7 +303,6 @@ export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.startOffset = params.startOffset ?? 0;
-  adapter.snapper = params.snapper ?? new DefaultSnapper();
   adapter.renderParams = params.render ?? {};
 
   adapter.styleInstance = new StyleInstances<ANNOTATION>(params.style);

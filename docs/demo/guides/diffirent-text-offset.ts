@@ -48,9 +48,9 @@ export const createDifferentTextOffsetWordsnapper = (
       ...DemoAnnotationConfig,
       edit: true,
       startOffset,
-      snapper: new WordSnapper(),
     },
   })
+    .setSnapper(new WordSnapper())
     .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
     .setAnnotations(annotations);

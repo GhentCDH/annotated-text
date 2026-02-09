@@ -1,9 +1,7 @@
 import { CreateAnnotation } from './create.annotation';
-import { type AnnotationAdapter, AnnotationAdapterToken } from '../../../adapter/annotation';
 import { SvgModel } from '../../model/svg.types';
 import { type Position } from '../types';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 import { DrawText } from '../text/DrawText';
 import { type BaseAnnotation } from '../../../model';
 
@@ -12,10 +10,6 @@ export const createNewBlock = <ANNOTATION extends BaseAnnotation>(
 ) => {
   const svgModel = annotationModule.inject(SvgModel);
   const svg = svgModel.svg;
-  const adapter = annotationModule.inject<AnnotationAdapter<ANNOTATION>>(
-    AnnotationAdapterToken,
-  );
-  const internalEventListener = annotationModule.inject(InternalEventListener);
   const drawText = annotationModule.inject(DrawText);
 
   const getPosition = (event: MouseEvent) => {
@@ -26,8 +20,7 @@ export const createNewBlock = <ANNOTATION extends BaseAnnotation>(
   };
 
   const createAnnotation: CreateAnnotation = new CreateAnnotation(
-    internalEventListener,
-    adapter,
+    annotationModule,
     ({ x, y }: Position) => drawText.getCharacterFromTextNodesAtPoint(x, y),
   );
 

@@ -35,9 +35,8 @@ createAnnotatedText(id,
     annotation: {
       edit: true,
       create: true,
-      snapper: new CustomSnapper(),
     },
-  });
+  }).setSnapper(new CustomSnapper());
 
 ``` 
 

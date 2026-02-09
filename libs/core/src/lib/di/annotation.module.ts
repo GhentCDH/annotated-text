@@ -7,7 +7,7 @@ import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { type TextAdapter } from '../adapter/text';
+import { DefaultSnapper, SnapperToken, type TextAdapter } from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
@@ -88,7 +88,8 @@ export class AnnotationModule {
       .register(DrawAnnotation, () => new DrawAnnotation(this))
       .register(DrawText, () => new DrawText(this))
       .register(RenderInstances, () => new RenderInstances(this))
-      .register(TagRenderer, () => new TagRenderer(this));
+      .register(TagRenderer, () => new TagRenderer(this))
+      .register(SnapperToken, () => new DefaultSnapper());
 
     this.container.register(MainContainer, () => new MainContainer(this));
 

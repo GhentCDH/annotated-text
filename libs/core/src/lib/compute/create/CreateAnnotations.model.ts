@@ -1,5 +1,5 @@
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
+import { Snapper, type TEXT_CONFIG_KEYS, type TEXT_CONFIG_VALUES } from '../../adapter/text';
 import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type ANNOTATION_CONFIG_KEYS, type ANNOTATION_CONFIG_VALUES } from '../../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
@@ -16,7 +16,11 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @param text
    */
   setText: (text: string) => this;
-
+  /**
+   * Set the snapper for the model. The snapper will be used to snap the annotations to the text. This is useful when you want to allow users to create annotations by dragging on the text, and you want to snap the annotations to the nearest word or character.
+   * @param snapper
+   */
+  setSnapper: (snapper: Snapper) => this;
   /**
    * Set the function to get the tag label from an annotation. This is used by the tag renderer to get the label for the tag.
    * @param tagFn

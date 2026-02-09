@@ -1,6 +1,6 @@
-import { createAnnotatedText, WordSnapper } from "@ghentcdh/annotated-text";
-import { plainText } from "../data";
-import { DemoAnnotationConfig } from "../data/data.types";
+import { createAnnotatedText, WordSnapper } from '@ghentcdh/annotated-text';
+import { plainText } from '../data';
+import { DemoAnnotationConfig } from '../data/data.types';
 
 export const wordSnapper = (id: string) => {
   createAnnotatedText(id, {
@@ -9,9 +9,9 @@ export const wordSnapper = (id: string) => {
       ...DemoAnnotationConfig,
       edit: true,
       create: true,
-      snapper: new WordSnapper(),
     },
   })
+    .setSnapper(new WordSnapper())
     .setText(plainText.text)
     .setAnnotations(plainText.annotations);
 };

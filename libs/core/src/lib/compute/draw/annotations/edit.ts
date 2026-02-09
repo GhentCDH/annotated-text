@@ -14,7 +14,6 @@ import {
 import { type Position } from '../types';
 import { DrawText } from '../text/DrawText';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
@@ -48,8 +47,7 @@ const drawHandle = (
 
   const editAnnotation = new EditAnnotation(
     annotation,
-    annotationModule.inject(InternalEventListener),
-    annotationAdapter,
+    annotationModule,
     ({ x, y }: Position) => drawText.getCharacterFromTextNodesAtPoint(x, y),
   );
   const onEditDragEnd = (event: MouseEvent) => {

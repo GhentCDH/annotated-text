@@ -1,6 +1,8 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
 import {
+  Snapper,
+  SnapperToken,
   type TEXT_CONFIG_KEYS,
   type TEXT_CONFIG_VALUES,
   type TextAdapter,
@@ -128,6 +130,13 @@ export class CreateAnnotationsImpl<
     this.text = text || '';
     this.draw.initDraw(this.text, this.annotations());
     this.setAnnotations(this.annotations());
+
+    return this;
+  }
+
+  public setSnapper(snapper: Snapper) {
+    this.annotationModule.register(SnapperToken, () => snapper);
+    this.recalculate();
 
     return this;
   }

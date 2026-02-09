@@ -4,8 +4,8 @@ import {
   SnapperResult,
   TextAnnotation,
   TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+} from '@ghentcdh/annotated-text';
+import { greekText } from '../data';
 
 class CustomSnapper extends Snapper {
   setText(text: string, offsetStart: number) {}
@@ -24,9 +24,9 @@ export const snapper = (id: string) => {
       ...greekText.annotationConfig,
       edit: true,
       create: true,
-      snapper: new CustomSnapper(),
     },
   })
+    .setSnapper(new CustomSnapper())
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 };

@@ -5,7 +5,6 @@ import { type TextAnnotation } from '../../../model';
 import { type Position } from '../types';
 import { DrawText } from '../text/DrawText';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 
 export const addDraggableAnnotation = (
   annotationModule: AnnotationModule,
@@ -15,12 +14,10 @@ export const addDraggableAnnotation = (
   const annotationAdapter = annotationModule.inject<AnnotationAdapter<any>>(
     AnnotationAdapterToken,
   );
-  const internalEventListener = annotationModule.inject(InternalEventListener);
   const dragAnnotation = new DragAnnotation(
     annotationAdapter.position.minStartPosition,
     annotation,
-    internalEventListener,
-    annotationAdapter,
+    annotationModule,
     ({ x, y }: Position) => drawText.getCharacterFromTextNodesAtPoint(x, y),
   );
 
