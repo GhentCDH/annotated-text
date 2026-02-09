@@ -199,7 +199,7 @@ export abstract class AnnotationAdapter<
         break;
       case 'snapper':
         this.snapper = value as Snapper;
-        this.snapper.setText(this.text, this.annotationAdapter.startOffset);
+        this.snapper.setText(this.text, this.startOffset);
         break;
       default:
         console.warn('Unsupported config key:', value);
