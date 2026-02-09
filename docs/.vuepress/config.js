@@ -4,7 +4,6 @@ import { defineUserConfig } from 'vuepress';
 import { hopeTheme } from 'vuepress-theme-hope';
 import { fileURLToPath } from 'node:url';
 import componentsSideBar from '../components/typedoc_sidebar.json';
-import apiSideBar from '../api/typedoc-sidebar.json';
 
 export default defineUserConfig({
   base: 'annotated-text',
@@ -50,16 +49,6 @@ export default defineUserConfig({
         link: '/',
       },
     ],
-    sidebar: [
-      componentsSideBar,
-
-      {
-        text: 'api',
-        children: apiSideBar,
-        link: '/api/globals.md',
-        extended: false,
-        collapsible: true,
-      },
-    ].flat(),
+    sidebar: [componentsSideBar].flat(),
   }),
 });

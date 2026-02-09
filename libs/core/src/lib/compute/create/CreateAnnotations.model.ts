@@ -4,12 +4,12 @@ import { type AnnotationEventType, type ErrorEventCallback, type EventCallback }
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
-  AnnotationStyleParams
+  type AnnotationStyleParams
 } from '../../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer/annotation-render';
 import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
 import { type tagLabelFn } from '../../tag/TagRenderer';
-import { StyleInstances } from '../../adapter/annotation/style/style-instances';
+import { type StyleInstances } from '../../adapter/annotation/style/style-instances';
 
 /**
  * Create annotation is a factory function that creates an annotation model.
