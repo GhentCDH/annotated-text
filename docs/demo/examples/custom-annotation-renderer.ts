@@ -76,6 +76,7 @@ const createUnderlineWithCaps: createAnnotationPathFn = (
 export class MyUnderLineAnnotationRenderer extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
+  readonly renderTag: true;
   fillBg = false;
 
   static instance = 'my-underline-renderer';
@@ -119,6 +120,7 @@ const createWavesPath: createAnnotationPathFn = (params: PathParams) => {
 export class WavesAnnotationRenderer extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
+  readonly renderTag = false;
 
   static instance = 'my-waves-renderer';
 
@@ -135,6 +137,7 @@ export class WavesAnnotationRenderer extends SvgAnnotationRender<any> {
 export class SketchyRender extends SvgAnnotationRender<any> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
+  readonly renderTag = false;
 
   static instance = 'my-sketchy-renderer';
 

@@ -7,8 +7,11 @@ import {
 } from '../annotation-render';
 import type { TextAnnotation } from '../../../../model';
 import { type AnnotationModule } from '../../../../di/annotation.module';
-import { AnnotationAdapterToken, TextAdapterToken } from '../../../../di/tokens';
-import { SvgModel } from '../../../../compute/model/svg.types';
+import {
+  AnnotationAdapterToken,
+  TextAdapterToken,
+} from '../../../../di/tokens';
+import { SvgModel } from '../../../../compute/model/svg.types'; // Mock the Debugger module
 
 // Mock the Debugger module
 vi.mock('../../../../utils/debugger', () => ({
@@ -35,6 +38,7 @@ interface TestStyle extends AnnotationRenderStyle {
 class MockRenderer extends AnnotationRender<AnnotationRenderStyle> {
   weightOrder = 1;
   isGutter: boolean;
+  renderTag: boolean;
 
   constructor(name: string, options: { isGutter?: boolean } = {}) {
     super(name, {}, DefaultAnnotationRenderStyle);
@@ -141,13 +145,14 @@ describe('RenderInstances', () => {
     });
 
     it('should return only gutter renderers', () => {
-      const gutterRenderer = new MockRenderer('margin-note', { isGutter: true });
+      const gutterRenderer = new MockRenderer('margin-note', {
+        isGutter: true,
+      });
       const textRenderer = new MockRenderer('highlight', { isGutter: false });
 
-      (mockModule.getAllRenderInstances as ReturnType<typeof vi.fn>).mockReturnValue([
-        gutterRenderer,
-        textRenderer,
-      ]);
+      (
+        mockModule.getAllRenderInstances as ReturnType<typeof vi.fn>
+      ).mockReturnValue([gutterRenderer, textRenderer]);
 
       const renders = new RenderInstances(mockModule);
       const gutterRenders = renders.getGutterRenders();
@@ -168,13 +173,13 @@ describe('RenderInstances', () => {
     it('should return only non-gutter renderers', () => {
       const textRenderer1 = new MockRenderer('highlight', { isGutter: false });
       const textRenderer2 = new MockRenderer('underline', { isGutter: false });
-      const gutterRenderer = new MockRenderer('margin-note', { isGutter: true });
+      const gutterRenderer = new MockRenderer('margin-note', {
+        isGutter: true,
+      });
 
-      (mockModule.getAllRenderInstances as ReturnType<typeof vi.fn>).mockReturnValue([
-        textRenderer1,
-        textRenderer2,
-        gutterRenderer,
-      ]);
+      (
+        mockModule.getAllRenderInstances as ReturnType<typeof vi.fn>
+      ).mockReturnValue([textRenderer1, textRenderer2, gutterRenderer]);
 
       const renders = new RenderInstances(mockModule);
       const textRenders = renders.getTextRenders();
@@ -193,13 +198,18 @@ describe('RenderInstances', () => {
         const customModule = createMockAnnotationModule({
           renderFn: (ann) => ann.type,
         });
-        (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(true);
+        (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
+          true,
+        );
         (customModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(
           underlineRenderer,
         );
 
         const renders = new RenderInstances(customModule);
-        const result = renders.getRenderer({ id: '1', type: 'underline' } as any);
+        const result = renders.getRenderer({
+          id: '1',
+          type: 'underline',
+        } as any);
 
         expect(result).toBe(underlineRenderer);
       });
@@ -211,7 +221,9 @@ describe('RenderInstances', () => {
         const customModule = createMockAnnotationModule({
           renderFn: () => null,
         });
-        (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(true);
+        (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
+          true,
+        );
         (customModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(
           defaultRenderer,
         );
@@ -238,7 +250,10 @@ describe('RenderInstances', () => {
         );
 
         const renders = new RenderInstances(customModule);
-        const result = renders.getRenderer({ id: '1', type: 'non-existent' } as any);
+        const result = renders.getRenderer({
+          id: '1',
+          type: 'non-existent',
+        } as any);
 
         expect(result).toBe(defaultRenderer);
       });
@@ -250,7 +265,9 @@ describe('RenderInstances', () => {
           renderFn: () => null,
           defaultRenderer: 'non-existent-default',
         });
-        (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(false);
+        (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
+          false,
+        );
 
         const renders = new RenderInstances(customModule);
 
@@ -263,7 +280,9 @@ describe('RenderInstances', () => {
     describe('when no renderFn is provided', () => {
       it('should use default renderer', () => {
         const defaultRenderer = new MockRenderer('highlight');
-        (mockModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(true);
+        (mockModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
+          true,
+        );
         (mockModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(
           defaultRenderer,
         );
@@ -293,7 +312,9 @@ describe('RenderInstances', () => {
   describe('createDraws', () => {
     it('should call createDraws on the correct renderer', () => {
       const renderer = new MockRenderer('highlight');
-      (mockModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(renderer);
+      (mockModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(
+        renderer,
+      );
 
       const renders = new RenderInstances(mockModule);
 
@@ -315,7 +336,9 @@ describe('RenderInstances', () => {
       };
       const renderer = new MockRenderer('highlight');
       renderer.createDraws.mockReturnValue(expectedDraws);
-      (mockModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(renderer);
+      (mockModule.injectRender as ReturnType<typeof vi.fn>).mockReturnValue(
+        renderer,
+      );
 
       const renders = new RenderInstances(mockModule);
       const result = renders.createDraws({
@@ -329,12 +352,13 @@ describe('RenderInstances', () => {
       const highlightRenderer = new MockRenderer('highlight');
       const underlineRenderer = new MockRenderer('underline');
 
-      (mockModule.injectRender as ReturnType<typeof vi.fn>)
-        .mockImplementation((name: string) => {
+      (mockModule.injectRender as ReturnType<typeof vi.fn>).mockImplementation(
+        (name: string) => {
           if (name === 'highlight') return highlightRenderer;
           if (name === 'underline') return underlineRenderer;
           throw new Error(`Renderer not found: ${name}`);
-        });
+        },
+      );
 
       const renders = new RenderInstances(mockModule);
 
@@ -356,16 +380,17 @@ describe('RenderInstances', () => {
   describe('complex scenarios', () => {
     it('should handle mixed gutter and text renderers correctly', () => {
       const textRenderer = new MockRenderer('highlight', { isGutter: false });
-      const gutterRenderer = new MockRenderer('margin-note', { isGutter: true });
+      const gutterRenderer = new MockRenderer('margin-note', {
+        isGutter: true,
+      });
 
       const customModule = createMockAnnotationModule({
         renderFn: (ann) => ann.renderType ?? ann.type,
       });
 
-      (customModule.getAllRenderInstances as ReturnType<typeof vi.fn>).mockReturnValue([
-        textRenderer,
-        gutterRenderer,
-      ]);
+      (
+        customModule.getAllRenderInstances as ReturnType<typeof vi.fn>
+      ).mockReturnValue([textRenderer, gutterRenderer]);
 
       const renders = new RenderInstances(customModule);
 
@@ -388,20 +413,29 @@ describe('RenderInstances', () => {
         defaultRenderer: 'underline',
       });
 
-      (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(true);
-      (customModule.injectRender as ReturnType<typeof vi.fn>)
-        .mockImplementation((name: string) => {
-          if (name === 'highlight') return highlight;
-          if (name === 'margin-note') return marginNote;
-          if (name === 'underline') return underline;
-          throw new Error(`Renderer not found: ${name}`);
-        });
+      (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
+        true,
+      );
+      (
+        customModule.injectRender as ReturnType<typeof vi.fn>
+      ).mockImplementation((name: string) => {
+        if (name === 'highlight') return highlight;
+        if (name === 'margin-note') return marginNote;
+        if (name === 'underline') return underline;
+        throw new Error(`Renderer not found: ${name}`);
+      });
 
       const renders = new RenderInstances(customModule);
 
-      expect(renders.getRenderer({ id: '1', type: 'important' } as any)).toBe(highlight);
-      expect(renders.getRenderer({ id: '2', type: 'note' } as any)).toBe(marginNote);
-      expect(renders.getRenderer({ id: '3', type: 'other' } as any)).toBe(underline);
+      expect(renders.getRenderer({ id: '1', type: 'important' } as any)).toBe(
+        highlight,
+      );
+      expect(renders.getRenderer({ id: '2', type: 'note' } as any)).toBe(
+        marginNote,
+      );
+      expect(renders.getRenderer({ id: '3', type: 'other' } as any)).toBe(
+        underline,
+      );
     });
   });
 });

@@ -78,10 +78,6 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
   const annotatedText = createAnnotatedText(id, {
     text: { textOffset: params.offset ?? 0 },
     annotation: {
-      tagConfig: {
-        enabled: params.tags ?? false,
-        tagFn: (a: any) => (a.renderer ? '' : a.label || 'new one'),
-      },
       edit: params.edit ?? false,
       create: params.create ?? false,
       render: {
@@ -96,6 +92,7 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
   })
     .setText(text)
     .setAnnotations(annotations)
+    .setTagLabelFn((a) => (a.renderer ? '' : a.label || 'new one'))
     .on('annotation-create--start', (e) => {
       writeLog(e.event, e.data.annotation);
     })
@@ -155,4 +152,4 @@ const createWithActions = (_id: CrudIdKeys, title: string) => {
   actionsRendered.demo.append(actionsDiv);
 };
 
-// createWithActions('actions', 'actions');
+createWithActions('actions', 'actions');

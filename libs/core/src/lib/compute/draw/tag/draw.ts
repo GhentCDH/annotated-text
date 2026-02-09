@@ -6,16 +6,6 @@ import {
   type TextAnnotation,
 } from '../../../model';
 import { type AnnotationSvg, SVG_ID, SVG_ROLE } from '../../model/svg.types';
-import { type TagConfig } from '../../../adapter/annotation/DefaultTag';
-import { type AnnotationAdapter } from '../../../adapter/annotation';
-import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
-
-const defaultParams = memoize((tagConfig: TagConfig<any>) => {
-  const fontSize = `${tagConfig.fontSize || 12}px`;
-  const padding = tagConfig.padding;
-
-  return { fontSize, padding };
-});
 
 const calculateTextDimensions = memoize(
   (x, y, textWidth, textHeight, padding) => {
@@ -51,23 +41,14 @@ const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
   return { textWidth, textHeight };
 };
 
-export const drawTag = <ANNOTATION extends BaseAnnotation>(
-  internalEventListener: InternalEventListener,
-  annotationAdapter: AnnotationAdapter<ANNOTATION>,
+export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
   tagSvg: AnnotationSvg,
   annotation: TextAnnotation,
 ) => {
-  internalEventListener.sendEvent('annotation--remove-tag', {
-    annotationUuid: annotation.id,
-  });
-
-  const tagConfig = annotationAdapter.tagConfig;
-  if (!tagConfig.enabled) return;
-
+  const tagConfig = annotation._tagMetadata;
+  if (!tagConfig) return;
   const annotationDimensions = annotation._drawMetadata
     .dimensions as AnnotationDimension;
-
-  if (!annotationDimensions) return;
 
   const color = annotation._drawMetadata.color as AnnotationDrawColors;
 
@@ -82,13 +63,11 @@ export const drawTag = <ANNOTATION extends BaseAnnotation>(
     .attr(SVG_ID.ANNOTATION_UID, annotation.id)
     .attr(SVG_ID.ANNOTATION_ROLE, SVG_ROLE.TAG);
 
-  const { fontSize, padding } = defaultParams(tagConfig);
-  const text = annotationAdapter.tagLabel(annotation);
-
-  if (!text) return;
+  const fontSize = `${tagConfig.fontSize}px`;
+  const padding = tagConfig.padding;
 
   const { textWidth, textHeight } = calculateTextWidth(
-    text,
+    tagConfig.label,
     tagGroup,
     tagConfig.fontSize,
   );
@@ -137,5 +116,5 @@ export const drawTag = <ANNOTATION extends BaseAnnotation>(
     .attr('font-size', fontSize)
     .attr('pointer-events', 'none')
     .attr('fill', color.tag.text!)
-    .text(text);
+    .text(tagConfig.label);
 };

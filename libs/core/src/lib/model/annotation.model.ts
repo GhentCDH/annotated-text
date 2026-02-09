@@ -1,7 +1,10 @@
 import { z } from 'zod/v4';
 import { annotationColorSchema } from './annotation.color';
 import { textLineSchema } from './line.model';
-import { annotationDrawMetadataSchema } from './draw.model';
+import {
+  annotationDrawMetadataSchema,
+  tagDrawMetadataSchema,
+} from './draw.model';
 
 export const annotationTargetSchema = z.union([
   z.literal('gutter'),
@@ -43,12 +46,14 @@ export const renderSchema = z.object({
   render: z.string(), // Name of the renderer
   style: renderStyleSchema,
   lines: z.array(textLineSchema).default([]),
+  tag: z.string().optional().nullish(),
 });
 export type TextRender = z.infer<typeof renderSchema>;
 
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,
   _drawMetadata: annotationDrawMetadataSchema,
+  _tagMetadata: tagDrawMetadataSchema.nullish(),
 });
 
 export type TextAnnotation = z.infer<typeof textAnnotationSchema>;

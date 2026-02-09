@@ -16,6 +16,7 @@ import { ExternalEventSender } from '../events/send-event';
 import { DrawText } from '../compute/draw/text/DrawText';
 import { MainContainer } from '../compute/model/maincontainer';
 import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
+import { TagRenderer } from '../tag/TagRenderer';
 
 /**
  * Configuration required to create an AnnotationModule.
@@ -86,7 +87,8 @@ export class AnnotationModule {
       .register(Draw, () => new Draw(this))
       .register(DrawAnnotation, () => new DrawAnnotation(this))
       .register(DrawText, () => new DrawText(this))
-      .register(RenderInstances, () => new RenderInstances(this));
+      .register(RenderInstances, () => new RenderInstances(this))
+      .register(TagRenderer, () => new TagRenderer(this));
 
     this.container.register(MainContainer, () => new MainContainer(this));
 

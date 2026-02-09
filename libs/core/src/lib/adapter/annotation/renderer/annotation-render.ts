@@ -137,6 +137,16 @@ export abstract class AnnotationRender<
   abstract isGutter: boolean;
 
   /**
+   * Indicates whether this renderer should render the tag of the annotation.
+   *
+   * - true: The renderer is responsible for rendering the annotation's tag (label)
+   * - false: The tag will not be renderer by this renderer, allowing for separate tag renderers or no tags at all
+   *
+   * @default false
+   */
+  abstract renderTag: boolean;
+
+  /**
    * Creates a new annotation renderer with the specified default style.
    *
    * The defaultStyle is deep cloned to ensure isolation between instances.

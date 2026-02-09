@@ -1,7 +1,6 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
 import { type RenderParams } from './renderer/annotation-render';
-import { DefaultTagConfig, type TagConfig } from './DefaultTag';
 import { StyleInstances } from './style/style-instances';
 import { type AnnotationStyleParams } from './style';
 import { AnnotationCache } from './AnnotationCache';
@@ -27,6 +26,7 @@ import type { Snapper } from '../text';
 import { DefaultSnapper } from '../text';
 import { type DeepPartial } from '../../deep-partial.type';
 import { type AnnotationModule } from '../../di/annotation.module';
+import { TagRenderer } from '../../tag/TagRenderer';
 
 /**
  * @deprecated
@@ -60,9 +60,9 @@ export abstract class AnnotationAdapter<
    * Configuration for styling the annotations, can be used to override default styles.
    */
   public config?: AnnotationConfig;
-  public tagConfig: TagConfig<ANNOTATION>;
   public renderParams: Partial<RenderParams<ANNOTATION>>;
   public styleInstance: StyleInstances<ANNOTATION>;
+  private tagRenderer: TagRenderer<ANNOTATION>;
 
   protected text = '';
   protected offsetStart = 0;
@@ -86,10 +86,12 @@ export abstract class AnnotationAdapter<
   abstract _parse(annotation: ANNOTATION): Annotation | null;
 
   protected renderInstance: RenderInstances<ANNOTATION>;
+
   override setModule(module: AnnotationModule) {
     super.setModule(module);
     this.renderInstance =
       this.inject<RenderInstances<ANNOTATION>>(RenderInstances);
+    this.tagRenderer = this.inject<TagRenderer<ANNOTATION>>(TagRenderer);
   }
 
   public parse(annotation: ANNOTATION): TextAnnotation | null {
@@ -117,6 +119,7 @@ export abstract class AnnotationAdapter<
     const textAnnotation = textAnnotationSchema.parse({
       ...parsedAnnotation,
       _render: renderParams,
+      _tagMetadata: this.tagRenderer.getTagConfig(annotation, renderInstance),
       _drawMetadata,
     });
 
@@ -137,14 +140,6 @@ export abstract class AnnotationAdapter<
     isNew: boolean,
     hasChanged: boolean,
   ): ANNOTATION | null;
-
-  /**
-   * Get the tag label of the annotation, it uses the tag function to determine the tag label.
-   * @param annotation
-   */
-  tagLabel(annotation: Pick<TextAnnotation, 'id'>) {
-    return this.tagConfig.tagFn(this.getOriginalAnnotation(annotation.id));
-  }
 
   /**
    *  If return true, then on hover it becomes the active color
@@ -213,7 +208,7 @@ export abstract class AnnotationAdapter<
   }
 
   // @region annotation  cache
-  protected getOriginalAnnotation(annotationId: AnnotationId): ANNOTATION {
+  getOriginalAnnotation(annotationId: AnnotationId): ANNOTATION {
     return this.annotationCache.getOriginalAnnotation(annotationId);
   }
 
@@ -282,7 +277,6 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
   snapper?: Snapper;
-  tagConfig?: Partial<TagConfig<ANNOTATION>>;
   render?: Partial<RenderParams<ANNOTATION>>;
   style?: Partial<AnnotationStyleParams<ANNOTATION>>;
 };
@@ -299,10 +293,6 @@ export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.snapper = params.snapper ?? new DefaultSnapper();
-  adapter.tagConfig = merge(
-    cloneDeep(DefaultTagConfig),
-    params.tagConfig ?? {},
-  );
   adapter.renderParams = params.render ?? {};
 
   adapter.styleInstance = new StyleInstances<ANNOTATION>(params.style);
