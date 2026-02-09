@@ -14,7 +14,7 @@ const _textToLines = memoize(
     let start = startOffset;
 
     return lines.map((textLine, index) => {
-      // Add additional 1 because the \n symbol consist of 2 characters
+      // Add 1 to account for the newline character separating this line from the next
       const end = start + textLine.length + 1;
       const line = textLineSchema.parse({
         lineNumber: index,
