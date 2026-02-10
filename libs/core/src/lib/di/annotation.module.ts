@@ -7,7 +7,7 @@ import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { DefaultSnapper, PlainTextAdapter, SnapperToken, TextAdapter } from '../adapter/text';
+import { DefaultSnapper, PlainTextAdapter, SnapperToken, type TextAdapter } from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';

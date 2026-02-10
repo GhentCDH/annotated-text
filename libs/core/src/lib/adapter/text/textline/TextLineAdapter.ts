@@ -1,5 +1,5 @@
 import { _textToLines } from './text_utilities';
-import { type Limit, TextAdapter, TextAdapterParams } from '../TextAdapter';
+import { type Limit, TextAdapter, type TextAdapterParams } from '../TextAdapter';
 import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 

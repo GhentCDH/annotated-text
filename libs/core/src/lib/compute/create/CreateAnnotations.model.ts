@@ -1,5 +1,5 @@
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type Snapper, TextAdapter, TextAdapterParams } from '../../adapter/text';
+import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
 import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import {
   type ANNOTATION_CONFIG_KEYS,

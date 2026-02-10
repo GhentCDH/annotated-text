@@ -4,7 +4,7 @@ import {
   type Snapper,
   SnapperToken,
   type TextAdapter,
-  TextAdapterParams,
+  type TextAdapterParams,
 } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
