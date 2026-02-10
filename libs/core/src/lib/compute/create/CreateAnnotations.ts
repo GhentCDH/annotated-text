@@ -3,9 +3,8 @@ import { EventListener } from '../../events/event.listener';
 import {
   type Snapper,
   SnapperToken,
-  type TEXT_CONFIG_KEYS,
-  type TEXT_CONFIG_VALUES,
   type TextAdapter,
+  TextAdapterParams,
 } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
@@ -35,6 +34,7 @@ import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
+import { setTextAdapter } from '../../adapter/SetAdapter';
 
 const document = globalThis.document || null;
 
@@ -52,11 +52,9 @@ export class CreateAnnotationsImpl<
 
   constructor(
     private readonly id: string,
-    private readonly textAdapter: TextAdapter,
     private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
   ) {
     this.annotationModule = new AnnotationModule(rootContainer, {
-      textAdapter,
       annotationAdapter,
     });
 
@@ -67,9 +65,6 @@ export class CreateAnnotationsImpl<
     const internalEventListener = this.annotationModule.inject(
       InternalEventListener,
     );
-
-    annotationAdapter.setConfigListener(this.configListener());
-    textAdapter.setConfigListener(this.configListener());
 
     this.eventListener = this.annotationModule.inject(
       EventListener,
@@ -117,12 +112,6 @@ export class CreateAnnotationsImpl<
       .on('redraw-svg', () => {
         this.redrawSvg();
       });
-  }
-
-  private configListener() {
-    return () => {
-      this.setAnnotations(this.annotations());
-    };
   }
 
   private annotations() {
@@ -253,11 +242,9 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
-  changeTextAdapterConfig<KEY extends TEXT_CONFIG_KEYS>(
-    key: KEY,
-    value: TEXT_CONFIG_VALUES<KEY>,
-  ): this {
-    this.textAdapter.setConfig(key, value);
+  setTextAdapter(adapterOrParams: TextAdapter | TextAdapterParams): this {
+    setTextAdapter(this.annotationModule, adapterOrParams);
+    this.recalculate();
     return this;
   }
 

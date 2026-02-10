@@ -2,8 +2,9 @@ import { type Token } from './container';
 import { type AnnotationModule } from './annotation.module';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
-import { type TextAdapter, TextAdapterToken } from '../adapter/text';
-import { type AnnotationAdapter, AnnotationAdapterToken } from '../adapter/annotation';
+import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
+import { type TextAdapter } from '../adapter/text';
+import { type AnnotationAdapter } from '../adapter/annotation';
 import { type Annotation, type BaseAnnotation } from '../model';
 
 /**

@@ -7,7 +7,7 @@ import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { DefaultSnapper, SnapperToken, type TextAdapter } from '../adapter/text';
+import { DefaultSnapper, PlainTextAdapter, SnapperToken, TextAdapter } from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
@@ -23,8 +23,6 @@ import { StyleInstances } from '../adapter/annotation/style/style-instances';
  * Configuration required to create an AnnotationModule.
  */
 export type AnnotationModuleConfig = {
-  /** Adapter for accessing and manipulating text content */
-  textAdapter: TextAdapter;
   /** Adapter for managing annotation data */
   annotationAdapter: AnnotationAdapter<any>;
 };
@@ -76,7 +74,7 @@ export class AnnotationModule {
 
     // Register adapters provided by the configuration
     this.container
-      .register(TextAdapterToken, () => config.textAdapter)
+      .register(TextAdapterToken, PlainTextAdapter)
       .register(AnnotationAdapterToken, () => config.annotationAdapter);
 
     // Register services that extend BaseAnnotationDi (need reference to this module)
@@ -94,9 +92,8 @@ export class AnnotationModule {
       .register(SnapperToken, () => new DefaultSnapper());
 
     this.container.register(MainContainer, () => new MainContainer(this));
-
-    config.textAdapter.setModule(this);
-    config.annotationAdapter.setModule(this);
+    this.inject<TextAdapter>(TextAdapterToken).setModule(this);
+    this.inject<AnnotationAdapter<any>>(AnnotationAdapterToken).setModule(this);
   }
 
   /**

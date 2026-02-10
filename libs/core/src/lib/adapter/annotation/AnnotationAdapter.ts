@@ -35,11 +35,10 @@ const config = {
 };
 export type AnnotationConfig = typeof config;
 
-export const AnnotationAdapterToken = 'ANNOTATION_ADAPTER';
-
 export abstract class AnnotationAdapter<
   ANNOTATION extends BaseAnnotation,
-> extends BaseAdapter {
+  PARAMS extends createAnnotationAdapterParams = createAnnotationAdapterParams,
+> extends BaseAdapter<PARAMS> {
   private readonly annotationCache = new AnnotationCache<ANNOTATION>();
   /**
    * If true, creation of annotations is enabled.
@@ -187,12 +186,18 @@ export abstract class AnnotationAdapter<
         break;
       case 'config':
         this.config = merge(cloneDeep(config), value);
-        this.changeConfig();
         break;
       default:
         console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
     }
+  }
+
+  override setParams(params: PARAMS) {
+    this.edit = params.edit ?? this.edit;
+    this.create = params.create ?? this.create;
+    this.config = merge(cloneDeep(this.config ?? config), params.config);
+    this.startOffset = params.startOffset ?? this.startOffset;
   }
 
   // @region annotation  cache

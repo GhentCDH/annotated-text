@@ -1,19 +1,13 @@
 import { drag } from 'd3';
 import { EditAnnotation } from './edit.annotations';
 import { EventAnnotations } from './EventAnnotation';
-import {
-  type AnnotationAdapter,
-  AnnotationAdapterToken,
-} from '../../../adapter';
+import { type AnnotationAdapter } from '../../../adapter';
 import { SVG_ID, SvgModel } from '../../model/svg.types';
-import {
-  type AnnotationDraw,
-  type Dimensions,
-  type TextAnnotation,
-} from '../../../model';
+import { type AnnotationDraw, type Dimensions, type TextAnnotation } from '../../../model';
 import { type Position } from '../types';
 import { DrawText } from '../text/DrawText';
 import { type AnnotationModule } from '../../../di/annotation.module';
+import { AnnotationAdapterToken } from '../../../di/tokens';
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,

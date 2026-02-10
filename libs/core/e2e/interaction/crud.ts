@@ -75,23 +75,19 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
   };
 
   // Basic text setup
-  const annotatedText = createAnnotatedText(id, {
-    text: { textOffset: params.offset ?? 0 },
+  const annotatedText = createAnnotatedText<any>(id, {
     annotation: {
       edit: params.edit ?? false,
       create: params.create ?? false,
-      render: {
-        renderFn: (a: any) => a.renderer,
-      },
-      style: {
-        styleFn: (a: any) => ({
-          color: createAnnotationColor(a.color),
-        }),
-      },
+      startOffset: params.offset ?? 0,
     },
   })
     .setText(text)
     .setAnnotations(annotations)
+    .setStyleParams({
+      styleFn: (a: any) => ({ color: createAnnotationColor(a.color) }),
+    })
+    .setRenderParams({ renderFn: (a) => a.renderer })
     .setTagLabelFn((a) => (a.renderer ? '' : a.label || 'new one'))
     .on('annotation-create--start', (e) => {
       writeLog(e.event, e.data.annotation);

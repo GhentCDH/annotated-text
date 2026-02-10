@@ -4,16 +4,12 @@ import type { BaseAnnotation } from '../../model';
 import {
   AnnotationAdapter,
   type createAnnotationAdapterParams,
-  type createTextAdapterParams,
   DefaultAnnotationAdapter,
-  PlainTextAdapter,
-  TextAdapter,
 } from '../../adapter';
 import type { Annotation } from '../../model/';
 import { Debugger } from '../../utils/debugger';
 
 type createAnnotatedTextParams<ANNOTATION extends BaseAnnotation> = {
-  text?: TextAdapter | createTextAdapterParams;
   annotation?: AnnotationAdapter<ANNOTATION> | createAnnotationAdapterParams;
 };
 
@@ -34,12 +30,6 @@ export const createAnnotatedText = <
 
     return annotatedTextCache.get(id) as AnnotatedText<ANNOTATION>;
   }
-  let textAdapter: TextAdapter;
-  if (params.text instanceof TextAdapter) {
-    textAdapter = params.text;
-  } else {
-    textAdapter = PlainTextAdapter(params.text ?? {}) as TextAdapter;
-  }
 
   let annotationAdapter: AnnotationAdapter<ANNOTATION>;
   if (params.annotation instanceof AnnotationAdapter) {
@@ -52,7 +42,6 @@ export const createAnnotatedText = <
 
   const annotatedImpl = new CreateAnnotationsImpl<ANNOTATION>(
     id,
-    textAdapter,
     annotationAdapter,
   ) as AnnotatedText<ANNOTATION>;
 

@@ -22,8 +22,9 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   constructor(
     private readonly sourceUri?: string,
     private readonly language?: string,
+    params: createAnnotationAdapterParams = {},
   ) {
-    super();
+    super(params);
   }
 
   _parse(annotation: W3CAnnotation): Annotation | null {
@@ -88,7 +89,7 @@ export const W3CAnnotationAdapter = (
   params: W3CAnnotationAdapterParams = {},
 ): AnnotationAdapter<W3CAnnotation> => {
   return createAnnotationAdapter(
-    new W3CAnnotationAdapterImpl(params.sourceUri, params.language),
+    new W3CAnnotationAdapterImpl(params.sourceUri, params.language, params),
     params,
   );
 };
