@@ -118,13 +118,10 @@ export class MyUnderLineAnnotationRenderer extends SvgAnnotationRender<any> {
 // Usage
 clearAnnotatedTextCache();
 
-createAnnotatedText("container", {
-  annotation: {
-    render: {
-      defaultRenderer: MyUnderLineAnnotationRenderer.instance,
-    },
-  },
-})
+createAnnotatedText("container")
+  .setRenderParams({
+    defaultRenderer: MyUnderLineAnnotationRenderer.instance,
+  })
   .registerRender(
     new MyUnderLineAnnotationRenderer(MyUnderLineAnnotationRenderer.instance)
   )

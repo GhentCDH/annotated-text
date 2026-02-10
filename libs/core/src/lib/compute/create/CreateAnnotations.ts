@@ -1,6 +1,8 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
 import {
+  type Snapper,
+  SnapperToken,
   type TEXT_CONFIG_KEYS,
   type TEXT_CONFIG_VALUES,
   type TextAdapter,
@@ -9,6 +11,7 @@ import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
+  type AnnotationStyleParams,
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
@@ -30,6 +33,8 @@ import { Draw } from '../draw/Draw';
 import { ExternalEventSender } from '../../events/send-event';
 import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { StyleInstances } from '../../adapter/annotation/style/style-instances';
 
 const document = globalThis.document || null;
 
@@ -128,6 +133,13 @@ export class CreateAnnotationsImpl<
     this.text = text || '';
     this.draw.initDraw(this.text, this.annotations());
     this.setAnnotations(this.annotations());
+
+    return this;
+  }
+
+  public setSnapper(snapper: Snapper) {
+    this.annotationModule.register(SnapperToken, () => snapper);
+    this.recalculate();
 
     return this;
   }
@@ -297,6 +309,12 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
+  setRenderParams(params: Partial<RenderInstances<ANNOTATION>>): this {
+    this.annotationModule.inject(RenderInstances).setParams(params);
+    this.recalculate();
+    return this;
+  }
+
   registerRender<STYLE extends AnnotationRenderStyle>(
     render: AnnotationRender<STYLE>,
   ) {
@@ -323,9 +341,19 @@ export class CreateAnnotationsImpl<
   }
 
   registerStyle(name: string, style: AnnotationStyle) {
-    this.annotationAdapter.styleInstance.registerStyle(name, style);
+    this.annotationModule
+      .inject<StyleInstances<ANNOTATION>>(StyleInstances)
+      .registerStyle(name, style);
     // TODO check if updated later the new render is used in the existing annotations
 
+    return this;
+  }
+
+  setStyleParams(params: Partial<AnnotationStyleParams<ANNOTATION>>): this {
+    this.annotationModule
+      .inject<StyleInstances<ANNOTATION>>(StyleInstances)
+      .setParams(params);
+    this.recalculate();
     return this;
   }
 

@@ -8,11 +8,10 @@ Renderers control how annotations are visually displayed on text. The library in
 Configure the default renderer when creating the annotated text instance:
 
 ```typescript
-createAnnotatedText(id, {
-  annotation: {
-    defaultRender: 'underline', // or 'highlight'
-  },
-});
+createAnnotatedText(id)
+  .setRenderParams({
+    defaultRenderer: 'underline', // or 'highlight'
+  });
 ```
 
 ## Assigning a Renderer to an Annotation

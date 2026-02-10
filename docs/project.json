@@ -4,17 +4,8 @@
   "projectType": "application",
   "sourceRoot": "docs",
   "targets": {
-    "build:typedoc": {
-      "executor": "nx:run-commands",
-      "inputs": ["{projectRoot}/**/*.ts", "!{projectRoot}/**/*.spec.ts"],
-      "outputs": ["{projectRoot}/.vuepress/api"],
-      "options": {
-        "command": "typedoc"
-      }
-    },
     "build:menu": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build:typedoc"],
       "options": {
         "command": "ts-node --project tools/tsconfig.tools.json tools/doc/vuepress.mjs"
       }
@@ -27,7 +18,7 @@
     },
     "build": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build:typedoc", "build:menu"],
+      "dependsOn": ["build:menu"],
       "options": {
         "command": "vuepress build docs"
       }
@@ -40,7 +31,7 @@
     },
     "serve": {
       "executor": "nx:run-commands",
-      "dependsOn": ["build:typedoc", "build:menu"],
+      "dependsOn": ["build:menu"],
       "options": {
         "command": "vuepress dev docs"
       }

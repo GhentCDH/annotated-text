@@ -1,11 +1,11 @@
 import {
-  Annotation,
-  AnnotationId,
+  type Annotation,
+  type AnnotationId,
   createAnnotatedText,
   getAnnotatedText,
-  TextLineAdapter,
+  TextLineAdapter
 } from '@ghentcdh/annotated-text';
-import { DemoAnnotation, greekText } from '../data';
+import { type DemoAnnotation, greekText } from '../data';
 
 const text = greekText.text;
 const annotations = greekText.annotations;
@@ -37,6 +37,8 @@ export const createAnnotatedTextWithLines = (
       edit: true,
     },
   })
+    .setRenderParams(greekText.annotationConfig.render)
+    .setStyleParams(greekText.annotationConfig.style)
     .setText(text)
     .setAnnotations(annotations);
 };

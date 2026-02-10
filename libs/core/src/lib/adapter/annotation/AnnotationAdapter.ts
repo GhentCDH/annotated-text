@@ -1,8 +1,6 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
-import { type RenderParams } from './renderer/annotation-render';
 import { StyleInstances } from './style/style-instances';
-import { type AnnotationStyleParams } from './style';
 import { AnnotationCache } from './AnnotationCache';
 import { RenderInstances } from './renderer/render-instances';
 import { BaseAdapter } from '../BaseAdapter';
@@ -21,12 +19,10 @@ import {
   textAnnotationSchema,
   type TextLine
 } from '../../model';
-
-import type { Snapper } from '../text';
-import { DefaultSnapper } from '../text';
 import { type DeepPartial } from '../../deep-partial.type';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { TagRenderer } from '../../tag/TagRenderer';
+import { type Snapper, SnapperToken } from '../text';
 
 /**
  * @deprecated
@@ -60,23 +56,16 @@ export abstract class AnnotationAdapter<
    * Configuration for styling the annotations, can be used to override default styles.
    */
   public config?: AnnotationConfig;
-  public renderParams: Partial<RenderParams<ANNOTATION>>;
-  public styleInstance: StyleInstances<ANNOTATION>;
   private tagRenderer: TagRenderer<ANNOTATION>;
 
   protected text = '';
   startOffset = 0;
 
-  /**
-   * Use a word snapper function to adjust the start and end indices of an annotation.
-   * @param action
-   * @param annotation
-   */
-  public snapper: Snapper = new DefaultSnapper();
-
   public setText(text: string) {
     this.text = text;
-    this.snapper.setText(text, this.startOffset);
+    this.annotationModule
+      .inject<Snapper>(SnapperToken)
+      .setText(text, this.startOffset);
   }
 
   /**
@@ -86,9 +75,12 @@ export abstract class AnnotationAdapter<
   abstract _parse(annotation: ANNOTATION): Annotation | null;
 
   protected renderInstance: RenderInstances<ANNOTATION>;
+  protected styleInstance: StyleInstances<ANNOTATION>;
 
   override setModule(module: AnnotationModule) {
     super.setModule(module);
+    this.styleInstance =
+      this.inject<StyleInstances<ANNOTATION>>(StyleInstances);
     this.renderInstance =
       this.inject<RenderInstances<ANNOTATION>>(RenderInstances);
     this.tagRenderer = this.inject<TagRenderer<ANNOTATION>>(TagRenderer);
@@ -197,10 +189,6 @@ export abstract class AnnotationAdapter<
         this.config = merge(cloneDeep(config), value);
         this.changeConfig();
         break;
-      case 'snapper':
-        this.snapper = value as Snapper;
-        this.snapper.setText(this.text, this.startOffset);
-        break;
       default:
         console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
@@ -272,11 +260,10 @@ export type ANNOTATION_CONFIG_KEYS = keyof CONFIG;
 export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
   CONFIG[K];
 
-export type createAnnotationAdapterParams<ANNOTATION> = {
+export type createAnnotationAdapterParams = {
   create?: boolean;
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
-  snapper?: Snapper;
   /**
    * Custom offset for text character indexing.
    *
@@ -299,13 +286,11 @@ export type createAnnotationAdapterParams<ANNOTATION> = {
    * startOffset: 100  // First character is at position 100
    */
   startOffset?: number;
-  render?: Partial<RenderParams<ANNOTATION>>;
-  style?: Partial<AnnotationStyleParams<ANNOTATION>>;
 };
 
 export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
   adapter: AnnotationAdapter<ANNOTATION>,
-  params: createAnnotationAdapterParams<ANNOTATION>,
+  params: createAnnotationAdapterParams,
 ): AnnotationAdapter<ANNOTATION> => {
   if (params.edit) {
     adapter.edit = params.edit;
@@ -315,10 +300,6 @@ export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
   }
   adapter.config = merge(cloneDeep(config), params.config);
   adapter.startOffset = params.startOffset ?? 0;
-  adapter.snapper = params.snapper ?? new DefaultSnapper();
-  adapter.renderParams = params.render ?? {};
-
-  adapter.styleInstance = new StyleInstances<ANNOTATION>(params.style);
 
   return adapter;
 };

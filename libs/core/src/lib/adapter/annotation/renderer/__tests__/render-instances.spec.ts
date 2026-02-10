@@ -1,16 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RenderInstances } from '../render-instances';
-import {
-  AnnotationRender,
-  type AnnotationRenderStyle,
-  DefaultAnnotationRenderStyle,
-} from '../annotation-render';
+import { AnnotationRender, type AnnotationRenderStyle, DefaultAnnotationRenderStyle } from '../annotation-render';
 import type { TextAnnotation } from '../../../../model';
 import { type AnnotationModule } from '../../../../di/annotation.module';
-import {
-  AnnotationAdapterToken,
-  TextAdapterToken,
-} from '../../../../di/tokens';
+import { AnnotationAdapterToken, TextAdapterToken } from '../../../../di/tokens';
 import { SvgModel } from '../../../../compute/model/svg.types'; // Mock the Debugger module
 
 // Mock the Debugger module
@@ -20,17 +13,6 @@ vi.mock('../../../../utils/debugger', () => ({
     warn: vi.fn(),
   },
 }));
-
-interface TestAnnotation {
-  id: string;
-  type: string;
-  renderType?: string;
-}
-
-interface TestStyle extends AnnotationRenderStyle {
-  opacity: number;
-  thickness: number;
-}
 
 /**
  * Creates a mock AnnotationRender for testing
@@ -55,10 +37,7 @@ class MockRenderer extends AnnotationRender<AnnotationRenderStyle> {
 /**
  * Creates a minimal mock AnnotationModule for testing
  */
-function createMockAnnotationModule(renderParams?: {
-  defaultRenderer?: string;
-  renderFn?: (ann: any) => string | null;
-}) {
+function createMockAnnotationModule() {
   // Create mock adapters
   const mockTextAdapter = {
     setModule: vi.fn(),
@@ -66,7 +45,6 @@ function createMockAnnotationModule(renderParams?: {
 
   const mockAnnotationAdapter = {
     setModule: vi.fn(),
-    renderParams: renderParams ?? {},
   };
 
   const mockSvgModel = {};
@@ -127,11 +105,10 @@ describe('RenderInstances', () => {
     });
 
     it('should return custom default renderer when set in adapter', () => {
-      const customModule = createMockAnnotationModule({
-        defaultRenderer: 'underline',
-      });
+      const customModule = createMockAnnotationModule();
 
       const renders = new RenderInstances(customModule);
+      renders.setParams({ defaultRenderer: 'underline' });
 
       expect(renders.defaultRenderer).toBe('underline');
     });
@@ -195,9 +172,7 @@ describe('RenderInstances', () => {
     describe('when renderFn returns a valid renderer name', () => {
       it('should return the matching renderer', () => {
         const underlineRenderer = new MockRenderer('underline');
-        const customModule = createMockAnnotationModule({
-          renderFn: (ann) => ann.type,
-        });
+        const customModule = createMockAnnotationModule();
         (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
           true,
         );
@@ -206,6 +181,7 @@ describe('RenderInstances', () => {
         );
 
         const renders = new RenderInstances(customModule);
+        renders.setParams({ renderFn: (ann: any) => ann.type });
         const result = renders.getRenderer({
           id: '1',
           type: 'underline',
@@ -218,9 +194,7 @@ describe('RenderInstances', () => {
     describe('when renderFn returns null/undefined', () => {
       it('should fall back to default renderer', () => {
         const defaultRenderer = new MockRenderer('highlight');
-        const customModule = createMockAnnotationModule({
-          renderFn: () => null,
-        });
+        const customModule = createMockAnnotationModule();
         (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
           true,
         );
@@ -229,6 +203,7 @@ describe('RenderInstances', () => {
         );
 
         const renders = new RenderInstances(customModule);
+        renders.setParams({ renderFn: () => null });
         const result = renders.getRenderer({ id: '1', type: 'any' } as any);
 
         expect(result).toBe(defaultRenderer);
@@ -238,10 +213,7 @@ describe('RenderInstances', () => {
     describe('when renderFn returns a non-existent renderer name', () => {
       it('should fall back to default renderer', () => {
         const defaultRenderer = new MockRenderer('highlight');
-        const customModule = createMockAnnotationModule({
-          renderFn: (ann) => ann.type,
-          defaultRenderer: 'highlight',
-        });
+        const customModule = createMockAnnotationModule();
         (customModule.hasRender as ReturnType<typeof vi.fn>)
           .mockReturnValueOnce(false) // First call for 'non-existent'
           .mockReturnValueOnce(true); // Second call for default
@@ -250,6 +222,10 @@ describe('RenderInstances', () => {
         );
 
         const renders = new RenderInstances(customModule);
+        renders.setParams({
+          renderFn: (ann: any) => ann.type,
+          defaultRenderer: 'highlight',
+        });
         const result = renders.getRenderer({
           id: '1',
           type: 'non-existent',
@@ -261,15 +237,16 @@ describe('RenderInstances', () => {
 
     describe('when default renderer is not found', () => {
       it('should throw an error', () => {
-        const customModule = createMockAnnotationModule({
-          renderFn: () => null,
-          defaultRenderer: 'non-existent-default',
-        });
+        const customModule = createMockAnnotationModule();
         (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
           false,
         );
 
         const renders = new RenderInstances(customModule);
+        renders.setParams({
+          renderFn: () => null,
+          defaultRenderer: 'non-existent-default',
+        });
 
         expect(() => {
           renders.getRenderer({ id: '1', type: 'test' } as any);
@@ -384,15 +361,15 @@ describe('RenderInstances', () => {
         isGutter: true,
       });
 
-      const customModule = createMockAnnotationModule({
-        renderFn: (ann) => ann.renderType ?? ann.type,
-      });
-
+      const customModule = createMockAnnotationModule();
       (
         customModule.getAllRenderInstances as ReturnType<typeof vi.fn>
       ).mockReturnValue([textRenderer, gutterRenderer]);
 
       const renders = new RenderInstances(customModule);
+      renders.setParams({
+        renderFn: (ann: any) => ann.renderType ?? ann.type,
+      });
 
       expect(renders.getTextRenders()).toHaveLength(1);
       expect(renders.getGutterRenders()).toHaveLength(1);
@@ -404,14 +381,7 @@ describe('RenderInstances', () => {
       const marginNote = new MockRenderer('margin-note', { isGutter: true });
       const underline = new MockRenderer('underline');
 
-      const customModule = createMockAnnotationModule({
-        renderFn: (ann) => {
-          if (ann.type === 'important') return 'highlight';
-          if (ann.type === 'note') return 'margin-note';
-          return null;
-        },
-        defaultRenderer: 'underline',
-      });
+      const customModule = createMockAnnotationModule();
 
       (customModule.hasRender as ReturnType<typeof vi.fn>).mockReturnValue(
         true,
@@ -426,6 +396,14 @@ describe('RenderInstances', () => {
       });
 
       const renders = new RenderInstances(customModule);
+      renders.setParams({
+        renderFn: (ann: any) => {
+          if (ann.type === 'important') return 'highlight';
+          if (ann.type === 'note') return 'margin-note';
+          return null;
+        },
+        defaultRenderer: 'underline',
+      });
 
       expect(renders.getRenderer({ id: '1', type: 'important' } as any)).toBe(
         highlight,

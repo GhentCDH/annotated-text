@@ -7,6 +7,7 @@ export type SnapperResult = {
 };
 
 export type SnapperAction = 'move-start' | 'move-end' | 'drag';
+export const SnapperToken = 'SNAPPER';
 
 export abstract class Snapper {
   abstract setText(text: string, offsetStart: number): void;

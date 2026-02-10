@@ -1,13 +1,14 @@
 import { type TextAnnotation } from '../../../model';
-import { type AnnotationAdapter } from '../../../adapter';
 import { type Position } from '../types';
 import {
   type CharacterPositionResult,
   getCharacterStartEndPosition,
 } from '../../position';
-import { type InternalEventListener } from '../../../events/internal/internal.event.listener';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { type Snapper, SnapperToken } from '../../../adapter/text';
 
-export class CreateAnnotation {
+export class CreateAnnotation extends BaseAnnotationDi {
   private startIndex: number;
   private drawing = false;
   private drawingAndMove = false;
@@ -15,12 +16,13 @@ export class CreateAnnotation {
   private prevEndIndex: number | null = null;
 
   constructor(
-    private readonly internalEventListener: InternalEventListener,
-    private readonly annotationAdapter: AnnotationAdapter<any>,
+    annotationModule: AnnotationModule,
     private readonly getCharacterFromTextNodesAtPoint: (
       position: Position,
     ) => CharacterPositionResult | null,
-  ) {}
+  ) {
+    super(annotationModule);
+  }
 
   startCreate(position: Position, event: any) {
     if (!this.annotationAdapter.create) return;
@@ -124,7 +126,8 @@ export class CreateAnnotation {
     dummyAnnotation.start = start;
     dummyAnnotation.end = end;
 
-    const snapper = this.annotationAdapter.snapper.fixOffset(dummyAnnotation);
+    const snapper =
+      this.inject<Snapper>(SnapperToken).fixOffset(dummyAnnotation);
     dummyAnnotation.start = snapper.start;
     dummyAnnotation.end = snapper.end;
 

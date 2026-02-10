@@ -10,11 +10,8 @@ This improves the consistency and readability of text highlights, preventing awk
 import { WordSnapper } from '@ghentcdh/annotated-text';
 
 // Create an annotated text with word snapping enabled
-createAnnotatedText(id, {
-  annotation: {
-    snapper: new WordSnapper(),
-  },
-})
+createAnnotatedText(id)
+  .setSnapper(new WordSnapper())
   .setText(text)
   .setAnnotations(annotations);
 ```

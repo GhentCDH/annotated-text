@@ -64,7 +64,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
 }
 
 export const DefaultAnnotationAdapter = (
-  params: createAnnotationAdapterParams<Annotation> = {},
+  params: createAnnotationAdapterParams = {},
 ): AnnotationAdapter<Annotation> => {
   return createAnnotationAdapter(new DefaultAnnotationAdapterImpl(), params);
 };

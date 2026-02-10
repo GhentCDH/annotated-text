@@ -5,21 +5,22 @@ import {
   type TextAnnotation,
   textAnnotationSchema,
 } from '../../../model';
-import type { InternalEventListener } from '../../../events/internal/internal.event.listener';
 import type { Position, StartEnd } from '../types';
-import { type AnnotationAdapter } from '../../../adapter';
 import { DUMMY_UID } from '../../model/svg.types';
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { type Snapper, SnapperToken } from '../../../adapter/text';
 
-export abstract class AbstractAnnotationEventEdit {
+export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;
   protected dummyAnnotation: TextAnnotation;
   protected readonly originalStartEnd: StartEnd;
 
   constructor(
-    protected readonly annotationAdapter: AnnotationAdapter<any>,
-    protected readonly internalEventListener: InternalEventListener,
+    annotationModule: AnnotationModule,
     props: Partial<{ annotation: TextAnnotation }> = {},
   ) {
+    super(annotationModule);
     this.annotation = props.annotation ?? null;
     this.originalStartEnd = {
       start: this.annotation?.start,
@@ -95,12 +96,15 @@ export abstract class AbstractAnnotationEventEdit {
 
     dummyAnnotation._render.weight = annotation._render.weight! + 1;
 
-    let snapper = this.annotationAdapter.snapper.fixOffset(dummyAnnotation);
+    const fixOffset =
+      this.annotationModule.inject<Snapper>(SnapperToken).fixOffset;
+
+    let snapper = fixOffset(dummyAnnotation);
 
     if (snapper.end < snapper.start) {
       // Try snapping the other side if the end is before the start
       dummyAnnotation.start = snapper.start;
-      snapper = this.annotationAdapter.snapper.fixOffset(dummyAnnotation);
+      snapper = fixOffset(dummyAnnotation);
     }
 
     if (snapper.end <= snapper.start) {
