@@ -21,11 +21,12 @@ const renderDemo = (
   renderDemoDiv(title, id);
 
   // Basic text setup
-  return createAnnotatedText(id, {
-    text: TextLineAdapter({
-      limit,
-    }),
-  })
+  return createAnnotatedText(id)
+    .setTextAdapter(
+      TextLineAdapter({
+        limit,
+      }),
+    )
     .setText(text)
     .setAnnotations(_annotations);
 };
@@ -37,16 +38,18 @@ const limitAfterInit = renderDemo(
   'limit-after-init',
   undefined,
 );
-limitAfterInit.changeTextAdapterConfig('limit', { start: 10, end: 30 });
+limitAfterInit.setTextAdapter({ limit: { start: 10, end: 30 } });
 const limitAfterIgnoreLinesInit = renderDemo(
   'Limit after initial init - ignore lines init [10-30]',
   'limit-after-init-ignore-lines',
   undefined,
 );
-limitAfterIgnoreLinesInit.changeTextAdapterConfig('limit', {
-  start: 10,
-  end: 30,
-  ignoreLines: true,
+limitAfterIgnoreLinesInit.setTextAdapter({
+  limit: {
+    start: 10,
+    end: 30,
+    ignoreLines: true,
+  },
 });
 
 annotations.forEach((a) => {

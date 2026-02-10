@@ -1,5 +1,5 @@
+import type { Annotation, BaseAnnotation } from '../model';
 import { type Container, type Token } from './container';
-import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
 import { type AnnotationAdapter, DefaultAnnotationAdapter } from '../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
@@ -7,7 +7,7 @@ import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { DefaultSnapper, PlainTextAdapter, type Snapper, SnapperToken, type TextAdapter } from '../adapter/text';
+import { DefaultSnapper, PlainTextAdapter, type Snapper, type TextAdapter } from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
@@ -18,6 +18,10 @@ import { MainContainer } from '../compute/model/maincontainer';
 import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
 import { TagRenderer } from '../tag/TagRenderer';
 import { StyleInstances } from '../adapter/annotation/style/style-instances';
+
+const AnnotationAdapterToken = 'ANNOTATION_ADAPTER';
+const TextAdapterToken = 'TEXT_ADAPTER';
+const SnapperToken = 'SNAPPER';
 
 /**
  * Scoped dependency injection module for annotation-related services.
@@ -105,15 +109,32 @@ export class AnnotationModule {
     this.container.destroy();
   }
 
-  updateAdapter(
-    token:
-      | typeof TextAdapterToken
-      | typeof AnnotationAdapterToken
-      | typeof SnapperToken,
-    factory: () => TextAdapter | AnnotationAdapter<any> | Snapper,
-  ): this {
-    this.container.register(token, factory);
+  updateTextAdapter(factory: () => TextAdapter): this {
+    this.container.register(TextAdapterToken, factory);
+    this.getTextAdapter().setModule(this);
     return this;
+  }
+
+  updateAnnotationAdapter(factory: () => AnnotationAdapter<any>): this {
+    this.container.register(AnnotationAdapterToken, factory);
+    this.getAnnotationAdapter().setModule(this);
+    return this;
+  }
+
+  updateSnapper(factory: () => Snapper): this {
+    this.container.register(SnapperToken, factory);
+    return this;
+  }
+
+  getSnapper() {
+    return this.inject<Snapper>(SnapperToken);
+  }
+  getTextAdapter() {
+    return this.inject<TextAdapter>(TextAdapterToken);
+  }
+
+  getAnnotationAdapter<ANNOTATION extends BaseAnnotation = Annotation>() {
+    return this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken);
   }
 
   getAllRenderInstances() {

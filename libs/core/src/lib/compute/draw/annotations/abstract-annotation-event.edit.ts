@@ -9,7 +9,6 @@ import type { Position, StartEnd } from '../types';
 import { DUMMY_UID } from '../../model/svg.types';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { type Snapper, SnapperToken } from '../../../adapter/text';
 
 export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;
@@ -96,8 +95,7 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
 
     dummyAnnotation._render.weight = annotation._render.weight! + 1;
 
-    const fixOffset =
-      this.annotationModule.inject<Snapper>(SnapperToken).fixOffset;
+    const fixOffset = this.annotationModule.getSnapper().fixOffset;
 
     let snapper = fixOffset(dummyAnnotation);
 

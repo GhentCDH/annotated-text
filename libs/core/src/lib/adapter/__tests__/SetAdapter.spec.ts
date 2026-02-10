@@ -39,11 +39,12 @@ function createMockModule(overrides?: {
 
   const module = {
     inject: vi.fn((token: any) => {
-      if (token === TextAdapterToken) return mockTextAdapter;
-      if (token === AnnotationAdapterToken) return mockAnnotationAdapter;
       throw new Error(`Unknown token: ${String(token)}`);
     }),
-    updateAdapter: vi.fn().mockReturnThis(),
+    updateAnnotationAdapter: vi.fn().mockReturnThis(),
+    updateTextAdapter: vi.fn().mockReturnThis(),
+    getTextAdapter: vi.fn(() => mockTextAdapter),
+    getAnnotationAdapter: vi.fn(() => mockAnnotationAdapter),
   } as unknown as AnnotationModule;
 
   return { module, mockTextAdapter, mockAnnotationAdapter };
@@ -64,7 +65,7 @@ describe('SetAdapter', () => {
         const result = setTextAdapter(module, adapter);
 
         expect(adapter.setModule).toHaveBeenCalledWith(module);
-        expect(module.updateAdapter).toHaveBeenCalledWith(
+        expect(module.updateTextAdapter()).toHaveBeenCalledWith(
           TextAdapterToken,
           expect.any(Function),
         );
@@ -78,8 +79,9 @@ describe('SetAdapter', () => {
 
         setTextAdapter(module, adapter);
 
-        const registerCall = (module.updateAdapter as ReturnType<typeof vi.fn>)
-          .mock.calls[0];
+        const registerCall = (
+          module.updateTextAdapter as ReturnType<typeof vi.fn>
+        ).mock.calls[0];
         const factory = registerCall[1];
         expect(factory()).toBe(adapter);
       });
@@ -121,7 +123,7 @@ describe('SetAdapter', () => {
         const result = setAnnotationAdapter(module, adapter);
 
         expect(adapter.setModule).toHaveBeenCalledWith(module);
-        expect(module.updateAdapter).toHaveBeenCalledWith(
+        expect(module.updateAnnotationAdapter()).toHaveBeenCalledWith(
           AnnotationAdapterToken,
           expect.any(Function),
         );
@@ -135,8 +137,9 @@ describe('SetAdapter', () => {
 
         setAnnotationAdapter(module, adapter);
 
-        const registerCall = (module.updateAdapter as ReturnType<typeof vi.fn>)
-          .mock.calls[0];
+        const registerCall = (
+          module.updateAnnotationAdapter as ReturnType<typeof vi.fn>
+        ).mock.calls[0];
         const factory = registerCall[1];
         expect(factory()).toBe(adapter);
       });

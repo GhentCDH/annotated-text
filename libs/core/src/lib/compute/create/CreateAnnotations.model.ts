@@ -1,11 +1,7 @@
 import { type AnnotationId, type BaseAnnotation } from '../../model';
 import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
 import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
-import {
-  type ANNOTATION_CONFIG_KEYS,
-  type ANNOTATION_CONFIG_VALUES,
-  type AnnotationStyleParams
-} from '../../adapter/annotation';
+import { type AnnotationAdapter, type AnnotationAdapterParams, type AnnotationStyleParams } from '../../adapter/annotation';
 import {
   type AnnotationRender,
   type AnnotationRenderStyle,
@@ -105,14 +101,15 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
   ): AnnotatedText<ANNOTATION>;
 
   /**
-   * Change the configuration of the textAdapter. If needed, it will recreate the annotation model.
-   * @param key
-   * @param value
+   * Change the annotation adapter. If needed, it will recreate the annotation model.
+   * By default the DefaultAnnotationAdapter is used.
+   * If you use a new adapter the previous parameters will be removed, but you can set them again with the new adapter.
+   * Calling the method with only parameters will update the current adapter with the new parameters, but will not change the adapter itself.
+   *
+   * @param adapterOrParams
    */
-
-  changeAnnotationAdapterConfig<KEY extends ANNOTATION_CONFIG_KEYS>(
-    key: KEY,
-    value: ANNOTATION_CONFIG_VALUES<KEY>,
+  setAnnotationAdapter(
+    adapterOrParams: AnnotationAdapterParams | AnnotationAdapter<ANNOTATION>,
   ): AnnotatedText<ANNOTATION>;
 
   /**

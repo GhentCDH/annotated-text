@@ -1,20 +1,16 @@
 import { drag } from 'd3';
 import { DragAnnotation } from './drag.annotations';
-import { type AnnotationAdapter } from '../../../adapter';
 import { type TextAnnotation } from '../../../model';
 import { type Position } from '../types';
 import { DrawText } from '../text/DrawText';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { AnnotationAdapterToken } from '../../../di/tokens';
 
 export const addDraggableAnnotation = (
   annotationModule: AnnotationModule,
   annotation: TextAnnotation,
 ) => {
   const drawText = annotationModule.inject(DrawText);
-  const annotationAdapter = annotationModule.inject<AnnotationAdapter<any>>(
-    AnnotationAdapterToken,
-  );
+  const annotationAdapter = annotationModule.getAnnotationAdapter();
   const dragAnnotation = new DragAnnotation(
     annotationAdapter.position.minStartPosition,
     annotation,

@@ -1,6 +1,5 @@
 import { TextAdapter, type TextAdapterParams } from './text/TextAdapter';
 import { type AnnotationModule } from '../di/annotation.module';
-import { AnnotationAdapterToken, TextAdapterToken } from '../di/tokens';
 import {
   AnnotationAdapter,
   type AnnotationAdapterParams,
@@ -12,12 +11,12 @@ export const setTextAdapter = (
 ) => {
   if (adapterOrParams instanceof TextAdapter) {
     adapterOrParams.setModule(annotationModule);
-    annotationModule.updateAdapter(TextAdapterToken, () => adapterOrParams);
+    annotationModule.updateTextAdapter(() => adapterOrParams);
 
     return adapterOrParams;
   }
 
-  const original = annotationModule.inject(TextAdapterToken) as TextAdapter;
+  const original = annotationModule.getTextAdapter();
   original.setParams(adapterOrParams);
 
   return original;
@@ -29,17 +28,12 @@ export const setAnnotationAdapter = (
 ) => {
   if (adapterOrParams instanceof AnnotationAdapter) {
     adapterOrParams.setModule(annotationModule);
-    annotationModule.updateAdapter(
-      AnnotationAdapterToken,
-      () => adapterOrParams,
-    );
+    annotationModule.updateAnnotationAdapter(() => adapterOrParams);
 
     return adapterOrParams;
   }
 
-  const original = annotationModule.inject(
-    AnnotationAdapterToken,
-  ) as AnnotationAdapter<any>;
+  const original = annotationModule.getAnnotationAdapter();
   original.setParams(adapterOrParams);
 
   return original;

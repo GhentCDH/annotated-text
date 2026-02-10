@@ -1,7 +1,6 @@
 import { drag } from 'd3';
 import { EditAnnotation } from './edit.annotations';
 import { EventAnnotations } from './EventAnnotation';
-import { type AnnotationAdapter } from '../../../adapter';
 import { SVG_ID, SvgModel } from '../../model/svg.types';
 import {
   type AnnotationDraw,
@@ -11,7 +10,6 @@ import {
 import { type Position } from '../types';
 import { DrawText } from '../text/DrawText';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { AnnotationAdapterToken } from '../../../di/tokens';
 
 export const drawAnnotationHandles = (
   annotation: TextAnnotation,
@@ -35,9 +33,7 @@ const drawHandle = (
   dimensions: Dimensions,
   target: 'start' | 'end',
 ) => {
-  const annotationAdapter = annotationModule.inject<AnnotationAdapter<any>>(
-    AnnotationAdapterToken,
-  );
+  const annotationAdapter = annotationModule.getAnnotationAdapter();
   const config = annotationAdapter.config!;
   const handleRadius = config.text.handleRadius;
   const drawText = annotationModule.inject(DrawText);

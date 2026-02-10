@@ -22,7 +22,6 @@ import {
 import { type DeepPartial } from '../../deep-partial.type';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { TagRenderer } from '../../tag/TagRenderer';
-import { type Snapper, SnapperToken } from '../text';
 
 /**
  * @deprecated
@@ -62,9 +61,6 @@ export abstract class AnnotationAdapter<
 
   public setText(text: string) {
     this.text = text;
-    this.annotationModule
-      .inject<Snapper>(SnapperToken)
-      .setText(text, this.startOffset);
   }
 
   /**

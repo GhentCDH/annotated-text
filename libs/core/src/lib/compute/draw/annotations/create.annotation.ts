@@ -6,7 +6,6 @@ import {
 } from '../../position';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { type Snapper, SnapperToken } from '../../../adapter/text';
 
 export class CreateAnnotation extends BaseAnnotationDi {
   private startIndex: number;
@@ -126,8 +125,7 @@ export class CreateAnnotation extends BaseAnnotationDi {
     dummyAnnotation.start = start;
     dummyAnnotation.end = end;
 
-    const snapper =
-      this.inject<Snapper>(SnapperToken).fixOffset(dummyAnnotation);
+    const snapper = this.getSnapper().fixOffset(dummyAnnotation);
     dummyAnnotation.start = snapper.start;
     dummyAnnotation.end = snapper.end;
 

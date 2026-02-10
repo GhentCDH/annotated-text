@@ -1,29 +1,18 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import {
-  type Snapper,
-  SnapperToken,
-  type TextAdapter,
-  type TextAdapterParams,
-} from '../../adapter/text';
+import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
-  type AnnotationStyleParams,
+  type AnnotationAdapterParams,
+  type AnnotationStyleParams
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
+import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-} from '../../adapter/annotation/renderer';
+import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
@@ -34,8 +23,7 @@ import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
-import { setTextAdapter } from '../../adapter/SetAdapter';
-import { AnnotationAdapterToken } from '../../di/tokens';
+import { setAnnotationAdapter, setTextAdapter } from '../../adapter/SetAdapter';
 
 const document = globalThis.document || null;
 
@@ -70,20 +58,16 @@ export class CreateAnnotationsImpl<
 
     internalEventListener
       .on('annotation--add', ({ data }) => {
-        const fullAnnotation = this.annotationAdapter.format(
-          data.annotation,
-          true,
-          true,
-        );
+        const fullAnnotation = this.annotationModule
+          .getAnnotationAdapter<ANNOTATION>()
+          .format(data.annotation, true, true);
 
         this.addAnnotation(fullAnnotation!);
       })
       .on('annotation--update', ({ data }) => {
-        const fullAnnotation = this.annotationAdapter.format(
-          data.annotation,
-          false,
-          true,
-        );
+        const fullAnnotation = this.annotationModule
+          .getAnnotationAdapter<ANNOTATION>()
+          .format(data.annotation, false, true);
         this.addAnnotation(fullAnnotation!);
       })
       .on('send-event--annotation', ({ data }) => {
@@ -110,12 +94,6 @@ export class CreateAnnotationsImpl<
       });
   }
 
-  private get annotationAdapter() {
-    return this.annotationModule.inject<AnnotationAdapter<ANNOTATION>>(
-      AnnotationAdapterToken,
-    );
-  }
-
   private annotations() {
     return Array.from(this.annotationsMap.values());
   }
@@ -129,7 +107,7 @@ export class CreateAnnotationsImpl<
   }
 
   public setSnapper(snapper: Snapper) {
-    this.annotationModule.updateAdapter(SnapperToken, () => snapper);
+    this.annotationModule.updateSnapper(() => snapper);
     this.recalculate();
 
     return this;
@@ -240,7 +218,15 @@ export class CreateAnnotationsImpl<
     key: KEY,
     value: ANNOTATION_CONFIG_VALUES<KEY>,
   ): this {
-    this.annotationAdapter.setConfig(key, value);
+    this.annotationModule.getAnnotationAdapter().setConfig(key, value);
+    return this;
+  }
+
+  setAnnotationAdapter(
+    adapterOrParams: AnnotationAdapterParams | AnnotationAdapter<ANNOTATION>,
+  ): this {
+    setAnnotationAdapter(this.annotationModule, adapterOrParams);
+    this.recalculate();
     return this;
   }
 
@@ -251,7 +237,8 @@ export class CreateAnnotationsImpl<
   }
 
   scrollToAnnotation(id: AnnotationId): this {
-    const lines = this.annotationAdapter.getAnnotation(id)?._render.lines;
+    const lines = this.annotationModule.getAnnotationAdapter().getAnnotation(id)
+      ?._render.lines;
     if (!lines) {
       console.warn('No lines found for annotation', id);
       return this;
