@@ -8,7 +8,7 @@ import { StyleInstances } from '../style-instances';
 import { createAnnotationColor } from '../../../../utils/createAnnotationColor';
 
 // Mock the Debugger module
-vi.mock('@ghentcdh/annotated-text', () => ({
+vi.mock('../../../../utils/debugger', () => ({
   Debugger: {
     verbose: vi.fn(),
     warn: vi.fn(),
@@ -16,7 +16,7 @@ vi.mock('@ghentcdh/annotated-text', () => ({
 }));
 
 // Mock createAnnotationColor for testing
-vi.mock('../../../utils/createAnnotationColor', () => ({
+vi.mock('../../../../utils/createAnnotationColor', () => ({
   createAnnotationColor: (color: string) => ({ hex: color, rgb: [0, 0, 0] }),
 }));
 
@@ -32,42 +32,69 @@ describe('StyleInstances', () => {
   });
 
   describe('constructor', () => {
-    it('should create instance with default parameters when none provided', () => {
+    it('should create instance with default parameters', () => {
       const styles = new StyleInstances<TestAnnotation>();
 
-      expect(styles.params).toBeUndefined();
+      // Default styleFn returns null, so getStyle should return default style
+      const result = styles.getStyle({ id: '1', type: 'test' });
+      expect(result).toBe(DefaultAnnotationStyle);
     });
+  });
 
-    it('should store provided params', () => {
-      const customParams = {
-        styleFn: (ann: TestAnnotation) => ann.type,
-      } as AnnotationStyleParams<TestAnnotation>;
+  describe('setParams', () => {
+    it('should set a custom styleFn', () => {
+      const styles = new StyleInstances<TestAnnotation>();
 
-      const styles = new StyleInstances<TestAnnotation>(customParams);
-
-      expect(styles.params).toBe(customParams);
-    });
-
-    it('should merge partial params with defaults', () => {
       const customStyle: AnnotationStyle = {
+        color: { hex: '#custom', rgb: [0, 0, 0] } as any,
+      };
+
+      styles.setParams({
+        styleFn: () => customStyle,
+      });
+
+      const result = styles.getStyle({ id: '1', type: 'test' });
+      expect(result).toBe(customStyle);
+    });
+
+    it('should set a custom defaultStyle', () => {
+      const styles = new StyleInstances<TestAnnotation>();
+
+      const customDefault: AnnotationStyle = {
         color: createAnnotationColor('#123456'),
       };
 
-      const styles = new StyleInstances<TestAnnotation>({
-        defaultStyle: customStyle,
+      styles.setParams({
+        styleFn: () => null,
+        defaultStyle: customDefault,
       });
 
-      // Verify the custom default style is used
       const result = styles.getStyle({ id: '1', type: 'test' });
-      expect(result).toEqual(customStyle);
+      expect(result).toEqual(customDefault);
+    });
+
+    it('should merge partial params with existing defaults', () => {
+      const styles = new StyleInstances<TestAnnotation>();
+
+      const customDefault: AnnotationStyle = {
+        color: createAnnotationColor('#123456'),
+      };
+
+      styles.setParams({
+        styleFn: () => null,
+        defaultStyle: customDefault,
+      });
+
+      // styleFn returns null, so the custom default style should be used
+      const result = styles.getStyle({ id: '1', type: 'test' });
+      expect(result).toEqual(customDefault);
     });
   });
 
   describe('registerStyle', () => {
     it('should register a named style', () => {
-      const styles = new StyleInstances<TestAnnotation>({
-        styleFn: (ann) => ann.type,
-      });
+      const styles = new StyleInstances<TestAnnotation>();
+      styles.setParams({ styleFn: (ann) => ann.type });
 
       const customStyle: AnnotationStyle = {
         color: { hex: '#ff0000', rgb: [0, 0, 0] } as any,
@@ -80,9 +107,8 @@ describe('StyleInstances', () => {
     });
 
     it('should allow overwriting existing named styles', () => {
-      const styles = new StyleInstances<TestAnnotation>({
-        styleFn: (ann) => ann.type,
-      });
+      const styles = new StyleInstances<TestAnnotation>();
+      styles.setParams({ styleFn: (ann) => ann.type });
 
       const firstStyle: AnnotationStyle = {
         color: { hex: '#ff0000', rgb: [0, 0, 0] } as any,
@@ -100,9 +126,8 @@ describe('StyleInstances', () => {
     });
 
     it('should support registering multiple different styles', () => {
-      const styles = new StyleInstances<TestAnnotation>({
-        styleFn: (ann) => ann.type,
-      });
+      const styles = new StyleInstances<TestAnnotation>();
+      styles.setParams({ styleFn: (ann) => ann.type });
 
       const errorStyle: AnnotationStyle = {
         color: { hex: '#f44336', rgb: [0, 0, 0] } as any,
@@ -129,9 +154,8 @@ describe('StyleInstances', () => {
   describe('getStyle', () => {
     describe('when styleFn returns null', () => {
       it('should return default style', () => {
-        const styles = new StyleInstances<TestAnnotation>({
-          styleFn: () => null,
-        });
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({ styleFn: () => null });
 
         const result = styles.getStyle({ id: '1', type: 'test' });
 
@@ -143,7 +167,8 @@ describe('StyleInstances', () => {
           color: createAnnotationColor('#ff0000'),
         };
 
-        const styles = new StyleInstances<TestAnnotation>({
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({
           styleFn: () => null,
           defaultStyle: customDefault,
         });
@@ -156,9 +181,8 @@ describe('StyleInstances', () => {
 
     describe('when styleFn returns a string', () => {
       it('should return registered style when name exists', () => {
-        const styles = new StyleInstances<TestAnnotation>({
-          styleFn: (ann) => ann.type,
-        });
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({ styleFn: (ann) => ann.type });
 
         const registeredStyle: AnnotationStyle = {
           color: { hex: '#registered', rgb: [0, 0, 0] } as any,
@@ -172,9 +196,8 @@ describe('StyleInstances', () => {
       });
 
       it('should return default style when name is not registered', () => {
-        const styles = new StyleInstances<TestAnnotation>({
-          styleFn: (ann) => ann.type,
-        });
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({ styleFn: (ann) => ann.type });
 
         const result = styles.getStyle({ id: '1', type: 'unknown' });
 
@@ -188,9 +211,8 @@ describe('StyleInstances', () => {
           color: { hex: '#direct', rgb: [0, 0, 0] } as any,
         };
 
-        const styles = new StyleInstances<TestAnnotation>({
-          styleFn: () => directStyle,
-        });
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({ styleFn: () => directStyle });
 
         const result = styles.getStyle({ id: '1', type: 'test' });
 
@@ -206,7 +228,8 @@ describe('StyleInstances', () => {
           color: { hex: '#low', rgb: [0, 0, 0] } as any,
         };
 
-        const styles = new StyleInstances<TestAnnotation>({
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({
           styleFn: (ann) => {
             if (ann.priority === 'high') return highPriorityStyle;
             if (ann.priority === 'low') return lowPriorityStyle;
@@ -238,7 +261,8 @@ describe('StyleInstances', () => {
           color: { hex: '#named', rgb: [0, 0, 0] } as any,
         };
 
-        const styles = new StyleInstances<TestAnnotation>({
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({
           styleFn: (ann) => {
             if (ann.type === 'direct') return directStyle;
             if (ann.type === 'named') return 'registered-name';
@@ -261,8 +285,9 @@ describe('StyleInstances', () => {
       });
 
       it('should handle empty string style names', () => {
-        const styles = new StyleInstances<TestAnnotation>({
-          styleFn: (annotation: TestAnnotation) => '',
+        const styles = new StyleInstances<TestAnnotation>();
+        styles.setParams({
+          styleFn: () => '',
         });
 
         const result = styles.getStyle({ id: '1', type: 'test' });
@@ -287,7 +312,8 @@ describe('StyleInstances', () => {
           color: { hex: '#admin', rgb: [0, 0, 0] } as any,
         };
 
-        const styles = new StyleInstances<ComplexAnnotation>({
+        const styles = new StyleInstances<ComplexAnnotation>();
+        styles.setParams({
           styleFn: (ann) => {
             if (ann.author.role === 'admin') return adminStyle;
             return ann.metadata.category;
@@ -330,9 +356,8 @@ describe('StyleInstances', () => {
         }
       }
 
-      const styles = new ExtendedStyleInstances({
-        styleFn: (ann) => ann.type,
-      });
+      const styles = new ExtendedStyleInstances();
+      styles.setParams({ styleFn: (ann) => ann.type });
 
       styles.registerStyle('style1', DefaultAnnotationStyle);
       styles.registerStyle('style2', DefaultAnnotationStyle);
