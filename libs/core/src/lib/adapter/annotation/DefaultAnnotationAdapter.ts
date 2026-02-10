@@ -1,6 +1,6 @@
 import {
   AnnotationAdapter,
-  type createAnnotationAdapterParams,
+  type AnnotationAdapterParams,
 } from './AnnotationAdapter';
 import {
   type Annotation,
@@ -63,7 +63,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
 }
 
 export const DefaultAnnotationAdapter = (
-  params: createAnnotationAdapterParams = {},
+  params: AnnotationAdapterParams = {},
 ): AnnotationAdapter<Annotation> => {
   return new DefaultAnnotationAdapterImpl(params);
 };

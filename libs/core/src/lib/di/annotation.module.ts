@@ -1,13 +1,13 @@
 import { type Container, type Token } from './container';
 import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
-import { type AnnotationAdapter } from '../adapter/annotation';
+import { type AnnotationAdapter, DefaultAnnotationAdapter } from '../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { DefaultSnapper, PlainTextAdapter, SnapperToken, type TextAdapter } from '../adapter/text';
+import { DefaultSnapper, PlainTextAdapter, type Snapper, SnapperToken, type TextAdapter } from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
@@ -18,14 +18,6 @@ import { MainContainer } from '../compute/model/maincontainer';
 import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
 import { TagRenderer } from '../tag/TagRenderer';
 import { StyleInstances } from '../adapter/annotation/style/style-instances';
-
-/**
- * Configuration required to create an AnnotationModule.
- */
-export type AnnotationModuleConfig = {
-  /** Adapter for managing annotation data */
-  annotationAdapter: AnnotationAdapter<any>;
-};
 
 /**
  * Scoped dependency injection module for annotation-related services.
@@ -57,25 +49,24 @@ export class AnnotationModule {
    * @param parentContainer - Parent container (usually rootContainer) for hierarchical lookup
    * @param config - Configuration with required adapters
    */
-  constructor(parentContainer: Container, config: AnnotationModuleConfig) {
+  constructor(parentContainer: Container) {
     this.container = parentContainer.createScope();
-    this.configure(config);
+    this.configure();
   }
 
   /**
    * Registers all annotation-related services with the container.
    * Order matters: SvgModel must be registered last as it depends on other services.
    */
-  configure(config: AnnotationModuleConfig): void {
+  configure(): void {
     // Register event listeners (no dependencies)
     this.container.register(InternalEventListener).register(EventListener);
-
     this.container.register(SvgModel, () => new SvgModel());
 
     // Register adapters provided by the configuration
     this.container
       .register(TextAdapterToken, PlainTextAdapter)
-      .register(AnnotationAdapterToken, () => config.annotationAdapter);
+      .register(AnnotationAdapterToken, DefaultAnnotationAdapter);
 
     // Register services that extend BaseAnnotationDi (need reference to this module)
     this.container
@@ -114,15 +105,14 @@ export class AnnotationModule {
     this.container.destroy();
   }
 
-  /**
-   * Register additional services with this module's container.
-   * Allows extending the module with custom services.
-   */
-  register<T>(classRef: new (...args: any[]) => T, factory?: () => T): this;
-  register<T>(token: string | symbol, factory: () => T): this;
-  register<T>(tokenOrClass: any, factory?: () => T): this {
-    this.container.register(tokenOrClass, factory);
-
+  updateAdapter(
+    token:
+      | typeof TextAdapterToken
+      | typeof AnnotationAdapterToken
+      | typeof SnapperToken,
+    factory: () => TextAdapter | AnnotationAdapter<any> | Snapper,
+  ): this {
+    this.container.register(token, factory);
     return this;
   }
 
@@ -135,9 +125,8 @@ export class AnnotationModule {
 
   registerRender(token: string | symbol, factory: () => AnnotationRender<any>) {
     factory().setModule(this);
-    this.register(`RENDER_INSTANCE_${token as any}`, factory)
-      .injectRender(token)
-      .setModule(this);
+    this.container.register(`RENDER_INSTANCE_${token as any}`, factory);
+    this.injectRender(token).setModule(this);
   }
 
   hasRender(token: string | symbol) {

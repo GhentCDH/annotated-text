@@ -40,14 +40,6 @@ export abstract class BaseAnnotationDi<
   /** Internal event listener for communication between services */
   readonly internalEventListener = this.inject(InternalEventListener);
 
-  /** Adapter for accessing and modifying annotation data */
-  readonly annotationAdapter = this.inject(
-    AnnotationAdapterToken,
-  ) as AnnotationAdapter<ANNOTATION>;
-
-  /** Adapter for accessing text content and styling */
-  readonly textAdapter = this.inject(TextAdapterToken) as TextAdapter;
-
   /**
    * @param annotationModule - The module providing dependency injection for this service
    */
@@ -62,5 +54,17 @@ export abstract class BaseAnnotationDi<
    */
   inject<T>(token: Token<T>) {
     return this.annotationModule.inject(token);
+  }
+
+  /** Adapter for accessing text content and styling */
+  protected get textAdapter() {
+    // don't move it out of the getter, as this can be changed on the fly when the module is configured, and we want to always get the latest version
+    return this.inject(TextAdapterToken) as TextAdapter;
+  }
+
+  /** Adapter for accessing and modifying annotation data */
+  protected get annotationAdapter() {
+    // don't move it out of the getter, as this can be changed on the fly when the module is configured, and we want to always get the latest version
+    return this.inject(AnnotationAdapterToken) as AnnotationAdapter<ANNOTATION>;
   }
 }

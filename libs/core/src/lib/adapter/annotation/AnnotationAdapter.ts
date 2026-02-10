@@ -37,7 +37,7 @@ export type AnnotationConfig = typeof config;
 
 export abstract class AnnotationAdapter<
   ANNOTATION extends BaseAnnotation,
-  PARAMS extends createAnnotationAdapterParams = createAnnotationAdapterParams,
+  PARAMS extends AnnotationAdapterParams = AnnotationAdapterParams,
 > extends BaseAdapter<PARAMS> {
   private readonly annotationCache = new AnnotationCache<ANNOTATION>();
   /**
@@ -265,7 +265,7 @@ export type ANNOTATION_CONFIG_KEYS = keyof CONFIG;
 export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
   CONFIG[K];
 
-export type createAnnotationAdapterParams = {
+export type AnnotationAdapterParams = {
   create?: boolean;
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
@@ -291,20 +291,4 @@ export type createAnnotationAdapterParams = {
    * startOffset: 100  // First character is at position 100
    */
   startOffset?: number;
-};
-
-export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
-  adapter: AnnotationAdapter<ANNOTATION>,
-  params: createAnnotationAdapterParams,
-): AnnotationAdapter<ANNOTATION> => {
-  if (params.edit) {
-    adapter.edit = params.edit;
-  }
-  if (params.create) {
-    adapter.create = params.create;
-  }
-  adapter.config = merge(cloneDeep(config), params.config);
-  adapter.startOffset = params.startOffset ?? 0;
-
-  return adapter;
 };

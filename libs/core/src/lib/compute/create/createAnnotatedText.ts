@@ -1,16 +1,12 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { CreateAnnotationsImpl } from './CreateAnnotations';
 import type { BaseAnnotation } from '../../model';
-import {
-  AnnotationAdapter,
-  type createAnnotationAdapterParams,
-  DefaultAnnotationAdapter,
-} from '../../adapter';
+import { type AnnotationAdapter, type AnnotationAdapterParams } from '../../adapter';
 import type { Annotation } from '../../model/';
 import { Debugger } from '../../utils/debugger';
 
 type createAnnotatedTextParams<ANNOTATION extends BaseAnnotation> = {
-  annotation?: AnnotationAdapter<ANNOTATION> | createAnnotationAdapterParams;
+  annotation?: AnnotationAdapter<ANNOTATION> | AnnotationAdapterParams;
 };
 
 const annotatedTextCache = new Map<string, AnnotatedText<any>>();
@@ -19,7 +15,6 @@ export const createAnnotatedText = <
   ANNOTATION extends BaseAnnotation = Annotation,
 >(
   id: string,
-  params: createAnnotatedTextParams<ANNOTATION> = {},
 ): AnnotatedText<ANNOTATION> => {
   if (annotatedTextCache.has(id)) {
     console.warn(
@@ -31,18 +26,8 @@ export const createAnnotatedText = <
     return annotatedTextCache.get(id) as AnnotatedText<ANNOTATION>;
   }
 
-  let annotationAdapter: AnnotationAdapter<ANNOTATION>;
-  if (params.annotation instanceof AnnotationAdapter) {
-    annotationAdapter = params.annotation;
-  } else {
-    annotationAdapter = DefaultAnnotationAdapter(
-      (params.annotation as any) ?? {},
-    ) as unknown as AnnotationAdapter<ANNOTATION>;
-  }
-
   const annotatedImpl = new CreateAnnotationsImpl<ANNOTATION>(
     id,
-    annotationAdapter,
   ) as AnnotatedText<ANNOTATION>;
 
   annotatedTextCache.set(id, annotatedImpl);

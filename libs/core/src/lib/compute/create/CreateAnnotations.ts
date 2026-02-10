@@ -35,6 +35,7 @@ import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
 import { setTextAdapter } from '../../adapter/SetAdapter';
+import { AnnotationAdapterToken } from '../../di/tokens';
 
 const document = globalThis.document || null;
 
@@ -50,13 +51,8 @@ export class CreateAnnotationsImpl<
   private readonly annotationModule: AnnotationModule;
   private readonly mainContainer: MainContainer;
 
-  constructor(
-    private readonly id: string,
-    private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
-  ) {
-    this.annotationModule = new AnnotationModule(rootContainer, {
-      annotationAdapter,
-    });
+  constructor(private readonly id: string) {
+    this.annotationModule = new AnnotationModule(rootContainer);
 
     this.svgModel = this.annotationModule.inject(SvgModel);
     this.mainContainer = this.annotationModule.inject(MainContainer);
@@ -114,6 +110,12 @@ export class CreateAnnotationsImpl<
       });
   }
 
+  private get annotationAdapter() {
+    return this.annotationModule.inject<AnnotationAdapter<ANNOTATION>>(
+      AnnotationAdapterToken,
+    );
+  }
+
   private annotations() {
     return Array.from(this.annotationsMap.values());
   }
@@ -127,7 +129,7 @@ export class CreateAnnotationsImpl<
   }
 
   public setSnapper(snapper: Snapper) {
-    this.annotationModule.register(SnapperToken, () => snapper);
+    this.annotationModule.updateAdapter(SnapperToken, () => snapper);
     this.recalculate();
 
     return this;
