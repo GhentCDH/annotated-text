@@ -1,5 +1,5 @@
-import type { Annotation, BaseAnnotation } from '../model';
 import { type Container, type Token } from './container';
+import type { Annotation, BaseAnnotation } from '../model';
 import { type AnnotationAdapter, DefaultAnnotationAdapter } from '../adapter/annotation';
 import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';

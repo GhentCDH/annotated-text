@@ -3,7 +3,6 @@ import { setAnnotationAdapter, setTextAdapter } from '../SetAdapter';
 import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../annotation';
 import { type AnnotationModule } from '../../di/annotation.module';
-import { AnnotationAdapterToken, TextAdapterToken } from '../../di/tokens';
 
 class MockTextAdapter extends TextAdapter {
   name = 'MockTextAdapter';
@@ -57,7 +56,7 @@ describe('SetAdapter', () => {
 
   describe('setTextAdapter', () => {
     describe('when given a TextAdapter instance', () => {
-      it('should call setModule and register the adapter', () => {
+      it('should call setModule and updateTextAdapter', () => {
         const { module } = createMockModule();
         const adapter = new MockTextAdapter({});
         adapter.setModule = vi.fn();
@@ -65,8 +64,7 @@ describe('SetAdapter', () => {
         const result = setTextAdapter(module, adapter);
 
         expect(adapter.setModule).toHaveBeenCalledWith(module);
-        expect(module.updateTextAdapter()).toHaveBeenCalledWith(
-          TextAdapterToken,
+        expect(module.updateTextAdapter).toHaveBeenCalledWith(
           expect.any(Function),
         );
         expect(result).toBe(adapter);
@@ -82,13 +80,13 @@ describe('SetAdapter', () => {
         const registerCall = (
           module.updateTextAdapter as ReturnType<typeof vi.fn>
         ).mock.calls[0];
-        const factory = registerCall[1];
+        const factory = registerCall[0];
         expect(factory()).toBe(adapter);
       });
     });
 
     describe('when given TextAdapterParams', () => {
-      it('should inject the existing adapter and call setParams', () => {
+      it('should get the existing adapter and call setParams', () => {
         const mockTextAdapter = new MockTextAdapter({});
         mockTextAdapter.setParams = vi.fn();
         const { module } = createMockModule({ textAdapter: mockTextAdapter });
@@ -96,7 +94,7 @@ describe('SetAdapter', () => {
         const params: TextAdapterParams = { textDirection: 'rtl' };
         const result = setTextAdapter(module, params);
 
-        expect(module.inject).toHaveBeenCalledWith(TextAdapterToken);
+        expect(module.getTextAdapter).toHaveBeenCalled();
         expect(mockTextAdapter.setParams).toHaveBeenCalledWith(params);
         expect(result).toBe(mockTextAdapter);
       });
@@ -115,7 +113,7 @@ describe('SetAdapter', () => {
 
   describe('setAnnotationAdapter', () => {
     describe('when given an AnnotationAdapter instance', () => {
-      it('should call setModule and register the adapter', () => {
+      it('should call setModule and updateAnnotationAdapter', () => {
         const { module } = createMockModule();
         const adapter = new MockAnnotationAdapter({});
         adapter.setModule = vi.fn();
@@ -123,8 +121,7 @@ describe('SetAdapter', () => {
         const result = setAnnotationAdapter(module, adapter);
 
         expect(adapter.setModule).toHaveBeenCalledWith(module);
-        expect(module.updateAnnotationAdapter()).toHaveBeenCalledWith(
-          AnnotationAdapterToken,
+        expect(module.updateAnnotationAdapter).toHaveBeenCalledWith(
           expect.any(Function),
         );
         expect(result).toBe(adapter);
@@ -140,13 +137,13 @@ describe('SetAdapter', () => {
         const registerCall = (
           module.updateAnnotationAdapter as ReturnType<typeof vi.fn>
         ).mock.calls[0];
-        const factory = registerCall[1];
+        const factory = registerCall[0];
         expect(factory()).toBe(adapter);
       });
     });
 
     describe('when given AnnotationAdapterParams', () => {
-      it('should inject the existing adapter and call setParams', () => {
+      it('should get the existing adapter and call setParams', () => {
         const mockAnnotationAdapter = new MockAnnotationAdapter({});
         mockAnnotationAdapter.setParams = vi.fn();
         const { module } = createMockModule({
@@ -156,7 +153,7 @@ describe('SetAdapter', () => {
         const params: AnnotationAdapterParams = { edit: true, create: false };
         const result = setAnnotationAdapter(module, params);
 
-        expect(module.inject).toHaveBeenCalledWith(AnnotationAdapterToken);
+        expect(module.getAnnotationAdapter).toHaveBeenCalled();
         expect(mockAnnotationAdapter.setParams).toHaveBeenCalledWith(params);
         expect(result).toBe(mockAnnotationAdapter);
       });

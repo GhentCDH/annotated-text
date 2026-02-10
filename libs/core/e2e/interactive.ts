@@ -2,22 +2,15 @@
 import '../src/lib/style/style.scss';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {
-  clearAnnotatedTextCache,
-  createAnnotatedText,
-  PlainTextAdapter,
-} from '@ghentcdh/annotated-text';
+import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
 
 // Clear any cached instances
 clearAnnotatedTextCache();
 
 // Interactive with event logging
-const interactive = createAnnotatedText('interactive', {
-  text: PlainTextAdapter({}),
-  annotation: {
-    edit: true,
-    create: true,
-  },
+const interactive = createAnnotatedText('interactive').setAnnotationAdapter({
+  edit: true,
+  create: false,
 });
 
 const eventLog = document.getElementById('event-log')!;

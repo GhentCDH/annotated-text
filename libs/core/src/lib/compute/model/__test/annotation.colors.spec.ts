@@ -7,7 +7,6 @@ import type {
 import { AnnotationColors } from '../annotation.colors';
 import { SvgModel } from '../svg.types';
 import type { AnnotationModule } from '../../../di/annotation.module';
-import { AnnotationAdapterToken } from '../../../di/tokens';
 import { EventListener } from '../../../events/event.listener';
 import { InternalEventListener } from '../../../events/internal/internal.event.listener';
 
@@ -54,7 +53,6 @@ describe('AnnotationColors', () => {
 
     const mockInject = vi.fn((token: any) => {
       if (token === SvgModel) return mockSvgModel;
-      if (token === AnnotationAdapterToken) return mockAnnotationAdapter;
       if (token === EventListener)
         return { register: vi.fn(), sendEvent: vi.fn() };
       if (token === InternalEventListener)
@@ -64,6 +62,8 @@ describe('AnnotationColors', () => {
 
     mockAnnotationModule = {
       inject: mockInject,
+      getAnnotationAdapter: vi.fn(() => mockAnnotationAdapter),
+      getTextAdapter: vi.fn(),
     } as unknown as AnnotationModule;
 
     colors = new AnnotationColors(mockAnnotationModule);

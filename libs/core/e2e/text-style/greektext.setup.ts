@@ -17,15 +17,13 @@ const greekPapyrusText = `1.Χ[αι]ρήμ[ων] Ἀπολλωνίωι τῶι
 5.ἐν ᾗ δηλοῖς μοι ὅτι ἀπέστειλας`;
 
 // Basic Greek text with line adapter
-const greekBasic = createAnnotatedText('greek-basic', {
-  text: TextLineAdapter({}),
-});
+const greekBasic =
+  createAnnotatedText('greek-basic').setTextAdapter(TextLineAdapter());
 greekBasic.setText(greekPapyrusText);
 
 // Greek text with annotations
-const greekAnnotated = createAnnotatedText('greek-annotated', {
-  text: TextLineAdapter({}),
-});
+const greekAnnotated =
+  createAnnotatedText('greek-annotated').setTextAdapter(TextLineAdapter());
 greekAnnotated.setText(greekPapyrusText).setAnnotations([
   { id: 'name-1', start: 0, end: 12 }, // Χ[αι]ρήμ[ων]
   { id: 'name-2', start: 13, end: 24 }, // Ἀπολλωνίωι
@@ -34,9 +32,10 @@ greekAnnotated.setText(greekPapyrusText).setAnnotations([
 ]);
 
 // Greek text with RTL option (though Greek is LTR, testing the option)
-const greekRtl = createAnnotatedText('greek-rtl', {
-  text: TextLineAdapter({ textDirection: 'ltr' }),
-});
+const greekRtl = createAnnotatedText('greek-rtl').setTextAdapter(
+  TextLineAdapter({ textDirection: 'rtl' }),
+);
+
 greekRtl
   .setText(
     `1.πρῶτος λόγος
@@ -49,13 +48,9 @@ greekRtl
   ]);
 
 // Interactive Greek text
-const greekInteractive = createAnnotatedText('greek-interactive', {
-  text: TextLineAdapter({}),
-  annotation: {
-    edit: true,
-    create: true,
-  },
-});
+const greekInteractive = createAnnotatedText('greek-interactive')
+  .setTextAdapter(TextLineAdapter())
+  .setAnnotationAdapter({ edit: true, create: true });
 
 const eventLog = document.getElementById('event-log')!;
 

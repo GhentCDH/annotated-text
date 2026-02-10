@@ -59,20 +59,14 @@ const renderDemo = (
   }
 
   // Basic text setup
-  createAnnotatedText(id, {
-    annotation: {
-      edit: true,
-      create: true,
-      render: {
-        renderFn: (a: any) => a.renderer ?? renderer,
-      },
-      style: {
-        styleFn: (a: any) => ({
-          color: createAnnotationColor(a.color),
-        }),
-      },
-    },
-  })
+  createAnnotatedText<any>(id)
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams({ renderFn: (a) => a.renderer ?? renderer })
+    .setStyleParams({
+      styleFn: (a: any) => ({
+        color: createAnnotationColor(a.color),
+      }),
+    })
     .updateRenderStyle('highlight', { borderRadius: 0.1 })
     .setText(text)
     .setAnnotations(annotations);

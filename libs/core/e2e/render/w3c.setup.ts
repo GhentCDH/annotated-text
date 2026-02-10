@@ -2,7 +2,6 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  PlainTextAdapter,
   type W3CAnnotation,
   W3CAnnotationAdapter,
 } from '@ghentcdh/annotated-text';
@@ -82,23 +81,25 @@ const w3cAnnotations: W3CAnnotation[] = [
 ];
 
 // Basic W3C annotations
-const w3cBasic = createAnnotatedText('w3c-basic', {
-  text: PlainTextAdapter({}),
-  annotation: W3CAnnotationAdapter({
+const w3cBasic = createAnnotatedText<W3CAnnotation>(
+  'w3c-basic',
+).setAnnotationAdapter(
+  W3CAnnotationAdapter({
     sourceUri: SOURCE_URI,
     language: LANGUAGE,
   }),
-});
+);
 w3cBasic.setText(sampleText).setAnnotations(w3cAnnotations);
 
 // W3C annotations with TextualBody
-const w3cBodies = createAnnotatedText('w3c-bodies', {
-  text: PlainTextAdapter({}),
-  annotation: W3CAnnotationAdapter({
+const w3cBodies = createAnnotatedText<W3CAnnotation>(
+  'w3c-bodies',
+).setAnnotationAdapter(
+  W3CAnnotationAdapter({
     sourceUri: SOURCE_URI,
     language: LANGUAGE,
   }),
-});
+);
 
 const annotationsWithBodies: W3CAnnotation[] = [
   {
@@ -150,13 +151,14 @@ const annotationsWithBodies: W3CAnnotation[] = [
 w3cBodies.setText(sampleText).setAnnotations(annotationsWithBodies);
 
 // W3C tagging annotations
-const w3cTagging = createAnnotatedText('w3c-tagging', {
-  text: PlainTextAdapter({}),
-  annotation: W3CAnnotationAdapter({
+const w3cTagging = createAnnotatedText<W3CAnnotation>(
+  'w3c-tagging',
+).setAnnotationAdapter(
+  W3CAnnotationAdapter({
     sourceUri: SOURCE_URI,
     language: LANGUAGE,
   }),
-});
+);
 
 const taggingAnnotations: W3CAnnotation[] = [
   {
@@ -202,19 +204,16 @@ const taggingAnnotations: W3CAnnotation[] = [
 w3cTagging.setText(sampleText).setAnnotations(taggingAnnotations);
 
 // Interactive W3C annotations
-const w3cInteractive = createAnnotatedText('w3c-interactive', {
-  text: PlainTextAdapter({}),
-  annotation: W3CAnnotationAdapter({
+const w3cInteractive = createAnnotatedText<W3CAnnotation>(
+  'w3c-interactive',
+).setAnnotationAdapter(
+  W3CAnnotationAdapter({
     sourceUri: SOURCE_URI,
     language: LANGUAGE,
+    edit: true,
+    create: true,
   }),
-  config: {
-    annotation: {
-      edit: true,
-      create: true,
-    },
-  },
-});
+);
 
 const eventLog = document.getElementById('event-log')!;
 const annotationOutput = document.getElementById('annotation-output')!;
@@ -237,12 +236,12 @@ w3cInteractive
       event.event === 'annotation-create--end' ||
       event.event === 'annotation-edit--end'
     ) {
-      const annotation = event.data?.annotation;
-      if (annotation) {
-        // Format the annotation using the adapter
-        const formatted = w3cInteractive.formatAnnotation(annotation);
-        annotationOutput.textContent = JSON.stringify(formatted, null, 2);
-      }
+      // const annotation = event.data?.annotation;
+      // if (annotation) {
+      //   // Format the annotation using the adapter
+      //   const formatted = w3cInteractive.formatAnnotation(annotation);
+      //   annotationOutput.textContent = JSON.stringify(formatted, null, 2);
+      // }
     }
   });
 

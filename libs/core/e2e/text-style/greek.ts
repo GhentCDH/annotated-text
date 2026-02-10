@@ -22,14 +22,11 @@ const renderDemo = (
   renderDemoDiv(title, id);
 
   // Basic text setup
-  createAnnotatedText(id, {
-    text: TextLineAdapter({}),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-      create: true,
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams(greekText.annotationConfig.render)
+    .setStyleParams(greekText.annotationConfig.style)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 };
