@@ -10,13 +10,6 @@ import { BaseAnnotationDi } from '../di/BaseAnnotationDi';
  */
 export type tagLabelFn<ANNOTATION> = (annotation: ANNOTATION) => string;
 
-export type TagConfig = {
-  label: string;
-  padding: number;
-  fontSize: number;
-  enabledOnHover: boolean;
-};
-
 /**
  * Responsible for resolving tag metadata for annotations.
  *
@@ -71,7 +64,6 @@ export class TagRenderer<
       label,
       padding: 1,
       fontSize: 8,
-      enabledOnHover: false,
     });
   }
 }

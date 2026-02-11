@@ -7,7 +7,7 @@ import {
 import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../annotation';
 import { type AnnotationModule } from '../../di/annotation.module';
-import { Snapper } from '../snapper';
+import { type Snapper } from '../snapper';
 
 class MockTextAdapter extends TextAdapter {
   name = 'MockTextAdapter';

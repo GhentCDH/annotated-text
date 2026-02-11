@@ -61,7 +61,6 @@ export const tagDrawMetadataSchema = z.object({
   label: z.string(),
   padding: z.number(),
   fontSize: z.number(),
-  enabledOnHover: z.boolean(),
 });
 
 export type TagDrawMetadata = z.infer<typeof tagDrawMetadataSchema>;
