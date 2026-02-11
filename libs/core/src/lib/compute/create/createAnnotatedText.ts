@@ -1,13 +1,8 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { CreateAnnotationsImpl } from './CreateAnnotations';
 import type { BaseAnnotation } from '../../model';
-import { type AnnotationAdapter, type AnnotationAdapterParams } from '../../adapter';
 import type { Annotation } from '../../model/';
 import { Debugger } from '../../utils/debugger';
-
-type createAnnotatedTextParams<ANNOTATION extends BaseAnnotation> = {
-  annotation?: AnnotationAdapter<ANNOTATION> | AnnotationAdapterParams;
-};
 
 const annotatedTextCache = new Map<string, AnnotatedText<any>>();
 

@@ -49,7 +49,7 @@ describe('TagRenderer', () => {
         label: 'test',
         padding: 1,
         fontSize: 8,
-        enabledOnHover: true,
+        enabledOnHover: false,
       });
     });
   });

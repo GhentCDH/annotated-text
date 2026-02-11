@@ -4,14 +4,14 @@ import {
   AnnotationAdapter,
   type AnnotationAdapterParams,
 } from '../adapter/annotation';
+import { type Snapper } from '../adapter/snapper';
 
 export const setTextAdapter = (
   annotationModule: AnnotationModule,
   adapterOrParams: TextAdapter | TextAdapterParams,
 ) => {
   if (adapterOrParams instanceof TextAdapter) {
-    adapterOrParams.setModule(annotationModule);
-    annotationModule.updateTextAdapter(() => adapterOrParams);
+    annotationModule.updateTextAdapter(adapterOrParams);
 
     return adapterOrParams;
   }
@@ -27,8 +27,7 @@ export const setAnnotationAdapter = (
   adapterOrParams: AnnotationAdapter<any> | AnnotationAdapterParams,
 ) => {
   if (adapterOrParams instanceof AnnotationAdapter) {
-    adapterOrParams.setModule(annotationModule);
-    annotationModule.updateAnnotationAdapter(() => adapterOrParams);
+    annotationModule.updateAnnotationAdapter(adapterOrParams);
 
     return adapterOrParams;
   }
@@ -37,4 +36,16 @@ export const setAnnotationAdapter = (
   original.setParams(adapterOrParams);
 
   return original;
+};
+
+export const setSnapperAdapter = (
+  annotationModule: AnnotationModule,
+  snapper: Snapper,
+  text: string,
+) => {
+  annotationModule.updateSnapper(snapper);
+  const annotationAdapter = annotationModule.getAnnotationAdapter();
+  snapper.setText(text, annotationAdapter.startOffset);
+
+  return snapper;
 };

@@ -1,7 +1,7 @@
 import RBush from 'rbush';
 import { defaultTokenizr, type Tokenizer } from './tokenizer';
 import { DefaultSnapper, type SnapperResult } from '../snapper';
-import { type TextAnnotation } from '../../../../model';
+import { type TextAnnotation } from '../../../model';
 
 export interface WordPosition {
   start: number; // inclusive
@@ -29,8 +29,14 @@ export class WordSnapper extends DefaultSnapper {
     this.tree = new RBush<WordBBox>();
   }
 
-  override setText(text: string, offsetStart: number): void {
+  override setText(text: string, offsetStart: number) {
+    const isSame = this.text === text && this.offsetStart === offsetStart;
+    if (isSame) {
+      return;
+    }
+
     super.setText(text, offsetStart);
+
     this.words = this.parseWords();
     this.buildTree();
   }
@@ -50,7 +56,6 @@ export class WordSnapper extends DefaultSnapper {
         words.push({ start, end, word: token.text });
       }
     }
-
     return words;
   }
 

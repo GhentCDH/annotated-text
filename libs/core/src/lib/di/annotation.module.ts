@@ -120,20 +120,20 @@ export class AnnotationModule {
     this.container.destroy();
   }
 
-  updateTextAdapter(factory: () => TextAdapter): this {
-    this.container.update(TextAdapterToken, factory);
+  updateTextAdapter(adapter: TextAdapter): this {
+    this.container.update(TextAdapterToken, () => adapter);
     this.getTextAdapter().setModule(this);
     return this;
   }
 
-  updateAnnotationAdapter(factory: () => AnnotationAdapter<any>): this {
-    this.container.update(AnnotationAdapterToken, factory);
+  updateAnnotationAdapter(adapter: AnnotationAdapter<any>): this {
+    this.container.update(AnnotationAdapterToken, () => adapter);
     this.getAnnotationAdapter().setModule(this);
     return this;
   }
 
-  updateSnapper(factory: () => Snapper): this {
-    this.container.update(SnapperToken, factory);
+  updateSnapper(snapper: Snapper): this {
+    this.container.update(SnapperToken, () => snapper);
     return this;
   }
 

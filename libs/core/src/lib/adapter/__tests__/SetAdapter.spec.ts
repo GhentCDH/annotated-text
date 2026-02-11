@@ -1,8 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { setAnnotationAdapter, setTextAdapter } from '../SetAdapter';
+import {
+  setAnnotationAdapter,
+  setSnapperAdapter,
+  setTextAdapter,
+} from '../SetAdapter';
 import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../annotation';
 import { type AnnotationModule } from '../../di/annotation.module';
+import { Snapper } from '../snapper';
 
 class MockTextAdapter extends TextAdapter {
   name = 'MockTextAdapter';
@@ -42,6 +47,7 @@ function createMockModule(overrides?: {
     }),
     updateAnnotationAdapter: vi.fn().mockReturnThis(),
     updateTextAdapter: vi.fn().mockReturnThis(),
+    updateSnapper: vi.fn().mockReturnThis(),
     getTextAdapter: vi.fn(() => mockTextAdapter),
     getAnnotationAdapter: vi.fn(() => mockAnnotationAdapter),
   } as unknown as AnnotationModule;
@@ -56,32 +62,14 @@ describe('SetAdapter', () => {
 
   describe('setTextAdapter', () => {
     describe('when given a TextAdapter instance', () => {
-      it('should call setModule and updateTextAdapter', () => {
+      it('should call updateTextAdapter with the adapter', () => {
         const { module } = createMockModule();
         const adapter = new MockTextAdapter({});
-        adapter.setModule = vi.fn();
 
         const result = setTextAdapter(module, adapter);
 
-        expect(adapter.setModule).toHaveBeenCalledWith(module);
-        expect(module.updateTextAdapter).toHaveBeenCalledWith(
-          expect.any(Function),
-        );
+        expect(module.updateTextAdapter).toHaveBeenCalledWith(adapter);
         expect(result).toBe(adapter);
-      });
-
-      it('should register a factory that returns the adapter', () => {
-        const { module } = createMockModule();
-        const adapter = new MockTextAdapter({});
-        adapter.setModule = vi.fn();
-
-        setTextAdapter(module, adapter);
-
-        const registerCall = (
-          module.updateTextAdapter as ReturnType<typeof vi.fn>
-        ).mock.calls[0];
-        const factory = registerCall[0];
-        expect(factory()).toBe(adapter);
       });
     });
 
@@ -113,32 +101,14 @@ describe('SetAdapter', () => {
 
   describe('setAnnotationAdapter', () => {
     describe('when given an AnnotationAdapter instance', () => {
-      it('should call setModule and updateAnnotationAdapter', () => {
+      it('should call updateAnnotationAdapter with the adapter', () => {
         const { module } = createMockModule();
         const adapter = new MockAnnotationAdapter({});
-        adapter.setModule = vi.fn();
 
         const result = setAnnotationAdapter(module, adapter);
 
-        expect(adapter.setModule).toHaveBeenCalledWith(module);
-        expect(module.updateAnnotationAdapter).toHaveBeenCalledWith(
-          expect.any(Function),
-        );
+        expect(module.updateAnnotationAdapter).toHaveBeenCalledWith(adapter);
         expect(result).toBe(adapter);
-      });
-
-      it('should register a factory that returns the adapter', () => {
-        const { module } = createMockModule();
-        const adapter = new MockAnnotationAdapter({});
-        adapter.setModule = vi.fn();
-
-        setAnnotationAdapter(module, adapter);
-
-        const registerCall = (
-          module.updateAnnotationAdapter as ReturnType<typeof vi.fn>
-        ).mock.calls[0];
-        const factory = registerCall[0];
-        expect(factory()).toBe(adapter);
       });
     });
 
@@ -169,6 +139,39 @@ describe('SetAdapter', () => {
 
         expect(mockAnnotationAdapter.setParams).toHaveBeenCalledWith({});
       });
+    });
+  });
+
+  describe('setSnapperAdapter', () => {
+    it('should call updateSnapper on the module', () => {
+      const { module } = createMockModule();
+      const snapper = { setText: vi.fn() } as unknown as Snapper;
+
+      setSnapperAdapter(module, snapper, 'hello world');
+
+      expect(module.updateSnapper).toHaveBeenCalledWith(snapper);
+    });
+
+    it('should call setText with the text and annotationAdapter startOffset', () => {
+      const mockAnnotationAdapter = new MockAnnotationAdapter({});
+      mockAnnotationAdapter.startOffset = 5;
+      const { module } = createMockModule({
+        annotationAdapter: mockAnnotationAdapter,
+      });
+      const snapper = { setText: vi.fn() } as unknown as Snapper;
+
+      setSnapperAdapter(module, snapper, 'hello world');
+
+      expect(snapper.setText).toHaveBeenCalledWith('hello world', 5);
+    });
+
+    it('should return the snapper', () => {
+      const { module } = createMockModule();
+      const snapper = { setText: vi.fn() } as unknown as Snapper;
+
+      const result = setSnapperAdapter(module, snapper, 'hello world');
+
+      expect(result).toBe(snapper);
     });
   });
 });

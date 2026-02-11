@@ -1,18 +1,29 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
+import {
+  type Snapper,
+  type TextAdapter,
+  type TextAdapterParams,
+} from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
   type AnnotationAdapterParams,
-  type AnnotationStyleParams
+  type AnnotationStyleParams,
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../../adapter/annotation/renderer';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../../adapter/annotation/renderer';
 import { type AnnotationStyle } from '../../adapter/annotation/style';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
@@ -23,7 +34,11 @@ import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
-import { setAnnotationAdapter, setTextAdapter } from '../../adapter/SetAdapter';
+import {
+  setAnnotationAdapter,
+  setSnapperAdapter,
+  setTextAdapter,
+} from '../../adapter/SetAdapter';
 
 const document = globalThis.document || null;
 
@@ -107,7 +122,7 @@ export class CreateAnnotationsImpl<
   }
 
   public setSnapper(snapper: Snapper) {
-    this.annotationModule.updateSnapper(() => snapper);
+    setSnapperAdapter(this.annotationModule, snapper, this.text);
     this.recalculate();
 
     return this;

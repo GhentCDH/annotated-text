@@ -3,7 +3,7 @@ import {
   type AnnotationId,
   createAnnotatedText,
   getAnnotatedText,
-  TextLineAdapter
+  TextLineAdapter,
 } from '@ghentcdh/annotated-text';
 import { type DemoAnnotation, greekText } from '../data';
 

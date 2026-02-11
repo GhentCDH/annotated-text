@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { WordSnapper } from '../WordSnapper';
-import { type TextAnnotation } from '../../../../../model';
+import { type TextAnnotation } from '../../../../model';
 
 describe('WordSnapper', () => {
   let snapper: WordSnapper;
@@ -74,14 +74,14 @@ describe('WordSnapper', () => {
     describe('Hello world', () => {
       it.each`
         start | end   | expectedStart | expectedEnd | expectedSelection | description
-        ${0}  | ${5}  | ${0}          | ${5}        | ${'Hello'}        | ${'select \'Hello\''}
-        ${0}  | ${4}  | ${0}          | ${5}        | ${'Hello'}        | ${'select \'Hello\''}
-        ${0}  | ${2}  | ${0}          | ${5}        | ${'Hello'}        | ${'select \'Hello\''}
-        ${3}  | ${5}  | ${0}          | ${5}        | ${'Hello'}        | ${'select \'Hello\''}
-        ${3}  | ${7}  | ${0}          | ${5}        | ${'Hello'}        | ${'select \'Hello\''}
-        ${6}  | ${10} | ${6}          | ${11}       | ${'world'}        | ${'select \'World\''}
-        ${6}  | ${7}  | ${6}          | ${11}       | ${'world'}        | ${'select \'World\''}
-        ${2}  | ${9}  | ${0}          | ${11}       | ${'Hello world'}  | ${'select \'Hello World\''}
+        ${0}  | ${5}  | ${0}          | ${5}        | ${'Hello'}        | ${"select 'Hello'"}
+        ${0}  | ${4}  | ${0}          | ${5}        | ${'Hello'}        | ${"select 'Hello'"}
+        ${0}  | ${2}  | ${0}          | ${5}        | ${'Hello'}        | ${"select 'Hello'"}
+        ${3}  | ${5}  | ${0}          | ${5}        | ${'Hello'}        | ${"select 'Hello'"}
+        ${3}  | ${7}  | ${0}          | ${5}        | ${'Hello'}        | ${"select 'Hello'"}
+        ${6}  | ${10} | ${6}          | ${11}       | ${'world'}        | ${"select 'World'"}
+        ${6}  | ${7}  | ${6}          | ${11}       | ${'world'}        | ${"select 'World'"}
+        ${2}  | ${9}  | ${0}          | ${11}       | ${'Hello world'}  | ${"select 'Hello World'"}
       `(
         'should make valid from $description',
         ({ start, end, expectedStart, expectedEnd, expectedSelection }) => {

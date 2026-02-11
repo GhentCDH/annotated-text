@@ -1,4 +1,4 @@
-import { type TextAnnotation } from '../../../model';
+import { type TextAnnotation } from '../../model';
 
 export type SnapperResult = {
   start: number;
@@ -20,9 +20,9 @@ export class DefaultSnapper extends Snapper {
   protected textLength = 0;
 
   override setText(text: string, offsetStart: number) {
-    this.text = text;
+    this.text = text ?? '';
     this.offsetStart = offsetStart;
-    this.textLength = text.length + offsetStart;
+    this.textLength = this.text.length + offsetStart;
   }
 
   fixOffset(annotation: TextAnnotation): SnapperResult {
