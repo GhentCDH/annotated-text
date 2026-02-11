@@ -8,7 +8,7 @@ const firstAnnotation = DemoShortText.annotations[0];
 
 test.describe('AnnotatedText Core - Snapper interactions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/interaction/crud.html');
+    await page.goto('/interaction/snapper.html');
   });
 
   test.describe('Move', () => {

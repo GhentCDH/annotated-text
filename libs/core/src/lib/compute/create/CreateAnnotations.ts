@@ -123,8 +123,6 @@ export class CreateAnnotationsImpl<
 
   public setSnapper(snapper: Snapper) {
     setSnapperAdapter(this.annotationModule, snapper, this.text);
-    this.recalculate();
-
     return this;
   }
 
@@ -146,6 +144,7 @@ export class CreateAnnotationsImpl<
   }
 
   private recalculate() {
+    const start = Date.now();
     if (!this.text) {
       Debugger.debug(
         'setAnnotations',
@@ -154,9 +153,14 @@ export class CreateAnnotationsImpl<
       return this;
     }
 
+    const startInit = Date.now();
     this.draw.initDraw(this.text, this.annotations());
+    Debugger.time(startInit, '  draw.initDraw \t');
+    const startRedraw = Date.now();
     this.redrawSvg();
+    Debugger.time(startRedraw, '  redrawSvg \t\t');
 
+    Debugger.time(start, 'recalculate \t\t');
     return this;
   }
 
@@ -191,9 +195,8 @@ export class CreateAnnotationsImpl<
     this.redrawSvg();
   }
 
-  private redrawSvg() {
+  private async redrawSvg() {
     if (!document) return;
-
     this.mainContainer.clear();
 
     // First create the text
@@ -206,8 +209,10 @@ export class CreateAnnotationsImpl<
     this.svgModel.createModel();
     this.mainContainer.setSvg(this.svgModel.node());
 
+    const initialDrawTime = Date.now();
     // Start computations with the known values
     this.draw.compute().initialDraw();
+    Debugger.time(initialDrawTime, ' \t initialDraw \t');
   }
 
   public destroy() {

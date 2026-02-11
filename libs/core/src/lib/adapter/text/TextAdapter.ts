@@ -46,8 +46,9 @@ export abstract class TextAdapter<
    * Parses the given text into an array of TextLine objects.
    * The parser is also responsible for handling text limits.
    * @param text
+   * @param startOffset
    */
-  abstract parse(text: string): TextLine[];
+  abstract parse(text: string, startOffset: number): TextLine[];
 
   getLimit(lines?: TextLine[]) {
     if (!this.limit) return null;

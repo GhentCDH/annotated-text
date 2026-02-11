@@ -7,8 +7,6 @@ import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
 import { getLinesForAnnotation } from '../../utils/line.utils';
-
-import { Debugger } from '../../../utils/debugger';
 import { AnnotationColors } from '../../model/annotation.colors';
 import { RenderInstances } from '../../../adapter/annotation/renderer/render-instances';
 
@@ -19,13 +17,9 @@ export class DrawAnnotation extends BaseAnnotationDi {
     this.annotationModule.inject(RenderInstances);
 
   drawAll() {
-    const now = Date.now();
-
     this.annotationAdapter.annotations
       .sortBy('weight')
       .forEach((annotation) => this.draw(annotation));
-
-    Debugger.time(now, '--- drawComputedAnnotations ');
 
     this.color();
 

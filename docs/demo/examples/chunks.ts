@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createAnnotatedText, TextLineAdapter } from '@ghentcdh/annotated-text';
-import { DemoAnnotation, greekText } from '../data';
+import { type DemoAnnotation, greekText } from '../data';
 
 const document = globalThis.document;
 
 const createChunk = (element: HTMLElement, annotation: DemoAnnotation) => {
   const id = uuidv4();
-  const div = document?.createElement(`div`);
+  const div = document?.createElement('div');
   if (!div) return;
 
   div.setAttribute('id', id);
