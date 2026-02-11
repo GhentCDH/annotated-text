@@ -8,7 +8,7 @@ on:
 
 permissions:
   contents: read
-  
+
 env:
   DEPENDENCIES_CACHE: cache-node-modules
 
@@ -80,40 +80,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
-      - name: Run core e2e tests with coverage
-        run: npx nx run core:e2e:coverage
+      - name: Run core e2e tests
+        run: npx nx run core:e2e
+        #      - name: Run core e2e tests with coverage
+        #        run: npx nx run core:e2e:coverage
         env:
           CI: true
           COVERAGE: true
-      - name: Coverage summary
-        run: |
-          if [ -f libs/core/coverage/e2e/coverage-summary.json ]; then
-            LINES=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
-            BRANCHES=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.branches.pct)")
-            FUNCTIONS=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.functions.pct)")
-            STATEMENTS=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.statements.pct)")
-            echo "## 🎭 E2E Test Coverage" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
-            echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
-            echo "| Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
-            echo "| Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
-            echo "| Functions | ${FUNCTIONS}% |" >> $GITHUB_STEP_SUMMARY
-            echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
-          fi
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report-core
-          path: libs/core/playwright-report/
-          retention-days: 30
-      - name: Upload E2E coverage report
-        uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: coverage-report-e2e
-          path: libs/core/coverage/e2e/
-          retention-days: 30
+#      - name: Coverage summary
+#        run: |
+#          if [ -f libs/core/coverage/e2e/coverage-summary.json ]; then
+#            LINES=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.lines.pct)")
+#            BRANCHES=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.branches.pct)")
+#            FUNCTIONS=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.functions.pct)")
+#            STATEMENTS=$(node -e "const c = require('./libs/core/coverage/e2e/coverage-summary.json'); console.log(c.total.statements.pct)")
+#            echo "## 🎭 E2E Test Coverage" >> $GITHUB_STEP_SUMMARY
+#            echo "" >> $GITHUB_STEP_SUMMARY
+#            echo "| Metric | Coverage |" >> $GITHUB_STEP_SUMMARY
+#            echo "|--------|----------|" >> $GITHUB_STEP_SUMMARY
+#            echo "| Lines | ${LINES}% |" >> $GITHUB_STEP_SUMMARY
+#            echo "| Branches | ${BRANCHES}% |" >> $GITHUB_STEP_SUMMARY
+#            echo "| Functions | ${FUNCTIONS}% |" >> $GITHUB_STEP_SUMMARY
+#            echo "| Statements | ${STATEMENTS}% |" >> $GITHUB_STEP_SUMMARY
+#          fi
+#      - name: Upload Playwright report
+#        uses: actions/upload-artifact@v4
+#        if: ${{ !cancelled() }}
+#        with:
+#          name: playwright-report-core
+#          path: libs/core/playwright-report/
+#          retention-days: 30
+#      - name: Upload E2E coverage report
+#        uses: actions/upload-artifact@v4
+#        if: ${{ !cancelled() }}
+#        with:
+#          name: coverage-report-e2e
+#          path: libs/core/coverage/e2e/
+#          retention-days: 30
