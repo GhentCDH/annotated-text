@@ -6,10 +6,8 @@ You can enable them by on the AnotationAdapter when creating the AnnotatedText c
 ```typescript
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
-createAnnotatedText(id,
-  {
-    annotation: { edit: true, create: true },
-  })
+createAnnotatedText(id)
+  .setAnnotationAdapter({ edit: true, create: true });
 ```
 
 Or you can enable/disable them on the fly using `setConfig`.
@@ -20,13 +18,8 @@ import { createAnnotatedText } from "@ghentcdh/annotated-text";
 // Create the annotated text component with the ID
 const textAnnotation = createAnnotatedText(id);
 
-// Enable/or disable them on the fly using setConfig
-textAnnotation.annotationAdapter.setConfig('edit', true);
-textAnnotation.annotationAdapter.setConfig('create', true);
-
-// Or directly set the properties
-textAnnotation.annotationAdapter.edit = true;
-textAnnotation.annotationAdapter.create = true;
+// Enable/or disable them on the fly using setAnnotationAdapter
+textAnnotation.setAnnotationAdapter({ edit: true, create: true });
 ```
 
 ## Example

@@ -34,11 +34,11 @@ export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 export abstract class TextAdapter<
   PARAMS extends TextAdapterParams = TextAdapterParams,
 > extends BaseAdapter<PARAMS> {
-  textDirection: TextDirection = 'ltr';
-  flatText = false;
-  limit: Limit | null = null;
-  style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
-  public textLength = 0;
+  textDirection: TextDirection;
+  flatText: boolean;
+  limit: Limit | null;
+  style: TextAdapterStyle;
+  textLength: number;
 
   public lines: TextLine[] = [];
 

@@ -37,10 +37,9 @@ export abstract class SvgAnnotationRender<
   // Implemented by default
   createDraws(annotation: TextAnnotation) {
     const parentDimensions = this.svgModel.getTextElementDimensions();
-    const params = {
-      textDirection: this.textAdapter.textDirection,
-      maxGutterWeight: this.annotationAdapter.gutter.maxWeight,
-    };
+
+    const textDirection = this.textAdapter.textDirection;
+
     const textStyle = this.textAdapter.style;
 
     const radius = this.style.borderRadius;
@@ -71,7 +70,7 @@ export abstract class SvgAnnotationRender<
         const lastRect = rectIdx === rects.length - 1;
         let rightBorder = lastRect && isLastLine;
 
-        if (params.textDirection === 'rtl') {
+        if (textDirection === 'rtl') {
           const r = rightBorder;
           rightBorder = leftBorder;
           leftBorder = r;

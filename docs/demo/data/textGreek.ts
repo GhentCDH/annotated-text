@@ -14,6 +14,8 @@ export const greekText = {
   annotationsWithGutters: annotationsWithGutters,
   lines: lines,
   annotationConfig: DemoAnnotationConfig,
+  renderParams: DemoAnnotationConfig.render,
+  styleParams: DemoAnnotationConfig.style,
 };
 
 export const largeGreekText = {

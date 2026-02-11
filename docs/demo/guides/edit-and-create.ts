@@ -7,14 +7,11 @@ import { greekText } from '../data';
 
 export const editAndCreateDemo = (id: string) => {
   clearAnnotatedTextCache();
-  createAnnotatedText(id, {
-    text: TextLineAdapter(),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-      create: true,
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations)
     .on('annotation-edit--start', (e) => console.log('EDIT -- start', e))

@@ -54,6 +54,9 @@ onMounted(()=> {
         text: TextLineAdapter(),
         annotation: greekText.annotationConfig
     })
+    .setTextAdapter(TextLineAdapter())
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 });

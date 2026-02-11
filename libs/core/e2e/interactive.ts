@@ -2,7 +2,10 @@
 import '../src/lib/style/style.scss';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
+import {
+  clearAnnotatedTextCache,
+  createAnnotatedText,
+} from '@ghentcdh/annotated-text';
 
 // Clear any cached instances
 clearAnnotatedTextCache();

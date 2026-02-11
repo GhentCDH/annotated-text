@@ -43,12 +43,12 @@ export abstract class AnnotationAdapter<
    * If true, creation of annotations is enabled.
    * @param params
    */
-  public create = false;
+  create: boolean;
   /**
    * If true, edit of annotations is enabled.
    * @param params
    */
-  public edit = false;
+  edit: boolean;
 
   /**
    * Configuration for styling the annotations, can be used to override default styles.
@@ -57,7 +57,7 @@ export abstract class AnnotationAdapter<
   private tagRenderer: TagRenderer<ANNOTATION>;
 
   protected text = '';
-  startOffset = 0;
+  startOffset: number;
 
   public setText(text: string) {
     this.text = text;
@@ -190,10 +190,10 @@ export abstract class AnnotationAdapter<
   }
 
   override setParams(params: PARAMS) {
-    this.edit = params.edit ?? this.edit;
-    this.create = params.create ?? this.create;
+    this.edit = params.edit ?? this.edit ?? false;
+    this.create = params.create ?? this.create ?? false;
     this.config = merge(cloneDeep(this.config ?? config), params.config);
-    this.startOffset = params.startOffset ?? this.startOffset;
+    this.startOffset = params.startOffset ?? this.startOffset ?? 0;
   }
 
   // @region annotation  cache

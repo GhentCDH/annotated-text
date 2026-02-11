@@ -3,16 +3,16 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, watchEffect } from "vue";
-import { v4 as uuidv4 } from "uuid";
-import type { AnnotatedText, Annotation } from "@ghentcdh/annotated-text";
+import { onMounted, onUnmounted, watch, watchEffect } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
+import type { AnnotatedText, Annotation } from '@ghentcdh/annotated-text';
 import {
   createAnnotatedText,
   Debugger,
   TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { AnnotatedTextV2Props } from "../types/props";
-import { AnnotatedTextV2Emits } from "../types/emits";
+} from '@ghentcdh/annotated-text';
+import { AnnotatedTextV2Props } from '../types/props';
+import { AnnotatedTextV2Emits } from '../types/emits';
 
 // init props
 
@@ -42,7 +42,7 @@ let textAnnotation: AnnotatedText<Annotation>;
 const createText = () => {
   textAnnotation?.destroy();
   textAnnotation = createAnnotatedText(id, {
-    text: TextLineAdapter({ textDirection: props.rtl ? "rtl" : "ltr" }),
+    text: TextLineAdapter({ textDirection: props.rtl ? 'rtl' : 'ltr' }),
     annotation: {
       edit: props.allowEdit,
       create: props.allowCreate,
@@ -53,8 +53,8 @@ const createText = () => {
     .setAnnotations(props.annotations)
     .highlightAnnotations(props.highlightAnnotations!)
     .selectAnnotations(props.selectedAnnotations)
-    .on("all", (event) =>
-      emit("event", event.mouseEvent as any, event.event, event.data!),
+    .on('all', (event) =>
+      emit('event', event.mouseEvent as any, event.event, event.data!),
     );
 };
 
@@ -107,23 +107,22 @@ watch(
 watch(
   () => props.allowEdit,
   () => {
-    textAnnotation?.changeAnnotationAdapterConfig("edit", props.allowEdit);
+    textAnnotation?.setAnnotationAdapter({ edit: props.allowCreate });
   },
 );
 watch(
   () => props.allowCreate,
   () => {
-    textAnnotation?.changeAnnotationAdapterConfig("create", props.allowCreate);
+    textAnnotation?.setAnnotationAdapter({ create: props.allowCreate });
   },
 );
 
 watch(
   () => props.rtl,
   () => {
-    textAnnotation.changeTextAdapterConfig(
-      "textDirection",
-      props.rtl ? "rtl" : "ltr",
-    );
+    textAnnotation?.setTextAdapter({
+      textDirection: props.rtl ? 'rtl' : 'ltr',
+    });
   },
 );
 

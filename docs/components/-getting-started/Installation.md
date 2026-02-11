@@ -8,5 +8,5 @@ npm i @ghentcdh/annotated-text
 ```
 
 ```bash
-pnpm i @ghentcdh/annotated-text
+pnpm add @ghentcdh/annotated-text
 ```

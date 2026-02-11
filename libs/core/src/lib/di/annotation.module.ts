@@ -110,13 +110,13 @@ export class AnnotationModule {
   }
 
   updateTextAdapter(factory: () => TextAdapter): this {
-    this.container.register(TextAdapterToken, factory);
+    this.container.update(TextAdapterToken, factory);
     this.getTextAdapter().setModule(this);
     return this;
   }
 
   updateAnnotationAdapter(factory: () => AnnotationAdapter<any>): this {
-    this.container.register(AnnotationAdapterToken, factory);
+    this.container.update(AnnotationAdapterToken, factory);
     this.getAnnotationAdapter().setModule(this);
     return this;
   }
