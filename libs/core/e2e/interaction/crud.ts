@@ -75,13 +75,12 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
   };
 
   // Basic text setup
-  const annotatedText = createAnnotatedText<any>(id, {
-    annotation: {
+  const annotatedText = createAnnotatedText<any>(id)
+    .setAnnotationAdapter({
       edit: params.edit ?? false,
       create: params.create ?? false,
       startOffset: params.offset ?? 0,
-    },
-  })
+    })
     .setText(text)
     .setAnnotations(annotations)
     .setStyleParams({

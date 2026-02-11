@@ -71,7 +71,7 @@ export class TagRenderer<
       label,
       padding: 1,
       fontSize: 8,
-      enabledOnHover: true,
+      enabledOnHover: false,
     });
   }
 }

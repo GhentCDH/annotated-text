@@ -50,6 +50,8 @@ export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
   const annotationDimensions = annotation._drawMetadata
     .dimensions as AnnotationDimension;
 
+  if (!annotationDimensions) return;
+
   const color = annotation._drawMetadata.color as AnnotationDrawColors;
 
   const startAnnotation = {
