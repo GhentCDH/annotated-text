@@ -42,10 +42,10 @@ indicate whether to update the view or not.
 
 ```typescript
 import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/annotated-text";
+import { W3CAnnotationAdapterImpl } from './W3CAnnotationAdapter';
 
-createAnnotatedText(id, {
-  annotation: W3CAnnotationAdapter()
-})
+createAnnotatedText(id)
+  .setAnnotationAdapter(W3CAnnotationAdapter())
   .setText(w3cText.text, false)
   .setAnnotations(w3cText.w3cAnnotations.items)
 ```
@@ -61,7 +61,7 @@ Sometimes you might have annotations from different sources. In that case, you c
 initializing the parser.
 
 ```typescript 
-  annotation: W3CAnnotationAdapter({
+W3CAnnotationAdapter({
   sourceId: `https://example.com/source1`
 })
 ```
@@ -77,15 +77,8 @@ import { w3cText } from "@demo";
 
 const createAnnotations = (id, sourceId)=>{
 
-        createAnnotatedText(id,
-            {
-                annotation: W3CAnnotationAdapter({  
-                   sourceUri: sourceId,  
-                    create: true,
-                    edit: true
-                }),
-            },
-        )
+        createAnnotatedText(id)
+        .setAnnotationAdapter(W3CAnnotationAdapter({ sourceUri: sourceId, create: true, edit: true }))
         .setText(w3cText.text, false)
         .setAnnotations(w3cText.w3cAnnotations.items)
         .on('all', ({ mouseEvent, event, data }) => {

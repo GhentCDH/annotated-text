@@ -1,13 +1,24 @@
 import { type Container, type Token } from './container';
 import type { Annotation, BaseAnnotation } from '../model';
-import { type AnnotationAdapter, DefaultAnnotationAdapter } from '../adapter/annotation';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
+import {
+  type AnnotationAdapter,
+  DefaultAnnotationAdapter,
+} from '../adapter/annotation';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { DefaultSnapper, PlainTextAdapter, type Snapper, type TextAdapter } from '../adapter/text';
+import {
+  DefaultSnapper,
+  PlainTextAdapter,
+  type Snapper,
+  type TextAdapter,
+} from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
@@ -122,7 +133,7 @@ export class AnnotationModule {
   }
 
   updateSnapper(factory: () => Snapper): this {
-    this.container.register(SnapperToken, factory);
+    this.container.update(SnapperToken, factory);
     return this;
   }
 

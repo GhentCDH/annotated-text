@@ -8,13 +8,17 @@ annotations using highlights, underlines, gutter markers, and custom renderers.
 Annotation rendering lets you:
 
 - Apply different visual styles to annotations (highlight, underline, gutter)
-- Dynamically assign render types using a `renderFn`
+- Dynamically assign render types per annotation using a `renderFn`
 - Use built-in renderers or create custom ones
-- Register single renderers or multiple renderers at once
-- By default following renderers are available:
-    - **highlight**: Default renderer that highlights text
-    - **underline**: Underlines the annotated text
-    - **gutter**: Displays annotation markers in the gutter/margin
+- Register single or multiple renderers at once
+
+Three built-in renderers are registered by default:
+
+| Renderer      | Key         | Description                                    |
+|---------------|-------------|------------------------------------------------|
+| `HighlightAnnotationRender` | `highlight` | Background highlight behind the text |
+| `UnderLineAnnotationRender` | `underline` | Line beneath the text                |
+| `GutterAnnotationRender`    | `gutter`    | Marker in the gutter area            |
 
 ### Example with default renderers
 
@@ -26,67 +30,55 @@ Annotation rendering lets you:
 
 ## Configuration
 
+### Default Renderer
+
+When no `renderFn` is provided, or when `renderFn` returns `null` or a key that does not match any registered renderer,
+the default renderer is used. By default this is `highlight`. Override it with `setRenderParams`:
+
+```typescript
+createAnnotatedText(containerId)
+  .setRenderParams({
+    defaultRenderer: 'underline'
+  })
+```
+
 ### Render Function
 
-The `renderFn` configuration option determines which renderer to use for each annotation. It receives an annotation and
-returns a string that corresponds to a registered renderer.
+Use `renderFn` to choose a renderer per annotation. It receives the annotation and should return a registered renderer
+key, or `null` to fall back to the default:
 
 ```typescript
-createAnnotatedText(containerId, {
-  annotation: {
-    render: {
-      renderFn: (annotation) => annotation.target,
-    },
-  },
-});
+createAnnotatedText(containerId)
+  .setRenderParams({
+    renderFn: (annotation) => annotation.target
+  })
 ```
 
-The function can implement any logic to determine the render type:
+The function can contain any logic:
 
 ```typescript
-renderFn: (annotation) => {
-  if (annotation.type === 'entity') return 'highlight';
-  if (annotation.type === 'relation') return 'underline';
-  return 'gutter';
-}
-```
-
-## Built-in Renderers
-
-The library provides three built-in renderers:
-
-| Renderer                    | Render Key  | Description                                         |
-|-----------------------------|-------------|-----------------------------------------------------|
-| `HighlightAnnotationRender` | `highlight` | Renders a background highlight behind the text      |
-| `UnderLineAnnotationRender` | `underline` | Renders a line beneath the text                     |
-| `GutterAnnotationRender`    | `gutter`    | Renders a marker in the gutter area beside the text |
-
-### Importing Built-in Renderers
-
-```typescript
-import {
-  HighlightAnnotationRender,
-  UnderLineAnnotationRender,
-  GutterAnnotationRender,
-} from "@ghentcdh/annotated-text";
+createAnnotatedText(containerId)
+  .setRenderParams({
+    renderFn: (annotation) => {
+      if (annotation.type === 'entity') return 'highlight';
+      if (annotation.type === 'relation') return 'underline';
+      return 'gutter';
+    }
+  })
 ```
 
 ## Registering Renderers
 
-### Single Renderer Registration
-
-Use `registerRender` to register a single renderer:
+### Single Renderer
 
 ```typescript
 import { createAnnotatedText, HighlightAnnotationRender } from "@ghentcdh/annotated-text";
 
-createAnnotatedText(containerId, config)
+createAnnotatedText(containerId)
   .registerRender(new HighlightAnnotationRender());
 ```
 
-### Multiple Renderer Registration
-
-Use `registerRenders` to register multiple renderers at once:
+### Multiple Renderers
 
 ```typescript
 import {
@@ -95,19 +87,19 @@ import {
   UnderLineAnnotationRender,
 } from "@ghentcdh/annotated-text";
 
-createAnnotatedText(containerId, config)
+createAnnotatedText(containerId)
   .registerRenders(
     new GutterAnnotationRender(),
     new UnderLineAnnotationRender(),
   );
 ```
 
-### Chaining Registrations
+### Chaining
 
-Both methods return the annotated text instance, allowing you to chain calls:
+All methods return the instance, so calls can be chained:
 
 ```typescript
-createAnnotatedText(containerId, config)
+createAnnotatedText(containerId)
   .registerRender(new HighlightAnnotationRender())
   .registerRenders(
     new GutterAnnotationRender(),
@@ -137,7 +129,6 @@ const id_line = `display-render--line`;
 
 onMounted(()=> {
     RenderUnderline(id_default,id_line);
-
 });
 
 

@@ -1,27 +1,29 @@
-import { createAnnotatedText, TextLineAdapter } from "@ghentcdh/annotated-text";
-import { DemoAnnotation, greekText } from "../data";
+import { createAnnotatedText, TextLineAdapter } from '@ghentcdh/annotated-text';
+import { DemoAnnotation, greekText } from '../data';
 
 const createAnnotatedTextWithLines = (
   annotation: DemoAnnotation,
   textContainer: HTMLElement,
   ignoreLines: boolean,
 ) => {
-  const ann = document.createElement("div");
+  const ann = document.createElement('div');
   ann.id = `annotation-selection-${annotation.id}-${ignoreLines}`;
-  ann.style.borderBottom = "1px solid #ccc";
-  ann.style.paddingBottom = "10px";
+  ann.style.borderBottom = '1px solid #ccc';
+  ann.style.paddingBottom = '10px';
   textContainer.appendChild(ann);
 
-  createAnnotatedText(ann.id, {
-    annotation: greekText.annotationConfig,
-    text: TextLineAdapter({
-      limit: {
-        start: annotation.start,
-        end: annotation.end,
-        ignoreLines,
-      },
-    }),
-  })
+  createAnnotatedText(ann.id)
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
+    .setTextAdapter(
+      TextLineAdapter({
+        limit: {
+          start: annotation.start,
+          end: annotation.end,
+          ignoreLines,
+        },
+      }),
+    )
     .setText(greekText.text)
     .setAnnotations([annotation]);
 };
@@ -31,17 +33,17 @@ export const linesAllAnnotationInSelection = (id: string) => {
   const element = document.getElementById(id);
   const annotations = greekText.annotations;
 
-  const textContainer = document.createElement("div");
-  textContainer.style.display = "grid";
-  textContainer.style.gridTemplateColumns = "repeat(2, 1fr)";
-  textContainer.style.gap = "10px";
+  const textContainer = document.createElement('div');
+  textContainer.style.display = 'grid';
+  textContainer.style.gridTemplateColumns = 'repeat(2, 1fr)';
+  textContainer.style.gap = '10px';
   element.appendChild(textContainer);
   annotations
-    .filter((a) => a.target === "text")
+    .filter((a) => a.target === 'text')
     .slice(0, 4)
     .forEach((annotation) => {
-      const annInfo = document.createElement("div");
-      annInfo.style.gridColumn = "span 2";
+      const annInfo = document.createElement('div');
+      annInfo.style.gridColumn = 'span 2';
       annInfo.innerText = `${annotation.start}-${annotation.end} -(${annotation.id})`;
       textContainer.appendChild(annInfo);
       createAnnotatedTextWithLines(annotation, textContainer, false);

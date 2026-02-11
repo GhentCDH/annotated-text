@@ -12,27 +12,26 @@ starting from 1. For example:
 - **FileMaker** uses 1-based indexing ([documentation](https://help.claris.com/en/pro-help/content/position.html))
 - **Scholarly editions** often reference character or word positions starting from 1
 - **Editorial workflows** may use 1-based positions for manuscript annotations
-- Other markup standards often use 1-based counting
+- **W3C Web Annotation** uses 0-based indexing, which can cause confusion when integrating with other systems that use
+  1-based indexing
+- Other markup standards often use 0-based counting
 
 This mismatch requires constant mental translation and can lead to errors when creating or validating annotations.
 
-### Solution: Text Offset Configuration
+### Solution: Start Offset Configuration
 
-Configure a custom offset for text character indexing using the `textOffset` option:
+Configure a custom offset for text character indexing using the `startOffset` option on the annotation adapter:
 
 ```typescript
-createAnnotatedText(id, {
-  text: {
-    textOffset: 1  // Start indexing at 1 instead of 0
-  },
-})
+createAnnotatedText(id)
+  .setAnnotationAdapter({ startOffset: 1 })
   .setText(text)
   .setAnnotations(annotations);
 ```
 
 ### How It Works
 
-When you set a `textOffset`:
+When you set a `startOffset`:
 
 - **Display layer**: Text positions are shown with the offset applied (e.g., first character is position 1)
 - **Internal layer**: Zero-based indexing is maintained internally for processing
@@ -56,9 +55,8 @@ const annotations = [
   }
 ];
 
-createAnnotatedText(id, {
-  text: { textOffset: 1 },
-})
+createAnnotatedText(id)
+  .setAnnotationAdapter({ startOffset: 1 })
   .setText(text)
   .setAnnotations(annotations);
 ```
@@ -66,7 +64,7 @@ createAnnotatedText(id, {
 **Default behavior (0-based indexing):**
 
 ```typescript
-// Without textOffset, or with textOffset: 0
+// Without startOffset, or with startOffset: 0
 const annotations = [
   {
     start: 0,    // First character 'H'
@@ -87,9 +85,8 @@ Align with FileMaker's Position function:
 
 ```typescript
 // Match FileMaker's 1-based Position() function
-createAnnotatedText("filemaker-text", {
-  text: { textOffset: 1 },
-});
+createAnnotatedText("filemaker-text")
+  .setAnnotationAdapter({ startOffset: 1 });
 ```
 
 #### Custom Offsets
@@ -98,9 +95,8 @@ Support arbitrary starting positions:
 
 ```typescript
 // Start at position 100 (e.g., continuing from a previous section)
-createAnnotatedText("section-2", {
-  text: { textOffset: 100 },
-});
+createAnnotatedText("section-2")
+  .setAnnotationAdapter({ startOffset: 100 });
 ```
 
 ### Important Considerations
@@ -113,25 +109,11 @@ createAnnotatedText("section-2", {
 
 ### Default Behavior
 
-When `textOffset` is not specified or set to `0`:
+When `startOffset` is not specified or set to `0`:
 
 - Text indexing starts at 0
 - Standard zero-based indexing is used throughout
 - This is the default behavior and matches most programming conventions
-
-### Configuration Options
-
-```typescript
-interface TextConfig {
-  textOffset?: number;  // Default: 0
-}
-
-createAnnotatedText(id, {
-  text: {
-    textOffset: 1,  // or any integer value
-  },
-});
-```
 
 ## Example
 
@@ -151,17 +133,6 @@ is applied, to demonstrate how the starting index affects the annotation positio
 
 <script setup>
 //
-import { onMounted } from "vue";
-import { createDifferentTextOffset } from "@demo";
-const id_offset_1 = `different-text-offset--1`;
-const id_no_offset = `different-text-offset--0`;
-const id_offset_10 = `different-text-offset--10`;
-
-onMounted(()=> {
-    createDifferentTextOffset(id_offset_1,1);
-    createDifferentTextOffset(id_no_offset,0);
-    createDifferentTextOffset(id_offset_10,10);
-});
 </script>
 
 ### Wordsnapper
@@ -220,4 +191,3 @@ onMounted(()=> {
     createDifferentTextOffsetLines(lines_id_offset_10,10);
 });
 </script>
-

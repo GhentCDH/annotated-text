@@ -12,18 +12,14 @@ export const RenderTag = (
 ) => {
   clearAnnotatedTextCache();
 
-  createAnnotatedText(id, {
-    text: TextLineAdapter(),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-      create: true,
-      render: {
-        defaultRenderer,
-        renderFn: greekText.annotationConfig.render.renderFn,
-      },
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams({
+      defaultRenderer,
+      renderFn: greekText.renderParams.renderFn,
+    })
+    .setStyleParams(greekText.styleParams)
     .setTagLabelFn((annotation) => annotation.label ?? 'No label')
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);

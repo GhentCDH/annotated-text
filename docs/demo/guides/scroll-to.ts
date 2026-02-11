@@ -2,9 +2,9 @@ import {
   AnnotatedText,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { v4 as uuidv4 } from "uuid";
-import { greekText } from "../data";
+} from '@ghentcdh/annotated-text';
+import { v4 as uuidv4 } from 'uuid';
+import { greekText } from '../data';
 
 const document = globalThis.document;
 
@@ -14,12 +14,12 @@ export const scrollToAnnotation = (id: string) => {
   const annotations = greekText.annotations;
   let annotatedText: AnnotatedText<any> = null;
 
-  const textContainer = document.createElement("div");
-  textContainer.style.display = "flex";
-  textContainer.style.flexWrap = "wrap";
-  textContainer.style.gap = "10px";
+  const textContainer = document.createElement('div');
+  textContainer.style.display = 'flex';
+  textContainer.style.flexWrap = 'wrap';
+  textContainer.style.gap = '10px';
   annotations.forEach((annotation) => {
-    const button = document.createElement("button");
+    const button = document.createElement('button');
     button.innerHTML = `Scroll to ${annotation.label || annotation.id}`;
     button.onclick = () => {
       annotatedText.scrollToAnnotation(annotation.id);
@@ -30,13 +30,13 @@ export const scrollToAnnotation = (id: string) => {
   element.appendChild(textContainer);
 
   const annotationId = uuidv4();
-  const annotationDiv = document.createElement("div");
-  annotationDiv.setAttribute("id", annotationId);
+  const annotationDiv = document.createElement('div');
+  annotationDiv.setAttribute('id', annotationId);
   element.appendChild(annotationDiv);
-  annotatedText = createAnnotatedText(annotationId, {
-    text: TextLineAdapter(),
-    annotation: greekText.annotationConfig,
-  })
+  annotatedText = createAnnotatedText(annotationId)
+    .setTextAdapter(TextLineAdapter())
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(annotations);
 };

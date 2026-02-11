@@ -80,6 +80,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/use-cache
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
       - name: Run core e2e tests with coverage
         run: npx nx run core:e2e:coverage
         env:

@@ -1,20 +1,15 @@
 # Limit lines to display
 
-You can limit the number of lines displayed in the AnnotatedText component, by passing a `limit` option to the
-`TextLineAdapter`.
-This limit contains a start and end index in the text, which will be used to determine the lines to display.
+You can limit the visible lines by passing a `limit` option to the text adapter. The `start` and `end` values define a character range in the text; only lines that intersect this range are displayed.
 
 ```typescript
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
-createAnnotatedText(id,
-  {
-    text: { limit: { start: 99, end: 180 } }
-  })
+createAnnotatedText(id)
+  .setTextAdapter({ limit: { start: 99, end: 180, ignoreLines: false } })
 ```
 
-if the property `ignoreLines` is set to `true`, Only the characters between the start and end index will be displayed,
-line start and end are ignored.
+When `ignoreLines` is `false` (the default), every line that overlaps the range is included in full. When set to `true`, only the characters strictly within the `start`/`end` range are shown and line boundaries are ignored.
 
 ## Example
 

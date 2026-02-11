@@ -1,5 +1,5 @@
-import { annotationColors } from "./const";
-import { DemoAnnotation, DemoAnnotationConfig } from "./data.types";
+import { annotationColors } from './const';
+import { DemoAnnotation, DemoAnnotationConfig } from './data.types';
 
 export const text = `**Markdown** 
 
@@ -18,38 +18,38 @@ const annotations = [
   {
     start: 0,
     end: 8,
-    color: annotationColors["5"],
-    id: "md-1",
+    color: annotationColors['5'],
+    id: 'md-1',
   },
   {
     start: 64,
     end: 88,
-    color: annotationColors["5"],
-    id: "md-2",
+    color: annotationColors['5'],
+    id: 'md-2',
   },
   {
     start: 57,
     end: 63,
-    color: annotationColors["2"],
-    id: "md-3",
+    color: annotationColors['2'],
+    id: 'md-3',
   },
   {
     start: 101,
     end: 106,
-    color: annotationColors["2"],
-    id: "md-4",
+    color: annotationColors['2'],
+    id: 'md-4',
   },
   {
     start: 117,
     end: 128,
-    color: annotationColors["5"],
-    id: "md-5",
+    color: annotationColors['5'],
+    id: 'md-5',
   },
   {
     start: 89,
     end: 578,
-    color: annotationColors["3"],
-    id: "md-6",
+    color: annotationColors['3'],
+    id: 'md-6',
   },
 ] as DemoAnnotation[];
 
@@ -57,4 +57,6 @@ export const markdownText = {
   text,
   annotations: annotations,
   annotationConfig: DemoAnnotationConfig,
+  renderParams: DemoAnnotationConfig.render,
+  styleParams: DemoAnnotationConfig.style,
 };

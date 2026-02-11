@@ -13,7 +13,6 @@ export const greekText = {
   annotations: annotations,
   annotationsWithGutters: annotationsWithGutters,
   lines: lines,
-  annotationConfig: DemoAnnotationConfig,
   renderParams: DemoAnnotationConfig.render,
   styleParams: DemoAnnotationConfig.style,
 };

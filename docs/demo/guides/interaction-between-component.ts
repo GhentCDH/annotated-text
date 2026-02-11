@@ -25,20 +25,15 @@ export const createAnnotatedTextWithLines = (
   ann.style.paddingBottom = '10px';
   textContainer.appendChild(ann);
 
-  return createAnnotatedText(ann.id, {
-    text: TextLineAdapter({
-      limit: {
-        start: annotation.start,
-        end: annotation.end,
-      },
-    }),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-    },
-  })
-    .setRenderParams(greekText.annotationConfig.render)
-    .setStyleParams(greekText.annotationConfig.style)
+  return createAnnotatedText(ann.id)
+    .setTextAdapter(
+      TextLineAdapter({
+        limit: { start: annotation.start, end: annotation.end },
+      }),
+    )
+    .setAnnotationAdapter({ edit: true })
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(text)
     .setAnnotations(annotations);
 };
