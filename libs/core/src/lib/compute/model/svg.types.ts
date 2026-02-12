@@ -48,8 +48,8 @@ export class SvgModel {
   createModel() {
     const textElementDimensions = this.getTextElementDimensions();
 
-    this.svg = select('body')
-      .append('svg')
+    const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.svg = select(svgEl)
       .attr('class', styles.svg)
       .attr('width', textElementDimensions.original.width)
       .attr('height', textElementDimensions.original.height) as any;

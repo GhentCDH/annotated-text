@@ -30,9 +30,13 @@ export class Draw<
     // https://github.com/GhentCDH/annotated-text/issues/184
     this.text.createTree();
     createNewBlock(this.annotationModule);
-    this.tag.drawAll();
 
     this.annotation.drawAll();
+    return this;
+  }
+
+  drawTags() {
+    this.tag.drawAll();
     return this;
   }
 
