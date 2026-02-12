@@ -25,8 +25,8 @@ const renderDemo = (
   createAnnotatedText(id)
     .setTextAdapter(TextLineAdapter())
     .setAnnotationAdapter({ edit: true, create: true })
-    .setRenderParams(greekText.annotationConfig.render)
-    .setStyleParams(greekText.annotationConfig.style)
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 };

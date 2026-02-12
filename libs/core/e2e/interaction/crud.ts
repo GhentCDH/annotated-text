@@ -87,7 +87,9 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
       styleFn: (a: any) => ({ color: createAnnotationColor(a.color) }),
     })
     .setRenderParams({ renderFn: (a) => a.renderer })
-    .setTagLabelFn((a) => (a.renderer ? '' : a.label || 'new one'))
+    .setTagLabelFn((a) =>
+      params.tags ? (a.renderer ? '' : a.label || 'new one') : null,
+    )
     .on('annotation-create--start', (e) => {
       writeLog(e.event, e.data.annotation);
     })

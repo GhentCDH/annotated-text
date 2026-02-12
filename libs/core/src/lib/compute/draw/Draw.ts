@@ -10,7 +10,6 @@ import { type AnnotationModule } from '../../di/annotation.module';
 import { isIntersection } from '../utils/intersect';
 import { getLinesForAnnotation } from '../utils/line.utils';
 import { validateAnnotation } from '../utils/assign_annotation_to_line';
-import { CacheDraw } from './CacheDraw';
 
 /**
  * This is a dispatcher class for all actions made on visual drawing of the annotations
@@ -21,8 +20,6 @@ export class Draw<
   readonly annotation = this.inject(DrawAnnotation);
   readonly text = this.inject(DrawText);
   readonly tag = this.inject(Tag);
-
-  private readonly textCache = new CacheDraw();
 
   constructor(mod: AnnotationModule) {
     super(mod);
@@ -45,31 +42,15 @@ export class Draw<
     const annotationAdapter = this.annotationAdapter;
     const snapper = this.getSnapper();
 
-    if (this.textCache.hasChanged({ textAdapter, text, startOffset })) {
-      const lines = this.textAdapter.parse(text, startOffset);
-      textAdapter.setLines(lines);
-    }
+    const lines = this.textAdapter.parse(text, startOffset);
+    textAdapter.setLines(lines);
 
-    if (this.textCache.hasChanged({ annotationAdapter, text })) {
-      annotationAdapter.setText(text);
-    }
-    if (this.textCache.hasChanged({ snapper, text, startOffset })) {
-      snapper.setText(text, startOffset);
-    }
+    annotationAdapter.setText(text);
+    snapper.setText(text, startOffset);
 
-    if (this.textCache.hasChanged({ textAdapter, startOffset })) {
-      textAdapter.setLineHeight(
-        getLineHeight(text, textAdapter.style.lineOffset),
-      );
-    }
-
-    this.textCache.updateCache({
-      textAdapter,
-      startOffset,
-      annotationAdapter,
-      snapper,
-      text,
-    });
+    textAdapter.setLineHeight(
+      getLineHeight(text, textAdapter.style.lineOffset),
+    );
 
     return this;
   }
