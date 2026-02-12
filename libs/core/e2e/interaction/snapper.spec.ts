@@ -43,7 +43,7 @@ test.describe('AnnotatedText Core - Snapper interactions', () => {
         // Move out of annotation
         await mouseMove.onMouseMoveTo({ x: 0, y: 0 });
 
-        await container.expect.toHaveScreenshot(`edit-${description}.png`);
+        await container.expect.toHaveScreenshot(`move-${description}.png`);
       },
     );
   });
