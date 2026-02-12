@@ -1,7 +1,11 @@
 import { text } from './text';
 import { annotations } from './annotations';
 import { renderDemoDiv, writeToLogDiv } from '../_utils/render-demo';
-import { type Annotation, type AnnotationEventType, createAnnotatedText } from '../../src';
+import {
+  type Annotation,
+  type AnnotationEventType,
+  createAnnotatedText,
+} from '../../src';
 
 const mainContainer = 'playground';
 
