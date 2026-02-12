@@ -20,5 +20,7 @@ export class Tag extends BaseAnnotationDi {
       annotationUuid: annotation.id,
     });
     drawTagSvg(tagSvg, annotation);
+
+    return true;
   }
 }

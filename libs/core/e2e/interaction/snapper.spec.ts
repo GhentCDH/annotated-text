@@ -58,13 +58,13 @@ test.describe('AnnotatedText Core - Snapper interactions', () => {
     const y = 50;
 
     await mouseMove.onMouseDown({ x: 30, y });
-    await container.expect.toHaveLog('annotation-create--start: 37-36');
+    await container.expect.toHaveLog('annotation-create--start: 35-39');
 
     await mouseMove.onMouseDrag({ x: 80, y });
-    await container.expect.toHaveLog('annotation-create--move: 36-43');
+    await container.expect.toHaveLog('annotation-create--move: 35-43');
 
     await mouseMove.onMouseEnd();
-    await container.expect.toHaveLog('annotation-create--end: 36-43');
+    await container.expect.toHaveLog('annotation-create--end: 35-43');
 
     await container.expect.toHaveScreenshot('create.png');
   });

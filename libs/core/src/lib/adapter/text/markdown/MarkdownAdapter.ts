@@ -1,6 +1,14 @@
 import memoize from 'memoizee';
-import { getPartialMarkdown, replaceMarkdownToHtml, stripHtmlFromText } from './parser';
-import { type Limit, TextAdapter, type TextAdapterParams } from '../TextAdapter';
+import {
+  getPartialMarkdown,
+  replaceMarkdownToHtml,
+  stripHtmlFromText,
+} from './parser';
+import {
+  type Limit,
+  TextAdapter,
+  type TextAdapterParams,
+} from '../TextAdapter';
 import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
