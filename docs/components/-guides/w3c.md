@@ -42,7 +42,6 @@ indicate whether to update the view or not.
 
 ```typescript
 import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/annotated-text";
-import { W3CAnnotationAdapterImpl } from './W3CAnnotationAdapter';
 
 createAnnotatedText(id)
   .setAnnotationAdapter(W3CAnnotationAdapter())

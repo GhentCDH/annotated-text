@@ -14,7 +14,7 @@ export class Tag extends BaseAnnotationDi {
   drawTag(annotation: TextAnnotation) {
     const tagSvg = this.svgModel.tagSvg;
 
-    if (!shouldDrawTag) return false;
+    if (!shouldDrawTag(annotation)) return false;
 
     this.internalEventListener.sendEvent('annotation--remove-tag', {
       annotationUuid: annotation.id,
