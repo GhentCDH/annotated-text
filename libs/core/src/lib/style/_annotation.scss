@@ -15,7 +15,7 @@
     .move {
       cursor: move;
     }
-    
+
   }
 
 
@@ -26,6 +26,8 @@
   }
 
   &-text {
+    position: relative;
+    z-index: 1;
     display: grid;
     row-gap: 0;
     column-gap: 5px;
@@ -33,6 +35,7 @@
     grid-template-columns: max-content auto;
     align-items: center;
     word-break: break-word;
+    pointer-events: none;
 
     .content {
       &,
