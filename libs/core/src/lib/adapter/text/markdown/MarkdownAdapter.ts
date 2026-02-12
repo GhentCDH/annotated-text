@@ -1,6 +1,14 @@
 import memoize from 'memoizee';
-import { getPartialMarkdown, replaceMarkdownToHtml, stripHtmlFromText } from './parser';
-import { createTextAdapter, type createTextAdapterParams, type Limit, TextAdapter } from '../TextAdapter';
+import {
+  getPartialMarkdown,
+  replaceMarkdownToHtml,
+  stripHtmlFromText,
+} from './parser';
+import {
+  type Limit,
+  TextAdapter,
+  type TextAdapterParams,
+} from '../TextAdapter';
 import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
@@ -69,11 +77,11 @@ const textToLines = (
 export class MarkdownTextAdapterImpl extends TextAdapter {
   name = 'MarkdownLineAdapter';
 
-  parse(text: string): TextLine[] {
-    return textToLines(text, this.limit, this.annotationAdapter.startOffset);
+  parse(text: string, startOffset: number): TextLine[] {
+    return textToLines(text, this.limit, startOffset);
   }
 }
 
-export const MarkdownTextAdapter = (params: createTextAdapterParams = {}) => {
-  return createTextAdapter(new MarkdownTextAdapterImpl(), params);
+export const MarkdownTextAdapter = (params: TextAdapterParams = {}) => {
+  return new MarkdownTextAdapterImpl(params);
 };

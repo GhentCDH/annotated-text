@@ -32,18 +32,17 @@ const renderDifferentLineHeight = (
   renderDemoDiv(title, id);
 
   // Basic text setup
-  createAnnotatedText(id, {
-    text: TextLineAdapter({
-      style: {
-        lineOffset,
-      },
-    }),
-    annotation: {
-      render: {
-        renderFn: (a: any) => a.renderer ?? defaultRender,
-      },
-    },
-  })
+  createAnnotatedText<any>(id)
+    .setTextAdapter(
+      TextLineAdapter({
+        style: {
+          lineOffset,
+        },
+      }),
+    )
+    .setRenderParams({
+      renderFn: (a) => a.renderer ?? defaultRender,
+    })
     .setText(text)
     .setAnnotations(_annotations);
 };

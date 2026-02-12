@@ -31,13 +31,14 @@ export const DefaultTextAdapterStyle = {
 
 export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 
-export const TextAdapterToken = 'TEXT_ADAPTER';
-export abstract class TextAdapter extends BaseAdapter {
-  textDirection: TextDirection = 'ltr';
-  flatText = false;
-  limit: Limit | null = null;
-  style: TextAdapterStyle = { ...DefaultTextAdapterStyle };
-  public textLength = 0;
+export abstract class TextAdapter<
+  PARAMS extends TextAdapterParams = TextAdapterParams,
+> extends BaseAdapter<PARAMS> {
+  textDirection: TextDirection;
+  flatText: boolean;
+  limit: Limit | null;
+  style: TextAdapterStyle;
+  textLength: number;
 
   public lines: TextLine[] = [];
 
@@ -45,8 +46,9 @@ export abstract class TextAdapter extends BaseAdapter {
    * Parses the given text into an array of TextLine objects.
    * The parser is also responsible for handling text limits.
    * @param text
+   * @param startOffset
    */
-  abstract parse(text: string): TextLine[];
+  abstract parse(text: string, startOffset: number): TextLine[];
 
   getLimit(lines?: TextLine[]) {
     if (!this.limit) return null;
@@ -73,32 +75,18 @@ export abstract class TextAdapter extends BaseAdapter {
     };
   }
 
-  /**
-   * Change the configuration of the adapter, it will update the eventlistener if rerendering of the annotations is needed.
-   * f.e. if the text direction changes, the adapter will emit a change event to update the annotations.
-   * @param key
-   * @param value
-   */
-  setConfig<KEY extends TEXT_CONFIG_KEYS>(
-    key: KEY,
-    value: TEXT_CONFIG_VALUES<KEY>,
-  ) {
-    switch (key) {
-      case 'textDirection':
-        this.textDirection = value as TextDirection;
-        this.changeConfig();
-        break;
-      case 'flatText':
-        this.flatText = !!value;
-        this.changeConfig();
-        break;
-      case 'limit':
-        this.limit = value as Limit | null;
-        this.changeConfig();
-        break;
-      default:
-        console.warn('Unsupported config key:', value);
-      // super.setConfig(value, key);
+  setParams(params: PARAMS) {
+    this.textDirection = params.textDirection ?? this.textDirection ?? 'ltr';
+    this.flatText = params.flatText ?? this.flatText ?? false;
+    this.style = Object.assign(
+      this.style ?? { ...DefaultTextAdapterStyle },
+      params.style ?? {},
+    );
+
+    if (params.limit === null) {
+      this.limit = null;
+    } else {
+      this.limit = params.limit ?? this.limit;
     }
   }
 
@@ -120,7 +108,7 @@ type CONFIG = InstanceType<typeof TextAdapter>;
 export type TEXT_CONFIG_KEYS = keyof CONFIG;
 export type TEXT_CONFIG_VALUES<K extends TEXT_CONFIG_KEYS> = CONFIG[K];
 
-export type createTextAdapterParams = {
+export type TextAdapterParams = {
   /**
    * The text direction for the adapter.
    * Can be either 'ltr' (left-to-right) or 'rtl' (right-to-left).
@@ -140,19 +128,4 @@ export type createTextAdapterParams = {
   limit?: Limit | null;
 
   style?: Partial<Omit<TextAdapterStyle, 'lineHeight'>>;
-};
-
-export const createTextAdapter = (
-  adapter: TextAdapter,
-  params: createTextAdapterParams,
-): TextAdapter => {
-  if (params.textDirection) {
-    adapter.textDirection = params.textDirection;
-  }
-  adapter.flatText = !!params.flatText;
-  adapter.limit = params.limit ?? null;
-
-  adapter.style = Object.assign(DefaultTextAdapterStyle, params.style ?? {});
-
-  return adapter;
 };

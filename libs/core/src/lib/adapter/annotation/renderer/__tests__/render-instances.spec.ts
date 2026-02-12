@@ -1,10 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { RenderInstances } from '../render-instances';
-import { AnnotationRender, type AnnotationRenderStyle, DefaultAnnotationRenderStyle } from '../annotation-render';
+import {
+  AnnotationRender,
+  type AnnotationRenderStyle,
+  DefaultAnnotationRenderStyle,
+} from '../annotation-render';
 import type { TextAnnotation } from '../../../../model';
 import { type AnnotationModule } from '../../../../di/annotation.module';
-import { AnnotationAdapterToken, TextAdapterToken } from '../../../../di/tokens';
-import { SvgModel } from '../../../../compute/model/svg.types'; // Mock the Debugger module
+import { SvgModel } from '../../../../compute/model/svg.types';
+import { EventListener } from '../../../../events/event.listener';
+import { InternalEventListener } from '../../../../events/internal/internal.event.listener'; // Mock the Debugger module
 
 // Mock the Debugger module
 vi.mock('../../../../utils/debugger', () => ({
@@ -48,13 +53,15 @@ function createMockAnnotationModule() {
   };
 
   const mockSvgModel = {};
+  const mockEventListener = { register: vi.fn(), sendEvent: vi.fn() };
+  const mockInternalEventListener = { register: vi.fn(), sendEvent: vi.fn() };
 
   // Create a partial mock of AnnotationModule
   const module = {
     inject: vi.fn((token: any) => {
-      if (token === AnnotationAdapterToken) return mockAnnotationAdapter;
-      if (token === TextAdapterToken) return mockTextAdapter;
       if (token === SvgModel) return mockSvgModel;
+      if (token === EventListener) return mockEventListener;
+      if (token === InternalEventListener) return mockInternalEventListener;
       throw new Error(`Service not found in mock: ${String(token)}`);
     }),
     register: vi.fn().mockReturnThis(),
@@ -63,6 +70,8 @@ function createMockAnnotationModule() {
     injectRender: vi.fn(),
     getAllRenderInstances: vi.fn().mockReturnValue([]),
     destroy: vi.fn(),
+    getTextAdapter: vi.fn().mockReturnValue(mockTextAdapter),
+    getAnnotationAdapter: vi.fn().mockReturnValue(mockAnnotationAdapter),
   } as unknown as AnnotationModule;
 
   return module;

@@ -2,15 +2,14 @@ import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
 import {
   type Snapper,
-  SnapperToken,
-  type TEXT_CONFIG_KEYS,
-  type TEXT_CONFIG_VALUES,
   type TextAdapter,
+  type TextAdapterParams,
 } from '../../adapter/text';
 import {
   type ANNOTATION_CONFIG_KEYS,
   type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
+  type AnnotationAdapterParams,
   type AnnotationStyleParams,
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
@@ -35,6 +34,11 @@ import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
+import {
+  setAnnotationAdapter,
+  setSnapperAdapter,
+  setTextAdapter,
+} from '../../adapter/SetAdapter';
 
 const document = globalThis.document || null;
 
@@ -50,15 +54,8 @@ export class CreateAnnotationsImpl<
   private readonly annotationModule: AnnotationModule;
   private readonly mainContainer: MainContainer;
 
-  constructor(
-    private readonly id: string,
-    private readonly textAdapter: TextAdapter,
-    private readonly annotationAdapter: AnnotationAdapter<ANNOTATION>,
-  ) {
-    this.annotationModule = new AnnotationModule(rootContainer, {
-      textAdapter,
-      annotationAdapter,
-    });
+  constructor(private readonly id: string) {
+    this.annotationModule = new AnnotationModule(rootContainer);
 
     this.svgModel = this.annotationModule.inject(SvgModel);
     this.mainContainer = this.annotationModule.inject(MainContainer);
@@ -68,9 +65,6 @@ export class CreateAnnotationsImpl<
       InternalEventListener,
     );
 
-    annotationAdapter.setConfigListener(this.configListener());
-    textAdapter.setConfigListener(this.configListener());
-
     this.eventListener = this.annotationModule.inject(
       EventListener,
     ) as EventListener<ANNOTATION>;
@@ -79,20 +73,16 @@ export class CreateAnnotationsImpl<
 
     internalEventListener
       .on('annotation--add', ({ data }) => {
-        const fullAnnotation = this.annotationAdapter.format(
-          data.annotation,
-          true,
-          true,
-        );
+        const fullAnnotation = this.annotationModule
+          .getAnnotationAdapter<ANNOTATION>()
+          .format(data.annotation, true, true);
 
         this.addAnnotation(fullAnnotation!);
       })
       .on('annotation--update', ({ data }) => {
-        const fullAnnotation = this.annotationAdapter.format(
-          data.annotation,
-          false,
-          true,
-        );
+        const fullAnnotation = this.annotationModule
+          .getAnnotationAdapter<ANNOTATION>()
+          .format(data.annotation, false, true);
         this.addAnnotation(fullAnnotation!);
       })
       .on('send-event--annotation', ({ data }) => {
@@ -119,12 +109,6 @@ export class CreateAnnotationsImpl<
       });
   }
 
-  private configListener() {
-    return () => {
-      this.setAnnotations(this.annotations());
-    };
-  }
-
   private annotations() {
     return Array.from(this.annotationsMap.values());
   }
@@ -138,9 +122,7 @@ export class CreateAnnotationsImpl<
   }
 
   public setSnapper(snapper: Snapper) {
-    this.annotationModule.register(SnapperToken, () => snapper);
-    this.recalculate();
-
+    setSnapperAdapter(this.annotationModule, snapper, this.text);
     return this;
   }
 
@@ -162,6 +144,7 @@ export class CreateAnnotationsImpl<
   }
 
   private recalculate() {
+    const start = Date.now();
     if (!this.text) {
       Debugger.debug(
         'setAnnotations',
@@ -170,9 +153,14 @@ export class CreateAnnotationsImpl<
       return this;
     }
 
+    const startInit = Date.now();
     this.draw.initDraw(this.text, this.annotations());
+    Debugger.time(startInit, '  draw.initDraw \t');
+    const startRedraw = Date.now();
     this.redrawSvg();
+    Debugger.time(startRedraw, '  redrawSvg \t\t');
 
+    Debugger.time(start, 'recalculate \t\t');
     return this;
   }
 
@@ -207,9 +195,8 @@ export class CreateAnnotationsImpl<
     this.redrawSvg();
   }
 
-  private redrawSvg() {
+  private async redrawSvg() {
     if (!document) return;
-
     this.mainContainer.clear();
 
     // First create the text
@@ -222,8 +209,10 @@ export class CreateAnnotationsImpl<
     this.svgModel.createModel();
     this.mainContainer.setSvg(this.svgModel.node());
 
+    const initialDrawTime = Date.now();
     // Start computations with the known values
     this.draw.compute().initialDraw();
+    Debugger.time(initialDrawTime, ' \t initialDraw \t');
   }
 
   public destroy() {
@@ -249,20 +238,27 @@ export class CreateAnnotationsImpl<
     key: KEY,
     value: ANNOTATION_CONFIG_VALUES<KEY>,
   ): this {
-    this.annotationAdapter.setConfig(key, value);
+    this.annotationModule.getAnnotationAdapter().setConfig(key, value);
     return this;
   }
 
-  changeTextAdapterConfig<KEY extends TEXT_CONFIG_KEYS>(
-    key: KEY,
-    value: TEXT_CONFIG_VALUES<KEY>,
+  setAnnotationAdapter(
+    adapterOrParams: AnnotationAdapterParams | AnnotationAdapter<ANNOTATION>,
   ): this {
-    this.textAdapter.setConfig(key, value);
+    setAnnotationAdapter(this.annotationModule, adapterOrParams);
+    this.recalculate();
+    return this;
+  }
+
+  setTextAdapter(adapterOrParams: TextAdapter | TextAdapterParams): this {
+    setTextAdapter(this.annotationModule, adapterOrParams);
+    this.recalculate();
     return this;
   }
 
   scrollToAnnotation(id: AnnotationId): this {
-    const lines = this.annotationAdapter.getAnnotation(id)?._render.lines;
+    const lines = this.annotationModule.getAnnotationAdapter().getAnnotation(id)
+      ?._render.lines;
     if (!lines) {
       console.warn('No lines found for annotation', id);
       return this;

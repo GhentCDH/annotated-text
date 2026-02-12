@@ -12,10 +12,8 @@ Rtl can be configured in the AnnotatedText component by setting the `text.rtl` p
 the text is rendered correctly in a right-to-left format.
 
 ```typescript
-createAnnotatedText(id,
-  {
-    text: { textDirection: 'rtl' }
-  })
+createAnnotatedText(id)
+  .setTextAdapter({ textDirection: 'rtl' })
   .setText(text)
   .setAnnotations(textAnnotations);
 ```
@@ -34,27 +32,17 @@ const greek_id = `greek-text-example`;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id,
-        {  
-            text: { textDirection: 'rtl' },
-            annotation: {
-                ...plainText.annotationConfig,
-                edit: true, 
-                create: true,
-            },
-        })
+    createAnnotatedText(id)
+    .setStyleParams(plainText.styleParams)
+    .setRenderParams(plainText.renderParams)
+    .setTextAdapter({textDirection: 'rtl'})
     .setText(plainText.text)
     .setAnnotations(plainText.annotations);
 
-    createAnnotatedText(greek_id,
-        {  
-            text: TextLineAdapter({ textDirection: 'rtl' }),
-            annotation: {
-                ...greekText.annotationConfig,
-                edit: true, 
-                create: true,
-            },
-        })
+    createAnnotatedText(greek_id)
+    .setStyleParams(greekText.styleParams)
+    .setRenderParams(greekText.renderParams)
+    .setTextAdapter(TextLineAdapter({textDirection: 'rtl'}))
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 });
@@ -67,9 +55,8 @@ If you use the `TextLineAdapter`, you can also enable right to left rendering by
 `rtl`.
 
 ```typescript
- createAnnotatedText(id, {
-  text: TextLineAdapter({ textDirection: 'rtl' })
-})
+ createAnnotatedText(id)
+  .setTextAdapter({ textDirection: 'rtl' })
 ```
 
 <div id="greek-text-example"></div>

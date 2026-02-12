@@ -1,24 +1,19 @@
-# Annotation styles
+# Annotation Styles
 
-The annotated-text library supports styling for annotations, allowing you to define reusable style presets that can be
-applied dynamically based on annotation properties.
+The annotated-text library lets you define reusable style presets and dynamically assign them to annotations.
 
 ## Overview
 
-Custom styles let you:
-
 - Define named style presets with specific colors
-- Dynamically assign styles to annotations using a `styleFn`
-- Return style names, inline style objects, or fall back to defaults
-- Register single styles or multiple styles at once
-- Separate styling concerns from annotation data
+- Dynamically assign styles per annotation using a `styleFn`
+- Return a style name, an inline style object, or `null` to fall back to the default
+- Register single or multiple styles at once
 
 ## Configuration
 
 ### Style Function
 
-The `styleFn` configuration option determines which style to apply to each annotation. It receives an annotation and can
-return:
+The `styleFn` determines which style to apply to each annotation. It receives an annotation and can return:
 
 | Return Value      | Behavior                                        |
 |-------------------|-------------------------------------------------|
@@ -27,13 +22,25 @@ return:
 | `null`            | Falls back to the default style                 |
 
 ```typescript
-createAnnotatedText(containerId, {
-  annotation: {
-    style: {
-      styleFn: (annotation) => annotation.style,
+createAnnotatedText(containerId)
+  .setStyleParams({
+    styleFn: (annotation) => annotation.style,
+  });
+```
+
+### Default Style
+
+The default style is used when `styleFn` returns `null` or when a named style is not found. If not configured, the
+built-in default uses a red color (`#ff3b3b`).
+
+```typescript
+createAnnotatedText(containerId)
+  .setStyleParams({
+    styleFn: (annotation) => annotation.style ?? null,
+    defaultStyle: {
+      color: createAnnotationColor("#6b7280"),
     },
-  },
-});
+  });
 ```
 
 ### Example
@@ -85,57 +92,34 @@ styleFn: (annotation) => {
 }
 ```
 
-### Default Style
-
-You can customize the default style that is used when `styleFn` returns `null` or when a named style is not found:
-
-```typescript
-createAnnotatedText(containerId, {
-  annotation: {
-    style: {
-      styleFn: (annotation) => annotation.style ?? null,
-      defaultStyle: {
-        color: createAnnotationColor("#6b7280"),
-      },
-    },
-  },
-});
-```
-
-If no `defaultStyle` is provided, the library uses a built-in default with a red color (`#ff3b3b`).
-
 ## Style Resolution
 
 When rendering an annotation, the style is resolved in the following order:
 
-1. The `styleFn` is called with the annotation
-2. If `null` is returned → the `defaultStyle` is used
-3. If a `string` is returned → the named style is looked up from registered styles
-    - If the named style exists → it is used
-    - If not found → the `defaultStyle` is used (with a warning)
-4. If an `AnnotationStyle` object is returned → it is used directly
+1. `styleFn` is called with the annotation
+2. If `null` is returned, the `defaultStyle` is used
+3. If a `string` is returned, the named style is looked up from registered styles
+    - If found, that style is used
+    - If not found, the `defaultStyle` is used (with a warning)
+4. If an `AnnotationStyle` object is returned, it is used directly
 
 ## Registering Styles
 
-### Single Style Registration
-
-Use `registerStyle` to register a single named style:
+### Single Style
 
 ```typescript
 import { createAnnotatedText, createAnnotationColor } from "@ghentcdh/annotated-text";
 
-createAnnotatedText(containerId, config)
+createAnnotatedText(containerId)
   .registerStyle("style-red", {
     color: createAnnotationColor("#ff3b3b"),
   });
 ```
 
-### Bulk Style Registration
-
-Use `registerStyles` to register multiple styles at once:
+### Multiple Styles
 
 ```typescript
-createAnnotatedText(containerId, config)
+createAnnotatedText(containerId)
   .registerStyles({
     "style-green": {
       color: createAnnotationColor("#8bc34a"),
@@ -149,12 +133,12 @@ createAnnotatedText(containerId, config)
   });
 ```
 
-### Chaining Registrations
+### Chaining
 
-Both methods return the annotated text instance, allowing you to chain calls:
+All methods return the instance, so calls can be chained:
 
 ```typescript
-createAnnotatedText(containerId, config)
+createAnnotatedText(containerId)
   .registerStyle("style-red", {
     color: createAnnotationColor("#ff3b3b"),
   })
@@ -195,23 +179,17 @@ The second line has a green annotation color.`;
 
 clearAnnotatedTextCache();
 
-createAnnotatedText("container", {
-  annotation: {
-    render: {
-      renderFn: (annotation) => annotation.target,
+createAnnotatedText("container")
+  .setRenderParams({
+    renderFn: (annotation) => annotation.target,
+  })
+  .setStyleParams({
+    styleFn: (annotation) => annotation.style,
+    defaultStyle: {
+      color: createAnnotationColor("#9ca3af"),
     },
-    style: {
-      styleFn: (annotation) => annotation.style,
-      defaultStyle: {
-        color: createAnnotationColor("#9ca3af"),
-      },
-    },
-    tagConfig: {
-      enabled: true,
-      tagFn: (a) => a.id,
-    },
-  },
-})
+  })
+  .setTagLabelFn((a) => a.id)
   .registerStyle("style-red", {
     color: createAnnotationColor("#ff3b3b"),
   })
@@ -222,7 +200,3 @@ createAnnotatedText("container", {
   .setText(text)
   .setAnnotations(annotations);
 ```
-
-## API Reference
-
-[AnnotationStyleParams](annotated-text/api/type-aliases/AnnotationStyleParams.html)

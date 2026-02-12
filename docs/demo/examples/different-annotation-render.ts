@@ -82,12 +82,11 @@ export const createDifferentAnnotationRenders = (
     .setText(text)
     .setAnnotations(annotations);
 
-  createAnnotatedText(id_underline_thick, {
-    annotation: {
+  createAnnotatedText(id_underline_thick)
+    .setAnnotationAdapter({
       edit: true,
       create: true,
-    },
-  })
+    })
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'thick' })
     .registerRender(new UnderLineAnnotationRender('thick', { borderWidth: 5 }))

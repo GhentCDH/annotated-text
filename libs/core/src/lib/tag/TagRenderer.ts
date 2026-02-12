@@ -1,7 +1,6 @@
 import type { AnnotationRender } from '../adapter/annotation/renderer';
 import { type BaseAnnotation, type TagDrawMetadata, tagDrawMetadataSchema } from '../model';
-import { BaseAnnotationDiFn } from '../di/BaseAnnotationDiFn';
-import type { AnnotationModule } from '../di/annotation.module';
+import { BaseAnnotationDi } from '../di/BaseAnnotationDi';
 
 /**
  * Function type that extracts a tag label string from an annotation.
@@ -10,13 +9,6 @@ import type { AnnotationModule } from '../di/annotation.module';
  * @returns The tag label string
  */
 export type tagLabelFn<ANNOTATION> = (annotation: ANNOTATION) => string;
-
-export type TagConfig = {
-  label: string;
-  padding: number;
-  fontSize: number;
-  enabledOnHover: boolean;
-};
 
 /**
  * Responsible for resolving tag metadata for annotations.
@@ -28,12 +20,7 @@ export type TagConfig = {
  */
 export class TagRenderer<
   ANNOTATION extends BaseAnnotation,
-> extends BaseAnnotationDiFn {
-  constructor(annotationModule: AnnotationModule) {
-    super();
-    this.setModule(annotationModule);
-  }
-
+> extends BaseAnnotationDi {
   /**
    * Function to get the tag label string from an annotation.
    * When `null`, no tags will be produced by {@link getTagConfig}.
@@ -77,7 +64,6 @@ export class TagRenderer<
       label,
       padding: 1,
       fontSize: 8,
-      enabledOnHover: true,
     });
   }
 }

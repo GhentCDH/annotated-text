@@ -56,6 +56,22 @@ export class Container {
   }
 
   /**
+   * Update the factory for an existing service. This allows changing how a service is created without modifying the registration logic.
+   *
+   * @throws Error if the service is not already registered
+   * @param token
+   * @param factory
+   */
+  update<T>(token: any, factory: () => T): this {
+    if (!this.factories.has(token)) {
+      throw new Error(`Cannot update unregistered service: ${String(token)}`);
+    }
+    this.factories.set(token, factory);
+    this.instances.delete(token); // Clear cached instance to allow re-creation with new factory
+    return this;
+  }
+
+  /**
    * Retrieve a service instance from the container.
    * Creates the instance on first access (lazy instantiation) and caches it.
    * Falls back to parent container if service not found locally.

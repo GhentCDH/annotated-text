@@ -18,14 +18,11 @@ class CustomSnapper extends Snapper {
 }
 
 export const snapper = (id: string) => {
-  createAnnotatedText(id, {
-    text: TextLineAdapter(),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-      create: true,
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setSnapper(new CustomSnapper())
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);

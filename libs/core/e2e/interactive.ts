@@ -5,19 +5,15 @@ import '../src/lib/style/style.scss';
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  PlainTextAdapter,
 } from '@ghentcdh/annotated-text';
 
 // Clear any cached instances
 clearAnnotatedTextCache();
 
 // Interactive with event logging
-const interactive = createAnnotatedText('interactive', {
-  text: PlainTextAdapter({}),
-  annotation: {
-    edit: true,
-    create: true,
-  },
+const interactive = createAnnotatedText('interactive').setAnnotationAdapter({
+  edit: true,
+  create: false,
 });
 
 const eventLog = document.getElementById('event-log')!;

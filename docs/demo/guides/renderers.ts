@@ -2,35 +2,28 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   TextLineAdapter,
-} from "@ghentcdh/annotated-text";
-import { greekText } from "../data";
+} from '@ghentcdh/annotated-text';
+import { greekText } from '../data';
 
 export const RenderUnderline = (id_default: string, id_underline: string) => {
   clearAnnotatedTextCache();
 
-  createAnnotatedText(id_default, {
-    text: TextLineAdapter(),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-      create: true,
-    },
-  })
+  createAnnotatedText(id_default)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 
-  createAnnotatedText(id_underline, {
-    text: TextLineAdapter(),
-    annotation: {
-      edit: true,
-      create: true,
-      style: greekText.annotationConfig.style,
-      render: {
-        defaultRenderer: "underline",
-        renderFn: greekText.annotationConfig.render.renderFn,
-      },
-    },
-  })
+  createAnnotatedText(id_underline)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams({
+      defaultRenderer: 'underline',
+      renderFn: greekText.renderParams.renderFn,
+    })
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 };

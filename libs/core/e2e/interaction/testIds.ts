@@ -12,3 +12,9 @@ export const crudIds = {
 };
 
 export type CrudIdKeys = keyof typeof crudIds;
+export const SnapperIds = {
+  default: 'snapper--default',
+  wordSnapper: 'snapper--word-snapper',
+};
+
+export type SnapperIdKeys = keyof typeof SnapperIds;

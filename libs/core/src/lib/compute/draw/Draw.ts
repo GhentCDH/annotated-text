@@ -26,34 +26,46 @@ export class Draw<
   }
 
   initialDraw() {
+    // TODO think about making async to speed up drawing speed
+    // https://github.com/GhentCDH/annotated-text/issues/184
     this.text.createTree();
     createNewBlock(this.annotationModule);
     this.tag.drawAll();
 
     this.annotation.drawAll();
-
     return this;
   }
 
   setText(text: string) {
-    const lines = this.textAdapter.parse(text);
-    this.textAdapter.setLines(lines);
-    this.annotationAdapter.setText(text);
-    this.textAdapter.setLineHeight(
-      getLineHeight(text, this.textAdapter.style.lineOffset),
+    const startOffset = this.annotationAdapter.startOffset;
+    const textAdapter = this.textAdapter;
+    const annotationAdapter = this.annotationAdapter;
+    const snapper = this.getSnapper();
+
+    const lines = this.textAdapter.parse(text, startOffset);
+    textAdapter.setLines(lines);
+
+    annotationAdapter.setText(text);
+    snapper.setText(text, startOffset);
+
+    textAdapter.setLineHeight(
+      getLineHeight(text, textAdapter.style.lineOffset),
     );
 
     return this;
   }
 
   setAnnotations(annotations: ANNOTATION[]) {
-    this.textAdapter.clear();
-    this.annotationAdapter.clear();
+    const textAdapter = this.textAdapter;
+    const annotationAdapter = this.annotationAdapter;
+    const lines = this.textAdapter.lines;
+    const limit = textAdapter.getLimit();
 
-    const limit = this.textAdapter.getLimit();
+    textAdapter.clear();
+    annotationAdapter.clear();
 
     annotations?.forEach((annotation) => {
-      const clonedAnnotation = this.annotationAdapter.parse(annotation);
+      const clonedAnnotation = annotationAdapter.parse(annotation);
       if (!clonedAnnotation) return;
 
       if (limit && !isIntersection(clonedAnnotation, limit)) {
@@ -63,17 +75,15 @@ export class Draw<
       this.setAnnotation(clonedAnnotation);
     });
 
-    this.annotationAdapter.calculateWeights(this.textAdapter.lines);
+    annotationAdapter.calculateWeights(lines);
 
     return this;
   }
 
   setAnnotation(annotation: TextAnnotation) {
-    validateAnnotation(
-      annotation,
-      this.textAdapter.textLength,
-      this.eventListener,
-    );
+    const textLength = this.textAdapter.textLength;
+
+    validateAnnotation(annotation, textLength, this.eventListener);
 
     const lines = getLinesForAnnotation(this.textAdapter.lines, annotation);
 
@@ -86,7 +96,6 @@ export class Draw<
     }
 
     annotation._render.lines = lines;
-
     return;
   }
 

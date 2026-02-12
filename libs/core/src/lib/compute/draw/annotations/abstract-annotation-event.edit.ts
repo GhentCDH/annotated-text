@@ -9,7 +9,6 @@ import type { Position, StartEnd } from '../types';
 import { DUMMY_UID } from '../../model/svg.types';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { type Snapper, SnapperToken } from '../../../adapter/text';
 
 export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;
@@ -96,26 +95,25 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
 
     dummyAnnotation._render.weight = annotation._render.weight! + 1;
 
-    const fixOffset =
-      this.annotationModule.inject<Snapper>(SnapperToken).fixOffset;
+    const snapper = this.annotationModule.getSnapper();
 
-    let snapper = fixOffset(dummyAnnotation);
+    let fixed = snapper.fixOffset(dummyAnnotation);
 
-    if (snapper.end < snapper.start) {
+    if (fixed.end < fixed.start) {
       // Try snapping the other side if the end is before the start
-      dummyAnnotation.start = snapper.start;
-      snapper = fixOffset(dummyAnnotation);
+      dummyAnnotation.start = fixed.start;
+      fixed = snapper.fixOffset(dummyAnnotation);
     }
 
-    if (snapper.end <= snapper.start) {
+    if (fixed.end <= fixed.start) {
       // Still invalid, abort
       return;
     }
 
     if (
       prevPosition &&
-      snapper.start === prevPosition.start &&
-      snapper.end === prevPosition.end
+      fixed.start === prevPosition.start &&
+      fixed.end === prevPosition.end
     ) {
       // No change, nothing to do
       return;
@@ -123,8 +121,8 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
 
     const color = annotation._drawMetadata.color as AnnotationDrawColors;
 
-    dummyAnnotation.start = snapper.start;
-    dummyAnnotation.end = snapper.end;
+    dummyAnnotation.start = fixed.start;
+    dummyAnnotation.end = fixed.end;
 
     this.internalEventListener.sendEvent('annotation--draw-dummy', {
       dummyAnnotation: dummyAnnotation,

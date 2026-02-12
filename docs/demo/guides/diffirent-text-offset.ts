@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { createAnnotatedText, TextLineAdapter, WordSnapper } from '@ghentcdh/annotated-text';
 import { annotationColors } from '../data/const';
-import { DemoAnnotation, DemoAnnotationConfig } from '../data/data.types';
+import { type DemoAnnotation, DemoAnnotationConfig } from '../data/data.types';
 
 const annotations = [
   {
@@ -24,13 +24,10 @@ const text =
   'The quick brown fox jumps over the lazy dog near the riverbank at dawn.';
 
 export const createDifferentTextOffset = (id: string, startOffset: number) => {
-  createAnnotatedText(id, {
-    annotation: {
-      ...DemoAnnotationConfig,
-      startOffset,
-      edit: true,
-    },
-  })
+  createAnnotatedText(id)
+    .setAnnotationAdapter({ edit: true, create: false, startOffset })
+    .setRenderParams(DemoAnnotationConfig.render)
+    .setStyleParams(DemoAnnotationConfig.style)
     .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
     .setAnnotations(annotations);
@@ -42,14 +39,11 @@ export const createDifferentTextOffsetWordsnapper = (
   id: string,
   startOffset: number,
 ) => {
-  createAnnotatedText(id, {
-    text: TextLineAdapter(),
-    annotation: {
-      ...DemoAnnotationConfig,
-      edit: true,
-      startOffset,
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: false, startOffset })
+    .setRenderParams(DemoAnnotationConfig.render)
+    .setStyleParams(DemoAnnotationConfig.style)
     .setSnapper(new WordSnapper())
     .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
@@ -62,13 +56,11 @@ export const createDifferentTextOffsetLines = (
   id: string,
   startOffset: number,
 ) => {
-  createAnnotatedText(id, {
-    text: TextLineAdapter(),
-    annotation: {
-      ...DemoAnnotationConfig,
-      startOffset,
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ startOffset })
+    .setRenderParams(DemoAnnotationConfig.render)
+    .setStyleParams(DemoAnnotationConfig.style)
     .setTagLabelFn((annotation) => annotation.label)
     .setText(text)
     .setAnnotations(annotations);

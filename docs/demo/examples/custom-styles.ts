@@ -3,7 +3,7 @@ import {
   createAnnotatedText,
   createAnnotationColor,
 } from '@ghentcdh/annotated-text';
-import { DemoAnnotation } from '../data/data.types';
+import { type DemoAnnotation } from '../data/data.types';
 
 const annotations = [
   {
@@ -36,16 +36,13 @@ The second line has a green annotation color.`;
 
 export const customStyles = (id: string) => {
   clearAnnotatedTextCache();
-  createAnnotatedText<DemoAnnotation>(id, {
-    annotation: {
-      render: {
-        renderFn: (annotation) => annotation.target,
-      },
-      style: {
-        styleFn: (annotation) => annotation.style,
-      },
-    },
-  })
+  createAnnotatedText<DemoAnnotation>(id)
+    .setRenderParams({
+      renderFn: (annotation) => annotation.target,
+    })
+    .setStyleParams({
+      styleFn: (annotation) => annotation.style,
+    })
     .setTagLabelFn((a) => a.id)
     .registerStyle('style-red', {
       color: createAnnotationColor('#ff3b3b'),

@@ -22,7 +22,6 @@ import {
 import { type DeepPartial } from '../../deep-partial.type';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { TagRenderer } from '../../tag/TagRenderer';
-import { type Snapper, SnapperToken } from '../text';
 
 /**
  * @deprecated
@@ -35,22 +34,21 @@ const config = {
 };
 export type AnnotationConfig = typeof config;
 
-export const AnnotationAdapterToken = 'ANNOTATION_ADAPTER';
-
 export abstract class AnnotationAdapter<
   ANNOTATION extends BaseAnnotation,
-> extends BaseAdapter {
+  PARAMS extends AnnotationAdapterParams = AnnotationAdapterParams,
+> extends BaseAdapter<PARAMS> {
   private readonly annotationCache = new AnnotationCache<ANNOTATION>();
   /**
    * If true, creation of annotations is enabled.
    * @param params
    */
-  public create = false;
+  create: boolean;
   /**
    * If true, edit of annotations is enabled.
    * @param params
    */
-  public edit = false;
+  edit: boolean;
 
   /**
    * Configuration for styling the annotations, can be used to override default styles.
@@ -59,13 +57,10 @@ export abstract class AnnotationAdapter<
   private tagRenderer: TagRenderer<ANNOTATION>;
 
   protected text = '';
-  startOffset = 0;
+  startOffset: number;
 
   public setText(text: string) {
     this.text = text;
-    this.annotationModule
-      .inject<Snapper>(SnapperToken)
-      .setText(text, this.startOffset);
   }
 
   /**
@@ -187,12 +182,18 @@ export abstract class AnnotationAdapter<
         break;
       case 'config':
         this.config = merge(cloneDeep(config), value);
-        this.changeConfig();
         break;
       default:
         console.warn('Unsupported config key:', value);
       // super.setConfig(value, key);
     }
+  }
+
+  override setParams(params: PARAMS) {
+    this.edit = params.edit ?? this.edit ?? false;
+    this.create = params.create ?? this.create ?? false;
+    this.config = merge(cloneDeep(this.config ?? config), params.config);
+    this.startOffset = params.startOffset ?? this.startOffset ?? 0;
   }
 
   // @region annotation  cache
@@ -260,7 +261,7 @@ export type ANNOTATION_CONFIG_KEYS = keyof CONFIG;
 export type ANNOTATION_CONFIG_VALUES<K extends ANNOTATION_CONFIG_KEYS> =
   CONFIG[K];
 
-export type createAnnotationAdapterParams = {
+export type AnnotationAdapterParams = {
   create?: boolean;
   edit?: boolean;
   config?: DeepPartial<AnnotationConfig>;
@@ -286,20 +287,4 @@ export type createAnnotationAdapterParams = {
    * startOffset: 100  // First character is at position 100
    */
   startOffset?: number;
-};
-
-export const createAnnotationAdapter = <ANNOTATION extends BaseAnnotation>(
-  adapter: AnnotationAdapter<ANNOTATION>,
-  params: createAnnotationAdapterParams,
-): AnnotationAdapter<ANNOTATION> => {
-  if (params.edit) {
-    adapter.edit = params.edit;
-  }
-  if (params.create) {
-    adapter.create = params.create;
-  }
-  adapter.config = merge(cloneDeep(config), params.config);
-  adapter.startOffset = params.startOffset ?? 0;
-
-  return adapter;
 };

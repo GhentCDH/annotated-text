@@ -15,12 +15,10 @@ text.
 ```typescript
 import { createAnnotatedText, MarkdownTextAdapter } from "@ghentcdh/annotated-text";
 
-const textAnnotation = createAnnotatedText(id,
-  {
-    lineAdapter: MarkdownTextAdapter(),
-  })
-  .setLines(plainText.lines)
-  .setAnnotations(plainText.annotations);
+const textAnnotation = createAnnotatedText(id)
+  .setTextAdapter(MarkdownTextAdapter())
+  .setText(`*bold* _italic_ **bold** __underline__ ~~strikethrough~~ \`code\` [link](https://www.google.com)`)
+  .setAnnotations([...]);
 ```
 
 ## Example
@@ -42,27 +40,19 @@ const id = `markdown-text-example`;
 const id_   = `plain-text-example`;
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id_,
-        {
-            text: MarkdownTextAdapter({flatText: true}),
-            annotation: {
-                ...markdownText.annotationConfig,
-                create: true,
-                edit: true,
-            },
-        })
+    createAnnotatedText(id_)
+    .setTextAdapter(MarkdownTextAdapter({flatText: true}))
+    .setAnnotationAdapter({ edit: true, create: true })
+     .setStyleParams(markdownText.styleParams)
+     .setRenderParams(markdownText.renderParams)
     .setText(markdownText.text)
     .setAnnotations(markdownText.annotations);
 
-    createAnnotatedText(id,
-        {
-            text: MarkdownTextAdapter(),
-            annotation: {
-                ...markdownText.annotationConfig,
-                create: true,
-                edit: true,
-            },
-        })
+    createAnnotatedText(id)
+     .setTextAdapter(MarkdownTextAdapter())
+     .setAnnotationAdapter({ edit: true, create: true })
+     .setStyleParams(markdownText.styleParams)
+     .setRenderParams(markdownText.renderParams)
      .setText(markdownText.text)
      .setAnnotations(markdownText.annotations);
 });

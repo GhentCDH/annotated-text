@@ -50,10 +50,10 @@ const id = `annotated-text-greek`;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id,  {
-        text: TextLineAdapter(),
-        annotation: greekText.annotationConfig
-    })
+    createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 });

@@ -6,12 +6,12 @@ import { HighlightAnnotationRender } from './TextAnnotationRender';
 import { UnderLineAnnotationRender } from './UnderLineAnnotationRender';
 import { Debugger } from '../../../utils/debugger';
 import type { BaseAnnotation, TextAnnotation } from '../../../model';
-import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 import { type AnnotationModule } from '../../../di/annotation.module';
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 
 export class RenderInstances<
   ANNOTATION extends BaseAnnotation,
-> extends BaseAnnotationDiFn {
+> extends BaseAnnotationDi {
   private renderParams = {
     defaultRenderer: DefaultRenders.highlight,
     styleFn: (annotation: ANNOTATION) => null,
@@ -22,8 +22,7 @@ export class RenderInstances<
   // protected readonly renderMap = new Map<string, AnnotationRender<any>>();
 
   constructor(annotationModule: AnnotationModule) {
-    super();
-    this.setModule(annotationModule);
+    super(annotationModule);
 
     this.annotationModule.registerRender(
       DefaultRenders.highlight,

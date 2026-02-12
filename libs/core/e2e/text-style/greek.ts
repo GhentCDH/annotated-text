@@ -8,12 +8,10 @@ import {
   TextLineAdapter,
 } from '../../src';
 
-const annotations = [];
-
 const renderDemo = (
   title: string,
   _id: GreekIdKeys,
-  _annotations = annotations,
+  _annotations = greekText.annotations,
 ) => {
   // Clear any cached instances
   clearAnnotatedTextCache();
@@ -22,16 +20,13 @@ const renderDemo = (
   renderDemoDiv(title, id);
 
   // Basic text setup
-  createAnnotatedText(id, {
-    text: TextLineAdapter({}),
-    annotation: {
-      ...greekText.annotationConfig,
-      edit: true,
-      create: true,
-    },
-  })
+  createAnnotatedText(id)
+    .setTextAdapter(TextLineAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setRenderParams(greekText.renderParams)
+    .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
-    .setAnnotations(greekText.annotations);
+    .setAnnotations(_annotations);
 };
 
 renderDemo('Greek text', 'greek-text');

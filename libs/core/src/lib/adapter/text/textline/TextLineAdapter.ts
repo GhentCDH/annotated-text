@@ -1,10 +1,5 @@
 import { _textToLines } from './text_utilities';
-import {
-  createTextAdapter,
-  type createTextAdapterParams,
-  type Limit,
-  TextAdapter,
-} from '../TextAdapter';
+import { type Limit, TextAdapter, type TextAdapterParams } from '../TextAdapter';
 import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
@@ -50,6 +45,6 @@ export class TextLineAdapterImpl extends TextAdapter {
   }
 }
 
-export const TextLineAdapter = (params: createTextAdapterParams = {}) => {
-  return createTextAdapter(new TextLineAdapterImpl(), params);
+export const TextLineAdapter = (params: TextAdapterParams = {}) => {
+  return new TextLineAdapterImpl(params);
 };

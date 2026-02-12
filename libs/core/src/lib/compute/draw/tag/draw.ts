@@ -41,6 +41,17 @@ const calculateTextWidth = (text: string, tagGroup: any, fontSize: number) => {
   return { textWidth, textHeight };
 };
 
+export const shouldDrawTag = (annotation: TextAnnotation) => {
+  const tagConfig = annotation._tagMetadata;
+  if (!tagConfig) return false;
+  const annotationDimensions = annotation._drawMetadata
+    .dimensions as AnnotationDimension;
+
+  if (!annotationDimensions) return false;
+
+  return true;
+};
+
 export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
   tagSvg: AnnotationSvg,
   annotation: TextAnnotation,
@@ -49,6 +60,8 @@ export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
   if (!tagConfig) return;
   const annotationDimensions = annotation._drawMetadata
     .dimensions as AnnotationDimension;
+
+  if (!annotationDimensions) return;
 
   const color = annotation._drawMetadata.color as AnnotationDrawColors;
 

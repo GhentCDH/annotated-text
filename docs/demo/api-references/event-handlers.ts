@@ -2,25 +2,19 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   createAnnotationColor,
-  PlainTextAdapter,
 } from '@ghentcdh/annotated-text';
 import { plainText } from '../data';
 
 export const createEventHandlerDemo = (id: string) => {
   const color = createAnnotationColor('#3b82f6');
   clearAnnotatedTextCache();
-  createAnnotatedText(id, {
-    text: PlainTextAdapter(),
-    annotation: {
-      create: true,
-      edit: true,
-      style: {
-        styleFn: () => ({
-          color: color,
-        }),
-      },
-    },
-  })
+  createAnnotatedText(id)
+    .setAnnotationAdapter({ create: true, edit: true })
+    .setStyleParams({
+      styleFn: () => ({
+        color: color,
+      }),
+    })
     .setText(plainText.text)
     .setAnnotations(plainText.annotations)
     .on('all', ({ mouseEvent, event, data }: any) => {

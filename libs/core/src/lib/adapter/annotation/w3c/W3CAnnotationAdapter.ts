@@ -6,8 +6,7 @@ import {
 import { type W3CAnnotation } from './model';
 import {
   AnnotationAdapter,
-  createAnnotationAdapter,
-  type createAnnotationAdapterParams,
+  type AnnotationAdapterParams,
 } from '../AnnotationAdapter';
 import {
   type Annotation,
@@ -16,14 +15,27 @@ import {
 } from '../../../model';
 import { selectText } from '../../text/utils/select-text';
 
-export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
-  name = 'W3CAnnotationAdapter';
+export type W3CAnnotationAdapterParams = {
+  sourceUri?: string;
+  language?: string;
+} & AnnotationAdapterParams;
 
-  constructor(
-    private readonly sourceUri?: string,
-    private readonly language?: string,
-  ) {
-    super();
+export class W3CAnnotationAdapterImpl extends AnnotationAdapter<
+  W3CAnnotation,
+  W3CAnnotationAdapterParams
+> {
+  name = 'W3CAnnotationAdapter';
+  private sourceUri?: string;
+  private language?: string;
+
+  constructor(params: W3CAnnotationAdapterParams = {}) {
+    super(params);
+  }
+
+  override setParams(params: W3CAnnotationAdapterParams) {
+    this.sourceUri = params.sourceUri;
+    this.language = params.language;
+    super.setParams(params);
   }
 
   _parse(annotation: W3CAnnotation): Annotation | null {
@@ -79,16 +91,8 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<W3CAnnotation> {
   }
 }
 
-type W3CAnnotationAdapterParams = {
-  sourceUri?: string;
-  language?: string;
-} & createAnnotationAdapterParams;
-
 export const W3CAnnotationAdapter = (
   params: W3CAnnotationAdapterParams = {},
 ): AnnotationAdapter<W3CAnnotation> => {
-  return createAnnotationAdapter(
-    new W3CAnnotationAdapterImpl(params.sourceUri, params.language),
-    params,
-  );
+  return new W3CAnnotationAdapterImpl(params);
 };

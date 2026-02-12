@@ -59,9 +59,9 @@ magnis dis parturient montes, nascetur ridiculus mus.`;
 
 export const customWeights = (id: string) => {
   clearAnnotatedTextCache();
-  createAnnotatedText(id, {
-    annotation: DemoAnnotationConfig,
-  })
+  createAnnotatedText(id)
+    .setStyleParams(DemoAnnotationConfig.style)
+    .setRenderParams(DemoAnnotationConfig.render)
     .setTagLabelFn((a) => a.id)
     .setText(text)
     .setAnnotations(annotations);

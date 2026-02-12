@@ -1,13 +1,24 @@
 import { type Container, type Token } from './container';
-import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
-import { type AnnotationAdapter } from '../adapter/annotation';
-import { type AnnotationRender, type AnnotationRenderStyle } from '../adapter/annotation/renderer';
+import type { Annotation, BaseAnnotation } from '../model';
+import {
+  type AnnotationAdapter,
+  DefaultAnnotationAdapter,
+} from '../adapter/annotation';
+import {
+  type AnnotationRender,
+  type AnnotationRenderStyle,
+} from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 
 import { Tag } from '../compute/draw/tag/tag';
 import { SvgModel } from '../compute/model/svg.types';
-import { DefaultSnapper, SnapperToken, type TextAdapter } from '../adapter/text';
+import {
+  DefaultSnapper,
+  PlainTextAdapter,
+  type Snapper,
+  type TextAdapter,
+} from '../adapter/text';
 import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
@@ -19,15 +30,9 @@ import { RenderInstances } from '../adapter/annotation/renderer/render-instances
 import { TagRenderer } from '../tag/TagRenderer';
 import { StyleInstances } from '../adapter/annotation/style/style-instances';
 
-/**
- * Configuration required to create an AnnotationModule.
- */
-export type AnnotationModuleConfig = {
-  /** Adapter for accessing and manipulating text content */
-  textAdapter: TextAdapter;
-  /** Adapter for managing annotation data */
-  annotationAdapter: AnnotationAdapter<any>;
-};
+const AnnotationAdapterToken = 'ANNOTATION_ADAPTER';
+const TextAdapterToken = 'TEXT_ADAPTER';
+const SnapperToken = 'SNAPPER';
 
 /**
  * Scoped dependency injection module for annotation-related services.
@@ -59,25 +64,24 @@ export class AnnotationModule {
    * @param parentContainer - Parent container (usually rootContainer) for hierarchical lookup
    * @param config - Configuration with required adapters
    */
-  constructor(parentContainer: Container, config: AnnotationModuleConfig) {
+  constructor(parentContainer: Container) {
     this.container = parentContainer.createScope();
-    this.configure(config);
+    this.configure();
   }
 
   /**
    * Registers all annotation-related services with the container.
    * Order matters: SvgModel must be registered last as it depends on other services.
    */
-  configure(config: AnnotationModuleConfig): void {
+  configure(): void {
     // Register event listeners (no dependencies)
     this.container.register(InternalEventListener).register(EventListener);
-
     this.container.register(SvgModel, () => new SvgModel());
 
     // Register adapters provided by the configuration
     this.container
-      .register(TextAdapterToken, () => config.textAdapter)
-      .register(AnnotationAdapterToken, () => config.annotationAdapter);
+      .register(TextAdapterToken, PlainTextAdapter)
+      .register(AnnotationAdapterToken, DefaultAnnotationAdapter);
 
     // Register services that extend BaseAnnotationDi (need reference to this module)
     this.container
@@ -94,9 +98,8 @@ export class AnnotationModule {
       .register(SnapperToken, () => new DefaultSnapper());
 
     this.container.register(MainContainer, () => new MainContainer(this));
-
-    config.textAdapter.setModule(this);
-    config.annotationAdapter.setModule(this);
+    this.inject<TextAdapter>(TextAdapterToken).setModule(this);
+    this.inject<AnnotationAdapter<any>>(AnnotationAdapterToken).setModule(this);
   }
 
   /**
@@ -117,16 +120,32 @@ export class AnnotationModule {
     this.container.destroy();
   }
 
-  /**
-   * Register additional services with this module's container.
-   * Allows extending the module with custom services.
-   */
-  register<T>(classRef: new (...args: any[]) => T, factory?: () => T): this;
-  register<T>(token: string | symbol, factory: () => T): this;
-  register<T>(tokenOrClass: any, factory?: () => T): this {
-    this.container.register(tokenOrClass, factory);
-
+  updateTextAdapter(adapter: TextAdapter): this {
+    this.container.update(TextAdapterToken, () => adapter);
+    this.getTextAdapter().setModule(this);
     return this;
+  }
+
+  updateAnnotationAdapter(adapter: AnnotationAdapter<any>): this {
+    this.container.update(AnnotationAdapterToken, () => adapter);
+    this.getAnnotationAdapter().setModule(this);
+    return this;
+  }
+
+  updateSnapper(snapper: Snapper): this {
+    this.container.update(SnapperToken, () => snapper);
+    return this;
+  }
+
+  getSnapper() {
+    return this.inject<Snapper>(SnapperToken);
+  }
+  getTextAdapter() {
+    return this.inject<TextAdapter>(TextAdapterToken);
+  }
+
+  getAnnotationAdapter<ANNOTATION extends BaseAnnotation = Annotation>() {
+    return this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken);
   }
 
   getAllRenderInstances() {
@@ -138,9 +157,8 @@ export class AnnotationModule {
 
   registerRender(token: string | symbol, factory: () => AnnotationRender<any>) {
     factory().setModule(this);
-    this.register(`RENDER_INSTANCE_${token as any}`, factory)
-      .injectRender(token)
-      .setModule(this);
+    this.container.register(`RENDER_INSTANCE_${token as any}`, factory);
+    this.injectRender(token).setModule(this);
   }
 
   hasRender(token: string | symbol) {

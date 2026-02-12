@@ -1,16 +1,12 @@
 # Plain text
 
-By default, the `AnnotatedText` component uses an internal lines model to display the text.
-
-You can use the `PlainTextAdapter` to adapt the component to work with plain text instead of lines.
+By default, the text will be rendered as plain text. You can use the `PlainTextAdapter` to render plain text.
 
 ```typescript
 import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/annotated-text";
 
-const textAnnotation = createAnnotatedText(id,
-  {
-    lineAdapter: PlainTextAdapter(),
-  })
+const textAnnotation = createAnnotatedText(id)
+  .setTextAdapter(PlainTextAdapter())
   .setText(plainText.text)
   .setAnnotations(plainText.annotations);
 ```
@@ -31,15 +27,11 @@ const id = `plain-text-example`;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id,
-        {
-            text: PlainTextAdapter(),
-            annotation: {
-                ...plainText.annotationConfig,
-                create: true,
-                edit: true
-            },
-        })
+    createAnnotatedText(id)
+    .setTextAdapter(PlainTextAdapter())
+    .setAnnotationAdapter({ edit: true, create: true })
+    .setStyleParams(plainText.styleParams)
+    .setRenderParams(plainText.renderParams)
     .setText(plainText.text)
     .setAnnotations(plainText.annotations);
 });

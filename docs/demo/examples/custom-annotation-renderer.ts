@@ -181,14 +181,11 @@ export const customAnnotationRender = (
 ) => {
   clearAnnotatedTextCache();
 
-  createAnnotatedText<DemoAnnotation>(id_default, {
-    annotation: {
-      ...DemoAnnotationConfig,
-      render: {
-        defaultRenderer,
-      },
-    },
-  })
+  createAnnotatedText<DemoAnnotation>(id_default)
+    .setRenderParams({
+      defaultRenderer,
+    })
+    .setStyleParams(DemoAnnotationConfig.style)
     .registerRender(
       new MyUnderLineAnnotationRenderer(MyUnderLineAnnotationRenderer.instance),
     )
@@ -213,14 +210,11 @@ export const customAnnotationRender = (
 export const annotationRender = (id_default: string) => {
   clearAnnotatedTextCache();
 
-  createAnnotatedText<DemoAnnotation>(id_default, {
-    annotation: {
-      ...DemoAnnotationConfig,
-      render: {
-        renderFn: (a) => a.target,
-      },
-    },
-  })
+  createAnnotatedText<DemoAnnotation>(id_default)
+    .setRenderParams({
+      renderFn: (a) => a.target,
+    })
+    .setStyleParams(DemoAnnotationConfig.style)
     .registerRender(new HighlightAnnotationRender(DefaultRenders.highlight))
     .registerRender(new GutterAnnotationRender(DefaultRenders.gutter))
     .registerRender(new UnderLineAnnotationRender(DefaultRenders.underline))

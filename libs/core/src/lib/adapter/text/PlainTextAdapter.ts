@@ -1,10 +1,5 @@
 import memoize from 'memoizee';
-import {
-  createTextAdapter,
-  type createTextAdapterParams,
-  type Limit,
-  TextAdapter,
-} from './TextAdapter';
+import { type Limit, TextAdapter, type TextAdapterParams } from './TextAdapter';
 import { mapLinesToLimit, type UpdateLineFn } from './utils/mapLineToLimit';
 import { type TextLine, textLineSchema } from '../../model';
 
@@ -72,6 +67,6 @@ export class PlainTextAdapterImpl extends TextAdapter {
   }
 }
 
-export const PlainTextAdapter = (params: createTextAdapterParams = {}) => {
-  return createTextAdapter(new PlainTextAdapterImpl(), params);
+export const PlainTextAdapter = (params: TextAdapterParams = {}) => {
+  return new PlainTextAdapterImpl(params);
 };

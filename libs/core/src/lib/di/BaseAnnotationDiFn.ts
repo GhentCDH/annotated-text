@@ -1,8 +1,5 @@
 import { type Token } from './container';
 import { type AnnotationModule } from './annotation.module';
-import { AnnotationAdapterToken, TextAdapterToken } from './tokens';
-import { type TextAdapter } from '../adapter/text';
-import { type AnnotationAdapter } from '../adapter/annotation';
 import { SvgModel } from '../compute/model/svg.types';
 
 /**
@@ -25,6 +22,7 @@ import { SvgModel } from '../compute/model/svg.types';
  */
 export abstract class BaseAnnotationDiFn {
   protected annotationModule: AnnotationModule;
+  svgModel: SvgModel;
 
   /**
    * Set the annotation module for dependency injection.
@@ -32,8 +30,6 @@ export abstract class BaseAnnotationDiFn {
    */
   setModule(module: AnnotationModule) {
     this.annotationModule = module;
-    this.textAdapter = module.inject(TextAdapterToken);
-    this.annotationAdapter = module.inject(AnnotationAdapterToken);
     this.svgModel = module.inject(SvgModel);
   }
 
@@ -47,7 +43,10 @@ export abstract class BaseAnnotationDiFn {
     return this.annotationModule.inject(token);
   }
 
-  protected textAdapter: TextAdapter;
-  protected annotationAdapter: AnnotationAdapter<any>;
-  protected svgModel: SvgModel;
+  protected get textAdapter() {
+    return this.annotationModule.getTextAdapter();
+  }
+  protected get annotationAdapter() {
+    return this.annotationModule.getAnnotationAdapter();
+  }
 }
