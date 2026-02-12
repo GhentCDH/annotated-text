@@ -205,13 +205,18 @@ export class CreateAnnotationsImpl<
 
     this.mainContainer.setTextElement(this.svgModel.textElement);
 
-    // Create the svg depending on the text element
+    // Create the SVG off-DOM for batch construction
     this.svgModel.createModel();
-    this.mainContainer.setSvg(this.svgModel.node());
 
     const initialDrawTime = Date.now();
-    // Start computations with the known values
+    // Compute and draw annotations while SVG is still off-DOM
     this.draw.compute().initialDraw();
+
+    // Attach the fully-built SVG to the DOM in a single operation
+    this.mainContainer.setSvg(this.svgModel.node());
+
+    // Draw tags after attaching (getBBox requires live DOM)
+    this.draw.drawTags();
     Debugger.time(initialDrawTime, ' \t initialDraw \t');
   }
 
