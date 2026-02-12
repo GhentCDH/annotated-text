@@ -28,7 +28,7 @@ const renderDemo = (
     .setRenderParams(greekText.renderParams)
     .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
-    .setAnnotations(greekText.annotations);
+    .setAnnotations(_annotations);
 };
 
 renderDemo('Greek text', 'greek-text');
