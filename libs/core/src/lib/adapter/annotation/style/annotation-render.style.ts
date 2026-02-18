@@ -51,6 +51,7 @@ export class AnnotationRenderStyle<ANNOTATION> {
     if (!annotation) return this.getDefaultStyle();
 
     const style = this.styleFn(annotation);
+
     if (style === null) {
       Debugger.verbose(
         'StyleInstances',
@@ -71,7 +72,7 @@ export class AnnotationRenderStyle<ANNOTATION> {
       return namedStyle;
     }
 
-    return getAnnotationStyle(this.getDefaultStyle(), style);
+    return getAnnotationStyle(this.defaultStyle, style);
   }
 
   updateDefaultStyle(style: CustomAnnotationStyle) {
