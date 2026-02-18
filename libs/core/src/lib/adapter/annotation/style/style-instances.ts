@@ -1,7 +1,8 @@
 import { merge } from 'lodash-es';
-import { type AnnotationStyleParams, type CustomAnnotationStyle, DefaultAnnotationStyleParams } from './annotation.style';
+import { type AnnotationStyleParams, DefaultAnnotationStyleParams } from './annotation.style';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import type { AnnotationModule } from '../../../di/annotation.module';
+import { CustomAnnotationStyle } from './annotation.style.default';
 
 /**
  * Manages annotation styles through a combination of a style function and a named style registry.

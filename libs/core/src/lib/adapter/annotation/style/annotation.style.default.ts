@@ -19,7 +19,7 @@ export const _DefaultAnnotationStyle = {
   width: 3,
 };
 
-type DefaultAnnotationStyle = typeof _DefaultAnnotationStyle;
+export type DefaultAnnotationStyle = typeof _DefaultAnnotationStyle;
 
 const _DefaultHoverStyle = {
   borderWidth: 2,

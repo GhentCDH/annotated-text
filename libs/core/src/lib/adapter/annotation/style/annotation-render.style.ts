@@ -1,6 +1,15 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { Debugger } from '../../../utils/debugger';
 
+import { CustomAnnotationStyle } from './annotation.style.default';
+import { AnnotationStyle } from '../../../model';
+import {
+  DEFAULT_STYLE_NAME,
+  DefaultAnnotationStyleParams,
+  getAnnotationStyle,
+  StyleFn,
+} from './annotation.style';
+
 export class AnnotationRenderStyle<ANNOTATION> {
   protected readonly styleMap = new Map<string, AnnotationStyle>();
   private defaultStyleName = DEFAULT_STYLE_NAME;

@@ -16,7 +16,7 @@ const getStyles = (...styles: Array<DefaultAnnotationStyle>) => {
         return value as DefaultAnnotationStyle[K];
       }
     }
-    throw new Error('value not found' + key);
+    throw new Error(`value not found ${key as string}`);
   };
 
   const generateColor = (
