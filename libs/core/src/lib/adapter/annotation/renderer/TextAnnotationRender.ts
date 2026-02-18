@@ -62,7 +62,7 @@ export class HighlightAnnotationRender extends SvgAnnotationRender<BaseAnnotatio
   readonly renderTag = true;
 
   constructor(name: string, style: CustomAnnotationStyle = {}) {
-    super(name, style);
+    super(name, {}, style);
   }
   override createPath(params: PathParams): AnnotationDrawPath {
     return createHighlightPath(params);

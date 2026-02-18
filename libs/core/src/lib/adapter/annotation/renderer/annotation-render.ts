@@ -1,7 +1,13 @@
-import { type AnnotationDimension, type AnnotationDraw, type BaseAnnotation, type TextAnnotation } from '../../../model';
+import {
+  type AnnotationDimension,
+  type AnnotationDraw,
+  type BaseAnnotation,
+  type TextAnnotation
+} from '../../../model';
 import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 import { AnnotationRenderStyle } from '../style/annotation-render.style';
 import { type CustomAnnotationStyle } from '../style';
+import { cloneDeep, merge } from 'lodash-es';
 
 /**
  * Parameters passed to the render method of annotation renderers.
@@ -149,11 +155,16 @@ export abstract class AnnotationRender<
    */
   protected constructor(
     public readonly name: string,
-    style: CustomAnnotationStyle = {},
+    defaultStyle: CustomAnnotationStyle,
+    style: CustomAnnotationStyle,
   ) {
     super();
-    // this.updateStyle(style);
-    this.annotationRenderStyle = new AnnotationRenderStyle(style);
+    this.annotationRenderStyle = new AnnotationRenderStyle({
+      default: merge(cloneDeep(defaultStyle.default), cloneDeep(style.default)),
+      edit: merge(cloneDeep(defaultStyle.edit), cloneDeep(style.edit)),
+      active: merge(cloneDeep(defaultStyle.active), cloneDeep(style.active)),
+      hover: merge(cloneDeep(defaultStyle.hover), cloneDeep(style.hover)),
+    });
   }
 
   /**

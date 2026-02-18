@@ -36,8 +36,8 @@ export const getAnnotationStyle = (
 ): AnnotationStyle => {
   const generateColors = (KEY: keyof CustomAnnotationStyle) => {
     const styles = getStyles(
-      style[KEY] ?? ({} as any),
-      defaultStyle[KEY] ?? ({} as any),
+      style?.[KEY] ?? ({} as any),
+      defaultStyle?.[KEY] ?? ({} as any),
       AnnotationDefaultStyle[KEY] ?? ({} as any),
       AnnotationDefaultStyle.default ?? ({} as any),
     );

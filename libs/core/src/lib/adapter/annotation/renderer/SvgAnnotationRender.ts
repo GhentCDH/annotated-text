@@ -17,8 +17,12 @@ export abstract class SvgAnnotationRender<
   protected borders = true;
   protected fillBg = true;
 
-  protected constructor(name: string, defaultStyle: CustomAnnotationStyle) {
-    super(name, defaultStyle);
+  protected constructor(
+    name: string,
+    defaultStyle: CustomAnnotationStyle,
+    style: CustomAnnotationStyle,
+  ) {
+    super(name, defaultStyle, style);
   }
 
   // Only this method is required to implement

@@ -1,5 +1,4 @@
 import memoizee from 'memoizee';
-import { cloneDeep, merge } from 'lodash-es';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
   createAnnotationFill,
@@ -45,7 +44,7 @@ export class UnderLineAnnotationRender extends SvgAnnotationRender<BaseAnnotatio
   override fillBg = false;
 
   constructor(name: string, style: CustomAnnotationStyle = {}) {
-    super(name, merge(cloneDeep(DefaultUnderlineAnnotationStyle), style));
+    super(name, DefaultUnderlineAnnotationStyle, style);
   }
 
   override createPath(params: PathParams): AnnotationDrawPath {

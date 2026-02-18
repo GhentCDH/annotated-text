@@ -96,7 +96,7 @@ export class GutterAnnotationRender extends AnnotationRender<BaseAnnotation> {
   readonly renderTag = false;
 
   constructor(name: string, style: CustomAnnotationStyle = {}) {
-    super(name, style);
+    super(name, {}, style);
   }
 
   createDraws(annotation: TextAnnotation) {
