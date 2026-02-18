@@ -1,5 +1,3 @@
-import { cloneDeep } from 'lodash-es';
-import { DefaultAnnotationRenderStyle } from './annotation-render';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
   createAnnotationFill,
@@ -8,7 +6,8 @@ import {
   createRightBorder,
   type PathParams,
 } from './_utils/path';
-import { type AnnotationDrawPath } from '../../../model';
+import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
+import { type CustomAnnotationStyle } from '../style';
 
 const createAnnotationBorder = ({
   x,
@@ -57,20 +56,13 @@ export const createHighlightPath: createAnnotationPathFn = (
   return { border, fill };
 };
 
-export const DefaultTextAnnotationRenderStyle = {
-  ...cloneDeep(DefaultAnnotationRenderStyle),
-  borderWidth: 2,
-  borderRadius: 6,
-};
-export type TextAnnotationRenderStyle = typeof DefaultTextAnnotationRenderStyle;
-
-export class HighlightAnnotationRender extends SvgAnnotationRender<TextAnnotationRenderStyle> {
+export class HighlightAnnotationRender extends SvgAnnotationRender<BaseAnnotation> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = false;
   readonly renderTag = true;
 
-  constructor(name: string, style: Partial<TextAnnotationRenderStyle> = {}) {
-    super(name, style, DefaultTextAnnotationRenderStyle);
+  constructor(name: string, style: CustomAnnotationStyle = {}) {
+    super(name, style);
   }
   override createPath(params: PathParams): AnnotationDrawPath {
     return createHighlightPath(params);

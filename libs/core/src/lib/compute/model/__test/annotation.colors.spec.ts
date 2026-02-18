@@ -1,9 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type {
-  AnnotationDrawColor,
-  AnnotationId,
-  TextAnnotation,
-} from '../../../model';
+import type { AnnotationId, TextAnnotation } from '../../../model';
 import { AnnotationColors } from '../annotation.colors';
 import { SvgModel } from '../svg.types';
 import type { AnnotationModule } from '../../../di/annotation.module';
@@ -203,13 +199,7 @@ describe('AnnotationColors', () => {
 
     it('returns default color when in neither set', () => {
       const anno = makeAnnotation('id3');
-      expect(
-        colors.getAnnotationColor(anno, {
-          default: { fill: 'gray' },
-          hover: { fill: 'blue' },
-          active: { fill: 'red' },
-        } as any),
-      ).toEqual({ fill: 'gray' });
+      expect(colors.getAnnotationColor(anno)).toEqual({ fill: 'gray' });
     });
 
     it('active takes priority over highlighted', () => {
@@ -219,13 +209,7 @@ describe('AnnotationColors', () => {
       colors.highlightAnnotations(['id4']);
       colors.selectAnnotations(['id4']); // same id now active
 
-      expect(
-        colors.getAnnotationColor(anno, {
-          default: { fill: 'gray' },
-          hover: { fill: 'blue' },
-          active: { fill: 'red' },
-        } as any),
-      ).toEqual({ fill: 'red' });
+      expect(colors.getAnnotationColor(anno)).toEqual({ fill: 'red' });
     });
   });
 
@@ -264,10 +248,7 @@ describe('AnnotationColors', () => {
       mockSvgModel.findFills.mockReturnValue(fillSelection);
       mockSvgModel.findBorders.mockReturnValue(borderSelection);
 
-      colors.colorAnnotation('id1', {
-        fill: 'green',
-        border: 'darkgreen',
-      } as AnnotationDrawColor);
+      colors.colorAnnotation('id1');
 
       expect(mockSvgModel.findFills).toHaveBeenCalledWith('id1');
       expect(fillSelection.attr).toHaveBeenCalledWith('fill', 'green');
@@ -282,7 +263,7 @@ describe('AnnotationColors', () => {
       mockSvgModel.findFills.mockReturnValue(fillSelection);
       mockSvgModel.findBorders.mockReturnValue(null);
 
-      colors.colorAnnotation('id1', { fill: 'green' } as AnnotationDrawColor);
+      colors.colorAnnotation('id1');
 
       expect(mockSvgModel.findFills).toHaveBeenCalledWith('id1');
       expect(fillSelection.attr).toHaveBeenCalledWith('fill', 'green');

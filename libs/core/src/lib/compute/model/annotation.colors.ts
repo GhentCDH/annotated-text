@@ -1,17 +1,20 @@
 import { SvgModel } from './svg.types';
 import { Debugger } from '../../utils/debugger';
 import {
-  type AnnotationDrawColor,
-  type AnnotationDrawColors,
   type AnnotationId,
+  type AnnotationStyle,
   type TextAnnotation,
 } from '../../model';
 import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { colorAnnotationContent } from '../draw/annotations';
 
 export class AnnotationColors extends BaseAnnotationDi {
   private readonly svgModel = this.inject(SvgModel);
   private readonly activeIds = new Set<AnnotationId>();
   private readonly highlightedIds = new Set<AnnotationId>();
+  private readonly renderInstances =
+    this.annotationModule.inject(RenderInstances);
 
   public highlightAnnotations(ids: AnnotationId[]) {
     const oldIds = new Set(this.highlightedIds);
@@ -45,14 +48,11 @@ export class AnnotationColors extends BaseAnnotationDi {
     return this;
   }
 
-  public getAnnotationColor(
-    annotation: TextAnnotation,
-    color: AnnotationDrawColors,
-  ) {
-    if (this.activeIds.has(annotation.id)) return color.active;
-    if (this.highlightedIds.has(annotation.id)) return color.hover;
+  public getAnnotationColor(annotation: TextAnnotation) {
+    if (this.activeIds.has(annotation.id)) return 'active';
+    if (this.highlightedIds.has(annotation.id)) return 'hover';
 
-    return color.default;
+    return 'default';
   }
 
   resetAnnotationColor(annotationUuid: AnnotationId) {
@@ -62,10 +62,7 @@ export class AnnotationColors extends BaseAnnotationDi {
       return;
     }
 
-    const color = this.getAnnotationColor(
-      annotation,
-      annotation._drawMetadata.color as AnnotationDrawColors,
-    );
+    const color = this.getAnnotationColor(annotation);
 
     if (!color) {
       Debugger.warn('No default color found for annotation', annotationUuid);
@@ -75,19 +72,21 @@ export class AnnotationColors extends BaseAnnotationDi {
     this.colorAnnotation(annotationUuid, color);
   }
 
-  colorAnnotation(annotationUuid: AnnotationId, color: AnnotationDrawColor) {
-    if (!color) {
-      Debugger.warn('No color provided for annotation', annotationUuid);
-      return;
-    }
-    this.svgModel
-      .findFills(annotationUuid)
-      ?.attr('fill', color.fill!)
-      .attr('stroke', 'none');
-    if (color.border)
-      this.svgModel
-        .findBorders(annotationUuid)
-        ?.attr('fill', 'none')
-        .attr('stroke', color.border);
+  colorAnnotation(
+    annotationUuid: AnnotationId,
+    styleKey: keyof AnnotationStyle,
+  ) {
+    const style =
+      this.annotationAdapter.getAnnotation(annotationUuid)?._style ??
+      this.renderInstances
+        .getDefaultRenderer()
+        .annotationRenderStyle.getDefaultStyle();
+
+    colorAnnotationContent(
+      style,
+      styleKey,
+      this.svgModel.findBorders(annotationUuid),
+      this.svgModel.findFills(annotationUuid),
+    );
   }
 }

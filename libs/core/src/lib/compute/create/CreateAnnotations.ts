@@ -6,11 +6,10 @@ import {
   type TextAdapterParams,
 } from '../../adapter/text';
 import {
-  type ANNOTATION_CONFIG_KEYS,
-  type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
   type AnnotationAdapterParams,
   type AnnotationStyleParams,
+  type CustomAnnotationStyle,
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
@@ -20,11 +19,7 @@ import {
   type EventCallback,
 } from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-} from '../../adapter/annotation/renderer';
-import { type AnnotationStyle } from '../../adapter/annotation/style';
+import { type AnnotationRender } from '../../adapter/annotation/renderer';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
 import { rootContainer } from '../../di/container';
@@ -102,7 +97,7 @@ export class CreateAnnotationsImpl<
           ?.remove();
       })
       .on('annotation--draw-dummy', ({ data }) => {
-        this.draw.annotation.dummy(data.dummyAnnotation, data.color);
+        this.draw.annotation.dummy(data.dummyAnnotation);
       })
       .on('redraw-svg', () => {
         this.redrawSvg();
@@ -239,14 +234,6 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
-  changeAnnotationAdapterConfig<KEY extends ANNOTATION_CONFIG_KEYS>(
-    key: KEY,
-    value: ANNOTATION_CONFIG_VALUES<KEY>,
-  ): this {
-    this.annotationModule.getAnnotationAdapter().setConfig(key, value);
-    return this;
-  }
-
   setAnnotationAdapter(
     adapterOrParams: AnnotationAdapterParams | AnnotationAdapter<ANNOTATION>,
   ): this {
@@ -316,35 +303,35 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
-  registerRender<STYLE extends AnnotationRenderStyle>(
-    render: AnnotationRender<STYLE>,
-  ) {
+  registerRender(render: AnnotationRender<ANNOTATION>) {
     this.annotationModule.registerRender(render.name, () => render);
-
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
     // TODO check if added later the new render is used in the existing annotations
     return this;
   }
 
   registerRenders(...renders: AnnotationRender<any>[]) {
     renders.forEach((render) => this.registerRender(render));
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
 
     // TODO check if added later the new render is used in the existing annotations
     return this;
   }
 
-  updateRenderStyle<STYLE extends AnnotationRenderStyle>(
-    name: string,
-    style: Partial<STYLE>,
-  ) {
-    this.annotationModule.injectRender<STYLE>(name).updateStyle(style);
+  updateRenderStyle(name: string, style: CustomAnnotationStyle) {
+    this.annotationModule
+      .injectRender(name)
+      .annotationRenderStyle.updateDefaultStyle(style);
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
     // TODO check if updated later the new render is used in the existing annotations
     return this;
   }
 
-  registerStyle(name: string, style: AnnotationStyle) {
+  registerStyle(name: string, style: CustomAnnotationStyle) {
     this.annotationModule
       .inject<StyleInstances<ANNOTATION>>(StyleInstances)
       .registerStyle(name, style);
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
     // TODO check if updated later the new render is used in the existing annotations
 
     return this;
@@ -354,11 +341,12 @@ export class CreateAnnotationsImpl<
     this.annotationModule
       .inject<StyleInstances<ANNOTATION>>(StyleInstances)
       .setParams(params);
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
     this.recalculate();
     return this;
   }
 
-  registerStyles(styles: Record<string, AnnotationStyle>) {
+  registerStyles(styles: Record<string, CustomAnnotationStyle>) {
     Object.keys(styles).forEach((key) => {
       this.registerStyle(key, styles[key]);
       // this.annotationAdapter.styleInstance.registerStyle(key, styles[key]);

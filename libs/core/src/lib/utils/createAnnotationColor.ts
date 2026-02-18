@@ -40,7 +40,7 @@ const defaultConfig: Config = {
  * @param {string} hex - The hex color code.
  * @returns {string} The RGB color string.
  */
-const hexToRgb = (hex: string): string => {
+export const hexToRgb = (hex: string): string => {
   const bigint = parseInt(hex.slice(1), 16);
   const r = (bigint >> 16) & 255;
   const g = (bigint >> 8) & 255;
@@ -79,6 +79,27 @@ export const createAnnotationColor = (
   };
 };
 
+export const getRgbaColor = (color: string, opacity: number): string => {
+  if (color === 'transparent') return 'transparent';
+
+  const rgbColor = hexToRgb(color);
+  return `rgba(${rgbColor},${opacity})`;
+};
+
+export const generateColor = (
+  _defaultColor: string,
+  _defaultOpacity: number,
+  _color?: string,
+  _opacity?: number,
+) => {
+  const color = _color ?? _defaultColor;
+  if (color === 'transparent') return 'transparent';
+
+  const rgbColor = hexToRgb(color);
+  const opacity = _opacity ?? _defaultOpacity;
+
+  return `rgba(${rgbColor},${opacity})`;
+};
 /**
  * Creates a set of annotation colors from a given set of color strings.
  *

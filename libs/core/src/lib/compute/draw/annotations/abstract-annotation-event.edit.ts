@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash-es';
 import {
-  type AnnotationDrawColors,
   type AnnotationId,
   type TextAnnotation,
   textAnnotationSchema,
@@ -119,14 +118,13 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
       return;
     }
 
-    const color = annotation._drawMetadata.color as AnnotationDrawColors;
+    // const color = annotation._drawMetadata.color as AnnotationDrawColors;
 
     dummyAnnotation.start = fixed.start;
     dummyAnnotation.end = fixed.end;
 
     this.internalEventListener.sendEvent('annotation--draw-dummy', {
       dummyAnnotation: dummyAnnotation,
-      color: color.edit,
     });
 
     return dummyAnnotation;

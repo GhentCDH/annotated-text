@@ -130,15 +130,8 @@ export class CreateAnnotation extends BaseAnnotationDi {
     dummyAnnotation.end = snapper.end;
 
     if (draw) {
-      const color = dummyAnnotation._render.style.color;
-
       this.internalEventListener.sendEvent('annotation--draw-dummy', {
         dummyAnnotation: dummyAnnotation,
-        color: {
-          border: color!.border,
-          fill: color!.background,
-          borderWidth: 2,
-        },
       });
     }
     this.prevEndIndex = character.characterPos;

@@ -1,11 +1,7 @@
-import { cloneDeep, merge } from 'lodash-es';
-import {
-  type AnnotationDimension,
-  type AnnotationDraw,
-  type AnnotationDrawColors,
-  type TextAnnotation
-} from '../../../model';
+import { type AnnotationDimension, type AnnotationDraw, type BaseAnnotation, type TextAnnotation } from '../../../model';
 import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
+import { AnnotationRenderStyle } from '../style/annotation-render.style';
+import { type CustomAnnotationStyle } from '../style';
 
 /**
  * Parameters passed to the render method of annotation renderers.
@@ -99,7 +95,7 @@ export type RenderParams<ANNOTATION> = {
  * ```
  */
 export abstract class AnnotationRender<
-  STYLE extends AnnotationRenderStyle,
+  ANNOTATION extends BaseAnnotation,
 > extends BaseAnnotationDiFn {
   /**
    * Determines the rendering priority when multiple renderers apply to overlapping annotations.
@@ -116,14 +112,6 @@ export abstract class AnnotationRender<
    * weightOrder = 10; // Gutter comment
    */
   abstract weightOrder: number;
-
-  /**
-   * Current style configuration for this renderer instance.
-   *
-   * Can be updated using the updateStyle() method.
-   * Initialized as a deep clone of the defaultStyle provided in the constructor.
-   */
-  style: STYLE;
 
   /**
    * Indicates whether this renderer displays content in the gutter (margin)
@@ -146,6 +134,8 @@ export abstract class AnnotationRender<
    */
   abstract renderTag: boolean;
 
+  public readonly annotationRenderStyle: AnnotationRenderStyle<ANNOTATION>;
+
   /**
    * Creates a new annotation renderer with the specified default style.
    *
@@ -159,12 +149,11 @@ export abstract class AnnotationRender<
    */
   protected constructor(
     public readonly name: string,
-    style: Partial<STYLE>,
-    private defaultStyle: STYLE,
+    style: CustomAnnotationStyle = {},
   ) {
     super();
-    this.style = cloneDeep(defaultStyle);
-    this.updateStyle(style);
+    // this.updateStyle(style);
+    this.annotationRenderStyle = new AnnotationRenderStyle(style);
   }
 
   /**
@@ -208,39 +197,10 @@ export abstract class AnnotationRender<
   abstract createDraws(annotation: TextAnnotation): {
     draws: AnnotationDraw[];
     dimensions: AnnotationDimension;
-    color: AnnotationDrawColors;
   };
 
-  /**
-   * Updates the renderer's style configuration.
-   *
-   * Performs a deep merge with the default style, so only specified properties
-   * are overridden while preserving all other default values.
-   *
-   * Uses lodash merge to handle nested objects properly.
-   *
-   * @param style - Partial style object containing properties to update
-   *
-   * @example
-   * ```typescript
-   * // Update only specific properties
-   * renderer.updateStyle({
-   *   borderWidth: 3,
-   *   borderRadius: 8
-   * });
-   *
-   * // Update nested properties
-   * renderer.updateStyle({
-   *   hover: {
-   *     color: {
-   *       border: 'rgba(255, 0, 0, 0.8)'
-   *     }
-   *   }
-   * });
-   * ```
-   */
-  updateStyle(style: Partial<STYLE>) {
-    this.style = merge(cloneDeep(this.defaultStyle), style) as STYLE;
+  getStyle(annotation: ANNOTATION) {
+    return this.annotationRenderStyle.getStyle(annotation);
   }
 }
 
@@ -268,24 +228,3 @@ export const DefaultAnnotationRenderStyle = {
     },
   },
 };
-
-/**
- * Type definition for the default annotation style structure.
- *
- * Custom style types can extend this to add additional properties
- * while maintaining compatibility with the base rendering system.
- *
- * @example
- * ```typescript
- * // Extend with custom properties
- * type CustomStyle = AnnotationRenderStyle & {
- *   shadowBlur: number;
- *   shadowColor: string;
- * };
- *
- * class CustomRenderer extends AnnotationRender<CustomStyle> {
- *   // Implementation
- * }
- * ```
- */
-export type AnnotationRenderStyle = typeof DefaultAnnotationRenderStyle;

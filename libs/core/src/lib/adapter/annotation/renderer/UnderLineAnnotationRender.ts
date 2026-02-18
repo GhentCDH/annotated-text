@@ -1,13 +1,13 @@
-import { cloneDeep } from 'lodash-es';
 import memoizee from 'memoizee';
-import { DefaultTextAnnotationRenderStyle } from './TextAnnotationRender';
+import { cloneDeep, merge } from 'lodash-es';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
   createAnnotationFill,
   type createAnnotationPathFn,
   type PathParams,
 } from './_utils/path';
-import { type AnnotationDrawPath } from '../../../model';
+import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
+import { type CustomAnnotationStyle } from '../style';
 
 const createLine = memoizee(
   (x: number, y: number, width: number, height: number) => {
@@ -27,23 +27,25 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const DefaultUnderlineAnnotationRenderStyle = {
-  ...cloneDeep(DefaultTextAnnotationRenderStyle),
+const DefaultUnderlineAnnotationStyle: CustomAnnotationStyle = {
+  default: {
+    backgroundColor: 'transparent',
+    backgroundOpacity: 0,
+    borderRadius: 0,
+  },
+  hover: {
+    borderWidth: 4,
+  },
 };
-export type UnderlineAnnotationRenderStyle =
-  typeof DefaultUnderlineAnnotationRenderStyle;
 
-export class UnderLineAnnotationRender extends SvgAnnotationRender<UnderlineAnnotationRenderStyle> {
+export class UnderLineAnnotationRender extends SvgAnnotationRender<BaseAnnotation> {
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
   readonly renderTag = true;
   override fillBg = false;
 
-  constructor(
-    name: string,
-    style: Partial<UnderlineAnnotationRenderStyle> = {},
-  ) {
-    super(name, style, DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string, style: CustomAnnotationStyle = {}) {
+    super(name, merge(cloneDeep(DefaultUnderlineAnnotationStyle), style));
   }
 
   override createPath(params: PathParams): AnnotationDrawPath {

@@ -1,8 +1,4 @@
-import type {
-  AnnotationDrawColor,
-  AnnotationId,
-  TextAnnotation,
-} from '../../../model';
+import type { AnnotationId, TextAnnotation } from '../../../model';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
@@ -42,7 +38,7 @@ export class DrawAnnotation extends BaseAnnotationDi {
     drawAnnotation(this.annotationModule, annotation);
   }
 
-  dummy(dummyAnnotation: TextAnnotation, color: AnnotationDrawColor) {
+  dummy(dummyAnnotation: TextAnnotation) {
     const annotationUuid = DUMMY_UID;
 
     dummyAnnotation._render.lines = getLinesForAnnotation(
@@ -50,26 +46,32 @@ export class DrawAnnotation extends BaseAnnotationDi {
       dummyAnnotation,
     );
 
-    this.createDraws(dummyAnnotation, color, annotationUuid);
+    this.createDraws(dummyAnnotation, annotationUuid);
   }
 
-  private createDraws(
-    annotation: TextAnnotation,
-    color: AnnotationDrawColor,
-    newUuid?: AnnotationId,
-  ) {
+  private createDraws(annotation: TextAnnotation, newUuid?: AnnotationId) {
     const annotationUuid = newUuid ?? annotation.id;
 
     this.internalEventListener.sendEvent('annotation--remove', {
       annotationUuid,
     });
     const renderInstance = this.renderInstances.highlightInstance;
+    const style =
+      annotation._style ??
+      this.renderInstances
+        .getDefaultRenderer()
+        .annotationRenderStyle.getDefaultStyle();
 
     renderInstance.createDraws(annotation).draws.forEach((a) => {
-      drawAnnotationContent({ ...a, annotationUuid }, this.svgModel, color);
+      drawAnnotationContent(
+        { ...a, annotationUuid },
+        this.svgModel,
+        style,
+        'edit',
+      );
     });
 
-    this.annotationColors.colorAnnotation(annotationUuid, color);
+    this.annotationColors.colorAnnotation(annotationUuid, 'edit');
   }
 
   compute() {
@@ -85,7 +87,6 @@ export class DrawAnnotation extends BaseAnnotationDi {
       annotation.id,
       rendered.draws,
       rendered.dimensions,
-      rendered.color,
     );
   }
 }

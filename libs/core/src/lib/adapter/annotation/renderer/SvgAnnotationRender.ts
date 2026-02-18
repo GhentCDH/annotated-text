@@ -1,38 +1,28 @@
 import { v4 as uuidv4 } from 'uuid';
 import { AnnotationRender } from './annotation-render';
-import { type TextAnnotationRenderStyle } from './TextAnnotationRender';
 import { type PathParams } from './_utils/path';
-import { getColors } from '../../../compute/compute/colors';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
-  type AnnotationDrawColors,
   type AnnotationDrawPath,
+  type BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
 import { getRanges } from '../../../compute/utils/ranges/get-range';
+import { type CustomAnnotationStyle } from '../style';
 
 export abstract class SvgAnnotationRender<
-  STYLE extends TextAnnotationRenderStyle,
-> extends AnnotationRender<STYLE> {
+  ANNOTATION extends BaseAnnotation,
+> extends AnnotationRender<ANNOTATION> {
   protected borders = true;
   protected fillBg = true;
 
-  protected constructor(
-    name: string,
-    style: Partial<STYLE>,
-    defaultStyle: STYLE,
-  ) {
-    super(name, style, defaultStyle);
+  protected constructor(name: string, defaultStyle: CustomAnnotationStyle) {
+    super(name, defaultStyle);
   }
 
   // Only this method is required to implement
   abstract createPath(params: PathParams): AnnotationDrawPath;
-
-  // Implemented by default, can be overridden
-  getColors(annotation: TextAnnotation): AnnotationDrawColors {
-    return getColors(this.style, annotation, this.borders, this.fillBg);
-  }
 
   // Implemented by default
   createDraws(annotation: TextAnnotation) {
@@ -42,15 +32,13 @@ export abstract class SvgAnnotationRender<
 
     const textStyle = this.textAdapter.style;
 
-    const radius = this.style.borderRadius;
+    const radius = annotation._style.default.borderRadius;
 
     const draws: AnnotationDraw[] = [];
     const lineOffset = textStyle.lineOffset / 2;
     const padding = textStyle.padding * annotation._render.weight!;
     const height = textStyle.lineHeight + padding * 2;
     let startPosition: AnnotationDimension;
-
-    const color = this.getColors(annotation);
 
     const lines = annotation._render.lines ?? [];
     lines.forEach((line, index: number) => {
@@ -109,6 +97,6 @@ export abstract class SvgAnnotationRender<
       });
     });
 
-    return { draws, dimensions: startPosition!, color };
+    return { draws, dimensions: startPosition! };
   }
 }

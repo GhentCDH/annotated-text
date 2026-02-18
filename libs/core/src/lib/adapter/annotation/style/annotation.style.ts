@@ -1,22 +1,88 @@
-import { createAnnotationColor } from '../../../utils/createAnnotationColor';
+import {
+  AnnotationDefaultStyle,
+  type CustomAnnotationStyle,
+  type DefaultAnnotationStyle,
+} from './annotation.style.default';
+import { getRgbaColor } from '../../../utils/createAnnotationColor';
+import { type AnnotationStyle } from '../../../model';
 
-export const DefaultAnnotationStyle = {
-  color: createAnnotationColor('#ff3b3b'),
+const getStyles = (...styles: Array<DefaultAnnotationStyle>) => {
+  const getValue = <K extends keyof DefaultAnnotationStyle>(
+    key: K,
+  ): DefaultAnnotationStyle[K] => {
+    for (const style of styles) {
+      const value = style?.[key];
+      if (value !== undefined) {
+        return value as DefaultAnnotationStyle[K];
+      }
+    }
+    throw new Error('value not found' + key);
+  };
+
+  const generateColor = (
+    colorKey: keyof DefaultAnnotationStyle,
+    opacityKey: keyof DefaultAnnotationStyle,
+  ) => {
+    const color = getValue(colorKey) as string;
+    const opacity = getValue(opacityKey) as number;
+    return getRgbaColor(color, opacity ?? 1);
+  };
+
+  return { generateColor, getValue };
+};
+export const getAnnotationStyle = (
+  defaultStyle: CustomAnnotationStyle,
+  style: CustomAnnotationStyle,
+): AnnotationStyle => {
+  const generateColors = (KEY: keyof CustomAnnotationStyle) => {
+    const styles = getStyles(
+      style[KEY] ?? ({} as any),
+      defaultStyle[KEY] ?? ({} as any),
+      AnnotationDefaultStyle[KEY] ?? ({} as any),
+      AnnotationDefaultStyle.default ?? ({} as any),
+    );
+
+    return {
+      backgroundColor: styles.generateColor(
+        'backgroundColor',
+        'backgroundOpacity',
+      ),
+      borderColor: styles.generateColor('borderColor', 'borderOpacity'),
+      borderWidth: styles.getValue('borderWidth'),
+      borderRadius: styles.getValue('borderRadius'),
+      // gutter
+      width: styles.getValue('width'),
+      gap: styles.getValue('gap'),
+      // Tag
+      tagTextColor: styles.getValue('tagTextColor'),
+      tagBackgroundColor: styles.generateColor(
+        'tagBackgroundColor',
+        'tagBackgroundOpacity',
+      ),
+      tagBorderColor: styles.generateColor(
+        'tagBorderColor',
+        'tagBorderOpacity',
+      ),
+      tagBorderWidth: styles.getValue('tagBorderWidth'),
+    };
+  };
+
+  return {
+    default: generateColors('default'),
+    edit: generateColors('edit'),
+    hover: generateColors('hover'),
+    active: generateColors('active'),
+  };
 };
 
-/**
- * Represents the visual styling properties for an annotation.
- *
- * This type is derived from {@link DefaultAnnotationStyle} and defines
- * the structure of style objects used throughout the annotation system.
- *
- * @property color - The color configuration for the annotation, created via `createAnnotationColor`
- */
-export type AnnotationStyle = typeof DefaultAnnotationStyle;
+export type StyleFn<ANNOTATION> = (
+  annotation: ANNOTATION,
+) => string | CustomAnnotationStyle | null;
 
+export const DEFAULT_STYLE_NAME = 'DEFAULT';
 export const DefaultAnnotationStyleParams = {
-  styleFn: (annotation: any): string | AnnotationStyle | null => null,
-  defaultStyle: DefaultAnnotationStyle,
+  styleFn: (annotation: any): string | CustomAnnotationStyle | null => null,
+  defaultStyle: DEFAULT_STYLE_NAME,
 };
 
 /**
@@ -34,5 +100,5 @@ export const DefaultAnnotationStyleParams = {
  */
 export type AnnotationStyleParams<ANNOTATION> =
   typeof DefaultAnnotationStyleParams & {
-    styleFn: (annotation: ANNOTATION) => string | AnnotationStyle | null;
+    styleFn: StyleFn<ANNOTATION>;
   };

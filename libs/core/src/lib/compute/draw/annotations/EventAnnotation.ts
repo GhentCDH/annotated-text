@@ -1,9 +1,5 @@
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import type {
-  AnnotationDrawColors,
-  BaseAnnotation,
-  TextAnnotation,
-} from '../../../model';
+import type { BaseAnnotation, TextAnnotation } from '../../../model';
 import { type AnnotationSvg } from '../../model/svg.types';
 import { Tag } from '../tag/tag';
 import { AnnotationColors } from '../../model/annotation.colors';
@@ -61,10 +57,7 @@ class EventAnnotation<
       const fullAnnotation = this.sendEvent('mouse-enter', mouseEvent);
 
       if (this.annotationAdapter.hover(fullAnnotation)) {
-        const color = this.annotation._drawMetadata
-          .color as AnnotationDrawColors;
-
-        this.annotationColors.colorAnnotation(this.annotation.id, color.hover);
+        this.annotationColors.colorAnnotation(this.annotation.id, 'hover');
       }
     };
   }

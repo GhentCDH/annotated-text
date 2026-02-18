@@ -16,9 +16,8 @@ export const ActiveAnnotations = (id_default: string, id_underline: string) => {
   const renderFn = (annotation: any) =>
     annotation.target === 'gutter' ? 'gutter' : null;
 
-  createAnnotatedText(id_default, {
-    text: TextLineAdapter(),
-  })
+  createAnnotatedText(id_default)
+    .setTextAdapter(TextLineAdapter())
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'highlight', renderFn })
     .setText(text)
@@ -26,9 +25,8 @@ export const ActiveAnnotations = (id_default: string, id_underline: string) => {
     .highlightAnnotations(activeAnnotations)
     .selectAnnotations(selectedAnnotations);
 
-  createAnnotatedText(id_underline, {
-    text: TextLineAdapter(),
-  })
+  createAnnotatedText(id_underline)
+    .setTextAdapter(TextLineAdapter())
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'underline', renderFn })
     .setText(text)
