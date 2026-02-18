@@ -5,7 +5,7 @@ import {
 } from '@ghentcdh/annotated-text';
 import { renderProblemIds, type RenderProblemKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
-import { createAnnotationColor, DefaultRenders } from '../../src';
+import { DefaultRenders } from '../../src';
 
 const text = `The quick brown fox jumps over the lazy dog.
 the second line`;
@@ -64,10 +64,14 @@ const renderDemo = (
     .setRenderParams({ renderFn: (a) => a.renderer ?? renderer })
     .setStyleParams({
       styleFn: (a: any) => ({
-        color: createAnnotationColor(a.color),
+        default: {
+          backgroundColor: a.color,
+          borderColor: a.color,
+          tagBackgroundColor: a.color,
+        },
       }),
     })
-    .updateRenderStyle('highlight', { borderRadius: 0.1 })
+    .updateRenderStyle('highlight', { default: { borderRadius: 0.1 } })
     .setText(text)
     .setAnnotations(annotations);
 };

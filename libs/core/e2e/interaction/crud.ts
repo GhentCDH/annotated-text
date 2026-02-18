@@ -87,6 +87,7 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
         default: {
           backgroundColor: a.color,
           borderColor: a.color,
+          tagBorderColor: a.color,
         },
       }),
     })

@@ -1,6 +1,9 @@
 import { z } from 'zod/v4';
 import { textLineSchema } from './line.model';
-import { annotationDrawMetadataSchema, tagDrawMetadataSchema } from './draw.model';
+import {
+  annotationDrawMetadataSchema,
+  tagDrawMetadataSchema,
+} from './draw.model';
 
 export const annotationTargetSchema = z.union([
   z.literal('gutter'),

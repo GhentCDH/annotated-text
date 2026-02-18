@@ -91,12 +91,12 @@ export class StyleInstances<ANNOTATION> extends BaseAnnotationDi {
 
   updateAllStyles() {
     this.annotationModule.getAllRenderInstances().forEach((render) => {
+      render.annotationRenderStyle.setDefaultStyleName(
+        this.styleParams.defaultStyle,
+      );
+      render.annotationRenderStyle.setStyleFn(this.styleParams.styleFn);
       for (const [name, style] of this.origStyleMap.entries()) {
         // TODO add the default style as well
-        render.annotationRenderStyle.setDefaultStyleName(
-          this.styleParams.defaultStyle,
-        );
-        render.annotationRenderStyle.setStyleFn(this.styleParams.styleFn);
         render.annotationRenderStyle.registerStyle(name, style);
       }
     });
