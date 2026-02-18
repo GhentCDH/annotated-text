@@ -35,22 +35,12 @@ const _DefaultActiveStyle = {
 };
 
 export const AnnotationDefaultStyle: CustomAnnotationStyle = {
-  // color: createAnnotationColor('#ff3b3b'),
-
   default: _DefaultAnnotationStyle,
   hover: _DefaultHoverStyle,
   active: _DefaultActiveStyle,
   edit: _DefaultEditStyle,
 };
 
-/**
- * Represents the visual styling properties for an annotation.
- *
- * This type is derived from {@link DefaultAnnotationStyle} and defines
- * the structure of style objects used throughout the annotation system.
- *
- * @property color - The color configuration for the annotation, created via `createAnnotationColor`
- */
 export type CustomAnnotationStyle = {
   default?: Partial<DefaultAnnotationStyle>;
   edit?: Partial<DefaultAnnotationStyle>;

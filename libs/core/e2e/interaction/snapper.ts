@@ -6,7 +6,7 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   type Snapper,
-  WordSnapper
+  WordSnapper,
 } from '../../src';
 import { DemoShortText } from '../_demo/data-short';
 
