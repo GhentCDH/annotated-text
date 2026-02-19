@@ -26,24 +26,28 @@ export type DefaultAnnotationStyle = typeof _DefaultAnnotationStyle;
 export type DefaultOverrideStyle = Partial<
   Pick<
     DefaultAnnotationStyle,
-    'backgroundColor' | 'backgroundOpacity' | 'borderColor' | 'borderOpacity'
+    | 'backgroundColor'
+    | 'backgroundOpacity'
+    | 'borderColor'
+    | 'borderOpacity'
+    | 'borderWidth'
   >
 >;
 
-const _DefaultHoverStyle = {
+const _DefaultHoverStyle: DefaultOverrideStyle = {
   borderWidth: 2,
   backgroundColor: '#cccccc',
   borderColor: '#cccccc',
   borderOpacity: 0.9,
 };
-const _DefaultEditStyle = {
+const _DefaultEditStyle: DefaultOverrideStyle = {
   backgroundColor: '#ff3b3b',
   borderColor: '#ff3b3b',
   borderWidth: 2,
 };
-const _DefaultActiveStyle = {
+const _DefaultActiveStyle: DefaultOverrideStyle = {
   backgroundOpacity: 0.8,
-  borderActive: 0.9,
+  borderOpacity: 0.9,
   borderWidth: 2,
 };
 
