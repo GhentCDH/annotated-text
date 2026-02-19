@@ -43,6 +43,7 @@ const _DefaultHoverStyle: DefaultOverrideStyle = {
 const _DefaultEditStyle: DefaultOverrideStyle = {
   backgroundColor: '#ff3b3b',
   borderColor: '#ff3b3b',
+  borderOpacity: 0.9,
   borderWidth: 2,
 };
 const _DefaultActiveStyle: DefaultOverrideStyle = {
