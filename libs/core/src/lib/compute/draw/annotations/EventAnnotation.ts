@@ -1,10 +1,8 @@
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import type { BaseAnnotation, TextAnnotation } from '../../../model';
 import { type AnnotationSvg } from '../../model/svg.types';
-import { Tag } from '../tag/tag';
 import { AnnotationColors } from '../../model/annotation.colors';
 import { type AnnotationEventType } from '../../../events';
-import type { InternalEvent } from '../../../events/internal/internal.events';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { ExternalEventSender } from '../../../events/send-event';
 
@@ -18,7 +16,6 @@ class EventAnnotation<
   ANNOTATION extends BaseAnnotation,
 > extends BaseAnnotationDi {
   private readonly externalEventSender = this.inject(ExternalEventSender);
-  private readonly tag = this.inject(Tag);
   private readonly annotationColors = this.inject(AnnotationColors);
 
   constructor(
@@ -43,11 +40,6 @@ class EventAnnotation<
       event: event,
       mouseEvent,
       annotationUuid: this.annotation?.id || '',
-    });
-  }
-  private sendEventIntern(event: InternalEvent) {
-    return this.internalEventListener.sendEvent(event, {
-      annotationUuid: this.annotation.id,
     });
   }
 

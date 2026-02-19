@@ -1,5 +1,5 @@
 import { drawTagSvg, shouldDrawTag } from './draw';
-import { type TextAnnotation } from '../../../model';
+import { type AnnotationId, type TextAnnotation } from '../../../model';
 import { SvgModel } from '../../model/svg.types';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 
@@ -16,11 +16,13 @@ export class Tag extends BaseAnnotationDi {
 
     if (!shouldDrawTag(annotation)) return false;
 
-    this.internalEventListener.sendEvent('annotation--remove-tag', {
-      annotationUuid: annotation.id,
-    });
+    this.removeTag(annotation.id);
     drawTagSvg(tagSvg, annotation);
 
     return true;
+  }
+
+  removeTag(annotationUuid: AnnotationId) {
+    this.svgModel?.findTags(annotationUuid)?.remove();
   }
 }

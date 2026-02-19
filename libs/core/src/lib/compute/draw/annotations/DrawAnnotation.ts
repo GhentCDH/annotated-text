@@ -45,16 +45,14 @@ export class DrawAnnotation extends BaseAnnotationDi {
       this.textAdapter.lines,
       dummyAnnotation,
     );
-
     this.createDraws(dummyAnnotation, annotationUuid);
   }
 
   private createDraws(annotation: TextAnnotation, newUuid?: AnnotationId) {
     const annotationUuid = newUuid ?? annotation.id;
 
-    this.internalEventListener.sendEvent('annotation--remove', {
-      annotationUuid,
-    });
+    this.removeDraw(annotationUuid);
+
     const renderInstance = this.renderInstances.highlightInstance;
     const style =
       annotation._style ??
@@ -70,8 +68,6 @@ export class DrawAnnotation extends BaseAnnotationDi {
         'edit',
       );
     });
-
-    this.annotationColors.colorAnnotation(annotationUuid, 'edit');
   }
 
   compute() {
@@ -88,5 +84,13 @@ export class DrawAnnotation extends BaseAnnotationDi {
       rendered.draws,
       rendered.dimensions,
     );
+  }
+
+  removeDraw(annotationUuid: AnnotationId, selector = '') {
+    this.svgModel?.findRelatedAnnotations(annotationUuid, selector)?.remove();
+  }
+
+  setClass(annotationUuid: AnnotationId, cssClass: string) {
+    this.svgModel?.setClass(annotationUuid, cssClass);
   }
 }

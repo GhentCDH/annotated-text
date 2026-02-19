@@ -106,7 +106,6 @@ export abstract class AnnotationAdapter<
     });
 
     this.addAnnotation(parsedAnnotation.id, annotation, textAnnotation);
-
     return textAnnotation;
   }
 

@@ -1,23 +1,15 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
-import {
-  type Snapper,
-  type TextAdapter,
-  type TextAdapterParams,
-} from '../../adapter/text';
+import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
 import {
   type AnnotationAdapter,
   type AnnotationAdapterParams,
   type AnnotationStyleParams,
-  type CustomAnnotationStyle,
+  type CustomAnnotationStyle
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
+import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
 import { type AnnotationRender } from '../../adapter/annotation/renderer';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
@@ -29,11 +21,7 @@ import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
-import {
-  setAnnotationAdapter,
-  setSnapperAdapter,
-  setTextAdapter,
-} from '../../adapter/SetAdapter';
+import { setAnnotationAdapter, setSnapperAdapter, setTextAdapter } from '../../adapter/SetAdapter';
 
 const document = globalThis.document || null;
 
@@ -84,20 +72,6 @@ export class CreateAnnotationsImpl<
         this.annotationModule
           .inject(ExternalEventSender)
           .sendEvent(data, data.additionalData);
-      })
-      .on('annotation--set-class', ({ data }) => {
-        this.svgModel?.setClass(data.annotationUuid, data.cssClass);
-      })
-      .on('annotation--remove-tag', ({ data }) => {
-        this.svgModel?.findTags(data.annotationUuid)?.remove();
-      })
-      .on('annotation--remove', ({ data }) => {
-        this.svgModel
-          ?.findRelatedAnnotations(data.annotationUuid, data.selector)
-          ?.remove();
-      })
-      .on('annotation--draw-dummy', ({ data }) => {
-        this.draw.annotation.dummy(data.dummyAnnotation);
       })
       .on('redraw-svg', () => {
         this.redrawSvg();

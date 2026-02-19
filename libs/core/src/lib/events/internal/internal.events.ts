@@ -2,25 +2,11 @@ import type { Annotation, AnnotationId, TextAnnotation } from '../../model';
 import type { AnnotationEventType } from '../events';
 
 export type InternalEventData = {
-  'annotation--draw-dummy': {
-    dummyAnnotation: TextAnnotation;
-  };
   'send-event--annotation': {
     event: AnnotationEventType<Annotation>;
     mouseEvent?: MouseEvent;
     annotationUuid: AnnotationId;
     additionalData?: any;
-  };
-  'annotation--set-class': {
-    annotationUuid: AnnotationId;
-    cssClass: string;
-  };
-  'annotation--remove-tag': {
-    annotationUuid: AnnotationId;
-  };
-  'annotation--remove': {
-    annotationUuid: AnnotationId;
-    selector?: string;
   };
   'annotation--add': {
     annotation: TextAnnotation;

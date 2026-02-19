@@ -6,6 +6,7 @@ import {
 } from '../../position';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { Draw } from '../Draw';
 
 export class CreateAnnotation extends BaseAnnotationDi {
   private startIndex: number;
@@ -13,6 +14,7 @@ export class CreateAnnotation extends BaseAnnotationDi {
   private drawingAndMove = false;
   private dummyAnnotation: null | TextAnnotation = null;
   private prevEndIndex: number | null = null;
+  private readonly draw = this.inject(Draw);
 
   constructor(
     annotationModule: AnnotationModule,
@@ -130,9 +132,7 @@ export class CreateAnnotation extends BaseAnnotationDi {
     dummyAnnotation.end = snapper.end;
 
     if (draw) {
-      this.internalEventListener.sendEvent('annotation--draw-dummy', {
-        dummyAnnotation: dummyAnnotation,
-      });
+      this.draw.annotation.dummy(dummyAnnotation);
     }
     this.prevEndIndex = character.characterPos;
 

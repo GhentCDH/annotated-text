@@ -37,7 +37,6 @@ export const drawAnnotationContent = (
   draw: AnnotationDraw,
   svgModel: SvgModel,
   style: AnnotationStyle,
-
   styleKey: keyof AnnotationStyle = 'default',
 ) => {
   let border = null;
