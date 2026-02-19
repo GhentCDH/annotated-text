@@ -111,7 +111,7 @@ export const drawTagSvg = (
     .attr('height', rectDimensions.height)
     .attr('fill', color.tagBackgroundColor ?? 'none')
     .attr('stroke', color.tagBorderColor ?? 'none')
-    .attr('stroke-width', color.tagBorderWidth ?? 'none')
+    .attr('stroke-width', color.tagBorderWidth ?? 0)
     .attr('pointer-events', 'none')
     .attr('rx', 3); // rounded corners
 
