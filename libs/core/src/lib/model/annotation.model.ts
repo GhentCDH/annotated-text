@@ -1,5 +1,4 @@
 import { z } from 'zod/v4';
-import { annotationColorSchema } from './annotation.color';
 import { textLineSchema } from './line.model';
 import {
   annotationDrawMetadataSchema,
@@ -34,24 +33,44 @@ export type AnnotationId = z.infer<typeof annotationIdSchema>;
 export type Annotation = z.infer<typeof annotationSchema>;
 
 export const renderStyleSchema = z.object({
-  color: annotationColorSchema,
   renderStyle: z.any(),
 });
 
-export type RenderStyle = z.infer<typeof renderStyleSchema>;
+export const styleDetailSchema = z.object({
+  backgroundColor: z.string(),
+  borderColor: z.string(),
+  borderRadius: z.number(),
+  borderWidth: z.number(),
+  // Gutter styles
+  gutterWidth: z.number(),
+  gutterGap: z.number(),
+  // Tag styles
+  tagTextColor: z.string(),
+  tagBorderColor: z.string(),
+  tagBackgroundColor: z.string(),
+  tagBorderWidth: z.number(),
+});
+
+export const styleSchema = z.object({
+  default: styleDetailSchema,
+  edit: styleDetailSchema,
+  active: styleDetailSchema,
+  hover: styleDetailSchema,
+});
+
+export type AnnotationStyle = z.infer<typeof styleSchema>;
 
 export const renderSchema = z.object({
   weight: z.number().optional().nullish(),
   isGutter: z.boolean(),
   render: z.string(), // Name of the renderer
-  style: renderStyleSchema,
   lines: z.array(textLineSchema).default([]),
-  tag: z.string().optional().nullish(),
 });
 export type TextRender = z.infer<typeof renderSchema>;
 
 export const textAnnotationSchema = annotationSchema.extend({
   _render: renderSchema,
+  _style: styleSchema,
   _drawMetadata: annotationDrawMetadataSchema,
   _tagMetadata: tagDrawMetadataSchema.nullish(),
 });

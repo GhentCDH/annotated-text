@@ -1,22 +1,110 @@
-import { createAnnotationColor } from '../../../utils/createAnnotationColor';
-
-export const DefaultAnnotationStyle = {
-  color: createAnnotationColor('#ff3b3b'),
-};
+import memoizee from 'memoizee';
+import {
+  AnnotationDefaultStyle,
+  type CustomAnnotationStyle,
+  type DefaultAnnotationStyle
+} from './annotation.style.default';
+import { type AnnotationStyle } from '../../../model';
 
 /**
- * Represents the visual styling properties for an annotation.
+ * Converts a hex color code to an RGB color.
  *
- * This type is derived from {@link DefaultAnnotationStyle} and defines
- * the structure of style objects used throughout the annotation system.
- *
- * @property color - The color configuration for the annotation, created via `createAnnotationColor`
+ * @param {string} hex - The hex color code.
+ * @returns {string} The RGB color string.
  */
-export type AnnotationStyle = typeof DefaultAnnotationStyle;
+const hexToRgb = memoizee((hex: string): string => {
+  const bigint = parseInt(hex.slice(1), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
 
+  return `${r},${g},${b}`;
+});
+
+const getRgbaColor = memoizee((color: string, opacity: number): string => {
+  if (color === 'transparent') return 'transparent';
+
+  const rgbColor = hexToRgb(color);
+  return `rgba(${rgbColor},${opacity})`;
+});
+
+const getStyles = (...styles: Array<DefaultAnnotationStyle>) => {
+  const getValue = <K extends keyof DefaultAnnotationStyle>(
+    key: K,
+  ): DefaultAnnotationStyle[K] => {
+    for (const style of styles) {
+      const value = style?.[key];
+      if (value !== undefined) {
+        return value as DefaultAnnotationStyle[K];
+      }
+    }
+    throw new Error(`value not found ${key as string}`);
+  };
+
+  const generateColor = (
+    colorKey: keyof DefaultAnnotationStyle,
+    opacityKey: keyof DefaultAnnotationStyle,
+  ) => {
+    const color = getValue(colorKey) as string;
+    const opacity = getValue(opacityKey) as number;
+    return getRgbaColor(color, opacity ?? 1);
+  };
+
+  return { generateColor, getValue };
+};
+export const getAnnotationStyle = (
+  defaultStyle: CustomAnnotationStyle,
+  style: CustomAnnotationStyle,
+): AnnotationStyle => {
+  const generateColors = (KEY: keyof CustomAnnotationStyle) => {
+    const styles = getStyles(
+      style?.[KEY] ?? ({} as any),
+      defaultStyle?.[KEY] ?? ({} as any),
+      AnnotationDefaultStyle[KEY] ?? ({} as any),
+      AnnotationDefaultStyle.default ?? ({} as any),
+    );
+
+    return {
+      backgroundColor: styles.generateColor(
+        'backgroundColor',
+        'backgroundOpacity',
+      ),
+      borderColor: styles.generateColor('borderColor', 'borderOpacity'),
+      borderWidth: styles.getValue('borderWidth'),
+      borderRadius: styles.getValue('borderRadius'),
+      // gutter
+      gutterWidth: styles.getValue('gutterWidth'),
+      gutterGap: styles.getValue('gutterGap'),
+      // Tag
+      tagTextColor: styles.getValue('tagTextColor'),
+      tagBackgroundColor: styles.generateColor(
+        'tagBackgroundColor',
+        'tagBackgroundOpacity',
+      ),
+      tagBorderColor: styles.generateColor(
+        'tagBorderColor',
+        'tagBorderOpacity',
+      ),
+      tagBorderWidth: styles.getValue('tagBorderWidth'),
+    };
+  };
+
+  return {
+    default: generateColors('default'),
+    edit: generateColors('edit'),
+    hover: generateColors('hover'),
+    active: generateColors('active'),
+  };
+};
+
+export type StyleFn<ANNOTATION> = (
+  annotation: ANNOTATION,
+) => string | CustomAnnotationStyle | null;
+
+export const DEFAULT_STYLE_NAME = 'DEFAULT';
 export const DefaultAnnotationStyleParams = {
-  styleFn: (annotation: any): string | AnnotationStyle | null => null,
-  defaultStyle: DefaultAnnotationStyle,
+  styleFn: (annotation: any): string | CustomAnnotationStyle | null => null,
+  defaultStyle: DEFAULT_STYLE_NAME,
 };
 
 /**
@@ -34,5 +122,5 @@ export const DefaultAnnotationStyleParams = {
  */
 export type AnnotationStyleParams<ANNOTATION> =
   typeof DefaultAnnotationStyleParams & {
-    styleFn: (annotation: ANNOTATION) => string | AnnotationStyle | null;
+    styleFn: StyleFn<ANNOTATION>;
   };

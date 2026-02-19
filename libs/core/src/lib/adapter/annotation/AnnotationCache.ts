@@ -1,18 +1,17 @@
 import { maxBy } from 'lodash-es';
-import type { AnnotationRender, GutterAnnotationRenderStyle } from './renderer';
 import type { RenderInstances } from './renderer/render-instances';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
-  type AnnotationDrawColors,
   type AnnotationId,
+  type BaseAnnotation,
   type TextAnnotation,
   type TextLine,
 } from '../../model';
 import { calculateGutterAnnotationWeightsAndEnrich } from '../../compute/utils/weights';
 import { AnnotationWeight } from '../../compute/utils/annotation.weight';
 
-export class AnnotationCache<ANNOTATION> {
+export class AnnotationCache<ANNOTATION extends BaseAnnotation> {
   private readonly originalAnnotationsMap = new Map<AnnotationId, ANNOTATION>();
   private readonly parsedAnnotationsMap = new Map<
     AnnotationId,
@@ -91,22 +90,17 @@ export class AnnotationCache<ANNOTATION> {
 
     const maxGutterWeight =
       maxBy(gutterAnnotations, (a) => a._render.weight)?._render.weight ?? 0;
-    const gutterInstances = renderInstances.getGutterRenders();
+    const gutterInstances = renderInstances
+      .getGutterRenders()
+      .map((r) => r.annotationRenderStyle.getDefaultStyle().default);
 
     // For now this is only base on one gutter renderer,
     // It should be tested against multiple if different instances are available
 
     const maxGutterWidth =
-      maxBy(
-        gutterInstances,
-        (r: AnnotationRender<GutterAnnotationRenderStyle>) =>
-          r.style?.width ?? 0,
-      )?.style?.width ?? 0;
+      maxBy(gutterInstances, (style) => style.gutterWidth)?.gutterWidth ?? 0;
     const maxGutterGap =
-      maxBy(
-        gutterInstances,
-        (r: AnnotationRender<GutterAnnotationRenderStyle>) => r.style?.gap ?? 0,
-      )?.style?.gap ?? 0;
+      maxBy(gutterInstances, (style) => style.gutterGap)?.gutterGap ?? 0;
 
     const gutterWidth = maxGutterWidth + maxGutterGap;
 
@@ -133,18 +127,15 @@ export class AnnotationCache<ANNOTATION> {
     annotationUuid: AnnotationId,
     annotations: AnnotationDraw[],
     dimensions: AnnotationDimension,
-    color: AnnotationDrawColors,
   ) {
     const annotation = this.getParsedAnnotation(annotationUuid);
     annotation._drawMetadata.draws = annotations;
     annotation._drawMetadata.dimensions = dimensions;
-    annotation._drawMetadata.color = color;
   }
 
   clearDrawAnnotation() {
     this.parsedAnnotationsMap.forEach((annotation) => {
       annotation._drawMetadata.draws = [];
-      annotation._drawMetadata.color = undefined;
       annotation._drawMetadata.dimensions = undefined;
     });
   }

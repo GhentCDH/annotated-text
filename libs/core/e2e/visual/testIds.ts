@@ -19,3 +19,13 @@ export const renderProblemIds = {
   underline_scaled_0_75: 'underline-scaled-0-75',
 };
 export type RenderProblemKeys = keyof typeof renderProblemIds;
+
+export const styleIds = {
+  defaultUnderline: 'style-underline',
+  defaultHighlight: 'style-highlight',
+  withTags: 'style-withTags',
+  oneActiveHighlight: 'style-oneActive-highlight',
+  oneActiveUnderline: 'style-oneActive-underline',
+};
+
+export type StyleKeys = keyof typeof styleIds;

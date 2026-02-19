@@ -5,7 +5,6 @@ import {
   type AnnotationEventType,
   clearAnnotatedTextCache,
   createAnnotatedText,
-  createAnnotationColor,
   type Snapper,
   WordSnapper,
 } from '../../src';
@@ -43,7 +42,13 @@ const renderDemo = (
     .setText(text)
     .setAnnotations(annotations)
     .setStyleParams({
-      styleFn: (a: any) => ({ color: createAnnotationColor(a.color) }),
+      styleFn: (a: any) => ({
+        default: {
+          backgroundColor: a.color,
+          borderColor: a.color,
+          tagBorderColor: a.color,
+        },
+      }),
     })
     .setRenderParams({ renderFn: (a) => a.renderer })
     .setTagLabelFn((a) => (a.renderer ? '' : a.label || 'new one'))

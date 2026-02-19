@@ -1,13 +1,13 @@
 import { type AnnotationId, type BaseAnnotation } from '../../model';
 import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
 import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
-import { type AnnotationAdapter, type AnnotationAdapterParams, type AnnotationStyleParams } from '../../adapter/annotation';
 import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-  type RenderParams
-} from '../../adapter/annotation/renderer/annotation-render';
-import { type AnnotationStyle } from '../../adapter/annotation/style/annotation.style';
+  type AnnotationAdapter,
+  type AnnotationAdapterParams,
+  type AnnotationStyleParams,
+  type CustomAnnotationStyle
+} from '../../adapter/annotation';
+import { type AnnotationRender, type RenderParams } from '../../adapter/annotation/renderer/annotation-render';
 import { type tagLabelFn } from '../../tag/TagRenderer';
 
 /**
@@ -131,9 +131,7 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * createAnnotatedText(containerId, config)
    *   .registerRender(new HighlightAnnotationRender());
    */
-  registerRender: <STYLE extends AnnotationRenderStyle>(
-    render: AnnotationRender<STYLE>,
-  ) => this;
+  registerRender: (render: AnnotationRender<ANNOTATION>) => this;
   /**
    * Registers multiple annotation renderers at once.
    *
@@ -161,10 +159,7 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    *   .registerRender(new UnderLineAnnotationRender())
    *   .updateRenderStyle("underline", { strokeWidth: 2 });
    */
-  updateRenderStyle: <STYLE extends AnnotationRenderStyle>(
-    name: string,
-    style: Partial<STYLE>,
-  ) => this;
+  updateRenderStyle: (name: string, style: CustomAnnotationStyle) => this;
   /**
    * Registers a single named annotation style.
    *
@@ -175,10 +170,10 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @example
    * createAnnotatedText(containerId, config)
    *   .registerStyle("style-error", {
-   *     color: createAnnotationColor("#ff3b3b")
+   *     default: createHighlightStyle("#ff3b3b")
    *   });
    */
-  registerStyle: (name: string, style: AnnotationStyle) => this;
+  registerStyle: (name: string, style: CustomAnnotationStyle) => this;
   /**
    * Registers multiple named annotation styles at once.
    *
@@ -188,12 +183,12 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @example
    * createAnnotatedText(containerId, config)
    *   .registerStyles({
-   *     "style-error": { color: createAnnotationColor("#ff3b3b") },
-   *     "style-warning": { color: createAnnotationColor("#ff9800") },
-   *     "style-info": { color: createAnnotationColor("#2196f3") }
+   *     "style-error": { default: createHighlightStyle("#ff3b3b") },
+   *     "style-warning": { default: createHighlightStyle("#ff9800") },
+   *     "style-info": { default: createHighlightStyle("#2196f3") }
    *   });
    */
-  registerStyles: (styles: Record<string, AnnotationStyle>) => this;
+  registerStyles: (styles: Record<string, CustomAnnotationStyle>) => this;
 
   setStyleParams(params: Partial<AnnotationStyleParams<ANNOTATION>>): this;
 }

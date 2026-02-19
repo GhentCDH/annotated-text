@@ -1,30 +1,17 @@
 import { type AnnotatedText } from './CreateAnnotations.model';
 import { EventListener } from '../../events/event.listener';
+import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
 import {
-  type Snapper,
-  type TextAdapter,
-  type TextAdapterParams,
-} from '../../adapter/text';
-import {
-  type ANNOTATION_CONFIG_KEYS,
-  type ANNOTATION_CONFIG_VALUES,
   type AnnotationAdapter,
   type AnnotationAdapterParams,
   type AnnotationStyleParams,
+  type CustomAnnotationStyle
 } from '../../adapter/annotation';
 import { SvgModel } from '../model/svg.types';
 import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
+import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-} from '../../adapter/annotation/renderer';
-import { type AnnotationStyle } from '../../adapter/annotation/style';
+import { type AnnotationRender } from '../../adapter/annotation/renderer';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
 import { AnnotationModule } from '../../di/annotation.module';
 import { rootContainer } from '../../di/container';
@@ -34,11 +21,7 @@ import { MainContainer } from '../model/maincontainer';
 import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
 import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
 import { StyleInstances } from '../../adapter/annotation/style/style-instances';
-import {
-  setAnnotationAdapter,
-  setSnapperAdapter,
-  setTextAdapter,
-} from '../../adapter/SetAdapter';
+import { setAnnotationAdapter, setSnapperAdapter, setTextAdapter } from '../../adapter/SetAdapter';
 
 const document = globalThis.document || null;
 
@@ -89,20 +72,6 @@ export class CreateAnnotationsImpl<
         this.annotationModule
           .inject(ExternalEventSender)
           .sendEvent(data, data.additionalData);
-      })
-      .on('annotation--set-class', ({ data }) => {
-        this.svgModel?.setClass(data.annotationUuid, data.cssClass);
-      })
-      .on('annotation--remove-tag', ({ data }) => {
-        this.svgModel?.findTags(data.annotationUuid)?.remove();
-      })
-      .on('annotation--remove', ({ data }) => {
-        this.svgModel
-          ?.findRelatedAnnotations(data.annotationUuid, data.selector)
-          ?.remove();
-      })
-      .on('annotation--draw-dummy', ({ data }) => {
-        this.draw.annotation.dummy(data.dummyAnnotation, data.color);
       })
       .on('redraw-svg', () => {
         this.redrawSvg();
@@ -239,14 +208,6 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
-  changeAnnotationAdapterConfig<KEY extends ANNOTATION_CONFIG_KEYS>(
-    key: KEY,
-    value: ANNOTATION_CONFIG_VALUES<KEY>,
-  ): this {
-    this.annotationModule.getAnnotationAdapter().setConfig(key, value);
-    return this;
-  }
-
   setAnnotationAdapter(
     adapterOrParams: AnnotationAdapterParams | AnnotationAdapter<ANNOTATION>,
   ): this {
@@ -316,36 +277,38 @@ export class CreateAnnotationsImpl<
     return this;
   }
 
-  registerRender<STYLE extends AnnotationRenderStyle>(
-    render: AnnotationRender<STYLE>,
-  ) {
+  registerRender(render: AnnotationRender<ANNOTATION>) {
     this.annotationModule.registerRender(render.name, () => render);
-
-    // TODO check if added later the new render is used in the existing annotations
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
+    this.recalculate();
     return this;
   }
 
   registerRenders(...renders: AnnotationRender<any>[]) {
-    renders.forEach((render) => this.registerRender(render));
+    renders.forEach((render) => {
+      this.annotationModule.registerRender(render.name, () => render);
+    });
 
-    // TODO check if added later the new render is used in the existing annotations
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
     return this;
   }
 
-  updateRenderStyle<STYLE extends AnnotationRenderStyle>(
-    name: string,
-    style: Partial<STYLE>,
-  ) {
-    this.annotationModule.injectRender<STYLE>(name).updateStyle(style);
-    // TODO check if updated later the new render is used in the existing annotations
+  updateRenderStyle(name: string, style: CustomAnnotationStyle) {
+    this.annotationModule
+      .injectRender(name)
+      .annotationRenderStyle.updateDefaultStyle(style);
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
+    this.recalculate();
+
     return this;
   }
 
-  registerStyle(name: string, style: AnnotationStyle) {
+  registerStyle(name: string, style: CustomAnnotationStyle) {
     this.annotationModule
       .inject<StyleInstances<ANNOTATION>>(StyleInstances)
       .registerStyle(name, style);
-    // TODO check if updated later the new render is used in the existing annotations
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
+    this.recalculate();
 
     return this;
   }
@@ -354,16 +317,19 @@ export class CreateAnnotationsImpl<
     this.annotationModule
       .inject<StyleInstances<ANNOTATION>>(StyleInstances)
       .setParams(params);
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
     this.recalculate();
     return this;
   }
 
-  registerStyles(styles: Record<string, AnnotationStyle>) {
+  registerStyles(styles: Record<string, CustomAnnotationStyle>) {
+    const styleInstances =
+      this.annotationModule.inject<StyleInstances<ANNOTATION>>(StyleInstances);
     Object.keys(styles).forEach((key) => {
-      this.registerStyle(key, styles[key]);
-      // this.annotationAdapter.styleInstance.registerStyle(key, styles[key]);
+      styleInstances.registerStyle(key, styles[key]);
     });
-    // TODO check if updated later the new render is used in the existing annotations
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
+    this.recalculate();
     return this;
   }
 }

@@ -1,14 +1,8 @@
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import type {
-  AnnotationDrawColors,
-  BaseAnnotation,
-  TextAnnotation,
-} from '../../../model';
+import type { BaseAnnotation, TextAnnotation } from '../../../model';
 import { type AnnotationSvg } from '../../model/svg.types';
-import { Tag } from '../tag/tag';
 import { AnnotationColors } from '../../model/annotation.colors';
 import { type AnnotationEventType } from '../../../events';
-import type { InternalEvent } from '../../../events/internal/internal.events';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { ExternalEventSender } from '../../../events/send-event';
 
@@ -22,7 +16,6 @@ class EventAnnotation<
   ANNOTATION extends BaseAnnotation,
 > extends BaseAnnotationDi {
   private readonly externalEventSender = this.inject(ExternalEventSender);
-  private readonly tag = this.inject(Tag);
   private readonly annotationColors = this.inject(AnnotationColors);
 
   constructor(
@@ -49,11 +42,6 @@ class EventAnnotation<
       annotationUuid: this.annotation?.id || '',
     });
   }
-  private sendEventIntern(event: InternalEvent) {
-    return this.internalEventListener.sendEvent(event, {
-      annotationUuid: this.annotation.id,
-    });
-  }
 
   private hover() {
     return (mouseEvent: MouseEvent) => {
@@ -61,10 +49,7 @@ class EventAnnotation<
       const fullAnnotation = this.sendEvent('mouse-enter', mouseEvent);
 
       if (this.annotationAdapter.hover(fullAnnotation)) {
-        const color = this.annotation._drawMetadata
-          .color as AnnotationDrawColors;
-
-        this.annotationColors.colorAnnotation(this.annotation.id, color.hover);
+        this.annotationColors.colorAnnotation(this.annotation.id, 'hover');
       }
     };
   }

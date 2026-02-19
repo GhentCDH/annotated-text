@@ -40,11 +40,7 @@ export class DragAnnotation extends AbstractAnnotationEventEdit {
 
     this.internalEventListener.blockEvents('starting annotation drag');
     this.dragBusy = true;
-
-    this.internalEventListener.sendEvent('annotation--set-class', {
-      annotationUuid: this.annotation!.id,
-      cssClass: 'move',
-    });
+    this.draw.annotation.setClass(this.annotation!.id, 'move');
   }
 
   protected override onDrag(position: Position, target: 'start' | 'end') {

@@ -4,10 +4,7 @@ import {
   type AnnotationAdapter,
   DefaultAnnotationAdapter,
 } from '../adapter/annotation';
-import {
-  type AnnotationRender,
-  type AnnotationRenderStyle,
-} from '../adapter/annotation/renderer';
+import { type AnnotationRender } from '../adapter/annotation/renderer';
 import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
 
@@ -92,9 +89,9 @@ export class AnnotationModule {
       .register(Draw, () => new Draw(this))
       .register(DrawAnnotation, () => new DrawAnnotation(this))
       .register(DrawText, () => new DrawText(this))
+      .register(StyleInstances, () => new StyleInstances(this))
       .register(RenderInstances, () => new RenderInstances(this))
       .register(TagRenderer, () => new TagRenderer(this))
-      .register(StyleInstances, () => new StyleInstances())
       .register(SnapperToken, () => new DefaultSnapper());
 
     this.container.register(MainContainer, () => new MainContainer(this));
@@ -152,7 +149,7 @@ export class AnnotationModule {
     const instances = this.container
       .getAllTokens()
       .filter((token) => String(token).startsWith('RENDER_INSTANCE_'));
-    return this.container.getMany(instances as any);
+    return this.container.getMany(instances) as AnnotationRender<any>[];
   }
 
   registerRender(token: string | symbol, factory: () => AnnotationRender<any>) {
@@ -165,8 +162,8 @@ export class AnnotationModule {
     return this.container.has(`RENDER_INSTANCE_${token as any}`);
   }
 
-  injectRender<STYLE extends AnnotationRenderStyle>(token: string | symbol) {
-    return this.inject<AnnotationRender<STYLE>>(
+  injectRender(token: string | symbol) {
+    return this.inject<AnnotationRender<any>>(
       `RENDER_INSTANCE_${token as any}`,
     );
   }

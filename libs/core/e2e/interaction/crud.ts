@@ -5,7 +5,7 @@ import {
   type AnnotationEventType,
   clearAnnotatedTextCache,
   createAnnotatedText,
-  createAnnotationColor,
+  createHighlightStyle,
 } from '../../src';
 import { DemoShortText } from '../_demo/data-short';
 
@@ -84,7 +84,10 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
     .setText(text)
     .setAnnotations(annotations)
     .setStyleParams({
-      styleFn: (a: any) => ({ color: createAnnotationColor(a.color) }),
+      styleFn: (a: any) => ({
+        default: createHighlightStyle(a.color),
+        edit: { backgroundColor: a.color },
+      }),
     })
     .setRenderParams({ renderFn: (a) => a.renderer })
     .setTagLabelFn((a) =>

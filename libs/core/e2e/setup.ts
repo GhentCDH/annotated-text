@@ -5,7 +5,6 @@ import '../src/lib/style/style.scss';
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  PlainTextAdapter,
   TextLineAdapter,
 } from '@ghentcdh/annotated-text';
 
@@ -13,15 +12,11 @@ import {
 clearAnnotatedTextCache();
 
 // Basic text setup
-const basicText = createAnnotatedText('basic-text', {
-  text: PlainTextAdapter({}),
-});
+const basicText = createAnnotatedText('basic-text');
 basicText.setText('Hello world. This is a simple text example.');
 
 // With annotations
-const withAnnotations = createAnnotatedText('with-annotations', {
-  text: PlainTextAdapter({}),
-});
+const withAnnotations = createAnnotatedText('with-annotations');
 withAnnotations
   .setText('Hello world. This text has some annotations.')
   .setAnnotations([
@@ -31,9 +26,7 @@ withAnnotations
   ]);
 
 // Overlapping annotations
-const overlapping = createAnnotatedText('overlapping', {
-  text: PlainTextAdapter({}),
-});
+const overlapping = createAnnotatedText('overlapping');
 overlapping
   .setText('This text has overlapping annotations that stack.')
   .setAnnotations([
@@ -43,9 +36,9 @@ overlapping
   ]);
 
 // RTL text
-const rtlText = createAnnotatedText('rtl-text', {
-  text: TextLineAdapter({ textDirection: 'rtl' }),
-});
+const rtlText = createAnnotatedText('rtl-text').setTextAdapter(
+  TextLineAdapter({ textDirection: 'rtl' }),
+);
 rtlText
   .setText('مرحبا بالعالم. هذا نص عربي.')
   .setAnnotations([{ id: '1', start: 0, end: 5 }]);

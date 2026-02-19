@@ -4,17 +4,15 @@ import { StyleInstances } from './style/style-instances';
 import { AnnotationCache } from './AnnotationCache';
 import { RenderInstances } from './renderer/render-instances';
 import { BaseAdapter } from '../BaseAdapter';
-import { createAnnotationColor } from '../../utils/createAnnotationColor';
 import {
   type Annotation,
   type AnnotationDimension,
   type AnnotationDraw,
-  type AnnotationDrawColors,
   annotationDrawMetadataSchema,
   type AnnotationId,
   type BaseAnnotation,
   renderSchema,
-  renderStyleSchema,
+  styleSchema,
   type TextAnnotation,
   textAnnotationSchema,
   type TextLine
@@ -88,30 +86,26 @@ export abstract class AnnotationAdapter<
 
     const renderInstance = this.renderInstance.getRenderer(annotation);
 
-    const style = renderStyleSchema.parse({
-      renderStyle: renderInstance.style,
-      ...renderInstance.style,
-      ...this.styleInstance.getStyle(annotation),
-    });
-
     const renderParams = renderSchema.parse({
       weight: undefined,
       isGutter: renderInstance.isGutter,
       render: renderInstance.name,
-      style: style,
     });
 
     const _drawMetadata = annotationDrawMetadataSchema.parse({});
 
+    const styleInstance = renderInstance.getStyle(annotation);
+    const _style = styleSchema.parse(styleInstance);
+
     const textAnnotation = textAnnotationSchema.parse({
       ...parsedAnnotation,
       _render: renderParams,
+      _style,
       _tagMetadata: this.tagRenderer.getTagConfig(annotation, renderInstance),
       _drawMetadata,
     });
 
     this.addAnnotation(parsedAnnotation.id, annotation, textAnnotation);
-
     return textAnnotation;
   }
 
@@ -140,53 +134,25 @@ export abstract class AnnotationAdapter<
    */
   createAnnotation(characterPos: number): TextAnnotation {
     const renderInstance = this.renderInstance.highlightInstance;
-
-    const style = renderStyleSchema.parse({
-      color: createAnnotationColor('#f51720'),
-      renderStyle: renderInstance.style,
-    });
+    const styleInstance =
+      renderInstance.annotationRenderStyle.getDefaultStyle();
 
     const renderParams = renderSchema.parse({
       weight: 0,
       isGutter: renderInstance.isGutter,
       render: renderInstance.name,
-      style: style,
     });
     const _drawMetadata = annotationDrawMetadataSchema.parse({});
+    const _style = styleSchema.parse(styleInstance);
 
     return textAnnotationSchema.parse({
       _render: renderParams,
       _drawMetadata,
+      _style,
       id: uuidv4(),
       start: characterPos,
       end: characterPos + 1,
     });
-  }
-
-  /**
-   * Change the configuration of the adapter, it will update the eventlistener if rerendering of the annotations is needed.
-   * f.e. if the text direction changes, the adapter will emit a change event to update the annotations.
-   * @param key
-   * @param value
-   */
-  setConfig<KEY extends ANNOTATION_CONFIG_KEYS>(
-    key: KEY,
-    value: ANNOTATION_CONFIG_VALUES<KEY>,
-  ) {
-    switch (key) {
-      case 'edit':
-        this.edit = value as boolean;
-        break;
-      case 'create':
-        this.create = value as boolean;
-        break;
-      case 'config':
-        this.config = merge(cloneDeep(config), value);
-        break;
-      default:
-        console.warn('Unsupported config key:', value);
-      // super.setConfig(value, key);
-    }
   }
 
   override setParams(params: PARAMS) {
@@ -209,13 +175,11 @@ export abstract class AnnotationAdapter<
     annotationUuid: AnnotationId,
     annotations: AnnotationDraw[],
     dimensions: AnnotationDimension,
-    color: AnnotationDrawColors,
   ) {
     return this.annotationCache.addDrawAnnotations(
       annotationUuid,
       annotations,
       dimensions,
-      color,
     );
   }
 

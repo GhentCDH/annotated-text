@@ -1,139 +1,78 @@
 import { merge } from 'lodash-es';
-import { type AnnotationStyle, type AnnotationStyleParams, DefaultAnnotationStyleParams } from './annotation.style';
-import { Debugger } from '../../../utils/debugger';
+import {
+  type AnnotationStyleParams,
+  DefaultAnnotationStyleParams,
+} from './annotation.style';
+import { type CustomAnnotationStyle } from './annotation.style.default';
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import type { AnnotationModule } from '../../../di/annotation.module';
 
-/**
- * Manages annotation styles through a combination of a style function and a named style registry.
- *
- * This class provides a flexible system for resolving annotation styles:
- * 1. A `styleFn` determines the style for each annotation
- * 2. Named styles can be registered and referenced by string keys
- * 3. A default style serves as the ultimate fallback
- *
- * @typeParam ANNOTATION - The type of annotation objects this instance handles
- *
- * @example
- * ```ts
- * interface MyAnnotation {
- *   id: string;
- *   type: 'highlight' | 'comment' | 'correction';
- * }
- *
- * const styles = new StyleInstances<MyAnnotation>({
- *   styleFn: (annotation) => annotation.type,
- *   defaultStyle: { color: createAnnotationColor('#ccc') }
- * });
- *
- * // Register named styles matching annotation types
- * styles.registerStyle('highlight', { color: createAnnotationColor('#ffeb3b') });
- * styles.registerStyle('comment', { color: createAnnotationColor('#2196f3') });
- * styles.registerStyle('correction', { color: createAnnotationColor('#f44336') });
- *
- * // Resolve style for an annotation
- * const style = styles.getStyle({ id: '1', type: 'highlight' });
- * // Returns the 'highlight' style with yellow color
- * ```
- *
- * @example
- * ```ts
- * // Using direct style objects instead of named styles
- * const styles = new StyleInstances<MyAnnotation>({
- *   styleFn: (annotation) => {
- *     if (annotation.type === 'highlight') {
- *       return { color: createAnnotationColor('#ffeb3b') };
- *     }
- *     return null; // Use default style
- *   }
- * });
- * ```
- */
-export class StyleInstances<ANNOTATION> {
+export class StyleInstances<ANNOTATION> extends BaseAnnotationDi {
   private styleParams = DefaultAnnotationStyleParams;
-  protected readonly styleMap = new Map<string, AnnotationStyle>();
+  protected readonly origStyleMap = new Map<string, CustomAnnotationStyle>();
+
+  constructor(annotationModule: AnnotationModule) {
+    super(annotationModule);
+  }
 
   /**
    * Registers a named style that can be referenced by the style function.
    *
    * When `styleFn` returns a string matching a registered name,
    * the corresponding style will be used for the annotation.
+   * The style is stored in `origStyleMap` and immediately propagated
+   * to all current render instances.
    *
    * @param name - The unique identifier for this style
    * @param style - The style configuration to associate with this name
    *
    * @example
    * ```ts
-   * const styles = new StyleInstances<MyAnnotation>();
-   *
    * styles.registerStyle('error', {
-   *   color: createAnnotationColor('#f44336')
+   *   default: { backgroundColor: '#f44336', borderColor: '#f44336' },
+   *   hover: { borderColor: '#d32f2f' },
    * });
    *
    * styles.registerStyle('warning', {
-   *   color: createAnnotationColor('#ff9800')
+   *   default: { backgroundColor: '#ff9800', borderColor: '#ff9800' },
    * });
    * ```
    */
-  registerStyle(name: string, style: AnnotationStyle) {
-    this.styleMap.set(name, style);
-  }
-
-  setParams(params: Partial<AnnotationStyleParams<ANNOTATION>>) {
-    this.styleParams = merge(this.styleParams, params);
+  registerStyle(name: string, style: CustomAnnotationStyle) {
+    this.origStyleMap.set(name, style);
+    this.annotationModule.getAllRenderInstances().forEach((render) => {
+      render.annotationRenderStyle.registerStyle(name, style);
+    });
   }
 
   /**
-   * Resolves the appropriate style for a given annotation.
+   * Propagates the current defaultStyleName, styleFn, and all registered styles
+   * to every render instance returned by `annotationModule.getAllRenderInstances()`.
    *
-   * The resolution follows this priority:
-   * 1. Call `styleFn` with the annotation
-   * 2. If `styleFn` returns `null`, use the default style
-   * 3. If `styleFn` returns a string, look up the named style in the registry
-   *    - If found, return the registered style
-   *    - If not found, log a warning and return the default style
-   * 4. If `styleFn` returns an `AnnotationStyle` object, use it directly
-   *
-   * @param annotation - The annotation to resolve a style for
-   * @returns The resolved {@link AnnotationStyle} for the annotation
-   *
-   * @example
-   * ```ts
-   * const styles = new StyleInstances<{ type: string }>({
-   *   styleFn: (ann) => ann.type
-   * });
-   *
-   * styles.registerStyle('important', {
-   *   color: createAnnotationColor('#f44336')
-   * });
-   *
-   * // Returns the 'important' registered style
-   * styles.getStyle({ type: 'important' });
-   *
-   * // Returns default style (type not registered)
-   * styles.getStyle({ type: 'unknown' });
-   * ```
+   * Call this after adding new render instances to ensure they receive
+   * the full style configuration.
    */
-  getStyle(annotation: ANNOTATION) {
-    const style = this.styleParams.styleFn(annotation);
-    if (style === null) {
-      Debugger.verbose(
-        'StyleInstances',
-        'No style specified for annotation, returning default style.',
+  updateAllStyles() {
+    this.annotationModule.getAllRenderInstances().forEach((render) => {
+      render.annotationRenderStyle.setDefaultStyleName(
+        this.styleParams.defaultStyle,
       );
-
-      return this.styleParams.defaultStyle;
-    }
-
-    if (typeof style === 'string') {
-      const namedStyle = this.styleMap.get(style);
-      if (!namedStyle) {
-        Debugger.warn(
-          'Style not found: ' + style + '. Returning default style.',
-        );
-        return this.styleParams.defaultStyle;
+      render.annotationRenderStyle.setStyleFn(this.styleParams.styleFn);
+      for (const [name, style] of this.origStyleMap.entries()) {
+        render.annotationRenderStyle.registerStyle(name, style);
       }
-      return namedStyle;
-    }
+    });
+  }
 
-    return style;
+  /**
+   * Merges the given params into the current style params and
+   * propagates the updated configuration to all render instances.
+   *
+   * @param params - Partial style params to merge (styleFn, defaultStyle)
+   */
+  setParams(params: Partial<AnnotationStyleParams<ANNOTATION>>) {
+    this.styleParams = merge(this.styleParams, params);
+
+    this.updateAllStyles();
   }
 }

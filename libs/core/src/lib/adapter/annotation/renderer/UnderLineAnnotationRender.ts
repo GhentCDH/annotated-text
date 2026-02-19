@@ -1,13 +1,16 @@
-import { cloneDeep } from 'lodash-es';
 import memoizee from 'memoizee';
-import { DefaultTextAnnotationRenderStyle } from './TextAnnotationRender';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
   createAnnotationFill,
   type createAnnotationPathFn,
   type PathParams,
 } from './_utils/path';
-import { type AnnotationDrawPath } from '../../../model';
+import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
+import { type CustomAnnotationStyle } from '../style';
+import {
+  _DefaultAnnotationStyle,
+  type DefaultAnnotationStyle,
+} from '../style/annotation.style.default';
 
 const createLine = memoizee(
   (x: number, y: number, width: number, height: number) => {
@@ -27,23 +30,33 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
-export const DefaultUnderlineAnnotationRenderStyle = {
-  ...cloneDeep(DefaultTextAnnotationRenderStyle),
-};
-export type UnderlineAnnotationRenderStyle =
-  typeof DefaultUnderlineAnnotationRenderStyle;
+export const createUnderlineStyle = (
+  color: string,
+  style: Partial<DefaultAnnotationStyle> = {},
+): Partial<DefaultAnnotationStyle> => ({
+  backgroundColor: 'transparent',
+  borderColor: color,
+  tagBorderColor: color,
+  backgroundOpacity: 0,
+  borderRadius: 0,
+  ...style,
+});
 
-export class UnderLineAnnotationRender extends SvgAnnotationRender<UnderlineAnnotationRenderStyle> {
+const DefaultUnderlineAnnotationStyle: CustomAnnotationStyle = {
+  default: createUnderlineStyle(_DefaultAnnotationStyle.backgroundColor),
+  hover: {
+    borderWidth: 4,
+  },
+};
+
+export class UnderLineAnnotationRender extends SvgAnnotationRender<BaseAnnotation> {
   readonly weightOrder: number = 2;
   readonly isGutter: boolean = false;
   readonly renderTag = true;
   override fillBg = false;
 
-  constructor(
-    name: string,
-    style: Partial<UnderlineAnnotationRenderStyle> = {},
-  ) {
-    super(name, style, DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string, style: CustomAnnotationStyle = {}) {
+    super(name, DefaultUnderlineAnnotationStyle, style);
   }
 
   override createPath(params: PathParams): AnnotationDrawPath {

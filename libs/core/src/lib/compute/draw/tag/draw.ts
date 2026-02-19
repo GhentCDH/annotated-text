@@ -1,10 +1,5 @@
 import memoize from 'memoizee';
-import {
-  type AnnotationDimension,
-  type AnnotationDrawColors,
-  type BaseAnnotation,
-  type TextAnnotation,
-} from '../../../model';
+import { type AnnotationDimension, type TextAnnotation } from '../../../model';
 import { type AnnotationSvg, SVG_ID, SVG_ROLE } from '../../model/svg.types';
 
 const calculateTextDimensions = memoize(
@@ -52,7 +47,7 @@ export const shouldDrawTag = (annotation: TextAnnotation) => {
   return true;
 };
 
-export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
+export const drawTagSvg = (
   tagSvg: AnnotationSvg,
   annotation: TextAnnotation,
 ) => {
@@ -63,7 +58,7 @@ export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
 
   if (!annotationDimensions) return;
 
-  const color = annotation._drawMetadata.color as AnnotationDrawColors;
+  const color = annotation._style.default;
 
   const startAnnotation = {
     x: annotationDimensions.x,
@@ -114,9 +109,9 @@ export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
     .attr('y', rectDimensions.y)
     .attr('width', rectDimensions.width)
     .attr('height', rectDimensions.height)
-    .attr('fill', color.tag.fill!)
-    .attr('stroke', color.tag.border!)
-    .attr('stroke-width', 1)
+    .attr('fill', color.tagBackgroundColor ?? 'none')
+    .attr('stroke', color.tagBorderColor ?? 'none')
+    .attr('stroke-width', color.tagBorderWidth ?? 0)
     .attr('pointer-events', 'none')
     .attr('rx', 3); // rounded corners
 
@@ -128,6 +123,6 @@ export const drawTagSvg = <ANNOTATION extends BaseAnnotation>(
     .attr('dominant-baseline', 'central')
     .attr('font-size', fontSize)
     .attr('pointer-events', 'none')
-    .attr('fill', color.tag.text!)
+    .attr('fill', color.tagTextColor)
     .text(tagConfig.label);
 };

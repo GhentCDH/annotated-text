@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash-es';
 import {
-  type AnnotationDrawColors,
   type AnnotationId,
   type TextAnnotation,
   textAnnotationSchema,
@@ -9,11 +8,13 @@ import type { Position, StartEnd } from '../types';
 import { DUMMY_UID } from '../../model/svg.types';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { type AnnotationModule } from '../../../di/annotation.module';
+import { Draw } from '../Draw';
 
 export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;
   protected dummyAnnotation: TextAnnotation;
   protected readonly originalStartEnd: StartEnd;
+  protected readonly draw = this.inject(Draw);
 
   constructor(
     annotationModule: AnnotationModule,
@@ -36,9 +37,7 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
 
     this.sendExternalEvent('annotation-edit--start', this.dummyAnnotation?.id);
 
-    this.internalEventListener.sendEvent('annotation--remove-tag', {
-      annotationUuid: this.annotation!.id,
-    });
+    this.draw.tag.removeTag(this.annotation!.id);
   }
 
   protected abstract onStart(position: Position, target: 'start' | 'end'): void;
@@ -69,9 +68,7 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   end(event: MouseEvent) {
     if (!this.dummyAnnotation) return;
     this.internalEventListener.unBlockEvents('ending annotation edit');
-    this.internalEventListener.sendEvent('annotation--remove', {
-      annotationUuid: this.dummyAnnotation?.id,
-    });
+    this.draw.annotation.removeDraw(this.dummyAnnotation?.id);
     if (!this.dummyAnnotation) return;
 
     // this.dummyAnnotation._render.weight = this.annotation._render.weight;
@@ -119,15 +116,10 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
       return;
     }
 
-    const color = annotation._drawMetadata.color as AnnotationDrawColors;
-
     dummyAnnotation.start = fixed.start;
     dummyAnnotation.end = fixed.end;
 
-    this.internalEventListener.sendEvent('annotation--draw-dummy', {
-      dummyAnnotation: dummyAnnotation,
-      color: color.edit,
-    });
+    this.draw.annotation.dummy(dummyAnnotation);
 
     return dummyAnnotation;
   }

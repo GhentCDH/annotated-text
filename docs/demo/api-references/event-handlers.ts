@@ -1,19 +1,13 @@
-import {
-  clearAnnotatedTextCache,
-  createAnnotatedText,
-  createAnnotationColor,
-} from '@ghentcdh/annotated-text';
+import { clearAnnotatedTextCache, createAnnotatedText, createHighlightStyle } from '@ghentcdh/annotated-text';
 import { plainText } from '../data';
 
 export const createEventHandlerDemo = (id: string) => {
-  const color = createAnnotationColor('#3b82f6');
+  const color = '#3b82f6';
   clearAnnotatedTextCache();
   createAnnotatedText(id)
     .setAnnotationAdapter({ create: true, edit: true })
     .setStyleParams({
-      styleFn: () => ({
-        color: color,
-      }),
+      styleFn: () => createHighlightStyle(color),
     })
     .setText(plainText.text)
     .setAnnotations(plainText.annotations)

@@ -9,30 +9,27 @@ import { DemoAnnotationConfig } from '../data/data.types';
 export const ActiveAnnotations = (id_default: string, id_underline: string) => {
   clearAnnotatedTextCache();
   const text = greekText.text.substring(0, 250);
-  const annotations = greekText.annotations.slice(0, 12);
-  const activeAnnotations = [annotations[0].id, annotations[1].id];
+  const annotations = greekText.annotations.slice(0, 12); //12);
+  const highlightAnnotations = [annotations[0].id]; // [annotations[0].id, annotations[1].id];
   const selectedAnnotations = [annotations[4].id, annotations[9].id];
 
   const renderFn = (annotation: any) =>
     annotation.target === 'gutter' ? 'gutter' : null;
-
-  createAnnotatedText(id_default, {
-    text: TextLineAdapter(),
-  })
+  createAnnotatedText(id_default)
+    .setTextAdapter(TextLineAdapter())
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'highlight', renderFn })
     .setText(text)
     .setAnnotations(annotations)
-    .highlightAnnotations(activeAnnotations)
+    .highlightAnnotations(highlightAnnotations)
     .selectAnnotations(selectedAnnotations);
 
-  createAnnotatedText(id_underline, {
-    text: TextLineAdapter(),
-  })
+  createAnnotatedText(id_underline)
+    .setTextAdapter(TextLineAdapter())
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'underline', renderFn })
     .setText(text)
     .setAnnotations(annotations)
-    .highlightAnnotations(activeAnnotations)
+    .highlightAnnotations(highlightAnnotations)
     .selectAnnotations(selectedAnnotations);
 };

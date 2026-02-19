@@ -1,7 +1,7 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  createAnnotationColor,
+  createHighlightStyle,
 } from '@ghentcdh/annotated-text';
 import { type DemoAnnotation } from '../data/data.types';
 
@@ -44,15 +44,13 @@ export const customStyles = (id: string) => {
       styleFn: (annotation) => annotation.style,
     })
     .setTagLabelFn((a) => a.id)
-    .registerStyle('style-red', {
-      color: createAnnotationColor('#ff3b3b'),
-    })
+    .registerStyle('style-red', { default: createHighlightStyle('#ff3b3b') })
     .registerStyles({
       'style-green': {
-        color: createAnnotationColor('#8bc34a'),
+        default: createHighlightStyle('#8bc34a'),
       },
       'style-gutter': {
-        color: createAnnotationColor('#4a70c3'),
+        default: createHighlightStyle('#4a70c3'),
       },
     })
     .setText(text)

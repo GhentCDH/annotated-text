@@ -8,6 +8,7 @@ import { Debugger } from '../../../utils/debugger';
 import type { BaseAnnotation, TextAnnotation } from '../../../model';
 import { type AnnotationModule } from '../../../di/annotation.module';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { StyleInstances } from '../style/style-instances';
 
 export class RenderInstances<
   ANNOTATION extends BaseAnnotation,
@@ -36,6 +37,7 @@ export class RenderInstances<
       DefaultRenders.underline,
       () => new UnderLineAnnotationRender(DefaultRenders.underline),
     );
+    this.annotationModule.inject(StyleInstances).updateAllStyles();
   }
 
   setParams(params: Partial<RenderParams<ANNOTATION>>) {
@@ -56,6 +58,14 @@ export class RenderInstances<
 
   getTextRenders() {
     return Array.from(this.getRenders()).filter((r) => !r.isGutter);
+  }
+
+  getDefaultRenderer() {
+    if (this.annotationModule.hasRender(this.defaultRenderer)) {
+      return this.annotationModule.injectRender(this.defaultRenderer);
+    }
+
+    throw new Error('Default renderer not found: ' + this.defaultRenderer);
   }
 
   getRenderer(annotation: ANNOTATION) {

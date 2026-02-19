@@ -1,8 +1,4 @@
-import type {
-  AnnotationDrawColor,
-  AnnotationId,
-  TextAnnotation,
-} from '../../../model';
+import type { AnnotationId, TextAnnotation } from '../../../model';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { drawAnnotation, drawAnnotationContent } from '../annotations';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
@@ -42,34 +38,36 @@ export class DrawAnnotation extends BaseAnnotationDi {
     drawAnnotation(this.annotationModule, annotation);
   }
 
-  dummy(dummyAnnotation: TextAnnotation, color: AnnotationDrawColor) {
+  dummy(dummyAnnotation: TextAnnotation) {
     const annotationUuid = DUMMY_UID;
 
     dummyAnnotation._render.lines = getLinesForAnnotation(
       this.textAdapter.lines,
       dummyAnnotation,
     );
-
-    this.createDraws(dummyAnnotation, color, annotationUuid);
+    this.createDraws(dummyAnnotation, annotationUuid);
   }
 
-  private createDraws(
-    annotation: TextAnnotation,
-    color: AnnotationDrawColor,
-    newUuid?: AnnotationId,
-  ) {
+  private createDraws(annotation: TextAnnotation, newUuid?: AnnotationId) {
     const annotationUuid = newUuid ?? annotation.id;
 
-    this.internalEventListener.sendEvent('annotation--remove', {
-      annotationUuid,
-    });
+    this.removeDraw(annotationUuid);
+
     const renderInstance = this.renderInstances.highlightInstance;
+    const style =
+      annotation._style ??
+      this.renderInstances
+        .getDefaultRenderer()
+        .annotationRenderStyle.getDefaultStyle();
 
     renderInstance.createDraws(annotation).draws.forEach((a) => {
-      drawAnnotationContent({ ...a, annotationUuid }, this.svgModel, color);
+      drawAnnotationContent(
+        { ...a, annotationUuid },
+        this.svgModel,
+        style,
+        'edit',
+      );
     });
-
-    this.annotationColors.colorAnnotation(annotationUuid, color);
   }
 
   compute() {
@@ -85,7 +83,14 @@ export class DrawAnnotation extends BaseAnnotationDi {
       annotation.id,
       rendered.draws,
       rendered.dimensions,
-      rendered.color,
     );
+  }
+
+  removeDraw(annotationUuid: AnnotationId, selector = '') {
+    this.svgModel?.findRelatedAnnotations(annotationUuid, selector)?.remove();
+  }
+
+  setClass(annotationUuid: AnnotationId, cssClass: string) {
+    this.svgModel?.setClass(annotationUuid, cssClass);
   }
 }

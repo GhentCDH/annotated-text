@@ -30,31 +30,9 @@ export const annotationDrawSchema = z.object({
   weight: z.number(),
 });
 
-export const annotationDrawColorSchema = z.object({
-  fill: z.string().optional(),
-  border: z.string().optional(),
-  borderWidth: z.number().default(1),
-});
-
-export const tagColorSchema = z.object({
-  text: z.string().optional(),
-  fill: z.string().optional(),
-  border: z.string().optional(),
-  borderWidth: z.number().default(1),
-});
-
-export const annotationDrawColorsSchema = z.object({
-  default: annotationDrawColorSchema,
-  tag: tagColorSchema,
-  active: annotationDrawColorSchema,
-  hover: annotationDrawColorSchema,
-  edit: annotationDrawColorSchema,
-});
-
 export const annotationDrawMetadataSchema = z.object({
   draws: z.array(annotationDrawSchema).default([]),
   dimensions: annotationDimensionSchema.optional(),
-  color: annotationDrawColorsSchema.optional(),
 });
 
 export const tagDrawMetadataSchema = z.object({
@@ -65,8 +43,6 @@ export const tagDrawMetadataSchema = z.object({
 
 export type TagDrawMetadata = z.infer<typeof tagDrawMetadataSchema>;
 export type AnnotationDraw = z.infer<typeof annotationDrawSchema>;
-export type AnnotationDrawColor = z.infer<typeof annotationDrawColorSchema>;
-export type AnnotationDrawColors = z.infer<typeof annotationDrawColorsSchema>;
 export type AnnotationDrawPath = z.infer<typeof annotationDrawPath>;
 export type AnnotationDrawMetadata = z.infer<
   typeof annotationDrawMetadataSchema

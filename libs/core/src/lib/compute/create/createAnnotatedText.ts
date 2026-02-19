@@ -11,21 +11,21 @@ export const createAnnotatedText = <
 >(
   id: string,
 ): AnnotatedText<ANNOTATION> => {
-  if (annotatedTextCache.has(id)) {
-    console.warn(
-      'AnnotatedText with this ID already exists:',
-      id,
-      'the original will be returned, params are ignored. ',
-    );
-
-    return annotatedTextCache.get(id) as AnnotatedText<ANNOTATION>;
-  }
+  // if (annotatedTextCache.has(id)) {
+  //   console.warn(
+  //     'AnnotatedText with this ID already exists:',
+  //     id,
+  //     'the original will be returned, params are ignored. ',
+  //   );
+  //
+  //   return annotatedTextCache.get(id) as AnnotatedText<ANNOTATION>;
+  // }
 
   const annotatedImpl = new CreateAnnotationsImpl<ANNOTATION>(
     id,
   ) as AnnotatedText<ANNOTATION>;
 
-  annotatedTextCache.set(id, annotatedImpl);
+  // annotatedTextCache.set(id, annotatedImpl);
   annotatedImpl.on('destroy', () => {
     annotatedTextCache.delete(id);
     Debugger.verbose(
