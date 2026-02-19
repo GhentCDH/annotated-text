@@ -7,6 +7,10 @@ import {
 } from './_utils/path';
 import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
 import { type CustomAnnotationStyle } from '../style';
+import {
+  _DefaultAnnotationStyle,
+  DefaultAnnotationStyle,
+} from '../style/annotation.style.default';
 
 const createLine = memoizee(
   (x: number, y: number, width: number, height: number) => {
@@ -26,12 +30,20 @@ const createUnderline: createAnnotationPathFn = (params: PathParams) => {
   };
 };
 
+export const createUnderlineStyle = (
+  color: string,
+  style: Partial<DefaultAnnotationStyle> = {},
+): Partial<DefaultAnnotationStyle> => ({
+  backgroundColor: 'transparent',
+  borderColor: color,
+  tagBorderColor: color,
+  backgroundOpacity: 0,
+  borderRadius: 0,
+  ...style,
+});
+
 const DefaultUnderlineAnnotationStyle: CustomAnnotationStyle = {
-  default: {
-    backgroundColor: 'transparent',
-    backgroundOpacity: 0,
-    borderRadius: 0,
-  },
+  default: createUnderlineStyle(_DefaultAnnotationStyle.backgroundColor),
   hover: {
     borderWidth: 4,
   },

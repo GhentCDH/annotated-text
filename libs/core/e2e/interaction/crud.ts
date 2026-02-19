@@ -5,6 +5,7 @@ import {
   type AnnotationEventType,
   clearAnnotatedTextCache,
   createAnnotatedText,
+  createHighlightStyle,
 } from '../../src';
 import { DemoShortText } from '../_demo/data-short';
 
@@ -84,11 +85,7 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
     .setAnnotations(annotations)
     .setStyleParams({
       styleFn: (a: any) => ({
-        default: {
-          backgroundColor: a.color,
-          borderColor: a.color,
-          tagBorderColor: a.color,
-        },
+        default: createHighlightStyle(a.color),
       }),
     })
     .setRenderParams({ renderFn: (a) => a.renderer })

@@ -8,6 +8,7 @@ import {
 } from './_utils/path';
 import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
 import { type CustomAnnotationStyle } from '../style';
+import { DefaultAnnotationStyle } from '../style/annotation.style.default';
 
 const createAnnotationBorder = ({
   x,
@@ -55,6 +56,16 @@ export const createHighlightPath: createAnnotationPathFn = (
 
   return { border, fill };
 };
+
+export const createHighlightStyle = (
+  color: string,
+  style: Partial<DefaultAnnotationStyle> = {},
+): Partial<DefaultAnnotationStyle> => ({
+  backgroundColor: color,
+  borderColor: color,
+  tagBorderColor: color,
+  ...style,
+});
 
 export class HighlightAnnotationRender extends SvgAnnotationRender<BaseAnnotation> {
   readonly weightOrder: number = 1;

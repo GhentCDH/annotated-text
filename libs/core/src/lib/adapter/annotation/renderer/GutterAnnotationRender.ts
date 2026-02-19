@@ -17,6 +17,10 @@ import {
   getScaledDimensions,
 } from '../../../compute/position/unscaled';
 import { type CustomAnnotationStyle } from '../style';
+import {
+  _DefaultAnnotationStyle,
+  DefaultAnnotationStyle,
+} from '../style/annotation.style.default';
 
 export const createGutterPath = (
   x: number,
@@ -90,13 +94,29 @@ const createGutterAnnotations = (
   return { draws, dimensions: startPosition };
 };
 
+export const createGutterStyle = (
+  color: string,
+  style: Partial<DefaultAnnotationStyle> = {},
+): Partial<DefaultAnnotationStyle> => ({
+  borderColor: 'transparent',
+  backgroundColor: color,
+  tagBorderColor: color,
+  borderOpacity: 0,
+  borderRadius: 0,
+  ...style,
+});
+
+const DefaultGutterStyle = {
+  default: createGutterStyle(_DefaultAnnotationStyle.backgroundColor),
+};
+
 export class GutterAnnotationRender extends AnnotationRender<BaseAnnotation> {
   readonly weightOrder: number = 1;
   readonly isGutter: boolean = true;
   readonly renderTag = false;
 
   constructor(name: string, style: CustomAnnotationStyle = {}) {
-    super(name, {}, style);
+    super(name, DefaultGutterStyle, style);
   }
 
   createDraws(annotation: TextAnnotation) {
