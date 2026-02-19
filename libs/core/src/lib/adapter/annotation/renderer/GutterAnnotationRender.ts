@@ -42,8 +42,8 @@ const createGutterAnnotations = (
   parentDimensions: DimensionsWithScale,
   annotation: TextAnnotation,
 ) => {
-  const gutterWidth = annotation._style.default.width;
-  const gutterGap = annotation._style.default.gap;
+  const gutterWidth = annotation._style.default.gutterWidth;
+  const gutterGap = annotation._style.default.gutterGap;
 
   if (!annotation._render.lines || annotation._render.lines.length === 0) {
     Debugger.warn('no lines to render for annotation', annotation);

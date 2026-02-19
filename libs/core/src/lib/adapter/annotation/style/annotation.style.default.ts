@@ -15,8 +15,8 @@ export const _DefaultAnnotationStyle = {
   tagBorderWidth: 1,
 
   // only for gutter annotations for now
-  gap: 6,
-  width: 3,
+  gutterGap: 6,
+  gutterWidth: 3,
 };
 
 export type DefaultAnnotationStyle = typeof _DefaultAnnotationStyle;
@@ -24,7 +24,10 @@ export type DefaultAnnotationStyle = typeof _DefaultAnnotationStyle;
 // TODO decide which ones we want to allow to be overridden and which not,
 //  for now we allow all except width and gap since they are more specific to the annotation type
 export type DefaultOverrideStyle = Partial<
-  Omit<DefaultAnnotationStyle, 'width' | 'gap'>
+  Pick<
+    DefaultAnnotationStyle,
+    'backgroundColor' | 'backgroundOpacity' | 'borderColor' | 'borderOpacity'
+  >
 >;
 
 const _DefaultHoverStyle = {
@@ -35,6 +38,7 @@ const _DefaultHoverStyle = {
 };
 const _DefaultEditStyle = {
   backgroundColor: '#ff3b3b',
+  borderColor: '#ff3b3b',
   borderWidth: 2,
 };
 const _DefaultActiveStyle = {

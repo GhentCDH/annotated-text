@@ -42,8 +42,8 @@ export const styleDetailSchema = z.object({
   borderRadius: z.number(),
   borderWidth: z.number(),
   // Gutter styles
-  width: z.number(),
-  gap: z.number(),
+  gutterWidth: z.number(),
+  gutterGap: z.number(),
   // Tag styles
   tagTextColor: z.string(),
   tagBorderColor: z.string(),

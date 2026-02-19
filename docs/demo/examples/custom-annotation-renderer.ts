@@ -6,12 +6,8 @@ import {
   type createAnnotationPathFn,
   createUnderlineStyle,
   CustomAnnotationStyle,
-  DefaultRenders,
-  GutterAnnotationRender,
-  HighlightAnnotationRender,
   type PathParams,
   SvgAnnotationRender,
-  UnderLineAnnotationRender,
 } from '@ghentcdh/annotated-text';
 import { annotationColors } from '../data/const';
 import { type DemoAnnotation, DemoAnnotationConfig } from '../data/data.types';
@@ -126,7 +122,7 @@ export class WavesAnnotationRenderer extends SvgAnnotationRender<any> {
   static instance = 'my-waves-renderer';
 
   constructor(name: string) {
-    super(name, {}, DefaultUnderlineAnnotationRenderStyle);
+    super(name, { default: createUnderlineStyle('#ff0000') }, {});
   }
 
   createPath(params: PathParams) {
@@ -143,7 +139,7 @@ export class SketchyRender extends SvgAnnotationRender<any> {
   static instance = 'my-sketchy-renderer';
 
   constructor(name: string) {
-    super(name, {}, DefaultUnderlineAnnotationRenderStyle);
+    super(name, { default: createUnderlineStyle('#ff0000') }, {});
   }
 
   createPath(params: PathParams): AnnotationDrawPath {
@@ -216,9 +212,6 @@ export const annotationRender = (id_default: string) => {
       renderFn: (a) => a.target,
     })
     .setStyleParams(DemoAnnotationConfig.style)
-    .registerRender(new HighlightAnnotationRender(DefaultRenders.highlight))
-    .registerRender(new GutterAnnotationRender(DefaultRenders.gutter))
-    .registerRender(new UnderLineAnnotationRender(DefaultRenders.underline))
     .setText(text)
     .setAnnotations(annotations);
 };

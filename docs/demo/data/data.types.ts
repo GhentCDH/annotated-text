@@ -1,5 +1,6 @@
 import {
   type Annotation,
+  createGutterStyle,
   createHighlightStyle,
 } from '@ghentcdh/annotated-text';
 
@@ -30,10 +31,19 @@ export const htmlColors: Partial<Record<string, string>> = {
 };
 
 const DefaultStyleFn = (annotation: DemoAnnotation) => {
-  if (annotation.label || annotation.color) {
-    const color = htmlColors[annotation.label] || annotation.color || '#000000';
+  if (typeof annotation.color === 'string') {
     return {
-      default: createHighlightStyle(color),
+      default: createHighlightStyle(annotation.color),
+    };
+  }
+
+  if (annotation.label) {
+    const color = htmlColors[annotation.label] || '#000000';
+    return {
+      default:
+        annotation.target === 'gutter'
+          ? createGutterStyle(color)
+          : createHighlightStyle(color),
     };
   }
 

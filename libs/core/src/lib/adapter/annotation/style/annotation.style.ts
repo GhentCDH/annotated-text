@@ -1,10 +1,10 @@
+import memoizee from 'memoizee';
 import {
   AnnotationDefaultStyle,
   type CustomAnnotationStyle,
   type DefaultAnnotationStyle
 } from './annotation.style.default';
 import { type AnnotationStyle } from '../../../model';
-import memoizee from 'memoizee';
 
 /**
  * Converts a hex color code to an RGB color.
@@ -73,8 +73,8 @@ export const getAnnotationStyle = (
       borderWidth: styles.getValue('borderWidth'),
       borderRadius: styles.getValue('borderRadius'),
       // gutter
-      width: styles.getValue('width'),
-      gap: styles.getValue('gap'),
+      gutterWidth: styles.getValue('gutterWidth'),
+      gutterGap: styles.getValue('gutterGap'),
       // Tag
       tagTextColor: styles.getValue('tagTextColor'),
       tagBackgroundColor: styles.generateColor(

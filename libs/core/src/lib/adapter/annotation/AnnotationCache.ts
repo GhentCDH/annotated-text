@@ -98,8 +98,9 @@ export class AnnotationCache<ANNOTATION extends BaseAnnotation> {
     // It should be tested against multiple if different instances are available
 
     const maxGutterWidth =
-      maxBy(gutterInstances, (style) => style.width)?.width ?? 0;
-    const maxGutterGap = maxBy(gutterInstances, (style) => style.gap)?.gap ?? 0;
+      maxBy(gutterInstances, (style) => style.gutterWidth)?.gutterWidth ?? 0;
+    const maxGutterGap =
+      maxBy(gutterInstances, (style) => style.gutterGap)?.gutterGap ?? 0;
 
     const gutterWidth = maxGutterWidth + maxGutterGap;
 

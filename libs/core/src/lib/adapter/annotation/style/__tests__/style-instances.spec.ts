@@ -1,11 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { type CustomAnnotationStyle } from '../annotation.style.default';
 import {
-  type AnnotationStyle,
-  DefaultAnnotationStyle,
+  DEFAULT_STYLE_NAME,
+  DefaultAnnotationStyleParams,
 } from '../annotation.style';
 import { StyleInstances } from '../style-instances';
+import type { AnnotationModule } from '../../../../di/annotation.module';
+import { EventListener } from '../../../../events/event.listener';
+import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
 
-// Mock the Debugger module
 vi.mock('../../../../utils/debugger', () => ({
   Debugger: {
     verbose: vi.fn(),
@@ -13,356 +16,369 @@ vi.mock('../../../../utils/debugger', () => ({
   },
 }));
 
-// Mock createAnnotationColor for testing
-vi.mock('../../../../utils/createAnnotationColor', () => ({
-  createAnnotationColor: (color: string) => ({ hex: color, rgb: [0, 0, 0] }),
-}));
-
 interface TestAnnotation {
   id: string;
   type: string;
-  priority?: 'low' | 'medium' | 'high';
 }
 
+function createMockRenderInstance() {
+  return {
+    annotationRenderStyle: {
+      registerStyle: vi.fn(),
+      setDefaultStyleName: vi.fn(),
+      setStyleFn: vi.fn(),
+    },
+  };
+}
+
+function createMockModule(
+  renderInstances: ReturnType<typeof createMockRenderInstance>[] = [],
+) {
+  const mockEventListener = { register: vi.fn(), sendEvent: vi.fn() };
+  const mockInternalEventListener = { register: vi.fn(), sendEvent: vi.fn() };
+
+  return {
+    inject: vi.fn((token: any) => {
+      if (token === EventListener) return mockEventListener;
+      if (token === InternalEventListener) return mockInternalEventListener;
+      throw new Error(`Service not found in mock: ${String(token)}`);
+    }),
+    getAllRenderInstances: vi.fn().mockReturnValue(renderInstances),
+    getTextAdapter: vi.fn().mockReturnValue({ setModule: vi.fn() }),
+    getAnnotationAdapter: vi.fn().mockReturnValue({ setModule: vi.fn() }),
+    getSnapper: vi.fn(),
+  } as unknown as AnnotationModule;
+}
+
+const errorStyle: CustomAnnotationStyle = {
+  default: { backgroundColor: '#f44336', borderColor: '#f44336' },
+  hover: { borderColor: '#d32f2f' },
+};
+
+const warningStyle: CustomAnnotationStyle = {
+  default: { backgroundColor: '#ff9800', borderColor: '#ff9800' },
+};
+
+const infoStyle: CustomAnnotationStyle = {
+  default: { backgroundColor: '#2196f3', borderColor: '#2196f3' },
+};
+
 describe('StyleInstances', () => {
+  let mockModule: AnnotationModule;
+  let renderA: ReturnType<typeof createMockRenderInstance>;
+  let renderB: ReturnType<typeof createMockRenderInstance>;
+
+  // DefaultAnnotationStyleParams is mutated by lodash merge in setParams,
+  // so we need to restore it between tests to avoid leaking state.
+  const originalDefaultStyle = DEFAULT_STYLE_NAME;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    DefaultAnnotationStyleParams.defaultStyle = originalDefaultStyle;
+    DefaultAnnotationStyleParams.styleFn = () => null;
+    renderA = createMockRenderInstance();
+    renderB = createMockRenderInstance();
+    mockModule = createMockModule([renderA, renderB]);
   });
 
-  describe('constructor', () => {
-    it('should create instance with default parameters', () => {
-      const styles = new StyleInstances<TestAnnotation>();
+  describe('registerStyle', () => {
+    it.each`
+      name         | style
+      ${'error'}   | ${errorStyle}
+      ${'warning'} | ${warningStyle}
+      ${'info'}    | ${infoStyle}
+    `(
+      'should propagate "$name" style to all render instances',
+      ({ name, style }) => {
+        const styles = new StyleInstances<TestAnnotation>(mockModule);
 
-      // Default styleFn returns null, so getStyle should return default style
-      const result = styles.getStyle({ id: '1', type: 'test' });
-      expect(result).toBe(DefaultAnnotationStyle);
+        styles.registerStyle(name, style);
+
+        expect(
+          renderA.annotationRenderStyle.registerStyle,
+        ).toHaveBeenCalledWith(name, style);
+        expect(
+          renderB.annotationRenderStyle.registerStyle,
+        ).toHaveBeenCalledWith(name, style);
+      },
+    );
+
+    it('should store style in origStyleMap for later propagation', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+
+      styles.registerStyle('error', errorStyle);
+      styles.registerStyle('warning', warningStyle);
+
+      // origStyleMap is protected, verify indirectly via updateAllStyles
+      // which re-propagates all stored styles
+      vi.clearAllMocks();
+      styles.updateAllStyles();
+
+      expect(renderA.annotationRenderStyle.registerStyle).toHaveBeenCalledWith(
+        'error',
+        errorStyle,
+      );
+      expect(renderA.annotationRenderStyle.registerStyle).toHaveBeenCalledWith(
+        'warning',
+        warningStyle,
+      );
+    });
+
+    it('should overwrite existing style when registering with the same name', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+
+      styles.registerStyle('error', errorStyle);
+      styles.registerStyle('error', warningStyle);
+
+      vi.clearAllMocks();
+      styles.updateAllStyles();
+
+      expect(renderA.annotationRenderStyle.registerStyle).toHaveBeenCalledTimes(
+        1,
+      );
+      expect(renderA.annotationRenderStyle.registerStyle).toHaveBeenCalledWith(
+        'error',
+        warningStyle,
+      );
     });
   });
 
   describe('setParams', () => {
-    it('should set a custom styleFn', () => {
-      const styles = new StyleInstances<TestAnnotation>();
+    it.each([
+      {
+        description: 'styleFn only',
+        params: { styleFn: (ann: TestAnnotation) => ann.type },
+        expectStyleFnCalled: true,
+        expectDefaultStyleCalled: true,
+      },
+      {
+        description: 'defaultStyle only',
+        params: { defaultStyle: 'error' },
+        expectStyleFnCalled: true,
+        expectDefaultStyleCalled: true,
+      },
+      {
+        description: 'both styleFn and defaultStyle',
+        params: {
+          styleFn: (ann: TestAnnotation) => ann.type,
+          defaultStyle: 'warning',
+        },
+        expectStyleFnCalled: true,
+        expectDefaultStyleCalled: true,
+      },
+    ])(
+      'should propagate params to all renders when setting $description',
+      ({ params, expectStyleFnCalled, expectDefaultStyleCalled }) => {
+        const styles = new StyleInstances<TestAnnotation>(mockModule);
 
-      const customStyle: AnnotationStyle = {
-        color: { hex: '#custom', rgb: [0, 0, 0] } as any,
-      };
+        styles.setParams(params);
 
-      styles.setParams({
-        styleFn: () => customStyle,
-      });
+        if (expectDefaultStyleCalled) {
+          expect(
+            renderA.annotationRenderStyle.setDefaultStyleName,
+          ).toHaveBeenCalled();
+          expect(
+            renderB.annotationRenderStyle.setDefaultStyleName,
+          ).toHaveBeenCalled();
+        }
+        if (expectStyleFnCalled) {
+          expect(renderA.annotationRenderStyle.setStyleFn).toHaveBeenCalled();
+          expect(renderB.annotationRenderStyle.setStyleFn).toHaveBeenCalled();
+        }
+      },
+    );
 
-      const result = styles.getStyle({ id: '1', type: 'test' });
-      expect(result).toBe(customStyle);
+    it('should set defaultStyle name on render instances', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+
+      styles.setParams({ defaultStyle: 'error' });
+
+      expect(
+        renderA.annotationRenderStyle.setDefaultStyleName,
+      ).toHaveBeenCalledWith('error');
+      expect(
+        renderB.annotationRenderStyle.setDefaultStyleName,
+      ).toHaveBeenCalledWith('error');
     });
 
-    it('should set a custom defaultStyle', () => {
-      const styles = new StyleInstances<TestAnnotation>();
+    it('should set styleFn on render instances', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+      const styleFn = (ann: TestAnnotation) => ann.type;
 
-      const customDefault: AnnotationStyle = {
-        color: createAnnotationColor('#123456'),
-      };
+      styles.setParams({ styleFn });
 
-      styles.setParams({
-        styleFn: () => null,
-        defaultStyle: customDefault,
-      });
-
-      const result = styles.getStyle({ id: '1', type: 'test' });
-      expect(result).toEqual(customDefault);
+      expect(renderA.annotationRenderStyle.setStyleFn).toHaveBeenCalledWith(
+        styleFn,
+      );
+      expect(renderB.annotationRenderStyle.setStyleFn).toHaveBeenCalledWith(
+        styleFn,
+      );
     });
 
-    it('should merge partial params with existing defaults', () => {
-      const styles = new StyleInstances<TestAnnotation>();
+    it('should merge params with existing defaults', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+      const styleFn = (ann: TestAnnotation) => ann.type;
 
-      const customDefault: AnnotationStyle = {
-        color: createAnnotationColor('#123456'),
-      };
+      styles.setParams({ styleFn });
+      vi.clearAllMocks();
 
-      styles.setParams({
-        styleFn: () => null,
-        defaultStyle: customDefault,
-      });
+      styles.setParams({ defaultStyle: 'warning' });
 
-      // styleFn returns null, so the custom default style should be used
-      const result = styles.getStyle({ id: '1', type: 'test' });
-      expect(result).toEqual(customDefault);
+      // styleFn should still be propagated (merged from previous call)
+      expect(renderA.annotationRenderStyle.setStyleFn).toHaveBeenCalledWith(
+        styleFn,
+      );
+      expect(
+        renderA.annotationRenderStyle.setDefaultStyleName,
+      ).toHaveBeenCalledWith('warning');
     });
   });
 
-  describe('registerStyle', () => {
-    it('should register a named style', () => {
-      const styles = new StyleInstances<TestAnnotation>();
-      styles.setParams({ styleFn: (ann) => ann.type });
-
-      const customStyle: AnnotationStyle = {
-        color: { hex: '#ff0000', rgb: [0, 0, 0] } as any,
-      };
-
-      styles.registerStyle('error', customStyle);
-
-      const result = styles.getStyle({ id: '1', type: 'error' });
-      expect(result).toBe(customStyle);
-    });
-
-    it('should allow overwriting existing named styles', () => {
-      const styles = new StyleInstances<TestAnnotation>();
-      styles.setParams({ styleFn: (ann) => ann.type });
-
-      const firstStyle: AnnotationStyle = {
-        color: { hex: '#ff0000', rgb: [0, 0, 0] } as any,
-      };
-
-      const secondStyle: AnnotationStyle = {
-        color: { hex: '#00ff00', rgb: [0, 0, 0] } as any,
-      };
-
-      styles.registerStyle('highlight', firstStyle);
-      styles.registerStyle('highlight', secondStyle);
-
-      const result = styles.getStyle({ id: '1', type: 'highlight' });
-      expect(result).toBe(secondStyle);
-    });
-
-    it('should support registering multiple different styles', () => {
-      const styles = new StyleInstances<TestAnnotation>();
-      styles.setParams({ styleFn: (ann) => ann.type });
-
-      const errorStyle: AnnotationStyle = {
-        color: { hex: '#f44336', rgb: [0, 0, 0] } as any,
-      };
-
-      const warningStyle: AnnotationStyle = {
-        color: { hex: '#ff9800', rgb: [0, 0, 0] } as any,
-      };
-
-      const infoStyle: AnnotationStyle = {
-        color: { hex: '#2196f3', rgb: [0, 0, 0] } as any,
-      };
+  describe('updateAllStyles', () => {
+    it('should propagate default style name, styleFn, and all registered styles', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+      const styleFn = (ann: TestAnnotation) => ann.type;
 
       styles.registerStyle('error', errorStyle);
       styles.registerStyle('warning', warningStyle);
-      styles.registerStyle('info', infoStyle);
+      styles.setParams({ styleFn, defaultStyle: 'error' });
 
-      expect(styles.getStyle({ id: '1', type: 'error' })).toBe(errorStyle);
-      expect(styles.getStyle({ id: '2', type: 'warning' })).toBe(warningStyle);
-      expect(styles.getStyle({ id: '3', type: 'info' })).toBe(infoStyle);
-    });
-  });
+      vi.clearAllMocks();
+      styles.updateAllStyles();
 
-  describe('getStyle', () => {
-    describe('when styleFn returns null', () => {
-      it('should return default style', () => {
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({ styleFn: () => null });
-
-        const result = styles.getStyle({ id: '1', type: 'test' });
-
-        expect(result).toBe(DefaultAnnotationStyle);
-      });
-
-      it('should return custom default style when provided', () => {
-        const customDefault: AnnotationStyle = {
-          color: createAnnotationColor('#ff0000'),
-        };
-
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({
-          styleFn: () => null,
-          defaultStyle: customDefault,
-        });
-
-        const result = styles.getStyle({ id: '1', type: 'test' });
-
-        expect(result).toEqual(customDefault);
-      });
-    });
-
-    describe('when styleFn returns a string', () => {
-      it('should return registered style when name exists', () => {
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({ styleFn: (ann) => ann.type });
-
-        const registeredStyle: AnnotationStyle = {
-          color: { hex: '#registered', rgb: [0, 0, 0] } as any,
-        };
-
-        styles.registerStyle('highlight', registeredStyle);
-
-        const result = styles.getStyle({ id: '1', type: 'highlight' });
-
-        expect(result).toBe(registeredStyle);
-      });
-
-      it('should return default style when name is not registered', () => {
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({ styleFn: (ann) => ann.type });
-
-        const result = styles.getStyle({ id: '1', type: 'unknown' });
-
-        expect(result).toBe(DefaultAnnotationStyle);
-      });
-    });
-
-    describe('when styleFn returns an AnnotationStyle object', () => {
-      it('should return the style object directly', () => {
-        const directStyle: AnnotationStyle = {
-          color: { hex: '#direct', rgb: [0, 0, 0] } as any,
-        };
-
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({ styleFn: () => directStyle });
-
-        const result = styles.getStyle({ id: '1', type: 'test' });
-
-        expect(result).toBe(directStyle);
-      });
-
-      it('should support dynamic style generation based on annotation', () => {
-        const highPriorityStyle: AnnotationStyle = {
-          color: { hex: '#high', rgb: [0, 0, 0] } as any,
-        };
-
-        const lowPriorityStyle: AnnotationStyle = {
-          color: { hex: '#low', rgb: [0, 0, 0] } as any,
-        };
-
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({
-          styleFn: (ann) => {
-            if (ann.priority === 'high') return highPriorityStyle;
-            if (ann.priority === 'low') return lowPriorityStyle;
-            return null;
-          },
-        });
-
+      for (const render of [renderA, renderB]) {
         expect(
-          styles.getStyle({ id: '1', type: 'test', priority: 'high' }),
-        ).toBe(highPriorityStyle);
-
-        expect(
-          styles.getStyle({ id: '2', type: 'test', priority: 'low' }),
-        ).toBe(lowPriorityStyle);
-
-        expect(
-          styles.getStyle({ id: '3', type: 'test', priority: 'medium' }),
-        ).toBe(DefaultAnnotationStyle);
-      });
-    });
-
-    describe('complex scenarios', () => {
-      it('should support mixed style resolution strategies', () => {
-        const directStyle: AnnotationStyle = {
-          color: { hex: '#direct', rgb: [0, 0, 0] } as any,
-        };
-
-        const namedStyle: AnnotationStyle = {
-          color: { hex: '#named', rgb: [0, 0, 0] } as any,
-        };
-
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({
-          styleFn: (ann) => {
-            if (ann.type === 'direct') return directStyle;
-            if (ann.type === 'named') return 'registered-name';
-            return null;
-          },
-        });
-
-        styles.registerStyle('registered-name', namedStyle);
-
-        // Direct style object
-        expect(styles.getStyle({ id: '1', type: 'direct' })).toBe(directStyle);
-
-        // Named style lookup
-        expect(styles.getStyle({ id: '2', type: 'named' })).toBe(namedStyle);
-
-        // Default fallback
-        expect(styles.getStyle({ id: '3', type: 'other' })).toBe(
-          DefaultAnnotationStyle,
+          render.annotationRenderStyle.setDefaultStyleName,
+        ).toHaveBeenCalledWith('error');
+        expect(render.annotationRenderStyle.setStyleFn).toHaveBeenCalledWith(
+          styleFn,
         );
-      });
+        expect(render.annotationRenderStyle.registerStyle).toHaveBeenCalledWith(
+          'error',
+          errorStyle,
+        );
+        expect(render.annotationRenderStyle.registerStyle).toHaveBeenCalledWith(
+          'warning',
+          warningStyle,
+        );
+      }
+    });
 
-      it('should handle empty string style names', () => {
-        const styles = new StyleInstances<TestAnnotation>();
-        styles.setParams({
-          styleFn: () => '',
-        });
+    it('should use DEFAULT_STYLE_NAME when no custom defaultStyle is set', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
 
-        const result = styles.getStyle({ id: '1', type: 'test' });
+      styles.updateAllStyles();
 
-        expect(result).toBe(DefaultAnnotationStyle);
-      });
+      expect(
+        renderA.annotationRenderStyle.setDefaultStyleName,
+      ).toHaveBeenCalledWith(DEFAULT_STYLE_NAME);
+    });
 
-      it('should work with complex annotation types', () => {
-        interface ComplexAnnotation {
-          id: string;
-          metadata: {
-            category: string;
-            tags: string[];
-          };
-          author: {
-            name: string;
-            role: string;
-          };
-        }
+    it('should propagate to newly added render instances', () => {
+      const styles = new StyleInstances<TestAnnotation>(mockModule);
+      styles.registerStyle('error', errorStyle);
 
-        const adminStyle: AnnotationStyle = {
-          color: { hex: '#admin', rgb: [0, 0, 0] } as any,
-        };
+      const renderC = createMockRenderInstance();
+      (
+        mockModule.getAllRenderInstances as ReturnType<typeof vi.fn>
+      ).mockReturnValue([renderA, renderB, renderC]);
 
-        const styles = new StyleInstances<ComplexAnnotation>();
-        styles.setParams({
-          styleFn: (ann) => {
-            if (ann.author.role === 'admin') return adminStyle;
-            return ann.metadata.category;
-          },
-        });
+      styles.updateAllStyles();
 
-        const categoryStyle: AnnotationStyle = {
-          color: { hex: '#category', rgb: [0, 0, 0] } as any,
-        };
+      expect(renderC.annotationRenderStyle.registerStyle).toHaveBeenCalledWith(
+        'error',
+        errorStyle,
+      );
+      expect(
+        renderC.annotationRenderStyle.setDefaultStyleName,
+      ).toHaveBeenCalled();
+      expect(renderC.annotationRenderStyle.setStyleFn).toHaveBeenCalled();
+    });
 
-        styles.registerStyle('important', categoryStyle);
+    it('should handle zero render instances without errors', () => {
+      const emptyModule = createMockModule([]);
+      const styles = new StyleInstances<TestAnnotation>(emptyModule);
 
-        const adminAnnotation: ComplexAnnotation = {
-          id: '1',
-          metadata: { category: 'regular', tags: [] },
-          author: { name: 'Admin', role: 'admin' },
-        };
+      styles.registerStyle('error', errorStyle);
 
-        const regularAnnotation: ComplexAnnotation = {
-          id: '2',
-          metadata: { category: 'important', tags: [] },
-          author: { name: 'User', role: 'user' },
-        };
-
-        expect(styles.getStyle(adminAnnotation)).toBe(adminStyle);
-        expect(styles.getStyle(regularAnnotation)).toBe(categoryStyle);
-      });
+      expect(() => styles.updateAllStyles()).not.toThrow();
     });
   });
 
-  describe('styleMap access', () => {
-    it('should allow subclasses to access styleMap', () => {
-      class ExtendedStyleInstances extends StyleInstances<TestAnnotation> {
-        getRegisteredStyleNames(): string[] {
-          return Array.from(this.styleMap.keys());
+  describe('registerStyle + setParams integration', () => {
+    it.each([
+      {
+        description: 'register styles before setParams',
+        setup: (styles: StyleInstances<TestAnnotation>) => {
+          styles.registerStyle('error', errorStyle);
+          styles.registerStyle('warning', warningStyle);
+          styles.setParams({
+            styleFn: (ann) => ann.type,
+            defaultStyle: 'error',
+          });
+        },
+      },
+      {
+        description: 'register styles after setParams',
+        setup: (styles: StyleInstances<TestAnnotation>) => {
+          styles.setParams({
+            styleFn: (ann) => ann.type,
+            defaultStyle: 'error',
+          });
+          styles.registerStyle('error', errorStyle);
+          styles.registerStyle('warning', warningStyle);
+        },
+      },
+    ])(
+      'should propagate all data regardless of order ($description)',
+      ({ setup }) => {
+        const styles = new StyleInstances<TestAnnotation>(mockModule);
+
+        setup(styles);
+        vi.clearAllMocks();
+        styles.updateAllStyles();
+
+        for (const render of [renderA, renderB]) {
+          expect(
+            render.annotationRenderStyle.setDefaultStyleName,
+          ).toHaveBeenCalledWith('error');
+          expect(
+            render.annotationRenderStyle.registerStyle,
+          ).toHaveBeenCalledWith('error', errorStyle);
+          expect(
+            render.annotationRenderStyle.registerStyle,
+          ).toHaveBeenCalledWith('warning', warningStyle);
+        }
+      },
+    );
+
+    it.each`
+      styleNames                      | expected
+      ${['error']}                    | ${1}
+      ${['error', 'warning']}         | ${2}
+      ${['error', 'warning', 'info']} | ${3}
+    `(
+      'should register $expected style(s) across all renders',
+      ({ styleNames, expected }) => {
+        const allStyles: Record<string, CustomAnnotationStyle> = {
+          error: errorStyle,
+          warning: warningStyle,
+          info: infoStyle,
+        };
+
+        const instances = new StyleInstances<TestAnnotation>(mockModule);
+
+        for (const name of styleNames) {
+          instances.registerStyle(name, allStyles[name]);
         }
 
-        hasStyle(name: string): boolean {
-          return this.styleMap.has(name);
-        }
-      }
-
-      const styles = new ExtendedStyleInstances();
-      styles.setParams({ styleFn: (ann) => ann.type });
-
-      styles.registerStyle('style1', DefaultAnnotationStyle);
-      styles.registerStyle('style2', DefaultAnnotationStyle);
-
-      expect(styles.getRegisteredStyleNames()).toEqual(['style1', 'style2']);
-      expect(styles.hasStyle('style1')).toBe(true);
-      expect(styles.hasStyle('nonexistent')).toBe(false);
-    });
+        expect(
+          renderA.annotationRenderStyle.registerStyle,
+        ).toHaveBeenCalledTimes(expected);
+        expect(
+          renderB.annotationRenderStyle.registerStyle,
+        ).toHaveBeenCalledTimes(expected);
+      },
+    );
   });
 });

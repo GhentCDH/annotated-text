@@ -29,8 +29,11 @@ export class AnnotationColors extends BaseAnnotationDi {
   public selectAnnotations(ids: AnnotationId[]) {
     const oldIds = new Set(this.activeIds);
     this.activeIds.clear();
-    ids.forEach((id) => this.highlightedIds.delete(id));
-    ids.forEach((id) => this.activeIds.add(id));
+
+    ids.forEach((id) => {
+      this.highlightedIds.delete(id);
+      this.activeIds.add(id);
+    });
 
     this.color();
     this.resetColors(oldIds);
