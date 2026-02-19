@@ -9,7 +9,8 @@ import type { TextAnnotation } from '../../../../model';
 import { type AnnotationModule } from '../../../../di/annotation.module';
 import { SvgModel } from '../../../../compute/model/svg.types';
 import { EventListener } from '../../../../events/event.listener';
-import { InternalEventListener } from '../../../../events/internal/internal.event.listener'; // Mock the Debugger module
+import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
+import { StyleInstances } from '../../style/style-instances';
 
 // Mock the Debugger module
 vi.mock('../../../../utils/debugger', () => ({
@@ -55,6 +56,7 @@ function createMockAnnotationModule() {
   const mockSvgModel = {};
   const mockEventListener = { register: vi.fn(), sendEvent: vi.fn() };
   const mockInternalEventListener = { register: vi.fn(), sendEvent: vi.fn() };
+  const mockStyleInstances = { updateAllStyles: vi.fn() };
 
   // Create a partial mock of AnnotationModule
   const module = {
@@ -62,6 +64,7 @@ function createMockAnnotationModule() {
       if (token === SvgModel) return mockSvgModel;
       if (token === EventListener) return mockEventListener;
       if (token === InternalEventListener) return mockInternalEventListener;
+      if (token === StyleInstances) return mockStyleInstances;
       throw new Error(`Service not found in mock: ${String(token)}`);
     }),
     register: vi.fn().mockReturnThis(),

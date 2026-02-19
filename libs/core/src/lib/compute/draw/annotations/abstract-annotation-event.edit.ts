@@ -118,8 +118,6 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
       return;
     }
 
-    // const color = annotation._drawMetadata.color as AnnotationDrawColors;
-
     dummyAnnotation.start = fixed.start;
     dummyAnnotation.end = fixed.end;
 
