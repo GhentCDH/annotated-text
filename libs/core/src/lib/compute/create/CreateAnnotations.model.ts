@@ -170,7 +170,7 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @example
    * createAnnotatedText(containerId, config)
    *   .registerStyle("style-error", {
-   *     color: createAnnotationColor("#ff3b3b")
+   *     default: createHighlightStyle("#ff3b3b")
    *   });
    */
   registerStyle: (name: string, style: CustomAnnotationStyle) => this;
@@ -183,9 +183,9 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    * @example
    * createAnnotatedText(containerId, config)
    *   .registerStyles({
-   *     "style-error": { color: createAnnotationColor("#ff3b3b") },
-   *     "style-warning": { color: createAnnotationColor("#ff9800") },
-   *     "style-info": { color: createAnnotationColor("#2196f3") }
+   *     "style-error": { default: createHighlightStyle("#ff3b3b") },
+   *     "style-warning": { default: createHighlightStyle("#ff9800") },
+   *     "style-info": { default: createHighlightStyle("#2196f3") }
    *   });
    */
   registerStyles: (styles: Record<string, CustomAnnotationStyle>) => this;

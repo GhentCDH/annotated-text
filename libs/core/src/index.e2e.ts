@@ -1,7 +1,6 @@
 // E2E entry point - same as index.ts but without SCSS import
 // SCSS is imported separately in HTML files for E2E tests
 
-export * from './lib/utils/createAnnotationColor';
 export * from './lib/compute';
 
 export * from './lib/events';

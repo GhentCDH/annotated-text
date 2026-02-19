@@ -9,7 +9,7 @@ export const _DefaultAnnotationStyle = {
   // Only for tags
   tagTextColor: '#000000',
   tagBackgroundColor: '#ffffff',
-  tagBackgroundOpacity: 0.6,
+  tagBackgroundOpacity: 0.1,
   tagBorderColor: '#ff3b3b',
   tagBorderOpacity: 0.6,
   tagBorderWidth: 1,
@@ -21,16 +21,25 @@ export const _DefaultAnnotationStyle = {
 
 export type DefaultAnnotationStyle = typeof _DefaultAnnotationStyle;
 
+// TODO decide which ones we want to allow to be overridden and which not,
+//  for now we allow all except width and gap since they are more specific to the annotation type
+export type DefaultOverrideStyle = Partial<
+  Omit<DefaultAnnotationStyle, 'width' | 'gap'>
+>;
+
 const _DefaultHoverStyle = {
   borderWidth: 2,
   backgroundColor: '#cccccc',
+  borderColor: '#cccccc',
+  borderOpacity: 0.9,
 };
 const _DefaultEditStyle = {
   backgroundColor: '#ff3b3b',
   borderWidth: 2,
 };
 const _DefaultActiveStyle = {
-  backgroundOpacity: 0.5,
+  backgroundOpacity: 0.8,
+  borderActive: 0.9,
   borderWidth: 2,
 };
 
@@ -43,7 +52,7 @@ export const AnnotationDefaultStyle: CustomAnnotationStyle = {
 
 export type CustomAnnotationStyle = {
   default?: Partial<DefaultAnnotationStyle>;
-  edit?: Partial<DefaultAnnotationStyle>;
-  active?: Partial<DefaultAnnotationStyle>;
-  hover?: Partial<DefaultAnnotationStyle>;
+  edit?: DefaultOverrideStyle;
+  active?: DefaultOverrideStyle;
+  hover?: DefaultOverrideStyle;
 };

@@ -4,8 +4,9 @@ import {
   createAnnotatedText,
   createAnnotationFill,
   type createAnnotationPathFn,
+  createUnderlineStyle,
+  CustomAnnotationStyle,
   DefaultRenders,
-  DefaultUnderlineAnnotationRenderStyle,
   GutterAnnotationRender,
   HighlightAnnotationRender,
   type PathParams,
@@ -81,8 +82,8 @@ export class MyUnderLineAnnotationRenderer extends SvgAnnotationRender<any> {
 
   static instance = 'my-underline-renderer';
 
-  constructor(name: string, style: Partial<any> = {}) {
-    super(name, style, DefaultUnderlineAnnotationRenderStyle);
+  constructor(name: string, style: CustomAnnotationStyle = {}) {
+    super(name, { default: createUnderlineStyle('#ff00ff') }, style);
   }
 
   createPath(params: PathParams): AnnotationDrawPath {

@@ -1,11 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   type AnnotationStyle,
-  type AnnotationStyleParams,
   DefaultAnnotationStyle,
 } from '../annotation.style';
 import { StyleInstances } from '../style-instances';
-import { createAnnotationColor } from '../../../../utils/createAnnotationColor';
 
 // Mock the Debugger module
 vi.mock('../../../../utils/debugger', () => ({

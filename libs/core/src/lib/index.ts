@@ -1,9 +1,5 @@
 import './style/style.scss';
 
-export {
-  createAnnotationColor,
-  createAnnotationColors,
-} from './utils/createAnnotationColor';
 export * from './compute';
 
 export * from './events';

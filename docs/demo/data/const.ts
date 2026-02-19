@@ -1,6 +1,4 @@
-import { createAnnotationColors } from '@ghentcdh/annotated-text';
-
-const colorDictionary: { [key: string]: string } = {
+export const annotationColors: { [key: string]: string } = {
   '1': '#f51720',
   '2': '#008d7c',
   '3': '#ffbc05',
@@ -11,5 +9,3 @@ const colorDictionary: { [key: string]: string } = {
   '8': '#424600',
   '9': '#613900',
 } as const;
-
-export const annotationColors = createAnnotationColors(colorDictionary);

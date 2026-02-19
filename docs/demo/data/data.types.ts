@@ -1,4 +1,7 @@
-import { type Annotation } from '@ghentcdh/annotated-text';
+import {
+  type Annotation,
+  createHighlightStyle,
+} from '@ghentcdh/annotated-text';
 
 export type DemoAnnotation = Annotation & {
   style?: string;
@@ -27,15 +30,10 @@ export const htmlColors: Partial<Record<string, string>> = {
 };
 
 const DefaultStyleFn = (annotation: DemoAnnotation) => {
-  console.log(annotation);
-  if (annotation.label) {
-    const color = htmlColors[annotation.label] || '#000000';
+  if (annotation.label || annotation.color) {
+    const color = htmlColors[annotation.label] || annotation.color || '#000000';
     return {
-      default: {
-        backgroundColor: color,
-        borderColor: color,
-        tagBackgroundColor: color,
-      },
+      default: createHighlightStyle(color),
     };
   }
 

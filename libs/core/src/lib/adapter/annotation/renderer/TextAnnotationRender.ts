@@ -8,7 +8,7 @@ import {
 } from './_utils/path';
 import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
 import { type CustomAnnotationStyle } from '../style';
-import { DefaultAnnotationStyle } from '../style/annotation.style.default';
+import { type DefaultAnnotationStyle } from '../style/annotation.style.default';
 
 const createAnnotationBorder = ({
   x,

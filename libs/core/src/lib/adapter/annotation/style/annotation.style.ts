@@ -1,10 +1,32 @@
 import {
   AnnotationDefaultStyle,
   type CustomAnnotationStyle,
-  type DefaultAnnotationStyle,
+  type DefaultAnnotationStyle
 } from './annotation.style.default';
-import { getRgbaColor } from '../../../utils/createAnnotationColor';
 import { type AnnotationStyle } from '../../../model';
+import memoizee from 'memoizee';
+
+/**
+ * Converts a hex color code to an RGB color.
+ *
+ * @param {string} hex - The hex color code.
+ * @returns {string} The RGB color string.
+ */
+const hexToRgb = memoizee((hex: string): string => {
+  const bigint = parseInt(hex.slice(1), 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+
+  return `${r},${g},${b}`;
+});
+
+const getRgbaColor = memoizee((color: string, opacity: number): string => {
+  if (color === 'transparent') return 'transparent';
+
+  const rgbColor = hexToRgb(color);
+  return `rgba(${rgbColor},${opacity})`;
+});
 
 const getStyles = (...styles: Array<DefaultAnnotationStyle>) => {
   const getValue = <K extends keyof DefaultAnnotationStyle>(

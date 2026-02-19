@@ -9,7 +9,7 @@ import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
 import { type CustomAnnotationStyle } from '../style';
 import {
   _DefaultAnnotationStyle,
-  DefaultAnnotationStyle,
+  type DefaultAnnotationStyle,
 } from '../style/annotation.style.default';
 
 const createLine = memoizee(

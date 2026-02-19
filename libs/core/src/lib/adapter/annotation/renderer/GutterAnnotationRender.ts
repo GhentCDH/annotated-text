@@ -19,7 +19,7 @@ import {
 import { type CustomAnnotationStyle } from '../style';
 import {
   _DefaultAnnotationStyle,
-  DefaultAnnotationStyle,
+  type DefaultAnnotationStyle,
 } from '../style/annotation.style.default';
 
 export const createGutterPath = (

@@ -1,6 +1,5 @@
 import './lib/style/style.scss';
 
-export * from './lib/utils/createAnnotationColor';
 export * from './lib/compute';
 
 export * from './lib/events';
