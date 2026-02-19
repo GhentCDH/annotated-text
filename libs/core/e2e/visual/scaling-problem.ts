@@ -1,11 +1,8 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {
-  clearAnnotatedTextCache,
-  createAnnotatedText,
-} from '@ghentcdh/annotated-text';
+import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
 import { renderProblemIds, type RenderProblemKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
-import { DefaultRenders } from '../../src';
+import { createHighlightStyle, createUnderlineStyle, DefaultRenders } from '../../src';
 
 const text = `The quick brown fox jumps over the lazy dog.
 the second line`;
@@ -57,18 +54,18 @@ const renderDemo = (
   if (scaled) {
     document.getElementById(id)!.style.transform = `scale(${scaled})`;
   }
-
+  const renderFn = (a) => a.renderer ?? renderer;
   // Basic text setup
   createAnnotatedText<any>(id)
     .setAnnotationAdapter({ edit: true, create: true })
-    .setRenderParams({ renderFn: (a) => a.renderer ?? renderer })
+    .setRenderParams({ renderFn })
     .setStyleParams({
       styleFn: (a: any) => ({
-        default: {
-          backgroundColor: a.color,
-          borderColor: a.color,
-          tagBackgroundColor: a.color,
-        },
+        default:
+          renderFn(a) === DefaultRenders.underline
+            ? createUnderlineStyle(a.color)
+            : createHighlightStyle(a.color),
+        edit: { backgroundColor: a.color },
       }),
     })
     .updateRenderStyle('highlight', { default: { borderRadius: 0.1 } })

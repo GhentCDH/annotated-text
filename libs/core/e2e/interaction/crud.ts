@@ -86,6 +86,7 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
     .setStyleParams({
       styleFn: (a: any) => ({
         default: createHighlightStyle(a.color),
+        edit: { backgroundColor: a.color },
       }),
     })
     .setRenderParams({ renderFn: (a) => a.renderer })
