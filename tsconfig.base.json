@@ -18,7 +18,8 @@
       "@ghentcdh/annotated-text": ["./libs/core/src/index.ts"],
       "@ghentcdh/annotated-text-vue-component": [
         "./libs/vue-component/src/index.ts"
-      ]
+      ],
+      "@ghentcdh/annotated-text-markdown": ["./libs/markdown/src/index.ts"]
     }
   },
   "exclude": [

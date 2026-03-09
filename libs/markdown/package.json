@@ -1,0 +1,36 @@
+{
+  "name": "@ghentcdh/annotated-text-markdown",
+  "author": "GhentCDH",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GhentCDH/annotated-text",
+    "directory": "libs/markdown"
+  },
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.js"
+    },
+    "./annotated-text.css": "./index.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "*.js",
+    "*.cjs",
+    "*.d.ts",
+    "*.css",
+    "*.md",
+    "assets/**",
+    "lib/**"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@ghentcdh/annotated-text": "1.0.0",
+    "markdown-it": "14.1.0"
+  }
+}
