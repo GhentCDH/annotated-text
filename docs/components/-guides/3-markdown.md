@@ -13,7 +13,8 @@ text.
 ## Use
 
 ```typescript
-import { createAnnotatedText, MarkdownTextAdapter } from "@ghentcdh/annotated-text";
+import { createAnnotatedText } from "@ghentcdh/annotated-text";
+import { MarkdownTextAdapter } from "@ghentcdh/annotated-text--markdown";
 
 const textAnnotation = createAnnotatedText(id)
   .setTextAdapter(MarkdownTextAdapter())

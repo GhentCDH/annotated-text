@@ -4,7 +4,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/GhentCDH/annotated-text",
-    "directory": "libs/core"
+    "directory": "libs/markdown"
   },
   "version": "1.0.0",
   "type": "module",
@@ -16,26 +16,21 @@
       "require": "./index.js",
       "import": "./index.js"
     },
-    "./annotated-text.css": "./index.css",
     "./package.json": "./package.json"
   },
   "files": [
     "*.js",
     "*.cjs",
     "*.d.ts",
-    "*.css",
     "*.md",
-    "assets/**",
     "lib/**"
   ],
   "sideEffects": false,
   "dependencies": {
-    "@ghenthcd/annotated-text": "latest",
-    "d3": "7.9.0",
-    "lodash-es": "^4.17.21",
     "markdown-it": "14.1.0",
-    "memoizee": "^0.4.17",
-    "tokenizr": "1.7.0",
-    "zod": "3.25.67"
+    "memoizee": "^0.4.17"
+  },
+  "peerDependencies": {
+    "@ghentcdh/annotated-text": "^1.0.0"
   }
 }
