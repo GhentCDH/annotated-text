@@ -14,9 +14,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.23
-      markdown-it:
-        specifier: 14.1.0
-        version: 14.1.0
       memoizee:
         specifier: ^0.4.17
         version: 0.4.17
