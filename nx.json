@@ -19,7 +19,7 @@
       "options": {
         "targetName": "e2e"
       },
-      "exclude": ["docs/**", "libs/vue-component/**", "libs/core/**"]
+      "exclude": ["docs/**", "libs/vue-component/**", "libs/core/**", "e2e/**"]
     },
     {
       "plugin": "@nx/js/typescript",

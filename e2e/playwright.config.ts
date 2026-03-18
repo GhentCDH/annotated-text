@@ -8,9 +8,9 @@ const __dirname = dirname(__filename);
 const isCoverage = process.env.COVERAGE === 'true';
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './',
   testMatch: '**/*.spec.ts',
-  snapshotDir: './e2e/__snapshots__',
+  snapshotDir: './__snapshots__',
   snapshotPathTemplate: '{snapshotDir}/{testFilePath}/{arg}-{platform}{ext}',
   timeout: 30000,
   fullyParallel: !isCoverage,
@@ -24,10 +24,10 @@ export default defineConfig({
   outputDir: resolve(__dirname, 'test-results'),
 
   globalSetup: isCoverage
-    ? resolve(__dirname, 'e2e/_utils/global-setup.ts')
+    ? resolve(__dirname, './_utils/global-setup.ts')
     : undefined,
   globalTeardown: isCoverage
-    ? resolve(__dirname, 'e2e/_utils/global-teardown.ts')
+    ? resolve(__dirname, './_utils/global-teardown.ts')
     : undefined,
 
   expect: {
@@ -54,9 +54,9 @@ export default defineConfig({
 
   webServer: {
     command: isCoverage
-      ? 'COVERAGE=true npx vite --config libs/core/vite.e2e.config.ts --host 0.0.0.0'
-      : 'npx vite --config libs/core/vite.e2e.config.ts --host 0.0.0.0',
-    cwd: resolve(__dirname, '../..'),
+      ? 'COVERAGE=true npx vite --config e2e/vite.e2e.config.ts --host 0.0.0.0'
+      : 'npx vite --config e2e/vite.e2e.config.ts --host 0.0.0.0',
+    cwd: resolve(__dirname, '..'),
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI && !isCoverage,
     timeout: 120000,

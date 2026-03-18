@@ -1,4 +1,9 @@
-import { type TargetSelector, type TextPositionSelector, type W3CAnnotation, type W3CAnnotationTarget } from '../model';
+import {
+  type TargetSelector,
+  type TextPositionSelector,
+  type W3CAnnotation,
+  type W3CAnnotationTarget,
+} from '../model';
 
 export const getTarget = (annotation: W3CAnnotation): W3CAnnotationTarget[] => {
   if (!annotation.target) return [];

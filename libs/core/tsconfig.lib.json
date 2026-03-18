@@ -13,10 +13,6 @@
   },
   "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": [
-    "e2e",
-    "e2e/**/*",
-    "playwright.config.ts",
-    "vite.e2e.config.ts",
     "vite.config.ts",
     "vite.config.mts",
     "vitest.config.ts",

@@ -7,7 +7,8 @@ const __dirname = path.dirname(__filename);
 
 async function globalTeardown() {
   if (process.env.COVERAGE === 'true') {
-    const nycOutputDir = path.resolve(__dirname, '..', 'coverage', '.nyc_output');
+    const nycOutputDir = path.resolve(__dirname, '..', '..',
+      'libs', 'core', 'coverage', 'e2e', '.nyc_output');
     
     // Check if any coverage files were written
     if (fs.existsSync(nycOutputDir)) {

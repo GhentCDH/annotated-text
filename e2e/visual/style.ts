@@ -5,7 +5,7 @@ import {
   type CustomAnnotationStyle,
   DefaultRenders,
   TextLineAdapter,
-} from '../../src';
+} from '../../libs/core/src';
 import { renderDemoDiv } from '../_utils/render-demo';
 
 // Clear any cached instances

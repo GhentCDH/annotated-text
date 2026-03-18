@@ -6,7 +6,7 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   createHighlightStyle,
-} from '../../src';
+} from '../../libs/core/src';
 import { DemoShortText } from '../_demo/data-short';
 
 const annotations = DemoShortText.annotations;

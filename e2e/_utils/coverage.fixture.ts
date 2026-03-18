@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const istanbulCLIOutput = path.resolve(__dirname, '..', 'coverage', '.nyc_output');
+const istanbulCLIOutput = path.resolve(__dirname, '..', '..', 'libs', 'core', 'coverage', 'e2e', '.nyc_output');
 
 // Extend the base test to collect coverage
 export const test = base.extend({
