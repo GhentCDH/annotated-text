@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 async function globalSetup() {
   if (process.env.COVERAGE === 'true') {
-    const coverageDir = path.resolve(__dirname, '..',  'libs', 'core', 'coverage', 'e2e');
+    const coverageDir = path.resolve(__dirname, '..', '..', 'libs', 'core', 'coverage', 'e2e');
     const nycOutputDir = path.resolve(coverageDir, '.nyc_output');
     
     // Clean up previous coverage data
