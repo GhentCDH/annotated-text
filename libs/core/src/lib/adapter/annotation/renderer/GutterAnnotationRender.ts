@@ -77,7 +77,7 @@ const createGutterAnnotations = (
   // We want to have the most gutters closest to the text
   const weight = params.maxGutterWeight - annotation._render.weight!;
   const x = (gutterWidth + gutterGap) * weight;
-  const height = y1 - y + lastLineDimensions.height;
+  const height = y1 - y + lastLineDimensions.realHeight;
 
   const draws: AnnotationDraw[] = [
     {
