@@ -11,12 +11,12 @@ const __dirname = dirname(__filename);
 const isCoverage = process.env.COVERAGE === 'true';
 
 export default defineConfig({
-  root: resolve(__dirname, 'e2e'),
+  root: __dirname,
   plugins: [
     nxViteTsPaths(),
     dts({
       entryRoot: 'src',
-      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
+      tsconfigPath: path.join(__dirname, '../libs/core/tsconfig.lib.json'),
       pathsToAliases: false,
     }),
     ...(isCoverage
@@ -36,7 +36,7 @@ export default defineConfig({
             extension: ['.ts'],
             requireEnv: false,
             forceBuildInstrument: true,
-            cwd: __dirname,
+            cwd: resolve(__dirname, '../libs/core'),
           }),
         ]
       : []),

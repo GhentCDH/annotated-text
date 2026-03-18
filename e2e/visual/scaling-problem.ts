@@ -2,7 +2,7 @@
 import { clearAnnotatedTextCache, createAnnotatedText } from '@ghentcdh/annotated-text';
 import { renderProblemIds, type RenderProblemKeys } from './testIds';
 import { renderDemoDiv } from '../_utils/render-demo';
-import { createHighlightStyle, createUnderlineStyle, DefaultRenders } from '../../src';
+import { createHighlightStyle, createUnderlineStyle, DefaultRenders } from '../../libs/core/src';
 
 const text = `The quick brown fox jumps over the lazy dog.
 the second line`;

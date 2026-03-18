@@ -1,6 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { scrollTo } from './scroll';
-import { type Position } from '../../src/lib/compute/draw/types';
+import { type Position } from '../../libs/core/src/lib/compute/draw/types';
 
 export class MouseMove {
   private startX = 0;

@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename);
 const istanbulCLIOutput = path.resolve(
   __dirname,
   '..',
+  'libs',
+  'core',
   'coverage',
   'e2e',
   '.nyc_output',

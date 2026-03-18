@@ -5,7 +5,7 @@ import {
   type Annotation,
   type AnnotationEventType,
   createAnnotatedText,
-} from '../../src';
+} from '../../libs/core/src';
 
 const mainContainer = 'playground';
 

@@ -6,7 +6,7 @@ import {
   clearAnnotatedTextCache,
   createAnnotatedText,
   TextLineAdapter,
-} from '../../src';
+} from '../../libs/core/src';
 
 const renderDemo = (
   title: string,
