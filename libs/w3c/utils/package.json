@@ -1,0 +1,36 @@
+{
+  "name": "@ghentcdh/w3c-utils",
+  "author": "GhentCDH",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GhentCDH/annotated-text",
+    "directory": "w3c/utils"
+  },
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./index.js"
+    },
+    "./annotated-text.css": "./index.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "*.js",
+    "*.cjs",
+    "*.d.ts",
+    "*.css",
+    "*.md",
+    "assets/**",
+    "lib/**"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "memoizee": "^0.4.17",
+    "zod": "3.25.67"
+  }
+}

@@ -1,5 +1,9 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "workspaceLayout": {
+    "libsDir": "libs",
+    "appsDir": "apps"
+  },
   "plugins": [
     {
       "plugin": "@nx/vite/plugin",
