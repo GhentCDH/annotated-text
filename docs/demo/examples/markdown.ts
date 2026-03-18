@@ -1,9 +1,7 @@
-import {
-  createAnnotatedText,
-  MarkdownTextAdapter,
-} from "@ghentcdh/annotated-text";
-import { markdown1 } from "../data/markdown-1";
-import { DemoAnnotationConfig } from "../data/data.types";
+import { createAnnotatedText } from '@ghentcdh/annotated-text';
+import { MarkdownTextAdapter } from '@ghentcdh/annotated-text--markdown';
+import { markdown1 } from '../data/markdown-1';
+import { DemoAnnotationConfig } from '../data/data.types';
 
 export const markdown_1 = (
   id: string,

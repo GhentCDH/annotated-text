@@ -1,15 +1,16 @@
 import memoize from 'memoizee';
 import {
+  type Limit,
+  TextAdapter,
+  type TextAdapterParams,
+  type TextLine,
+  textLineSchema,
+} from '@ghentcdh/annotated-text';
+import {
   getPartialMarkdown,
   replaceMarkdownToHtml,
   stripHtmlFromText,
 } from './parser';
-import {
-  type Limit,
-  TextAdapter,
-  type TextAdapterParams,
-} from '../TextAdapter';
-import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
 const _textToLines = memoize(

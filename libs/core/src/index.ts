@@ -1,4 +1,5 @@
 import './lib/style/style.scss';
+export { isIntersection } from './lib/compute/utils/intersect';
 
 export * from './lib/compute';
 

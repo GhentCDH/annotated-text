@@ -19,6 +19,9 @@ export default defineUserConfig({
           '@ghentcdh/annotated-text': fileURLToPath(
             new URL('../../libs/core/src/index.ts', import.meta.url),
           ),
+          '@ghentcdh/annotated-text--markdown': fileURLToPath(
+            new URL('../../libs/markdown/src/index.ts', import.meta.url),
+          ),
           '@demo': fileURLToPath(new URL('../demo/index.ts', import.meta.url)),
         },
       },
