@@ -8,8 +8,9 @@ import {
   type Limit,
   TextAdapter,
   type TextAdapterParams,
-} from '../TextAdapter';
-import { type TextLine, textLineSchema } from '../../../model';
+  type TextLine,
+  textLineSchema,
+} from '@ghentcdh/annotated-text';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
 const _textToLines = memoize(

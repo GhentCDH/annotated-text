@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import { type Annotation, createAnnotatedText, MarkdownTextAdapter, TextLineAdapter } from '@ghentcdh/annotated-text';
+import { type Annotation, createAnnotatedText, TextLineAdapter } from '@ghentcdh/annotated-text';
 import { greekText, markdownText, plainText } from '../data';
+import { MarkdownTextAdapter } from '@ghentcdh/annotated-text--markdown';
 
 const printPosition = (event: any) => {
   const annotation = event.data.annotation as Annotation;
