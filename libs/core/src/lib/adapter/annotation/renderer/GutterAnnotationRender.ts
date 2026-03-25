@@ -33,14 +33,17 @@ const createGutterAnnotations = (
   annotation: TextAnnotation,
 ): {
   draws: AnnotationDraw[];
-  dimensions: AnnotationDimension;
+  dimensions?: AnnotationDimension;
 } => {
   const gutterWidth = annotation._style.default.gutterWidth;
   const gutterGap = annotation._style.default.gutterGap;
 
   if (!annotation._render.lines || annotation._render.lines.length === 0) {
     Debugger.warn('no lines to render for annotation', annotation);
-    return { draws: [], dimensions: undefined };
+    return {
+      draws: [],
+      dimensions: undefined as unknown as AnnotationDimension,
+    };
   }
 
   // Add the gutterwidth as padding
@@ -55,7 +58,7 @@ const createGutterAnnotations = (
   const lines = annotation._render.lines ?? [];
   lines.forEach((line) => {
     const rects = getRanges(parentDimensions, annotation, line);
-    if (rects?.length < 0) {
+    if (!rects?.length || rects.length === 0) {
       return;
     }
     const first = rects[0];
@@ -84,7 +87,14 @@ const createGutterAnnotations = (
       height: dimensions,
     },
   ];
-  return { draws, dimensions: dimensions };
+  return {
+    draws,
+    dimensions: {
+      x: dimensions.x,
+      y1: dimensions.y,
+      y2: dimensions.y + dimensions.height,
+    },
+  };
 };
 
 export const createGutterStyle = (
@@ -119,6 +129,9 @@ export class GutterAnnotationRender extends AnnotationRender<BaseAnnotation> {
       maxGutterWeight: this.annotationAdapter.gutter.maxWeight,
     };
 
-    return createGutterAnnotations(params, parentDimensions, annotation);
+    return createGutterAnnotations(params, parentDimensions, annotation) as {
+      draws: AnnotationDraw[];
+      dimensions: AnnotationDimension;
+    };
   }
 }

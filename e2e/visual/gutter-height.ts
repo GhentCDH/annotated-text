@@ -77,5 +77,3 @@ const renderDifferentLineHeight = (
 renderDifferentLineHeight('plainText', DefaultRenders.underline);
 renderDifferentLineHeight('markdown', DefaultRenders.underline);
 renderDifferentLineHeight('textLine', DefaultRenders.underline);
-
-const selection = text.substring(0, 100);
