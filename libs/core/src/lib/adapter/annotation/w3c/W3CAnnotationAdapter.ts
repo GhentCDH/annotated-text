@@ -1,7 +1,7 @@
 import {
   type W3CAnnotation,
   w3cAnnotation,
-  W3CAnnotationBuilder,
+  type W3CAnnotationBuilder,
 } from '@ghentcdh/w3c-utils';
 import {
   AnnotationAdapter,
@@ -9,7 +9,7 @@ import {
 } from '../AnnotationAdapter';
 import {
   type Annotation,
-  AnnotationId,
+  type AnnotationId,
   annotationSchema,
   type TextAnnotation,
 } from '../../../model';
