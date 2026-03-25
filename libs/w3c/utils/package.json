@@ -1,10 +1,10 @@
 {
-  "name": "@ghentcdh/annotated-text",
+  "name": "@ghentcdh/w3c-utils",
   "author": "GhentCDH",
   "repository": {
     "type": "git",
     "url": "https://github.com/GhentCDH/annotated-text",
-    "directory": "libs/core"
+    "directory": "w3c/utils"
   },
   "version": "1.0.0",
   "type": "module",
@@ -30,11 +30,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@ghentcdh/w3c-utils": "^1.0.0",
-    "d3": "7.9.0",
-    "lodash-es": "^4.17.21",
-    "memoizee": "^0.4.17",
-    "tokenizr": "1.7.0",
-    "zod": "3.25.67"
+    "zod": "4.1.12",
+    "vitest": "4.0.9"
   }
 }

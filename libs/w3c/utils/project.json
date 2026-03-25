@@ -1,7 +1,7 @@
 {
-  "name": "markdown",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "markdown/src",
+  "name": "w3c-utils",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "w3c/utils/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -14,8 +14,8 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/markdown",
-        "configFile": "libs/markdown/vite.config.mts"
+        "outputPath": "dist/libs/w3c/utils",
+        "configFile": "libs/w3c/utils/vite.config.mts"
       },
       "configurations": {
         "production": {

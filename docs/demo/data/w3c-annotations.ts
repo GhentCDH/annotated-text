@@ -2,53 +2,56 @@ const text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam al
 `;
 
 const source = 'annotation-source://plain-text';
-const w3cAnnotations = {
-  '@context': 'http://www.w3.org/ns/anno.jsonld',
-  items: [
-    {
-      id: 'ann-1',
-      motivation: 'tagging',
-      '@context': 'http://www.w3.org/ns/anno.jsonld',
-      target: [
-        {
-          type: 'Text',
-          selector: {
-            start: 228,
-            end: 488,
-            type: 'TextPositionSelector',
-          },
-          textDirection: 'ltr',
-          source,
+const w3cAnnotations = [
+  {
+    id: 'ann-1',
+    motivation: 'tagging',
+    type: 'Annotation',
+    '@context': 'http://www.w3.org/ns/anno.jsonld',
+    body: [
+      {
+        type: 'TextualBody',
+        value: 'example',
+        purpose: 'tagging',
+      },
+    ],
+    target: [
+      {
+        selector: {
+          start: 228,
+          end: 488,
+          type: 'TextPositionSelector',
         },
-      ],
-    },
-    {
-      id: 'ann-3',
-      motivation: 'tagging',
-      '@context': 'http://www.w3.org/ns/anno.jsonld',
-      body: [
-        {
-          type: 'TextualBody',
-          value: 'example',
-          purpose: 'tagging',
+        textDirection: 'ltr',
+        source,
+      },
+    ],
+  },
+  {
+    id: 'ann-3',
+    motivation: 'tagging',
+    type: 'Annotation',
+    '@context': 'http://www.w3.org/ns/anno.jsonld',
+    body: [
+      {
+        type: 'TextualBody',
+        value: 'example',
+        purpose: 'tagging',
+      },
+    ],
+    target: [
+      {
+        selector: {
+          start: 1,
+          end: 20,
+          type: 'TextPositionSelector',
         },
-      ],
-      target: [
-        {
-          type: 'Text',
-          selector: {
-            start: 1,
-            end: 20,
-            type: 'TextPositionSelector',
-          },
-          textDirection: 'ltr',
-          source: 'annotation-source://other-source',
-        },
-      ],
-    },
-  ],
-  type: 'AnnotationPage',
-};
+        textDirection: 'ltr',
+        source: 'annotation-source://other-source',
+      },
+    ],
+  },
+];
 
 export const w3cText = {
   text,

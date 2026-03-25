@@ -7,7 +7,7 @@ const md = markdownit({
 const markdownEnv = {};
 
 export const replaceMarkdownToHtml = (text: string): string => {
-  return md.renderInline(text, markdownEnv);
+  return md.render(text, markdownEnv);
 };
 
 const document = globalThis.document;

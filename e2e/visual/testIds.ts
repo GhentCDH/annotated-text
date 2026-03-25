@@ -29,3 +29,10 @@ export const styleIds = {
 };
 
 export type StyleKeys = keyof typeof styleIds;
+export const gutterHeightIds = {
+  markdown: 'gutter-markdown',
+  plainText: 'gutter-plaintext',
+  textLine: 'gutter-textLine',
+} as const;
+
+export type GutterHeightsKeys = keyof typeof gutterHeightIds;

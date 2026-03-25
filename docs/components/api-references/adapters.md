@@ -42,7 +42,7 @@ Add the docs
 
 The **default** adapter is the adapter that uses the internal format.
 
-- [W3C Web Annotation Data Model parser](../-guides/w3c.md)
+- [W3C Web Annotation Data Model parser](../~w3c/w3c.md)
   is available to convert annotations to the W3C Web Annotation Data Model format.
 
 ### Create your own AnnotationAdapter
