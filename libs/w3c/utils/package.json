@@ -30,7 +30,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "memoizee": "^0.4.17",
-    "zod": "3.25.67"
+    "zod": "4.1.12",
+    "vitest": "4.0.9"
   }
 }

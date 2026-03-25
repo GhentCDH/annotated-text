@@ -20,7 +20,7 @@
         "./libs/vue-component/src/index.ts"
       ],
       "@ghentcdh/annotated-text--markdown": ["./libs/markdown/src/index.ts"],
-      "@ghentcdh/utils": ["w3c/utils/src/index.ts"]
+      "@ghentcdh/w3c-utils": ["./libs/w3c/utils/src/index.ts"]
     }
   },
   "exclude": [

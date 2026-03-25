@@ -71,7 +71,7 @@ W3CAnnotationAdapter({
 <script setup>
 //
 import { onMounted, onUnmounted } from "vue";
-import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter,clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
+import { createAnnotatedText, PlainTextAdapter, W3CAnnotationAdapter, clearAnnotatedTextCache } from "@ghentcdh/annotated-text";
 import { w3cText } from "@demo";
 
 const createAnnotations = (id, sourceId)=>{
@@ -79,7 +79,7 @@ const createAnnotations = (id, sourceId)=>{
         createAnnotatedText(id)
         .setAnnotationAdapter(W3CAnnotationAdapter({ sourceUri: sourceId, create: true, edit: true }))
         .setText(w3cText.text, false)
-        .setAnnotations(w3cText.w3cAnnotations.items)
+        .setAnnotations(w3cText.w3cAnnotations)
         .on('all', ({ mouseEvent, event, data }) => {
             const events = [`annotation-create--start`,     
                             `annotation-create--move`, 

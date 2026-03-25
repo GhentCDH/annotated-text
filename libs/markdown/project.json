@@ -14,8 +14,8 @@
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/core",
-        "configFile": "libs/core/vite.config.ts"
+        "outputPath": "dist/libs/markdown",
+        "configFile": "libs/markdown/vite.config.mts"
       },
       "configurations": {
         "production": {

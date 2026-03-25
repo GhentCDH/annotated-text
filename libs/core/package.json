@@ -30,6 +30,7 @@
   ],
   "sideEffects": false,
   "dependencies": {
+    "@ghentcdh/w3c-utils": "^1.0.0",
     "d3": "7.9.0",
     "lodash-es": "^4.17.21",
     "memoizee": "^0.4.17",

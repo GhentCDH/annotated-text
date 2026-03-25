@@ -2,9 +2,9 @@
 import {
   clearAnnotatedTextCache,
   createAnnotatedText,
-  type W3CAnnotation,
   W3CAnnotationAdapter,
 } from '@ghentcdh/annotated-text';
+import { type W3CAnnotation } from '@ghentcdh/@ghentcdh/w3c-utils';
 
 // Clear any cached instances
 clearAnnotatedTextCache();
@@ -29,7 +29,7 @@ const w3cAnnotations: W3CAnnotation[] = [
       language: 'en',
     },
     target: {
-      type: 'Text',
+      type: 'SpecificResource',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
@@ -49,7 +49,7 @@ const w3cAnnotations: W3CAnnotation[] = [
       language: 'en',
     },
     target: {
-      type: 'Text',
+      type: 'SpecificResource',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
@@ -69,7 +69,7 @@ const w3cAnnotations: W3CAnnotation[] = [
       language: 'en',
     },
     target: {
-      type: 'Text',
+      type: 'SpecificResource',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
@@ -115,7 +115,6 @@ const annotationsWithBodies: W3CAnnotation[] = [
       },
     ],
     target: {
-      type: 'Text',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
@@ -137,7 +136,6 @@ const annotationsWithBodies: W3CAnnotation[] = [
       },
     ],
     target: {
-      type: 'Text',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
@@ -171,7 +169,6 @@ const taggingAnnotations: W3CAnnotation[] = [
       value: 'noun',
     },
     target: {
-      type: 'Text',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
@@ -190,7 +187,6 @@ const taggingAnnotations: W3CAnnotation[] = [
       value: 'adjective',
     },
     target: {
-      type: 'Text',
       source: SOURCE_URI,
       selector: {
         type: 'TextPositionSelector',
