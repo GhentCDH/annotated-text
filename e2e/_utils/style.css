@@ -30,3 +30,8 @@ body {
     height: 40px;
     background-color: #ccc;
 }
+
+p {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

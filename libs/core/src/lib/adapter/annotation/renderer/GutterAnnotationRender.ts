@@ -1,26 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
-import {
-  AnnotationRender,
-  type AnnotationRenderParams,
-} from './annotation-render';
+import { AnnotationRender, type AnnotationRenderParams } from './annotation-render';
 import { Debugger } from '../../../utils/debugger';
-import { getMinMaxBy } from '../../../compute/draw/utils/min-max.by';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
   type BaseAnnotation,
-  type TextAnnotation,
+  type TextAnnotation
 } from '../../../model';
-import {
-  type DimensionsWithScale,
-  getDimensions,
-  getScaledDimensions,
-} from '../../../compute/position/unscaled';
+import { type DimensionsWithScale } from '../../../compute/position/unscaled';
 import { type CustomAnnotationStyle } from '../style';
-import {
-  _DefaultAnnotationStyle,
-  type DefaultAnnotationStyle,
-} from '../style/annotation.style.default';
+import { _DefaultAnnotationStyle, type DefaultAnnotationStyle } from '../style/annotation.style.default';
+import { getRanges } from '../../../compute/utils/ranges/get-range';
 
 export const createGutterPath = (
   x: number,
@@ -41,57 +31,70 @@ const createGutterAnnotations = (
   params: AnnotationRenderParams,
   parentDimensions: DimensionsWithScale,
   annotation: TextAnnotation,
-) => {
+): {
+  draws: AnnotationDraw[];
+  dimensions?: AnnotationDimension;
+} => {
   const gutterWidth = annotation._style.default.gutterWidth;
   const gutterGap = annotation._style.default.gutterGap;
 
   if (!annotation._render.lines || annotation._render.lines.length === 0) {
     Debugger.warn('no lines to render for annotation', annotation);
-    return { draws: [], dimensions: undefined, color: null };
+    return {
+      draws: [],
+      dimensions: undefined as unknown as AnnotationDimension,
+    };
   }
-
-  const { min: firstLine, max: lastLine } = getMinMaxBy(
-    annotation._render.lines,
-    (line) => line.lineNumber,
-  );
-
-  const firstLineDimensions = getScaledDimensions(
-    parentDimensions,
-    getDimensions(firstLine.element),
-  );
-  const lastLineDimensions = getScaledDimensions(
-    parentDimensions,
-    getDimensions(lastLine.element),
-  );
-
-  const y = firstLineDimensions.y;
-
-  const y1 = lastLineDimensions.y;
-  const startPosition: AnnotationDimension = {
-    x: 0,
-    y1: y,
-    y2: y1,
-  };
 
   // Add the gutterwidth as padding
   // We want to have the most gutters closest to the text
   const weight = params.maxGutterWeight - annotation._render.weight!;
-  const x = (gutterWidth + gutterGap) * weight;
-  const height = y1 - y + lastLineDimensions.height;
+  const dimensions = {
+    x: (gutterWidth + gutterGap) * weight,
+    y: -1,
+    height: 0,
+  };
 
+  const lines = annotation._render.lines ?? [];
+  lines.forEach((line) => {
+    const rects = getRanges(parentDimensions, annotation, line);
+    if (!rects?.length || rects.length === 0) {
+      return;
+    }
+    const first = rects[0];
+    const last = rects[rects?.length - 1];
+    if (dimensions.x < 0) {
+      dimensions.x = first.dimensions.x;
+    }
+    if (dimensions.y < 0) {
+      dimensions.y = first.dimensions.y;
+    }
+    dimensions.height = last.dimensions.y + last.dimensions.height;
+  });
   const draws: AnnotationDraw[] = [
     {
       weight: annotation._render.weight!,
       uuid: uuidv4(),
       annotationUuid: annotation.id,
-      lineNumber: firstLine.lineNumber,
-      path: createGutterPath(x, y, gutterWidth, height),
+      lineNumber: 0,
+      path: createGutterPath(
+        dimensions.x,
+        dimensions.y,
+        gutterWidth,
+        dimensions.height,
+      ),
       draggable: {},
-      height: { x, y, height },
+      height: dimensions,
     },
   ];
-
-  return { draws, dimensions: startPosition };
+  return {
+    draws,
+    dimensions: {
+      x: dimensions.x,
+      y1: dimensions.y,
+      y2: dimensions.y + dimensions.height,
+    },
+  };
 };
 
 export const createGutterStyle = (
