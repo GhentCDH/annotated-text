@@ -4,7 +4,7 @@ import {
   createAnnotatedText,
   DefaultRenders,
   PlainTextAdapter,
-  TextLineAdapter
+  TextLineAdapter,
 } from '../../libs/core/src';
 import { renderDemoDiv } from '../_utils/render-demo';
 import { MarkdownTextAdapter } from '@ghentcdh/annotated-text--markdown';
@@ -25,14 +25,16 @@ Every morning they claimed the same sunny spot on the couch, the parrot perched 
 
 Their bond reminded everyone nearby that friendship needs no explanation — only warmth, presence, and a willingness to share the light.`;
 
-const lines = `1. Feathers & Fur\n2. An unlikely friendship bloomed between a colorful parrot and a gentle dog. One spoke in squawks and mimicked laughter, the other communicated through tail wags and soft brown eyes. Yet somehow, without sharing a common language, they understood each other perfectly.\n3. Every morning they claimed the same sunny spot on the couch, the parrot perched boldly on the dog's broad back. The dog never minded. He simply sighed contentedly, as if carrying his feathered companion was the most natural thing in the world.
+const lines = `1. Feathers & Fur
+2. An unlikely friendship bloomed between a colorful parrot and a gentle dog. One spoke in squawks and mimicked laughter, the other communicated through tail wags and soft brown eyes. Yet somehow, without sharing a common language, they understood each other perfectly.
+3. Every morning they claimed the same sunny spot on the couch, the parrot perched boldly on the dog's broad back. The dog never minded. He simply sighed contentedly, as if carrying his feathered companion was the most natural thing in the world.
 4. Their bond reminded everyone nearby that friendship needs no explanation — only warmth, presence, and a willingness to share the light.`;
 
 const annotations = [
   { id: '1', start: 0, end: 100, renderer: DefaultRenders.underline },
   { id: '2', start: 0, end: 100, renderer: DefaultRenders.gutter },
-  { id: '3', start: 101, end: 200, renderer: DefaultRenders.gutter },
-  { id: '4', start: 101, end: 200, renderer: DefaultRenders.underline },
+  { id: '3', start: 100, end: 200, renderer: DefaultRenders.gutter },
+  { id: '4', start: 100, end: 200, renderer: DefaultRenders.underline },
 ] as any;
 
 const configuration: Record<GutterHeightsKeys, any> = {
