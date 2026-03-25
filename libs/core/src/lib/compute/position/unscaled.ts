@@ -73,7 +73,6 @@ export const getDimensions = (element: HTMLElement) => {
     y: rect.y,
     width: rect.width,
     height: normalizedHeight,
-    realHeight: rect.height,
   };
 };
 
@@ -88,6 +87,5 @@ export const getScaledDimensions = (
     y: getDif(parent.y, element.y, parentDimensions.scale),
     height: getScaled(element.height, parentDimensions.scale),
     width: getScaled(element.width, parentDimensions.scale),
-    realHeight: getScaled(element.height, parentDimensions.scale),
   };
 };
