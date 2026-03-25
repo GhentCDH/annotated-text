@@ -3,6 +3,7 @@ import {
   type W3CAgent,
   type W3CAnnotation,
   W3CAnnotation as W3CAnnotationSchema,
+  type W3CAudience,
   type W3CBody,
   type W3CCssStylesheet,
   type W3CFragmentSelector as W3CFragmentSelectorSchema,
@@ -50,6 +51,34 @@ const normaliseTargets = (ann: Partial<W3CAnnotation>): W3CTarget[] =>
 const normaliseBodies = (ann: Partial<W3CAnnotation>): W3CBody[] =>
   toArray(ann.body as W3CBody | W3CBody[]);
 
+
+/** Concatenate two single-or-array fields, collapsing single-element results */
+const concatFields = <T>(
+  a: T | T[] | undefined,
+  b: T | T[] | undefined,
+): T | T[] | undefined => {
+  const merged = [...toArray(a as T | T[]), ...toArray(b as T | T[])];
+  return merged.length === 0
+    ? undefined
+    : merged.length === 1
+      ? merged[0]
+      : merged;
+};
+
+/** Like concatFields but deduplicates primitive (string) values */
+const concatUniqueFields = <T extends string>(
+  a: T | T[] | undefined,
+  b: T | T[] | undefined,
+): T | T[] | undefined => {
+  const merged = [
+    ...new Set([...toArray(a as T | T[]), ...toArray(b as T | T[])]),
+  ];
+  return merged.length === 0
+    ? undefined
+    : merged.length === 1
+      ? merged[0]
+      : merged;
+};
 /** Replace or add a selector on a SpecificResource */
 const upsertSelector = (
   resource: W3CSpecificResource,
@@ -337,6 +366,89 @@ export class W3CAnnotationBuilder {
 
   setStylesheet(stylesheet: W3CCssStylesheet | string): this {
     this.state.stylesheet = stylesheet;
+    return this;
+  }
+
+
+  // -------------------------------------------------------------------------
+  // Merge
+  // -------------------------------------------------------------------------
+
+  /**
+   * Merge a partial W3C annotation into the current state.
+   *
+   * - Scalar fields (`id`, `created`, `modified`, ...) are overwritten by the incoming value.
+   * - Array-like fields (`target`, `body`, `creator`, ...) are concatenated.
+   * - String array fields (`motivation`, `rights`, `via`) are concatenated and deduplicated.
+   */
+  merge(partial: Partial<W3CAnnotation>): this {
+    const source = deepClone(partial);
+
+    // Scalar fields — incoming overwrites
+    if (source['@context'] !== undefined)
+      this.state['@context'] = source['@context'];
+    if (source.id !== undefined) this.state.id = source.id;
+    if (source.type !== undefined) this.state.type = source.type;
+    if (source.created !== undefined) this.state.created = source.created;
+    if (source.modified !== undefined) this.state.modified = source.modified;
+    if (source.generated !== undefined)
+      this.state.generated = source.generated;
+    if (source.canonical !== undefined) this.state.canonical = source.canonical;
+    if (source.stylesheet !== undefined)
+      this.state.stylesheet = source.stylesheet;
+
+    // String array fields — concat & deduplicate
+    if (source.motivation !== undefined) {
+      this.state.motivation = concatUniqueFields(
+        this.state.motivation as W3CMotivation | W3CMotivation[],
+        source.motivation as W3CMotivation | W3CMotivation[],
+      );
+    }
+    if (source.rights !== undefined) {
+      this.state.rights = concatUniqueFields(
+        this.state.rights as string | string[],
+        source.rights as string | string[],
+      );
+    }
+    if (source.via !== undefined) {
+      this.state.via = concatUniqueFields(
+        this.state.via as string | string[],
+        source.via as string | string[],
+      );
+    }
+
+    // Object array fields — concat
+    if (source.target !== undefined) {
+      this.state.target = concatFields(
+        this.state.target as W3CTarget | W3CTarget[],
+        source.target as W3CTarget | W3CTarget[],
+      ) as W3CTarget | W3CTarget[];
+    }
+    if (source.body !== undefined) {
+      this.state.body = concatFields(
+        this.state.body as W3CBody | W3CBody[],
+        source.body as W3CBody | W3CBody[],
+      ) as W3CBody | W3CBody[] | undefined;
+    }
+    if (source.creator !== undefined) {
+      this.state.creator = concatFields(
+        this.state.creator as W3CAgent | W3CAgent[],
+        source.creator as W3CAgent | W3CAgent[],
+      ) as W3CAgent | W3CAgent[] | undefined;
+    }
+    if (source.generator !== undefined) {
+      this.state.generator = concatFields(
+        this.state.generator as W3CAgent | W3CAgent[],
+        source.generator as W3CAgent | W3CAgent[],
+      ) as W3CAgent | W3CAgent[] | undefined;
+    }
+    if (source.audience !== undefined) {
+      this.state.audience = concatFields(
+        this.state.audience as W3CAudience | W3CAudience[],
+        source.audience as W3CAudience | W3CAudience[],
+      ) as W3CAudience | W3CAudience[] | undefined;
+    }
+
     return this;
   }
 
