@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/GhentCDH/annotated-text"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
