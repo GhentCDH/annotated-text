@@ -1,10 +1,5 @@
 import memoize from 'memoizee';
-import {
-  isIntersection,
-  type Limit,
-  type TextLine,
-  textLineSchema,
-} from '@ghentcdh/annotated-text';
+import { isIntersection, type Limit, type TextLine, textLineSchema } from '@ghentcdh/annotated-text';
 
 export type UpdateLineFn = (
   textLine: TextLine,
@@ -25,7 +20,10 @@ const getEnd = memoize(
   },
 );
 
-export const getDiff = (line: TextLine, limit: Limit) => {
+export const getDiff = (
+  line: Pick<TextLine, 'start' | 'end'>,
+  limit: Limit,
+) => {
   const start = getStart(line.start, limit!.start);
   const end = getEnd(line.start, line.end, limit!.end);
 
@@ -40,7 +38,6 @@ export const mapLineToLimit = (
   if (!limit) {
     return textLineSchema.parse(textLine);
   }
-
   if (!isIntersection(textLine, limit)) {
     return null;
   }

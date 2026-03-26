@@ -12,7 +12,7 @@ export type Limit = {
   start: number;
   /**
    * The end position in the text up to which to consider lines.
-   * This is exclusive.
+   * This is inclusive.
    **/
   end: number;
   /**

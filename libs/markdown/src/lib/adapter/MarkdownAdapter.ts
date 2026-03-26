@@ -6,12 +6,18 @@ import {
   type TextLine,
   textLineSchema,
 } from '@ghentcdh/annotated-text';
+import { v4 as uuid4 } from 'uuid';
 import {
   getPartialMarkdown,
+  getPartialMarkdownWithLimit,
   replaceMarkdownToHtml,
   stripHtmlFromText,
 } from './parser';
-import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
+import {
+  getDiff,
+  mapLinesToLimit,
+  type UpdateLineFn,
+} from '../utils/mapLineToLimit';
 
 const _textToLines = memoize(
   (text: string, startOffset: number): TextLine[] => {
@@ -67,7 +73,26 @@ const textToLines = (
   startOffset: number,
 ): TextLine[] => {
   // Calculation will be cached, but we need to ensure that the objects returned are immutable, so we create new instances of them.
-  const lines = _textToLines(text, startOffset);
+
+  const { html, text: _text } = getPartialMarkdown(
+    text,
+    0 + startOffset,
+    text.length + startOffset,
+  );
+  const flatText = stripHtmlFromText(html);
+
+  const line = textLineSchema.parse({
+    lineNumber: 0,
+    uuid: uuid4(),
+    flatText,
+    html,
+    start: 0,
+    end: flatText.length,
+    text,
+  });
+
+  const lines = [line];
+
   return mapLinesToLimit(lines, limit, updateLine);
 };
 
@@ -79,7 +104,46 @@ export class MarkdownTextAdapterImpl extends TextAdapter {
   name = 'MarkdownLineAdapter';
 
   parse(text: string, startOffset: number): TextLine[] {
-    return textToLines(text, this.limit, startOffset);
+    const fullHtml = replaceMarkdownToHtml(text);
+    const fullFlatText = stripHtmlFromText(fullHtml);
+    // this.flatText = fullFlatText;
+
+    const textDim = { start: startOffset, end: text.length + startOffset };
+    const diff = this.limit ? getDiff(textDim, this.limit) : textDim;
+
+    const markdownText = this.limit
+      ? getPartialMarkdownWithLimit(
+          text,
+          { ...diff, ignoreLines: this.limit.ignoreLines },
+          startOffset,
+        )
+      : {
+          start: 0,
+          end: text.length,
+          html: fullHtml,
+          markdownText: text,
+        };
+    const flatText = this.limit
+      ? fullFlatText.substring(markdownText.start, markdownText.end)
+      : fullFlatText;
+    const html = this.limit ? markdownText.html : fullHtml;
+    // console.log('diff', diff);
+    // console.log('flatText', flatText);
+    const line = textLineSchema.parse({
+      lineNumber: 0,
+      uuid: uuid4(),
+      flatText,
+      html: html,
+      start: markdownText.start,
+      end: markdownText.end,
+      text: markdownText.markdownText,
+    });
+
+    return [line];
+    //
+    // return mapLinesToLimit([line], this.limit, updateLine);
+    //
+    // return textToLines(text, this.limit, startOffset);
   }
 }
 
