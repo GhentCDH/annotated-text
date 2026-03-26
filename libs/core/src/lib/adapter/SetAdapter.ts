@@ -1,16 +1,16 @@
 import { TextAdapter, type TextAdapterParams } from './text/TextAdapter';
 import { type AnnotationModule } from '../di/annotation.module';
-import {
-  AnnotationAdapter,
-  type AnnotationAdapterParams,
-} from '../adapter/annotation';
+import { AnnotationAdapter, type AnnotationAdapterParams } from '../adapter/annotation';
 import { type Snapper } from '../adapter/snapper';
 
 export const setTextAdapter = (
   annotationModule: AnnotationModule,
   adapterOrParams: TextAdapter | TextAdapterParams,
 ) => {
-  if (adapterOrParams instanceof TextAdapter) {
+  if (
+    adapterOrParams instanceof TextAdapter ||
+    (adapterOrParams as any).TYPE === 'TextAdapter'
+  ) {
     annotationModule.updateTextAdapter(adapterOrParams);
 
     return adapterOrParams;

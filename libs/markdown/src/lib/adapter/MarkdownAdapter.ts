@@ -3,15 +3,11 @@ import {
   TextAdapter,
   type TextAdapterParams,
   type TextLine,
-  textLineSchema,
+  textLineSchema
 } from '@ghentcdh/annotated-text';
 import { v4 as uuid4 } from 'uuid';
 import memoize from 'memoizee';
-import {
-  getPartialMarkdownWithLimit,
-  replaceMarkdownToHtml,
-  stripHtmlFromText,
-} from './parser';
+import { getPartialMarkdownWithLimit, replaceMarkdownToHtml, stripHtmlFromText } from './parser';
 
 /**
  * Computes the clamped start offset of a limit within a line.

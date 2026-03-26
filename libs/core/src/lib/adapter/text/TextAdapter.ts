@@ -34,6 +34,7 @@ export type TextAdapterStyle = typeof DefaultTextAdapterStyle;
 export abstract class TextAdapter<
   PARAMS extends TextAdapterParams = TextAdapterParams,
 > extends BaseAdapter<PARAMS> {
+  readonly TYPE = 'TextAdapter';
   textDirection: TextDirection;
   flatText: boolean;
   fullFlatText: string;
