@@ -1,12 +1,14 @@
 import { renderMarkdownIds, RenderMarkdownKeys } from './testIds';
 import {
+  type Annotation,
+  type AnnotationEventType,
   clearAnnotatedTextCache,
   createAnnotatedText,
   DefaultRenders,
   PlainTextAdapter,
   WordSnapper,
 } from '../../libs/core/src';
-import { renderDemoDiv } from '../_utils/render-demo';
+import { renderDemoDiv, writeToLogDiv } from '../_utils/render-demo';
 import { MarkdownTextAdapter } from '@ghentcdh/annotated-text--markdown';
 import {
   replaceMarkdownToHtml,
@@ -80,8 +82,11 @@ const renderDifferentLineHeight = (
   const id = renderMarkdownIds[_id];
   const title = `${_id}`;
 
-  renderDemoDiv(title, id);
+  renderDemoDiv(title, id, 'demo-container', true);
 
+  const writeLog = (event: AnnotationEventType, a: Annotation) => {
+    writeToLogDiv(id, `${event}: ${a.start}-${a.end}`);
+  };
   const params = configuration[_id];
 
   // Basic text setup
@@ -92,14 +97,32 @@ const renderDifferentLineHeight = (
       renderFn: (a) => a.renderer ?? defaultRender,
     })
     .setText(params.text)
-    .setAnnotations(_annotations);
+    .setAnnotations(_annotations)
+    .on('annotation-create--start', (e) => {
+      writeLog(e.event, e.data.annotation);
+    })
+    .on('annotation-create--end', (e) => {
+      writeLog(e.event, e.data.annotation);
+    })
+    .on('annotation-create--move', (e) => {
+      writeLog(e.event, e.data.annotation);
+    })
+    .on('annotation-edit--start', (e) => {
+      writeLog(e.event, e.data.annotation);
+    })
+    .on('annotation-edit--end', (e) => {
+      writeLog(e.event, e.data.annotation);
+    })
+    .on('annotation-edit--move', (e) => {
+      writeLog(e.event, e.data.annotation);
+    });
 
   if (params.snapper) {
     annotatedText.setSnapper(params.snapper);
   }
 };
 
-// renderDifferentLineHeight('underline', DefaultRenders.underline);
+renderDifferentLineHeight('underline', DefaultRenders.underline);
 renderDifferentLineHeight('highlight', DefaultRenders.highlight);
 renderDifferentLineHeight('highlight_wordsnapper', DefaultRenders.highlight);
 renderDifferentLineHeight('highlight_plain', DefaultRenders.highlight);
