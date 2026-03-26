@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { setAnnotationAdapter, setSnapperAdapter, setTextAdapter } from '../SetAdapter';
+import {
+  setAnnotationAdapter,
+  setSnapperAdapter,
+  setTextAdapter,
+} from '../SetAdapter';
 import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../annotation';
 import { type AnnotationModule } from '../../di/annotation.module';

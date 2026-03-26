@@ -43,13 +43,11 @@ export class Draw<
   setText(text: string) {
     const startOffset = this.annotationAdapter.startOffset;
     const textAdapter = this.textAdapter;
-    const annotationAdapter = this.annotationAdapter;
     const snapper = this.getSnapper();
 
     const lines = this.textAdapter.parse(text, startOffset);
     textAdapter.setLines(lines);
 
-    annotationAdapter.setText(text);
     snapper.setText(text, startOffset);
 
     textAdapter.setLineHeight(

@@ -16,7 +16,7 @@ export default defineConfig({
   fullyParallel: !isCoverage,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: isCoverage ? 1 : process.env.CI ? 1 : undefined,
+  workers: isCoverage ? 1 : undefined,
   reporter: [
     ['html', { outputFolder: resolve(__dirname, 'playwright-report') }],
     process.env.CI ? ['github'] : ['list'],

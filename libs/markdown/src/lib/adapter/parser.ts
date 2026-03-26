@@ -8,7 +8,8 @@ type Limit = {
 
 const md = markdownit({
   html: false,
-}).disable('list');
+});
+//.disable('list');
 
 const markdownEnv = {};
 
@@ -216,56 +217,19 @@ export const getPartialMarkdownWithLimit = (
 };
 
 /**
- * Extracts a substring of an inline markdown text within a character range while
- * preserving surrounding markdown markup. Unlike {@link getPartialMarkdownWithLimit},
- * this uses `parseInline` and works on a single inline markdown string without
- * block-level parsing.
+ * Selects a portion of markdown text by character range and returns the corresponding HTML.
  *
- * @param text - The inline markdown text to slice
- * @param start - Start character index (inclusive)
- * @param end - End character index (inclusive)
- * @returns Object containing the rendered `html` and the raw `text` of the extracted range
+ * @param text - The full markdown source text
+ * @param start - The start character index of the selection
+ * @param end - The end character index of the selection
+ * @param offset - Optional character offset to shift the selection range (default: 0)
+ * @returns The partial markdown converted to HTML with adjusted start/end positions
  */
-export const getPartialMarkdown = (
+export const selectTextFromMarkdown = (
   text: string,
   start: number,
   end: number,
+  offset = 0,
 ) => {
-  const parsedLines = md.parseInline(text, markdownEnv);
-
-  const tokens = parsedLines.flatMap((token) => findTokenInRange(token));
-
-  let nextStart = 0;
-  const markdownText: string[] = [];
-  let index = 0;
-
-  for (const token of tokens) {
-    const tokenEnd = nextStart + token.length;
-
-    if (nextStart < start && tokenEnd < start) {
-      // Out of range, skip
-    } else if (nextStart < start) {
-      const prevToken = tokens[index - 1];
-      if (prevToken?.openTag) {
-        markdownText.push(prevToken.markup);
-      }
-      markdownText.push(token.content.substring(start - nextStart));
-    } else if (end < tokenEnd) {
-      markdownText.push(token.content.substring(0, end + 1));
-
-      const nextToken = tokens[index + 1];
-      if (nextToken?.closeTag) {
-        markdownText.push(nextToken.markup);
-      }
-      break;
-    } else {
-      markdownText.push([token.content, token.markup].join(''));
-    }
-    nextStart += token.length;
-    index++;
-  }
-
-  const newText = markdownText.join('');
-
-  return { html: replaceMarkdownToHtml(newText), text: newText };
+  return getPartialMarkdownWithLimit(text, { start, end }, offset);
 };
