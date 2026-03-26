@@ -54,7 +54,12 @@
     }
   ],
   "release": {
-    "projects": ["libs/core", "!@ghentcdh/annotated-text"],
+    "projects": [
+      "libs/core",
+      "libs/w3c/utils",
+      "libs/markdown",
+      "!@ghentcdh/annotated-text"
+    ],
     "version": {
       "conventionalCommits": true,
       "preVersionCommand": "npx nx run-many -t build"
