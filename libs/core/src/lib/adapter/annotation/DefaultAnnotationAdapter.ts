@@ -35,7 +35,7 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
     if (!hasChanged) return originalAnnotation;
 
     const textSelection = selectText(
-      this.text,
+      this.textAdapter.fullFlatText,
       annotation.start,
       annotation.end,
       this.startOffset,
@@ -43,7 +43,9 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
 
     const data = annotationSchema.safeParse({
       ...annotation,
-      textSelection,
+      text: textSelection.exact,
+      suffix: textSelection.suffix,
+      prefix: textSelection.prefix,
     });
 
     let formattedAnnotation: Annotation;

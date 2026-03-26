@@ -28,7 +28,9 @@
   "sideEffects": false,
   "dependencies": {
     "markdown-it": "14.1.1",
-    "memoizee": "^0.4.17"
+    "memoizee": "^0.4.17",
+    "uuid": "13.0.0",
+    "vitest": "4.0.9"
   },
   "peerDependencies": {
     "@ghentcdh/annotated-text": "^1.0.0"

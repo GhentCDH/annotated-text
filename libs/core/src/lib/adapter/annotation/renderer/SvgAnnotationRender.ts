@@ -41,7 +41,8 @@ export abstract class SvgAnnotationRender<
     const draws: AnnotationDraw[] = [];
     const lineOffset = textStyle.lineOffset / 2;
     const padding = textStyle.padding * annotation._render.weight!;
-    const height = textStyle.lineHeight + padding * 2;
+    const paddingHeight = padding * 2;
+    const minHeight = textStyle.lineHeight + padding * 2;
     let startPosition: AnnotationDimension;
 
     const lines = annotation._render.lines ?? [];
@@ -56,6 +57,10 @@ export abstract class SvgAnnotationRender<
 
       rects?.forEach((rect, rectIdx) => {
         const dimensions = rect.dimensions;
+        let height = dimensions.height + paddingHeight;
+        if (height < minHeight) {
+          height = minHeight;
+        }
         const x = dimensions.x;
         const y = dimensions.y - padding - lineOffset;
         let leftBorder = isFirstLine && rectIdx === 0;

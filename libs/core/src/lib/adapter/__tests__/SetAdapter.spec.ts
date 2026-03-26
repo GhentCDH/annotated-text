@@ -12,8 +12,8 @@ import { type Snapper } from '../snapper';
 class MockTextAdapter extends TextAdapter {
   name = 'MockTextAdapter';
 
-  parse() {
-    return [];
+  _parse() {
+    return { lines: [], flatText: '' };
   }
 
   override setParams(params: TextAdapterParams) {
@@ -147,20 +147,23 @@ describe('SetAdapter', () => {
       const { module } = createMockModule();
       const snapper = { setText: vi.fn() } as unknown as Snapper;
 
-      setSnapperAdapter(module, snapper, 'hello world');
+      setSnapperAdapter(module, snapper);
 
       expect(module.updateSnapper).toHaveBeenCalledWith(snapper);
     });
 
     it('should call setText with the text and annotationAdapter startOffset', () => {
       const mockAnnotationAdapter = new MockAnnotationAdapter({});
+      const mockTextAdapter = new MockTextAdapter({});
       mockAnnotationAdapter.startOffset = 5;
+      mockTextAdapter.fullFlatText = 'hello world';
       const { module } = createMockModule({
         annotationAdapter: mockAnnotationAdapter,
+        textAdapter: mockTextAdapter,
       });
       const snapper = { setText: vi.fn() } as unknown as Snapper;
 
-      setSnapperAdapter(module, snapper, 'hello world');
+      setSnapperAdapter(module, snapper);
 
       expect(snapper.setText).toHaveBeenCalledWith('hello world', 5);
     });

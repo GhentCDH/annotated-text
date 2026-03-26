@@ -54,12 +54,7 @@ export abstract class AnnotationAdapter<
   public config?: AnnotationConfig;
   private tagRenderer: TagRenderer<ANNOTATION>;
 
-  protected text = '';
   startOffset: number;
-
-  public setText(text: string) {
-    this.text = text;
-  }
 
   /**
    * Parse an annotation object into a TextAnnotation.

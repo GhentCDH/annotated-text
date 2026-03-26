@@ -1,5 +1,9 @@
 import { _textToLines } from './text_utilities';
-import { type Limit, TextAdapter, type TextAdapterParams } from '../TextAdapter';
+import {
+  type Limit,
+  TextAdapter,
+  type TextAdapterParams,
+} from '../TextAdapter';
 import { type TextLine, textLineSchema } from '../../../model';
 import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
@@ -40,8 +44,14 @@ const textToLines = (
 export class TextLineAdapterImpl extends TextAdapter {
   name = 'TextLineAdapter';
 
-  parse(text: string): TextLine[] {
-    return textToLines(text, this.limit, this.annotationAdapter.startOffset);
+  _parse(text: string) {
+    const lines = textToLines(
+      text,
+      this.limit,
+      this.annotationAdapter.startOffset,
+    );
+
+    return { lines, flatText: text };
   }
 }
 

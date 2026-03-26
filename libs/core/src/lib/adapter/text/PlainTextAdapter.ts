@@ -62,8 +62,14 @@ const textToLines = (
 export class PlainTextAdapterImpl extends TextAdapter {
   name = 'PlainTextAdapter';
 
-  parse(text: string): TextLine[] {
-    return textToLines(text, this.limit, this.annotationAdapter.startOffset);
+  _parse(text: string) {
+    const lines = textToLines(
+      text,
+      this.limit,
+      this.annotationAdapter.startOffset,
+    );
+
+    return { lines, flatText: text };
   }
 }
 

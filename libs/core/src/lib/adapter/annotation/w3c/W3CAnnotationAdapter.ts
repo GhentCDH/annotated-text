@@ -13,6 +13,7 @@ import {
   annotationSchema,
   type TextAnnotation,
 } from '../../../model';
+import { selectText } from '../../text/utils/select-text';
 
 export type W3CAnnotationAdapterParams = {
   sourceUri?: string;
@@ -98,7 +99,21 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<
       { start: annotation.start, end: annotation.end },
       sourceUri!,
     );
+    const textSelection = selectText(
+      this.textAdapter.fullFlatText,
+      annotation.start,
+      annotation.end,
+      this.startOffset,
+    );
 
+    builder.updateTextQuoteSelector(
+      {
+        prefix: textSelection.prefix,
+        suffix: textSelection.suffix,
+        exact: textSelection.exact,
+      },
+      sourceUri!,
+    );
     const _w3c = builder.build();
 
     this.w3cBuilderMap.set(annotation.id, builder);

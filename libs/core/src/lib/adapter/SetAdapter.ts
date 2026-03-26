@@ -41,8 +41,8 @@ export const setAnnotationAdapter = (
 export const setSnapperAdapter = (
   annotationModule: AnnotationModule,
   snapper: Snapper,
-  text: string,
 ) => {
+  const text = annotationModule.getTextAdapter().fullFlatText;
   annotationModule.updateSnapper(snapper);
   const annotationAdapter = annotationModule.getAnnotationAdapter();
   snapper.setText(text, annotationAdapter.startOffset);
