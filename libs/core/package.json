@@ -6,7 +6,7 @@
     "url": "https://github.com/GhentCDH/annotated-text",
     "directory": "libs/core"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "main": "./index.cjs",
   "module": "./index.js",

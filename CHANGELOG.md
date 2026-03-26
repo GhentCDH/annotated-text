@@ -1,3 +1,14 @@
+## 1.0.3 (2026-03-26)
+
+### 🩹 Fixes
+
+- check adapter ([fd87693](https://github.com/GhentCDH/vue_component_annotated_text/commit/fd87693))
+- check adapter ([266582f](https://github.com/GhentCDH/vue_component_annotated_text/commit/266582f))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 1.0.2 (2026-03-26)
 
 ### 🩹 Fixes
