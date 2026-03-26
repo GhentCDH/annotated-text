@@ -12,8 +12,8 @@ import { type Snapper } from '../snapper';
 class MockTextAdapter extends TextAdapter {
   name = 'MockTextAdapter';
 
-  parse() {
-    return [];
+  _parse() {
+    return { lines: [], flatText: '' };
   }
 
   override setParams(params: TextAdapterParams) {

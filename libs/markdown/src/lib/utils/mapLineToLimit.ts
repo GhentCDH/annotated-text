@@ -1,5 +1,10 @@
 import memoize from 'memoizee';
-import { isIntersection, type Limit, type TextLine, textLineSchema } from '@ghentcdh/annotated-text';
+import {
+  isIntersection,
+  type Limit,
+  type TextLine,
+  textLineSchema,
+} from '@ghentcdh/annotated-text';
 
 export type UpdateLineFn = (
   textLine: TextLine,

@@ -4,6 +4,7 @@ import {
   createAnnotatedText,
   DefaultRenders,
   PlainTextAdapter,
+  WordSnapper,
 } from '../../libs/core/src';
 import { renderDemoDiv } from '../_utils/render-demo';
 import { MarkdownTextAdapter } from '@ghentcdh/annotated-text--markdown';
@@ -42,6 +43,11 @@ const configuration: Record<RenderMarkdownKeys, any> = {
     text: markdownText,
     adapter: MarkdownTextAdapter,
   },
+  highlight_wordsnapper: {
+    text: markdownText,
+    adapter: MarkdownTextAdapter,
+    snapper: new WordSnapper(),
+  },
   highlight_plain: {
     text: fullFlatText,
     adapter: PlainTextAdapter,
@@ -66,8 +72,6 @@ const configuration: Record<RenderMarkdownKeys, any> = {
   },
 };
 
-console.log(fullFlatText);
-
 const renderDifferentLineHeight = (
   _id: RenderMarkdownKeys,
   defaultRender: string,
@@ -81,17 +85,23 @@ const renderDifferentLineHeight = (
   const params = configuration[_id];
 
   // Basic text setup
-  createAnnotatedText<any>(id)
+  const annotatedText = createAnnotatedText<any>(id)
+    .setAnnotationAdapter({ edit: true, create: true })
     .setTextAdapter(params.adapter({ limit: params.limit }))
     .setRenderParams({
       renderFn: (a) => a.renderer ?? defaultRender,
     })
     .setText(params.text)
     .setAnnotations(_annotations);
+
+  if (params.snapper) {
+    annotatedText.setSnapper(params.snapper);
+  }
 };
 
 // renderDifferentLineHeight('underline', DefaultRenders.underline);
 renderDifferentLineHeight('highlight', DefaultRenders.highlight);
+renderDifferentLineHeight('highlight_wordsnapper', DefaultRenders.highlight);
 renderDifferentLineHeight('highlight_plain', DefaultRenders.highlight);
 renderDifferentLineHeight('limit', DefaultRenders.highlight);
 renderDifferentLineHeight('limit_no_ignore', DefaultRenders.highlight);

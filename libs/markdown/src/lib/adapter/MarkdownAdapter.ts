@@ -4,20 +4,11 @@ import {
   TextAdapter,
   type TextAdapterParams,
   type TextLine,
-  textLineSchema,
+  textLineSchema
 } from '@ghentcdh/annotated-text';
 import { v4 as uuid4 } from 'uuid';
-import {
-  getPartialMarkdown,
-  getPartialMarkdownWithLimit,
-  replaceMarkdownToHtml,
-  stripHtmlFromText,
-} from './parser';
-import {
-  getDiff,
-  mapLinesToLimit,
-  type UpdateLineFn,
-} from '../utils/mapLineToLimit';
+import { getPartialMarkdown, getPartialMarkdownWithLimit, replaceMarkdownToHtml, stripHtmlFromText } from './parser';
+import { getDiff, mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
 
 const _textToLines = memoize(
   (text: string, startOffset: number): TextLine[] => {
@@ -103,10 +94,10 @@ const textToLines = (
 export class MarkdownTextAdapterImpl extends TextAdapter {
   name = 'MarkdownLineAdapter';
 
-  parse(text: string, startOffset: number): TextLine[] {
+  _parse(text: string, startOffset: number) {
     const fullHtml = replaceMarkdownToHtml(text);
     const fullFlatText = stripHtmlFromText(fullHtml);
-    // this.flatText = fullFlatText;
+    this.fullFlatText = fullFlatText;
 
     const textDim = { start: startOffset, end: text.length + startOffset };
     const diff = this.limit ? getDiff(textDim, this.limit) : textDim;
@@ -139,7 +130,7 @@ export class MarkdownTextAdapterImpl extends TextAdapter {
       text: markdownText.markdownText,
     });
 
-    return [line];
+    return { lines: [line], flatText, html };
     //
     // return mapLinesToLimit([line], this.limit, updateLine);
     //

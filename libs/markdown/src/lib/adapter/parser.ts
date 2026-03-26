@@ -12,11 +12,23 @@ const md = markdownit({
 
 const markdownEnv = {};
 
+/**
+ * Renders a markdown string to HTML using markdown-it.
+ * @param text - Raw markdown text
+ * @returns The rendered HTML string
+ */
 export const replaceMarkdownToHtml = (text: string): string => {
   return md.render(text, markdownEnv);
 };
 
 const document = globalThis.document;
+
+/**
+ * Strips all HTML tags from a string, returning only the text content.
+ * Uses a temporary DOM element to parse the HTML.
+ * @param text - HTML string to strip
+ * @returns Plain text content without HTML tags
+ */
 export const stripHtmlFromText = (text: string) => {
   const div = document?.createElement('div') ?? ({} as HTMLElement);
   div.innerHTML = text;
@@ -24,8 +36,8 @@ export const stripHtmlFromText = (text: string) => {
 };
 
 type TokenInfo = {
-  start: string;
-  end: string;
+  start: number;
+  end: number;
   content: string;
   markup: string;
   length: number;
@@ -33,12 +45,16 @@ type TokenInfo = {
   closeTag: boolean;
 };
 
-const findTokenInRange = (token: Token, offset: number): TokenInfo[] => {
+/**
+ * Recursively extracts token information from a markdown-it token tree.
+ * Flattens child tokens into a list of {@link TokenInfo} objects with
+ * computed positions, markup, and open/close tag flags.
+ * @param token - The markdown-it token to extract info from
+ * @returns Flat array of token info for each leaf token
+ */
+const findTokenInRange = (token: Token): TokenInfo[] => {
   if (token.children) {
-    // TODO loop through children
-    return token.children
-      .map((child) => findTokenInRange(child, offset))
-      .flat();
+    return token.children.flatMap((child) => findTokenInRange(child));
   }
 
   const { markup, content } = token;
@@ -53,12 +69,20 @@ const findTokenInRange = (token: Token, offset: number): TokenInfo[] => {
       length,
       start: 0,
       end: length,
-      openTag: token.type?.indexOf('_open') >= 0,
-      closeTag: token.type?.indexOf('_close') >= 0,
+      openTag: token.type?.includes('_open'),
+      closeTag: token.type?.includes('_close'),
     } as TokenInfo,
   ];
 };
 
+/**
+ * Parses a markdown-it inline token into positioned child tokens.
+ * Each child gets absolute `start` and `end` character offsets
+ * based on `prevStart`.
+ * @param token - The inline token whose children to position
+ * @param prevStart - The absolute character offset where this token begins
+ * @returns Object with the token's `start`, `end`, `length`, and positioned `children`
+ */
 const parseLineToTokens = (token: Token, prevStart: number) => {
   let nextStart = prevStart;
   let length = 0;
@@ -66,8 +90,8 @@ const parseLineToTokens = (token: Token, prevStart: number) => {
   const children = token.children?.map((child) => {
     const start = nextStart;
     const end = start + child.content.length;
-    length = length + child.content.length;
-    nextStart = nextStart + child.content.length;
+    length += child.content.length;
+    nextStart = end;
 
     return {
       ...child,
@@ -80,11 +104,17 @@ const parseLineToTokens = (token: Token, prevStart: number) => {
     end: prevStart + length,
     start: prevStart,
     length,
-
     children,
   };
 };
 
+/**
+ * Checks whether a line (or child token) overlaps with the given `[start, end]` range.
+ * @param start - Range start (inclusive)
+ * @param end - Range end (inclusive)
+ * @param line - Object with `start` and `end` positions to test
+ * @returns `true` if the line overlaps with the range
+ */
 const inRange = (
   start: number,
   end: number,
@@ -100,11 +130,16 @@ const inRange = (
 };
 
 /**
- * this function returns a markdown string with a limited range of text. It keeps the markdown tags,
- * f.e. if you have split in the middle of a strong tag then it will keep the strong markup
- * @param text
- * @param start
- * @param end
+ * Extracts a substring of markdown text within a character range while preserving
+ * surrounding markdown markup (e.g. bold, italic tags). Parses the full text, then
+ * slices only the tokens that fall within the given `limit` range.
+ *
+ * @param text - The full markdown text to slice
+ * @param limit - The character range to extract (`start`/`end`), with optional `ignoreLines`
+ *   to skip per-character slicing and keep full lines
+ * @param startOffset - Optional offset added to all character positions (default `0`)
+ * @returns Object containing the rendered `html`, raw `markdownText`, and the actual
+ *   `start`/`end` positions of the extracted range
  */
 export const getPartialMarkdownWithLimit = (
   text: string,
@@ -116,8 +151,10 @@ export const getPartialMarkdownWithLimit = (
   const markdownText: string[] = [];
   let index = 0;
   const { start, end } = limit;
-  let lineStart: number = null;
-  let lineEnd: number = null;
+  let lineStart = startOffset;
+  let lineEnd = startOffset;
+  let lineRangeSet = false;
+
   for (const parsedLine of parsedLines) {
     const line = parseLineToTokens(parsedLine, nextStart);
     if (!line.children?.length) {
@@ -147,8 +184,11 @@ export const getPartialMarkdownWithLimit = (
         if (prevChild) markdownText.push(prevChild.markup);
       }
 
-      if (lineStart === null) lineStart = lStart;
-      if (lineEnd === null) lineEnd = lEnd;
+      if (!lineRangeSet) {
+        lineStart = lStart;
+        lineEnd = lEnd;
+        lineRangeSet = true;
+      }
 
       lStart = lStart - line.start;
       lEnd = lEnd - line.start;
@@ -165,16 +205,27 @@ export const getPartialMarkdownWithLimit = (
     index = 0;
   }
 
-  const _markdownText = markdownText.flat().join('');
+  const result = markdownText.join('');
 
   return {
-    html: replaceMarkdownToHtml(_markdownText),
-    markdownText: _markdownText,
+    html: replaceMarkdownToHtml(result),
+    markdownText: result,
     start: lineStart,
     end: lineEnd,
   };
 };
 
+/**
+ * Extracts a substring of an inline markdown text within a character range while
+ * preserving surrounding markdown markup. Unlike {@link getPartialMarkdownWithLimit},
+ * this uses `parseInline` and works on a single inline markdown string without
+ * block-level parsing.
+ *
+ * @param text - The inline markdown text to slice
+ * @param start - Start character index (inclusive)
+ * @param end - End character index (inclusive)
+ * @returns Object containing the rendered `html` and the raw `text` of the extracted range
+ */
 export const getPartialMarkdown = (
   text: string,
   start: number,
@@ -182,7 +233,7 @@ export const getPartialMarkdown = (
 ) => {
   const parsedLines = md.parseInline(text, markdownEnv);
 
-  const tokens = parsedLines.map((token) => findTokenInRange(token, 0)).flat();
+  const tokens = parsedLines.flatMap((token) => findTokenInRange(token));
 
   let nextStart = 0;
   const markdownText: string[] = [];
@@ -192,7 +243,7 @@ export const getPartialMarkdown = (
     const tokenEnd = nextStart + token.length;
 
     if (nextStart < start && tokenEnd < start) {
-      // Out of range, just skip
+      // Out of range, skip
     } else if (nextStart < start) {
       const prevToken = tokens[index - 1];
       if (prevToken?.openTag) {
@@ -210,11 +261,11 @@ export const getPartialMarkdown = (
     } else {
       markdownText.push([token.content, token.markup].join(''));
     }
-    nextStart = nextStart + token.length;
+    nextStart += token.length;
     index++;
   }
-  // find the first and last tokens in the absolute range
-  const newText = markdownText.flat().join('');
+
+  const newText = markdownText.join('');
 
   return { html: replaceMarkdownToHtml(newText), text: newText };
 };

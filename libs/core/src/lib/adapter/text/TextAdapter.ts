@@ -36,6 +36,7 @@ export abstract class TextAdapter<
 > extends BaseAdapter<PARAMS> {
   textDirection: TextDirection;
   flatText: boolean;
+  fullFlatText: string;
   limit: Limit | null;
   style: TextAdapterStyle;
   textLength: number;
@@ -48,7 +49,18 @@ export abstract class TextAdapter<
    * @param text
    * @param startOffset
    */
-  abstract parse(text: string, startOffset: number): TextLine[];
+  abstract _parse(
+    text: string,
+    startOffset: number,
+  ): { lines: TextLine[]; flatText: string };
+
+  parse(text: string, startOffset: number): TextLine[] {
+    const parsed = this._parse(text, startOffset);
+    this.lines = parsed.lines;
+    this.fullFlatText = parsed.flatText;
+
+    return this.lines;
+  }
 
   getLimit(lines?: TextLine[]) {
     if (!this.limit) return null;
