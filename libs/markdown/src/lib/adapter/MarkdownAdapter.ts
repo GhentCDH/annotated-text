@@ -6,12 +6,12 @@ import {
   textLineSchema,
 } from '@ghentcdh/annotated-text';
 import { v4 as uuid4 } from 'uuid';
+import memoize from 'memoizee';
 import {
   getPartialMarkdownWithLimit,
   replaceMarkdownToHtml,
   stripHtmlFromText,
 } from './parser';
-import memoize from 'memoizee';
 
 /**
  * Computes the clamped start offset of a limit within a line.
