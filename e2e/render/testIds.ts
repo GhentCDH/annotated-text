@@ -5,6 +5,7 @@ export const renderMarkdownIds = {
   highlight_plain: 'markdown-plain-highlight',
   limit: 'markdown-limit-ignore-lines',
   limit_no_ignore: 'markdown-limit-NO-ignore-lines',
+  styling: 'markdown-styling',
 } as const;
 
 export type RenderMarkdownKeys = keyof typeof renderMarkdownIds;

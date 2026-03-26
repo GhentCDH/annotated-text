@@ -26,6 +26,14 @@ Every morning they claimed the same sunny spot on the couch, the parrot perched 
 
 Their bond reminded everyone nearby that friendship needs no explanation — only warmth, presence, and a willingness to share the light.`;
 
+const styledText = `# Feathers & Fur
+
+An unlikely *friendship* bloomed between a colorful **parrot** and a gentle **dog**. One spoke in squawks and mimicked laughter, the other communicated through tail wags and soft brown eyes. Yet somehow, without sharing a common language, they understood each other perfectly.
+
+Every morning they claimed the same sunny spot on the couch, the parrot perched boldly on the dog's broad back. The dog never minded. He simply sighed contentedly, as if carrying his feathered companion was the most natural thing in the world.
+
+Their bond reminded everyone nearby that friendship needs no explanation — only warmth, presence, and a willingness to share the light.`;
+
 const fullHtml = replaceMarkdownToHtml(markdownText);
 const fullFlatText = stripHtmlFromText(fullHtml);
 const annotations = [
@@ -37,6 +45,10 @@ const annotations = [
 ] as any;
 
 const configuration: Record<RenderMarkdownKeys, any> = {
+  styling: {
+    text: styledText,
+    adapter: MarkdownTextAdapter,
+  },
   underline: {
     text: markdownText,
     adapter: MarkdownTextAdapter,
@@ -122,6 +134,7 @@ const renderDifferentLineHeight = (
   }
 };
 
+renderDifferentLineHeight('styling', DefaultRenders.underline);
 renderDifferentLineHeight('underline', DefaultRenders.underline);
 renderDifferentLineHeight('highlight', DefaultRenders.highlight);
 renderDifferentLineHeight('highlight_wordsnapper', DefaultRenders.highlight);

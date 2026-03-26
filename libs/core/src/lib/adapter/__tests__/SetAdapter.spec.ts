@@ -1,9 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  setAnnotationAdapter,
-  setSnapperAdapter,
-  setTextAdapter,
-} from '../SetAdapter';
+import { setAnnotationAdapter, setSnapperAdapter, setTextAdapter } from '../SetAdapter';
 import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../annotation';
 import { type AnnotationModule } from '../../di/annotation.module';
@@ -147,20 +143,23 @@ describe('SetAdapter', () => {
       const { module } = createMockModule();
       const snapper = { setText: vi.fn() } as unknown as Snapper;
 
-      setSnapperAdapter(module, snapper, 'hello world');
+      setSnapperAdapter(module, snapper);
 
       expect(module.updateSnapper).toHaveBeenCalledWith(snapper);
     });
 
     it('should call setText with the text and annotationAdapter startOffset', () => {
       const mockAnnotationAdapter = new MockAnnotationAdapter({});
+      const mockTextAdapter = new MockTextAdapter({});
       mockAnnotationAdapter.startOffset = 5;
+      mockTextAdapter.fullFlatText = 'hello world';
       const { module } = createMockModule({
         annotationAdapter: mockAnnotationAdapter,
+        textAdapter: mockTextAdapter,
       });
       const snapper = { setText: vi.fn() } as unknown as Snapper;
 
-      setSnapperAdapter(module, snapper, 'hello world');
+      setSnapperAdapter(module, snapper);
 
       expect(snapper.setText).toHaveBeenCalledWith('hello world', 5);
     });
