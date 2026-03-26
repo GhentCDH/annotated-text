@@ -11,7 +11,7 @@ export const setTextAdapter = (
     adapterOrParams instanceof TextAdapter ||
     (adapterOrParams as any).TYPE === 'TextAdapter'
   ) {
-    annotationModule.updateTextAdapter(adapterOrParams);
+    annotationModule.updateTextAdapter(adapterOrParams as TextAdapter);
 
     return adapterOrParams;
   }
