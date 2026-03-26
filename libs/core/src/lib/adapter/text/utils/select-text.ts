@@ -8,11 +8,11 @@ export const selectText = memoizee(
     offset: number,
     prefixOffset = 10,
   ) => {
-    let exactStart = start - offset;
+    const exactStart = start - offset;
     let prefixStart = exactStart - prefixOffset;
     if (prefixStart < 0) prefixStart = 0;
 
-    let exactEnd = end - offset + 1;
+    const exactEnd = end - offset + 1;
     let suffixEnd = exactEnd + prefixOffset;
     if (suffixEnd > text.length) suffixEnd = text.length;
 
