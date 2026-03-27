@@ -1,3 +1,13 @@
+## 1.0.4 (2026-03-27)
+
+### 🩹 Fixes
+
+- markdown build externalize @ghentcdh/annotated-text ([776542d](https://github.com/GhentCDH/vue_component_annotated_text/commit/776542d))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 1.0.3 (2026-03-26)
 
 ### 🩹 Fixes
