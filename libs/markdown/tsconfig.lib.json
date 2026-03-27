@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/libs/core",
+    "outDir": "../../dist/libs/markdown",
     "declaration": true,
     "declarationMap": true,
     "importHelpers": true,

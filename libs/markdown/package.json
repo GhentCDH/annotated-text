@@ -13,7 +13,7 @@
   "types": "./index.d.ts",
   "exports": {
     ".": {
-      "require": "./index.js",
+      "require": "./index.cjs",
       "import": "./index.js"
     },
     "./package.json": "./package.json"
@@ -33,6 +33,6 @@
     "vitest": "4.0.9"
   },
   "peerDependencies": {
-    "@ghentcdh/annotated-text": "^1.0.0"
+    "@ghentcdh/annotated-text": "^1.0.3"
   }
 }

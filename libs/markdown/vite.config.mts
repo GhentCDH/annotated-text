@@ -7,7 +7,7 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
-  cacheDir: '../node_modules/.vite/markdown',
+  cacheDir: '../../node_modules/.vite/libs/markdown',
   plugins: [
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['*.md']),
@@ -24,7 +24,7 @@ export default defineConfig(() => ({
   // Configuration for building your library.
   // See: https://vite.dev/guide/build.html#library-mode
   build: {
-    outDir: '../dist/markdown',
+    outDir: '../../dist/libs/markdown',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -42,7 +42,7 @@ export default defineConfig(() => ({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: [],
+      external: ['@ghentcdh/annotated-text'],
     },
   },
   test: {
