@@ -1,9 +1,11 @@
+// @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
 import {
   replaceMarkdownToHtml,
   stripHtmlFromText,
   getPartialMarkdownWithLimit,
   selectTextFromMarkdown,
+  selectTextInMarkdown,
 } from '../parser';
 
 describe('parser', () => {
@@ -42,13 +44,18 @@ describe('parser', () => {
   });
 
   describe('stripHtmlFromText', () => {
-    it('should return empty string when no DOM is available', () => {
-      // In a node environment (no document), stripHtmlFromText falls back to empty string
-      expect(stripHtmlFromText('<p>hello</p>')).toBe('');
+    it('should strip HTML tags and return text content', () => {
+      expect(stripHtmlFromText('<p>hello</p>')).toBe('hello');
     });
 
     it('should return empty string for empty input', () => {
       expect(stripHtmlFromText('')).toBe('');
+    });
+
+    it('should strip nested HTML tags', () => {
+      expect(
+        stripHtmlFromText('<p>hello <strong>bold</strong> world</p>'),
+      ).toBe('hello bold world');
     });
   });
 
@@ -175,5 +182,65 @@ describe('parser', () => {
       const result = selectTextFromMarkdown('**bold** plain', 0, 4);
       expect(result.markdownText).toContain('bold');
     });
+  });
+
+  describe('selectTextInMarkdown', () => {
+    it('should return fullHtml, fullFlatText, prefix, exact, and suffix', () => {
+      const result = selectTextInMarkdown('hello world', 0, 4);
+      expect(result).toHaveProperty('fullHtml');
+      expect(result).toHaveProperty('fullFlatText');
+      expect(result).toHaveProperty('prefix');
+      expect(result).toHaveProperty('exact');
+      expect(result).toHaveProperty('suffix');
+    });
+
+    it('should render fullHtml from markdown', () => {
+      const result = selectTextInMarkdown('hello **bold** world', 0, 4);
+      expect(result.fullHtml.trim()).toBe(
+        '<p>hello <strong>bold</strong> world</p>',
+      );
+    });
+
+    it('should strip HTML to produce fullFlatText', () => {
+      const result = selectTextInMarkdown('hello **bold** world', 0, 4);
+      expect(result.fullFlatText).toBe('hello bold world\n');
+    });
+
+    it('should select the exact text from the plain text', () => {
+      const result = selectTextInMarkdown('hello world', 0, 4);
+      expect(result.exact).toBe('hello');
+    });
+
+    it('should return prefix and suffix around the selection', () => {
+      const result = selectTextInMarkdown('hello world', 6, 10);
+      expect(result.prefix).toBe('hello ');
+      expect(result.exact).toBe('world');
+      expect(result.suffix).toBe('\n');
+    });
+
+    it('should apply startOffset to shift the selection range', () => {
+      const result = selectTextInMarkdown('hello world', 10, 14, 10);
+      expect(result.exact).toBe('hello');
+    });
+
+    it('should select text that spans markdown formatting', () => {
+      const result = selectTextInMarkdown('hello **bold** world', 6, 9);
+      expect(result.exact).toBe('bold');
+    });
+
+    it.each`
+      markdown                        | start | end   | expected
+      ${'hello world'}                | ${0}  | ${4}  | ${'hello'}
+      ${'hello world'}                | ${6}  | ${10} | ${'world'}
+      ${'**bold** plain'}             | ${0}  | ${3}  | ${'bold'}
+      ${'*italic* text'}              | ${0}  | ${5}  | ${'italic'}
+      ${'start **middle** end'}       | ${6}  | ${11} | ${'middle'}
+    `(
+      'should select "$expected" from "$markdown" at [$start, $end]',
+      ({ markdown, start, end, expected }) => {
+        const result = selectTextInMarkdown(markdown, start, end);
+        expect(result.exact).toBe(expected);
+      },
+    );
   });
 });
