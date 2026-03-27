@@ -1,3 +1,13 @@
+## 1.0.5 (2026-03-27)
+
+### 🚀 Features
+
+- markdown - selectText In Markdown externalise ([#198](https://github.com/GhentCDH/vue_component_annotated_text/pull/198))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.0.4 (2026-03-27)
 
 ### 🩹 Fixes
