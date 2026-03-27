@@ -58,3 +58,25 @@ const result = selectTextFromMarkdown(text, start, end, offset);
 | `start` | `number` | | Start character index of the selection |
 | `end` | `number` | | End character index of the selection |
 | `offset` | `number` | `0` | Character offset to shift the selection range |
+
+## `selectTextInMarkdown`
+
+Selects a text range from markdown by converting it to plain text first. Converts the markdown to HTML, strips the HTML to get flat text, then extracts a prefix/exact/suffix selection around the given character range.
+
+```typescript
+import { selectTextInMarkdown } from '@ghentcdh/annotated-text--markdown';
+
+const result = selectTextInMarkdown(markdown, start, end, startOffset);
+// result.fullHtml     - full markdown rendered as HTML
+// result.fullFlatText - full plain text (HTML stripped)
+// result.prefix       - text before the exact selection
+// result.exact        - the selected text
+// result.suffix       - text after the exact selection
+```
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `markdown` | `string` | | The raw markdown source text |
+| `start` | `number` | | Start character index of the selection (in plain text coordinates) |
+| `end` | `number` | | End character index of the selection (in plain text coordinates) |
+| `startOffset` | `number` | `0` | Character offset to shift the selection range |

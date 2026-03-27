@@ -1,4 +1,5 @@
 import markdownit, { type Token } from 'markdown-it';
+import { selectText } from '@ghentcdh/annotated-text';
 
 type Limit = {
   start: number;
@@ -232,4 +233,33 @@ export const selectTextFromMarkdown = (
   offset = 0,
 ) => {
   return getPartialMarkdownWithLimit(text, { start, end }, offset);
+};
+
+/**
+ * Selects a text range from markdown by converting it to plain text first.
+ * Converts the markdown to HTML, strips the HTML to get flat text, then
+ * extracts a prefix/exact/suffix selection around the given character range.
+ *
+ * @param markdown - The raw markdown source text
+ * @param start - Start character index of the selection (in plain text coordinates)
+ * @param end - End character index of the selection (in plain text coordinates)
+ * @param startOffset - Character offset to shift the selection range (default: 0)
+ * @returns Object containing `fullHtml`, `fullFlatText`, `prefix`, `exact`, and `suffix`
+ */
+export const selectTextInMarkdown = (
+  markdown: string,
+  start: number,
+  end: number,
+  startOffset = 0,
+) => {
+  const fullHtml = replaceMarkdownToHtml(markdown);
+  const fullFlatText = stripHtmlFromText(fullHtml);
+
+  const selection = selectText(fullFlatText, start, end, startOffset);
+
+  return {
+    fullHtml,
+    fullFlatText,
+    ...selection,
+  };
 };
