@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "release": "git checkout main && git pull && node tools/release/release.mjs"
+    "release": "git checkout main && git pull && node libs/w3c/utils/src/lib/annotation/tools/release/release.mjs"
   },
   "dependencies": {
     "d3": "7.9.0",
@@ -33,7 +33,7 @@
     "rbush": "4.0.1",
     "tokenizr": "2.1.0",
     "uuid": "13.0.0",
-    "zod": "4.1.12"
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@babel/types": "^7.28.5",

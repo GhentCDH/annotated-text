@@ -1,10 +1,19 @@
 import { describe, expect, it, vi } from 'vitest';
 import { w3cAnnotation, W3CAnnotationBuilder } from '../annotation.builder';
+import {
+  isW3CTextualBody,
+  isW3CCustomBody,
+  getTextualBodies,
+  getCustomBodies,
+  getBodies,
+} from '../annotation-helpers';
 import type {
   W3CAnnotation,
+  W3CBody,
   W3CSpecificResource,
   W3CTextualBody,
 } from '../annotation.schema';
+import { W3CTextualBody as W3CTextualBodySchema } from '../annotation.schema';
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -56,6 +65,30 @@ describe('W3CAnnotationBuilder', () => {
 
       expect(minimalAnnotation.id).toBe('https://example.org/anno/1');
       expect(builder.peek().id).toBe('https://example.org/anno/changed');
+    });
+  });
+
+  describe('clone', () => {
+    it('should return a new builder with the same state', () => {
+      const original = w3cAnnotation()
+        .setId('https://example.org/anno/1')
+        .setMotivation('oa:commenting')
+        .setTarget('https://example.org/doc');
+
+      const clone = original.clone();
+      expect(clone).not.toBe(original);
+      expect(clone.peek()).toEqual(original.peek());
+    });
+
+    it('should not be affected by changes to the original', () => {
+      const original = w3cAnnotation()
+        .setId('https://example.org/anno/1')
+        .setTarget('https://example.org/doc');
+
+      const clone = original.clone();
+      original.setId('https://example.org/anno/changed');
+
+      expect(clone.peek().id).toBe('https://example.org/anno/1');
     });
   });
 
@@ -432,6 +465,154 @@ describe('W3CAnnotationBuilder', () => {
           purpose: 'oa:tagging',
         });
       });
+    });
+  });
+
+  describe('TextualBody with extended type array', () => {
+    it('should validate a TextualBody with type as an array including custom IRI', () => {
+      const body = {
+        type: ['TextualBody', 'https://my-app.example.org/types/type-1'],
+        format: 'application/json',
+        value:
+          '{"register":{"id":"mela:register:7979e83f","label":"test"}}',
+      };
+      const result = W3CTextualBodySchema.safeParse(body);
+      expect(result.success).toBe(true);
+    });
+
+    it('should validate a TextualBody with @context and prefixed type', () => {
+      const body = {
+        '@context': [
+          'http://www.w3.org/ns/anno.jsonld',
+          { myapp: 'https://my-app.example.org/types/' },
+        ],
+        type: ['TextualBody', 'myapp:type-1'],
+        format: 'application/json',
+        value:
+          '{"register":{"id":"mela:register:7979e83f","label":"test"}}',
+      };
+      const result = W3CTextualBodySchema.safeParse(body);
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject a type array that does not include "TextualBody"', () => {
+      const body = {
+        type: ['https://my-app.example.org/types/type-1'],
+        value: 'some value',
+      };
+      const result = W3CTextualBodySchema.safeParse(body);
+      expect(result.success).toBe(false);
+    });
+
+    it('should recognise extended TextualBody via isW3CTextualBody guard', () => {
+      const body: W3CBody = {
+        type: ['TextualBody', 'https://my-app.example.org/types/type-1'],
+        format: 'application/json',
+        value:
+          '{"register":{"id":"mela:register:7979e83f","label":"test"}}',
+      };
+      expect(isW3CTextualBody(body)).toBe(true);
+    });
+
+    it('should set an extended TextualBody via the builder', () => {
+      const body: W3CTextualBody = {
+        type: ['TextualBody', 'https://my-app.example.org/types/type-1'],
+        format: 'application/json',
+        value:
+          '{"register":{"id":"mela:register:7979e83f","label":"test"}}',
+      };
+      const state = w3cAnnotation().setBody(body).peek();
+      expect(state.body).toEqual(body);
+    });
+
+    it('should retrieve extended TextualBodies via getTextualBodies', () => {
+      const body: W3CTextualBody = {
+        type: ['TextualBody', 'https://my-app.example.org/types/type-1'],
+        format: 'application/json',
+        value: '{"key":"value"}',
+        purpose: 'oa:classifying',
+      };
+      const ann: W3CAnnotation = {
+        '@context': 'http://www.w3.org/ns/anno.jsonld',
+        type: 'Annotation',
+        id: 'https://example.org/anno/1',
+        target: SOURCE_URI,
+        body,
+      };
+      const bodies = getTextualBodies('oa:classifying')(ann);
+      expect(bodies).toHaveLength(1);
+      expect(bodies[0].value).toBe('{"key":"value"}');
+    });
+
+    it('should build a valid annotation with extended TextualBody', () => {
+      const body: W3CTextualBody = {
+        '@context': [
+          'http://www.w3.org/ns/anno.jsonld',
+          { myapp: 'https://my-app.example.org/types/' },
+        ],
+        type: ['TextualBody', 'myapp:type-1'],
+        format: 'application/json',
+        value: '{"key":"value"}',
+      };
+      const annotation = w3cAnnotation()
+        .setId('https://example.org/anno/1')
+        .setTarget(SOURCE_URI)
+        .setBody(body)
+        .build();
+
+      expect(annotation.body).toEqual(body);
+    });
+  });
+
+  describe('custom body (W3CCustomBody)', () => {
+    const customBody = {
+      definition: 'uri:my-app/type-1',
+      format: 'application/json',
+      value:
+        '{"register":{"id":"mela:register:7979e83f","label":"test"}}',
+    };
+
+    it('should recognise a custom body via isW3CCustomBody guard', () => {
+      expect(isW3CCustomBody(customBody as W3CBody)).toBe(true);
+    });
+
+    it('should not recognise a TextualBody as custom', () => {
+      const textual: W3CBody = {
+        type: 'TextualBody',
+        value: 'hello',
+      };
+      expect(isW3CCustomBody(textual)).toBe(false);
+    });
+
+    it('should set a custom body via the builder', () => {
+      const state = w3cAnnotation().setBody(customBody as W3CBody).peek();
+      expect(state.body).toEqual(customBody);
+    });
+
+    it('should retrieve custom bodies via getCustomBodies', () => {
+      const ann: W3CAnnotation = {
+        '@context': 'http://www.w3.org/ns/anno.jsonld',
+        type: 'Annotation',
+        id: 'https://example.org/anno/1',
+        target: SOURCE_URI,
+        body: [
+          { type: 'TextualBody', value: 'a comment' },
+          customBody as W3CBody,
+        ],
+      };
+      const customs = getCustomBodies()(ann);
+      expect(customs).toHaveLength(1);
+      expect(customs[0]).toEqual(customBody);
+    });
+
+    it('should build a valid annotation with a custom body', () => {
+      const annotation = w3cAnnotation()
+        .setId('https://example.org/anno/1')
+        .setTarget(SOURCE_URI)
+        .setBody(customBody as W3CBody)
+        .build();
+
+      expect(annotation.body).toEqual(customBody);
     });
   });
 

@@ -3,6 +3,7 @@ import type {
   W3CAnnotation,
   W3CBody,
   W3CBodyChoice,
+  W3CCustomBody,
   W3CExternalResource,
   W3CMotivation,
   W3CSelector,
@@ -62,6 +63,14 @@ export const isW3CBodyChoice = (b: W3CBody): b is W3CBodyChoice =>
 
 export const isW3CIriTarget = (t: W3CTarget): t is string => isString(t);
 export const isW3CIriBody = (b: W3CBody): b is string => isString(b);
+
+/** True when the body is a plain object that does not match any known body type */
+export const isW3CCustomBody = (b: W3CBody): b is W3CCustomBody =>
+  !isString(b) &&
+  !isW3CTextualBody(b) &&
+  !isW3CSpecificResource(b) &&
+  !isW3CExternalResource(b) &&
+  !isW3CBodyChoice(b);
 
 // Selector guards
 export const isW3CTextQuoteSelector = (s: W3CSelector) =>
@@ -135,6 +144,12 @@ export const getIriBodies =
   (ann: W3CAnnotation): string[] =>
     getBodies(ann).filter(isW3CIriBody);
 
+/** Get custom (application-specific) bodies */
+export const getCustomBodies =
+  () =>
+  (ann: W3CAnnotation): W3CCustomBody[] =>
+    getBodies(ann).filter(isW3CCustomBody);
+
 // ---------------------------------------------------------------------------
 // Curried target accessors  getTarget(type)(annotation)
 // ---------------------------------------------------------------------------
@@ -167,6 +182,7 @@ type BodyType =
   | 'SpecificResource'
   | 'ExternalResource'
   | 'Choice'
+  | 'Custom'
   | 'Iri';
 
 /** Curried generic target accessor by type string */
@@ -199,6 +215,8 @@ export const getBody =
       case 'Choice':
         // re-inspect raw bodies (before Choice expansion)
         return toArray(ann.body).filter(isW3CBodyChoice);
+      case 'Custom':
+        return bodies.filter(isW3CCustomBody);
       case 'Iri':
         return bodies.filter(isW3CIriBody);
     }

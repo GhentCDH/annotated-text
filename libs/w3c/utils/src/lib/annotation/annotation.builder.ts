@@ -51,7 +51,6 @@ const normaliseTargets = (ann: Partial<W3CAnnotation>): W3CTarget[] =>
 const normaliseBodies = (ann: Partial<W3CAnnotation>): W3CBody[] =>
   toArray(ann.body as W3CBody | W3CBody[]);
 
-
 /** Concatenate two single-or-array fields, collapsing single-element results */
 const concatFields = <T>(
   a: T | T[] | undefined,
@@ -124,6 +123,15 @@ export class W3CAnnotationBuilder {
   }
 
   // -------------------------------------------------------------------------
+  // Clone
+  // -------------------------------------------------------------------------
+
+  /** Return a deep copy of this builder */
+  clone(): W3CAnnotationBuilder {
+    return new W3CAnnotationBuilder(deepClone(this.state) as W3CAnnotation);
+  }
+
+  // -------------------------------------------------------------------------
   // Identity
   // -------------------------------------------------------------------------
 
@@ -134,6 +142,22 @@ export class W3CAnnotationBuilder {
 
   setContext(ctx: 'http://www.w3.org/ns/anno.jsonld' | string[]): this {
     this.state['@context'] = ctx;
+    return this;
+  }
+
+  /** Add a context entry, converting to array if needed (deduplicates) */
+  addContext(ctx: 'http://www.w3.org/ns/anno.jsonld' | string): this {
+    const current = this.state['@context'];
+    const arr: string[] = current === undefined
+      ? []
+      : Array.isArray(current)
+        ? [...current]
+        : [current];
+    if (!arr.includes(ctx)) arr.push(ctx);
+    this.state['@context'] =
+      arr.length === 1
+        ? (arr[0] as 'http://www.w3.org/ns/anno.jsonld')
+        : arr;
     return this;
   }
 
@@ -369,7 +393,6 @@ export class W3CAnnotationBuilder {
     return this;
   }
 
-
   // -------------------------------------------------------------------------
   // Merge
   // -------------------------------------------------------------------------
@@ -391,8 +414,7 @@ export class W3CAnnotationBuilder {
     if (source.type !== undefined) this.state.type = source.type;
     if (source.created !== undefined) this.state.created = source.created;
     if (source.modified !== undefined) this.state.modified = source.modified;
-    if (source.generated !== undefined)
-      this.state.generated = source.generated;
+    if (source.generated !== undefined) this.state.generated = source.generated;
     if (source.canonical !== undefined) this.state.canonical = source.canonical;
     if (source.stylesheet !== undefined)
       this.state.stylesheet = source.stylesheet;
