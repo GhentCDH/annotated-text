@@ -1,6 +1,6 @@
-import { contextBuilder } from '../context.builder';
 import { expect } from 'vitest';
 import { z } from 'zod';
+import { contextBuilder } from '../context.builder';
 
 describe('ContextBuilder', () => {
   const builder = contextBuilder('annotation', 'http://localhost:3000');

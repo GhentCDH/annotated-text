@@ -1,4 +1,4 @@
-import { z, ZodArray, ZodObject, ZodTypeAny } from 'zod';
+import { z, type ZodArray, type ZodObject, type ZodTypeAny } from 'zod';
 import type { ContextBuilder } from './context.builder';
 import type { JsonLdContext, JsonLdMeta, JsonSchema } from './context.schema';
 

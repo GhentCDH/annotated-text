@@ -1,4 +1,4 @@
-import { z, ZodObject } from 'zod';
+import { z, type ZodObject } from 'zod';
 import { buildJsonLdContext } from './context-helpers.jsonld';
 import { buildJsonFormSchema } from './context.helpers.json';
 import { toAnnotationBody } from './context.helpers';
@@ -10,7 +10,7 @@ const parsePrefix = (prefix: string, uri: string) => {
 export class ContextBuilder<T extends z.ZodRawShape = z.ZodRawShape> {
   private prefixes: Record<string, string> = {};
   private _schema: ZodObject<T> | undefined;
-  private type: string = 'unknown';
+  private type = 'unknown';
 
   /** Add a prefix mapping, e.g. addPrefix('myapp', 'https://example.org/ns/') */
   addPrefix(prefix: string, uri: string): this {

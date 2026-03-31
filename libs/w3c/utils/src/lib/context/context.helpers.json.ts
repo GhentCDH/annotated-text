@@ -1,4 +1,4 @@
-import { ZodObject } from 'zod';
+import { type ZodObject } from 'zod';
 
 /**
  * If a property has `anyOf: [{type: T}, {type: "null"}]` (produced by Zod's `.nullable()`),
