@@ -1,8 +1,8 @@
 import { type ZodObject } from 'zod';
 
 /**
- * If a property has `anyOf: [{type: T}, {type: "null"}]` (produced by Zod's `.nullable()`),
- * collapse it to `{type: T}` so JSON Forms testers (e.g. `schemaTypeIs('string')`) match correctly.
+ * Simplify a Zod-generated `anyOf: [{type: T}, {type: "null"}]` (from `.nullable()`)
+ * into a flat `{type: T}` so JSON Forms type testers match correctly.
  */
 const simplifyNullableAnyOf = (property: Record<string, unknown>): void => {
   const anyOf = property['anyOf'];
@@ -21,6 +21,16 @@ const simplifyNullableAnyOf = (property: Record<string, unknown>): void => {
   }
 };
 
+/**
+ * Generate a JSON Schema (draft-07) from a Zod object schema.
+ *
+ * - Targets draft-07 for compatibility with JSON Forms
+ * - Sets `additionalProperties: true` on the root schema
+ * - Simplifies nullable `anyOf` patterns to flat type definitions
+ *
+ * @param schema - The Zod object schema to convert
+ * @returns A JSON Schema object
+ */
 export const buildJsonFormSchema = (schema: ZodObject<any>) => {
   const jsonSchema = schema.toJSONSchema({
     unrepresentable: 'any',
