@@ -123,7 +123,7 @@ export class ContextBuilder<T extends z.ZodRawShape = z.ZodRawShape> {
    * @returns The parsed and validated data
    */
   parse(data: unknown) {
-    return this.toZod()?.parse(data);
+    return this.toZod()?.parse(data) ?? null;
   }
 
   /**
@@ -133,7 +133,9 @@ export class ContextBuilder<T extends z.ZodRawShape = z.ZodRawShape> {
    * @returns A result object with `success`, `data`, and `error` fields
    */
   safeParse(data: unknown) {
-    return this.toZod()?.safeParse(data);
+    const zod = this.toZod();
+    if (!zod) return { success: true, data: null };
+    return zod.safeParse(data);
   }
 
   /**
