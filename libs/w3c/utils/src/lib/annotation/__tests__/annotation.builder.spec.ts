@@ -697,6 +697,43 @@ describe('W3CAnnotationBuilder', () => {
   });
 
   describe('read / inspect', () => {
+    describe('getBodiesByType', () => {
+      it('should return bodies matching a type string', () => {
+        const builder = w3cAnnotation()
+          .setBody([
+            { type: 'TextualBody', value: 'hello' },
+            { type: 'SpecificResource', source: 'https://example.org' },
+          ]);
+        const results = builder.getBodiesByType('TextualBody');
+        expect(results).toHaveLength(1);
+        expect((results[0] as any).value).toBe('hello');
+      });
+
+      it('should match when type is an array', () => {
+        const builder = w3cAnnotation()
+          .setBody({
+            type: ['TextualBody', 'https://example.org/types/custom'],
+            value: 'hello',
+          } as any);
+        expect(builder.getBodiesByType('TextualBody')).toHaveLength(1);
+        expect(
+          builder.getBodiesByType('https://example.org/types/custom'),
+        ).toHaveLength(1);
+      });
+
+      it('should return empty array when no bodies match', () => {
+        const builder = w3cAnnotation()
+          .setBody({ type: 'TextualBody', value: 'hello' });
+        expect(builder.getBodiesByType('SpecificResource')).toHaveLength(0);
+      });
+
+      it('should skip IRI string bodies', () => {
+        const builder = w3cAnnotation()
+          .setBody('https://example.org/body' as any);
+        expect(builder.getBodiesByType('TextualBody')).toHaveLength(0);
+      });
+    });
+
     describe('getTextQuoteSelector', () => {
       it('should return all TextQuoteSelectors', () => {
         const builder = w3cAnnotation(annotationWithSpecificResource);

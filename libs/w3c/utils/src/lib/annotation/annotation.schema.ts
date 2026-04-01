@@ -230,7 +230,7 @@ export const W3CTextualBody = W3CResourceProperties.extend({
   type: W3CTextualBodyType,
   value: z.string(),
   purpose: z.union([W3CMotivation, z.array(W3CMotivation)]).optional(),
-});
+}).passthrough();
 
 export type W3CTextualBody = z.infer<typeof W3CTextualBody>;
 
@@ -246,7 +246,7 @@ export const W3CSpecificResource = W3CResourceProperties.extend({
   styleClass: z.string().optional(),
   renderedVia: z.union([W3CAgent, z.array(W3CAgent)]).optional(),
   purpose: z.union([W3CMotivation, z.array(W3CMotivation)]).optional(),
-});
+}).passthrough();
 
 export type W3CSpecificResource = z.infer<typeof W3CSpecificResource>;
 
@@ -258,7 +258,7 @@ export const W3CExternalResource = W3CResourceProperties.extend({
   id: W3CIri,
   type: z.union([z.string(), z.array(z.string())]).optional(),
   purpose: z.union([W3CMotivation, z.array(W3CMotivation)]).optional(),
-});
+}).passthrough();
 
 export type W3CExternalResource = z.infer<typeof W3CExternalResource>;
 

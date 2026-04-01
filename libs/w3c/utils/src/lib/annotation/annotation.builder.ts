@@ -532,6 +532,19 @@ export class W3CAnnotationBuilder {
   }
 
   /**
+   * Return all bodies whose `type` matches the given type string.
+   * Handles both single-string and array-of-strings `type` fields.
+   */
+  getBodiesByType(type: string): W3CBody[] {
+    return normaliseBodies(this.state).filter((b) => {
+      if (typeof b === 'string') return false;
+      const t = (b as { type?: string | string[] }).type;
+      if (t === undefined) return false;
+      return Array.isArray(t) ? t.includes(type) : t === type;
+    });
+  }
+
+  /**
    * Return all bodies that have a matching `purpose`.
    * When no purpose is provided, returns all bodies that have any purpose set.
    */
