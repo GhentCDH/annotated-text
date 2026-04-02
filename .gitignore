@@ -60,3 +60,4 @@ test-results
 
 .claude/worktrees
 .claude/settings.local.json
+.nx/polygraph

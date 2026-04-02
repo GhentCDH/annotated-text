@@ -186,8 +186,17 @@ export type W3CAudience = z.infer<typeof W3CAudience>;
 // Resource (shared properties used by bodies & targets)
 // ---------------------------------------------------------------------------
 
+/** JSON-LD @context — a single IRI or an array of IRIs / context objects */
+export const W3CJsonLdContext = z.union([
+  z.string(),
+  z.array(z.union([z.string(), z.record(z.string(), z.string())])),
+]);
+
+export type W3CJsonLdContext = z.infer<typeof W3CJsonLdContext>;
+
 /** Common descriptive properties shared by Body and Target resources */
 export const W3CResourceProperties = z.object({
+  '@context': W3CJsonLdContext.optional(),
   id: W3CIri.optional(),
   format: z.union([z.string(), z.array(z.string())]).optional(),
   language: z.union([W3CLanguageTag, z.array(W3CLanguageTag)]).optional(),
@@ -208,11 +217,20 @@ export const W3CResourceProperties = z.object({
 // Textual Body (§3.2.4)
 // ---------------------------------------------------------------------------
 
+export const W3CTextualBodyType = z.union([
+  z.literal('TextualBody'),
+  z
+    .array(z.string())
+    .refine((arr) => arr.includes('TextualBody'), {
+      message: 'Type array must include "TextualBody"',
+    }),
+]);
+
 export const W3CTextualBody = W3CResourceProperties.extend({
-  type: z.literal('TextualBody'),
+  type: W3CTextualBodyType,
   value: z.string(),
   purpose: z.union([W3CMotivation, z.array(W3CMotivation)]).optional(),
-});
+}).passthrough();
 
 export type W3CTextualBody = z.infer<typeof W3CTextualBody>;
 
@@ -228,7 +246,7 @@ export const W3CSpecificResource = W3CResourceProperties.extend({
   styleClass: z.string().optional(),
   renderedVia: z.union([W3CAgent, z.array(W3CAgent)]).optional(),
   purpose: z.union([W3CMotivation, z.array(W3CMotivation)]).optional(),
-});
+}).passthrough();
 
 export type W3CSpecificResource = z.infer<typeof W3CSpecificResource>;
 
@@ -240,7 +258,7 @@ export const W3CExternalResource = W3CResourceProperties.extend({
   id: W3CIri,
   type: z.union([z.string(), z.array(z.string())]).optional(),
   purpose: z.union([W3CMotivation, z.array(W3CMotivation)]).optional(),
-});
+}).passthrough();
 
 export type W3CExternalResource = z.infer<typeof W3CExternalResource>;
 
@@ -258,15 +276,25 @@ export const W3CBodyChoice = z.object({
 export type W3CBodyChoice = z.infer<typeof W3CBodyChoice>;
 
 // ---------------------------------------------------------------------------
+// Custom Body — catch-all for application-specific body objects
+// ---------------------------------------------------------------------------
+
+export const W3CCustomBody = z.record(z.string(), z.unknown());
+
+export type W3CCustomBody = z.infer<typeof W3CCustomBody>;
+
+// ---------------------------------------------------------------------------
 // Body (§3.2)
 // ---------------------------------------------------------------------------
 
-/** A body is either a TextualBody, SpecificResource, ExternalResource, or a Choice */
+/** A body is either a TextualBody, SpecificResource, ExternalResource, Choice, custom object, or a plain IRI */
 export const W3CBody = z.union([
   W3CTextualBody,
   W3CSpecificResource,
   W3CExternalResource,
   W3CBodyChoice,
+  /** Application-specific custom body */
+  W3CCustomBody,
   /** Simple IRI body */
   W3CIri,
 ]);
