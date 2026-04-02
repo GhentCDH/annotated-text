@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "release": "git checkout main && git pull && node libs/w3c/utils/src/lib/annotation/tools/release/release.mjs"
+    "release": "git checkout main && git pull && npx nx release"
   },
   "dependencies": {
     "d3": "7.9.0",
