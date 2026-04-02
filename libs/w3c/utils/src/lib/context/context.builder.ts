@@ -146,7 +146,10 @@ export class ContextBuilder<T extends z.ZodRawShape = z.ZodRawShape> {
    * @param purpose - Optional annotation purpose (e.g. `"oa:tagging"`)
    * @returns A W3C annotation body object
    */
-  toAnnotationBody(data: unknown, purpose?: string): Record<string, unknown> {
+  toAnnotationBody(
+    data: unknown,
+    purpose?: string,
+  ): Record<string, unknown> | null {
     const parsed = this.parse(data);
     return toAnnotationBody(parsed as any, this.type, purpose);
   }

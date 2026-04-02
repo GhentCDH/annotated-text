@@ -111,7 +111,7 @@ Use `.toJsonLdContext()` to produce the `@context` object for JSON-LD serializat
 - `id` and `type` are mapped to `@id` and `@type`
 - Scalar properties become compact IRIs (e.g. `"label": "annotation:label"`)
 - Nested objects use expanded term definitions with `@type: '@id'`
-- Arrays of objects include `@container: '@set'`
+- Arrays of objects are unwrapped and treated as nested objects
 
 ```typescript
 const jsonLdContext = builder.toJsonLdContext();
@@ -164,12 +164,12 @@ const jsonSchema = builder.toJsonSchema();
 
 ## From JSON Schema
 
-You can also create a builder from an existing JSON Schema using `.parseFromJsonSchema()`:
+You can also create a builder from an existing JSON Schema using `.parseJsonSchema()`:
 
 ```typescript
 const builder = contextBuilder('annotation', 'http://localhost:3000');
 
-builder.setType('annotation', 'example').parseFromJsonSchema({
+builder.setType('annotation', 'example').parseJsonSchema({
   type: 'object',
   required: ['register'],
   properties: {
@@ -206,7 +206,7 @@ builder.setType('annotation', 'example').parseFromJsonSchema({
 | Method | Description |
 |---|---|
 | `parseZodSchema(schema)` | Set a `z.object()` schema for validation and context generation |
-| `parseFromJsonSchema(schema)` | Set a schema from a JSON Schema object |
+| `parseJsonSchema(schema)` | Set a schema from a JSON Schema object |
 
 ### Outputs
 
