@@ -1,3 +1,14 @@
+## 1.0.6 (2026-04-20)
+
+### 🚀 Features
+
+- w3c utils add custom context ([#199](https://github.com/GhentCDH/vue_component_annotated_text/pull/199))
+- update anntoation-builder ([ec98eae](https://github.com/GhentCDH/vue_component_annotated_text/commit/ec98eae))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.0.5 (2026-03-27)
 
 ### 🚀 Features
