@@ -466,6 +466,78 @@ describe('W3CAnnotationBuilder', () => {
         });
       });
     });
+
+    describe('updateBodyByType', () => {
+      it('should add a body when no matching type exists', () => {
+        const state = w3cAnnotation()
+          .updateBodyByType('AnnotationStyle', {
+            type: 'AnnotationStyle',
+            id: 'paragraph',
+            name: 'Paragraph',
+          })
+          .peek();
+
+        expect(state.body).toStrictEqual({
+          type: 'AnnotationStyle',
+          id: 'paragraph',
+          name: 'Paragraph',
+        });
+      });
+
+      it('should replace a body with the same type', () => {
+        const state = w3cAnnotation()
+          .updateBodyByType('AnnotationStyle', {
+            type: 'AnnotationStyle',
+            id: 'paragraph',
+            name: 'Paragraph',
+          })
+          .updateBodyByType('AnnotationStyle', {
+            type: 'AnnotationStyle',
+            id: 'heading',
+            name: 'Heading',
+          })
+          .peek();
+
+        expect(state.body).toStrictEqual({
+          type: 'AnnotationStyle',
+          id: 'heading',
+          name: 'Heading',
+        });
+      });
+
+      it('should not replace bodies of a different type', () => {
+        const state = w3cAnnotation()
+          .updateTextualBody('hello', 'oa:commenting')
+          .updateBodyByType('AnnotationStyle', {
+            type: 'AnnotationStyle',
+            id: 'paragraph',
+          })
+          .peek();
+
+        const bodies = state.body as W3CBody[];
+        expect(bodies).toHaveLength(2);
+        expect((bodies[0] as W3CTextualBody).value).toBe('hello');
+        expect((bodies[1] as any).type).toBe('AnnotationStyle');
+      });
+
+      it('should match when type is an array', () => {
+        const state = w3cAnnotation()
+          .setBody({
+            type: ['AnnotationStyle', 'CustomType'],
+            id: 'old',
+          } as any)
+          .updateBodyByType('AnnotationStyle', {
+            type: 'AnnotationStyle',
+            id: 'new',
+          })
+          .peek();
+
+        expect(state.body).toStrictEqual({
+          type: 'AnnotationStyle',
+          id: 'new',
+        });
+      });
+    });
   });
 
   describe('TextualBody with extended type array', () => {

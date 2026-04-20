@@ -64,6 +64,14 @@ const concatFields = <T>(
       : merged;
 };
 
+/** Check if a body's `type` matches a given type string (supports array types) */
+const matchesBodyType = (b: W3CBody, type: string): boolean => {
+  if (typeof b === 'string') return false;
+  const t = (b as { type?: string | string[] }).type;
+  if (t === undefined) return false;
+  return Array.isArray(t) ? t.includes(type) : t === type;
+};
+
 /** Like concatFields but deduplicates primitive (string) values */
 const concatUniqueFields = <T extends string>(
   a: T | T[] | undefined,
@@ -314,25 +322,31 @@ export class W3CAnnotationBuilder {
       ...extras,
     };
 
-    const current = normaliseBodies(this.state);
-
     if (!purpose) {
-      // No purpose filter — just prepend/replace first TextualBody
-      const idx = current.findIndex(isW3CTextualBody);
-      const next =
-        idx === -1
-          ? [...current, body]
-          : current.map((b, i) => (i === idx ? body : b));
-      this.state.body = next.length === 1 ? next[0] : next;
-      return this;
+      return this.updateBodyByType('TextualBody', body);
     }
 
     // Replace the TextualBody with the same purpose
+    const current = normaliseBodies(this.state);
     const idx = current.findIndex(
       (b) =>
         isW3CTextualBody(b) &&
         toArray((b as W3CTextualBody).purpose).includes(purpose),
     );
+    const next =
+      idx === -1
+        ? [...current, body]
+        : current.map((b, i) => (i === idx ? body : b));
+    this.state.body = next.length === 1 ? next[0] : next;
+
+    return this;
+  }
+
+  /** Add or replace a body matching the given `type` */
+  updateBodyByType(type: string, body: W3CBody): this {
+    const current = normaliseBodies(this.state);
+    const idx = current.findIndex((b) => matchesBodyType(b, type));
+
     const next =
       idx === -1
         ? [...current, body]
@@ -536,12 +550,7 @@ export class W3CAnnotationBuilder {
    * Handles both single-string and array-of-strings `type` fields.
    */
   getBodiesByType(type: string): W3CBody[] {
-    return normaliseBodies(this.state).filter((b) => {
-      if (typeof b === 'string') return false;
-      const t = (b as { type?: string | string[] }).type;
-      if (t === undefined) return false;
-      return Array.isArray(t) ? t.includes(type) : t === type;
-    });
+    return normaliseBodies(this.state).filter((b) => matchesBodyType(b, type));
   }
 
   /**
