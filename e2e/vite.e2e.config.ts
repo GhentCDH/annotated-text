@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite';
-import istanbul from 'vite-plugin-istanbul';
+// import istanbul from 'vite-plugin-istanbul';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import dts from 'vite-plugin-dts';
 import { fileURLToPath } from 'url';
-import path, { dirname, resolve } from 'path';
+import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,32 +13,32 @@ export default defineConfig({
   root: __dirname,
   plugins: [
     nxViteTsPaths(),
-    dts({
-      entryRoot: 'src',
-      tsconfigPath: path.join(__dirname, '../libs/core/tsconfig.lib.json'),
-      pathsToAliases: false,
-    }),
-    ...(isCoverage
-      ? [
-          istanbul({
-            include: ['src/**/*.ts'],
-            exclude: [
-              'node_modules/**',
-              'e2e/**/*',
-              '**/*.spec.ts',
-              '**/*.test.ts',
-              '**/*.scss',
-              '**/*.css',
-              '**/style/**',
-              '**/index.e2e.ts',
-            ],
-            extension: ['.ts'],
-            requireEnv: false,
-            forceBuildInstrument: true,
-            cwd: resolve(__dirname, '../libs/core'),
-          }),
-        ]
-      : []),
+    // dts({
+    //   entryRoot: 'src',
+    //   tsconfigPath: path.join(__dirname, '../libs/core/tsconfig.lib.json'),
+    //   pathsToAliases: false,
+    // }),
+    // ...(isCoverage
+    //   ? [
+    //       istanbul({
+    //         include: ['src/**/*.ts'],
+    //         exclude: [
+    //           'node_modules/**',
+    //           'e2e/**/*',
+    //           '**/*.spec.ts',
+    //           '**/*.test.ts',
+    //           '**/*.scss',
+    //           '**/*.css',
+    //           '**/style/**',
+    //           '**/index.e2e.ts',
+    //         ],
+    //         extension: ['.ts'],
+    //         requireEnv: false,
+    //         forceBuildInstrument: true,
+    //         cwd: resolve(__dirname, '../libs/core'),
+    //       }),
+    //     ]
+    //   : []),
   ],
   // resolve: {
   //   alias: {

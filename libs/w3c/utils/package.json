@@ -28,6 +28,9 @@
     "assets/**",
     "lib/**"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "dependencies": {
     "zod": "4.3.6",

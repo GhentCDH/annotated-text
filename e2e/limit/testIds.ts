@@ -2,6 +2,9 @@ export const limitIds = {
   'limit-after-init': 'limit-after-init',
   'limit-after-init-ignore-lines': 'limit-after-init-ignore-lines',
   'no-limit': 'no-limit',
+  'markdown-no-limit': 'markdown-no-limit',
+  'markdown-limit-ignore-lines': 'markdown-limit-ignore-lines',
+  'markdown-limit': 'markdown-limit',
 };
 
 export type LimitIdKeys = keyof typeof limitIds;

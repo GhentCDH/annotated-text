@@ -1,5 +1,6 @@
 import markdownit, { type Token } from 'markdown-it';
 import { selectText } from '@ghentcdh/annotated-text';
+import { normalizeMarkdown } from './markdown.normalizer';
 
 type Limit = {
   start: number;
@@ -148,70 +149,14 @@ export const getPartialMarkdownWithLimit = (
   limit: Limit,
   startOffset = 0,
 ) => {
-  const parsedLines = md.parse(text, markdownEnv);
-  let nextStart = startOffset;
-  const markdownText: string[] = [];
-  let index = 0;
-  const { start, end } = limit;
-  let lineStart = startOffset;
-  let lineEnd = startOffset;
-  let lineRangeSet = false;
-
-  for (const parsedLine of parsedLines) {
-    const line = parseLineToTokens(parsedLine, nextStart);
-    if (!line.children?.length) {
-      continue;
-    }
-    nextStart = line.end + 1;
-
-    if (!inRange(start, end, line)) {
-      continue;
-    }
-
-    for (const child of line.children) {
-      if (!inRange(start, end, child)) {
-        continue;
-      }
-
-      let lStart = child.start;
-      let lEnd = child.end;
-
-      if (!limit?.ignoreLines) {
-        lStart = start < lStart ? lStart : start;
-        lEnd = end < lEnd ? end : lEnd;
-      }
-
-      if (lStart !== child.start) {
-        const prevChild = line.children[index - 1];
-        if (prevChild) markdownText.push(prevChild.markup);
-      }
-
-      if (!lineRangeSet) {
-        lineStart = lStart;
-        lineEnd = lEnd;
-        lineRangeSet = true;
-      }
-
-      lStart = lStart - line.start;
-      lEnd = lEnd - line.start;
-
-      markdownText.push(child.content.substring(lStart, lEnd));
-      markdownText.push(child.markup);
-
-      if (lEnd !== child.end) {
-        const nextChild = line.children[index + 1];
-        if (nextChild) markdownText.push(nextChild.markup);
-      }
-      index += 1;
-    }
-    index = 0;
-  }
-
-  const result = markdownText.join('');
-
+  const result = normalizeMarkdown(text);
+  const markdownText = result.reconstruct(limit.start, limit.end);
+  const lineStart = limit.start;
+  const lineEnd = limit.end;
   return {
-    html: replaceMarkdownToHtml(result),
-    markdownText: result,
+    html: replaceMarkdownToHtml(markdownText), //replaceMarkdownToHtml(result),
+    markdownText,
+    rawText: result.toRawRange(limit.start, limit.end),
     start: lineStart,
     end: lineEnd,
   };
