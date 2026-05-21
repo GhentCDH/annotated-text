@@ -1,3 +1,13 @@
+## 1.0.8 (2026-05-21)
+
+### 🚀 Features
+
+- update markdown ([8696d92](https://github.com/GhentCDH/vue_component_annotated_text/commit/8696d92))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 1.0.7 (2026-05-19)
 
 This was a version bump only, there were no code changes.
