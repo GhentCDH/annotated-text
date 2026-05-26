@@ -154,6 +154,26 @@ export class ContextBuilder<T extends z.ZodRawShape = z.ZodRawShape> {
     return toAnnotationBody(parsed as any, this.type, purpose);
   }
 
+  /**
+   * Wrap data as a W3C annotation body without validating against the schema.
+   * Useful when the data is already trusted or partially constructed.
+   *
+   * @param data - The data to wrap (not validated)
+   * @param purpose - Optional annotation purpose (e.g. `"oa:tagging"`)
+   * @returns A W3C annotation body object
+   */
+  toAnnotationBodyUnsafe(
+    data: Record<string, unknown>,
+    purpose?: string,
+  ): { success: boolean; error?: any; body: Record<string, unknown> } {
+    let _data = data;
+    const parsed = this.safeParse(data);
+    if (parsed.success) {
+      _data = parsed.data as Record<string, unknown>;
+    }
+    return { ...parsed, body: toAnnotationBody(_data, this.type, purpose) };
+  }
+
   /** Get the context URI, or `undefined` if not set */
   getContextUri() {
     return this.uri;
