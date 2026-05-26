@@ -1,3 +1,13 @@
+## 1.0.9 (2026-05-26)
+
+### 🚀 Features
+
+- update context.builder ([52c6b0c](https://github.com/GhentCDH/vue_component_annotated_text/commit/52c6b0c))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 1.0.8 (2026-05-21)
 
 ### 🚀 Features
