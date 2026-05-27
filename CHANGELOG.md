@@ -1,3 +1,13 @@
+## 1.0.10 (2026-05-27)
+
+### 🩹 Fixes
+
+- default style colors ([#201](https://github.com/GhentCDH/vue_component_annotated_text/pull/201))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.0.9 (2026-05-26)
 
 ### 🚀 Features
