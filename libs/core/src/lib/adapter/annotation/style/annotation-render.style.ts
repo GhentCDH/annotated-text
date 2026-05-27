@@ -1,11 +1,6 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { type CustomAnnotationStyle } from './annotation.style.default';
-import {
-  DEFAULT_STYLE_NAME,
-  DefaultAnnotationStyleParams,
-  getAnnotationStyle,
-  type StyleFn,
-} from './annotation.style';
+import { DEFAULT_STYLE_NAME, DefaultAnnotationStyleParams, getAnnotationStyle, type StyleFn } from './annotation.style';
 import { Debugger } from '../../../utils/debugger';
 
 import { type AnnotationStyle } from '../../../model';
@@ -27,8 +22,14 @@ export class AnnotationRenderStyle<ANNOTATION> {
   }
 
   getDefaultStyle(): AnnotationStyle {
-    return (this.styleMap.get(this.defaultStyleName) ??
+    let defaultStyle = (this.styleMap.get(this.defaultStyleName) ??
       this.styleMap.get(DEFAULT_STYLE_NAME)) as AnnotationStyle;
+
+    if (!defaultStyle) {
+      defaultStyle = getAnnotationStyle({} as any, this.defaultStyle);
+    }
+
+    return defaultStyle;
   }
 
   setDefaultStyleName(name: string) {
