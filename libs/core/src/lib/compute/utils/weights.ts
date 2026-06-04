@@ -3,6 +3,7 @@
 //character indexes.
 import { sortBy } from 'lodash-es';
 import { type TextAnnotation, type TextLine } from '../../model';
+import { Debugger } from '../../utils/debugger';
 
 export const calculateGutterAnnotationWeightsAndEnrich = (
   lines: TextLine[],
@@ -45,13 +46,13 @@ export const calculateGutterAnnotationWeightsAndEnrich = (
       if (lineAnnotation.index > 0) {
         // eslint-disable-next-line no-constant-binary-expression
         if (!lineAnnotation.annotation._render.weight === undefined) {
-          console.warn('no weight for annotation', lineAnnotation.annotation);
+          Debugger.warn('no weight for annotation', lineAnnotation.annotation);
         }
         return;
       }
 
       if (lineAnnotation.annotation._render.weight !== undefined) {
-        console.warn(
+        Debugger.warn(
           '!!! weight for annotation already set?',
           lineAnnotation.annotation,
         );

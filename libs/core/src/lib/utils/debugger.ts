@@ -30,10 +30,6 @@ export class Debugger {
     return this.instance._debugEnabled;
   }
 
-  public static warn(...message: any) {
-    console.warn(...message);
-  }
-
   public static time(startTime: number, message: string) {
     const endTime = Date.now();
     const tookTime = endTime - startTime;
@@ -43,6 +39,16 @@ export class Debugger {
     } else {
       Debugger.debug('TIMER', logMessage);
     }
+  }
+
+  public static warn(...message: any) {
+    if (!this.verboseEnabled) return;
+
+    console.warn(...message);
+  }
+
+  public static error(...message: any) {
+    console.error(...message);
   }
 
   public static debug(subject: string, mainMessage: string, ...message: any) {

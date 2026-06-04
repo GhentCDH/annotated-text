@@ -152,7 +152,7 @@ export class CreateAnnotationsImpl<
 
     const mainElement = document?.getElementById(id);
     if (!mainElement) {
-      console.error('element not found', id);
+      Debugger.error('element not found', id);
       return;
     }
 
@@ -226,13 +226,13 @@ export class CreateAnnotationsImpl<
     const lines = this.annotationModule.getAnnotationAdapter().getAnnotation(id)
       ?._render.lines;
     if (!lines) {
-      console.warn('No lines found for annotation', id);
+      Debugger.warn('No lines found for annotation', id);
       return this;
     }
 
     const lineElement = lines[0].element;
     if (!lineElement) {
-      console.warn('No line element found for annotation', id);
+      Debugger.warn('No line element found for annotation', id);
       return this;
     }
     lineElement.scrollIntoView({
