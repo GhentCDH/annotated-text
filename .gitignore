@@ -46,6 +46,9 @@ coverage
 /docs/**/typedoc_sidebar.json
 
 
+_tmp**
+
+
 
 .nx/cache
 .nx/workspace-data
