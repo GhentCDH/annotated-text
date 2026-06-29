@@ -61,3 +61,6 @@ test-results
 .claude/worktrees
 .claude/settings.local.json
 .nx/polygraph
+
+_tmp*
+*PLAN.md
