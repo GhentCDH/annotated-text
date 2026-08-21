@@ -106,6 +106,11 @@ export abstract class SvgAnnotationRender<
       });
     });
 
+    // console.log('draws', draws);
+    if (!draws) {
+      console.warn(`No draws for annotation ${annotation.id}`);
+    }
+    // console.groupEnd();
     return { draws, dimensions: startPosition! };
   }
 }
