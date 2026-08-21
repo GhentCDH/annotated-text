@@ -16,8 +16,7 @@ text.
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
 import { MarkdownTextAdapter } from "@ghentcdh/annotated-text--markdown";
 
-const textAnnotation = createAnnotatedText(id)
-  .setTextAdapter(MarkdownTextAdapter())
+const textAnnotation = createAnnotatedText(id, { textAdapter: MarkdownTextAdapter() })
   .setText(`*bold* _italic_ **bold** __underline__ ~~strikethrough~~ \`code\` [link](https://www.google.com)`)
   .setAnnotations([...]);
 ```
@@ -42,17 +41,15 @@ const id = `markdown-text-example`;
 const id_   = `plain-text-example`;
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id_)
-    .setTextAdapter(MarkdownTextAdapter({flatText: true}))
-    .setAnnotationAdapter({ edit: true, create: true })
+    createAnnotatedText(id_, { textAdapter: MarkdownTextAdapter({flatText: true}) })
+    .setAnnotationAdapterParams({ edit: true, create: true })
      .setStyleParams(markdownText.styleParams)
      .setRenderParams(markdownText.renderParams)
     .setText(markdownText.text)
     .setAnnotations(markdownText.annotations);
 
-    createAnnotatedText(id)
-     .setTextAdapter(MarkdownTextAdapter())
-     .setAnnotationAdapter({ edit: true, create: true })
+    createAnnotatedText(id, { textAdapter: MarkdownTextAdapter() })
+     .setAnnotationAdapterParams({ edit: true, create: true })
      .setStyleParams(markdownText.styleParams)
      .setRenderParams(markdownText.renderParams)
      .setText(markdownText.text)

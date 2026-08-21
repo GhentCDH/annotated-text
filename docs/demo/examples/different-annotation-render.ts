@@ -48,33 +48,30 @@ export const createDifferentAnnotationRenders = (
   const activeAnnotations = [];
   const selectedAnnotations = [];
 
-  createAnnotatedText(id_default, {
-    annotation: {
+  createAnnotatedText(id_default)
+    .setAnnotationAdapterParams({
       edit: true,
       create: true,
-    },
-  })
+    })
     .setStyleParams(DemoAnnotationConfig)
     .setText(text)
     .setAnnotations(annotations);
 
-  createAnnotatedText(id_underline, {
-    annotation: {
+  createAnnotatedText(id_underline)
+    .setAnnotationAdapterParams({
       edit: true,
       create: true,
-    },
-  })
+    })
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'underline' })
     .setText(text)
     .setAnnotations(annotations);
 
-  createAnnotatedText(id_underline_thin, {
-    annotation: {
+  createAnnotatedText(id_underline_thin)
+    .setAnnotationAdapterParams({
       edit: true,
       create: true,
-    },
-  })
+    })
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'thin' })
     .registerRender(new UnderLineAnnotationRender('thin', { borderWidth: 1 }))
@@ -83,7 +80,7 @@ export const createDifferentAnnotationRenders = (
     .setAnnotations(annotations);
 
   createAnnotatedText(id_underline_thick)
-    .setAnnotationAdapter({
+    .setAnnotationAdapterParams({
       edit: true,
       create: true,
     })

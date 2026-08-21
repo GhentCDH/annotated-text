@@ -13,7 +13,7 @@ the text is rendered correctly in a right-to-left format.
 
 ```typescript
 createAnnotatedText(id)
-  .setTextAdapter({ textDirection: 'rtl' })
+  .setTextAdapterParams({ textDirection: 'rtl' })
   .setText(text)
   .setAnnotations(textAnnotations);
 ```
@@ -35,14 +35,13 @@ onMounted(()=> {
     createAnnotatedText(id)
     .setStyleParams(plainText.styleParams)
     .setRenderParams(plainText.renderParams)
-    .setTextAdapter({textDirection: 'rtl'})
+    .setTextAdapterParams({textDirection: 'rtl'})
     .setText(plainText.text)
     .setAnnotations(plainText.annotations);
 
-    createAnnotatedText(greek_id)
+    createAnnotatedText(greek_id, { textAdapter: TextLineAdapter({textDirection: 'rtl'}) })
     .setStyleParams(greekText.styleParams)
     .setRenderParams(greekText.renderParams)
-    .setTextAdapter(TextLineAdapter({textDirection: 'rtl'}))
     .setText(greekText.text)
     .setAnnotations(greekText.annotations);
 });
@@ -56,7 +55,7 @@ If you use the `TextLineAdapter`, you can also enable right to left rendering by
 
 ```typescript
  createAnnotatedText(id)
-  .setTextAdapter({ textDirection: 'rtl' })
+  .setTextAdapterParams({ textDirection: 'rtl' })
 ```
 
 <div id="greek-text-example"></div>

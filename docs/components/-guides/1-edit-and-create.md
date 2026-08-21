@@ -7,10 +7,10 @@ You can enable them by on the AnotationAdapter when creating the AnnotatedText c
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
 createAnnotatedText(id)
-  .setAnnotationAdapter({ edit: true, create: true });
+  .setAnnotationAdapterParams({ edit: true, create: true });
 ```
 
-Or you can enable/disable them on the fly using `setConfig`.
+Or you can enable/disable them on the fly using `setAnnotationAdapterParams`.
 
 ```typescript
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
@@ -18,8 +18,8 @@ import { createAnnotatedText } from "@ghentcdh/annotated-text";
 // Create the annotated text component with the ID
 const textAnnotation = createAnnotatedText(id);
 
-// Enable/or disable them on the fly using setAnnotationAdapter
-textAnnotation.setAnnotationAdapter({ edit: true, create: true });
+// Enable/or disable them on the fly using setAnnotationAdapterParams
+textAnnotation.setAnnotationAdapterParams({ edit: true, create: true });
 ```
 
 ## Example

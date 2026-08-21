@@ -34,17 +34,14 @@ selection.
 }
 ```
 
-First set the parser before adding annotations to the `AnnotatedText` component. The parser can be set with the
-`setParser` method.
+Pass the `W3CAnnotationAdapter` when creating the `AnnotatedText` component.
 
-Then add annotations with the `setAnnotations` method. The method accepts an array of W3C annotations and a boolean to
-indicate whether to update the view or not.
+Then add annotations with the `setAnnotations` method.
 
 ```typescript
 import { createAnnotatedText, W3CAnnotationAdapter } from "@ghentcdh/annotated-text";
 
-createAnnotatedText(id)
-  .setAnnotationAdapter(W3CAnnotationAdapter())
+createAnnotatedText(id, { annotationAdapter: W3CAnnotationAdapter() })
   .setText(w3cText.text, false)
   .setAnnotations(w3cText.w3cAnnotations.items)
 ```
@@ -76,8 +73,7 @@ import { w3cText } from "@demo";
 
 const createAnnotations = (id, sourceId)=>{
 
-        createAnnotatedText(id)
-        .setAnnotationAdapter(W3CAnnotationAdapter({ sourceUri: sourceId, create: true, edit: true }))
+        createAnnotatedText(id, { annotationAdapter: W3CAnnotationAdapter({ sourceUri: sourceId, create: true, edit: true }) })
         .setText(w3cText.text, false)
         .setAnnotations(w3cText.w3cAnnotations)
         .on('all', ({ mouseEvent, event, data }) => {

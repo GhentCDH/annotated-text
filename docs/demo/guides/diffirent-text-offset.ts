@@ -25,7 +25,7 @@ const text =
 
 export const createDifferentTextOffset = (id: string, startOffset: number) => {
   createAnnotatedText(id)
-    .setAnnotationAdapter({ edit: true, create: false, startOffset })
+    .setAnnotationAdapterParams({ edit: true, create: false, startOffset })
     .setRenderParams(DemoAnnotationConfig.render)
     .setStyleParams(DemoAnnotationConfig.style)
     .setTagLabelFn((annotation) => annotation.label)
@@ -39,9 +39,8 @@ export const createDifferentTextOffsetWordsnapper = (
   id: string,
   startOffset: number,
 ) => {
-  createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
-    .setAnnotationAdapter({ edit: true, create: false, startOffset })
+  createAnnotatedText(id, { textAdapter: TextLineAdapter() })
+    .setAnnotationAdapterParams({ edit: true, create: false, startOffset })
     .setRenderParams(DemoAnnotationConfig.render)
     .setStyleParams(DemoAnnotationConfig.style)
     .setSnapper(new WordSnapper())
@@ -56,9 +55,8 @@ export const createDifferentTextOffsetLines = (
   id: string,
   startOffset: number,
 ) => {
-  createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
-    .setAnnotationAdapter({ startOffset })
+  createAnnotatedText(id, { textAdapter: TextLineAdapter() })
+    .setAnnotationAdapterParams({ startOffset })
     .setRenderParams(DemoAnnotationConfig.render)
     .setStyleParams(DemoAnnotationConfig.style)
     .setTagLabelFn((annotation) => annotation.label)

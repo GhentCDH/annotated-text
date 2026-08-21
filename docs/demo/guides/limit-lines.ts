@@ -10,10 +10,10 @@ const printPosition = (event: any) => {
 
 export const limitLinesPlainText = (id: string, ignoreLines?: boolean) => {
   createAnnotatedText(id)
-    .setTextAdapter({
+    .setTextAdapterParams({
       limit: { start: 200, end: 400, ignoreLines },
     })
-    .setAnnotationAdapter({ edit: true, create: true })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setStyleParams(markdownText.styleParams)
     .setRenderParams(markdownText.renderParams)
     .setText(plainText.text)
@@ -22,13 +22,12 @@ export const limitLinesPlainText = (id: string, ignoreLines?: boolean) => {
 };
 
 export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
-  createAnnotatedText(id)
-    .setTextAdapter(
-      MarkdownTextAdapter({
-        limit: { start: 57, end: 400, ignoreLines },
-      }),
-    )
-    .setAnnotationAdapter({ edit: true, create: true })
+  createAnnotatedText(id, {
+    textAdapter: MarkdownTextAdapter({
+      limit: { start: 57, end: 400, ignoreLines },
+    }),
+  })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setStyleParams(markdownText.styleParams)
     .setRenderParams(markdownText.renderParams)
     .setText(markdownText.text)
@@ -36,13 +35,12 @@ export const limitLinesMarkdown = (id: string, ignoreLines?: boolean) => {
     .on('annotation-edit--end', printPosition);
 };
 export const limitLinesLineText = (id: string, ignoreLines?: boolean) => {
-  createAnnotatedText(id)
-    .setTextAdapter(
-      TextLineAdapter({
-        limit: { start: 57, end: 400, ignoreLines },
-      }),
-    )
-    .setAnnotationAdapter({ edit: true, create: true })
+  createAnnotatedText(id, {
+    textAdapter: TextLineAdapter({
+      limit: { start: 57, end: 400, ignoreLines },
+    }),
+  })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setStyleParams(greekText.styleParams)
     .setRenderParams(greekText.renderParams)
     .setText(greekText.text)

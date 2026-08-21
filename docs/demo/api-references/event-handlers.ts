@@ -5,7 +5,7 @@ export const createEventHandlerDemo = (id: string) => {
   const color = '#3b82f6';
   clearAnnotatedTextCache();
   createAnnotatedText(id)
-    .setAnnotationAdapter({ create: true, edit: true })
+    .setAnnotationAdapterParams({ create: true, edit: true })
     .setStyleParams({
       styleFn: () => createHighlightStyle(color),
     })

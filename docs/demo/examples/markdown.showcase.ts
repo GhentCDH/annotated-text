@@ -354,9 +354,8 @@ export const markdownShowcaseAnnotationsAnnotations = [
 ];
 
 export const createMarkdownExample = (id: string) => {
-  return createAnnotatedText(id)
-    .setAnnotationAdapter({ create: true, edit: true })
-    .setTextAdapter(MarkdownTextAdapter())
+  return createAnnotatedText(id, { textAdapter: MarkdownTextAdapter() })
+    .setAnnotationAdapterParams({ create: true, edit: true })
     .setText(markdownShowcase)
     .setRenderParams({
       defaultRenderer: 'highlight',

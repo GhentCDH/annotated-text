@@ -33,8 +33,8 @@ Don't forget to replace do destroy the component when it is no longer needed to 
 
 Add the styling to your css
 
-```css
-@import '@ghentcdh/annotated-text/annotated-text.css';
+```scss
+@use '@ghentcdh/annotated-text/style.css' as *;
 ```
 
 ## Example
@@ -50,8 +50,7 @@ const id = `annotated-text-greek`;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
+    createAnnotatedText(id, { textAdapter: TextLineAdapter() })
     .setRenderParams(greekText.renderParams)
     .setStyleParams(greekText.styleParams)
     .setText(greekText.text)

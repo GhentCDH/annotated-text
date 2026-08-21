@@ -7,9 +7,8 @@ import { greekText } from '../data';
 
 export const editAndCreateDemo = (id: string) => {
   clearAnnotatedTextCache();
-  createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
-    .setAnnotationAdapter({ edit: true, create: true })
+  createAnnotatedText(id, { textAdapter: TextLineAdapter() })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setRenderParams(greekText.renderParams)
     .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
