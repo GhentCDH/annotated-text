@@ -1,4 +1,5 @@
 import { type Container, type Token } from './container';
+import { Debugger } from '../utils/debugger';
 import type { Annotation, BaseAnnotation } from '../model';
 import {
   type AnnotationAdapter,
@@ -61,24 +62,33 @@ export class AnnotationModule {
    * @param parentContainer - Parent container (usually rootContainer) for hierarchical lookup
    * @param config - Configuration with required adapters
    */
-  constructor(parentContainer: Container) {
+  constructor(
+    parentContainer: Container,
+    adapters: {
+      annotationAdapter: AnnotationAdapter<any>;
+      textAdapter: TextAdapter;
+    },
+  ) {
     this.container = parentContainer.createScope();
-    this.configure();
+    this.configure(adapters);
   }
 
   /**
    * Registers all annotation-related services with the container.
    * Order matters: SvgModel must be registered last as it depends on other services.
    */
-  configure(): void {
+  configure(adapters: {
+    annotationAdapter: AnnotationAdapter<any>;
+    textAdapter: TextAdapter;
+  }): void {
     // Register event listeners (no dependencies)
     this.container.register(InternalEventListener).register(EventListener);
     this.container.register(SvgModel, () => new SvgModel());
 
     // Register adapters provided by the configuration
     this.container
-      .register(TextAdapterToken, PlainTextAdapter)
-      .register(AnnotationAdapterToken, DefaultAnnotationAdapter);
+      .register(TextAdapterToken, () => adapters.textAdapter)
+      .register(AnnotationAdapterToken, () => adapters.annotationAdapter);
 
     // Register services that extend BaseAnnotationDi (need reference to this module)
     this.container
@@ -117,16 +127,44 @@ export class AnnotationModule {
     this.container.destroy();
   }
 
+  /**
+   * @deprecated use createAnnotatedText(id, {textAdapter})
+   * @param adapter
+   */
   updateTextAdapter(adapter: TextAdapter): this {
-    this.container.update(TextAdapterToken, () => adapter);
+    console.warn('Use  createAnnotatedText(id, {textAdapter})');
+    if (this.hasTextAdapter())
+      this.container.update(TextAdapterToken, () => adapter);
+    else this.container.register(TextAdapterToken, () => adapter);
     this.getTextAdapter().setModule(this);
     return this;
   }
 
+  /**
+   * @deprecated use createAnnotatedText(id, {annotationAdapter})
+   * @param adapter
+   */
   updateAnnotationAdapter(adapter: AnnotationAdapter<any>): this {
-    this.container.update(AnnotationAdapterToken, () => adapter);
+    console.warn('Use  createAnnotatedText(id, {annotationAdapter})');
+    if (this.hasAnnotationAdapter())
+      this.container.update(AnnotationAdapterToken, () => adapter);
+    else this.container.register(AnnotationAdapterToken, () => adapter);
+
     this.getAnnotationAdapter().setModule(this);
     return this;
+  }
+
+  private useDefaultAnnotationAdapter<ANNOTATION extends BaseAnnotation>() {
+    Debugger.warn('use default annotation adapter');
+    this.container.register(AnnotationAdapterToken, DefaultAnnotationAdapter);
+    this.updateAnnotationAdapter(DefaultAnnotationAdapter());
+    return this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken);
+  }
+  private useDefaultTextAdapter() {
+    Debugger.warn('use default text adapter');
+    this.updateTextAdapter(PlainTextAdapter());
+    this.container.register(TextAdapterToken, PlainTextAdapter);
+    return this.inject<TextAdapter>(TextAdapterToken);
   }
 
   updateSnapper(snapper: Snapper): this {
@@ -137,12 +175,46 @@ export class AnnotationModule {
   getSnapper() {
     return this.inject<Snapper>(SnapperToken);
   }
-  getTextAdapter() {
-    return this.inject<TextAdapter>(TextAdapterToken);
+
+  getTextAdapter(): TextAdapter {
+    try {
+      const adapter = this.inject<TextAdapter>(TextAdapterToken);
+      if (adapter) return adapter;
+    } catch (err) {
+      //
+    }
+
+    return this.useDefaultTextAdapter();
   }
 
-  getAnnotationAdapter<ANNOTATION extends BaseAnnotation = Annotation>() {
-    return this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken);
+  private hasTextAdapter(): boolean {
+    try {
+      const adapter = this.inject(TextAdapterToken);
+      if (adapter) return true;
+    } catch (err) {
+      //
+    }
+    return false;
+  }
+  private hasAnnotationAdapter(): boolean {
+    try {
+      const adapter = this.inject(AnnotationAdapterToken);
+      if (adapter) return true;
+    } catch (err) {
+      //
+    }
+    return false;
+  }
+
+  getAnnotationAdapter<
+    ANNOTATION extends BaseAnnotation = Annotation,
+  >(): AnnotationAdapter<ANNOTATION> {
+    if (this.hasAnnotationAdapter()) {
+      return this.inject<AnnotationAdapter<ANNOTATION>>(AnnotationAdapterToken);
+    }
+
+    console.warn('use default annotation adapter');
+    return this.useDefaultAnnotationAdapter<ANNOTATION>();
   }
 
   getAllRenderInstances() {

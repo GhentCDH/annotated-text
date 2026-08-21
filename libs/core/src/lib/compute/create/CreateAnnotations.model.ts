@@ -1,14 +1,30 @@
 import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type Snapper, type TextAdapter, type TextAdapterParams } from '../../adapter/text';
-import { type AnnotationEventType, type ErrorEventCallback, type EventCallback } from '../../events';
+import {
+  type Snapper,
+  type TextAdapter,
+  type TextAdapterParams,
+} from '../../adapter/text';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
 import {
   type AnnotationAdapter,
   type AnnotationAdapterParams,
   type AnnotationStyleParams,
-  type CustomAnnotationStyle
+  type CustomAnnotationStyle,
 } from '../../adapter/annotation';
-import { type AnnotationRender, type RenderParams } from '../../adapter/annotation/renderer/annotation-render';
+import {
+  type AnnotationRender,
+  type RenderParams,
+} from '../../adapter/annotation/renderer/annotation-render';
 import { type tagLabelFn } from '../../tag/TagRenderer';
+
+export interface CreateAnnotationsProps<ANNOTATION extends BaseAnnotation> {
+  annotationAdapter?: AnnotationAdapter<ANNOTATION>;
+  textAdapter?: TextAdapter;
+}
 
 /**
  * Create annotation is a factory function that creates an annotation model.
@@ -89,6 +105,9 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
   destroy: () => this;
 
   /**
+   @deprecated use setTextAdapterParams
+    for adapter set it in the createAnnotatedText adapter
+
    * Change the text adapter. If needed, it will recreate the annotation model.
    * By default the PlainTextAdapter is used.
    * If you use a new adapter the previous parameters will be removed, but you can set them again with the new adapter.
@@ -100,7 +119,12 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
     adapterOrParams: TextAdapter | TextAdapterParams,
   ): AnnotatedText<ANNOTATION>;
 
+  setTextAdapterParams(params: TextAdapterParams): AnnotatedText<ANNOTATION>;
+
   /**
+   * @deprecated use setAnnotationAdapterParams
+   * for adapter set it in the createAnnotatedText adapter
+   *
    * Change the annotation adapter. If needed, it will recreate the annotation model.
    * By default the DefaultAnnotationAdapter is used.
    * If you use a new adapter the previous parameters will be removed, but you can set them again with the new adapter.
@@ -110,6 +134,17 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
    */
   setAnnotationAdapter(
     adapterOrParams: AnnotationAdapterParams | AnnotationAdapter<ANNOTATION>,
+  ): AnnotatedText<ANNOTATION>;
+
+  /**
+   * Change the annotation adapter parameters
+   *
+   * Calling the method with only parameters will update the current adapter with the new parameters, but will not change the adapter itself.
+   *
+   * @param adapterOrParams
+   */
+  setAnnotationAdapterParams(
+    params: AnnotationAdapterParams,
   ): AnnotatedText<ANNOTATION>;
 
   /**
