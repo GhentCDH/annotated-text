@@ -12,9 +12,8 @@ export const RenderTag = (
 ) => {
   clearAnnotatedTextCache();
 
-  createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
-    .setAnnotationAdapter({ edit: true, create: true })
+  createAnnotatedText(id, { textAdapter: TextLineAdapter() })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setRenderParams({
       defaultRenderer,
       renderFn: greekText.renderParams.renderFn,

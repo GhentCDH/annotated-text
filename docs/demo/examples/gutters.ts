@@ -3,8 +3,7 @@ import { greekText } from '../data';
 import { DemoAnnotationConfig } from '../data/data.types';
 
 export const gutters = (id: string) => {
-  createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
+  createAnnotatedText(id, { textAdapter: TextLineAdapter() })
     .setStyleParams(DemoAnnotationConfig.style)
     .setRenderParams({ defaultRenderer: 'gutter' })
     .setText(greekText.text)

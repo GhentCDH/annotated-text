@@ -60,7 +60,7 @@ const textToLines = (
  * It does not handle any special formatting or annotations, just plain text lines.
  */
 export class PlainTextAdapterImpl extends TextAdapter {
-  name = 'PlainTextAdapter';
+  name = 'PlainTextAdapter_' + Date.now();
 
   _parse(text: string) {
     const lines = textToLines(

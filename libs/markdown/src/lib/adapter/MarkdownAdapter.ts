@@ -55,7 +55,7 @@ export const getDiff = (
  * preserving markdown markup.
  */
 export class MarkdownTextAdapterImpl extends TextAdapter {
-  name = 'MarkdownLineAdapter';
+  name = 'MarkdownLineAdapter_' + Date.now();
 
   /**
    * Parses the given markdown text into a single {@link TextLine}.

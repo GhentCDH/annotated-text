@@ -1,8 +1,12 @@
-import { type AnnotatedText } from './CreateAnnotations.model';
+import {
+  type AnnotatedText,
+  type CreateAnnotationsProps,
+} from './CreateAnnotations.model';
 import { CreateAnnotationsImpl } from './CreateAnnotations';
 import type { BaseAnnotation } from '../../model';
 import type { Annotation } from '../../model/';
 import { Debugger } from '../../utils/debugger';
+import { DefaultAnnotationAdapter, PlainTextAdapter } from '../../adapter';
 
 const annotatedTextCache = new Map<string, AnnotatedText<any>>();
 
@@ -10,6 +14,7 @@ export const createAnnotatedText = <
   ANNOTATION extends BaseAnnotation = Annotation,
 >(
   id: string,
+  config?: CreateAnnotationsProps<ANNOTATION>,
 ): AnnotatedText<ANNOTATION> => {
   // if (annotatedTextCache.has(id)) {
   //   console.warn(
@@ -21,9 +26,11 @@ export const createAnnotatedText = <
   //   return annotatedTextCache.get(id) as AnnotatedText<ANNOTATION>;
   // }
 
-  const annotatedImpl = new CreateAnnotationsImpl<ANNOTATION>(
-    id,
-  ) as AnnotatedText<ANNOTATION>;
+  const annotatedImpl = new CreateAnnotationsImpl<ANNOTATION>(id, {
+    annotationAdapter:
+      config?.annotationAdapter ?? (DefaultAnnotationAdapter() as any),
+    textAdapter: config?.textAdapter ?? PlainTextAdapter(),
+  }) as AnnotatedText<ANNOTATION>;
 
   // annotatedTextCache.set(id, annotatedImpl);
   annotatedImpl.on('destroy', () => {

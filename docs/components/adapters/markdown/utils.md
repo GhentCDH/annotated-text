@@ -14,8 +14,7 @@ Internally it uses [markdown-it](https://github.com/markdown-it/markdown-it) to 
 import { createAnnotatedText } from '@ghentcdh/annotated-text';
 import { MarkdownTextAdapter } from '@ghentcdh/annotated-text--markdown';
 
-createAnnotatedText(id)
-  .setTextAdapter(MarkdownTextAdapter())
+createAnnotatedText(id, { textAdapter: MarkdownTextAdapter() })
   .setText('hello **bold** world')
   .setAnnotations([...]);
 ```

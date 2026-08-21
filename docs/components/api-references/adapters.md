@@ -16,8 +16,8 @@ You can also pass properties that will be used by the default adapter. f.e. `tex
 import { TextLineAdapter } from "@ghentcdh/annotated-text";
 
 createAnnotatedText(id, {
-  text: TextLineAdapter(),
-  annotation: W3CAnnotationAdapter()
+  textAdapter: TextLineAdapter(),
+  annotationAdapter: W3CAnnotationAdapter()
 })
 ```
 

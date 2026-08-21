@@ -13,12 +13,11 @@ const createChunk = (element: HTMLElement, annotation: DemoAnnotation) => {
   div.style.border = '1px solid black';
   element.appendChild(div);
 
-  return createAnnotatedText(id)
-    .setTextAdapter(
-      TextLineAdapter({
-        limit: { start: annotation.start, end: annotation.end },
-      }),
-    )
+  return createAnnotatedText(id, {
+    textAdapter: TextLineAdapter({
+      limit: { start: annotation.start, end: annotation.end },
+    }),
+  })
     .setRenderParams(greekText.renderParams)
     .setStyleParams(greekText.styleParams)
     .setText(greekText.text)
@@ -31,9 +30,8 @@ export const textWithChunks = (id: string, chunksId: string) => {
     .slice(0, 10);
   const annotationsMap = {};
   const element = document.getElementById(id);
-  createAnnotatedText(id)
-    .setTextAdapter(TextLineAdapter())
-    .setAnnotationAdapter({ edit: true, create: true })
+  createAnnotatedText(id, { textAdapter: TextLineAdapter() })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setRenderParams(greekText.renderParams)
     .setStyleParams(greekText.styleParams)
     .setText(greekText.text)

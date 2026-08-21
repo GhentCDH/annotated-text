@@ -24,7 +24,7 @@ Configure a custom offset for text character indexing using the `startOffset` op
 
 ```typescript
 createAnnotatedText(id)
-  .setAnnotationAdapter({ startOffset: 1 })
+  .setAnnotationAdapterParams({ startOffset: 1 })
   .setText(text)
   .setAnnotations(annotations);
 ```
@@ -56,7 +56,7 @@ const annotations = [
 ];
 
 createAnnotatedText(id)
-  .setAnnotationAdapter({ startOffset: 1 })
+  .setAnnotationAdapterParams({ startOffset: 1 })
   .setText(text)
   .setAnnotations(annotations);
 ```
@@ -86,7 +86,7 @@ Align with FileMaker's Position function:
 ```typescript
 // Match FileMaker's 1-based Position() function
 createAnnotatedText("filemaker-text")
-  .setAnnotationAdapter({ startOffset: 1 });
+  .setAnnotationAdapterParams({ startOffset: 1 });
 ```
 
 #### Custom Offsets
@@ -96,7 +96,7 @@ Support arbitrary starting positions:
 ```typescript
 // Start at position 100 (e.g., continuing from a previous section)
 createAnnotatedText("section-2")
-  .setAnnotationAdapter({ startOffset: 100 });
+  .setAnnotationAdapterParams({ startOffset: 100 });
 ```
 
 ### Important Considerations

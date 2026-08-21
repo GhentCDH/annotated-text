@@ -33,8 +33,7 @@ export const scrollToAnnotation = (id: string) => {
   const annotationDiv = document.createElement('div');
   annotationDiv.setAttribute('id', annotationId);
   element.appendChild(annotationDiv);
-  annotatedText = createAnnotatedText(annotationId)
-    .setTextAdapter(TextLineAdapter())
+  annotatedText = createAnnotatedText(annotationId, { textAdapter: TextLineAdapter() })
     .setRenderParams(greekText.renderParams)
     .setStyleParams(greekText.styleParams)
     .setText(greekText.text)

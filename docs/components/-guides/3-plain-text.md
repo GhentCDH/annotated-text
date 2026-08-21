@@ -5,8 +5,7 @@ By default, the text will be rendered as plain text. You can use the `PlainTextA
 ```typescript
 import { createAnnotatedText, PlainTextAdapter } from "@ghentcdh/annotated-text";
 
-const textAnnotation = createAnnotatedText(id)
-  .setTextAdapter(PlainTextAdapter())
+const textAnnotation = createAnnotatedText(id, { textAdapter: PlainTextAdapter() })
   .setText(plainText.text)
   .setAnnotations(plainText.annotations);
 ```
@@ -27,9 +26,8 @@ const id = `plain-text-example`;
 
 onMounted(()=> {
     clearAnnotatedTextCache()
-    createAnnotatedText(id)
-    .setTextAdapter(PlainTextAdapter())
-    .setAnnotationAdapter({ edit: true, create: true })
+    createAnnotatedText(id, { textAdapter: PlainTextAdapter() })
+    .setAnnotationAdapterParams({ edit: true, create: true })
     .setStyleParams(plainText.styleParams)
     .setRenderParams(plainText.renderParams)
     .setText(plainText.text)

@@ -8,8 +8,8 @@ const __dirname = dirname(__filename);
 const isCoverage = process.env.COVERAGE === 'true';
 
 export default defineConfig({
-  testDir: './apps/e2e/src',
-  testMatch: './apps/e2e/src/**/*.spec.ts',
+  testDir: '.',
+  testMatch: './**/*.spec.ts',
   snapshotDir: './__snapshots__',
   snapshotPathTemplate: '{snapshotDir}/{testFilePath}/{arg}-{platform}{ext}',
   timeout: 30000,
@@ -51,4 +51,14 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+
+  webServer: {
+    command: isCoverage
+      ? 'COVERAGE=true npx vite --config e2e/vite.e2e.config.ts --host 0.0.0.0'
+      : 'npx vite --config e2e/vite.e2e.config.ts --host 0.0.0.0',
+    cwd: resolve(__dirname, '..'),
+    url: 'http://localhost:4173',
+    reuseExistingServer: !process.env.CI && !isCoverage,
+    timeout: 120000,
+  },
 });

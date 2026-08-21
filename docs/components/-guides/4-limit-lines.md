@@ -6,7 +6,7 @@ You can limit the visible lines by passing a `limit` option to the text adapter.
 import { createAnnotatedText } from "@ghentcdh/annotated-text";
 
 createAnnotatedText(id)
-  .setTextAdapter({ limit: { start: 99, end: 180, ignoreLines: false } })
+  .setTextAdapterParams({ limit: { start: 99, end: 180, ignoreLines: false } })
 ```
 
 When `ignoreLines` is `false` (the default), every line that overlaps the range is included in full. When set to `true`, only the characters strictly within the `start`/`end` range are shown and line boundaries are ignored.
