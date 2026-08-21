@@ -51,4 +51,14 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+
+  webServer: {
+    command: isCoverage
+      ? 'COVERAGE=true npx vite --config e2e/vite.e2e.config.ts --host 0.0.0.0'
+      : 'npx vite --config e2e/vite.e2e.config.ts --host 0.0.0.0',
+    cwd: resolve(__dirname, '..'),
+    url: 'http://localhost:4173',
+    reuseExistingServer: !process.env.CI && !isCoverage,
+    timeout: 120000,
+  },
 });
