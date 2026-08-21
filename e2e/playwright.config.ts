@@ -8,8 +8,8 @@ const __dirname = dirname(__filename);
 const isCoverage = process.env.COVERAGE === 'true';
 
 export default defineConfig({
-  testDir: './apps/e2e/src',
-  testMatch: './apps/e2e/src/**/*.spec.ts',
+  testDir: '.',
+  testMatch: './**/*.spec.ts',
   snapshotDir: './__snapshots__',
   snapshotPathTemplate: '{snapshotDir}/{testFilePath}/{arg}-{platform}{ext}',
   timeout: 30000,
