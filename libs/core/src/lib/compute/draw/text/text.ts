@@ -37,7 +37,6 @@ const calculateLinePadding = memoize(
 
 const createText = (textLine: TextLine, textAdapter: TextAdapter) => {
   const textDiv = document.createElement('div');
-  // console.log(textAdapter);
   const { linePadding, lineHeight } = calculateLinePadding(
     textAdapter.style.padding,
     textLine.maxLineWeight,

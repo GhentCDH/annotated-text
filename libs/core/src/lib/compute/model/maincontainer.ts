@@ -24,7 +24,7 @@ export class MainContainer {
 
     if (this.textElement) {
       this.mainElement.removeChild(this.textElement);
-      console.warn('element already initialized, clear and reinitialize');
+      Debugger.warn('element already initialized, clear and reinitialize');
     }
 
     const divElement = document.createElement('div');
