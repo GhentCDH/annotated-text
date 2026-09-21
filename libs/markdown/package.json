@@ -12,12 +12,12 @@
   },
   "version": "1.0.11",
   "type": "module",
-  "main": "./index.cjs",
+  "main": "./index.umd.cjs",
   "module": "./index.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
-      "require": "./index.cjs",
+      "require": "./index.umd.cjs",
       "import": "./index.js"
     },
     "./package.json": "./package.json"
