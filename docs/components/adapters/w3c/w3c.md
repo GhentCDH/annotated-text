@@ -34,7 +34,7 @@ selection.
 }
 ```
 
-Pass the `W3CAnnotationAdapter` when creating the `AnnotatedText` component.
+Pass the `EvwritAnnotationAdapter` when creating the `AnnotatedText` component.
 
 Then add annotations with the `setAnnotations` method.
 
