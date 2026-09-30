@@ -1,5 +1,4 @@
-import MarkdownIt from 'markdown-it';
-import type Token from 'markdown-it/lib/token.mjs';
+import MarkdownIt, { type MarkdownIt as MarkdownItInstance, type Token } from 'markdown-it';
 
 /**
  * A single mapped span between the raw markdown source and the normalized text.
@@ -62,7 +61,7 @@ const DEFAULT_PARSER = new MarkdownIt({
  */
 export function normalizeMarkdown(
   source: string,
-  parser: MarkdownIt = DEFAULT_PARSER,
+  parser: MarkdownItInstance = DEFAULT_PARSER,
 ): NormalizationResult {
   const tokens = parser.parse(source, {});
   const lineOffsets = computeLineOffsets(source);
