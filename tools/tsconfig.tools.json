@@ -17,7 +17,10 @@
     // Speeds up compilation
     "forceConsistentCasingInFileNames": true,
     // Prevents casing issues
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noUncheckedSideEffectImports": false,
+    "types": ["*"],
+    "ignoreDeprecations": "6.0"
     // Allows importing JSON
   },
   "include": ["tools/**/*"],
