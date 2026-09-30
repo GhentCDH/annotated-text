@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { textLineSchema } from './line.model';
 import {
   annotationDrawMetadataSchema,
