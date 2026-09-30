@@ -100,7 +100,6 @@ export function normalizeMarkdown(
         normCursor += 1;
       }
     }
-    rawCursor = blockRawStart;
 
     // Walk inline children, scanning the source forward to locate each piece.
     let scanPos = blockRawStart;

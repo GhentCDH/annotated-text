@@ -38,7 +38,6 @@ export const findLineElement = (node: Node) => {
   const parentNode = node.parentNode as HTMLElement;
   let lineElement = parentNode;
   let lineUid = lineElement.getAttribute(SVG_ID.LINE_UID);
-  let offset = 0;
 
   if (!lineUid) {
     // If the parent node is not a line, traverse up the DOM tree
@@ -55,7 +54,7 @@ export const findLineElement = (node: Node) => {
   const _lineHeight = window.getComputedStyle?.(lineElement).lineHeight;
   const lineHeight = parseFloat(_lineHeight);
 
-  offset = findOffset(node as HTMLElement, lineElement);
+  const offset = findOffset(node as HTMLElement, lineElement);
   return { lineElement, lineUid, offset, lineHeight };
 };
 
