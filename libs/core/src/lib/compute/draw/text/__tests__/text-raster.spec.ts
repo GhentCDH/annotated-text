@@ -74,10 +74,8 @@ describe('drawTextRaster', () => {
     } as any;
 
     // Mock document methods
-    global.document = {
-      createTreeWalker: vi.fn(),
-      createRange: vi.fn().mockReturnValue(mockRange),
-    } as any;
+    vi.spyOn(document, 'createTreeWalker').mockReturnValue(undefined as any);
+    vi.spyOn(document, 'createRange').mockReturnValue(mockRange as any);
 
     // Mock utility functions
     vi.mocked(findLineElement).mockReturnValue({
