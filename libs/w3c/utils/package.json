@@ -34,7 +34,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "zod": "4.3.6",
+    "zod": "4.6.5",
     "vitest": "4.0.9"
   }
 }
