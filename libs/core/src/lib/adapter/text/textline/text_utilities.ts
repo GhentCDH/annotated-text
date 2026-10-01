@@ -7,8 +7,8 @@ export const _textToLines = memoize(
     text = text.replace(/\r\n/g, '\n').replace(/\u000b/g, '\n');
     const regLineNumber = /^([0-9/]+[a-z]?)\./g;
     let lineStart = textOffset;
-    let lineEnd = lineStart;
-    let gutter = '';
+    let lineEnd: number;
+    let gutter: string;
 
     // split text into lines
     const lines = text.split('\n');

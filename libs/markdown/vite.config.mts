@@ -40,7 +40,7 @@ export default defineConfig(() => ({
       // formats: ["es" as const],
       format: ['cjs', 'esm', 'es'],
     },
-    rollupOptions: {
+    rolldownOptions: {
       // External packages that should not be bundled into your library.
       external: ['@ghentcdh/annotated-text'],
     },

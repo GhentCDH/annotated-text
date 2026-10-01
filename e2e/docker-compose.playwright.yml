@@ -1,5 +1,5 @@
 x-playwright-base: &playwright-base
-  image: mcr.microsoft.com/playwright:v1.58.1-jammy
+  image: mcr.microsoft.com/playwright:v1.63.0-jammy
   working_dir: /app
   volumes:
     - ..:/app
@@ -15,7 +15,7 @@ services:
       - CI=${CI:-false}
     command:
       - |
-        npm install -g pnpm@10.8.1
+        npm install -g pnpm@12.8.1
         pnpm install --frozen-lockfile
         npx playwright test -c e2e/playwright.config.ts
 
@@ -25,7 +25,7 @@ services:
       - CI=false
     command:
       - |
-        npm install -g pnpm@10.8.1
+        npm install -g pnpm@12.8.1
         pnpm install --frozen-lockfile
         npx playwright test -c e2e/playwright.config.ts --ui --ui-port=8077 --ui-host=localhost
 
@@ -35,7 +35,7 @@ services:
       - CI=false
     command:
       - |
-        npm install -g pnpm@10.8.1
+        npm install -g pnpm@12.8.1
         pnpm install --frozen-lockfile
         npx playwright test -c e2e/playwright.config.ts --update-snapshots
 
@@ -46,7 +46,7 @@ services:
       - COVERAGE=true
     command:
       - |
-        npm install -g pnpm@10.8.1
+        npm install -g pnpm@12.8.1
         pnpm install --frozen-lockfile
         COVERAGE=true npx playwright test -c e2e/playwright.config.ts
         npx nyc report --reporter=text --reporter=text-summary --reporter=html --reporter=lcov --reporter=json-summary

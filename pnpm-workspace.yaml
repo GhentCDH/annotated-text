@@ -1,0 +1,11 @@
+packages:
+  - 'libs/**'
+  - 'e2e'
+
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  es5-ext: true
+  esbuild: true
+  nx: true
+  unrs-resolver: true

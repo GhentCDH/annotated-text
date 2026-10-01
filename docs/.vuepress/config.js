@@ -16,6 +16,7 @@ export default defineUserConfig({
       plugins: [],
       resolve: {
         alias: {
+          '_media': fileURLToPath(new URL('../_media', import.meta.url)),
           '@ghentcdh/annotated-text': fileURLToPath(
             new URL('../../libs/core/src/index.ts', import.meta.url),
           ),

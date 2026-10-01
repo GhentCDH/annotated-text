@@ -22,7 +22,6 @@ export const getLinesForAnnotation = (
     }
 
     if (annotation.end <= line.end) {
-      i = allLines.length;
       break;
     }
   }
