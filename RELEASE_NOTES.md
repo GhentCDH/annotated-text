@@ -1,3 +1,21 @@
+## 1.1.0 (2026-10-01)
+
+### 🚀 Features
+
+- add annotation-editor adapter ([c45d271](https://github.com/GhentCDH/vue_component_annotated_text/commit/c45d271))
+
+### 🩹 Fixes
+
+- update publishing ([1dd8933](https://github.com/GhentCDH/vue_component_annotated_text/commit/1dd8933))
+- update publishing ([d62a136](https://github.com/GhentCDH/vue_component_annotated_text/commit/d62a136))
+- update publishing ([74ff37e](https://github.com/GhentCDH/vue_component_annotated_text/commit/74ff37e))
+- update publishing ([df63d13](https://github.com/GhentCDH/vue_component_annotated_text/commit/df63d13))
+- **crouton-prisma:** tsup file ([2f95c1f](https://github.com/GhentCDH/vue_component_annotated_text/commit/2f95c1f))
+
+### ❤️ Thank You
+
+- Bo Vandersteene
+
 ## 1.0.11 (2026-08-21)
 
 ### 🚀 Features
