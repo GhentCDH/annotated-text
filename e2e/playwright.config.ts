@@ -9,7 +9,7 @@ const isCoverage = process.env.COVERAGE === 'true';
 
 export default defineConfig({
   testDir: '.',
-  testMatch: './**/*.spec.ts',
+  testMatch: '**/*.spec.ts',
   snapshotDir: './__snapshots__',
   snapshotPathTemplate: '{snapshotDir}/{testFilePath}/{arg}-{platform}{ext}',
   timeout: 30000,
