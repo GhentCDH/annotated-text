@@ -7,7 +7,8 @@ import {
 } from '@ghentcdh/annotated-text';
 import { v4 as uuid4 } from 'uuid';
 import memoize from 'memoizee';
-import { getPartialMarkdownWithLimit, replaceMarkdownToHtml, stripHtmlFromText } from './parser';
+import { getPartialMarkdownWithLimit, replaceMarkdownToHtml } from './parser';
+import { normalizeMarkdown } from './markdown.normalizer';
 
 /**
  * Computes the clamped start offset of a limit within a line.
@@ -70,8 +71,11 @@ export class MarkdownTextAdapterImpl extends TextAdapter {
    */
   _parse(text: string, startOffset: number) {
     const fullHtml = replaceMarkdownToHtml(text);
-    const fullFlatText = stripHtmlFromText(fullHtml);
-    this.fullFlatText = fullFlatText;
+    // Use normalizeMarkdown for fullFlatText so positions match annotation
+    // coordinate space (normalizeMarkdown collapses block separators to \n,
+    // while stripHtmlFromText produces \n\n from <p> tags — causing drift).
+    this.fullFlatText = normalizeMarkdown(text).text;
+    const fullFlatText = this.fullFlatText;
 
     const textDim = { start: startOffset, end: text.length + startOffset };
     const diff = this.limit ? getDiff(textDim, this.limit) : textDim;
