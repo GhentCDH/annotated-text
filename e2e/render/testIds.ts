@@ -5,6 +5,7 @@ export const renderMarkdownIds = {
   highlight_plain: 'markdown-plain-highlight',
   limit: 'markdown-limit-ignore-lines',
   limit_no_ignore: 'markdown-limit-NO-ignore-lines',
+  limit_no_ignore_cut: 'markdown-limit-NO-ignore-lines-cut',
   styling: 'markdown-styling',
 } as const;
 

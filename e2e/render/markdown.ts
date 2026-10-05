@@ -84,6 +84,15 @@ const configuration: Record<RenderMarkdownKeys, any> = {
       ignoreLines: false,
     },
   },
+  limit_no_ignore_cut: {
+    text: markdownText,
+    adapter: MarkdownTextAdapter,
+    limit: {
+      start: 15,
+      end: 37,
+      ignoreLines: false,
+    },
+  },
 };
 
 const renderDifferentLineHeight = (
@@ -103,8 +112,8 @@ const renderDifferentLineHeight = (
 
   // Basic text setup
   const annotatedText = createAnnotatedText<any>(id)
-    .setAnnotationAdapter({ edit: true, create: true })
-    .setTextAdapter(params.adapter({ limit: params.limit }))
+    .setAnnotationAdapterParams({ edit: true, create: true })
+    .setTextAdapterParams(params.adapter({ limit: params.limit }))
     .setRenderParams({
       renderFn: (a) => a.renderer ?? defaultRender,
     })
@@ -141,3 +150,4 @@ renderDifferentLineHeight('highlight_wordsnapper', DefaultRenders.highlight);
 renderDifferentLineHeight('highlight_plain', DefaultRenders.highlight);
 renderDifferentLineHeight('limit', DefaultRenders.highlight);
 renderDifferentLineHeight('limit_no_ignore', DefaultRenders.highlight);
+renderDifferentLineHeight('limit_no_ignore_cut', DefaultRenders.highlight, []);

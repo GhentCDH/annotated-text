@@ -323,8 +323,19 @@ function makeResult(
   });
 
   const reconstruct = (normStart: number, normEnd: number): string => {
-    const { start, end } = toRawRange(normStart, normEnd);
-    return source.slice(start, end);
+    const rawStart = toRawOffset(normStart);
+    let rawEnd = toRawOffset(normEnd);
+
+    // Extend past any marker segments (closing *, **, _, etc.) immediately
+    // trailing the end position — they have zero norm-length so toRawOffset
+    // never lands past them, but they must be included for valid markdown.
+    for (const seg of segments) {
+      if (seg.rawStart < rawEnd) continue;
+      if (seg.kind !== 'marker' || seg.rawStart !== rawEnd) break;
+      rawEnd = seg.rawEnd;
+    }
+
+    return source.slice(rawStart, rawEnd);
   };
 
   return {
