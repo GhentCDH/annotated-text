@@ -38,6 +38,28 @@ test.describe('AnnotatedText Core - Markdown ', () => {
 
     await container.expect.toHaveScreenshot('create.png');
   });
+
+  // Regression: WordSnapper used stripHtmlFromText for word positions, causing
+  // drift after block boundaries. Words after markup (e.g. *friendship*) snapped
+  // to wrong positions. Fixed by using normalizeMarkdown().text instead.
+  test('WordSnapper snaps to correct word after markdown formatting', async ({ page }) => {
+    const id = renderMarkdownIds.highlight_wordsnapper;
+    const container = findAnnotatedTextContainer(page, id);
+
+    await container.scrollTo();
+    await container.toBeVisible();
+
+    const mouseMove = container.mouse;
+    // "bloomed" is the word immediately after *friendship* in paragraph 1
+    // norm positions: friendship=27-36, bloomed=38-44
+    const y = 100;
+
+    await mouseMove.onMouseDown({ x: 190, y });
+    await mouseMove.onMouseDrag({ x: 240, y });
+    await mouseMove.onMouseEnd();
+
+    await container.expect.toHaveScreenshot('create-after-markup.png');
+  });
   test.describe('Move', () => {
     const id = renderMarkdownIds.highlight_wordsnapper;
     const { startX, startY, endX, endY } = positionScreen;
