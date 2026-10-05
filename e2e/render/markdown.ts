@@ -37,10 +37,10 @@ Their bond reminded everyone nearby that friendship needs no explanation — onl
 const fullHtml = replaceMarkdownToHtml(markdownText);
 const fullFlatText = stripHtmlFromText(fullHtml);
 const annotations = [
-  { id: '1', start: 0, end: 100 },
+  { id: '1', start: 0, end: 99 },
   { id: '2', start: 0, end: 100, renderer: DefaultRenders.gutter },
   { id: '3', start: 100, end: 200, renderer: DefaultRenders.gutter },
-  { id: '4', start: 100, end: 200 },
+  { id: '4', start: 100, end: 199 },
   { id: '5', start: 301, end: 341, renderer: DefaultRenders.underline },
 ] as any;
 
