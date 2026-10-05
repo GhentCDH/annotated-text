@@ -84,6 +84,15 @@ const configuration: Record<RenderMarkdownKeys, any> = {
       ignoreLines: false,
     },
   },
+  limit_no_ignore_cut: {
+    text: markdownText,
+    adapter: MarkdownTextAdapter,
+    limit: {
+      start: 15,
+      end: 37,
+      ignoreLines: false,
+    },
+  },
 };
 
 const renderDifferentLineHeight = (
@@ -141,3 +150,4 @@ renderDifferentLineHeight('highlight_wordsnapper', DefaultRenders.highlight);
 renderDifferentLineHeight('highlight_plain', DefaultRenders.highlight);
 renderDifferentLineHeight('limit', DefaultRenders.highlight);
 renderDifferentLineHeight('limit_no_ignore', DefaultRenders.highlight);
+renderDifferentLineHeight('limit_no_ignore_cut', DefaultRenders.highlight, []);
