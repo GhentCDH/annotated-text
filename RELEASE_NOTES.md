@@ -1,3 +1,16 @@
+## 1.1.1 (2026-10-05)
+
+### 🩹 Fixes
+
+- **e2e:** fix testMatch glob pattern for playwright 1.63 ([8181e00](https://github.com/GhentCDH/vue_component_annotated_text/commit/8181e00))
+- **e2e:** tests ([#207](https://github.com/GhentCDH/vue_component_annotated_text/pull/207))
+- **markdown:** include closing markup markers in reconstruct range ([#208](https://github.com/GhentCDH/vue_component_annotated_text/pull/208))
+- **markdown:** wordsnapper on markdown text ([#209](https://github.com/GhentCDH/vue_component_annotated_text/pull/209))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.1.0 (2026-10-01)
 
 ### 🚀 Features
