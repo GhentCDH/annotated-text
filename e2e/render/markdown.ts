@@ -112,8 +112,8 @@ const renderDifferentLineHeight = (
 
   // Basic text setup
   const annotatedText = createAnnotatedText<any>(id)
-    .setAnnotationAdapter({ edit: true, create: true })
-    .setTextAdapter(params.adapter({ limit: params.limit }))
+    .setAnnotationAdapterParams({ edit: true, create: true })
+    .setTextAdapterParams(params.adapter({ limit: params.limit }))
     .setRenderParams({
       renderFn: (a) => a.renderer ?? defaultRender,
     })
