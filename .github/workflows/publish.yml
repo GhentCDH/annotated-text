@@ -33,24 +33,8 @@ jobs:
         run: npx nx build core --production && npx nx build w3c-utils && npx nx build markdown
 
       - name: Publish package on NPM
-        run: |
-          # 1. Execute the primary release publish using Nx
-          npx nx release publish --access public --verbose --tag latest
-          
-          # 2. Force the current version as 'latest' on the npm registry via OIDC
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            CLEAN_VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
-            echo "Enforcing version $CLEAN_VERSION as 'latest' across monorepo packages..."
-          
-            pnpm npm dist-tag add @ghentcdh/core@$CLEAN_VERSION latest
-            pnpm npm dist-tag add @ghentcdh/w3c-utils@$CLEAN_VERSION latest
-            pnpm npm dist-tag add @ghentcdh/markdown@$CLEAN_VERSION latest
-          else
-            echo "Workflow run manually via workflow_dispatch. Skipping manual dist-tag enforcement."
-          fi
-        shell: bash
+        run: npx nx release publish --access public --verbose --tag latest
         env:
-          # Tells pnpm/npm to fetch the token from GitHub Actions
           NPM_CONFIG_OIDC_TOKEN_PROVIDER: github
           NPM_CONFIG_PROVENANCE: true
 
