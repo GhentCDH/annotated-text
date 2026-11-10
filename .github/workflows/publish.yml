@@ -30,7 +30,7 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: npx nx build core --production && npx nx build w3c-utils && npx nx build markdown
+        run: npx nx build core -c production && npx nx build w3c-utils && npx nx build markdown
 
       - name: Publish package on NPM
         run: npx nx release publish --access public --verbose --tag latest

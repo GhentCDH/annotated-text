@@ -19,21 +19,21 @@ export default defineConfig(() => ({
   resolve: {
     tsconfigPaths: true,
   },
-  root: __dirname,
+  root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/libs/core',
   plugins: [
     {
       // Replaces the removed nxCopyAssetsPlugin(['*.md']): copy project-root markdown into the build output.
       name: 'copy-markdown',
       writeBundle: ({ dir }) => {
-        for (const file of globSync('*.md', { cwd: __dirname })) {
-          copyFileSync(path.join(__dirname, file), path.join(dir!, file));
+        for (const file of globSync('*.md', { cwd: import.meta.dirname })) {
+          copyFileSync(path.join(import.meta.dirname, file), path.join(dir!, file));
         }
       },
     },
     dts({
       entryRoot: 'src',
-      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
+      tsconfigPath: path.join(import.meta.dirname, 'tsconfig.lib.json'),
       pathsToAliases: false,
     }),
   ],
