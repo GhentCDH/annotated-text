@@ -47,6 +47,13 @@
       }
     },
     {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      },
+      "include": ["libs/core/**/*", "libs/markdown/**/*", "libs/w3c/utils/**/*"]
+    },
+    {
       "plugin": "@nx/vitest",
       "options": {
         "testTargetName": "test"
