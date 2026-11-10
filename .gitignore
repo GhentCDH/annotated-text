@@ -67,3 +67,4 @@ _tmp*
 /plans/
 
 .nx/migrate-runs
+.vitest
