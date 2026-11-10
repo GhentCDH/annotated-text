@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { copyFileSync, globSync } from 'fs';
 import * as path from 'path';
+import pkg from './package.json';
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
 const configValues = { default: {}, production: {}, development: {} };
@@ -28,7 +29,10 @@ export default defineConfig(() => ({
       name: 'copy-dist-files',
       writeBundle: ({ dir }) => {
         for (const file of globSync('*.md', { cwd: import.meta.dirname })) {
-          copyFileSync(path.join(import.meta.dirname, file), path.join(dir!, file));
+          copyFileSync(
+            path.join(import.meta.dirname, file),
+            path.join(dir!, file),
+          );
         }
         copyFileSync(
           path.join(import.meta.dirname, 'package.json'),
@@ -60,14 +64,15 @@ export default defineConfig(() => ({
       entry: 'src/index.ts',
       name: 'AnnotatedText',
       fileName: 'index',
-      // Change this to the formats you want to support.
-      // Don't forget to update your package.json as well.
-      // formats: ["es" as const],
-      format: ['cjs', 'esm', 'es'],
+      formats: ['es' as const, 'cjs' as const],
     },
     rolldownOptions: {
-      // External packages that should not be bundled into your library.
-      external: [],
+      // Every declared dependency stays external. An undeclared one gets inlined,
+      // so keep package.json in sync with the imports.
+      external: (id: string) =>
+        Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }).some(
+          (dep) => id === dep || id.startsWith(`${dep}/`),
+        ),
     },
   },
   test: {

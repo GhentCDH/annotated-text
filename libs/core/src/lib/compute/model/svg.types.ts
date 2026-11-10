@@ -1,5 +1,4 @@
-import { type Selection } from 'd3-selection';
-import { select } from 'd3';
+import { select, type Selection } from 'd3-selection';
 import { Debugger } from '../../utils/debugger';
 import { type AnnotationId } from '../../model';
 import { styles } from '../styles.const';

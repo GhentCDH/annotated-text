@@ -1,7 +1,7 @@
 {
   "name": "w3c-utils",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "w3c/utils/src",
+  "sourceRoot": "libs/w3c/utils/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -13,7 +13,7 @@
     "build": {
       "outputs": [
         "{projectRoot}/{options.outDir}",
-        "{workspaceRoot}/dist/w3c/utils"
+        "{workspaceRoot}/dist/libs/w3c/utils"
       ],
       "options": {
         "config": "./vite.config.mts",
