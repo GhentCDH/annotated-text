@@ -8,21 +8,26 @@ import {
   type ZoomControlsOptions,
 } from '../zoom';
 
-const createApi = (initial = 1) => {
+const createApi = (initial = 1, blocked = false) => {
   let zoom = initial;
   const api: ZoomApi = {
     getZoom: () => zoom,
     setZoom: vi.fn((z: number) => {
       zoom = clampZoom(z, DefaultZoomControls);
     }),
+    isBlocked: () => blocked,
   };
   return api;
 };
 
-const setup = (options: Partial<ZoomControlsOptions>, initial = 1) => {
+const setup = (
+  options: Partial<ZoomControlsOptions>,
+  initial = 1,
+  blocked = false,
+) => {
   const wrapper = document.createElement('div');
   document.body.appendChild(wrapper);
-  const api = createApi(initial);
+  const api = createApi(initial, blocked);
   const controls = attachZoomControls(
     wrapper,
     { ...DefaultZoomControls, ...options },
@@ -31,10 +36,7 @@ const setup = (options: Partial<ZoomControlsOptions>, initial = 1) => {
   return { wrapper, api, controls };
 };
 
-const wheel = (
-  wrapper: HTMLElement,
-  init: WheelEventInit = {},
-): WheelEvent => {
+const wheel = (wrapper: HTMLElement, init: WheelEventInit = {}): WheelEvent => {
   const event = new WheelEvent('wheel', {
     cancelable: true,
     clientX: 10,
@@ -113,7 +115,9 @@ describe('zoom', () => {
 
         (buttons(wrapper) as Record<string, HTMLButtonElement>)[name].click();
 
-        expect(api.setZoom).toHaveBeenCalledWith(expected);
+        expect(api.setZoom).toHaveBeenCalledWith(expected, {
+          y: expect.any(Number),
+        });
       },
     );
 
@@ -127,7 +131,7 @@ describe('zoom', () => {
       ({ zoom, label, outDisabled, inDisabled }) => {
         const { wrapper, controls } = setup({ buttons: true });
 
-        controls.update(zoom, 'ltr');
+        controls.update(zoom);
 
         const { zoomOut, reset, zoomIn } = buttons(wrapper);
         expect(reset.textContent).toBe(label);
@@ -136,12 +140,22 @@ describe('zoom', () => {
       },
     );
 
-    it('should follow the text direction', () => {
-      const { wrapper, controls } = setup({ buttons: true });
+    it('should always be left-to-right, whatever the text direction', () => {
+      const { wrapper } = setup({ buttons: true });
 
-      controls.update(1, 'rtl');
+      expect((wrapper.firstElementChild as HTMLElement).dir).toBe('ltr');
+    });
 
-      expect((wrapper.firstElementChild as HTMLElement).dir).toBe('rtl');
+    it('should keep the line next to the clicked button in place', () => {
+      const { wrapper, api } = setup({ buttons: true });
+      const { zoomIn } = buttons(wrapper);
+      vi.spyOn(zoomIn, 'getBoundingClientRect').mockReturnValue(
+        DOMRect.fromRect({ x: 100, y: 10, width: 20, height: 30 }),
+      );
+
+      zoomIn.click();
+
+      expect(api.setZoom).toHaveBeenCalledWith(1.25, { y: 25 });
     });
 
     it('should remove the toolbar on destroy', () => {
@@ -188,6 +202,17 @@ describe('zoom', () => {
         x: 10,
         y: 20,
       });
+    });
+
+    it('should not zoom the page or the text while blocked', () => {
+      const { wrapper, api } = setup({ wheel: true }, 1, true);
+
+      const event = wheel(wrapper, { deltaY: -100, ctrlKey: true });
+      vi.advanceTimersByTime(WHEEL_COMMIT_DELAY);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(wrapper.style.transform).toBe('');
+      expect(api.setZoom).not.toHaveBeenCalled();
     });
 
     it('should render once after a burst of wheel events', () => {

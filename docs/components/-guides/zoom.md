@@ -31,8 +31,9 @@ createAnnotatedText(id)
 | `max`      | `4`     | Maximum zoom                                                                            |
 | `step`     | `0.25`  | Zoom step for the buttons and the keyboard                                              |
 
-The buttons stick to the top of the scroll container. They sit on the side where
-lines end (right for left-to-right text, left for right-to-left text). Restyle them
+The buttons sit in the top right corner, above the first line, and stick to the top
+of the scroll container while scrolling, whatever the text direction. They zoom around
+the toolbar, so the text next to it stays in place. Restyle them
 with the `.ghent-cdh-annotation-zoom` class or the `--annotated-text-zoom-border`,
 `--annotated-text-zoom-background`, `--annotated-text-zoom-color` and
 `--annotated-text-zoom-top` CSS variables.
@@ -51,6 +52,9 @@ annotatedText.on('zoom', ({ data }) => {
 `setZoom` keeps the text in the middle of the visible area in place, so the reader
 doesn't lose their position. Pass a viewport point as second argument to keep the
 text under that point in place instead: `setZoom(2, { x: event.clientX, y: event.clientY })`.
+Leave out `x` to keep the start of the line at `y` in place: it doesn't move when the line wraps differently at the new zoom.
+
+Zoom is ignored while an annotation is being created, edited or dragged.
 
 ::: tip
 Put the text in a container with a fixed height and `overflow: auto`, so zooming

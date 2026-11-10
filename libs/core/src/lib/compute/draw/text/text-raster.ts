@@ -17,6 +17,45 @@ export type TextRasterItem = {
   centerX: number; // Horizontal center of the character
 };
 
+/** Characters whose top edges are this close are on the same line */
+const SAME_LINE_TOLERANCE = 1;
+
+/**
+ * Text position of the item closest to a point. The closest line wins, then the
+ * closest character on it: a point next to a short line anchors on that line, not
+ * on a longer line further away that happens to reach closer horizontally.
+ * Without `x` it returns the first character of the closest line.
+ */
+export const findNearestTextPosition = (
+  items: TextRasterItem[],
+  x: number | undefined,
+  y: number,
+): number | null => {
+  // ponytail: linear scans over all characters, fine for one call per zoom step.
+  // Use a growing rbush search box if this ever runs per frame.
+  const distanceY = (item: TextRasterItem) =>
+    Math.max(item.minY - y, 0, y - item.maxY);
+  const nearestDy = items.reduce(
+    (min, item) => Math.min(min, distanceY(item)),
+    Infinity,
+  );
+
+  let nearest: TextRasterItem | null = null;
+  let nearestScore = Infinity;
+  for (const item of items) {
+    if (distanceY(item) > nearestDy + SAME_LINE_TOLERANCE) continue;
+    const score =
+      x === undefined
+        ? item.textPosition
+        : Math.max(item.minX - x, 0, x - item.maxX);
+    if (score < nearestScore) {
+      nearestScore = score;
+      nearest = item;
+    }
+  }
+  return nearest?.textPosition ?? null;
+};
+
 /**
  * Creates a spatial index (R-tree) of all text characters in an SVG document.
  * This enables efficient spatial queries to find text at specific coordinates.

@@ -1,8 +1,14 @@
 # Plan 07 — Zoomable text with annotations that follow
 
-**Status:** implemented in #210, except:
+**Status:** implemented in #210, follow-up fixes and remaining tests in #214, except:
 - step 4: resize does *not* do a full recompute. Instead the `ResizeObserver` now only redraws on width changes, and zoom must go through `setZoom()`. Setting `--annotated-text-zoom` by hand changes the font but leaves the line height stale.
 - step 6: padding / border width don't scale with zoom yet. Revisit after users have tried it.
+- manual checks in §5 (trackpad pinch per browser, long Syriac text, page-level zoom) not done yet.
+
+Changes in #214:
+- toolbar reserves its height above the first line (no overlap) and always sits top right, whatever the text direction;
+- buttons keep the line next to the toolbar in place (`setZoom(zoom, { y })` anchors on the line start, stable when lines rewrap); the anchor picks the nearest line first, then the nearest character;
+- zoom is ignored while an annotation is being created, edited or dragged (`setZoom` no-ops, Ctrl + wheel / pinch don't preview), without waiting for plan 06's `cancel()`.
 **Severity:** medium — user-facing usability gap for long, small-script texts (e.g. Syriac).
 **Estimated effort:** ~4–5 days (phase 1 ~1 day, phase 3 controls ~2 days).
 **Related plans:** [02 — Accessibility](./02-accessibility.md) — zoom without breaking the page is also WCAG 1.4.4 (Resize Text).
@@ -83,15 +89,15 @@ setZoomControls({
 
 ## 5. Verification
 
-- [ ] Unit: `setZoom(2)` sets `--annotated-text-zoom: 2` on the wrapper and triggers `initDraw`; out-of-range values are clamped.
-- [ ] Unit: `getLineHeight` returns a larger value when the wrapper has a larger font size.
-- [ ] E2E (Playwright): for zoom `1`, `1.5`, `3`, every annotation `<rect>` bbox covers the client rects of its text range (tolerance ~1px) — highlight, underline, gutter, RTL text.
-- [ ] E2E: resize/drag handles and create-by-selection still hit the right character offsets after zoom.
-- [ ] E2E: zoom keeps the first visible line in view (phase 2).
-- [ ] Unit: zoom buttons call `setZoom` with `±step`, are disabled at `min`/`max`, `%` label resets to 1.
-- [ ] Unit: wheel without modifier is not prevented; wheel with `ctrlKey`/`metaKey` is prevented and changes zoom; many ticks → one `recalculate()` after idle.
-- [ ] E2E: Ctrl + wheel over the text zooms the text only (page `devicePixelRatio` unchanged); the character under the pointer stays under the pointer.
-- [ ] E2E: buttons are keyboard-reachable and announce the new zoom level.
+- [x] ~~Unit~~ E2E: `setZoom(2)` sets `--annotated-text-zoom: 2` on the wrapper and triggers `initDraw`; out-of-range values are clamped. (covered end to end by `clamps to min and max` and the alignment tests, no unit test)
+- [x] Unit: `getLineHeight` returns a larger value when the wrapper has a larger font size.
+- [x] E2E (Playwright): for zoom `1`, `1.5`, `3`, every annotation `<rect>` bbox covers the client rects of its text range (tolerance ~1px) — highlight, underline, gutter, RTL text. (`e2e/zoom`: highlights LTR at 0.5–3, RTL at 1 and 2)
+- [x] E2E: resize/drag handles and create-by-selection still hit the right character offsets after zoom.
+- [x] E2E: zoom keeps the first visible line in view (phase 2).
+- [x] Unit: zoom buttons call `setZoom` with `±step`, are disabled at `min`/`max`, `%` label resets to 1.
+- [x] Unit: wheel without modifier is not prevented; wheel with `ctrlKey`/`metaKey` is prevented and changes zoom; many ticks → one `recalculate()` after idle.
+- [x] E2E: Ctrl + wheel over the text zooms the text only (page `devicePixelRatio` unchanged); the character under the pointer stays under the pointer.
+- [x] E2E: buttons are keyboard-reachable and announce the new zoom level.
 - [ ] Manual: trackpad pinch in Chrome, Firefox and Safari.
 - [ ] Manual: long Syriac text in a fixed-height scroll box, zoom 1 → 3 → 1, no drift, no horizontal scroll.
 - [ ] Page-level browser zoom still works (no regression).
@@ -102,5 +108,5 @@ setZoomControls({
 - **Memoized measurements.** `memoizee` caches in `unscaled.ts` are keyed on numbers only — fine — but check any cache keyed on line/character that survives a recompute.
 - **Hijacking the browser.** Ctrl + wheel is the user's page-zoom gesture. Only intercept it over the text box and only when `wheel: true`; keep the default `false` until a demo confirms users expect it.
 - **Safari gestures.** `gesture*` events are non-standard and Safari-only; feature-detect, don't sniff the UA.
-- **Toolbar overlapping text.** A sticky overlay can cover the first characters of RTL lines (top-left) or LTR (top-right); place it on the side opposite the text direction, or reserve space with padding.
-- **Drag in progress.** Zoom during an active edit/drag: block or cancel first (ties into [06](./06-drag-edit-lifecycle.md) `cancel()`).
+- **Toolbar overlapping text.** Resolved: the toolbar height is reserved above the first line.
+- **Drag in progress.** Resolved by blocking: zoom is ignored while the internal event listener is blocking (create, edit, drag). Plan 06's edit bug that left events (and so zoom) blocked is fixed in #214.

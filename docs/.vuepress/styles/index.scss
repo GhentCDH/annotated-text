@@ -1,0 +1,2 @@
+// Library styles: the import in libs/core/src/index.ts is tree-shaken by "sideEffects": false
+@use "../../../libs/core/src/lib/style/style";

@@ -22,15 +22,24 @@ export const DefaultZoomControls: ZoomControlsOptions = {
   step: 0.25,
 };
 
-export type ZoomAnchor = { x: number; y: number };
+type Point = { x: number; y: number };
+
+/**
+ * Viewport point whose text stays in place while zooming. With `x` the character
+ * at that point stays put; without it the start of the line at `y` does, which
+ * doesn't move when the line wraps differently at the new zoom.
+ */
+export type ZoomAnchor = { x?: number; y: number };
 
 export type ZoomApi = {
   getZoom: () => number;
   setZoom: (zoom: number, anchor?: ZoomAnchor) => void;
+  /** True while zooming is not allowed, e.g. during an annotation drag or edit */
+  isBlocked: () => boolean;
 };
 
 export type ZoomControls = {
-  update: (zoom: number, direction: 'ltr' | 'rtl') => void;
+  update: (zoom: number) => void;
   destroy: () => void;
 };
 
@@ -56,7 +65,7 @@ export const getScrollParent = (element: HTMLElement): HTMLElement => {
 };
 
 /** Center of the part of the element that is visible in its scroll box and the viewport */
-export const getVisibleCenter = (element: HTMLElement): ZoomAnchor => {
+export const getVisibleCenter = (element: HTMLElement): Point => {
   const rect = element.getBoundingClientRect();
   const scrollParent = getScrollParent(element);
   const box =
@@ -70,12 +79,20 @@ export const getVisibleCenter = (element: HTMLElement): ZoomAnchor => {
   return { x: rect.left + rect.width / 2, y: (top + bottom) / 2 };
 };
 
-const createButton = (label: string, text: string, onClick: () => void) => {
+const createButton = (
+  label: string,
+  text: string,
+  onClick: (anchor: ZoomAnchor) => void,
+) => {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = text;
   if (label) button.setAttribute('aria-label', label);
-  button.addEventListener('click', onClick);
+  button.addEventListener('click', () => {
+    // Keep the line next to the toolbar in place, so the toolbar doesn't jump away
+    const rect = button.getBoundingClientRect();
+    onClick({ y: rect.top + rect.height / 2 });
+  });
   return button;
 };
 
@@ -84,21 +101,26 @@ const createToolbar = (options: ZoomControlsOptions, api: ZoomApi) => {
   toolbar.className = styles.zoom;
   toolbar.setAttribute('role', 'toolbar');
   toolbar.setAttribute('aria-label', 'Zoom');
+  // Same place (top right) and button order (− % +) whatever the text direction
+  toolbar.dir = 'ltr';
 
-  const zoomBy = (step: number) => api.setZoom(round(api.getZoom() + step));
+  const zoomBy = (step: number, anchor: ZoomAnchor) =>
+    api.setZoom(round(api.getZoom() + step), anchor);
 
-  const zoomOut = createButton('Zoom out', '−', () => zoomBy(-options.step));
+  const zoomOut = createButton('Zoom out', '−', (anchor) =>
+    zoomBy(-options.step, anchor),
+  );
   // No aria-label: the percentage is the accessible name and is announced on change
-  const reset = createButton('', '100%', () => api.setZoom(1));
+  const reset = createButton('', '100%', (anchor) => api.setZoom(1, anchor));
   reset.title = 'Reset zoom';
   reset.setAttribute('aria-live', 'polite');
-  const zoomIn = createButton('Zoom in', '+', () => zoomBy(options.step));
+  const zoomIn = createButton('Zoom in', '+', (anchor) =>
+    zoomBy(options.step, anchor),
+  );
 
   toolbar.append(zoomOut, reset, zoomIn);
 
-  const update = (zoom: number, direction: 'ltr' | 'rtl') => {
-    // Put the toolbar on the side where lines end, so it doesn't cover their start
-    toolbar.dir = direction;
+  const update = (zoom: number) => {
     reset.textContent = `${Math.round(zoom * 100)}%`;
     zoomOut.disabled = zoom <= options.min;
     zoomIn.disabled = zoom >= options.max;
@@ -137,7 +159,7 @@ export const attachZoomControls = (
   }
 
   if (options.wheel) {
-    let pending: { zoom: number; anchor: ZoomAnchor } | null = null;
+    let pending: { zoom: number; anchor: Point } | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const commit = () => {
@@ -149,7 +171,7 @@ export const attachZoomControls = (
       api.setZoom(zoom, anchor);
     };
 
-    const preview = (zoom: number, anchor: ZoomAnchor) => {
+    const preview = (zoom: number, anchor: Point) => {
       if (!pending) {
         // Origin is measured once, before any transform is applied
         const rect = wrapper.getBoundingClientRect();
@@ -164,6 +186,7 @@ export const attachZoomControls = (
     listen('wheel', (event: WheelEvent) => {
       if (!event.ctrlKey && !event.metaKey) return; // plain wheel keeps scrolling
       event.preventDefault(); // don't zoom the whole page
+      if (api.isBlocked()) return;
       const current = pending?.zoom ?? api.getZoom();
       // Mouse wheel ticks are ~100, trackpad pinch deltas are small: both feel natural
       const delta = Math.max(-100, Math.min(100, event.deltaY));
@@ -179,6 +202,7 @@ export const attachZoomControls = (
     });
     listen('gesturechange', (event) => {
       event.preventDefault();
+      if (api.isBlocked()) return;
       const zoom = clampZoom(gestureStartZoom * event.scale, options);
       preview(zoom, { x: event.clientX, y: event.clientY });
     });

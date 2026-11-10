@@ -1,6 +1,11 @@
 # Plan 06 — Drag & edit: lifecycle bugs, missing cancel, hot-path cost, zero test coverage
 
-**Status:** not started
+**Status:** phase 1 partly done in #214:
+- 3a done: `end()` always releases the block (tracked with an `active` flag so an `end()` without a matching `start()` can't release someone else's block); an edit without a drawn dummy restores the `move` class and the tag and emits nothing; an exception in `onStart` releases the block and rethrows. `move()` is ignored without a started edit. Blocking is not token-based or counted.
+- 3b done: `DragAnnotation.onStart` guards missing draws/draggables (optional chaining), the duplicate `blockEvents` call is removed.
+- 3c not done: errors still reach the console, not `eventListener.sendError`.
+- 3d partly: `__tests__/edit-lifecycle.spec.ts` covers the abort paths with a small mocked module (9 of 13 tests fail on the old code), no shared harness yet. E2E regression in `e2e/zoom` (click a handle without moving, then zoom and edit).
+- Phases 2+ (cancel / Escape, hot-path cost) not started.
 **Severity:** high — two of these bugs deadlock the component from ordinary user actions, and the whole subsystem has no unit tests.
 **Estimated effort:** ~1 week. Phase 1 (the two deadlock bugs + harness) is ~2 days and is the urgent part.
 **Related plans:** [05 — sendEvent mutation](./05-sendevent-input-mutation.md) — same code path; the two bugs compound and the test harness is shared. [02 — Accessibility](./02-accessibility.md) phase 3 needs the `cancel()` built here and benefits from the offset-based `move()` refactor.

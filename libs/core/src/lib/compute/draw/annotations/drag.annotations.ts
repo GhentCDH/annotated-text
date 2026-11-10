@@ -24,21 +24,23 @@ export class DragAnnotation extends AbstractAnnotationEventEdit {
   }
 
   protected override onStart(position: Position) {
-    const draws = this.annotation!._drawMetadata.draws;
+    this.dragBusy = false;
+    const draws = this.annotation?._drawMetadata?.draws ?? [];
 
-    this.startDimensions = draws.find((d) => d.draggable.start)!.draggable
-      ?.start as Dimensions;
-    this.endDimensions = draws.find((d) => d.draggable.end)!.draggable
-      ?.end as Dimensions;
-
-    // if (!startDimensions || !endDimensions) return;
+    const start = draws.find((d) => d.draggable?.start)?.draggable?.start;
+    const end = draws.find((d) => d.draggable?.end)?.draggable?.end;
+    // Not draggable (e.g. gutter or outside the rendered lines): dragBusy stays
+    // false, so onDrag ignores the moves and end() releases the block
+    if (!start || !end) return;
+    this.startDimensions = start;
+    this.endDimensions = end;
 
     const result = this.getCharacterFromTextNodesAtPoint(position);
     if (!result) return;
     this.pickupIndex = result.characterPos;
     this.textStart = this.minStartPosition;
 
-    this.internalEventListener.blockEvents('starting annotation drag');
+    // start() already blocked the events
     this.dragBusy = true;
     this.draw.annotation.setClass(this.annotation!.id, 'move');
   }
