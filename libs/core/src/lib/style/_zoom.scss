@@ -1,0 +1,44 @@
+.ghent-cdh-annotation-zoom {
+  // Sticky, zero-height bar: stays visible while scrolling and takes no space
+  position: sticky;
+  z-index: 2;
+  top: var(--annotated-text-zoom-top, 4px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 0;
+
+  // Keep the buttons at their normal size whatever the text zoom is
+  font-size: calc(1em / var(--annotated-text-zoom, 1));
+
+  button {
+    min-width: 2em;
+    padding: 0.25em 0.5em;
+    border: 1px solid var(--annotated-text-zoom-border, #ccc);
+    background: var(--annotated-text-zoom-background, #fff);
+    color: var(--annotated-text-zoom-color, inherit);
+    font: inherit;
+    line-height: 1.2;
+    cursor: pointer;
+    pointer-events: all;
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+
+    &:first-child {
+      border-start-start-radius: 4px;
+      border-end-start-radius: 4px;
+    }
+
+    &:last-child {
+      border-start-end-radius: 4px;
+      border-end-end-radius: 4px;
+    }
+
+    & + button {
+      border-inline-start: 0;
+    }
+  }
+}

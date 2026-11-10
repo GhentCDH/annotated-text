@@ -1,13 +1,23 @@
-export const getLineHeight = (text: string, offset = 2) => {
+/**
+ * Measure the line height of the text.
+ *
+ * The probe is attached to `parent` (the wrapper), so it inherits the font
+ * family, size and zoom the text is rendered with.
+ */
+export const getLineHeight = (
+  text: string,
+  offset = 2,
+  parent: HTMLElement = document.body,
+) => {
   const tempElement = document.createElement('span');
   tempElement.style.visibility = 'hidden';
   tempElement.style.position = 'absolute';
   tempElement.style.whiteSpace = 'pre';
   tempElement.textContent = text;
 
-  document.body.appendChild(tempElement);
+  parent.appendChild(tempElement);
   const lineHeight = getLineHeightOnElement(tempElement);
-  document.body.removeChild(tempElement);
+  parent.removeChild(tempElement);
 
   return lineHeight + offset;
 };

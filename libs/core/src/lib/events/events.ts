@@ -9,6 +9,7 @@ export type _AnnotationEventType =
   | 'annotation-create--start'
   | 'annotation-create--end'
   | 'annotation-create--move'
+  | 'zoom'
   | 'destroy';
 
 type EditAnnotationEventData<ANNOTATION> = {
@@ -37,6 +38,7 @@ export type EventData<ANNOTATION> = {
   'annotation-create--start': EditAnnotationEventData<ANNOTATION>;
   'annotation-create--end': EditAnnotationEventData<ANNOTATION>;
   'annotation-create--move': EditAnnotationEventMoveData<ANNOTATION>;
+  zoom: { zoom: number };
   destroy: null;
   all: unknown;
 };

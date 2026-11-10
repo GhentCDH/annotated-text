@@ -3,6 +3,7 @@ import { createNewBlock } from './annotations/create';
 import { DrawAnnotation } from './annotations/DrawAnnotation';
 import { DrawText } from './text/DrawText';
 import { getLineHeight } from './utils/line-height';
+import { MainContainer } from '../model/maincontainer';
 import { Debugger } from '../../utils/debugger';
 import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
 import type { BaseAnnotation, TextAnnotation } from '../../model';
@@ -51,7 +52,11 @@ export class Draw<
     snapper.setText(text, startOffset);
 
     textAdapter.setLineHeight(
-      getLineHeight(text, textAdapter.style.lineOffset),
+      getLineHeight(
+        text,
+        textAdapter.style.lineOffset,
+        this.inject(MainContainer).wrapper ?? undefined,
+      ),
     );
 
     return this;

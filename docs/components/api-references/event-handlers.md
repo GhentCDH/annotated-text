@@ -32,6 +32,7 @@ By default the events will be logged to the console with debug statements.
 | annotation-create--start | Emitted when a new annotation is being created. This is the first event in the create process.     |
 | annotation-create--move  | Emitted when a new annotation is being moved during the create process.                            |
 | annotation-create--end   | Emitted when a new annotation creation is completed. This is the last event in the create process. |
+| zoom                     | Emitted when the text zoom changes, `data.zoom` is the new zoom factor.                            |
 | destroy                  | Emitted when the annotated text component is destroyed.                                            |
 
 ## Examples

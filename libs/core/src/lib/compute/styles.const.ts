@@ -4,6 +4,7 @@ export const styles = {
   text: `annotated-text ${prefix}-text`,
   svg: `${prefix}-svg`,
   wrapper: `${prefix}-wrapper`,
+  zoom: `${prefix}-zoom`,
   line: {
     wrapper: '',
     text: {

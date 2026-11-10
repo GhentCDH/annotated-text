@@ -20,6 +20,10 @@ import {
   type RenderParams,
 } from '../../adapter/annotation/renderer/annotation-render';
 import { type tagLabelFn } from '../../tag/TagRenderer';
+import {
+  type ZoomAnchor,
+  type ZoomControlsOptions,
+} from '../zoom/zoom';
 
 export interface CreateAnnotationsProps<ANNOTATION extends BaseAnnotation> {
   annotationAdapter?: AnnotationAdapter<ANNOTATION>;
@@ -226,4 +230,31 @@ export interface AnnotatedText<ANNOTATION extends BaseAnnotation> {
   registerStyles: (styles: Record<string, CustomAnnotationStyle>) => this;
 
   setStyleParams(params: Partial<AnnotationStyleParams<ANNOTATION>>): this;
+
+  /**
+   * Zoom only the annotated text, not the page. The text reflows to the
+   * container width and the annotations are redrawn to match.
+   *
+   * The zoom is clamped between `min` and `max` of {@link setZoomControls}.
+   * Emits a `zoom` event.
+   *
+   * @param zoom - zoom factor, `1` is the normal size
+   * @param anchor - client (viewport) point whose character stays in place,
+   * defaults to the middle of the visible text
+   *
+   * @example
+   * annotatedText.setZoom(1.5);
+   */
+  setZoom: (zoom: number, anchor?: ZoomAnchor) => this;
+
+  /** Current zoom factor, `1` is the normal size */
+  getZoom: () => number;
+
+  /**
+   * Enable built-in zoom controls. All are off by default.
+   *
+   * @example
+   * annotatedText.setZoomControls({ buttons: true, wheel: true, keyboard: true });
+   */
+  setZoomControls: (options: Partial<ZoomControlsOptions>) => this;
 }

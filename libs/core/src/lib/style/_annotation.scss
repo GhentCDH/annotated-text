@@ -23,6 +23,8 @@
     position: relative;
     display: block;
     width: 100%;
+    // Zoom only the annotated text, set through `setZoom()`
+    font-size: calc(1em * var(--annotated-text-zoom, 1));
   }
 
   &-text {
