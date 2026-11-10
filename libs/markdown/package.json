@@ -33,7 +33,9 @@
   "dependencies": {
     "markdown-it": "15.0.3",
     "memoizee": "^0.4.17",
-    "uuid": "14.0.3",
+    "uuid": "14.0.3"
+  },
+  "devDependencies": {
     "vitest": "5.1.0"
   },
   "peerDependencies": {

@@ -23,8 +23,9 @@ export default defineConfig(() => ({
   cacheDir: '../../node_modules/.vite/w3c/utils',
   plugins: [
     {
-      // Replaces the removed nxCopyAssetsPlugin(['*.md']): copy project-root markdown into the build output.
-      name: 'copy-markdown',
+      // Replaces the removed nxCopyAssetsPlugin(['*.md']) and the package.json copy from the
+      // removed @nx/vite:build executor: nx release publish reads the manifest from the dist folder.
+      name: 'copy-dist-files',
       writeBundle: ({ dir }) => {
         for (const file of globSync('*.md', { cwd: import.meta.dirname })) {
           copyFileSync(
@@ -32,6 +33,10 @@ export default defineConfig(() => ({
             path.join(dir!, file),
           );
         }
+        copyFileSync(
+          path.join(import.meta.dirname, 'package.json'),
+          path.join(dir!, 'package.json'),
+        );
       },
     },
     dts({
