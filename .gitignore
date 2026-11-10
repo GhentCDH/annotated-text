@@ -64,6 +64,5 @@ test-results
 
 _tmp*
 *PLAN.md
-/plans/
 
 .nx/migrate-runs
