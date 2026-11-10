@@ -42,3 +42,24 @@
     }
   }
 }
+
+// Reserve the toolbar height above the first line so the buttons don't cover it.
+// Text and svg move down together so the annotations stay aligned with the text.
+// ponytail: height derived from the button styles above, keep in sync when they change
+.ghent-cdh-annotation-wrapper:has(> .ghent-cdh-annotation-zoom) {
+  // Button line-height (1.2em) + padding (0.5em) at normal size + border and gap
+  --annotated-text-zoom-buttons: calc(
+    1.7em / var(--annotated-text-zoom, 1) + 6px
+  );
+  --annotated-text-zoom-bar: calc(
+    var(--annotated-text-zoom-top, 4px) + var(--annotated-text-zoom-buttons)
+  );
+
+  > .ghent-cdh-annotation-text {
+    margin-top: var(--annotated-text-zoom-bar);
+  }
+
+  > .ghent-cdh-annotation-svg {
+    top: var(--annotated-text-zoom-bar);
+  }
+}
