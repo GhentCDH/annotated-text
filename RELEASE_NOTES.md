@@ -1,3 +1,16 @@
+## 1.3.0 (2026-11-10)
+
+### 🩹 Fixes
+
+- use -c production instead of --production flag in publish workflow ([54d49fd](https://github.com/GhentCDH/vue_component_annotated_text/commit/54d49fd))
+- copy package.json into dist so nx release publish works ([8f65b83](https://github.com/GhentCDH/vue_component_annotated_text/commit/8f65b83))
+- let dependency-checks rule ignore test files ([534ed42](https://github.com/GhentCDH/vue_component_annotated_text/commit/534ed42))
+- zoom styling and button behaviour in docs and npm package ([#214](https://github.com/GhentCDH/vue_component_annotated_text/pull/214))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.2.0 (2026-11-10)
 
 ### 🚀 Features
