@@ -1,6 +1,8 @@
 # Plan 07 — Zoomable text with annotations that follow
 
-**Status:** not started
+**Status:** implemented in #210, except:
+- step 4: resize does *not* do a full recompute. Instead the `ResizeObserver` now only redraws on width changes, and zoom must go through `setZoom()`. Setting `--annotated-text-zoom` by hand changes the font but leaves the line height stale.
+- step 6: padding / border width don't scale with zoom yet. Revisit after users have tried it.
 **Severity:** medium — user-facing usability gap for long, small-script texts (e.g. Syriac).
 **Estimated effort:** ~4–5 days (phase 1 ~1 day, phase 3 controls ~2 days).
 **Related plans:** [02 — Accessibility](./02-accessibility.md) — zoom without breaking the page is also WCAG 1.4.4 (Resize Text).

@@ -34,6 +34,16 @@ import {
   setSnapperAdapter,
   setTextAdapter,
 } from '../../adapter/SetAdapter';
+import {
+  attachZoomControls,
+  clampZoom,
+  DefaultZoomControls,
+  getScrollParent,
+  getVisibleCenter,
+  type ZoomAnchor,
+  type ZoomControls,
+  type ZoomControlsOptions,
+} from '../zoom/zoom';
 
 const document = globalThis.document || null;
 
@@ -48,6 +58,10 @@ export class CreateAnnotationsImpl<
 
   private readonly annotationModule: AnnotationModule;
   private readonly mainContainer: MainContainer;
+
+  private zoom = 1;
+  private zoomOptions: ZoomControlsOptions = DefaultZoomControls;
+  private zoomControls: ZoomControls | null = null;
 
   constructor(
     private readonly id: string,
@@ -202,6 +216,7 @@ export class CreateAnnotationsImpl<
 
     // Draw tags after attaching (getBBox requires live DOM)
     this.draw.drawTags();
+    this.updateZoomControls();
     Debugger.time(initialDrawTime, ' \t initialDraw \t');
   }
 
@@ -209,9 +224,75 @@ export class CreateAnnotationsImpl<
     Debugger.debug('CreateAnnotations', 'destroy', this.id);
     this.eventListener.sendEvent('destroy', null, null);
 
+    this.zoomControls?.destroy();
+    this.zoomControls = null;
     this.mainContainer.destroy();
 
     return this;
+  }
+
+  public getZoom() {
+    return this.zoom;
+  }
+
+  public setZoom(zoom: number, anchor?: ZoomAnchor) {
+    const newZoom = clampZoom(zoom, this.zoomOptions);
+    const wrapper = this.mainContainer.wrapper;
+    if (newZoom === this.zoom || !wrapper) {
+      this.zoom = newZoom;
+      return this;
+    }
+
+    // Keep the character at the anchor (pointer, or middle of the visible text)
+    // at the same place on screen, so the reader doesn't lose their position.
+    const point = anchor ?? getVisibleCenter(wrapper);
+    const textPosition = this.text
+      ? this.draw.text.findNearestCharacter(point.x, point.y)
+      : null;
+    const before =
+      textPosition === null
+        ? null
+        : this.draw.text.getCharacterClientY(textPosition);
+
+    this.zoom = newZoom;
+    wrapper.style.setProperty('--annotated-text-zoom', `${newZoom}`);
+    this.recalculate();
+
+    const after =
+      textPosition === null
+        ? null
+        : this.draw.text.getCharacterClientY(textPosition);
+    if (before !== null && after !== null) {
+      getScrollParent(wrapper).scrollTop += after - before;
+    }
+
+    this.eventListener.sendEvent('zoom', { zoom: newZoom });
+    return this;
+  }
+
+  public setZoomControls(options: Partial<ZoomControlsOptions>) {
+    this.zoomOptions = { ...DefaultZoomControls, ...options };
+    this.zoomControls?.destroy();
+    this.zoomControls = null;
+
+    const wrapper = this.mainContainer.wrapper;
+    if (wrapper) {
+      this.zoomControls = attachZoomControls(wrapper, this.zoomOptions, {
+        getZoom: () => this.zoom,
+        setZoom: (zoom, anchor) => this.setZoom(zoom, anchor),
+      });
+    }
+    // Re-apply the zoom: it may be outside the new min/max
+    this.setZoom(this.zoom);
+    this.updateZoomControls();
+    return this;
+  }
+
+  private updateZoomControls() {
+    this.zoomControls?.update(
+      this.zoom,
+      this.annotationModule.getTextAdapter().textDirection ?? 'ltr',
+    );
   }
 
   public highlightAnnotations(ids: AnnotationId[]) {

@@ -19,6 +19,11 @@ export class MainContainer {
     );
   }
 
+  /** The wrapper holding the svg and text, null before the main element is set */
+  get wrapper(): HTMLElement | null {
+    return this.element ?? null;
+  }
+
   setMainElement(mainElement: HTMLElement) {
     this.mainElement = mainElement;
 
@@ -72,12 +77,15 @@ export class MainContainer {
     if (this.resizeObserver) {
       return;
     }
-    let initialized = false;
-    this.resizeObserver = new ResizeObserver(() => {
-      Debugger.verbose('CreateAnnotations', 'resize detected', initialized);
-      if (initialized)
+    // Only width changes reflow the text. Height changes are caused by our own
+    // redraw (or zoom, which redraws itself) and would trigger a second redraw.
+    let width: number | null = null;
+    this.resizeObserver = new ResizeObserver((entries) => {
+      const newWidth = entries[entries.length - 1]?.contentRect.width ?? null;
+      Debugger.verbose('CreateAnnotations', 'resize detected', newWidth);
+      if (width !== null && newWidth !== width)
         this.internalEventListener.sendEvent('redraw-svg', undefined);
-      initialized = true;
+      width = newWidth;
     });
     if (this.element) {
       Debugger.debug('CreateAnnotations', 'start observing', this.mainElement);
