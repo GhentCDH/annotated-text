@@ -21,6 +21,7 @@
       "import": "./index.js"
     },
     "./annotated-text.css": "./index.css",
+    "./style.css": "./index.css",
     "./package.json": "./package.json"
   },
   "files": [
@@ -32,7 +33,9 @@
     "assets/**",
     "lib/**"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "dependencies": {
     "@ghentcdh/w3c-utils": "^1.1.1",
     "d3": "7.9.2",
