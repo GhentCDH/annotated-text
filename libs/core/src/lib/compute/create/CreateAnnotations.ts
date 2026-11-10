@@ -289,10 +289,7 @@ export class CreateAnnotationsImpl<
   }
 
   private updateZoomControls() {
-    this.zoomControls?.update(
-      this.zoom,
-      this.annotationModule.getTextAdapter().textDirection ?? 'ltr',
-    );
+    this.zoomControls?.update(this.zoom);
   }
 
   public highlightAnnotations(ids: AnnotationId[]) {

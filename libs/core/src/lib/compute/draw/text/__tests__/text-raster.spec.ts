@@ -1,8 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RBush from 'rbush';
-import { drawTextRaster } from '../text-raster';
+import {
+  drawTextRaster,
+  findNearestTextPosition,
+  type TextRasterItem,
+} from '../text-raster';
 import { calculateOffset, findLineElement } from '../../utils/bounding-rect';
-import { getScaledDimensions, getUnscaledRect } from '../../../position/unscaled';
+import {
+  getScaledDimensions,
+  getUnscaledRect,
+} from '../../../position/unscaled';
 import type { TextAdapter } from '../../../../adapter/text';
 
 // Mock dependencies
@@ -394,5 +401,43 @@ describe('drawTextRaster', () => {
       mockContainerDimensions,
       expect.any(Object),
     );
+  });
+});
+
+describe('findNearestTextPosition', () => {
+  const item = (
+    textPosition: number,
+    minX: number,
+    minY: number,
+  ): TextRasterItem => ({
+    minX,
+    minY,
+    maxX: minX + 10,
+    maxY: minY + 20,
+    textPosition,
+    text: 'a',
+    centerX: minX + 5,
+  });
+  // A short first line (x 0-20) above a long second line (x 0-200)
+  const items = [
+    item(0, 0, 0),
+    item(1, 10, 0),
+    item(2, 0, 20),
+    item(3, 190, 20),
+  ];
+
+  it.each`
+    name                            | x      | y      | expected
+    ${'inside a character'}         | ${15}  | ${5}   | ${1}
+    ${'right of the short line'}    | ${195} | ${5}   | ${1}
+    ${'above the text, right side'} | ${195} | ${-30} | ${1}
+    ${'on the long line'}           | ${195} | ${30}  | ${3}
+    ${'below the text, left side'}  | ${0}   | ${90}  | ${2}
+  `('should find $expected $name', ({ x, y, expected }) => {
+    expect(findNearestTextPosition(items, x, y)).toBe(expected);
+  });
+
+  it('should return null without characters', () => {
+    expect(findNearestTextPosition([], 0, 0)).toBeNull();
   });
 });

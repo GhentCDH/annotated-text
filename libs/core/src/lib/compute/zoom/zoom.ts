@@ -30,7 +30,7 @@ export type ZoomApi = {
 };
 
 export type ZoomControls = {
-  update: (zoom: number, direction: 'ltr' | 'rtl') => void;
+  update: (zoom: number) => void;
   destroy: () => void;
 };
 
@@ -70,12 +70,21 @@ export const getVisibleCenter = (element: HTMLElement): ZoomAnchor => {
   return { x: rect.left + rect.width / 2, y: (top + bottom) / 2 };
 };
 
-const createButton = (label: string, text: string, onClick: () => void) => {
+const createButton = (
+  label: string,
+  text: string,
+  onClick: (anchor: ZoomAnchor) => void,
+) => {
   const button = document.createElement('button');
   button.type = 'button';
   button.textContent = text;
   if (label) button.setAttribute('aria-label', label);
-  button.addEventListener('click', onClick);
+  button.addEventListener('click', () => {
+    // Zoom around the button, like the wheel zooms around the pointer: the text
+    // next to the toolbar stays in place, so the toolbar doesn't jump away
+    const rect = button.getBoundingClientRect();
+    onClick({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+  });
   return button;
 };
 
@@ -84,21 +93,26 @@ const createToolbar = (options: ZoomControlsOptions, api: ZoomApi) => {
   toolbar.className = styles.zoom;
   toolbar.setAttribute('role', 'toolbar');
   toolbar.setAttribute('aria-label', 'Zoom');
+  // Same place (top right) and button order (− % +) whatever the text direction
+  toolbar.dir = 'ltr';
 
-  const zoomBy = (step: number) => api.setZoom(round(api.getZoom() + step));
+  const zoomBy = (step: number, anchor: ZoomAnchor) =>
+    api.setZoom(round(api.getZoom() + step), anchor);
 
-  const zoomOut = createButton('Zoom out', '−', () => zoomBy(-options.step));
+  const zoomOut = createButton('Zoom out', '−', (anchor) =>
+    zoomBy(-options.step, anchor),
+  );
   // No aria-label: the percentage is the accessible name and is announced on change
-  const reset = createButton('', '100%', () => api.setZoom(1));
+  const reset = createButton('', '100%', (anchor) => api.setZoom(1, anchor));
   reset.title = 'Reset zoom';
   reset.setAttribute('aria-live', 'polite');
-  const zoomIn = createButton('Zoom in', '+', () => zoomBy(options.step));
+  const zoomIn = createButton('Zoom in', '+', (anchor) =>
+    zoomBy(options.step, anchor),
+  );
 
   toolbar.append(zoomOut, reset, zoomIn);
 
-  const update = (zoom: number, direction: 'ltr' | 'rtl') => {
-    // Put the toolbar on the side where lines end, so it doesn't cover their start
-    toolbar.dir = direction;
+  const update = (zoom: number) => {
     reset.textContent = `${Math.round(zoom * 100)}%`;
     zoomOut.disabled = zoom <= options.min;
     zoomIn.disabled = zoom >= options.max;

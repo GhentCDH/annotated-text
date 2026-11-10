@@ -31,10 +31,7 @@ const setup = (options: Partial<ZoomControlsOptions>, initial = 1) => {
   return { wrapper, api, controls };
 };
 
-const wheel = (
-  wrapper: HTMLElement,
-  init: WheelEventInit = {},
-): WheelEvent => {
+const wheel = (wrapper: HTMLElement, init: WheelEventInit = {}): WheelEvent => {
   const event = new WheelEvent('wheel', {
     cancelable: true,
     clientX: 10,
@@ -113,7 +110,10 @@ describe('zoom', () => {
 
         (buttons(wrapper) as Record<string, HTMLButtonElement>)[name].click();
 
-        expect(api.setZoom).toHaveBeenCalledWith(expected);
+        expect(api.setZoom).toHaveBeenCalledWith(expected, {
+          x: expect.any(Number),
+          y: expect.any(Number),
+        });
       },
     );
 
@@ -127,7 +127,7 @@ describe('zoom', () => {
       ({ zoom, label, outDisabled, inDisabled }) => {
         const { wrapper, controls } = setup({ buttons: true });
 
-        controls.update(zoom, 'ltr');
+        controls.update(zoom);
 
         const { zoomOut, reset, zoomIn } = buttons(wrapper);
         expect(reset.textContent).toBe(label);
@@ -136,12 +136,22 @@ describe('zoom', () => {
       },
     );
 
-    it('should follow the text direction', () => {
-      const { wrapper, controls } = setup({ buttons: true });
+    it('should always be left-to-right, whatever the text direction', () => {
+      const { wrapper } = setup({ buttons: true });
 
-      controls.update(1, 'rtl');
+      expect((wrapper.firstElementChild as HTMLElement).dir).toBe('ltr');
+    });
 
-      expect((wrapper.firstElementChild as HTMLElement).dir).toBe('rtl');
+    it('should zoom around the clicked button', () => {
+      const { wrapper, api } = setup({ buttons: true });
+      const { zoomIn } = buttons(wrapper);
+      vi.spyOn(zoomIn, 'getBoundingClientRect').mockReturnValue(
+        DOMRect.fromRect({ x: 100, y: 10, width: 20, height: 30 }),
+      );
+
+      zoomIn.click();
+
+      expect(api.setZoom).toHaveBeenCalledWith(1.25, { x: 110, y: 25 });
     });
 
     it('should remove the toolbar on destroy', () => {

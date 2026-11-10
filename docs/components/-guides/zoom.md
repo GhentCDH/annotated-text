@@ -31,8 +31,9 @@ createAnnotatedText(id)
 | `max`      | `4`     | Maximum zoom                                                                            |
 | `step`     | `0.25`  | Zoom step for the buttons and the keyboard                                              |
 
-The buttons stick to the top of the scroll container. They sit on the side where
-lines end (right for left-to-right text, left for right-to-left text). Restyle them
+The buttons sit in the top right corner, above the first line, and stick to the top
+of the scroll container while scrolling, whatever the text direction. They zoom around
+the toolbar, so the text next to it stays in place. Restyle them
 with the `.ghent-cdh-annotation-zoom` class or the `--annotated-text-zoom-border`,
 `--annotated-text-zoom-background`, `--annotated-text-zoom-color` and
 `--annotated-text-zoom-top` CSS variables.
