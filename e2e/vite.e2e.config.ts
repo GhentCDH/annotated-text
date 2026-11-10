@@ -1,18 +1,29 @@
 import { defineConfig } from 'vite';
 // import istanbul from 'vite-plugin-istanbul';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, resolve } from 'path';
+import { readFileSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Replaces the removed nxViteTsPaths(): native resolve.tsconfigPaths skips e2e files
+// because the workspace tsconfigs exclude **/e2e/**, so alias tsconfig.base.json paths directly.
+const tsconfigPaths: Record<string, string[]> = JSON.parse(
+  readFileSync(resolve(__dirname, '../tsconfig.base.json'), 'utf8'),
+).compilerOptions.paths;
+
 const isCoverage = process.env.COVERAGE === 'true';
 
 export default defineConfig({
+  resolve: {
+    alias: Object.entries(tsconfigPaths).map(([find, [path]]) => ({
+      find: new RegExp(`^${find}$`),
+      replacement: resolve(__dirname, '..', path),
+    })),
+  },
   root: __dirname,
   plugins: [
-    nxViteTsPaths(),
     // dts({
     //   entryRoot: 'src',
     //   tsconfigPath: path.join(__dirname, '../libs/core/tsconfig.lib.json'),

@@ -1,5 +1,5 @@
 x-playwright-base: &playwright-base
-  image: mcr.microsoft.com/playwright:v1.63.0-jammy
+  image: mcr.microsoft.com/playwright:v1.65.0-jammy
   working_dir: /app
   volumes:
     - ..:/app

@@ -31,10 +31,10 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "markdown-it": "15.0.2",
+    "markdown-it": "15.0.3",
     "memoizee": "^0.4.17",
-    "uuid": "14.0.2",
-    "vitest": "5.0.2"
+    "uuid": "14.0.3",
+    "vitest": "5.1.0"
   },
   "peerDependencies": {
     "@ghentcdh/annotated-text": "^1.0.3"
