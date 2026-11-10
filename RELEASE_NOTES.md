@@ -1,3 +1,13 @@
+## 1.2.0 (2026-11-10)
+
+### 🚀 Features
+
+- add zoomable text ([#213](https://github.com/GhentCDH/vue_component_annotated_text/pull/213))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.1.1 (2026-10-05)
 
 ### 🩹 Fixes
