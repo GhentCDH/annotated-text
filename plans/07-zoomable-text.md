@@ -109,4 +109,4 @@ setZoomControls({
 - **Hijacking the browser.** Ctrl + wheel is the user's page-zoom gesture. Only intercept it over the text box and only when `wheel: true`; keep the default `false` until a demo confirms users expect it.
 - **Safari gestures.** `gesture*` events are non-standard and Safari-only; feature-detect, don't sniff the UA.
 - **Toolbar overlapping text.** Resolved: the toolbar height is reserved above the first line.
-- **Drag in progress.** Resolved by blocking: zoom is ignored while the internal event listener is blocking (create, edit, drag). Note: plan 06's edit bug that leaves events blocked would also leave zoom blocked until it's fixed.
+- **Drag in progress.** Resolved by blocking: zoom is ignored while the internal event listener is blocking (create, edit, drag). Plan 06's edit bug that left events (and so zoom) blocked is fixed in #214.

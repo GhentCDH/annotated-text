@@ -440,6 +440,32 @@ test.describe('AnnotatedText Core - Zoom', () => {
     });
   });
 
+  test('zoom and editing work again after clicking a handle without moving', async ({
+    page,
+  }) => {
+    const handle = await startHandle(page, 'quick-0');
+    await page.mouse.click(
+      handle.x + handle.width / 2,
+      handle.y + handle.height / 2,
+    );
+
+    await setZoom(page, 1.5);
+    expect(await getZoom(page)).toBe(1.5);
+
+    // editing isn't blocked either
+    const moved = await startHandle(page, 'quick-0');
+    const target = await measure(page, 'quick-0', 'the', 0);
+    const y = moved.y + moved.height / 2;
+    await page.mouse.move(moved.x + moved.width / 2, y);
+    await page.mouse.down();
+    await page.mouse.move(target.text.left + 10, y);
+    await page.mouse.move(target.text.left + 1, y);
+    await page.mouse.up();
+    await expect
+      .poll(() => lastEvent(page))
+      .toMatchObject({ event: 'annotation-edit--end' });
+  });
+
   test.describe('keyboard', () => {
     test('buttons are reachable with tab and announce the zoom level', async ({
       page,

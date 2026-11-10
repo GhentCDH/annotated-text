@@ -12,9 +12,11 @@ import { Draw } from '../Draw';
 
 export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;
-  protected dummyAnnotation: TextAnnotation;
+  protected dummyAnnotation: TextAnnotation | undefined;
   protected readonly originalStartEnd: StartEnd;
   protected readonly draw = this.inject(Draw);
+  /** True between a start() that blocked the events and the matching end() */
+  private active = false;
 
   constructor(
     annotationModule: AnnotationModule,
@@ -32,8 +34,16 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
     if (!this.annotationAdapter.edit) return;
     if (this.internalEventListener.isBlocking) return;
     this.internalEventListener.blockEvents('annotation-edit--start');
+    this.active = true;
+    this.dummyAnnotation = undefined;
 
-    this.onStart(position, target);
+    try {
+      this.onStart(position, target);
+    } catch (error) {
+      // Never leave the events blocked: that freezes the whole component
+      this.end(event);
+      throw error;
+    }
 
     this.sendExternalEvent('annotation-edit--start', this.dummyAnnotation?.id);
 
@@ -43,7 +53,7 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected abstract onStart(position: Position, target: 'start' | 'end'): void;
 
   move(position: Position, target: 'start' | 'end', event: MouseEvent) {
-    if (!this.annotationAdapter.edit) return;
+    if (!this.active || !this.annotationAdapter.edit) return;
 
     const dragResult = this.onDrag(position, target);
     if (!dragResult) return;
@@ -66,19 +76,36 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   ): { startEnd: StartEnd; prevPosition?: StartEnd } | null;
 
   end(event: MouseEvent) {
-    if (!this.dummyAnnotation) return;
+    if (!this.active) return;
+    // Always release the block, whatever else happens
+    this.active = false;
     this.internalEventListener.unBlockEvents('ending annotation edit');
-    this.draw.annotation.removeDraw(this.dummyAnnotation?.id);
-    if (!this.dummyAnnotation) return;
 
-    // this.dummyAnnotation._render.weight = this.annotation._render.weight;
-    if (this.annotation) this.dummyAnnotation.id = this.annotation.id;
+    const dummyAnnotation = this.dummyAnnotation;
+    this.dummyAnnotation = undefined;
+
+    if (!dummyAnnotation) {
+      // Nothing changed (released without moving, or the snapper kept the
+      // same range): undo what start() did, nothing to emit
+      if (this.annotation) {
+        this.draw.annotation.setClass(this.annotation.id, '');
+        this.draw.tag.drawTag(this.annotation);
+      }
+      return;
+    }
+
+    this.draw.annotation.removeDraw(dummyAnnotation.id);
+    if (this.annotation) dummyAnnotation.id = this.annotation.id;
 
     this.internalEventListener.sendEvent('annotation--update', {
-      annotation: this.dummyAnnotation,
+      annotation: dummyAnnotation,
     });
 
-    this.sendExternalEvent('annotation-edit--end', this.dummyAnnotation?.id);
+    // dummyAnnotation is cleared above, so pass the edited range explicitly
+    this.sendExternalEvent('annotation-edit--end', dummyAnnotation.id, {
+      start: dummyAnnotation.start,
+      end: dummyAnnotation.end,
+    });
   }
 
   private drawDummyAnnotation(startEnd: StartEnd, prevPosition?: StartEnd) {
@@ -130,6 +157,7 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
       | 'annotation-edit--start'
       | 'annotation-edit--end',
     moveId?: AnnotationId,
+    range: StartEnd | undefined = this.dummyAnnotation,
   ) {
     const annotation = this.annotation;
 
@@ -140,10 +168,10 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
       annotationUuid: annotation.id || '',
       additionalData: {
         annotation: {
-          start: this.dummyAnnotation?.start ?? annotation.start,
-          end: this.dummyAnnotation?.end ?? annotation.end,
+          start: range?.start ?? annotation.start,
+          end: range?.end ?? annotation.end,
         },
-        annotationUuid: this.dummyAnnotation?.id,
+        annotationUuid: moveId,
         moveId,
       },
     });
