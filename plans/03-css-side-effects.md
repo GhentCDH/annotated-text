@@ -1,6 +1,6 @@
 # Plan 03 — `sideEffects: false` vs the SCSS entry import, and the wrong documented CSS path
 
-**Status:** not started
+**Status:** done except the proof: `sideEffects: ["*.css"]`, `./style.css` export and one documented path are in. Not done: webpack fixture (step 4) and CI guard (step 5).
 **Severity:** high — a bundler is entitled to drop the library's entire stylesheet, and two of three documented import paths don't resolve.
 **Estimated effort:** ~2 hours plus verification.
 **Related plans:** [01 — Packaging](./01-packaging-artifacts.md) — step 7 there edits the same `exports` block; ship these together. [02 — Accessibility](./02-accessibility.md) adds `_a11y.scss`, which inherits this bug.

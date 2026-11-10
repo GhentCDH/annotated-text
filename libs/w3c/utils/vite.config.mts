@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import * as path from 'path';
+import pkg from './package.json';
 import { copyFileSync, globSync } from 'fs';
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
@@ -52,7 +53,7 @@ export default defineConfig(() => ({
   // Configuration for building your library.
   // See: https://vite.dev/guide/build.html#library-mode
   build: {
-    outDir: '../../../dist/w3c/utils',
+    outDir: '../../../dist/libs/w3c/utils',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -63,13 +64,15 @@ export default defineConfig(() => ({
       entry: 'src/index.ts',
       name: 'utils',
       fileName: 'index',
-      // Change this to the formats you want to support.
-      // Don't forget to update your package.json as well.
-      format: ['cjs', 'esm', 'es'],
+      formats: ['es' as const, 'cjs' as const],
     },
     rolldownOptions: {
-      // External packages that should not be bundled into your library.
-      external: [],
+      // Every declared dependency stays external. An undeclared one gets inlined,
+      // so keep package.json in sync with the imports.
+      external: (id: string) =>
+        Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }).some(
+          (dep) => id === dep || id.startsWith(`${dep}/`),
+        ),
     },
   },
   test: {

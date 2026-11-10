@@ -1,6 +1,6 @@
 # Plan 01 — Fix the published npm artifacts
 
-**Status:** not started
+**Status:** steps 2–5, 7 and 11 done: `formats: ['es', 'cjs']`, w3c `outDir`, every declared dependency external (read from each `package.json`), core dependency list, `exports` with `types`/`import`/`require`, ESM + CJS smoke test from packed tarballs (run by hand). Step 6 and 9 were already done (one `zod` specifier, `moduleResolution: bundler`). Step 8 partly: the root `package.json` is `private` and lost `exports`/`style`/`files`, it keeps its name and dependencies. Not done: step 10 (publint/attw in CI), `index.d.cts` for the `require` types (the one remaining publint warning), `./markdown` and `./w3c` subpaths.
 **Severity:** high — the published packages are very likely unusable for CJS consumers, and `@ghentcdh/w3c-utils` may be publishing an empty directory.
 **Estimated effort:** ~1 day including verification tooling.
 **Related plans:** [03 — CSS export & sideEffects](./03-css-side-effects.md) (must ship in the same release), [04 — d3 submodule imports](./04-d3-submodule-imports.md) (reduces bundle once `external` is fixed).

@@ -1,32 +1,18 @@
 {
   "name": "@ghentcdh/annotated-text",
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/GhentCDH/annotated-text"
   },
   "version": "1.0.1",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/annotated-text.js",
-      "require": "./dist/annotated-text.cjs"
-    },
-    "./style.css": {
-      "import": "./dist/annotated-text.css"
-    }
-  },
   "type": "module",
-  "style": "./dist/annotated-text.css",
-  "files": [
-    "dist/**/*"
-  ],
   "scripts": {
     "prepare": "husky install",
     "release": "git checkout main && git pull && npx nx release"
   },
   "dependencies": {
-    "d3": "7.9.2",
     "lodash-es": "^4.18.1",
     "markdown-it": "15.0.3",
     "memoizee": "^0.4.17",
@@ -53,7 +39,7 @@
     "@swc/cli": "0.8.2",
     "@swc/core": "1.16.22",
     "@swc/helpers": "0.5.24",
-    "@types/d3": "7.4.3",
+    "@types/d3-drag": "3.0.7",
     "@types/d3-selection": "3.0.12",
     "@types/jsdom": "^30.0.0",
     "@types/lodash-es": "^4.17.12",

@@ -1,6 +1,6 @@
 # Plan 04 — Replace the `d3` barrel import with `d3-selection` / `d3-drag`
 
-**Status:** not started
+**Status:** done together with plan 01, except the ESLint guard (step 8) and the before/after build time.
 **Severity:** medium — pure bundle-size and build-time win, no behaviour change.
 **Estimated effort:** ~1 hour for the change, plus a build to measure the delta.
 **Related plans:** [01 — Packaging](./01-packaging-artifacts.md) — step 4 there fixes `external: []`, which is what makes this win actually reach consumers. Step 5 there lists `d3-drag`/`d3-selection` as core dependencies. **Land 01 first or together.**

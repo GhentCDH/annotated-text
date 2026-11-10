@@ -1,4 +1,4 @@
-import { drag } from 'd3';
+import { drag } from 'd3-drag';
 import { DragAnnotation } from './drag.annotations';
 import { type TextAnnotation } from '../../../model';
 import { type Position } from '../types';

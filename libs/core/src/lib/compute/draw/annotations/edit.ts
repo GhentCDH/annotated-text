@@ -1,4 +1,4 @@
-import { drag } from 'd3';
+import { drag } from 'd3-drag';
 import { EditAnnotation } from './edit.annotations';
 import { EventAnnotations } from './EventAnnotation';
 import { SVG_ID, SvgModel } from '../../model/svg.types';
