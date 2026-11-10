@@ -427,14 +427,22 @@ describe('findNearestTextPosition', () => {
   ];
 
   it.each`
-    name                            | x      | y      | expected
-    ${'inside a character'}         | ${15}  | ${5}   | ${1}
-    ${'right of the short line'}    | ${195} | ${5}   | ${1}
-    ${'above the text, right side'} | ${195} | ${-30} | ${1}
-    ${'on the long line'}           | ${195} | ${30}  | ${3}
-    ${'below the text, left side'}  | ${0}   | ${90}  | ${2}
+    name                            | x            | y      | expected
+    ${'inside a character'}         | ${15}        | ${5}   | ${1}
+    ${'right of the short line'}    | ${195}       | ${5}   | ${1}
+    ${'above the text, right side'} | ${195}       | ${-30} | ${1}
+    ${'on the long line'}           | ${195}       | ${30}  | ${3}
+    ${'below the text, left side'}  | ${0}         | ${90}  | ${2}
+    ${'line start, first line'}     | ${undefined} | ${-30} | ${0}
+    ${'line start, second line'}    | ${undefined} | ${30}  | ${2}
   `('should find $expected $name', ({ x, y, expected }) => {
     expect(findNearestTextPosition(items, x, y)).toBe(expected);
+  });
+
+  it('should treat characters with slightly different tops as one line', () => {
+    const line = [item(5, 0, 0.5), item(4, 10, 0)];
+
+    expect(findNearestTextPosition(line, undefined, 0)).toBe(4);
   });
 
   it('should return null without characters', () => {

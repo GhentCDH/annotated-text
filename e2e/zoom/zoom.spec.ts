@@ -13,9 +13,9 @@ const measure = (page: Page, id: string, word: string, line: number) =>
         width: r.width,
         height: r.height,
       });
-      const lineEl = document.querySelectorAll(
-        '[data-annotation-role="line"]',
-      )[line];
+      const lineEl = document.querySelectorAll('[data-annotation-role="line"]')[
+        line
+      ];
       const walker = document.createTreeWalker(lineEl, NodeFilter.SHOW_TEXT);
       let node: Node | null;
       while ((node = walker.nextNode())) {
@@ -104,27 +104,67 @@ test.describe('AnnotatedText Core - Zoom', () => {
     expect(await getZoom(page)).toBe(0.5);
   });
 
-  test('keeps the reading position when zooming', async ({ page }) => {
+  test('setZoom keeps the middle of the visible text in place', async ({
+    page,
+  }) => {
     const boxRect = (await box(page).boundingBox())!;
     const boxCenter = boxRect.y + boxRect.height / 2;
 
-    // Scroll line 20 to the middle of the box: the buttons zoom around that point
+    // Scroll line 20 to the middle of the box
     const start = await measure(page, 'fox-20', 'fox', 20);
     await box(page).evaluate(
       (el, dy) => (el.scrollTop += dy),
       start.text.top + start.text.height / 2 - boxCenter,
     );
 
-    await page.getByRole('button', { name: 'Zoom in' }).click();
-    await page.getByRole('button', { name: 'Zoom in' }).click();
-    expect(await getZoom(page)).toBe(1.5);
+    await setZoom(page, 1.5);
 
     // Without anchoring line 20 would be ~300px further down, out of the box
     const after = await measure(page, 'fox-20', 'fox', 20);
-    expect(Math.abs(after.text.top - boxCenter)).toBeLessThan(after.text.height);
+    expect(Math.abs(after.text.top - boxCenter)).toBeLessThan(
+      after.text.height,
+    );
   });
 
   test.describe('buttons', () => {
+    test('keep the line next to the toolbar in place', async ({ page }) => {
+      const toolbar = page.getByRole('toolbar', { name: 'Zoom' });
+      const toolbarTop = (await toolbar.boundingBox())!.y;
+
+      // Scroll line 20 to the top of the box, next to the toolbar
+      const start = await measure(page, 'fox-20', 'fox', 20);
+      await box(page).evaluate(
+        (el, dy) => (el.scrollTop += dy),
+        start.text.top - toolbarTop,
+      );
+      const before = await measure(page, 'fox-20', 'fox', 20);
+
+      await page.getByRole('button', { name: 'Zoom in' }).click();
+      await page.getByRole('button', { name: 'Zoom in' }).click();
+      expect(await getZoom(page)).toBe(1.5);
+
+      const after = await measure(page, 'fox-20', 'fox', 20);
+      expect(Math.abs(after.text.top - before.text.top)).toBeLessThan(
+        after.text.height,
+      );
+      expect((await toolbar.boundingBox())!.y).toBeCloseTo(toolbarTop, 0);
+    });
+
+    test('keep the first line in place at the top of the text', async ({
+      page,
+    }) => {
+      const before = await measure(page, 'quick-0', 'quick', 0);
+
+      await page.getByRole('button', { name: 'Zoom in' }).click();
+      await page.getByRole('button', { name: 'Zoom in' }).click();
+
+      expect(await box(page).evaluate((el) => el.scrollTop)).toBeLessThan(2);
+      const after = await measure(page, 'quick-0', 'quick', 0);
+      expect(Math.abs(after.text.top - before.text.top)).toBeLessThan(
+        after.text.height,
+      );
+    });
+
     test('zoom in, out and reset', async ({ page }) => {
       const zoomIn = page.getByRole('button', { name: 'Zoom in' });
       const zoomOut = page.getByRole('button', { name: 'Zoom out' });
@@ -145,14 +185,20 @@ test.describe('AnnotatedText Core - Zoom', () => {
     test('disable zoom in at max', async ({ page }) => {
       await setZoom(page, 4);
 
-      await expect(page.getByRole('button', { name: 'Zoom in' })).toBeDisabled();
-      await expect(page.getByRole('button', { name: 'Zoom out' })).toBeEnabled();
+      await expect(
+        page.getByRole('button', { name: 'Zoom in' }),
+      ).toBeDisabled();
+      await expect(
+        page.getByRole('button', { name: 'Zoom out' }),
+      ).toBeEnabled();
     });
 
     test('stay visible while scrolling the box', async ({ page }) => {
       await box(page).evaluate((el) => (el.scrollTop = 500));
 
-      await expect(page.getByRole('button', { name: 'Zoom in' })).toBeInViewport();
+      await expect(
+        page.getByRole('button', { name: 'Zoom in' }),
+      ).toBeInViewport();
       const toolbar = await page.getByRole('toolbar').boundingBox();
       const boxRect = await box(page).boundingBox();
       expect(toolbar!.y).toBeGreaterThanOrEqual(boxRect!.y);

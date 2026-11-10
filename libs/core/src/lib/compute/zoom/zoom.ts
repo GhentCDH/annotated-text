@@ -22,7 +22,14 @@ export const DefaultZoomControls: ZoomControlsOptions = {
   step: 0.25,
 };
 
-export type ZoomAnchor = { x: number; y: number };
+type Point = { x: number; y: number };
+
+/**
+ * Viewport point whose text stays in place while zooming. With `x` the character
+ * at that point stays put; without it the start of the line at `y` does, which
+ * doesn't move when the line wraps differently at the new zoom.
+ */
+export type ZoomAnchor = { x?: number; y: number };
 
 export type ZoomApi = {
   getZoom: () => number;
@@ -56,7 +63,7 @@ export const getScrollParent = (element: HTMLElement): HTMLElement => {
 };
 
 /** Center of the part of the element that is visible in its scroll box and the viewport */
-export const getVisibleCenter = (element: HTMLElement): ZoomAnchor => {
+export const getVisibleCenter = (element: HTMLElement): Point => {
   const rect = element.getBoundingClientRect();
   const scrollParent = getScrollParent(element);
   const box =
@@ -80,10 +87,9 @@ const createButton = (
   button.textContent = text;
   if (label) button.setAttribute('aria-label', label);
   button.addEventListener('click', () => {
-    // Zoom around the button, like the wheel zooms around the pointer: the text
-    // next to the toolbar stays in place, so the toolbar doesn't jump away
+    // Keep the line next to the toolbar in place, so the toolbar doesn't jump away
     const rect = button.getBoundingClientRect();
-    onClick({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+    onClick({ y: rect.top + rect.height / 2 });
   });
   return button;
 };
@@ -151,7 +157,7 @@ export const attachZoomControls = (
   }
 
   if (options.wheel) {
-    let pending: { zoom: number; anchor: ZoomAnchor } | null = null;
+    let pending: { zoom: number; anchor: Point } | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     const commit = () => {
@@ -163,7 +169,7 @@ export const attachZoomControls = (
       api.setZoom(zoom, anchor);
     };
 
-    const preview = (zoom: number, anchor: ZoomAnchor) => {
+    const preview = (zoom: number, anchor: Point) => {
       if (!pending) {
         // Origin is measured once, before any transform is applied
         const rect = wrapper.getBoundingClientRect();

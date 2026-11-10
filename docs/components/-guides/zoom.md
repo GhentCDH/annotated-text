@@ -52,6 +52,7 @@ annotatedText.on('zoom', ({ data }) => {
 `setZoom` keeps the text in the middle of the visible area in place, so the reader
 doesn't lose their position. Pass a viewport point as second argument to keep the
 text under that point in place instead: `setZoom(2, { x: event.clientX, y: event.clientY })`.
+Leave out `x` to keep the start of the line at `y` in place: it doesn't move when the line wraps differently at the new zoom.
 
 ::: tip
 Put the text in a container with a fixed height and `overflow: auto`, so zooming

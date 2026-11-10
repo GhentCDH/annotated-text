@@ -29,14 +29,24 @@ export class DrawText extends BaseAnnotationDi {
     );
   }
 
-  /** Text position of the character closest to a client (viewport) point */
-  findNearestCharacter(clientX: number, clientY: number): number | null {
+  /**
+   * Text position of the character closest to a client (viewport) point,
+   * or of the first character of the closest line when `clientX` is undefined
+   */
+  findNearestCharacter(
+    clientX: number | undefined,
+    clientY: number,
+  ): number | null {
     if (!this.textTree) return null;
     const { x, y } = getScaledDimensions(
       this.svgModel.getTextElementDimensions(),
-      { x: clientX, y: clientY, width: 0, height: 0 },
+      { x: clientX ?? 0, y: clientY, width: 0, height: 0 },
     );
-    return findNearestTextPosition(this.textTree.all(), x, y);
+    return findNearestTextPosition(
+      this.textTree.all(),
+      clientX === undefined ? undefined : x,
+      y,
+    );
   }
 
   /** Client (viewport) y of the top of the character at a text position */

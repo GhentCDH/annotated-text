@@ -111,7 +111,6 @@ describe('zoom', () => {
         (buttons(wrapper) as Record<string, HTMLButtonElement>)[name].click();
 
         expect(api.setZoom).toHaveBeenCalledWith(expected, {
-          x: expect.any(Number),
           y: expect.any(Number),
         });
       },
@@ -142,7 +141,7 @@ describe('zoom', () => {
       expect((wrapper.firstElementChild as HTMLElement).dir).toBe('ltr');
     });
 
-    it('should zoom around the clicked button', () => {
+    it('should keep the line next to the clicked button in place', () => {
       const { wrapper, api } = setup({ buttons: true });
       const { zoomIn } = buttons(wrapper);
       vi.spyOn(zoomIn, 'getBoundingClientRect').mockReturnValue(
@@ -151,7 +150,7 @@ describe('zoom', () => {
 
       zoomIn.click();
 
-      expect(api.setZoom).toHaveBeenCalledWith(1.25, { x: 110, y: 25 });
+      expect(api.setZoom).toHaveBeenCalledWith(1.25, { y: 25 });
     });
 
     it('should remove the toolbar on destroy', () => {
