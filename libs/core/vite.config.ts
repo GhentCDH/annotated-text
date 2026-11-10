@@ -1,8 +1,7 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+import { copyFileSync, globSync } from 'fs';
 import * as path from 'path';
 
 // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
@@ -17,12 +16,21 @@ const options = {
 };
 
 export default defineConfig(() => ({
+  resolve: {
+    tsconfigPaths: true,
+  },
   root: __dirname,
   cacheDir: '../../node_modules/.vite/libs/core',
   plugins: [
-    nxViteTsPaths(),
-    nxCopyAssetsPlugin(['*.md']),
-    // checker({ typescript: true }),
+    {
+      // Replaces the removed nxCopyAssetsPlugin(['*.md']): copy project-root markdown into the build output.
+      name: 'copy-markdown',
+      writeBundle: ({ dir }) => {
+        for (const file of globSync('*.md', { cwd: __dirname })) {
+          copyFileSync(path.join(__dirname, file), path.join(dir!, file));
+        }
+      },
+    },
     dts({
       entryRoot: 'src',
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
