@@ -199,7 +199,7 @@ Docker ensures identical rendering everywhere.
 ### Docker Image
 
 ```
-mcr.microsoft.com/playwright:v1.56.0-jammy
+mcr.microsoft.com/playwright:v1.65.0-jammy
 ```
 
 ### Cached Dependencies
