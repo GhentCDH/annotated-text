@@ -59,6 +59,17 @@
         "testTargetName": "test"
       },
       "include": ["libs/core/**/*", "libs/markdown/**/*", "libs/w3c/utils/**/*"]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "devTargetName": "dev",
+        "typecheckTargetName": "typecheck",
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static"
+      }
     }
   ],
   "release": {

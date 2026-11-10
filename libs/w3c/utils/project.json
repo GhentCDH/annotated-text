@@ -11,11 +11,13 @@
       }
     },
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/w3c/utils"
+      ],
       "options": {
-        "outputPath": "dist/libs/w3c/utils",
-        "configFile": "libs/w3c/utils/vite.config.mts"
+        "config": "./vite.config.mts",
+        "outDir": "../../../dist/libs/w3c/utils"
       },
       "configurations": {
         "production": {
