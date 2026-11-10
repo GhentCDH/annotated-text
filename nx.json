@@ -51,6 +51,14 @@
       "options": {
         "testTargetName": "test"
       }
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testMode": "watch",
+        "testTargetName": "test"
+      },
+      "include": ["libs/core/**/*", "libs/markdown/**/*", "libs/w3c/utils/**/*"]
     }
   ],
   "release": {
