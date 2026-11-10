@@ -54,6 +54,8 @@ doesn't lose their position. Pass a viewport point as second argument to keep th
 text under that point in place instead: `setZoom(2, { x: event.clientX, y: event.clientY })`.
 Leave out `x` to keep the start of the line at `y` in place: it doesn't move when the line wraps differently at the new zoom.
 
+Zoom is ignored while an annotation is being created, edited or dragged.
+
 ::: tip
 Put the text in a container with a fixed height and `overflow: auto`, so zooming
 scrolls the text and not the page. Add `resize: vertical` to let the user resize it.

@@ -8,21 +8,26 @@ import {
   type ZoomControlsOptions,
 } from '../zoom';
 
-const createApi = (initial = 1) => {
+const createApi = (initial = 1, blocked = false) => {
   let zoom = initial;
   const api: ZoomApi = {
     getZoom: () => zoom,
     setZoom: vi.fn((z: number) => {
       zoom = clampZoom(z, DefaultZoomControls);
     }),
+    isBlocked: () => blocked,
   };
   return api;
 };
 
-const setup = (options: Partial<ZoomControlsOptions>, initial = 1) => {
+const setup = (
+  options: Partial<ZoomControlsOptions>,
+  initial = 1,
+  blocked = false,
+) => {
   const wrapper = document.createElement('div');
   document.body.appendChild(wrapper);
-  const api = createApi(initial);
+  const api = createApi(initial, blocked);
   const controls = attachZoomControls(
     wrapper,
     { ...DefaultZoomControls, ...options },
@@ -197,6 +202,17 @@ describe('zoom', () => {
         x: 10,
         y: 20,
       });
+    });
+
+    it('should not zoom the page or the text while blocked', () => {
+      const { wrapper, api } = setup({ wheel: true }, 1, true);
+
+      const event = wheel(wrapper, { deltaY: -100, ctrlKey: true });
+      vi.advanceTimersByTime(WHEEL_COMMIT_DELAY);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(wrapper.style.transform).toBe('');
+      expect(api.setZoom).not.toHaveBeenCalled();
     });
 
     it('should render once after a burst of wheel events', () => {

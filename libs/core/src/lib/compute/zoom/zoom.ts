@@ -34,6 +34,8 @@ export type ZoomAnchor = { x?: number; y: number };
 export type ZoomApi = {
   getZoom: () => number;
   setZoom: (zoom: number, anchor?: ZoomAnchor) => void;
+  /** True while zooming is not allowed, e.g. during an annotation drag or edit */
+  isBlocked: () => boolean;
 };
 
 export type ZoomControls = {
@@ -184,6 +186,7 @@ export const attachZoomControls = (
     listen('wheel', (event: WheelEvent) => {
       if (!event.ctrlKey && !event.metaKey) return; // plain wheel keeps scrolling
       event.preventDefault(); // don't zoom the whole page
+      if (api.isBlocked()) return;
       const current = pending?.zoom ?? api.getZoom();
       // Mouse wheel ticks are ~100, trackpad pinch deltas are small: both feel natural
       const delta = Math.max(-100, Math.min(100, event.deltaY));
@@ -199,6 +202,7 @@ export const attachZoomControls = (
     });
     listen('gesturechange', (event) => {
       event.preventDefault();
+      if (api.isBlocked()) return;
       const zoom = clampZoom(gestureStartZoom * event.scale, options);
       preview(zoom, { x: event.clientX, y: event.clientY });
     });

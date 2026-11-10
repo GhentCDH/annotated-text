@@ -14,7 +14,7 @@ Findings not yet promoted to a plan live in project memory (`review_backlog_*`) 
 | 04 | [Replace the `d3` barrel import](./04-d3-submodule-imports.md) | medium | ~1 h | 01 (for the consumer-side win) |
 | 05 | [`sendEvent` mutates the cached annotation](./05-sendevent-input-mutation.md) | high | ~2 h | — |
 | 06 | [Drag & edit: lifecycle, cancel, hot path, tests](./06-drag-edit-lifecycle.md) | high | ~1 week, phased | 05 |
-| 07 | [Zoomable text with annotations that follow](./07-zoomable-text.md) | medium | ~4–5 days, phased | — (06 for zoom-during-drag) |
+| 07 | [Zoomable text with annotations that follow](./07-zoomable-text.md) | medium | ~4–5 days, phased | — |
 
 ## Suggested order
 

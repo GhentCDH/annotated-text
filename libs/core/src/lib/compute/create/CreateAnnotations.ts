@@ -235,7 +235,17 @@ export class CreateAnnotationsImpl<
     return this.zoom;
   }
 
+  /** True while an annotation is being created, edited or dragged */
+  private isInteracting() {
+    return this.annotationModule.inject(InternalEventListener).isBlocking;
+  }
+
+  /**
+   * Zoom the text. Ignored while an annotation is being created, edited or
+   * dragged: the re-render would drop the annotation being changed.
+   */
   public setZoom(zoom: number, anchor?: ZoomAnchor) {
+    if (this.isInteracting()) return this;
     const newZoom = clampZoom(zoom, this.zoomOptions);
     const wrapper = this.mainContainer.wrapper;
     if (newZoom === this.zoom || !wrapper) {
@@ -280,6 +290,7 @@ export class CreateAnnotationsImpl<
       this.zoomControls = attachZoomControls(wrapper, this.zoomOptions, {
         getZoom: () => this.zoom,
         setZoom: (zoom, anchor) => this.setZoom(zoom, anchor),
+        isBlocked: () => this.isInteracting(),
       });
     }
     // Re-apply the zoom: it may be outside the new min/max
