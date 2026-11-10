@@ -34,8 +34,8 @@
   ],
   "sideEffects": false,
   "dependencies": {
-    "@ghentcdh/w3c-utils": "^1.0.0",
-    "d3": "7.9.0",
+    "@ghentcdh/w3c-utils": "^1.1.1",
+    "d3": "7.9.2",
     "lodash-es": "^4.17.21",
     "memoizee": "^0.4.17",
     "tokenizr": "2.2.1"
