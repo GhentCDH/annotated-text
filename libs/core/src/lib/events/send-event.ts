@@ -1,4 +1,3 @@
-import { merge } from 'lodash-es';
 import {
   type AnnotationEventType,
   CHANGED_EVENTS,
@@ -26,11 +25,13 @@ export class ExternalEventSender<ANNOTATION> extends BaseAnnotationDi {
     const isNew = NEW_EVENTS.includes(event);
     const hasChanged = CHANGED_EVENTS.includes(event);
 
+    // Never merge into fullAnnotation: it is the cached annotation, and a
+    // rejected or aborted edit must leave the cache untouched.
+    const patch = (additionalData as any).annotation;
     const annotation = this.annotationAdapter.format(
-      merge(
-        fullAnnotation,
-        (additionalData as any).annotation,
-      ) as TextAnnotation,
+      (patch
+        ? { ...fullAnnotation, ...patch }
+        : fullAnnotation) as TextAnnotation,
       isNew,
       hasChanged,
     );

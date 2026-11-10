@@ -1,6 +1,6 @@
 # Plan 05 — `ExternalEventSender.sendEvent` mutates the cached annotation
 
-**Status:** not started
+**Status:** steps 1, 3 and the unit tests of step 5 done (shallow spread instead of `merge`, `send-event.spec.ts`). Step 2: option A, the return value is still the cached object. Not done: step 4 (is consumer input aliased?) and the aborted-drag integration test.
 **Severity:** high — silent state corruption on every drag frame; leaves the cache holding coordinates that were never committed.
 **Estimated effort:** ~2 hours including tests.
 **Related plans:** [06 — Drag/edit lifecycle](./06-drag-edit-lifecycle.md). The two bugs compound and are best fixed together — this one is *why* an aborted drag leaves visible damage rather than just doing nothing.
