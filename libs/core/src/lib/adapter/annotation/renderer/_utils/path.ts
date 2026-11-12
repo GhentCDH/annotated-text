@@ -1,4 +1,5 @@
 import memoize from 'memoizee';
+
 import { type AnnotationDrawPath } from '../../../../model';
 
 export type PathParams = {

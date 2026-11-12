@@ -1,4 +1,5 @@
 import RBush from 'rbush';
+
 import {
   type AnnotationId,
   type TextAnnotation as _TextAnnotation,

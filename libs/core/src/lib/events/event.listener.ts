@@ -1,12 +1,12 @@
+import type { BaseAnnotation } from '../model';
+import { Debugger } from '../utils/debugger';
+import { type ErrorCode, Errors } from './errors';
 import {
   type AnnotationEventType,
   type ErrorEventCallback,
   type EventCallback,
   type EventData,
 } from './events';
-import { type ErrorCode, Errors } from './errors';
-import { Debugger } from '../utils/debugger';
-import type { BaseAnnotation } from '../model';
 
 export class EventListener<ANNOTATION extends BaseAnnotation> {
   private readonly eventMap = new Map<

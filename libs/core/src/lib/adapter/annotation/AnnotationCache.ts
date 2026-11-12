@@ -1,5 +1,7 @@
 import { maxBy } from 'lodash-es';
-import type { RenderInstances } from './renderer/render-instances';
+
+import { AnnotationWeight } from '../../compute/utils/annotation.weight';
+import { calculateGutterAnnotationWeightsAndEnrich } from '../../compute/utils/weights';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
@@ -8,8 +10,7 @@ import {
   type TextAnnotation,
   type TextLine,
 } from '../../model';
-import { calculateGutterAnnotationWeightsAndEnrich } from '../../compute/utils/weights';
-import { AnnotationWeight } from '../../compute/utils/annotation.weight';
+import type { RenderInstances } from './renderer/render-instances';
 
 export class AnnotationCache<ANNOTATION extends BaseAnnotation> {
   private readonly originalAnnotationsMap = new Map<AnnotationId, ANNOTATION>();

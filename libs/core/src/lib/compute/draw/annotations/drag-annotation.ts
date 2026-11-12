@@ -1,9 +1,10 @@
 import { drag } from 'd3';
-import { DragAnnotation } from './drag.annotations';
-import { type TextAnnotation } from '../../../model';
-import { type Position } from '../types';
-import { DrawText } from '../text/DrawText';
+
 import { type AnnotationModule } from '../../../di/annotation.module';
+import { type TextAnnotation } from '../../../model';
+import { DrawText } from '../text/DrawText';
+import { type Position } from '../types';
+import { DragAnnotation } from './drag.annotations';
 
 export const addDraggableAnnotation = (
   annotationModule: AnnotationModule,

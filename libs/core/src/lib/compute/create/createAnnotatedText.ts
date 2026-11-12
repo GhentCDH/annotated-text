@@ -1,12 +1,12 @@
+import { DefaultAnnotationAdapter, PlainTextAdapter } from '../../adapter';
+import type { BaseAnnotation } from '../../model';
+import type { Annotation } from '../../model/';
+import { Debugger } from '../../utils/debugger';
+import { CreateAnnotationsImpl } from './CreateAnnotations';
 import {
   type AnnotatedText,
   type CreateAnnotationsProps,
 } from './CreateAnnotations.model';
-import { CreateAnnotationsImpl } from './CreateAnnotations';
-import type { BaseAnnotation } from '../../model';
-import type { Annotation } from '../../model/';
-import { Debugger } from '../../utils/debugger';
-import { DefaultAnnotationAdapter, PlainTextAdapter } from '../../adapter';
 
 const annotatedTextCache = new Map<string, AnnotatedText<any>>();
 

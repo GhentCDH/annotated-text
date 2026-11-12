@@ -1,10 +1,11 @@
 import memoizee from 'memoizee';
+
+import { type AnnotationStyle } from '../../../model';
 import {
   AnnotationDefaultStyle,
   type CustomAnnotationStyle,
   type DefaultAnnotationStyle
 } from './annotation.style.default';
-import { type AnnotationStyle } from '../../../model';
 
 /**
  * Converts a hex color code to an RGB color.

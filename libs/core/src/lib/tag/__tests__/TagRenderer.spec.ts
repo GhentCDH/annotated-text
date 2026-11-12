@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { TagRenderer } from '../TagRenderer';
+
 import { type AnnotationModule } from '../../di/annotation.module';
+import { TagRenderer } from '../TagRenderer';
 
 const annotationModuleMock = {
   inject: () => null,

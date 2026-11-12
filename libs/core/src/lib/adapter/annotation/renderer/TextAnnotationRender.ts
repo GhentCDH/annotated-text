@@ -1,14 +1,14 @@
+import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
+import { type CustomAnnotationStyle } from '../style';
+import { type DefaultAnnotationStyle } from '../style/annotation.style.default';
 import { SvgAnnotationRender } from './SvgAnnotationRender';
 import {
+  type PathParams,
   createAnnotationFill,
   type createAnnotationPathFn,
   createLeftBorder,
   createRightBorder,
-  type PathParams,
 } from './_utils/path';
-import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
-import { type CustomAnnotationStyle } from '../style';
-import { type DefaultAnnotationStyle } from '../style/annotation.style.default';
 
 const createAnnotationBorder = ({
   x,

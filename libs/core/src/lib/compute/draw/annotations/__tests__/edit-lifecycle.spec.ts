@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { EditAnnotation } from '../edit.annotations';
-import { DragAnnotation } from '../drag.annotations';
-import { Draw } from '../../Draw';
-import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
-import { EventListener } from '../../../../events/event.listener';
+
 import { type AnnotationModule } from '../../../../di/annotation.module';
+import { EventListener } from '../../../../events/event.listener';
+import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
 import { type TextAnnotation } from '../../../../model';
+import { Draw } from '../../Draw';
 import { type Position } from '../../types';
+import { DragAnnotation } from '../drag.annotations';
+import { EditAnnotation } from '../edit.annotations';
 
 // Draw is only used as an injection token; the real module has circular imports
 vi.mock('../../Draw', () => ({ Draw: class Draw {} }));

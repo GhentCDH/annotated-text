@@ -1,12 +1,12 @@
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { type AnnotationModule } from '../../../di/annotation.module';
 import { type TextAnnotation } from '../../../model';
-import { type Position } from '../types';
 import {
   type CharacterPositionResult,
   getCharacterStartEndPosition,
 } from '../../position';
-import { type AnnotationModule } from '../../../di/annotation.module';
-import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { Draw } from '../Draw';
+import { type Position } from '../types';
 
 export class CreateAnnotation extends BaseAnnotationDi {
   private startIndex: number;

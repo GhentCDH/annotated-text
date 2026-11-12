@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { AnnotationOverlap, type OverlapTextAnnotation } from '../annotation.overlap';
 
 const a1 = { id: 'a1', start: 0, end: 10 } as OverlapTextAnnotation;

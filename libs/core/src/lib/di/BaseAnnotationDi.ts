@@ -1,8 +1,8 @@
-import { type Token } from './container';
-import { type AnnotationModule } from './annotation.module';
-import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { EventListener } from '../events/event.listener';
+import { InternalEventListener } from '../events/internal/internal.event.listener';
 import { type Annotation, type BaseAnnotation } from '../model';
+import { type AnnotationModule } from './annotation.module';
+import { type Token } from './container';
 
 /**
  * Abstract base class for services that participate in the annotation DI system.

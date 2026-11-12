@@ -1,19 +1,20 @@
 import {
   type W3CAnnotation,
-  w3cAnnotation,
   type W3CAnnotationBuilder,
+  w3cAnnotation,
 } from '@ghentcdh/w3c-utils';
+
+import {
+  type Annotation,
+  type AnnotationId,
+  type TextAnnotation,
+  annotationSchema,
+} from '../../../model';
+import { selectText } from '../../text/utils/select-text';
 import {
   AnnotationAdapter,
   type AnnotationAdapterParams,
 } from '../AnnotationAdapter';
-import {
-  type Annotation,
-  type AnnotationId,
-  annotationSchema,
-  type TextAnnotation,
-} from '../../../model';
-import { selectText } from '../../text/utils/select-text';
 
 export type W3CAnnotationAdapterParams = {
   sourceUri?: string;

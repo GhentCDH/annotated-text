@@ -1,14 +1,15 @@
 import { merge } from 'lodash-es';
-import { type RenderParams } from './annotation-render';
-import { DefaultRenders } from './default.renderer';
+
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { type AnnotationModule } from '../../../di/annotation.module';
+import type { BaseAnnotation, TextAnnotation } from '../../../model';
+import { Debugger } from '../../../utils/debugger';
+import { StyleInstances } from '../style/style-instances';
 import { GutterAnnotationRender } from './GutterAnnotationRender';
 import { HighlightAnnotationRender } from './TextAnnotationRender';
 import { UnderLineAnnotationRender } from './UnderLineAnnotationRender';
-import { Debugger } from '../../../utils/debugger';
-import type { BaseAnnotation, TextAnnotation } from '../../../model';
-import { type AnnotationModule } from '../../../di/annotation.module';
-import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { StyleInstances } from '../style/style-instances';
+import { type RenderParams } from './annotation-render';
+import { DefaultRenders } from './default.renderer';
 
 export class RenderInstances<
   ANNOTATION extends BaseAnnotation,

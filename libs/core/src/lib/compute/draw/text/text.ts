@@ -1,7 +1,8 @@
 import memoize from 'memoizee';
-import { Debugger } from '../../../utils/debugger';
+
 import { type AnnotationAdapter, type TextAdapter } from '../../../adapter';
 import { type TextLine } from '../../../model';
+import { Debugger } from '../../../utils/debugger';
 import { styles } from '../../styles.const';
 
 const document = globalThis.document || null;

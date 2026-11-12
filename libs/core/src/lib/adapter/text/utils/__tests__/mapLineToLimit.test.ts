@@ -1,14 +1,15 @@
 // write vitest on mapLineToLimit.ts
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  getDiff,
-  mapLinesToLimit,
-  mapLineToLimit,
-  type UpdateLineFn,
-} from '../mapLineToLimit';
-import { type TextLine } from '../../../../model';
+
 import { isIntersection } from '../../../../compute/utils/intersect';
+import { type TextLine } from '../../../../model';
 import { type Limit } from '../../TextAdapter';
+import {
+  type UpdateLineFn,
+  getDiff,
+  mapLineToLimit,
+  mapLinesToLimit,
+} from '../mapLineToLimit';
 
 // Mock dependencies
 vi.mock('../../../../compute/utils/intersect', () => ({

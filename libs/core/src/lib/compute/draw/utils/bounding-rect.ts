@@ -1,4 +1,5 @@
 import memoize from 'memoizee';
+
 import { SVG_ID } from '../../model/svg.types';
 
 export const insideRange = memoize(

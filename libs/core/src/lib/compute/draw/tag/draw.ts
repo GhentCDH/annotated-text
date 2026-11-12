@@ -1,4 +1,5 @@
 import memoize from 'memoizee';
+
 import { type AnnotationDimension, type TextAnnotation } from '../../../model';
 import { type AnnotationSvg, SVG_ID, SVG_ROLE } from '../../model/svg.types';
 

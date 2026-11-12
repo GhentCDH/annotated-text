@@ -1,11 +1,12 @@
 import RBush from 'rbush';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { type TextRasterItem } from '../../draw/text/text-raster';
 import {
   type CharacterPositionResult,
   getCharacterFromTextNodesAtPoint,
   getCharacterStartEndPosition,
 } from '../character-position';
-import { type TextRasterItem } from '../../draw/text/text-raster';
 import {
   type DimensionsWithScale,
   getScaledDimensions,

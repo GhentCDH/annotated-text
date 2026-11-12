@@ -1,8 +1,9 @@
 // LineSearch.spec.ts
 
 import { describe, expect, it } from 'vitest';
-import { getLinesForAnnotation } from '../line.utils';
+
 import type { TextLine } from '../../../model';
+import { getLinesForAnnotation } from '../line.utils';
 
 describe('LineSearch', () => {
   const createLine = (start: number, end: number) =>

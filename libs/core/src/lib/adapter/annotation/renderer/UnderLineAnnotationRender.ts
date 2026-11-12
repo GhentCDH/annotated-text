@@ -1,16 +1,17 @@
 import memoizee from 'memoizee';
-import { SvgAnnotationRender } from './SvgAnnotationRender';
-import {
-  createAnnotationFill,
-  type createAnnotationPathFn,
-  type PathParams,
-} from './_utils/path';
+
 import { type AnnotationDrawPath, type BaseAnnotation } from '../../../model';
 import { type CustomAnnotationStyle } from '../style';
 import {
-  _DefaultAnnotationStyle,
   type DefaultAnnotationStyle,
+  _DefaultAnnotationStyle,
 } from '../style/annotation.style.default';
+import { SvgAnnotationRender } from './SvgAnnotationRender';
+import {
+  type PathParams,
+  createAnnotationFill,
+  type createAnnotationPathFn,
+} from './_utils/path';
 
 const createLine = memoizee(
   (x: number, y: number, width: number, height: number) => {

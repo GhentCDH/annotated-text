@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { describe, expect, it } from 'vitest';
-import { AnnotationWeight } from '../annotation.weight';
-import { type TextAnnotation, type TextLine, type TextRender } from '../../../model';
+
 import { type AnnotationRender } from '../../../adapter/annotation/renderer';
+import { type TextAnnotation, type TextLine, type TextRender } from '../../../model';
+import { AnnotationWeight } from '../annotation.weight';
 
 // Helper to create annotations
 const createAnnotation = (

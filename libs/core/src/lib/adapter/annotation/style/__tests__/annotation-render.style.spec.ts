@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { Debugger } from '../../../../utils/debugger';
 import { AnnotationRenderStyle } from '../annotation-render.style';
 import { getAnnotationStyle } from '../annotation.style';
 import type { CustomAnnotationStyle } from '../annotation.style.default';
-import { Debugger } from '../../../../utils/debugger';
 
 vi.mock('../../../../utils/debugger', () => ({
   Debugger: {

@@ -1,16 +1,16 @@
-import { Tag } from './tag/tag';
-import { createNewBlock } from './annotations/create';
-import { DrawAnnotation } from './annotations/DrawAnnotation';
-import { DrawText } from './text/DrawText';
-import { getLineHeight } from './utils/line-height';
-import { MainContainer } from '../model/maincontainer';
-import { Debugger } from '../../utils/debugger';
 import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
-import type { BaseAnnotation, TextAnnotation } from '../../model';
 import { type AnnotationModule } from '../../di/annotation.module';
+import type { BaseAnnotation, TextAnnotation } from '../../model';
+import { Debugger } from '../../utils/debugger';
+import { MainContainer } from '../model/maincontainer';
+import { validateAnnotation } from '../utils/assign_annotation_to_line';
 import { isIntersection } from '../utils/intersect';
 import { getLinesForAnnotation } from '../utils/line.utils';
-import { validateAnnotation } from '../utils/assign_annotation_to_line';
+import { DrawAnnotation } from './annotations/DrawAnnotation';
+import { createNewBlock } from './annotations/create';
+import { Tag } from './tag/tag';
+import { DrawText } from './text/DrawText';
+import { getLineHeight } from './utils/line-height';
 
 /**
  * This is a dispatcher class for all actions made on visual drawing of the annotations

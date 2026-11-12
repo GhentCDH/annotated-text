@@ -1,9 +1,9 @@
-import { CreateAnnotation } from './create.annotation';
-import { SvgModel } from '../../model/svg.types';
-import { type Position } from '../types';
 import { type AnnotationModule } from '../../../di/annotation.module';
-import { DrawText } from '../text/DrawText';
 import { type BaseAnnotation } from '../../../model';
+import { SvgModel } from '../../model/svg.types';
+import { DrawText } from '../text/DrawText';
+import { type Position } from '../types';
+import { CreateAnnotation } from './create.annotation';
 
 export const createNewBlock = <ANNOTATION extends BaseAnnotation>(
   annotationModule: AnnotationModule,

@@ -1,11 +1,11 @@
+import { BaseAnnotationDi } from '../di/BaseAnnotationDi';
+import { type AnnotationId, type TextAnnotation } from '../model';
 import {
   type AnnotationEventType,
   CHANGED_EVENTS,
   type EventData,
   NEW_EVENTS,
 } from './events';
-import { BaseAnnotationDi } from '../di/BaseAnnotationDi';
-import { type AnnotationId, type TextAnnotation } from '../model';
 
 export class ExternalEventSender<ANNOTATION> extends BaseAnnotationDi {
   sendEvent<EVENT extends AnnotationEventType<ANNOTATION>>(

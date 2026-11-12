@@ -1,6 +1,6 @@
-import { type Token } from './container';
-import { type AnnotationModule } from './annotation.module';
 import { SvgModel } from '../compute/model/svg.types';
+import { type AnnotationModule } from './annotation.module';
+import { type Token } from './container';
 
 /**
  * Base class for adapters and other services that need lazy module injection.

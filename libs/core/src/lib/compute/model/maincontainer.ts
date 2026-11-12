@@ -1,6 +1,6 @@
-import { Debugger } from '../../utils/debugger';
 import { type AnnotationModule } from '../../di/annotation.module';
 import { InternalEventListener } from '../../events/internal/internal.event.listener';
+import { Debugger } from '../../utils/debugger';
 import { styles } from '../styles.const';
 
 export class MainContainer {

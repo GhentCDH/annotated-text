@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { WordSnapper } from '../WordSnapper';
+
 import { type TextAnnotation } from '../../../../model';
+import { WordSnapper } from '../WordSnapper';
 
 describe('WordSnapper', () => {
   let snapper: WordSnapper;

@@ -1,14 +1,15 @@
 import { cloneDeep } from 'lodash-es';
+
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { type AnnotationModule } from '../../../di/annotation.module';
 import {
   type AnnotationId,
   type TextAnnotation,
   textAnnotationSchema,
 } from '../../../model';
-import type { Position, StartEnd } from '../types';
 import { DUMMY_UID } from '../../model/svg.types';
-import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { type AnnotationModule } from '../../../di/annotation.module';
 import { Draw } from '../Draw';
+import type { Position, StartEnd } from '../types';
 
 export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected readonly annotation: TextAnnotation | null;

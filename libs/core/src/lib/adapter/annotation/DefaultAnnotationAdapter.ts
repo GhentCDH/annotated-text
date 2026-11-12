@@ -1,14 +1,14 @@
 import {
+  type Annotation,
+  type TextAnnotation,
+  annotationSchema,
+} from '../../model';
+import { Debugger } from '../../utils/debugger';
+import { selectText } from '../text/utils/select-text';
+import {
   AnnotationAdapter,
   type AnnotationAdapterParams,
 } from './AnnotationAdapter';
-import {
-  type Annotation,
-  annotationSchema,
-  type TextAnnotation,
-} from '../../model';
-import { selectText } from '../text/utils/select-text';
-import { Debugger } from '../../utils/debugger';
 
 export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> {
   name = 'DefaultAnnotationAdapter';

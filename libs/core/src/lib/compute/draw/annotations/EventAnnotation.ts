@@ -1,10 +1,10 @@
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import type { BaseAnnotation, TextAnnotation } from '../../../model';
-import { type AnnotationSvg } from '../../model/svg.types';
-import { AnnotationColors } from '../../model/annotation.colors';
-import { type AnnotationEventType } from '../../../events';
 import { type AnnotationModule } from '../../../di/annotation.module';
+import { type AnnotationEventType } from '../../../events';
 import { ExternalEventSender } from '../../../events/send-event';
+import type { BaseAnnotation, TextAnnotation } from '../../../model';
+import { AnnotationColors } from '../../model/annotation.colors';
+import { type AnnotationSvg } from '../../model/svg.types';
 
 export class EventAnnotations extends BaseAnnotationDi {
   addToAnnotation(annotation: TextAnnotation, rect: AnnotationSvg) {
