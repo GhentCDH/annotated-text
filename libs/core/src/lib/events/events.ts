@@ -6,6 +6,7 @@ export type _AnnotationEventType =
   | 'annotation-edit--start'
   | 'annotation-edit--end'
   | 'annotation-edit--move'
+  | 'annotation-edit--cancel'
   | 'annotation-create--start'
   | 'annotation-create--end'
   | 'annotation-create--move'
@@ -35,6 +36,7 @@ export type EventData<ANNOTATION> = {
   'annotation-edit--start': EditAnnotationEventData<ANNOTATION>;
   'annotation-edit--end': EditAnnotationEventData<ANNOTATION>;
   'annotation-edit--move': EditAnnotationEventMoveData<ANNOTATION>;
+  'annotation-edit--cancel': EditAnnotationEventData<ANNOTATION>;
   'annotation-create--start': EditAnnotationEventData<ANNOTATION>;
   'annotation-create--end': EditAnnotationEventData<ANNOTATION>;
   'annotation-create--move': EditAnnotationEventMoveData<ANNOTATION>;

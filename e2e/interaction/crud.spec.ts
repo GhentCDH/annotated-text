@@ -110,6 +110,34 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
         await container.expect.toHaveScreenshot(`edit-${description}.png`);
       },
     );
+
+    test('Escape cancels the edit and the next edit still works', async ({
+      page,
+    }) => {
+      const container = findAnnotatedTextContainer(page, id);
+
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      const mouseMove = container.mouse;
+
+      await mouseMove.onMouseDown({ x: startX, y: startY });
+      await mouseMove.onMouseDrag({ x: startX - 20, y: startY });
+      await container.expect.toHaveLog('annotation-edit--move: 1-9');
+
+      await page.keyboard.press('Escape');
+      await container.expect.toHaveLog('annotation-edit--cancel: 4-9');
+
+      // The rest of the drag is ignored
+      await mouseMove.onMouseDrag({ x: startX - 40, y: startY });
+      await mouseMove.onMouseEnd();
+      await container.expect.toHaveLog('annotation-edit--cancel: 4-9');
+
+      await mouseMove.onMouseDown({ x: startX, y: startY });
+      await mouseMove.onMouseDrag({ x: startX - 20, y: startY });
+      await mouseMove.onMouseEnd();
+      await container.expect.toHaveLog('annotation-edit--end: 1-9');
+    });
   });
 
   test.describe('Delete', () => {

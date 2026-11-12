@@ -5,7 +5,8 @@
 - 3b done: `DragAnnotation.onStart` guards missing draws/draggables (optional chaining), the duplicate `blockEvents` call is removed.
 - 3c not done: errors still reach the console, not `eventListener.sendError`.
 - 3d partly: `__tests__/edit-lifecycle.spec.ts` covers the abort paths with a small mocked module (9 of 13 tests fail on the old code), no shared harness yet. E2E regression in `e2e/zoom` (click a handle without moving, then zoom and edit).
-- Phases 2+ (cancel / Escape, hot-path cost) not started.
+- Phase 2 done: `cancel()` on the base class, Escape cancels the edit in flight, `end()` without a change goes through `cancel()`, new public event `annotation-edit--cancel` (documented). Differences from §4: the keydown listener sits on `document` and only exists between `start()` and `end()`/`cancel()`, so there is nothing to tear down in `MainContainer` and no internal bus event; `cancel()` does not write back to the annotation, because nothing writes to it during an edit any more: `format()` of the default and W3C adapter no longer caches the in-flight range on every move event (that was the real cause of the plan 05 failure scenario). Not done: Escape while *creating* an annotation.
+- Phase 3 (hot-path cost) not started.
 **Severity:** high — two of these bugs deadlock the component from ordinary user actions, and the whole subsystem has no unit tests.
 **Estimated effort:** ~1 week. Phase 1 (the two deadlock bugs + harness) is ~2 days and is the urgent part.
 **Related plans:** [05 — sendEvent mutation](./05-sendevent-input-mutation.md) — same code path; the two bugs compound and the test harness is shared. [02 — Accessibility](./02-accessibility.md) phase 3 needs the `cancel()` built here and benefits from the offset-based `move()` refactor.
