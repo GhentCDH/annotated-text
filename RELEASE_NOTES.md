@@ -1,3 +1,17 @@
+## 1.3.1 (2026-11-12)
+
+### 🚀 Features
+
+- cancel an annotation edit with Escape ([#217](https://github.com/GhentCDH/vue_component_annotated_text/pull/217))
+
+### 🩹 Fixes
+
+- stop sendEvent from mutating the cached annotation ([#215](https://github.com/GhentCDH/vue_component_annotated_text/pull/215))
+
+### ❤️ Thank You
+
+- Bo Vandersteene @bovandersteene
+
 ## 1.3.0 (2026-11-10)
 
 ### 🩹 Fixes
