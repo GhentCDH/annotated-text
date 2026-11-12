@@ -138,6 +138,74 @@ test.describe('AnnotatedText Core - CRUD interactions', () => {
       await mouseMove.onMouseEnd();
       await container.expect.toHaveLog('annotation-edit--end: 1-9');
     });
+
+    test('A cancelled edit keeps the original range after a redraw', async ({
+      page,
+    }) => {
+      const container = findAnnotatedTextContainer(page, id);
+
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      const annotation = container.annotation(firstAnnotation.id);
+      const before = await annotation.getPosition();
+
+      const mouseMove = container.mouse;
+      await mouseMove.onMouseDown({ x: startX, y: startY });
+      await mouseMove.onMouseDrag({ x: startX - 20, y: startY });
+      await page.keyboard.press('Escape');
+      await mouseMove.onMouseEnd();
+
+      // A width change redraws from the cached annotations
+      const viewport = page.viewportSize()!;
+      await page.setViewportSize({ ...viewport, width: viewport.width - 200 });
+      await page.waitForTimeout(200);
+      await page.setViewportSize(viewport);
+      await page.waitForTimeout(200);
+
+      expect(await annotation.getPosition()).toEqual(before);
+      await container.expect.toHaveLog('annotation-edit--cancel: 4-9');
+    });
+
+    test('Releasing a handle without moving it is a cancel', async ({
+      page,
+    }) => {
+      const container = findAnnotatedTextContainer(page, id);
+
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      const mouseMove = container.mouse;
+      await mouseMove.onMouseDown({ x: startX, y: startY });
+      await container.expect.toHaveLog('annotation-edit--start: 4-9');
+      await mouseMove.onMouseEnd();
+
+      await container.expect.toHaveLog('annotation-edit--cancel: 4-9');
+    });
+
+    test('Escape cancels dragging the whole annotation', async ({ page }) => {
+      const container = findAnnotatedTextContainer(page, id);
+
+      await container.scrollTo();
+      await container.toBeVisible();
+
+      const annotation = container.annotation(firstAnnotation.id);
+      const before = await annotation.getPosition();
+      const middle = { x: (startX + endX) / 2, y: startY };
+
+      const mouseMove = container.mouse;
+      await mouseMove.onMouseDown(middle);
+      await mouseMove.onMouseDrag({ x: middle.x + 40, y: middle.y }, 4);
+      await expect(container.log).toHaveText(/^annotation-edit--move: /);
+      await expect(container.log).not.toHaveText('annotation-edit--move: 4-9');
+
+      await page.keyboard.press('Escape');
+      await container.expect.toHaveLog('annotation-edit--cancel: 4-9');
+
+      await mouseMove.onMouseEnd();
+      await container.expect.toHaveLog('annotation-edit--cancel: 4-9');
+      expect(await annotation.getPosition()).toEqual(before);
+    });
   });
 
   test.describe('Delete', () => {

@@ -21,6 +21,8 @@ const w3cAnnotations: W3CAnnotation[] = [
   {
     id: 'anno-1',
     '@context': 'http://www.w3.org/ns/anno.jsonld',
+    // Required to edit: the builder rejects an annotation without a type
+    type: 'Annotation',
     motivation: 'classifying',
     body: {
       type: 'TextualBody',
