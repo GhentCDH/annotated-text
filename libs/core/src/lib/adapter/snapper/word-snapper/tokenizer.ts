@@ -1,4 +1,4 @@
-import { Tokenizr, type Token } from 'tokenizr';
+import { type Token, Tokenizr } from 'tokenizr';
 
 export type Tokenizer = (token: string) => Token[];
 

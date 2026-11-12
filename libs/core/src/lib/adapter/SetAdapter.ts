@@ -1,7 +1,7 @@
-import { TextAdapter, type TextAdapterParams } from './text/TextAdapter';
-import { type AnnotationModule } from '../di/annotation.module';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../adapter/annotation';
 import { type Snapper } from '../adapter/snapper';
+import { type AnnotationModule } from '../di/annotation.module';
+import { TextAdapter, type TextAdapterParams } from './text/TextAdapter';
 
 export const setTextAdapter = (
   annotationModule: AnnotationModule,

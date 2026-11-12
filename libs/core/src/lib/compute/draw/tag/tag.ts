@@ -1,7 +1,7 @@
-import { drawTagSvg, shouldDrawTag } from './draw';
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
 import { type AnnotationId, type TextAnnotation } from '../../../model';
 import { SvgModel } from '../../model/svg.types';
-import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { drawTagSvg, shouldDrawTag } from './draw';
 
 export class Tag extends BaseAnnotationDi {
   readonly svgModel = super.inject(SvgModel);

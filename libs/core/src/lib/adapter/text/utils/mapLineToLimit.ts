@@ -1,6 +1,7 @@
 import memoize from 'memoizee';
-import { type TextLine, textLineSchema } from '../../../model';
+
 import { isIntersection } from '../../../compute/utils/intersect';
+import { type TextLine, textLineSchema } from '../../../model';
 import { type Limit } from '../TextAdapter';
 
 export type UpdateLineFn = (

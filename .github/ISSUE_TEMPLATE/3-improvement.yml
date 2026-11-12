@@ -1,0 +1,21 @@
+name: 🛠️ Improvement
+description: Improve something that already exists (DX, performance, docs, refactor)
+body:
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behaviour
+      description: What exists today and where (package / file / docs page)?
+    validations:
+      required: true
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Proposed improvement
+      description: What should change, and why does it matter?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context

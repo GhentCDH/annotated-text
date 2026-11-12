@@ -1,0 +1,46 @@
+name: 🚀 Feature request
+description: Suggest a new capability for annotated-text
+labels: ['enhancement 🚀']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what makes it hard today?
+      placeholder: I'm always frustrated when …
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What should annotated-text do? A sketch of the API usage is very welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds or other approaches you've looked at.
+  - type: dropdown
+    id: packages
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Rendering / layout
+        - Annotations / editing
+        - Markdown
+        - W3C utils
+        - Docs
+        - Other
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to open a pull request for this
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context

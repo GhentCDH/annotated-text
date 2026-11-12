@@ -1,16 +1,17 @@
 import type RBush from 'rbush';
-import {
-  drawTextRaster,
-  findNearestTextPosition,
-  type TextRasterItem,
-} from './text-raster';
-import { drawText } from './text';
-import { Debugger } from '../../../utils/debugger';
+
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import { Debugger } from '../../../utils/debugger';
 import { SvgModel } from '../../model/svg.types';
 import { getCharacterFromTextNodesAtPoint } from '../../position';
 import { getScaledDimensions } from '../../position/unscaled';
 import { findTextLine } from '../../utils/line.utils';
+import { drawText } from './text';
+import {
+  type TextRasterItem,
+  drawTextRaster,
+  findNearestTextPosition,
+} from './text-raster';
 
 export class DrawText extends BaseAnnotationDi {
   private readonly svgModel = this.inject(SvgModel);

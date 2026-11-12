@@ -1,6 +1,6 @@
 import type { AnnotationRender } from '../adapter/annotation/renderer';
-import { type BaseAnnotation, type TagDrawMetadata, tagDrawMetadataSchema } from '../model';
 import { BaseAnnotationDi } from '../di/BaseAnnotationDi';
+import { type BaseAnnotation, type TagDrawMetadata, tagDrawMetadataSchema } from '../model';
 
 /**
  * Function type that extracts a tag label string from an annotation.

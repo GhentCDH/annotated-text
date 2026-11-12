@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { isIntersection } from '../intersect'; // Adjust the path accordingly
 
 describe('isIntersection', () => {

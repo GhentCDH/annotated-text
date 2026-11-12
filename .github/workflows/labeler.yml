@@ -1,21 +1,17 @@
 name: Labeler
 
-
 on:
-    pull_request:
-        branches:
-            - main
+  pull_request:
+    # edited: relabel when the title changes
+    types: [opened, edited, synchronize, reopened]
+    branches:
+      - main
+      - master
 
 jobs:
-    labeler:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v7
-
-            - name: Run Labeler
-              uses: crazy-max/ghaction-github-labeler@v4.1.0
-              with:
-                  skip-delete: true
-                  
-            - name: Label the pr
-              uses: actions/labeler@v5
+  labeler:
+    uses: GhentCDH/crouton/.github/workflows/shared-labeler.yml@main
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write

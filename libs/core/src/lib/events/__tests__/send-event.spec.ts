@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
-import { ExternalEventSender } from '../send-event';
+
+import { type AnnotationModule } from '../../di/annotation.module';
 import { EventListener } from '../event.listener';
 import { InternalEventListener } from '../internal/internal.event.listener';
-import { type AnnotationModule } from '../../di/annotation.module';
+import { ExternalEventSender } from '../send-event';
 
 const setup = () => {
   const cached = {

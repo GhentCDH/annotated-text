@@ -1,5 +1,6 @@
 import { expect } from 'vitest';
 import { z } from 'zod';
+
 import { buildJsonLdContext } from '../context-helpers.jsonld';
 
 describe('buildJsonLdContext', () => {

@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest';
+
 import {
-  replaceMarkdownToHtml,
-  stripHtmlFromText,
   getPartialMarkdownWithLimit,
+  replaceMarkdownToHtml,
   selectTextFromMarkdown,
   selectTextInMarkdown,
+  stripHtmlFromText,
 } from '../parser';
 
 describe('parser', () => {

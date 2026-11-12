@@ -1,7 +1,8 @@
 import type RBush from 'rbush';
-import { type DimensionsWithScale, getScaledDimensions } from './unscaled';
+
 import { type TextRasterItem } from '../draw/text/text-raster';
 import { insideRange } from '../draw/utils/bounding-rect';
+import { type DimensionsWithScale, getScaledDimensions } from './unscaled';
 
 /**
  * Searches for a TextRasterItem at a specific point in the R-tree.

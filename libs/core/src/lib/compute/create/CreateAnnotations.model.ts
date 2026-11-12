@@ -1,14 +1,3 @@
-import { type AnnotationId, type BaseAnnotation } from '../../model';
-import {
-  type Snapper,
-  type TextAdapter,
-  type TextAdapterParams,
-} from '../../adapter/text';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
 import {
   type AnnotationAdapter,
   type AnnotationAdapterParams,
@@ -19,6 +8,17 @@ import {
   type AnnotationRender,
   type RenderParams,
 } from '../../adapter/annotation/renderer/annotation-render';
+import {
+  type Snapper,
+  type TextAdapter,
+  type TextAdapterParams,
+} from '../../adapter/text';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
+import { type AnnotationId, type BaseAnnotation } from '../../model';
 import { type tagLabelFn } from '../../tag/TagRenderer';
 import {
   type ZoomAnchor,

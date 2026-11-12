@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://ghentcdh.github.io/annotated-text/
+    about: Guides, live examples and API reference for the annotated text component.
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/GhentCDH/annotated-text/security/advisories/new
+    about: Please report security issues privately, not as a public issue.

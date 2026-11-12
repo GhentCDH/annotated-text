@@ -1,11 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import {
-  attachZoomControls,
-  clampZoom,
   DefaultZoomControls,
   WHEEL_COMMIT_DELAY,
   type ZoomApi,
   type ZoomControlsOptions,
+  attachZoomControls,
+  clampZoom,
 } from '../zoom';
 
 const createApi = (initial = 1, blocked = false) => {

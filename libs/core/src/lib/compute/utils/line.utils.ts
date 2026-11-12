@@ -1,5 +1,5 @@
-import { isIntersection } from './intersect';
 import type { Annotation, TextLine } from '../../model';
+import { isIntersection } from './intersect';
 
 /**
  * Get all lines that intersect with the given annotation.

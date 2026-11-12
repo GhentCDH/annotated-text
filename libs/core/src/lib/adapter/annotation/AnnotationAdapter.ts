@@ -1,25 +1,26 @@
 import { cloneDeep, merge } from 'lodash-es';
 import { v4 as uuidv4 } from 'uuid';
-import { StyleInstances } from './style/style-instances';
-import { AnnotationCache } from './AnnotationCache';
-import { RenderInstances } from './renderer/render-instances';
-import { BaseAdapter } from '../BaseAdapter';
+
+import { type DeepPartial } from '../../deep-partial.type';
+import { type AnnotationModule } from '../../di/annotation.module';
 import {
   type Annotation,
   type AnnotationDimension,
   type AnnotationDraw,
-  annotationDrawMetadataSchema,
   type AnnotationId,
   type BaseAnnotation,
+  type TextAnnotation,
+  type TextLine,
+  annotationDrawMetadataSchema,
   renderSchema,
   styleSchema,
-  type TextAnnotation,
-  textAnnotationSchema,
-  type TextLine
+  textAnnotationSchema
 } from '../../model';
-import { type DeepPartial } from '../../deep-partial.type';
-import { type AnnotationModule } from '../../di/annotation.module';
 import { TagRenderer } from '../../tag/TagRenderer';
+import { BaseAdapter } from '../BaseAdapter';
+import { AnnotationCache } from './AnnotationCache';
+import { RenderInstances } from './renderer/render-instances';
+import { StyleInstances } from './style/style-instances';
 
 /**
  * @deprecated

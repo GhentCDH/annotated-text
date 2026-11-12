@@ -1,10 +1,10 @@
-import type { AnnotationId, TextAnnotation } from '../../../model';
+import { RenderInstances } from '../../../adapter/annotation/renderer/render-instances';
 import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import { drawAnnotation, drawAnnotationContent } from '../annotations';
+import type { AnnotationId, TextAnnotation } from '../../../model';
+import { AnnotationColors } from '../../model/annotation.colors';
 import { DUMMY_UID, SvgModel } from '../../model/svg.types';
 import { getLinesForAnnotation } from '../../utils/line.utils';
-import { AnnotationColors } from '../../model/annotation.colors';
-import { RenderInstances } from '../../../adapter/annotation/renderer/render-instances';
+import { drawAnnotation, drawAnnotationContent } from '../annotations';
 
 export class DrawAnnotation extends BaseAnnotationDi {
   private readonly annotationColors = this.inject(AnnotationColors);

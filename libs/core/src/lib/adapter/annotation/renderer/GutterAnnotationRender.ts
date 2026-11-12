@@ -1,16 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
-import { AnnotationRender, type AnnotationRenderParams } from './annotation-render';
-import { Debugger } from '../../../utils/debugger';
+
+import { type DimensionsWithScale } from '../../../compute/position/unscaled';
+import { getRanges } from '../../../compute/utils/ranges/get-range';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
   type BaseAnnotation,
   type TextAnnotation
 } from '../../../model';
-import { type DimensionsWithScale } from '../../../compute/position/unscaled';
+import { Debugger } from '../../../utils/debugger';
 import { type CustomAnnotationStyle } from '../style';
-import { _DefaultAnnotationStyle, type DefaultAnnotationStyle } from '../style/annotation.style.default';
-import { getRanges } from '../../../compute/utils/ranges/get-range';
+import { type DefaultAnnotationStyle, _DefaultAnnotationStyle } from '../style/annotation.style.default';
+import { AnnotationRender, type AnnotationRenderParams } from './annotation-render';
 
 export const createGutterPath = (
   x: number,

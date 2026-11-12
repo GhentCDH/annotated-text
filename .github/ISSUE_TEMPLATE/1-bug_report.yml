@@ -1,0 +1,77 @@
+name: 🐞 Bug report
+description: Something in annotated-text doesn't work as expected
+labels: ['bug 🐞']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please search [existing issues](https://github.com/GhentCDH/annotated-text/issues) first.
+        **Security problems:** do not file them here — see [SECURITY.md](https://github.com/GhentCDH/annotated-text/blob/main/SECURITY.md).
+  - type: dropdown
+    id: packages
+    attributes:
+      label: Affected package(s)
+      multiple: true
+      options:
+        - @ghentcdh/annotated-text (core)
+        - @ghentcdh/annotated-text--markdown
+        - @ghentcdh/w3c-utils
+        - docs
+        - not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `pnpm list "@ghentcdh/*"` (or the package version you use)
+      placeholder: 1.3.0
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps to trigger the problem.
+      placeholder: |
+        1. Render the component with the example below
+        2. Click …
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Minimal example
+      description: The smallest piece of code / data (text, annotations, config) that reproduces the problem.
+      render: ts
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / stack trace
+      description: Browser console or server output.
+      render: shell
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, package manager, OS, browser, framework version.
+      placeholder: Node 24, pnpm 12, macOS 15, Chrome 141, Vue 3.5
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, links, anything else.

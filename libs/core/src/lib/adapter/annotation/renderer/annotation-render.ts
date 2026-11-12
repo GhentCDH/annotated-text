@@ -1,13 +1,14 @@
 import { cloneDeep, merge } from 'lodash-es';
+
+import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
   type BaseAnnotation,
   type TextAnnotation
 } from '../../../model';
-import { BaseAnnotationDiFn } from '../../../di/BaseAnnotationDiFn';
-import { AnnotationRenderStyle } from '../style/annotation-render.style';
 import { type CustomAnnotationStyle } from '../style';
+import { AnnotationRenderStyle } from '../style/annotation-render.style';
 
 /**
  * Parameters passed to the render method of annotation renderers.

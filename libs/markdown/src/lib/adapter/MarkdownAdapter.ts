@@ -1,3 +1,6 @@
+import memoize from 'memoizee';
+import { v4 as uuid4 } from 'uuid';
+
 import {
   type Limit,
   TextAdapter,
@@ -5,10 +8,9 @@ import {
   type TextLine,
   textLineSchema
 } from '@ghentcdh/annotated-text';
-import { v4 as uuid4 } from 'uuid';
-import memoize from 'memoizee';
-import { getPartialMarkdownWithLimit, replaceMarkdownToHtml } from './parser';
+
 import { normalizeMarkdown } from './markdown.normalizer';
+import { getPartialMarkdownWithLimit, replaceMarkdownToHtml } from './parser';
 
 /**
  * Computes the clamped start offset of a limit within a line.

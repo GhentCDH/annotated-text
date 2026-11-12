@@ -1,4 +1,5 @@
 import memoize from 'memoizee';
+
 import { type TextLine, textLineSchema } from '../../../model';
 
 export const _textToLines = memoize(

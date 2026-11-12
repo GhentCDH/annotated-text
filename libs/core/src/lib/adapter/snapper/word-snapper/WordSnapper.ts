@@ -1,7 +1,8 @@
 import RBush from 'rbush';
-import { defaultTokenizr, type Tokenizer } from './tokenizer';
-import { DefaultSnapper, type SnapperResult } from '../snapper';
+
 import { type TextAnnotation } from '../../../model';
+import { DefaultSnapper, type SnapperResult } from '../snapper';
+import { type Tokenizer, defaultTokenizr } from './tokenizer';
 
 export interface WordPosition {
   start: number; // inclusive

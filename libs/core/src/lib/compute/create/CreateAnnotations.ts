@@ -1,49 +1,49 @@
-import { type AnnotatedText } from './CreateAnnotations.model';
-import { EventListener } from '../../events/event.listener';
-import {
-  type Snapper,
-  type TextAdapter,
-  type TextAdapterParams,
-} from '../../adapter/text';
-import {
-  type AnnotationAdapter,
-  type AnnotationAdapterParams,
-  type AnnotationStyleParams,
-  type CustomAnnotationStyle,
-} from '../../adapter/annotation';
-import { SvgModel } from '../model/svg.types';
-import { Debugger } from '../../utils/debugger';
-import {
-  type AnnotationEventType,
-  type ErrorEventCallback,
-  type EventCallback,
-} from '../../events';
-import { type AnnotationId, type BaseAnnotation } from '../../model';
-import { type AnnotationRender } from '../../adapter/annotation/renderer';
-import { InternalEventListener } from '../../events/internal/internal.event.listener';
-import { AnnotationModule } from '../../di/annotation.module';
-import { rootContainer } from '../../di/container';
-import { Draw } from '../draw/Draw';
-import { ExternalEventSender } from '../../events/send-event';
-import { MainContainer } from '../model/maincontainer';
-import { type tagLabelFn, TagRenderer } from '../../tag/TagRenderer';
-import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
-import { StyleInstances } from '../../adapter/annotation/style/style-instances';
 import {
   setAnnotationAdapter,
   setSnapperAdapter,
   setTextAdapter,
 } from '../../adapter/SetAdapter';
 import {
-  attachZoomControls,
-  clampZoom,
+  type AnnotationAdapter,
+  type AnnotationAdapterParams,
+  type AnnotationStyleParams,
+  type CustomAnnotationStyle,
+} from '../../adapter/annotation';
+import { type AnnotationRender } from '../../adapter/annotation/renderer';
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { StyleInstances } from '../../adapter/annotation/style/style-instances';
+import {
+  type Snapper,
+  type TextAdapter,
+  type TextAdapterParams,
+} from '../../adapter/text';
+import { AnnotationModule } from '../../di/annotation.module';
+import { rootContainer } from '../../di/container';
+import {
+  type AnnotationEventType,
+  type ErrorEventCallback,
+  type EventCallback,
+} from '../../events';
+import { EventListener } from '../../events/event.listener';
+import { InternalEventListener } from '../../events/internal/internal.event.listener';
+import { ExternalEventSender } from '../../events/send-event';
+import { type AnnotationId, type BaseAnnotation } from '../../model';
+import { TagRenderer, type tagLabelFn } from '../../tag/TagRenderer';
+import { Debugger } from '../../utils/debugger';
+import { Draw } from '../draw/Draw';
+import { MainContainer } from '../model/maincontainer';
+import { SvgModel } from '../model/svg.types';
+import {
   DefaultZoomControls,
-  getScrollParent,
-  getVisibleCenter,
   type ZoomAnchor,
   type ZoomControls,
   type ZoomControlsOptions,
+  attachZoomControls,
+  clampZoom,
+  getScrollParent,
+  getVisibleCenter,
 } from '../zoom/zoom';
+import { type AnnotatedText } from './CreateAnnotations.model';
 
 const document = globalThis.document || null;
 

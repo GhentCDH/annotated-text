@@ -1,32 +1,31 @@
-import { type Container, type Token } from './container';
-import { Debugger } from '../utils/debugger';
-import type { Annotation, BaseAnnotation } from '../model';
 import {
   type AnnotationAdapter,
   DefaultAnnotationAdapter,
 } from '../adapter/annotation';
 import { type AnnotationRender } from '../adapter/annotation/renderer';
-import { InternalEventListener } from '../events/internal/internal.event.listener';
-import { EventListener } from '../events/event.listener';
-
-import { Tag } from '../compute/draw/tag/tag';
-import { SvgModel } from '../compute/model/svg.types';
+import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
+import { StyleInstances } from '../adapter/annotation/style/style-instances';
 import {
   DefaultSnapper,
   PlainTextAdapter,
   type Snapper,
   type TextAdapter,
 } from '../adapter/text';
-import { AnnotationColors } from '../compute/model/annotation.colors';
 import { Draw } from '../compute/draw/Draw';
 import { DrawAnnotation } from '../compute/draw/annotations/DrawAnnotation';
 import { EventAnnotations } from '../compute/draw/annotations/EventAnnotation';
-import { ExternalEventSender } from '../events/send-event';
+import { Tag } from '../compute/draw/tag/tag';
 import { DrawText } from '../compute/draw/text/DrawText';
+import { AnnotationColors } from '../compute/model/annotation.colors';
 import { MainContainer } from '../compute/model/maincontainer';
-import { RenderInstances } from '../adapter/annotation/renderer/render-instances';
+import { SvgModel } from '../compute/model/svg.types';
+import { EventListener } from '../events/event.listener';
+import { InternalEventListener } from '../events/internal/internal.event.listener';
+import { ExternalEventSender } from '../events/send-event';
+import type { Annotation, BaseAnnotation } from '../model';
 import { TagRenderer } from '../tag/TagRenderer';
-import { StyleInstances } from '../adapter/annotation/style/style-instances';
+import { Debugger } from '../utils/debugger';
+import { type Container, type Token } from './container';
 
 const AnnotationAdapterToken = 'ANNOTATION_ADAPTER';
 const TextAdapterToken = 'TEXT_ADAPTER';

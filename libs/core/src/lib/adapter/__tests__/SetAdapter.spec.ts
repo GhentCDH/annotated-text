@@ -1,13 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { type AnnotationModule } from '../../di/annotation.module';
 import {
   setAnnotationAdapter,
   setSnapperAdapter,
   setTextAdapter,
 } from '../SetAdapter';
-import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 import { AnnotationAdapter, type AnnotationAdapterParams } from '../annotation';
-import { type AnnotationModule } from '../../di/annotation.module';
 import { type Snapper } from '../snapper';
+import { TextAdapter, type TextAdapterParams } from '../text/TextAdapter';
 
 class MockTextAdapter extends TextAdapter {
   name = 'MockTextAdapter';

@@ -2,6 +2,7 @@
 //two annotations can start on the same line and 'overlap' even if they are not overlapping based on
 //character indexes.
 import { sortBy } from 'lodash-es';
+
 import { type TextAnnotation, type TextLine } from '../../model';
 import { Debugger } from '../../utils/debugger';
 

@@ -1,182 +1,72 @@
-# Contributing to @ghentcdh/annotated-text
+# Contributing to annotated-text
 
-Thank you for your interest in contributing to the annotated-text library! This document provides guidelines and
-instructions for contributing.
+Thanks for helping out! Open an issue before starting anything large so we can agree on the approach first.
 
-## Prerequisites
+By participating you agree to follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+Security issues go through the [Security Policy](./SECURITY.md), **not** public issues.
 
-Before you begin, ensure you have the following installed:
+## Ways to contribute
 
-- **Node.js** >= 22
-- **pnpm** >= 10
+- **Report a bug** — use the _Bug report_ issue form. A minimal example that reproduces the problem helps a lot.
+- **Suggest a feature or improvement** — use the _Feature request_ or _Improvement_ form.
+- **Improve the docs** — everything under `docs/` is fair game.
+- **Send a pull request** — for bugs, small improvements, or anything already agreed on in an issue.
 
-You can verify your versions with:
+## Development setup
 
-```bash
-node --version
-pnpm --version
+Requirements: **Node 24** and **pnpm** (version pinned in `package.json` → `packageManager`; `corepack enable`
+picks it up).
+
+```sh
+git clone https://github.com/GhentCDH/annotated-text.git
+cd annotated-text
+pnpm install
+
+pnpm nx run-many -t build        # build all packages
+pnpm nx run-many -t test         # unit tests
+pnpm nx run-many -t lint         # lint (CI fails on lint errors — typecheck does not catch them)
+pnpm nx run-many -t typecheck
+pnpm nx run docs:serve           # docs site on localhost
 ```
 
-## Getting Started
+This is an [Nx](https://nx.dev) monorepo — always run tasks through `pnpm nx`, and prefer
+`pnpm nx affected -t lint test` while iterating.
 
-1. Fork the repository on GitHub
-2. Clone your fork locally:
+## Where does code go?
 
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/annotated-text.git
-   cd annotated-text
-   ```
+| Package          | Contains                                                    |
+| ---------------- | ----------------------------------------------------------- |
+| `libs/core`      | `@ghentcdh/annotated-text`: the component                   |
+| `libs/markdown`  | `@ghentcdh/annotated-text--markdown`: markdown text adapter |
+| `libs/w3c/utils` | `@ghentcdh/w3c-utils`: W3C Web Annotation helpers           |
+| `e2e`            | Playwright tests (run in Docker)                            |
+| `docs`           | VuePress site with live examples                            |
 
-3. Install dependencies:
+## Code style
 
-   ```bash
-   pnpm install
-   ```
+- Formatting is Prettier (`singleQuote`); ESLint enforces import order and type-only imports.
+- The pre-commit hook runs lint on affected projects; `pnpm nx run-many -t lint --fix` fixes most findings.
 
-4. Set up Git hooks:
+## Commits and pull requests
 
-   ```bash
-   pnpm prepare
-   ```
+- Branch from `main`.
+- Use [Conventional Commits](https://www.conventionalcommits.org/) with the package as scope, e.g.
+  `fix(core): …`, `feat(markdown): …`, `docs: …`. Mark breaking changes with `!`
+  (`refactor(core)!: …`).
+- PR titles follow the same format — they end up in the release notes.
+- Keep PRs focused; one logical change per PR.
+- Add or update tests, and update `docs` for user-facing changes.
+- Fill in the pull request template.
 
-## Project Structure
+## Releasing (maintainers)
 
-This is an [Nx](https://nx.dev/) monorepo. Key directories include:
-
-```
-annotated-text/
-├── libs/               # Library packages
-├── docs/               # Documentation (VitePress)
-├── tools/              # Build and release scripts
-└── dist/               # Build output
-```
-
-## Development Workflow
-
-### Running the Development Server
-
-```bash
-pnpm nx serve docs
+```sh
+pnpm release --specifier=patch   # or minor / major
 ```
 
-### Building
-
-```bash
-pnpm nx build docs
-```
-
-To build all projects:
-
-```bash
-pnpm nx run-many -t build
-```
-
-### Running Tests
-
-Unit tests use [Vitest](https://vitest.dev/):
-
-```bash
-pnpm nx test core
-```
-
-End-to-end tests use [Playwright](https://playwright.dev/):
-
-```bash
-pnpm nx e2e docs
-```
-
-### Linting
-
-```bash
-pnpm nx lint <project-name>
-```
-
-## Code Style
-
-This project uses automated code formatting and linting:
-
-- **ESLint** for JavaScript/TypeScript/Vue linting
-- **Prettier** for code formatting
-- **Stylelint** for CSS/SCSS linting
-
-Pre-commit hooks (via Husky and lint-staged) automatically format and lint staged files. To manually format your code:
-
-```bash
-pnpm prettier --write "**/*.{js,ts,vue,css,scss}"
-```
-
-## Commit Guidelines
-
-We use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages. This enables automatic
-changelog generation.
-
-### Format
-
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
-```
-
-### Types
-
-- `feat`: A new feature
-- `fix`: A bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, semicolons, etc.)
-- `refactor`: Code changes that neither fix bugs nor add features
-- `perf`: Performance improvements
-- `test`: Adding or updating tests
-- `chore`: Maintenance tasks (dependencies, build config, etc.)
-
-### Examples
-
-```
-feat(renderer): add curved underline style option
-fix(highlight): correct color opacity calculation
-docs: update API reference for AnnotationManager
-```
-
-## Pull Request Process
-
-1. Create a new branch from `main`:
-
-   ```bash
-   git checkout -b feat/your-feature-name
-   ```
-
-2. Make your changes and commit using conventional commit messages
-
-3. Ensure all tests pass:
-
-   ```bash
-   pnpm nx run-many -t test
-   pnpm nx run-many -t lint
-   ```
-
-4. Push your branch and open a pull request against `main`
-
-5. Fill out the pull request template, describing your changes
-
-6. Wait for review—address any feedback from maintainers
-
-## Reporting Issues
-
-When reporting bugs, please include:
-
-- A clear description of the issue
-- Steps to reproduce
-- Expected vs. actual behavior
-- Browser and OS information
-- Minimal reproduction (if possible)
-
-## Questions?
-
-If you have questions or need help, feel free to open
-a [GitHub Discussion](https://github.com/GhentCDH/annotated-text/discussions) or reach out to the maintainers.
+`nx release` bumps the versions, updates `RELEASE_NOTES.md`, commits and tags; the `postrelease` script pushes.
+The pushed tag triggers the `Publish` workflow, which publishes to npm and creates the GitHub release.
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+By contributing, you agree that your contributions are licensed under the [MIT License](./LICENSE).

@@ -1,13 +1,13 @@
-import { SvgModel } from './svg.types';
-import { Debugger } from '../../utils/debugger';
+import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
 import {
   type AnnotationId,
   type AnnotationStyle,
   type TextAnnotation,
 } from '../../model';
-import { BaseAnnotationDi } from '../../di/BaseAnnotationDi';
-import { RenderInstances } from '../../adapter/annotation/renderer/render-instances';
+import { Debugger } from '../../utils/debugger';
 import { colorAnnotationContent } from '../draw/annotations';
+import { SvgModel } from './svg.types';
 
 export class AnnotationColors extends BaseAnnotationDi {
   private readonly svgModel = this.inject(SvgModel);

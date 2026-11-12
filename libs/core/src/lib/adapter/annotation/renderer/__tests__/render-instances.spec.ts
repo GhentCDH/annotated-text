@@ -1,16 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { RenderInstances } from '../render-instances';
+
+import { SvgModel } from '../../../../compute/model/svg.types';
+import { type AnnotationModule } from '../../../../di/annotation.module';
+import { EventListener } from '../../../../events/event.listener';
+import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
+import type { TextAnnotation } from '../../../../model';
+import { StyleInstances } from '../../style/style-instances';
 import {
   AnnotationRender,
   type AnnotationRenderStyle,
   DefaultAnnotationRenderStyle,
 } from '../annotation-render';
-import type { TextAnnotation } from '../../../../model';
-import { type AnnotationModule } from '../../../../di/annotation.module';
-import { SvgModel } from '../../../../compute/model/svg.types';
-import { EventListener } from '../../../../events/event.listener';
-import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
-import { StyleInstances } from '../../style/style-instances';
+import { RenderInstances } from '../render-instances';
 
 // Mock the Debugger module
 vi.mock('../../../../utils/debugger', () => ({

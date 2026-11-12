@@ -1,11 +1,11 @@
-import { _textToLines } from './text_utilities';
+import { type TextLine, textLineSchema } from '../../../model';
 import {
   type Limit,
   TextAdapter,
   type TextAdapterParams,
 } from '../TextAdapter';
-import { type TextLine, textLineSchema } from '../../../model';
-import { mapLinesToLimit, type UpdateLineFn } from '../utils/mapLineToLimit';
+import { type UpdateLineFn, mapLinesToLimit } from '../utils/mapLineToLimit';
+import { _textToLines } from './text_utilities';
 
 const updateLine: UpdateLineFn = (
   line: TextLine,

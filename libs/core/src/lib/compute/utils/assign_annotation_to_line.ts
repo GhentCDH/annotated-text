@@ -1,5 +1,5 @@
-import type { Annotation, BaseAnnotation } from '../../model';
 import { type EventListener } from '../../events/event.listener';
+import type { Annotation, BaseAnnotation } from '../../model';
 
 export const validateAnnotation = <ANNOTATION extends BaseAnnotation>(
   annotation: Annotation,

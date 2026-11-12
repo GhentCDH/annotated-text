@@ -1,19 +1,20 @@
 import { type Selection } from 'd3-selection';
-import { addDraggableAnnotation } from './annotations/drag-annotation';
-import { drawAnnotationHandles } from './annotations/edit';
-import { EventAnnotations } from './annotations/EventAnnotation';
+
+import { type AnnotationModule } from '../../di/annotation.module';
+import {
+  type AnnotationDraw,
+  type AnnotationStyle,
+  type TextAnnotation,
+} from '../../model';
 import {
   type AnnotationSvg,
   SVG_ID,
   SVG_ROLE,
   SvgModel,
 } from '../model/svg.types';
-import {
-  type AnnotationDraw,
-  type AnnotationStyle,
-  type TextAnnotation,
-} from '../../model';
-import { type AnnotationModule } from '../../di/annotation.module';
+import { EventAnnotations } from './annotations/EventAnnotation';
+import { addDraggableAnnotation } from './annotations/drag-annotation';
+import { drawAnnotationHandles } from './annotations/edit';
 
 export const colorAnnotationContent = (
   style: AnnotationStyle,

@@ -1,11 +1,12 @@
 import { merge } from 'lodash-es';
+
+import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
+import type { AnnotationModule } from '../../../di/annotation.module';
 import {
   type AnnotationStyleParams,
   DefaultAnnotationStyleParams,
 } from './annotation.style';
 import { type CustomAnnotationStyle } from './annotation.style.default';
-import { BaseAnnotationDi } from '../../../di/BaseAnnotationDi';
-import type { AnnotationModule } from '../../../di/annotation.module';
 
 export class StyleInstances<ANNOTATION> extends BaseAnnotationDi {
   private styleParams = DefaultAnnotationStyleParams;

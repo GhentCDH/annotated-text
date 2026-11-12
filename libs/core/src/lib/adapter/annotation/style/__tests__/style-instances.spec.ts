@@ -1,13 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { type CustomAnnotationStyle } from '../annotation.style.default';
+
+import type { AnnotationModule } from '../../../../di/annotation.module';
+import { EventListener } from '../../../../events/event.listener';
+import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
 import {
   DEFAULT_STYLE_NAME,
   DefaultAnnotationStyleParams,
 } from '../annotation.style';
+import { type CustomAnnotationStyle } from '../annotation.style.default';
 import { StyleInstances } from '../style-instances';
-import type { AnnotationModule } from '../../../../di/annotation.module';
-import { EventListener } from '../../../../events/event.listener';
-import { InternalEventListener } from '../../../../events/internal/internal.event.listener';
 
 vi.mock('../../../../utils/debugger', () => ({
   Debugger: {

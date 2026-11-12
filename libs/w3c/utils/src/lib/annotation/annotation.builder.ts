@@ -1,4 +1,11 @@
 import type { z } from 'zod';
+
+import {
+  getTextPositionSelectors,
+  getTextQuoteSelectors,
+  isW3CSpecificResource,
+  isW3CTextualBody
+} from './annotation-helpers'; // ---------------------------------------------------------------------------
 import {
   type W3CAgent,
   type W3CAnnotation,
@@ -16,12 +23,6 @@ import {
   type W3CTextQuoteSelector as W3CTextQuoteSelectorSchema,
   type W3CTextualBody
 } from './annotation.schema';
-import {
-  getTextPositionSelectors,
-  getTextQuoteSelectors,
-  isW3CSpecificResource,
-  isW3CTextualBody
-} from './annotation-helpers'; // ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // Internal types

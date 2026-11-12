@@ -1,5 +1,7 @@
 import markdownit, { type Token } from 'markdown-it';
+
 import { selectText } from '@ghentcdh/annotated-text';
+
 import { normalizeMarkdown } from './markdown.normalizer';
 
 type Limit = {

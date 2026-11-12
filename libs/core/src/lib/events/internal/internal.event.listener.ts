@@ -1,5 +1,5 @@
-import { type InternalEvent, type InternalEventData } from './internal.events';
 import { Debugger } from '../../utils/debugger';
+import { type InternalEvent, type InternalEventData } from './internal.events';
 
 export type InternalEventListenerType = InternalEvent;
 

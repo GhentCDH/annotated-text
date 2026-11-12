@@ -1,12 +1,13 @@
 import { pick } from 'lodash-es';
-import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
-import { type Position } from '../types';
+
+import { type AnnotationModule } from '../../../di/annotation.module';
+import { type TextAnnotation } from '../../../model';
 import {
   type CharacterPositionResult,
   getCharacterStartEndPosition,
 } from '../../position';
-import { type TextAnnotation } from '../../../model';
-import { type AnnotationModule } from '../../../di/annotation.module';
+import { type Position } from '../types';
+import { AbstractAnnotationEventEdit } from './abstract-annotation-event.edit';
 
 export class EditAnnotation extends AbstractAnnotationEventEdit {
   constructor(

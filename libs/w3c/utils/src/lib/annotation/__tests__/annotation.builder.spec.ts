@@ -1,12 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { w3cAnnotation, W3CAnnotationBuilder } from '../annotation.builder';
+
 import {
-  isW3CTextualBody,
-  isW3CCustomBody,
-  getTextualBodies,
-  getCustomBodies,
   getBodies,
+  getCustomBodies,
+  getTextualBodies,
+  isW3CCustomBody,
+  isW3CTextualBody,
 } from '../annotation-helpers';
+import { W3CAnnotationBuilder, w3cAnnotation } from '../annotation.builder';
 import type {
   W3CAnnotation,
   W3CBody,

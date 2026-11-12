@@ -1,16 +1,17 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import RBush from 'rbush';
-import {
-  drawTextRaster,
-  findNearestTextPosition,
-  type TextRasterItem,
-} from '../text-raster';
-import { calculateOffset, findLineElement } from '../../utils/bounding-rect';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { TextAdapter } from '../../../../adapter/text';
 import {
   getScaledDimensions,
   getUnscaledRect,
 } from '../../../position/unscaled';
-import type { TextAdapter } from '../../../../adapter/text';
+import { calculateOffset, findLineElement } from '../../utils/bounding-rect';
+import {
+  type TextRasterItem,
+  drawTextRaster,
+  findNearestTextPosition,
+} from '../text-raster';
 
 // Mock dependencies
 vi.mock('rbush');

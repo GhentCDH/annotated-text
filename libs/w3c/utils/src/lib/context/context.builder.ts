@@ -1,7 +1,8 @@
-import { z, type ZodObject } from 'zod';
+import { type ZodObject, z } from 'zod';
+
 import { buildJsonLdContext } from './context-helpers.jsonld';
-import { buildJsonFormSchema } from './context.helpers.json';
 import { toAnnotationBody } from './context.helpers';
+import { buildJsonFormSchema } from './context.helpers.json';
 
 /**
  * Ensure the prefix URI ends with `/` when it contains a protocol.

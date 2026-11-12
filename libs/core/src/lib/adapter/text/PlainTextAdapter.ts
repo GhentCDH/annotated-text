@@ -1,7 +1,8 @@
 import memoize from 'memoizee';
-import { type Limit, TextAdapter, type TextAdapterParams } from './TextAdapter';
-import { mapLinesToLimit, type UpdateLineFn } from './utils/mapLineToLimit';
+
 import { type TextLine, textLineSchema } from '../../model';
+import { type Limit, TextAdapter, type TextAdapterParams } from './TextAdapter';
+import { type UpdateLineFn, mapLinesToLimit } from './utils/mapLineToLimit';
 
 const _textToLines = memoize(
   (text: string, startOffset: number): TextLine[] => {

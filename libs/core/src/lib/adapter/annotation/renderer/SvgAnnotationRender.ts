@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { AnnotationRender } from './annotation-render';
-import { type PathParams } from './_utils/path';
+
+import { getRanges } from '../../../compute/utils/ranges/get-range';
 import {
   type AnnotationDimension,
   type AnnotationDraw,
@@ -8,8 +8,9 @@ import {
   type BaseAnnotation,
   type TextAnnotation,
 } from '../../../model';
-import { getRanges } from '../../../compute/utils/ranges/get-range';
 import { type CustomAnnotationStyle } from '../style';
+import { type PathParams } from './_utils/path';
+import { AnnotationRender } from './annotation-render';
 
 export abstract class SvgAnnotationRender<
   ANNOTATION extends BaseAnnotation,
