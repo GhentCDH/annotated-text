@@ -60,12 +60,7 @@ This is an [Nx](https://nx.dev) monorepo — always run tasks through `pnpm nx`,
 
 ## Releasing (maintainers)
 
-```sh
-pnpm release --specifier=patch   # or minor / major
-```
-
-`nx release` bumps the versions, updates `RELEASE_NOTES.md`, commits and tags; the `postrelease` script pushes.
-The pushed tag triggers the `Publish` workflow, which publishes to npm and creates the GitHub release.
+See [docs/release.md](./docs/release.md): `pnpm release`, never `nx release` directly.
 
 ## License
 
