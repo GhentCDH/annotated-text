@@ -1,29 +1,43 @@
-enhancement:
-  - head-branch: [ '^feature', 'feature', 'feat' ]
+# Labels applied from the branch name and the changed files (actions/labeler).
+# The PR title (Conventional Commit type) is handled in
+# .github/workflows/shared-labeler.yml. Label names must exist in labels.yml.
+
+enhancement 🚀:
+  - head-branch: ['^(feat|feature|enhancement)[/_-]']
 
 bug 🐞:
-  - head-branch: [ '^bug', 'bugfix', 'fix' ]
+  - head-branch: ['^(fix|bug|bugfix|hotfix)[/_-]']
 
 release:
-  - head-branch: [ '^release', 'release' ]
+  - head-branch: ['^release[/_-]']
 
 refactoring:
-  - head-branch: [ '^refactoring', 'refactoring' ]
+  - head-branch: ['^(refactor|refactoring)[/_-]']
 
+performance:
+  - head-branch: ['^perf(ormance)?[/_-]']
+
+testing:
+  - head-branch: ['^tests?[/_-]']
 
 build:
-  - head-branch: [ '^chore', 'chore' ]
+  - head-branch: ['^(chore|build)[/_-]']
+
+dependencies:
+  - head-branch: ['^(deps|dependabot|renovate)[/_-]']
   - changed-files:
       - any-glob-to-any-file:
-          - package*
+          - pnpm-lock.yaml
 
 ci:
+  - head-branch: ['^ci[/_-]']
   - changed-files:
       - any-glob-to-any-file:
-          - .github/*
+          - .github/**
 
 documentation:
-  - head-branch: [ '^docs', 'docs' ]
+  - head-branch: ['^docs?[/_-]']
   - changed-files:
       - any-glob-to-any-file:
-          - docs/*
+          - docs/**
+          - '**/*.md'

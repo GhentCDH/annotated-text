@@ -3,7 +3,7 @@
 changelog:
   exclude:
     labels:
-      - ignore-for-release
+      - skip-changelog
     authors:
       - octocat
   categories:

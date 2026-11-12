@@ -47,7 +47,7 @@ it.each`
 ## Git
 
 - Conventional Commits
-- Husky pre-commit hooks (lint-staged with prettier + eslint)
+- Husky pre-commit hook (`nx affected -t lint --fix`)
 
 <!-- nx configuration start-->
 <!-- Leave the start & end comments to automatically receive updates. -->

@@ -4,24 +4,16 @@ Release
 
 ## Creating a new release
 
-Every release creates a new tag in the repository and a new release in the GitHub repository.
-The package is published to the npm registry, when merged to the main branch.
-The release notes are automatically generated based on the commit messages since the last release.
-
-**Release patch**
-
 ```bash
-npx nx release --specifier=patch  
+pnpm release                      # bump derived from the conventional commits since the last tag
+pnpm release --specifier=patch    # or minor / major to force it
 ```
 
-**Release minor**
+This checks out `main`, bumps the versions, updates `RELEASE_NOTES.md`, commits, tags and pushes.
+Nothing is published from your machine.
 
-```bash
-npx nx release --specifier=minor  
-```
+The pushed tag triggers two workflows on GitHub:
 
-**Release major**
-
-```bash
-npx nx release --specifier=major  
-```
+- **Publish**: publishes the packages to npm and creates the GitHub release, with notes generated from the merged
+  pull requests (grouped by label, see `.github/release.yml`).
+- **Publish Docs**: builds and deploys the documentation site.

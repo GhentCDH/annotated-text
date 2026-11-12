@@ -1,1 +1,1 @@
- npx nx affected -t lint format --base=origin/main --parallel=5 --fix
+npx nx affected -t lint --base=origin/main --parallel=5 --fix
