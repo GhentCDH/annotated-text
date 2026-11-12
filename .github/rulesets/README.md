@@ -22,3 +22,12 @@ What it enforces on the default branch:
 
 Required check names come from the workflow job names (`ci / …` = jobs of the shared CI workflow). Update
 `main.json` when a job is renamed, otherwise pull requests wait forever on a check that never reports.
+
+## `tags.json`: release tags
+
+A `v*` tag triggers the `Publish` workflow, so pushing one is publishing to npm. This ruleset lets only repository
+admins create, move or delete `v*` tags.
+
+```sh
+gh api -X POST repos/GhentCDH/annotated-text/rulesets --input .github/rulesets/tags.json
+```
