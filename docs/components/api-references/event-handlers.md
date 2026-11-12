@@ -29,6 +29,7 @@ By default the events will be logged to the console with debug statements.
 | annotation-edit--start   | Emitted when an annotation is being edited. This is the first event in the edit process.           |
 | annotation-edit--move    | Emitted when an annotation is being moved during the edit process.                                 |
 | annotation-edit--end     | Emitted when an annotation edit is completed. This is the last event in the edit process.          |
+| annotation-edit--cancel  | Emitted instead of `annotation-edit--end` when an edit is abandoned: Escape, or released unchanged. |
 | annotation-create--start | Emitted when a new annotation is being created. This is the first event in the create process.     |
 | annotation-create--move  | Emitted when a new annotation is being moved during the create process.                            |
 | annotation-create--end   | Emitted when a new annotation creation is completed. This is the last event in the create process. |

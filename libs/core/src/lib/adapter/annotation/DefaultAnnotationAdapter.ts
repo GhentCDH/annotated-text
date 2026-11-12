@@ -58,8 +58,8 @@ export class DefaultAnnotationAdapterImpl extends AnnotationAdapter<Annotation> 
       ...(originalAnnotation ?? {}),
       ...formattedAnnotation,
     };
-    this.addAnnotation(annotation.id, formattedAnnotation, annotation);
-
+    // Do not cache here: format also runs for every move event of an edit that
+    // can still be cancelled. A committed change is cached when it is parsed again.
     return formattedAnnotation;
   }
 }

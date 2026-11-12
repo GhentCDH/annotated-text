@@ -104,7 +104,7 @@ describe('annotation edit lifecycle', () => {
       expect(t.internalEventListener.isBlocking).toBe(false);
     });
 
-    it('should restore the tag and emit nothing when released without moving', () => {
+    it('should restore the tag and emit a cancel when released without moving', () => {
       const t = setup();
       const edit = new EditAnnotation(t.annotation, t.module, t.characterAt);
 
@@ -114,7 +114,59 @@ describe('annotation edit lifecycle', () => {
       expect(t.draw.tag.removeTag).toHaveBeenCalledWith('a');
       expect(t.draw.tag.drawTag).toHaveBeenCalledWith(t.annotation);
       expect(t.internalEvents).toEqual([]);
-      expect(t.externalEvents).toEqual(['annotation-edit--start 10-20']);
+      expect(t.externalEvents).toEqual([
+        'annotation-edit--start 10-20',
+        'annotation-edit--cancel 10-20',
+      ]);
+    });
+
+    it.each`
+      trigger       | cancel
+      ${'cancel()'} | ${(edit: EditAnnotation) => edit.cancel()}
+      ${'Escape'}   | ${() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))}
+    `(
+      'should drop the edit and keep the original range on $trigger',
+      ({ cancel }) => {
+        const t = setup();
+        const edit = new EditAnnotation(t.annotation, t.module, t.characterAt);
+
+        edit.start(at(10), 'start', event);
+        edit.move(at(12), 'start', event);
+        cancel(edit);
+        // d3 still delivers the rest of the drag
+        edit.move(at(14), 'start', event);
+        edit.end(event);
+
+        expect(t.internalEventListener.isBlocking).toBe(false);
+        expect(t.draw.annotation.removeDraw).toHaveBeenCalledTimes(1);
+        expect(t.draw.tag.drawTag).toHaveBeenCalledWith(t.annotation);
+        expect(t.annotation).toMatchObject({ start: 10, end: 20 });
+        expect(t.internalEvents).toEqual([]);
+        expect(t.externalEvents).toEqual([
+          'annotation-edit--start 10-20',
+          'annotation-edit--move 12-20',
+          'annotation-edit--cancel 10-20',
+        ]);
+      },
+    );
+
+    it('should ignore other keys and stop listening once the edit is over', () => {
+      const t = setup();
+      const edit = new EditAnnotation(t.annotation, t.module, t.characterAt);
+      const press = (key: string) =>
+        document.dispatchEvent(new KeyboardEvent('keydown', { key }));
+
+      edit.start(at(10), 'start', event);
+      edit.move(at(12), 'start', event);
+      press('a');
+      edit.end(event);
+      press('Escape');
+
+      expect(t.externalEvents).toEqual([
+        'annotation-edit--start 10-20',
+        'annotation-edit--move 12-20',
+        'annotation-edit--end 12-20',
+      ]);
     });
 
     it('should update the annotation and emit the new range after an edit', () => {
@@ -146,6 +198,7 @@ describe('annotation edit lifecycle', () => {
       expect(t.internalEvents).toEqual(['annotation--update 14-20']);
       expect(t.externalEvents).toEqual([
         'annotation-edit--start 10-20',
+        'annotation-edit--cancel 10-20',
         'annotation-edit--start 10-20',
         'annotation-edit--move 14-20',
         'annotation-edit--end 14-20',

@@ -142,6 +142,57 @@ test.describe('W3C Web Annotations', () => {
     }
   });
 
+  test('Escape cancels a W3C annotation edit and keeps the original annotation', async ({
+    page,
+  }) => {
+    const container = page.locator('#w3c-interactive');
+    const eventLog = page.locator('#event-log');
+    await expect(container).toBeVisible();
+    await container.scrollIntoViewIfNeeded();
+
+    const fill = container
+      .locator('[data-annotation-uid][data-annotation-role="fill"]')
+      .first();
+    const before = await fill.boundingBox();
+    // The middle of the annotation: drags the whole annotation
+    const box = before!;
+    const x = box.x + box.width / 2;
+    const y = box.y + box.height / 2;
+    const dragLeft = async () => {
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      for (let i = 1; i <= 4; i++) {
+        await page.mouse.move(x - 10 * i, y);
+        await page.waitForTimeout(30);
+      }
+    };
+
+    await dragLeft();
+    await expect(eventLog).toContainText('annotation-edit--move');
+    await page.keyboard.press('Escape');
+    await page.mouse.up();
+
+    const lastEvent = await eventLog.locator('div').last().textContent();
+    expect(lastEvent).toContain('Event: annotation-edit--cancel - ');
+    const original = await page.evaluate(
+      () => (window as any).__w3cTestInstances.sampleAnnotations[0],
+    );
+    expect(JSON.parse(lastEvent!.split(' - ')[1]).annotation).toEqual(original);
+    expect(await fill.boundingBox()).toEqual(before);
+
+    // The next edit starts from the original range again (16-19, moved left)
+    await dragLeft();
+    await page.mouse.up();
+    const edited = await eventLog
+      .locator('div', { hasText: 'Event: annotation-edit--end - ' })
+      .last()
+      .textContent();
+    const [selector] = JSON.parse(edited!.split(' - ')[1]).annotation.target
+      .selector;
+    expect(selector.end - selector.start).toBe(3);
+    expect(selector.start).toBeLessThan(16);
+  });
+
   test('visual: W3C interactive initial state', async ({ page }) => {
     const container = page.locator('#w3c-interactive');
     await expect(container).toBeVisible();

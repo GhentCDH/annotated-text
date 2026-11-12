@@ -117,7 +117,7 @@ export class W3CAnnotationAdapterImpl extends AnnotationAdapter<
     const _w3c = builder.build();
 
     this.w3cBuilderMap.set(annotation.id, builder);
-    this.addAnnotation(annotation.id, _w3c, annotation);
+    // Do not cache here, see DefaultAnnotationAdapter.format
 
     return _w3c;
   }

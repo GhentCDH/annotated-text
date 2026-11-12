@@ -110,6 +110,9 @@ const renderDemo = (_id: CrudIdKeys, title: string) => {
     })
     .on('annotation-edit--move', (e) => {
       writeLog(e.event, e.data.annotation);
+    })
+    .on('annotation-edit--cancel', (e) => {
+      writeLog(e.event, e.data.annotation);
     });
 
   return { ...rendered, annotatedText, id };

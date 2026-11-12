@@ -15,8 +15,11 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
   protected dummyAnnotation: TextAnnotation | undefined;
   protected readonly originalStartEnd: StartEnd;
   protected readonly draw = this.inject(Draw);
-  /** True between a start() that blocked the events and the matching end() */
+  /** True between a start() that blocked the events and the matching end() or cancel() */
   private active = false;
+  private readonly onKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') this.cancel();
+  };
 
   constructor(
     annotationModule: AnnotationModule,
@@ -36,16 +39,18 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
     this.internalEventListener.blockEvents('annotation-edit--start');
     this.active = true;
     this.dummyAnnotation = undefined;
+    // Only listen while an edit is in flight: no listener to tear down on destroy
+    document.addEventListener('keydown', this.onKeydown);
 
     try {
       this.onStart(position, target);
     } catch (error) {
       // Never leave the events blocked: that freezes the whole component
-      this.end(event);
+      this.release('annotation edit failed to start');
       throw error;
     }
 
-    this.sendExternalEvent('annotation-edit--start', this.dummyAnnotation?.id);
+    this.sendExternalEvent('annotation-edit--start');
 
     this.draw.tag.removeTag(this.annotation!.id);
   }
@@ -77,22 +82,11 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
 
   end(event: MouseEvent) {
     if (!this.active) return;
-    // Always release the block, whatever else happens
-    this.active = false;
-    this.internalEventListener.unBlockEvents('ending annotation edit');
+    // Nothing changed (released without moving, or the snapper kept the same
+    // range): that is a cancel
+    if (!this.dummyAnnotation) return this.cancel();
 
-    const dummyAnnotation = this.dummyAnnotation;
-    this.dummyAnnotation = undefined;
-
-    if (!dummyAnnotation) {
-      // Nothing changed (released without moving, or the snapper kept the
-      // same range): undo what start() did, nothing to emit
-      if (this.annotation) {
-        this.draw.annotation.setClass(this.annotation.id, '');
-        this.draw.tag.drawTag(this.annotation);
-      }
-      return;
-    }
+    const dummyAnnotation = this.release('ending annotation edit')!;
 
     this.draw.annotation.removeDraw(dummyAnnotation.id);
     if (this.annotation) dummyAnnotation.id = this.annotation.id;
@@ -106,6 +100,39 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
       start: dummyAnnotation.start,
       end: dummyAnnotation.end,
     });
+  }
+
+  /**
+   * Abandon the edit in flight: the annotation keeps its original range and
+   * nothing is updated. Called on Escape and when an edit ends without a change.
+   */
+  cancel() {
+    if (!this.active) return;
+    const dummyAnnotation = this.release('cancelling annotation edit');
+
+    if (dummyAnnotation) this.draw.annotation.removeDraw(dummyAnnotation.id);
+    if (!this.annotation) return;
+
+    // Undo what start() did
+    this.draw.annotation.setClass(this.annotation.id, '');
+    this.draw.tag.drawTag(this.annotation);
+
+    this.sendExternalEvent(
+      'annotation-edit--cancel',
+      this.annotation.id,
+      this.originalStartEnd,
+    );
+  }
+
+  /** Always release the block, whatever else happens. Returns the dummy that was drawn. */
+  private release(reason: string) {
+    this.active = false;
+    this.internalEventListener.unBlockEvents(reason);
+    document.removeEventListener('keydown', this.onKeydown);
+
+    const dummyAnnotation = this.dummyAnnotation;
+    this.dummyAnnotation = undefined;
+    return dummyAnnotation;
   }
 
   private drawDummyAnnotation(startEnd: StartEnd, prevPosition?: StartEnd) {
@@ -155,7 +182,8 @@ export abstract class AbstractAnnotationEventEdit extends BaseAnnotationDi {
     event:
       | 'annotation-edit--move'
       | 'annotation-edit--start'
-      | 'annotation-edit--end',
+      | 'annotation-edit--end'
+      | 'annotation-edit--cancel',
     moveId?: AnnotationId,
     range: StartEnd | undefined = this.dummyAnnotation,
   ) {
