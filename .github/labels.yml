@@ -58,3 +58,9 @@
 - name: skip-changelog
   description: Changes that should be omitted from the release notes
   color: ededed
+- name: block
+  description: Do not merge
+  color: b60205
+- name: needs review
+  description: AI-authored, needs human review before merge
+  color: fbca04
