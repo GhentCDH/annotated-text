@@ -3,40 +3,40 @@
 # .github/workflows/shared-labeler.yml. Label names must exist in labels.yml.
 
 enhancement 🚀:
-  - head-branch: ['^(feat|feature|enhancement)[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?(feat|feature|enhancement)[/_-]']
 
 bug 🐞:
-  - head-branch: ['^(fix|bug|bugfix|hotfix)[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?(fix|bug|bugfix|hotfix)[/_-]']
 
 release:
-  - head-branch: ['^release[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?release[/_-]']
 
 refactoring:
-  - head-branch: ['^(refactor|refactoring)[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?(refactor|refactoring)[/_-]']
 
 performance:
-  - head-branch: ['^perf(ormance)?[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?perf(ormance)?[/_-]']
 
 testing:
-  - head-branch: ['^tests?[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?tests?[/_-]']
 
 build:
-  - head-branch: ['^(chore|build)[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?(chore|build)[/_-]']
 
 dependencies:
-  - head-branch: ['^(deps|dependabot|renovate)[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?(deps|dependabot|renovate)[/_-]']
   - changed-files:
       - any-glob-to-any-file:
           - pnpm-lock.yaml
 
 ci:
-  - head-branch: ['^ci[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?ci[/_-]']
   - changed-files:
       - any-glob-to-any-file:
           - .github/**
 
 documentation:
-  - head-branch: ['^docs?[/_-]']
+  - head-branch: ['^(?:(?:ai|claude|copilot|codex)/)?docs?[/_-]']
   - changed-files:
       - any-glob-to-any-file:
           - docs/**

@@ -1,0 +1,17 @@
+name: Merge gate
+
+# Required check `merge-gate / gate`: fails while the PR has the `block` or `needs review` label.
+# `needs review` is added automatically for AI branches (ai/, claude/, copilot/, codex/).
+# pull_request_target: write token also for fork PRs; nothing from the PR is checked out or executed.
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  merge-gate:
+    uses: GhentCDH/crouton/.github/workflows/shared-merge-gate.yml@main
+    permissions:
+      pull-requests: write

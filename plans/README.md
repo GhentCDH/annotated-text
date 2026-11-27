@@ -15,6 +15,7 @@ Findings not yet promoted to a plan live in project memory (`review_backlog_*`) 
 | 05 | [`sendEvent` mutates the cached annotation](./05-sendevent-input-mutation.md) | high | ~2 h | — |
 | 06 | [Drag & edit: lifecycle, cancel, hot path, tests](./06-drag-edit-lifecycle.md) | high | ~1 week, phased | 05 |
 | 07 | [Zoomable text with annotations that follow](./07-zoomable-text.md) | medium | ~4–5 days, phased | — |
+| — | [Merge-gate labels (`block`, `needs review`)](./merge-gate-labels.md) | medium | ~1 h | crouton merge-gate PR |
 
 ## Suggested order
 

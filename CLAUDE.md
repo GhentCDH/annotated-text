@@ -72,3 +72,9 @@ it.each`
 - `nx-generate` skill handles generator discovery internally — don't call nx_docs just to look up generator syntax
 
 <!-- nx configuration end-->
+
+# Branches for AI-authored work
+
+AI agents (Claude Code, Copilot, Codex, …) must start every branch name with `claude/` (or `ai/`, `copilot/`,
+`codex/`), e.g. `claude/feat/date-filter`. The `merge-gate` workflow then labels the PR `needs review` and blocks
+merging until a human removes the label. See `.github/rulesets/README.md`.
